@@ -5,7 +5,7 @@ using TsRanodmizer.IntermediateObjects;
 
 namespace TsRanodmizer.LevelObjects
 {
-    [TargetTimeSpinnerObjectType("OrbPedestalEvent")]
+    [TimeSpinnerType("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent")]
     class OrbPedestal : LevelObject<Mobile>
     {
         public OrbPedestal(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)

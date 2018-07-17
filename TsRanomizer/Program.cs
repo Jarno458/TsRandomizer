@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -8,7 +9,7 @@ namespace TsRanodmizer
 {
 	public static class Program
 	{
-		public static int Seed { get; private set; }
+		public static int Seed { get; internal set; }
 
 		public static int Main(string[] args)
 		{
@@ -36,10 +37,10 @@ namespace TsRanodmizer
 
 			if (args.Length == 1)
 			{
-				if (int.TryParse(args[0], out seed))
+				if (int.TryParse(args[0], NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out seed))
 					return true;
 
-				Console.Out.WriteLine("Invalid arguments, Usage TsRanodmizer.exe [integer seed]");
+				Console.Out.WriteLine("Invalid arguments, Usage TsRanodmizer.exe [hex seed]");
 				Console.ReadKey(true);
 				return false;
 			}

@@ -9,29 +9,29 @@ using TsRanodmizer.Extensions;
 namespace TsRanodmizer.Screens
 {
 	partial class GameplayScreen
-    {
-	    int levelId = 1;
+	{
+		int levelId = 1;
 
 		void LoadLevel(int levelId, int roomNumber, int whichCheckpoint)
-	    {
-		    var self = Screen.Reflect();
+		{
+			var self = ScreenReflected;
 
 			int num = self._level == null ? -1 : self._level.ID;
-		    if (levelId == 1 && roomNumber == 0 && whichCheckpoint == 0)
-			    levelId = 0;
+			if (levelId == 1 && roomNumber == 0 && whichCheckpoint == 0)
+				levelId = 0;
 
-		    LoadLevel(new LevelChangeRequest
-		    {
-			    LevelID = levelId,
-			    RoomID = roomNumber,
-			    CheckpointID = whichCheckpoint,
-			    ShouldPlayLevelSong = levelId != num
-		    });
-	    }
+			LoadLevel(new LevelChangeRequest
+			{
+				LevelID = levelId,
+				RoomID = roomNumber,
+				CheckpointID = whichCheckpoint,
+				ShouldPlayLevelSong = levelId != num
+			});
+		}
 
 		void LoadLevel(LevelChangeRequest levelChangeRequest)
 		{
-			var self = Screen.Reflect();
+			var self = ScreenReflected;
 
 			LevelSpecification levelSpec = null;
 			int levelId = levelChangeRequest.LevelID;
@@ -92,14 +92,14 @@ namespace TsRanodmizer.Screens
 			self.ScreenManager.Game.ResetElapsedTime();
 		}
 
-	    void LoadNextLevel()
-	    {
-		    levelId++;
+		void LoadNextLevel()
+		{
+			levelId++;
 
-		    if (levelId > 18)
-			    levelId = 1;
+			if (levelId > 18)
+				levelId = 1;
 
-		    LoadLevel(levelId, 0, 0);
+			LoadLevel(levelId, 0, 0);
 		}
-    }
+	}
 }

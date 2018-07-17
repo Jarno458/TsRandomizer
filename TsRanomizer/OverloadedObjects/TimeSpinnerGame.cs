@@ -1,10 +1,5 @@
-﻿using System.Linq;
-using System.Reflection;
-using Microsoft.Xna.Framework;
-using Timespinner;
-using Timespinner.GameStateManagement.ScreenManager;
+﻿using Timespinner;
 using TsRanodmizer.Extensions;
-using TsRanodmizer.Screens;
 
 namespace TsRanodmizer.OverloadedObjects
 {
@@ -12,32 +7,19 @@ namespace TsRanodmizer.OverloadedObjects
     {
 	    public static dynamic Constants => new Constants();
 
-	    public static Assembly TimeSpinnerAssembly = typeof(TimespinnerGame).Assembly;
-
 	    public TimeSpinnerGame()
         {
-            var screenManager = HookScreenManager();
-
-            InjectMenu(screenManager);
+            HookScreenManager();
         }
 
-        static void InjectMenu(ScreenManager2 screenManager)
+        void HookScreenManager()
         {
-            var spashScreen = screenManager.GetScreens().First();
-            screenManager.RemoveScreen(spashScreen);
-            screenManager.AddScreen(new Menu(spashScreen), new PlayerIndex?());
-        }
-
-        ScreenManager2 HookScreenManager()
-        {
-            var screenManager = Components.FirstOfType<ScreenManager>();
-            var newScreenManager = new ScreenManager2(this);
+            var screenManager = Components.FirstOfType<Timespinner.GameStateManagement.ScreenManager.ScreenManager>();
+            var newScreenManager = new ScreenManager(this);
 
             newScreenManager.CopyScreensFrom(screenManager);
 
             Components.ReplaceComponent(screenManager, newScreenManager);
-
-            return newScreenManager;
         }
     }
 }

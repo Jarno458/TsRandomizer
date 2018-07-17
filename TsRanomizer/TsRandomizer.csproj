@@ -47,13 +47,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\DarkGameplayScreen.cs" />
     <Compile Include="IntermediateObjects\ProgressiveItemInfo.cs" />
     <Compile Include="ReplacementObjects\Replaces.cs" />
-    <Compile Include="IntermediateObjects\TargetTimeSpinnerObjectTypeAttribute.cs" />
+    <Compile Include="IntermediateObjects\TimeSpinnerType.cs" />
     <Compile Include="Randomisation\ItemKey.cs" />
     <Compile Include="LevelObjects\LevelObject.cs" />
     <Compile Include="Randomisation\Gate.cs" />
@@ -73,10 +74,11 @@
     <Compile Include="OverloadedObjects\TimeSpinnerGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LookupHashSet.cs" />
+    <Compile Include="LookupDictionairy.cs" />
     <Compile Include="ReplacementObjects\TimeSpinnerWheeel.cs" />
-    <Compile Include="Screens\Menu.cs" />
+    <Compile Include="Screens\MenuEntry.cs" />
     <Compile Include="Screens\Screen.cs" />
+    <Compile Include="Screens\SeedSelectionMenuScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

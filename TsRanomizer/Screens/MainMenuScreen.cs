@@ -1,12 +1,28 @@
-﻿using Timespinner.GameStateManagement.ScreenManager;
+﻿using System.Collections;
+using Microsoft.Xna.Framework;
+using Timespinner.GameStateManagement.ScreenManager;
+using TsRanodmizer.Extensions;
+using ScreenManager = TsRanodmizer.OverloadedObjects.ScreenManager;
 
 namespace TsRanodmizer.Screens
 {
 	class MainMenuScreen : Screen
 	{
-		public MainMenuScreen(GameScreen screen) : base(screen)
+		readonly ScreenManager screenManager;
+
+		public MainMenuScreen(ScreenManager screenManager, GameScreen screen) : base(screen)
 		{
-			throw new System.NotImplementedException();
+			this.screenManager = screenManager;
+			var entry = MenuEntry.Create("Select Seed", SelectSeed);
+			var menuEntries = (IList)screen.Reflect().MenuEntries;
+			menuEntries.Insert(0, entry.Entry);
+		}
+
+		void SelectSeed(PlayerIndex pi)
+		{
+			var selectSeedMenu = SeedSelectionMenuScreen.Create(screenManager);
+
+			screenManager.AddScreen(selectSeedMenu.Screen, PlayerIndex.One);
 		}
 	}
 }

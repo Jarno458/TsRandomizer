@@ -46,9 +46,9 @@ namespace TsRanodmizer.LevelObjects
 			foreach (var dirivedType in dirievedTypes)
 			{
 				var supportedGameEventTypes = dirivedType
-					.GetCustomAttributes(typeof(TargetTimeSpinnerObjectTypeAttribute), true)
-					.Cast<TargetTimeSpinnerObjectTypeAttribute>()
-					.Select(a => a.ObjectType)
+					.GetCustomAttributes(typeof(TimeSpinnerType), true)
+					.Cast<TimeSpinnerType>()
+					.Select(a => a.Type)
 					.ToArray();
 
 				if (!supportedGameEventTypes.Any())

@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Dynamic;
 using System.Reflection;
-using TsRanodmizer.OverloadedObjects;
+using TsRanodmizer.IntermediateObjects;
 
 namespace TsRanodmizer
 {
     class Constants : DynamicObject
     {
-        static readonly Type Type;
+        static readonly Type Type = TimeSpinnerType
+	        .Get("Timespinner.Core.Constants.Constants");
 
-        static Constants()
-        {
-            Type = TimeSpinnerGame.TimeSpinnerAssembly.GetType("Timespinner.Core.Constants.Constants");
-        }
-
-        public override bool TryGetMember(GetMemberBinder binder, out object result)
+		public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             try
             {

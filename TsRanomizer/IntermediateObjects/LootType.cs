@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using TsRanodmizer.OverloadedObjects;
 
 namespace TsRanodmizer.IntermediateObjects
 {
@@ -20,8 +19,8 @@ namespace TsRanodmizer.IntermediateObjects
 		public static readonly LootType Orb = ConstOrb;
 		public static readonly LootType Familiar = ConstFamiliar;
 
-		static readonly Type ETreasureLootType = TimeSpinnerGame.TimeSpinnerAssembly
-			.GetType("Timespinner.GameObjects.Events.ETreasureLootType");
+		static readonly Type ETreasureLootType = TimeSpinnerType
+			.Get("Timespinner.GameObjects.Events.ETreasureLootType");
 
 		readonly int lootType;
 

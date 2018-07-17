@@ -7,7 +7,7 @@ using TsRanodmizer.IntermediateObjects;
 
 namespace TsRanodmizer.ReplacementObjects
 {
-	[TargetTimeSpinnerObjectType("TimespinnerWheelItem")]
+	[TimeSpinnerType("TimespinnerWheelItem")]
 	class TimeSpinnerWheeel : Replaces
 	{
 		public const int YOffset = 48;
