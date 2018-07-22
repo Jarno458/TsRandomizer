@@ -1,43 +1,37 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using TsRanodmizer.OverloadedObjects;
 
 namespace TsRanodmizer
 {
 	public static class Program
 	{
-		public static int Seed { get; internal set; }
-
 		public static int Main(string[] args)
 		{
-			if (!CheckArguments(args, out int seed))
+			if (!CheckArguments(args))
 				return -1;
 
 			if (!Md5CheckPassed("A2F880953099610FACF4E3CC153085E1"))
 				return -1;
 
-			Seed = seed;
 			StartTimeSpinner();
 
 			return 0;
 		}
 
-		static bool CheckArguments(string[] args, out int seed)
+		static bool CheckArguments(string[] args)
 		{
 			if (args.Length > 1)
 			{
-				Console.Out.WriteLine("Invalid arguments, Usage TsRanodmizer.exe [integer seed]");
+				Console.Out.WriteLine("Invalid arguments, Usage TsRanodmizer.exe [hex seed]");
 				Console.ReadKey(true);
-				seed = -1;
 				return false;
 			}
 
 			if (args.Length == 1)
 			{
-				if (int.TryParse(args[0], NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out seed))
+				if (Seed.TrySetFromText(args[0]))
 					return true;
 
 				Console.Out.WriteLine("Invalid arguments, Usage TsRanodmizer.exe [hex seed]");
@@ -45,7 +39,6 @@ namespace TsRanodmizer
 				return false;
 			}
 
-			seed = new Random().Next();
 			return true;
 		}
 
@@ -92,12 +85,11 @@ namespace TsRanodmizer
 
 		static void StartTimeSpinner()
 		{
-			Console.Out.WriteLine($"Starting TimeSpinner...");
+			Console.Out.WriteLine("Starting TimeSpinner...");
 
 			/*try
 			{*/
-				var timespinnerGame = new TimeSpinnerGame();
-				timespinnerGame.Run();
+				new TimeSpinnerGame().Run();
 			/*}
 			catch (Exception e)
 			{

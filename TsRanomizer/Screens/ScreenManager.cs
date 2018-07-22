@@ -1,15 +1,16 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRanodmizer.Extensions;
-using TsRanodmizer.Screens;
-using GameplayScreen = TsRanodmizer.Screens.GameplayScreen;
 
-namespace TsRanodmizer.OverloadedObjects
+namespace TsRanodmizer.Screens
 {
 	class ScreenManager : Timespinner.GameStateManagement.ScreenManager.ScreenManager
 	{
 		readonly LookupDictionairy<GameScreen, Screen> hookedScreens
 			= new LookupDictionairy<GameScreen, Screen>(s => s.GameScreen);
+		readonly List<GameScreen> foundScreens = new List<GameScreen>(20);
 
 		public readonly dynamic Reflected;
 
@@ -20,8 +21,8 @@ namespace TsRanodmizer.OverloadedObjects
 
 		public override void Update(GameTime gameTime)
 		{
-			DetectNewGameplayScreens();
-			UpdateGameplayScreens();
+			DetectNewScreens();
+			UpdateScreens();
 
 			base.Update(gameTime);
 		}
@@ -33,28 +34,31 @@ namespace TsRanodmizer.OverloadedObjects
 			DrawGameplayScreens();
 		}
 
-		void DetectNewGameplayScreens()
+		void DetectNewScreens()
 		{
+			foundScreens.Clear();
+
 			foreach (var screen in GetScreens())
 			{
-				if (hookedScreens.Contains(screen)) continue;
-
-				switch (screen.GetType().Name)
+				if (hookedScreens.Contains(screen))
 				{
-					case "MainMenuScreen":
-						var mainMenuScreen = new MainMenuScreen(this, screen);
-						hookedScreens.Add(mainMenuScreen);
-						break;
-
-					case "GameplayScreen":
-						var gameplayScreen = new GameplayScreen(screen);
-						hookedScreens.Add(gameplayScreen);
-						break;
+					foundScreens.Add(screen);
+					continue;
 				}
+
+				if(!Screen.RegisteredTypes.TryGetValue(screen.GetType(), out Type handlerType))
+					continue;
+
+				var screenHandler = (Screen)Activator.CreateInstance(handlerType, this, screen);
+				hookedScreens.Add(screenHandler);
+				foundScreens.Add(screen);
 			}
+
+			if(foundScreens.Count != hookedScreens.Count)
+				hookedScreens.Filter(foundScreens);
 		}
 
-		void UpdateGameplayScreens()
+		void UpdateScreens()
 		{
 			var input = (InputState)Reflected._input;
 

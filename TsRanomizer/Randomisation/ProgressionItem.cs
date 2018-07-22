@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
+using TsRanodmizer.IntermediateObjects;
 
 namespace TsRanodmizer.Randomisation
 {
@@ -57,7 +58,7 @@ namespace TsRanodmizer.Randomisation
 		{
 			return flags != 0 && (flags & (flags - 1)) == 0;
 		}
-	
+
 
 		[Pure]
 		public override bool Equals(object obj)
@@ -78,7 +79,7 @@ namespace TsRanodmizer.Randomisation
 			return flags.GetHashCode();
 		}
 
-		public static implicit operator ProgressionItem (ulong value)
+		public static implicit operator ProgressionItem(ulong value)
 		{
 			return new ProgressionItem(value);
 		}
@@ -88,22 +89,27 @@ namespace TsRanodmizer.Randomisation
 			return value.flags;
 		}
 
-		public static ProgressionItem operator | (ProgressionItem a, ProgressionItem b)
+		public static implicit operator ItemInfo(ProgressionItem value)
+		{
+			return ItemInfo.FromProgressionItem(value);
+		}
+
+		public static ProgressionItem operator |(ProgressionItem a, ProgressionItem b)
 		{
 			return a.flags | b.flags;
 		}
 
-		public static Gate operator & (ProgressionItem a, ProgressionItem b)
+		public static Gate operator &(ProgressionItem a, ProgressionItem b)
 		{
 			return new Gate(a) & new Gate(b);
 		}
 
-		public static bool operator == (ProgressionItem a, ProgressionItem b)
+		public static bool operator ==(ProgressionItem a, ProgressionItem b)
 		{
 			return a.Equals(b);
 		}
 
-		public static bool operator != (ProgressionItem a, ProgressionItem b)
+		public static bool operator !=(ProgressionItem a, ProgressionItem b)
 		{
 			return !a.Equals(b);
 		}

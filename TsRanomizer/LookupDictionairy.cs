@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TsRanodmizer
 {
@@ -11,7 +12,6 @@ namespace TsRanodmizer
 
 		public LookupDictionairy(Func<TValue, TLookup> keySelector) : this(0, keySelector)
 		{
-			this.keySelector = keySelector;
 		}
 
 		public LookupDictionairy(int capacity, Func<TValue, TLookup> keySelector)
@@ -22,10 +22,21 @@ namespace TsRanodmizer
 
 		public TValue this[TLookup key] => lookupTable[key];
 		public TValue this[TValue value] => value;
+		public int Count => lookupTable.Count;
 
 		public bool TryGetValue(TLookup key, out TValue value)
 		{
 			return lookupTable.TryGetValue(key, out value);
+		}
+
+		public void Filter(IEnumerable<TLookup> intersectionFilter)
+		{
+			var keysToRemove = lookupTable.Keys
+				.Where(e => !intersectionFilter.Contains(e))
+				.ToList();
+
+			foreach (var key in keysToRemove)
+				lookupTable.Remove(key);
 		}
 
 		public IEnumerator<TValue> GetEnumerator()

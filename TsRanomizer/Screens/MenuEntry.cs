@@ -14,24 +14,39 @@ namespace TsRanodmizer.Screens
 			.GetEvent("Selected", BindingFlags.NonPublic | BindingFlags.Instance);
 		static readonly Type MainMenuSelectedEventType = MainMenuEntrySelectEventInfo.EventHandlerType;
 		static readonly MethodInfo SelectedEventAddMethod = MainMenuEntrySelectEventInfo.GetAddMethod(true);
-		
-		public object Entry { get; }
+
+		readonly object entry;
+		readonly dynamic reflected;
+
+		public string Text
+		{
+			get => reflected.Text;
+			set => reflected.Text = value;
+		}
 
 		public bool DoesDrawLargeShadow
 		{
-			get => Entry.Reflect().DoesDrawLargeShadow;
-			set => Entry.Reflect().DoesDrawLargeShadow = value;
+			get => reflected.DoesDrawLargeShadow;
+			set => reflected.DoesDrawLargeShadow = value;
 		}
 
 		public bool IsCenterAligned
 		{
-			get => Entry.Reflect().IsCenterAligned;
-			set => Entry.Reflect().IsCenterAligned = value;
+			get => reflected.IsCenterAligned;
+			set => reflected.IsCenterAligned = value;
+		}
+
+		public string Description
+		{
+			get => reflected.Description;
+			set => reflected.Description = value;
 		}
 
 		MenuEntry(object entry)
 		{
-			Entry = entry;
+			this.entry = entry;
+			reflected = entry.Reflect();
+
 			DoesDrawLargeShadow = true;
 			IsCenterAligned = true;
 		}
@@ -41,7 +56,7 @@ namespace TsRanodmizer.Screens
 			return Create(text, (o, args) => handler(args.Reflect().PlayerIndex));
 		}
 		
-		static MenuEntry Create(string text, Action<object, EventArgs> handler)
+		public static MenuEntry Create(string text, Action<object, EventArgs> handler)
 		{
 			var handlerDelegate = 
 				Delegate.CreateDelegate(MainMenuSelectedEventType, handler.Target, handler.Method);
@@ -50,6 +65,11 @@ namespace TsRanodmizer.Screens
 			SelectedEventAddMethod.Invoke(entry, new object[] { handlerDelegate });
 
 			return new MenuEntry(entry);
+		}
+
+		public object AsTimeSpinnerMenuEntry()
+		{
+			return entry;
 		}
 	}
 }

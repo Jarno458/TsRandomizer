@@ -47,12 +47,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\GameSaveExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Screens\MainMenuScreen.cs" />
+    <Compile Include="LevelObjects\SelenNpc.cs" />
+    <Compile Include="LevelObjects\CutscenePrologue4.cs" />
+    <Compile Include="Screens\OrbMenuScreen.cs" />
+    <Compile Include="Screens\SaveSelectScreen.cs" />
+    <Compile Include="Screens\GameDifficultyMenuScreen.cs" />
     <Compile Include="Screens\DarkGameplayScreen.cs" />
-    <Compile Include="IntermediateObjects\ProgressiveItemInfo.cs" />
     <Compile Include="ReplacementObjects\Replaces.cs" />
     <Compile Include="IntermediateObjects\TimeSpinnerType.cs" />
     <Compile Include="Randomisation\ItemKey.cs" />
@@ -64,14 +68,14 @@
     <Compile Include="Randomisation\ItemLocation.cs" />
     <Compile Include="IntermediateObjects\ItemInfo.cs" />
     <Compile Include="Randomisation\ItemLocationRandomizer.cs" />
-    <Compile Include="LevelObjects\LevelItem.cs" />
     <Compile Include="LevelObjects\OrbPedestal.cs" />
     <Compile Include="LevelObjects\TreasureChest.cs" />
     <Compile Include="Extensions\GameComponentCollectionExtensions.cs" />
     <Compile Include="Extensions\ReflectExtensions.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
-    <Compile Include="OverloadedObjects\ScreenManager.cs" />
-    <Compile Include="OverloadedObjects\TimeSpinnerGame.cs" />
+    <Compile Include="Screens\ScreenManager.cs" />
+    <Compile Include="Seed.cs" />
+    <Compile Include="TimeSpinnerGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LookupDictionairy.cs" />

@@ -25,13 +25,13 @@ namespace TsRanodmizer.ReplacementObjects
 
 		static Replaces()
 		{
-			var levelObjectType = MethodBase.GetCurrentMethod().DeclaringType
+			var replaces = MethodBase.GetCurrentMethod().DeclaringType
 			                      ?? throw new TypeLoadException("Cannot load Type LevelObject");
 
-			var dirievedTypes = levelObjectType.Assembly.GetTypes()
-				.Where(t => levelObjectType.IsAssignableFrom(t)
+			var dirievedTypes = replaces.Assembly.GetTypes()
+				.Where(t => replaces.IsAssignableFrom(t)
 				            && !t.IsGenericType
-				            && t != levelObjectType);
+				            && t != replaces);
 
 			foreach (var dirivedType in dirievedTypes)
 			{
@@ -73,8 +73,7 @@ namespace TsRanodmizer.ReplacementObjects
 			((List<Mobile>)level.Reflect()._newObjects).AddRange(newObjects);
 			objects.AddRange(newObjects);
 		}
-
-
+		
 		protected abstract Animate Replace(Level level, Animate objectToReplace);
 	}
 }

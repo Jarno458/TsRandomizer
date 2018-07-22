@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Timespinner.GameAbstractions.Inventory;
 using TsRanodmizer.IntermediateObjects;
 
 namespace TsRanodmizer.Randomisation
@@ -10,12 +12,14 @@ namespace TsRanodmizer.Randomisation
 		ProgressionItem availableProgressionItems;
 		Random random;
 
-		public ItemLocationMap RandonmiseItemLocations(int seed, ItemLocationMap itemLocationMap)
+	
+		public ItemLocationMap RandonmiseItemLocations(uint seed, ItemLocationMap itemLocationMap)
 		{
-			random = new Random(seed);
+			random = new Random((int)seed);
 			itemLocations = itemLocationMap;
 			availableProgressionItems = ProgressionItem.None;
 
+			CalculateTutorial();
 			CalculateLakeDesolationPath();
 			CalculateLibraryPath();
 			FillRemainingChests();
@@ -23,9 +27,24 @@ namespace TsRanodmizer.Randomisation
 			return itemLocations;
 		}
 
+		void CalculateTutorial()
+		{
+			var orbsTypes = new List<EInventoryOrbType>(Enum.GetValues(typeof(EInventoryOrbType)).Cast<EInventoryOrbType>());
+			orbsTypes.Remove(EInventoryOrbType.None);
+
+			var meleeOrbType = orbsTypes[random.Next(orbsTypes.Count)];
+			itemLocations[ItemKey.TutorialMeleeOrb].SetItem(new ItemInfo(meleeOrbType, EOrbSlot.Melee));
+
+			var spellOrbType = orbsTypes[random.Next(orbsTypes.Count)];
+			itemLocations[ItemKey.TutorialSpellOrb].SetItem(new ItemInfo(spellOrbType, EOrbSlot.Spell));
+
+			if (spellOrbType == EInventoryOrbType.Barrier)
+				availableProgressionItems |= ProgressionItem.Lightwall;
+		}
+
 		void CalculateLakeDesolationPath()
 		{
-			var progressionItems = new []
+			var progressionItems = new[]
 			{
 				ProgressionItem.ForwardDash, ProgressionItem.ForwardDash, ProgressionItem.ForwardDash,
 				ProgressionItem.DoubleJump,  ProgressionItem.DoubleJump,
@@ -36,16 +55,13 @@ namespace TsRanodmizer.Randomisation
 
 			PutRandomItemInReachableChest(progressionItems);
 
-			//if(itemLocation.ItemInfo.IsProgressive) //TODO: ability to decide item at runtime rather then roomload
-
 			availableProgressionItems |= ProgressionItem.KittyBoss;
 		}
 
 		void CalculateLibraryPath()
 		{
 			PutRandomItemInReachableChest(ProgressionItem.CardD);
-			var progressionItem = 
-				PutRandomItemInReachableChest(ProgressionItem.CardB, ProgressionItem.CardC);
+			PutRandomItemInReachableChest(ProgressionItem.CardB, ProgressionItem.CardC);
 
 			//If boss is required we need the elevator key, otherwise we need it with CardB
 			PutRandomItemInReachableChest(ProgressionItem.CardE);
@@ -75,7 +91,7 @@ namespace TsRanodmizer.Randomisation
 
 			availableProgressionItems |= progressionItem;
 		}
-		
+
 		ProgressionItem SelectRandomProgressionItem(params ProgressionItem[] items)
 		{
 			return items[random.Next(items.Length)];

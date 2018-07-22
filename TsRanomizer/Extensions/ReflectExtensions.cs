@@ -124,8 +124,21 @@ namespace TsRanodmizer.Extensions
 		{
 			try
 			{
-				methodInfo = type.GetMethod(methodName, InstanceLevel, null, argTypes, null);
+				methodInfo = type.GetMethod(methodName, InstanceLevel);
 				return methodInfo != null;
+			}
+			catch (AmbiguousMatchException)
+			{
+				try
+				{
+					methodInfo = type.GetMethod(methodName, InstanceLevel, null, argTypes, null);
+					return methodInfo != null;
+				}
+				catch
+				{
+					methodInfo = null;
+					return false;
+				}
 			}
 			catch
 			{

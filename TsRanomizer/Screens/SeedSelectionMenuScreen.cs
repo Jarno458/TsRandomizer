@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections;
-using System.Globalization;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
-using ScreenManager = TsRanodmizer.OverloadedObjects.ScreenManager;
 
 namespace TsRanodmizer.Screens
 {
@@ -18,13 +16,12 @@ namespace TsRanodmizer.Screens
 		static readonly Type MainMenuEntryType = TimeSpinnerType
 			.Get("Timespinner.GameStateManagement.MenuEntry");
 
-		public GameScreen Screen { get; }
-
+		readonly GameScreen screen;
 		readonly dynamic reflected;
 
 		SeedSelectionMenuScreen(GameScreen screen)
 		{
-			Screen = screen;
+			this.screen = screen;
 			reflected = screen.Reflect();
 		}
 
@@ -36,11 +33,11 @@ namespace TsRanodmizer.Screens
 			var seedSelectionMenu = new SeedSelectionMenuScreen(screen);
 
 			seedSelectionMenu.reflected._menuTitle = "Select Seed";
-			seedSelectionMenu.SetSeed(Program.Seed);
+			seedSelectionMenu.SetSeed(Seed.Current);
 
 			var extraButtons = new[] {
-				MenuEntry.Create("OK", seedSelectionMenu.OnOkayEntrySelected).Entry,
-				MenuEntry.Create("New", seedSelectionMenu.OnGenerateSelected).Entry
+				MenuEntry.Create("OK", seedSelectionMenu.OnOkayEntrySelected).AsTimeSpinnerMenuEntry(),
+				MenuEntry.Create("New", seedSelectionMenu.OnGenerateSelected).AsTimeSpinnerMenuEntry()
 			};
 
 			var menuEntries = (IList)seedSelectionMenu.reflected.MenuEntries;
@@ -79,24 +76,26 @@ namespace TsRanodmizer.Screens
 			if (hexString.Length == 0)
 				hexString = "0";
 
-			var seed = int.Parse(hexString, NumberStyles.HexNumber);
-
-			Program.Seed = seed;
-			
-			Console.WriteLine($"Selected Seed: {seed:X8}");
+			Seed.TrySetFromText(hexString);
+			Console.WriteLine($"Selected Seed: {Seed.Current}");
 
 			reflected.OnCancel(playerIndex);
 		}
 
 		void OnGenerateSelected(PlayerIndex playerIndex)
 		{
-			SetSeed(new Random().Next());
+			SetSeed(new Seed());
 		}
 
-		void SetSeed(int seed)
+		void SetSeed(Seed seed)
 		{
-			reflected._currentEnteredPassword = $"{seed:X8}{new string(' ', 4)}";
+			reflected._currentEnteredPassword = $"{seed}{new string(' ', 4)}";
 			reflected.RefreshDisplayPassword();
+		}
+
+		public static implicit operator GameScreen(SeedSelectionMenuScreen value)
+		{
+			return value.screen;
 		}
 	}
 }

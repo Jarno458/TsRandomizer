@@ -8,6 +8,7 @@ using TsRanodmizer.Extensions;
 
 namespace TsRanodmizer.Screens
 {
+	// ReSharper disable once UnusedMember.Global
 	partial class GameplayScreen
 	{
 		int levelId = 1;

@@ -2,66 +2,60 @@
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.Events;
+using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
 
 namespace TsRanodmizer.LevelObjects
 {
 	class TreasureChest : LevelObject<TreasureChestEvent>
-    {
-        public TreasureChest(TreasureChestEvent treasureChest, ItemInfo itemInfo) : base(treasureChest, itemInfo)
-        {
-        }
+	{
+		bool hasDroppedLoot;
 
-		protected override void OnChangeRoom()
-        {
-	        if (ItemInfo == null || ItemInfo == ItemInfo.Dummy)
+		public TreasureChest(TreasureChestEvent treasureChest, ItemInfo itemInfo) : base(treasureChest, itemInfo)
+		{
+		}
+
+		protected override void Initialize()
+		{
+			if (ItemInfo == null || ItemInfo == ItemInfo.Dummy)
 				return;
 
-            ObjectPrivate._treasureLootType = ItemInfo.TreasureLootType;
+			Reflected._treasureLootType = ItemInfo.TreasureLootType;
 
-            switch (ItemInfo.LootType)
-            {
-                case LootType.ConstUseItem:
-                    ObjectPrivate._lootUseItemType = ItemInfo.UseItem;
-                    break;
-                case LootType.ConstRelic:
-                    ObjectPrivate._lootRelicType = ItemInfo.Relic;
-                    break;
-                case LootType.ConstEquipment:
-                    ObjectPrivate._lootEquipmentType = ItemInfo.Emquipment;
-                    break;
-                case LootType.ConstOrb:
-                    ObjectPrivate._lootOrbType = ItemInfo.OrbType;
-                    ObjectPrivate._lootOrbSlot = ItemInfo.OrbSlot;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(ItemInfo.LootType), ItemInfo.LootType, $"lootType cannot be droppd by {nameof(TreasureChest)}");
-            }
-        }
+			switch (ItemInfo.LootType)
+			{
+				case LootType.ConstUseItem:
+					Reflected._lootUseItemType = ItemInfo.UseItem;
+					break;
+				case LootType.ConstRelic:
+					Reflected._lootRelicType = ItemInfo.Relic;
+					break;
+				case LootType.ConstEquipment:
+					Reflected._lootEquipmentType = ItemInfo.Emquipment;
+					break;
+				case LootType.ConstOrb:
+					Reflected._lootOrbType = ItemInfo.OrbType;
+					Reflected._lootOrbSlot = ItemInfo.OrbSlot;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(ItemInfo.LootType), ItemInfo.LootType, $"lootType cannot be droppd by {nameof(TreasureChest)}");
+			}
+		}
 
-        protected override void OnUpdate()
-        {
-	        if (ItemInfo == null || ItemInfo == ItemInfo.Dummy)
-		        return;
+		protected override void OnUpdate()
+		{
+			if (ItemInfo == null || ItemInfo == ItemInfo.Dummy)
+				return;
 
-	        var level = (Level)ObjectPrivate._level;
-	        var gameSave = level.GameSave;
-	        var inventory = gameSave.Inventory;
-	        var orbInventory = inventory.OrbInventory;
-	        var orbCollection = orbInventory.Inventory;
-			var lootOrbType = (int)(object)ObjectPrivate._lootOrbType;
-			
-			if (LootType.FromETreasureLootType(ObjectPrivate._treasureLootType) == LootType.Orb
-                && ObjectPrivate._hasDroppedLoot
-                && !orbCollection.ContainsKey(lootOrbType))
-            {
-	            orbInventory.AddItem(lootOrbType);
+			if(hasDroppedLoot)
+				return;
 
-                if (ObjectPrivate._lootOrbSlot == EOrbSlot.Spell || ObjectPrivate._lootOrbSlot == EOrbSlot.All)
-	                orbCollection[lootOrbType].IsSpellUnlocked = true;
-                if (ObjectPrivate._lootOrbSlot == EOrbSlot.Passive || ObjectPrivate._lootOrbSlot == EOrbSlot.All)
-	                orbCollection[lootOrbType].IsPassiveUnlocked = true;
-            }
-        }
-    }
+			if (ItemInfo.LootType == LootType.Orb && Reflected._hasDroppedLoot)
+			{
+				var gameSave = ((Level)Reflected._level).GameSave;
+				gameSave.AddOrb(ItemInfo.OrbType, ItemInfo.OrbSlot);
+				hasDroppedLoot = true;
+			}
+		}
+	}
 }

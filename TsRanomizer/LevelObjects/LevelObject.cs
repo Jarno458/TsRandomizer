@@ -30,7 +30,7 @@ namespace TsRanodmizer.LevelObjects
 		protected static readonly List<LevelObject> Objects = new List<LevelObject>();
 
 		public readonly ItemInfo ItemInfo;
-		public readonly dynamic ObjectPrivate;
+		public readonly dynamic Reflected;
 		public readonly Mobile Object;
 
 		static LevelObject()
@@ -63,7 +63,7 @@ namespace TsRanodmizer.LevelObjects
 		protected LevelObject(Mobile typedObject, ItemInfo itemInfo)
 		{
 			ItemInfo = itemInfo;
-			ObjectPrivate = typedObject.Reflect();
+			Reflected = typedObject.Reflect();
 			Object = typedObject;
 		}
 
@@ -86,8 +86,8 @@ namespace TsRanodmizer.LevelObjects
 				var requirement = itemLocations.GetItemRequirements(key);
 				var color = obj.ItemInfo != null
 					? obj.ItemInfo != ItemInfo.Dummy
-						? Color.DarkGreen
-						: Color.Orange
+						? Color.Green
+						: Color.DarkGreen
 					: Color.Red;
 
 				var text = $"{key}, Requirement: {requirement}";
@@ -102,8 +102,11 @@ namespace TsRanodmizer.LevelObjects
 			var levelPrivate = level.Reflect();
 			IEnumerable<Animate> eventObjects = levelPrivate._levelEvents.Values;
 			IEnumerable<Animate> itemObjects = levelPrivate._items.Values;
+			IEnumerable<Animate> npcs = levelPrivate.NPCs.Values;
 
-			var objects = eventObjects.Concat(itemObjects).ToList();
+			var objects = eventObjects
+				.Concat(itemObjects)
+				.Concat(npcs).ToList();
 
 			Replaces.ReplaceObjects(level, objects);
 
@@ -127,7 +130,7 @@ namespace TsRanodmizer.LevelObjects
 
 					Objects.Add(levelObject);
 
-					levelObject.OnChangeRoom();
+					levelObject.Initialize();
 				}
 			}
 		}
@@ -142,7 +145,7 @@ namespace TsRanodmizer.LevelObjects
 			return new ItemKey(levelPrivate._id, currentRoom.ID, position.X, position.Y);
 		}
 
-		protected virtual void OnChangeRoom()
+		protected virtual void Initialize()
 		{
 		}
 
