@@ -10,6 +10,7 @@ using TsRanodmizer.IntermediateObjects;
 namespace TsRanodmizer.LevelObjects
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Cutscene.CutscenePrologue4")]
+	// ReSharper disable once UnusedMember.Global
 	class CutscenePrologue4 : LevelObject
 	{
 		readonly GameSave gameSave;
@@ -22,7 +23,7 @@ namespace TsRanodmizer.LevelObjects
 
 		protected override void Initialize()
 		{
-			if (ItemInfo == null || ItemInfo == ItemInfo.Dummy)
+			if (ItemInfo == null)
 				return;
 			
 			var scripts = ((Queue<ScriptAction>)((Level)Reflected._level).Reflect()._waitingScripts).ToArray();
@@ -34,7 +35,7 @@ namespace TsRanodmizer.LevelObjects
 
 		protected override void OnUpdate()
 		{
-			if (ItemInfo == null || ItemInfo == ItemInfo.Dummy)
+			if (ItemInfo == null)
 				return;
 
 			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;
@@ -42,11 +43,8 @@ namespace TsRanodmizer.LevelObjects
 			if (hasAwardedMeleeOrb || !orbCollection.ContainsKey((int)EInventoryOrbType.Blue))
 				return;
 
-			if (!hasAwardedMeleeOrb)
-			{
-				gameSave.AddOrb(ItemInfo.OrbType, ItemInfo.OrbSlot);
-				hasAwardedMeleeOrb = true;
-			}
+			gameSave.AddOrb(ItemInfo.OrbType, ItemInfo.OrbSlot);
+			hasAwardedMeleeOrb = true;
 		}
 	}
 }

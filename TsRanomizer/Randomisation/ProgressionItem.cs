@@ -21,6 +21,7 @@ namespace TsRanodmizer.Randomisation
 		public const ulong ConstCardD = 1 << 9;
 		public const ulong ConstCardE = 1 << 10;
 		public const ulong ConstCardV = 1 << 11;
+		public const ulong ConstTimespinnerSpindle = 1 << 12;
 
 		public const long ConstKittyBoss = 1 << 30;
 
@@ -37,7 +38,8 @@ namespace TsRanodmizer.Randomisation
 		public static readonly ProgressionItem CardD = ConstCardD;
 		public static readonly ProgressionItem CardE = ConstCardE;
 		public static readonly ProgressionItem CardV = ConstCardV;
-
+		public static readonly ProgressionItem TimespinnerSpindle = ConstTimespinnerSpindle;
+		
 		public static readonly ProgressionItem KittyBoss = ConstKittyBoss;
 
 		readonly ulong flags;

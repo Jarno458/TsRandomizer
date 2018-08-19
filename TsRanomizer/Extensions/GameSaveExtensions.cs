@@ -38,6 +38,11 @@ namespace TsRanodmizer.Extensions
 			return gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int)orbType);
 		}
 
+		public static bool HasRelic(this GameSave gameSave, EInventoryRelicType relic)
+		{
+			return gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int)relic);
+		}
+
 		public static void AddOrb(this GameSave gameSave, EInventoryOrbType orbType, EOrbSlot orbSlot)
 		{
 			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;

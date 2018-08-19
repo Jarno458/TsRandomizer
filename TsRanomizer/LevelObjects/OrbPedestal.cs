@@ -15,7 +15,7 @@ namespace TsRanodmizer.LevelObjects
 
 		protected override void Initialize()
 		{
-			if (ItemInfo == null || ItemInfo == ItemInfo.Dummy)
+			if (ItemInfo == null)
 				return;
 
 			//TODO: change sprite

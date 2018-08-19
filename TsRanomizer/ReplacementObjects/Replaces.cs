@@ -11,12 +11,12 @@ namespace TsRanodmizer.ReplacementObjects
 {
 	abstract class Replaces<T> : Replaces where T : Animate
 	{
-		protected override Animate Replace(Level level, Animate objectToReplace)
+		protected override IEnumerable<Animate> Replace(Level level, Animate objectToReplace)
 		{
 			return Replace(level, (T)objectToReplace);
 		}
 
-		protected abstract T Replace(Level level, T objectToReplace);
+		protected abstract IEnumerable<T> Replace(Level level, T objectToReplace);
 	}
 
 	abstract class Replaces
@@ -52,7 +52,8 @@ namespace TsRanodmizer.ReplacementObjects
 
 		public static void ReplaceObjects(Level level, List<Animate> objects)
 		{
-			var newObjects = new List<Animate>();
+			var levelReflected = level.Reflect();
+			//var newObjects = new List<Animate>();
 			var objectsPerTypes = objects.GroupBy(o => o.GetType());
 
 			foreach (var objectsPerType in objectsPerTypes)
@@ -63,17 +64,22 @@ namespace TsRanodmizer.ReplacementObjects
 
 				foreach (var obj in objectsPerType)
 				{
-					var newObject = replacer.Replace(level, obj);
+					var newObjects = replacer.Replace(level, obj);
 
 					obj.SilentKill();
-					newObjects.Add(newObject);
+					//newObjects.Add(newObject);
+
+					foreach (var newObject in newObjects)
+						levelReflected.RequestAddObject(newObject);
 				}
 			}
 
-			((List<Mobile>)level.Reflect()._newObjects).AddRange(newObjects);
-			objects.AddRange(newObjects);
+			//((List<Mobile>)level.Reflect()._newObjects).AddRange(newObjects);
+			//objects.AddRange(newObjects);
 		}
 		
-		protected abstract Animate Replace(Level level, Animate objectToReplace);
+		protected abstract IEnumerable<Animate> Replace(Level level, Animate objectToReplace);
+
+		//protected abstract Mobile CreateShadowObject(Level level, Animate objectToReplace);
 	}
 }

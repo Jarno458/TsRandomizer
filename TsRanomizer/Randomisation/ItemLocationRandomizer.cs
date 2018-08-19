@@ -11,8 +11,7 @@ namespace TsRanodmizer.Randomisation
 		ItemLocationMap itemLocations;
 		ProgressionItem availableProgressionItems;
 		Random random;
-
-	
+		
 		public ItemLocationMap RandonmiseItemLocations(uint seed, ItemLocationMap itemLocationMap)
 		{
 			random = new Random((int)seed);
@@ -32,14 +31,17 @@ namespace TsRanodmizer.Randomisation
 			var orbsTypes = new List<EInventoryOrbType>(Enum.GetValues(typeof(EInventoryOrbType)).Cast<EInventoryOrbType>());
 			orbsTypes.Remove(EInventoryOrbType.None);
 
-			var meleeOrbType = orbsTypes[random.Next(orbsTypes.Count)];
-			itemLocations[ItemKey.TutorialMeleeOrb].SetItem(new ItemInfo(meleeOrbType, EOrbSlot.Melee));
-
 			var spellOrbType = orbsTypes[random.Next(orbsTypes.Count)];
 			itemLocations[ItemKey.TutorialSpellOrb].SetItem(new ItemInfo(spellOrbType, EOrbSlot.Spell));
 
 			if (spellOrbType == EInventoryOrbType.Barrier)
 				availableProgressionItems |= ProgressionItem.Lightwall;
+
+			orbsTypes.Remove(EInventoryOrbType.Empire);
+
+			var meleeOrbType = orbsTypes[random.Next(orbsTypes.Count)];
+			itemLocations[ItemKey.TutorialMeleeOrb].SetItem(new ItemInfo(meleeOrbType, EOrbSlot.Melee));
+
 		}
 
 		void CalculateLakeDesolationPath()

@@ -41,18 +41,11 @@ namespace TsRanodmizer.Screens
 			else if (levelId > 18)
 				levelId = 0;
 
-			//Beta blocker
-			/*if (levelID != 1 && levelID != 2 && levelID != 0 && levelID != 10)
-			{
-				levelID = 1;
-				levelChangeRequest.RoomID = 0;
-			}*/
 			try
 			{
 				levelSpec = LevelSpecification.FromCompressedFile(Level.GetLevelPathFromID(levelId, true));
 				if (levelSpec == null || levelSpec.ID != levelId)
 				{
-					//self.ScreenManager.AddScreen((GameScreen)new MessageBoxScreen("Failed to load level.\nPlease email info@lunarraygames.com for help!"), self.ControllingPlayer);
 					Console.WriteLine("Failed to load level.");
 					self.ExitScreen();
 					return;

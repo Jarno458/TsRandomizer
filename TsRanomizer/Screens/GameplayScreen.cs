@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRanodmizer.Extensions;
@@ -25,7 +26,21 @@ namespace TsRanodmizer.Screens
 
 		public GameplayScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
-			itemLocations = ItemLocationMap.FromSaveFile(ScreenReflected.SaveFile);
+			var seed = GetSeed(ScreenReflected.SaveFile);
+			 
+			var levelReflected = Level.Reflect();
+			levelReflected._random = new DropLootDeRandomizer(levelReflected._random, seed);
+			itemLocations = ItemLocationMap.FromSeed(seed);
+		}
+
+		Seed GetSeed(GameSave saveFile)
+		{
+			var seed = saveFile.FindSeed() ?? Seed.Current;
+
+			saveFile.SetSeed(seed);
+			Seed.Current = seed;
+
+			return seed;
 		}
 
 		public override void Update(InputState input)
@@ -40,7 +55,7 @@ namespace TsRanodmizer.Screens
 
 			var newObjects = (List<Mobile>)LevelReflected._newObjects;
 			if (newObjects.Any())
-				LevelObject.RandomiseObjects(itemLocations, newObjects);
+				LevelObject.GenerateShadowObjects(itemLocations, newObjects);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)

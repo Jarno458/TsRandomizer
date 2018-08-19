@@ -47,12 +47,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Drawables\SeedRepresentation.cs" />
     <Compile Include="Extensions\GameSaveExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="IntermediateObjects\TriggerBase.cs" />
+    <Compile Include="LevelObjects\LakeEel.cs" />
     <Compile Include="LevelObjects\SelenNpc.cs" />
     <Compile Include="LevelObjects\CutscenePrologue4.cs" />
+    <Compile Include="ReplacementObjects\TimespinnerSpindle.cs" />
+    <Compile Include="IntermediateObjects\TriggerAfterLootDrop.cs" />
+    <Compile Include="DropLootDeRandomizer.cs" />
     <Compile Include="Screens\OrbMenuScreen.cs" />
     <Compile Include="Screens\SaveSelectScreen.cs" />
     <Compile Include="Screens\GameDifficultyMenuScreen.cs" />
@@ -79,7 +86,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LookupDictionairy.cs" />
-    <Compile Include="ReplacementObjects\TimeSpinnerWheeel.cs" />
+    <Compile Include="ReplacementObjects\TimeSpinnerWheel.cs" />
     <Compile Include="Screens\MenuEntry.cs" />
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\SeedSelectionMenuScreen.cs" />

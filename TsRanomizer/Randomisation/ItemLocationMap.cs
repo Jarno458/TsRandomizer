@@ -13,10 +13,8 @@ namespace TsRanodmizer.Randomisation
 
 		public ItemLocation this[ItemKey key] => itemLocations[key];
 
-		public static ItemLocationMap FromSaveFile(GameSave saveFile)
+		public static ItemLocationMap FromSeed(Seed seed)
 		{
-			var seed = saveFile.FindSeed() ?? Seed.Current;
-			saveFile.SetSeed(seed);
 			return new ItemLocationRandomizer().RandonmiseItemLocations(seed, new ItemLocationMap());
 		}
 
@@ -25,7 +23,7 @@ namespace TsRanodmizer.Randomisation
 			var longJump = new Gate(ProgressionItem.DoubleJump | ProgressionItem.UpwardDash | ProgressionItem.Lightwall | ProgressionItem.ForwardDash);
 			var highJump = new Gate(ProgressionItem.DoubleJump | ProgressionItem.UpwardDash | ProgressionItem.Lightwall);
 			var highJumpOfNpc = new Gate(ProgressionItem.DoubleJump | ProgressionItem.UpwardDash | ProgressionItem.Lightwall | ProgressionItem.TimeStop);
-			var vineWall = new Gate(ProgressionItem.AntiWeed);
+			var topLakeDesolation = new Gate(ProgressionItem.AntiWeed);
 			var lowerLakeDesolationBridge = longJump | ProgressionItem.TimeStop;
 			var leftLibrary = new Gate(ProgressionItem.KittyBoss);
 			var upperLeftLibrary = leftLibrary & longJump;
@@ -42,18 +40,18 @@ namespace TsRanodmizer.Randomisation
 				new ItemLocation(1,1,1528,144),
 				new ItemLocation(1,15,264,144),
 				new ItemLocation(1,25,296,176),
-				new ItemLocation(1,9,600,144 + TimeSpinnerWheeel.YOffset),
-				new ItemLocation(1,14,40,176, vineWall),
+				new ItemLocation(1,9,600,144 + TimespinnerWheel.YOffset),
+				new ItemLocation(1,14,40,176, ProgressionItem.AntiWeed),
 				//lower lake desolation
 				new ItemLocation(1,2,1016,384, highJumpOfNpc),
 				new ItemLocation(1,11,72,240, lowerLakeDesolationBridge),
 				new ItemLocation(1,3,56,176, highJumpOfNpc),
 				//upper lake desolation
-				new ItemLocation(1,17,152,96, vineWall),
-				new ItemLocation(1,21,200,144, vineWall),
-				new ItemLocation(1,20,232,96, vineWall & highJump),
-				new ItemLocation(1,20,168,240, vineWall),
-				new ItemLocation(1,22,344,160, vineWall),
+				new ItemLocation(1,17,152,96, topLakeDesolation),
+				new ItemLocation(1,21,200,144, topLakeDesolation),
+				new ItemLocation(1,20,232,96, topLakeDesolation & highJump),
+				new ItemLocation(1,20,168,240, topLakeDesolation),
+				new ItemLocation(1,22,344,160, topLakeDesolation),
 				//libary left
 				new ItemLocation(2,60,328,160, leftLibrary),
 				new ItemLocation(2,54,296,176, leftLibrary),
@@ -79,6 +77,7 @@ namespace TsRanodmizer.Randomisation
 				new ItemLocation(2,23,1112,112, rightSideLibrary),
 				new ItemLocation(2,23,136,304, rightSideLibrary),
 				new ItemLocation(2,11,104,192, rightSideLibrary),
+				new ItemLocation(2,29,280,222 + TimespinnerSpindle.YOffset, rightSizeLibraryElevator),
 			};
 		}
 

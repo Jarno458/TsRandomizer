@@ -1,6 +1,5 @@
 ﻿using System;
 using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.Events;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
@@ -17,7 +16,7 @@ namespace TsRanodmizer.LevelObjects
 
 		protected override void Initialize()
 		{
-			if (ItemInfo == null || ItemInfo == ItemInfo.Dummy)
+			if (ItemInfo == null)
 				return;
 
 			Reflected._treasureLootType = ItemInfo.TreasureLootType;
@@ -44,10 +43,7 @@ namespace TsRanodmizer.LevelObjects
 
 		protected override void OnUpdate()
 		{
-			if (ItemInfo == null || ItemInfo == ItemInfo.Dummy)
-				return;
-
-			if(hasDroppedLoot)
+			if (ItemInfo == null || hasDroppedLoot)
 				return;
 
 			if (ItemInfo.LootType == LootType.Orb && Reflected._hasDroppedLoot)

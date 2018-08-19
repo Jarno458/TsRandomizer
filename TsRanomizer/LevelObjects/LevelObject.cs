@@ -103,17 +103,20 @@ namespace TsRanodmizer.LevelObjects
 			IEnumerable<Animate> eventObjects = levelPrivate._levelEvents.Values;
 			IEnumerable<Animate> itemObjects = levelPrivate._items.Values;
 			IEnumerable<Animate> npcs = levelPrivate.NPCs.Values;
-
+			IEnumerable<Animate> monsters = levelPrivate._enemies.Values;
+			
 			var objects = eventObjects
 				.Concat(itemObjects)
-				.Concat(npcs).ToList();
+				.Concat(npcs)
+				//.Concat(monsters)
+				.ToList();
 
 			Replaces.ReplaceObjects(level, objects);
 
-			RandomiseObjects(itemLocations, objects);
+			GenerateShadowObjects(itemLocations, objects);
 		}
 
-		public static void RandomiseObjects(ItemLocationMap itemLocations, IEnumerable<Mobile> objects)
+		public static void GenerateShadowObjects(ItemLocationMap itemLocations, IEnumerable<Mobile> objects)
 		{
 			var objectsPerTypes = objects.GroupBy(o => o.GetType());
 

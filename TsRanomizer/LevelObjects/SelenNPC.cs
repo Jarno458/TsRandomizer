@@ -10,6 +10,7 @@ using TsRanodmizer.IntermediateObjects;
 namespace TsRanodmizer.LevelObjects
 {
 	[TimeSpinnerType("Timespinner.GameObjects.NPCs.SelenNPC")]
+	// ReSharper disable once UnusedMember.Global
 	class SelenNpc : LevelObject
 	{
 		readonly GameSave gameSave;
@@ -23,7 +24,7 @@ namespace TsRanodmizer.LevelObjects
 
 		protected override void OnUpdate()
 		{
-			if (ItemInfo == null || ItemInfo == ItemInfo.Dummy)
+			if (ItemInfo == null)
 				return;
 
 			if (!hasReplacedSpellPopup && Reflected._tutorialSection == 2)
