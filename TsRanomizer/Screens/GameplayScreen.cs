@@ -29,7 +29,7 @@ namespace TsRanodmizer.Screens
 			var seed = GetSeed(ScreenReflected.SaveFile);
 			 
 			var levelReflected = Level.Reflect();
-			levelReflected._random = new DropLootDeRandomizer(levelReflected._random, seed);
+			levelReflected._random = new DeRandomizer(levelReflected._random, seed);
 			itemLocations = ItemLocationMap.FromSeed(seed);
 		}
 

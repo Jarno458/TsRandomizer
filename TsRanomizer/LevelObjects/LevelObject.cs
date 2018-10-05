@@ -97,18 +97,22 @@ namespace TsRanodmizer.LevelObjects
 
 		public static void OnChangeRoom(ItemLocationMap itemLocations, Level level)
 		{
+			Console.Out.WriteLine("OnChangeRoom"); //TODO Remove lolz
+
 			Objects.Clear();
 
 			var levelPrivate = level.Reflect();
 			IEnumerable<Animate> eventObjects = levelPrivate._levelEvents.Values;
 			IEnumerable<Animate> itemObjects = levelPrivate._items.Values;
 			IEnumerable<Animate> npcs = levelPrivate.NPCs.Values;
-			IEnumerable<Animate> monsters = levelPrivate._enemies.Values;
-			
+			IEnumerable<Alive> monsters = levelPrivate._enemies.Values;
+
+			foreach (Alive monster in monsters) //TODO Remove lolz
+				monster.MaxHP = 1;
+
 			var objects = eventObjects
 				.Concat(itemObjects)
 				.Concat(npcs)
-				//.Concat(monsters)
 				.ToList();
 
 			Replaces.ReplaceObjects(level, objects);
@@ -128,12 +132,14 @@ namespace TsRanodmizer.LevelObjects
 				{
 					var itemKey = GetKey(obj);
 					var itemInfo = itemLocations.GetItemInfo(itemKey);
-					var levelObject =
-						(LevelObject)Activator.CreateInstance(levelObjectType, obj, itemInfo);
+					var levelObject = (LevelObject)Activator.CreateInstance(levelObjectType, obj, itemInfo);
 
 					Objects.Add(levelObject);
 
 					levelObject.Initialize();
+
+					if (itemInfo == null)
+						Console.Out.WriteLine($"UnmappedItem: {itemKey}");
 				}
 			}
 		}

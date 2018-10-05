@@ -1,96 +1,111 @@
-﻿namespace TsRanodmizer.Randomisation
+﻿using System;
+
+namespace TsRanodmizer.Randomisation
 {
-    class Gate
-    {
-        readonly ProgressionItem requiredItems;
+	abstract class Gate
+	{
+		public abstract bool CanOpen(ProgressionItem obtainedProgressionItems);
 
-        public Gate(ProgressionItem requiredItems)
-        {
-            this.requiredItems = requiredItems;
-        }
+		public static Gate operator &(Gate a, Gate b)
+		{
+			return new AndGate(a, b);
+		}
 
-        public virtual bool CanOpen(ProgressionItem obtainedProgressionItems)
-        {
-            return requiredItems == ProgressionItem.None || requiredItems.HasMatchingFlag(obtainedProgressionItems);
-        }
+		public static Gate operator |(Gate a, Gate b)
+		{
+			if(a is ProgressionItemGate x && b is ProgressionItemGate y)
+				return new ProgressionItemGate(x.RequiredItems | y.RequiredItems);
 
-        public static Gate operator &(Gate a, Gate b)
-        {
-            return new AndGate(a, b);
-        }
+			return new OrGate(a, b);
+		}
 
-        public static Gate operator |(Gate a, Gate b)
-        {
-            return new OrGate(a, b);
-        }
+		public static Gate operator &(Gate a, ProgressionItem b)
+		{
+			return a & new ProgressionItemGate(b);
+		}
 
-        public static Gate operator &(Gate a, ProgressionItem b)
-        {
-            return new AndGate(a, new Gate(b));
-        }
+		public static Gate operator &(ProgressionItem b, Gate a)
+		{
+			return a & new ProgressionItemGate(b);
+		}
 
-        public static Gate operator &(ProgressionItem b, Gate a)
-        {
-            return a & b;
-        }
+		public static Gate operator |(Gate a, ProgressionItem b)
+		{
+			return a | new ProgressionItemGate(b);
+		}
 
-        public static Gate operator |(Gate a, ProgressionItem b)
-        {
-            return new OrGate(a, new Gate(b));
-        }
+		public static Gate operator |(ProgressionItem b, Gate a)
+		{
+			return a | new ProgressionItemGate(b);
+		}
 
-        public static Gate operator |(ProgressionItem b, Gate a)
-        {
-            return a | b;
-        }
+		public static explicit operator Gate(ProgressionItem requiredItems)
+		{
+			return new ProgressionItemGate(requiredItems);
+		}
 
-        public override string ToString()
-        {
-            return $"({requiredItems})".Replace(", ", "|");
-        }
+		class ProgressionItemGate : Gate
+		{
+			public readonly ProgressionItem RequiredItems;
 
-        class AndGate : Gate
-        {
-            readonly Gate a;
-            readonly Gate b;
+			public ProgressionItemGate(ProgressionItem requiredItems)
+			{
+				RequiredItems = requiredItems;
+			}
 
-            internal AndGate(Gate a, Gate b) : base(ProgressionItem.None)
-            {
-                this.a = a;
-                this.b = b;
-            }
+			public override bool CanOpen(ProgressionItem obtainedProgressionItems)
+			{
+				return RequiredItems == ProgressionItem.None || RequiredItems.HasMatchingFlag(obtainedProgressionItems);
+			}
 
-            public override bool CanOpen(ProgressionItem obtainedProgressionItems)
-            {
-                return a.CanOpen(obtainedProgressionItems) && b.CanOpen(obtainedProgressionItems);
-            }
+			public override string ToString()
+			{
+				return $"({RequiredItems})".Replace(", ", "|");
+			}
+		}
 
-            public override string ToString()
-            {
-                return $"({a} & {b})";
-            }
-        }
+		class AndGate : Gate
+		{
+			readonly Gate a;
+			readonly Gate b;
 
-        class OrGate : Gate
-        {
-            readonly Gate a;
-            readonly Gate b;
+			internal AndGate(Gate a, Gate b)
+			{
+				this.a = a;
+				this.b = b;
+			}
 
-            internal OrGate(Gate a, Gate b) : base(ProgressionItem.None)
-            {
-                this.a = a;
-                this.b = b;
-            }
+			public override bool CanOpen(ProgressionItem obtainedProgressionItems)
+			{
+				return a.CanOpen(obtainedProgressionItems) && b.CanOpen(obtainedProgressionItems);
+			}
 
-            public override bool CanOpen(ProgressionItem obtainedProgressionItems)
-            {
-                return a.CanOpen(obtainedProgressionItems) || b.CanOpen(obtainedProgressionItems);
-            }
+			public override string ToString()
+			{
+				return $"({a} & {b})";
+			}
+		}
 
-            public override string ToString()
-            {
-                return $"({a} | {b})";
-            }
-        }
-    }
- }
+		class OrGate : Gate
+		{
+			readonly Gate a;
+			readonly Gate b;
+
+			internal OrGate(Gate a, Gate b)
+			{
+				this.a = a;
+				this.b = b;
+			}
+
+			public override bool CanOpen(ProgressionItem obtainedProgressionItems)
+			{
+				return a.CanOpen(obtainedProgressionItems) || b.CanOpen(obtainedProgressionItems);
+			}
+
+			public override string ToString()
+			{
+				return $"({a} | {b})";
+			}
+		}
+	}
+}

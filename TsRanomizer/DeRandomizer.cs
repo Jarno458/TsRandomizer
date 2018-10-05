@@ -9,7 +9,7 @@ using TsRanodmizer.IntermediateObjects;
 
 namespace TsRanodmizer
 {
-	class DropLootDeRandomizer : Random
+	class DeRandomizer : Random
 	{
 		readonly Dictionary<MethodBase, Func<StackTrace, Random>> methodsToDeRandimize;
 		readonly Dictionary<Type, Random> randomizersPerKey = new Dictionary<Type, Random>();
@@ -17,7 +17,7 @@ namespace TsRanodmizer
 		readonly Random defaultRandom;
 		readonly Seed seed;
 
-		public DropLootDeRandomizer(Random defaultRandom, Seed seed)
+		public DeRandomizer(Random defaultRandom, Seed seed)
 		{
 			this.defaultRandom = defaultRandom;
 			this.seed = seed;

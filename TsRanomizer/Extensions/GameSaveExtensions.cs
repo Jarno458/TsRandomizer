@@ -54,7 +54,7 @@ namespace TsRanodmizer.Extensions
 			switch (orbSlot)
 			{
 				case EOrbSlot.Melee:
-					gameSave.DataKeyBools.Add(MeleeOrbPrefixKey + orbTypeKey, true);
+					gameSave.DataKeyBools[MeleeOrbPrefixKey + orbTypeKey] = true;
 					break;
 				case EOrbSlot.Spell:
 					orbCollection[orbTypeKey].IsSpellUnlocked = true;

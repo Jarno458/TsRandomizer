@@ -6,12 +6,10 @@ namespace TsRanodmizer.IntermediateObjects
 {
 	class ItemInfo
 	{
-		public static ItemInfo Dummy =
-				new ItemInfo(EInventoryEquipmentType.DemonHorn);
+		public static ItemInfo Dummy = new ItemInfo(EInventoryEquipmentType.DemonHorn);
 
 		public LootType LootType { get; protected set; }
 		public int ItemId { get; protected set; }
-		public bool Obtained { get; protected set; }
 
 		public Enum TreasureLootType => LootType.ToETreasureLootType();
 
@@ -45,14 +43,6 @@ namespace TsRanodmizer.IntermediateObjects
 		{
 			LootType = LootType.Orb;
 			ItemId = (int)orbType + 100 * (int)orbSlot;
-
-			//if(orbSlot != EOrbSlot.Melee)
-			//    PrerequisiteItem = new ItemInfo(orbType, EOrbSlot.Melee);
-		}
-
-		public virtual void IsObtained()
-		{
-			Obtained = true;
 		}
 
 		public static ItemInfo FromProgressionItem(ProgressionItem item)
@@ -86,6 +76,8 @@ namespace TsRanodmizer.IntermediateObjects
 					return new ItemInfo(EInventoryRelicType.ElevatorKeycard);
 				case ProgressionItem.ConstCardV:
 					return new ItemInfo(EInventoryRelicType.ScienceKeycardV);
+				case ProgressionItem.ConstSwimming:
+					return new ItemInfo(EInventoryRelicType.WaterMask);
 				default:
 					throw new ArgumentOutOfRangeException(nameof(item), item, "ProgressionItem not mapped to ItemInfo item");
 			}

@@ -1,4 +1,6 @@
-﻿using Timespinner;
+﻿using System;
+using Microsoft.Xna.Framework;
+using Timespinner;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.Screens;
 
@@ -8,7 +10,7 @@ namespace TsRanodmizer
 	{
 		public static dynamic Constants => new Constants();
 
-		public TimeSpinnerGame()
+		public TimeSpinnerGame(PlatformHelper platformHelper) : base(platformHelper)
 		{
 			HookScreenManager();
 		}

@@ -22,8 +22,7 @@ namespace TsRanodmizer.Randomisation
 		public const ulong ConstCardE = 1 << 10;
 		public const ulong ConstCardV = 1 << 11;
 		public const ulong ConstTimespinnerSpindle = 1 << 12;
-
-		public const long ConstKittyBoss = 1 << 30;
+		public const ulong ConstSwimming = 1 << 13;
 
 		public static readonly ProgressionItem None = ConstNone;
 		public static readonly ProgressionItem TimeStop = ConstTimeStop;
@@ -39,9 +38,8 @@ namespace TsRanodmizer.Randomisation
 		public static readonly ProgressionItem CardE = ConstCardE;
 		public static readonly ProgressionItem CardV = ConstCardV;
 		public static readonly ProgressionItem TimespinnerSpindle = ConstTimespinnerSpindle;
+		public static readonly ProgressionItem Swimming = ConstSwimming;
 		
-		public static readonly ProgressionItem KittyBoss = ConstKittyBoss;
-
 		readonly ulong flags;
 
 		ProgressionItem(ulong flags)
@@ -103,7 +101,7 @@ namespace TsRanodmizer.Randomisation
 
 		public static Gate operator &(ProgressionItem a, ProgressionItem b)
 		{
-			return new Gate(a) & new Gate(b);
+			return (Gate)a & b;
 		}
 
 		public static bool operator ==(ProgressionItem a, ProgressionItem b)

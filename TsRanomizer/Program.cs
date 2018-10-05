@@ -12,8 +12,8 @@ namespace TsRanodmizer
 			if (!CheckArguments(args))
 				return -1;
 
-			if (!Md5CheckPassed("A2F880953099610FACF4E3CC153085E1"))
-				return -1;
+			//if (!Md5CheckPassed("A2F880953099610FACF4E3CC153085E1"))
+			//	return -1;
 
 			StartTimeSpinner();
 
@@ -48,7 +48,7 @@ namespace TsRanodmizer
 				return true;
 
 			Console.Out.WriteLine("TsRanodmizer version missmatch!, pleaze update TsRanodmizer");
-			Console.Out.WriteLine("The installed version of TsRanodmizer is made to work with the installed version of TimeSpinner");
+			Console.Out.WriteLine("The installed version of TsRanodmizer is not made to work with the installed version of TimeSpinner");
 			Console.Out.WriteLine("If you continue the game might crash at any given point");
 
 			do
@@ -87,10 +87,10 @@ namespace TsRanodmizer
 		{
 			Console.Out.WriteLine("Starting TimeSpinner...");
 
-			/*try
-			{*/
-				new TimeSpinnerGame().Run();
-			/*}
+			try
+			{
+				new TimeSpinnerGame(DummyPlatformHelper.CreateInstance()).Run();
+			}
 			catch (Exception e)
 			{
 				Console.Error.WriteLine($"Exeception of type {e.GetType()} occured:");
@@ -98,7 +98,7 @@ namespace TsRanodmizer
 				Console.Error.WriteLine(e.StackTrace);
 
 				Console.ReadKey(true);
-			}*/
+			}
 		}
 	}
 }

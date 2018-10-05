@@ -56,8 +56,6 @@ namespace TsRanodmizer.Randomisation
 			};
 
 			PutRandomItemInReachableChest(progressionItems);
-
-			availableProgressionItems |= ProgressionItem.KittyBoss;
 		}
 
 		void CalculateLibraryPath()

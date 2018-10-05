@@ -10,26 +10,12 @@ namespace TsRanodmizer.Randomisation
 		public ItemInfo ItemInfo { get; private set; }
 		public bool IsUsed { get; private set; }
 
-
-		public ItemLocation(int levelId, int roomId, int x, int y) : this(new ItemKey(levelId, roomId, x, y))
+		public ItemLocation(ItemKey key) : this(key, ProgressionItem.None)
 		{
 		}
 
-		public ItemLocation(int levelId, int roomId, int x, int y, Gate gate) : this(new ItemKey(levelId, roomId, x, y), gate)
-		{
-		}
-
-		public ItemLocation(int levelId, int roomId, int x, int y, ProgressionItem requiredProgressionItems)
-			: this(new ItemKey(levelId, roomId, x, y), new Gate(requiredProgressionItems))
-		{
-		}
-
-		public ItemLocation(ItemKey key, ProgressionItem requiredProgressionItems) 
-			: this(key, new Gate(requiredProgressionItems))
-		{
-		}
-
-		public ItemLocation(ItemKey key) : this(key, new Gate(ProgressionItem.None))
+		public ItemLocation(ItemKey key, ProgressionItem requiredProgressionItems)
+			: this(key, (Gate)requiredProgressionItems)
 		{
 		}
 
