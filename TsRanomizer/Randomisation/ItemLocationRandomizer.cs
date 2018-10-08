@@ -60,11 +60,11 @@ namespace TsRanodmizer.Randomisation
 
 		void CalculateLibraryPath()
 		{
-			PutRandomItemInReachableChest(ProgressionItem.CardD);
+			PutProgressionItemInReachableChest(ProgressionItem.CardD);
 			PutRandomItemInReachableChest(ProgressionItem.CardB, ProgressionItem.CardC);
 
 			//If boss is required we need the elevator key, otherwise we need it with CardB
-			PutRandomItemInReachableChest(ProgressionItem.CardE);
+			PutProgressionItemInReachableChest(ProgressionItem.CardE);
 		}
 
 		void FillRemainingChests()
@@ -77,13 +77,13 @@ namespace TsRanodmizer.Randomisation
 		ProgressionItem PutRandomItemInReachableChest(params ProgressionItem[] items)
 		{
 			var progressionItem = SelectRandomProgressionItem(items);
-			PutRandomItemInReachableChest(progressionItem);
+			PutProgressionItemInReachableChest(progressionItem);
 			return progressionItem;
 		}
 
-		void PutRandomItemInReachableChest(ProgressionItem progressionItem)
+		void PutProgressionItemInReachableChest(ProgressionItem progressionItem)
 		{
-			var item = ItemInfo.FromProgressionItem(progressionItem);
+			var item = (ItemInfo)progressionItem;
 			var reachableItemLocations = GetUnusedReachableItemLocations();
 			var itemLocation = reachableItemLocations[random.Next(reachableItemLocations.Length)];
 

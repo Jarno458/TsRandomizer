@@ -82,6 +82,15 @@ namespace TsRanodmizer.Randomisation
 
 			public override string ToString()
 			{
+				if (a is ProgressionItemGate x && b is ProgressionItemGate y)
+				{
+					if (x.RequiredItems == ProgressionItem.TimeStop && y.RequiredItems == ProgressionItem.TimespinnerSpindle)
+						return "(AccessToPast)";
+					if (x.RequiredItems == (ProgressionItem.DoubleJump | ProgressionItem.Lightwall | ProgressionItem.UpwardDash)
+					    && y.RequiredItems == ProgressionItem.TimeStop)
+						return "(DoubleJumpOfNpc)";
+				}
+
 				return $"({a} & {b})";
 			}
 		}

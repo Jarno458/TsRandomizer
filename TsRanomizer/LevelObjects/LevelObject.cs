@@ -81,7 +81,8 @@ namespace TsRanodmizer.LevelObjects
 			for (var i = 0; i < Objects.Count; i++)
 			{
 				var obj = Objects[i];
-				var drawPos = new Vector2(30, 160 + 30 * i);
+				var drawKeyPos = new Vector2(30, 160 + 60 * i);
+				var drawRequirementPos = new Vector2(30, 160 + (60 * i) + 24);
 				var key = GetKey(obj.Object);
 				var requirement = itemLocations.GetItemRequirements(key);
 				var color = obj.ItemInfo != null
@@ -90,8 +91,8 @@ namespace TsRanodmizer.LevelObjects
 						: Color.DarkGreen
 					: Color.Red;
 
-				var text = $"{key}, Requirement: {requirement}";
-				spriteBatch.DrawString(menuFont, text, drawPos, color, 2);
+				spriteBatch.DrawString(menuFont, $"{key}", drawKeyPos, color, 2);
+				spriteBatch.DrawString(menuFont, $"Requirement: {requirement}", drawRequirementPos, color, 1.5f);
 			}
 		}
 
