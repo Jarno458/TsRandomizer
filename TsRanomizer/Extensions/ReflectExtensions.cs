@@ -7,7 +7,7 @@ namespace TsRanodmizer.Extensions
 {
 	public static class ReflectExtensions
 	{
-		public static dynamic Reflect(this object instance)
+		internal static dynamic Reflect(this object instance)
 		{
 			return new Dynamic(instance);
 		}

@@ -141,6 +141,7 @@ namespace TsRanodmizer.Randomisation
 		{
 			var accessToPast = ProgressionItem.TimeStop & ProgressionItem.TimespinnerSpindle;
 			//Refugee Camp
+			itemLocations.Add(new ItemKey(3, 0, 104, 160), accessToPast); //neliste
 			itemLocations.Add(new ItemKey(3, 30, 296, 176), accessToPast);
 			itemLocations.Add(new ItemKey(3, 30, 232, 176), accessToPast);
 			itemLocations.Add(new ItemKey(3, 30, 168, 176), accessToPast);

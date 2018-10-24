@@ -4,7 +4,7 @@ namespace TsRanodmizer.Extensions
 {
 	public static class AnimateExtensions
 	{
-		public static void ChangeAnimation(this Animate animate, int id)
+		internal static void ChangeAnimation(this Animate animate, int id)
 		{
 			animate.ChangeAnimation(new AnimationSpec
 			{

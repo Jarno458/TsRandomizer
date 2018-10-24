@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Inventory;
+using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
@@ -65,6 +67,10 @@ namespace TsRanodmizer.LevelObjects
 			ItemInfo = itemInfo;
 			Reflected = typedObject.Reflect();
 			Object = typedObject;
+
+			GameSave gameSave = ((Level)Reflected._level).GameSave;
+			gameSave.AddRelic(EInventoryRelicType.Dash);
+			gameSave.AddRelic(EInventoryRelicType.DoubleJump);
 		}
 
 		public static void UpdateAll()

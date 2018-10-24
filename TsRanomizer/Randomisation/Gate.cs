@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TsRanodmizer.Randomisation
+﻿namespace TsRanodmizer.Randomisation
 {
 	abstract class Gate
 	{

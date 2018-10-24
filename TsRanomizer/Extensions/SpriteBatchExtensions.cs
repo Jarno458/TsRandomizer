@@ -5,7 +5,7 @@ namespace TsRanodmizer.Extensions
 {
     static class SpriteBatchExtensions
     {
-        public static void DrawString(
+        internal static void DrawString(
             this SpriteBatch spriteBatch,
             SpriteFont font, string text, Vector2 position, Color color, float zoom)
         {

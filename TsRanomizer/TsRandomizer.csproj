@@ -54,10 +54,12 @@
     <Compile Include="Extensions\AnimateExtensions.cs" />
     <Compile Include="Extensions\GameSaveExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\ScriptActionQueueExtensions.cs" />
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="IntermediateObjects\TriggerBase.cs" />
+    <Compile Include="LevelObjects\NelisteNpc.cs" />
     <Compile Include="LevelObjects\SelenNpc.cs" />
     <Compile Include="LevelObjects\CutscenePrologue4.cs" />
     <Compile Include="PlatformHelper.cs" />

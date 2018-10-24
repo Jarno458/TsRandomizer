@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.Remoting.Messaging;
 using Microsoft.Xna.Framework;
-using Timespinner.Core.Specifications;
+using Timespinner.Core;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.GameObjects;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
+using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.IntermediateObjects;
 using TsRanodmizer.Extensions;
@@ -18,30 +18,43 @@ namespace TsRanodmizer.LevelObjects
 	// ReSharper disable once UnusedMember.Global
 	class OrbPedestal : LevelObject<Mobile>
 	{
-		static MethodInfo GetOrbGlowColorByTypeMethod = TimeSpinnerType
+		static readonly MethodInfo GetOrbGlowColorByTypeMethod = TimeSpinnerType
 			.Get("Timespinner.GameObjects.Heroes.Orbs.LunaisOrb")
-			.GetMethod("GetOrbGlowColorByType", BindingFlags.Static | BindingFlags.NonPublic);
+			.GetPrivateStaticMethod("GetOrbGlowColorByType", typeof(EInventoryOrbType));
 
-		bool hasDroppedLoot;
-
-		public OrbPedestal(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, new ItemInfo(EInventoryOrbType.Flame, EOrbSlot.Melee))
-		{
-		}
+		readonly SpriteSheet menuIcons;
 
 		List<Appendage> Appendages => Reflected._appendages;
 
+		bool hasDroppedLoot;
+
+		public OrbPedestal(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, new ItemInfo(EInventoryOrbType.Eye, EOrbSlot.Spell))
+		{
+			menuIcons = ((Level)Reflected._level).GCM.SpMenuIcons;
+		}
+		
 		protected override void Initialize()
 		{
 			if (ItemInfo == null)
 				return;
 
-			Reflected._orbType = ItemInfo.OrbType;
+			if (ItemInfo.LootType == LootType.Orb)
+			{
+				Reflected._orbType = ItemInfo.OrbType;
+				UpdateOrbGlowColor();
 
-			UpdateGlowColor();
-			UpdateSprite();
+				if (ItemInfo.OrbSlot == EOrbSlot.Melee)
+					UpdateMeleeOrbSprite();
+				else
+					UpdateSprite();
+			}
+			else
+			{
+				UpdateSprite();
+			}
 		}
 
-		void UpdateSprite()
+		void UpdateMeleeOrbSprite()
 		{
 			const int wierdOffset = 19;
 			if (Appendages.Count == 0)
@@ -50,7 +63,24 @@ namespace TsRanodmizer.LevelObjects
 				((Appendage)Reflected._orbAppendage).ChangeAnimation((int)ItemInfo.OrbType + wierdOffset);
 		}
 
-		void UpdateGlowColor()
+		void UpdateSprite()
+		{
+			if (Appendages.Count == 0)
+			{
+				Reflected._sprite = menuIcons;
+				((Animate)Object).ChangeAnimation(ItemInfo.AnimationIndex);
+			}
+			else
+			{
+				Appendage orbAppendage = (Appendage)Reflected._orbAppendage;
+				orbAppendage.AnchorOffset = new Point(-4, -36); //TODO fix glow position
+
+				((Animate)Reflected._orbAppendage).Reflect()._sprite = menuIcons;
+				((Animate)Reflected._orbAppendage).ChangeAnimation(ItemInfo.AnimationIndex);
+			}
+		}
+
+		void UpdateOrbGlowColor()
 		{
 			var orbGlowColorVector = GetOrbGlowColorByType(ItemInfo.OrbType);
 			var orbGlowColor = new Color(orbGlowColorVector);
@@ -65,16 +95,18 @@ namespace TsRanodmizer.LevelObjects
 			if (ItemInfo == null || hasDroppedLoot)
 				return;
 
-			if (ItemInfo.LootType == LootType.Orb && Reflected.HasBeenPickedUp)
-			{
-				var gameSave = ((Level)Reflected._level).GameSave;
-				gameSave.AddOrb(ItemInfo.OrbType, ItemInfo.OrbSlot);
-				hasDroppedLoot = true;
-			}
-			//TODO: incase of not an melee orb??
+			if (!Reflected.HasBeenPickedUp) return;
+
+			var level = (Level)Reflected._level;
+			var scripts = (Queue<ScriptAction>)level.Reflect()._waitingScripts;
+
+			scripts.UpdateRelicOrbGetToastToItem(ItemInfo);
+			level.GameSave.AddItem(ItemInfo);
+
+			hasDroppedLoot = true;
 		}
 
-		Vector4 GetOrbGlowColorByType(EInventoryOrbType orbType)
+		static Vector4 GetOrbGlowColorByType(EInventoryOrbType orbType)
 		{
 			return (Vector4)GetOrbGlowColorByTypeMethod.Invoke(null, new object[]{ orbType });
 		}

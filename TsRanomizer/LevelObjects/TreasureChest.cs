@@ -30,7 +30,7 @@ namespace TsRanodmizer.LevelObjects
 					Reflected._lootRelicType = ItemInfo.Relic;
 					break;
 				case LootType.ConstEquipment:
-					Reflected._lootEquipmentType = ItemInfo.Emquipment;
+					Reflected._lootEquipmentType = ItemInfo.Enquipment;
 					break;
 				case LootType.ConstOrb:
 					Reflected._lootOrbType = ItemInfo.OrbType;

@@ -8,14 +8,14 @@ namespace TsRanodmizer.Extensions
 	{
 		static readonly Type EnumerableType = typeof(Enumerable);
 
-		public static IEnumerable CastAsType(this IEnumerable source, Type targetType)
+		internal static IEnumerable CastAsType(this IEnumerable source, Type targetType)
 		{
 			var castMethod = EnumerableType.GetMethod("Cast")?.MakeGenericMethod(targetType);
 
 			return (IEnumerable)castMethod?.Invoke(null, new object[] { source });
 		}
 
-		public static IList ToListOfType(this IEnumerable source, Type targetType)
+		internal static IList ToListOfType(this IEnumerable source, Type targetType)
 		{
 			var enumerable = CastAsType(source, targetType);
 

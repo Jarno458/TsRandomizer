@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using Timespinner.GameAbstractions.Inventory;
 
 namespace TsRanodmizer.IntermediateObjects
 {
@@ -38,6 +39,26 @@ namespace TsRanodmizer.IntermediateObjects
 		public Enum ToETreasureLootType()
 		{
 			return (Enum)Enum.ToObject(ETreasureLootType, lootType);
+		}
+
+		[Pure]
+		public EInventoryCategoryType ToEInventoryCategoryType()
+		{
+			switch (lootType)
+			{
+				case ConstEquipment:
+					return EInventoryCategoryType.Equipment;
+				case ConstFamiliar:
+					return EInventoryCategoryType.Familiar;
+				case ConstOrb:
+					return EInventoryCategoryType.Orb;
+				case ConstRelic:
+					return EInventoryCategoryType.Relic;
+				case ConstUseItem:
+					return EInventoryCategoryType.UseItem;
+				default:
+					throw new ArgumentOutOfRangeException($"LootType {lootType} isnt supported by EInventoryCategoryType");
+			}
 		}
 
 		public static implicit operator LootType(int value)

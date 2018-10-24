@@ -5,7 +5,7 @@ namespace TsRanodmizer.Extensions
 {
     public static class GameComponentCollectionExtensions
     {
-        public static void ReplaceComponent<T>(
+	    internal static void ReplaceComponent<T>(
             this GameComponentCollection components, T toBeReplaced, T replacement
         ) where T : IGameComponent
         {
@@ -13,7 +13,7 @@ namespace TsRanodmizer.Extensions
             components.Add(replacement);
         }
 
-        public static T FirstOfType<T>(this GameComponentCollection components) where T : IGameComponent
+	    internal static T FirstOfType<T>(this GameComponentCollection components) where T : IGameComponent
         {
             return (T)components.First(c => c.GetType() == typeof(T));
         }
