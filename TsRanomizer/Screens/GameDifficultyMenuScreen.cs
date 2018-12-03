@@ -36,7 +36,7 @@ namespace TsRanodmizer.Screens
 		{
 			var selectSeedMenu = SeedSelectionMenuScreen.Create(ScreenManager);
 
-			ScreenManager.AddScreen(selectSeedMenu, PlayerIndex.One);
+			ScreenManager.AddScreen(selectSeedMenu, pi);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)

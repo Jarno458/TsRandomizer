@@ -21,7 +21,7 @@ namespace TsRanodmizer
 		}
 
 		public TValue this[TLookup key] => lookupTable[key];
-		public TValue this[TValue value] => value;
+
 		public int Count => lookupTable.Count;
 
 		public bool TryGetValue(TLookup key, out TValue value)

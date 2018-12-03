@@ -43,15 +43,16 @@ namespace TsRanodmizer.LevelObjects
 
 		protected override void OnUpdate()
 		{
-			if (ItemInfo == null || hasDroppedLoot)
+			if (ItemInfo == null || hasDroppedLoot || !Reflected._hasDroppedLoot)
 				return;
 
-			if (ItemInfo.LootType == LootType.Orb && Reflected._hasDroppedLoot)
-			{
-				var gameSave = ((Level)Reflected._level).GameSave;
-				gameSave.AddOrb(ItemInfo.OrbType, ItemInfo.OrbSlot);
-				hasDroppedLoot = true;
-			}
+			var level = (Level)Reflected._level;
+				
+			if (ItemInfo.LootType == LootType.Orb)
+				level.GameSave.AddItem(ItemInfo);
+
+			ItemInfo.OnPickup(level);
+			hasDroppedLoot = true;
 		}
 	}
 }

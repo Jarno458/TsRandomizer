@@ -1,107 +1,177 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using TsRanodmizer.IntermediateObjects;
 
 namespace TsRanodmizer.Randomisation
 {
-	class ItemLocationRandomizer
+	static class ItemLocationRandomizer
 	{
-		ItemLocationMap itemLocations;
-		ProgressionItem availableProgressionItems;
-		Random random;
-		
-		public ItemLocationMap RandonmiseItemLocations(uint seed, ItemLocationMap itemLocationMap)
-		{
-			random = new Random((int)seed);
-			itemLocations = itemLocationMap;
-			availableProgressionItems = ProgressionItem.None;
+		static ItemLocationMap itemLocations;
+		static Requirement availableRequirements;
+		static Random random;
 
+		static readonly Requirement DoubleJump = Requirement.DoubleJump | Requirement.TimeStop;
+		static readonly Requirement UpwardDash = Requirement.UpwardDash | DoubleJump;
+		
+		static readonly Dictionary<ItemInfo, Requirement> Unlocks = new Dictionary<ItemInfo, Requirement>
+		{
+			{ItemInfo.Get(EInventoryRelicType.TimespinnerWheel), Requirement.TimeStop},
+			{ItemInfo.Get(EInventoryRelicType.DoubleJump), DoubleJump},
+			{ItemInfo.Get(EInventoryRelicType.Dash), Requirement.ForwardDash},
+			{ItemInfo.Get(EInventoryRelicType.EssenceOfSpace), UpwardDash}, 
+			{ItemInfo.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell), UpwardDash},
+			{ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Passive), Requirement.AntiWeed},
+			{ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Melee), Requirement.AntiWeed},
+			{ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Spell), Requirement.AntiWeed},
+			{ItemInfo.Get(EInventoryRelicType.ScienceKeycardA), Requirement.CardA | Requirement.CardB | Requirement.CardC | Requirement.CardD},
+			{ItemInfo.Get(EInventoryRelicType.ScienceKeycardB), Requirement.CardB | Requirement.CardC | Requirement.CardD},
+			{ItemInfo.Get(EInventoryRelicType.ScienceKeycardC), Requirement.CardC | Requirement.CardD},
+			{ItemInfo.Get(EInventoryRelicType.ScienceKeycardD), Requirement.CardD},
+			{ItemInfo.Get(EInventoryRelicType.ElevatorKeycard), Requirement.CardE},
+			{ItemInfo.Get(EInventoryRelicType.ScienceKeycardV), Requirement.CardV},
+			{ItemInfo.Get(EInventoryRelicType.WaterMask), Requirement.Swimming},
+		};
+
+		public static void AddRandomItemsToLocationMap(ItemLocationMap itemLocationMap, Seed seed)
+		{
+			random = new Random(seed);
+			itemLocations = itemLocationMap;
+			availableRequirements = Requirement.None;
+
+			CalculateTeleporterPickAction();
 			CalculateTutorial();
-			CalculateLakeDesolationPath();
+
+			if (!availableRequirements.Contains(Requirement.AntiWeed))
+			{
+				CalculateLakeDesolationPath();
+
+				var LakeDelosationBridge = Requirement.DoubleJump | Requirement.ForwardDash | Requirement.TimeStop;
+				if (availableRequirements.Contains(LakeDelosationBridge))
+				{
+
+				}
+			
+			}
+				
 			CalculateLibraryPath();
 			FillRemainingChests();
-
-			return itemLocations;
 		}
 
-		void CalculateTutorial()
+		static void CalculateTeleporterPickAction()
 		{
-			var orbsTypes = new List<EInventoryOrbType>(Enum.GetValues(typeof(EInventoryOrbType)).Cast<EInventoryOrbType>());
-			orbsTypes.Remove(EInventoryOrbType.None);
+			var gateProgressionItems = new[] {
+				new {Gate = Requirement.GateKittyBoss, LevelId = 2, RoomId = 55},
+				new {Gate = Requirement.GateLeftLibrary, LevelId = 2, RoomId = 54},
+				new {Gate = Requirement.GateLakeSirine, LevelId = 7, RoomId = 30},
+				new {Gate = Requirement.GateLakeSirine, LevelId = 7, RoomId = 31},
+				new {Gate = Requirement.GateAccessToPast, LevelId = 3, RoomId = 6},
+				new {Gate = Requirement.GateAccessToPast, LevelId = 8, RoomId = 51},
+			};
 
-			var spellOrbType = orbsTypes[random.Next(orbsTypes.Count)];
-			itemLocations[ItemKey.TutorialSpellOrb].SetItem(new ItemInfo(spellOrbType, EOrbSlot.Spell));
+			var selectedGate = gateProgressionItems[random.Next(gateProgressionItems.Length)];
 
-			if (spellOrbType == EInventoryOrbType.Barrier)
-				availableProgressionItems |= ProgressionItem.Lightwall;
+			ItemInfo.Get(EInventoryRelicType.PyramidsKey).SetPickupAction(
+				level => TeleportPickupAction(level, selectedGate.LevelId, selectedGate.RoomId)
+			);
 
-			orbsTypes.Remove(EInventoryOrbType.Empire);
-
-			var meleeOrbType = orbsTypes[random.Next(orbsTypes.Count)];
-			itemLocations[ItemKey.TutorialMeleeOrb].SetItem(new ItemInfo(meleeOrbType, EOrbSlot.Melee));
-
+			Unlocks[ItemInfo.Get(EInventoryRelicType.PyramidsKey)] = selectedGate.Gate;
 		}
 
-		void CalculateLakeDesolationPath()
+		static void CalculateTutorial()
+		{
+			var orbTypes = ((EInventoryOrbType[])Enum.GetValues(typeof(EInventoryOrbType))).ToList();
+			orbTypes.Remove(EInventoryOrbType.None);
+
+			var spellOrbTypes = orbTypes
+				.Where(orbType => orbType != EInventoryOrbType.Barrier)
+				.ToArray();
+			var spellOrbType = spellOrbTypes[random.Next(spellOrbTypes.Length)];
+			PutItemAtLocation(ItemInfo.Get(spellOrbType, EOrbSlot.Spell), itemLocations[ItemKey.TutorialSpellOrb]);
+
+			orbTypes.Remove(EInventoryOrbType.Empire);
+
+			var meleeOrbType = orbTypes[random.Next(orbTypes.Count)];
+			PutItemAtLocation(ItemInfo.Get(meleeOrbType, EOrbSlot.Melee), itemLocations[ItemKey.TutorialMeleeOrb]);
+		}
+
+		static void CalculateLakeDesolationPath()
 		{
 			var progressionItems = new[]
 			{
-				ProgressionItem.ForwardDash, ProgressionItem.ForwardDash, ProgressionItem.ForwardDash,
-				ProgressionItem.DoubleJump,  ProgressionItem.DoubleJump,
-				ProgressionItem.Lightwall,   ProgressionItem.Lightwall,
-				ProgressionItem.TimeStop,    ProgressionItem.TimeStop,
-				ProgressionItem.UpwardDash
+				Requirement.Teleport, Requirement.Teleport, Requirement.Teleport,
+				//Requirement.ForwardDash, Requirement.ForwardDash,
+				//Requirement.DoubleJump,  Requirement.DoubleJump,
+				//Requirement.TimeStop,
 			};
 
 			PutRandomItemInReachableChest(progressionItems);
 		}
 
-		void CalculateLibraryPath()
+		static void CalculateLibraryPath()
 		{
-			PutProgressionItemInReachableChest(ProgressionItem.CardD);
-			PutRandomItemInReachableChest(ProgressionItem.CardB, ProgressionItem.CardC);
+			PutItemMatchitngRequirementInReachableChest(Requirement.CardD);
+			PutRandomItemInReachableChest(Requirement.CardB, Requirement.CardC);
 
 			//If boss is required we need the elevator key, otherwise we need it with CardB
-			PutProgressionItemInReachableChest(ProgressionItem.CardE);
+			PutItemMatchitngRequirementInReachableChest(Requirement.CardE);
 		}
 
-		void FillRemainingChests()
+		static void FillRemainingChests()
 		{
 			foreach (var itemLocation in itemLocations)
 				if (!itemLocation.IsUsed)
-					itemLocation.SetItem(ItemInfo.Dummy);
+					PutItemAtLocation(ItemInfo.Dummy, itemLocation);
 		}
 
-		ProgressionItem PutRandomItemInReachableChest(params ProgressionItem[] items)
+		static void PutRandomItemInReachableChest(params Requirement[] items)
 		{
-			var progressionItem = SelectRandomProgressionItem(items);
-			PutProgressionItemInReachableChest(progressionItem);
-			return progressionItem;
+			var progressionItem = SelectRandomRequirement(items);
+			PutItemMatchitngRequirementInReachableChest(progressionItem);
 		}
 
-		void PutProgressionItemInReachableChest(ProgressionItem progressionItem)
+		static void PutItemMatchitngRequirementInReachableChest(Requirement requirement)
 		{
-			var item = (ItemInfo)progressionItem;
+			var itemsThatMeetRequirement = Unlocks
+				.Where(kvp => requirement.Contains(kvp.Value))
+				.Select(kvp => kvp.Key)
+				.ToArray();
+			var item = itemsThatMeetRequirement[random.Next(itemsThatMeetRequirement.Length)];
+
 			var reachableItemLocations = GetUnusedReachableItemLocations();
 			var itemLocation = reachableItemLocations[random.Next(reachableItemLocations.Length)];
 
-			itemLocation.SetItem(item);
-
-			availableProgressionItems |= progressionItem;
+			PutItemAtLocation(item, itemLocation);
 		}
 
-		ProgressionItem SelectRandomProgressionItem(params ProgressionItem[] items)
+		static Requirement SelectRandomRequirement(params Requirement[] items)
 		{
 			return items[random.Next(items.Length)];
 		}
 
-		ItemLocation[] GetUnusedReachableItemLocations()
+		static ItemLocation[] GetUnusedReachableItemLocations()
 		{
 			return itemLocations
-				.Where(c => !c.IsUsed && c.Gate.CanOpen(availableProgressionItems))
+				.Where(c => !c.IsUsed && c.Gate.CanOpen(availableRequirements))
 				.ToArray();
+		}
+
+		static void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)
+		{
+			itemLocation.SetItem(itemInfo);
+
+			if (Unlocks.ContainsKey(itemInfo))
+				availableRequirements |= Unlocks[itemInfo];
+		}
+
+		static void TeleportPickupAction(Level level, int levelId, int roomId)
+		{
+			var minimapRoom = level.Minimap.Areas[levelId].Rooms[roomId];
+
+			minimapRoom.SetKnown(true);
+			minimapRoom.SetVisited(true);
 		}
 	}
 }

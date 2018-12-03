@@ -54,16 +54,17 @@
     <Compile Include="Extensions\AnimateExtensions.cs" />
     <Compile Include="Extensions\GameSaveExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\MethodInfoExtensions.cs" />
     <Compile Include="Extensions\ScriptActionQueueExtensions.cs" />
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="IntermediateObjects\TriggerBase.cs" />
+    <Compile Include="LevelObjects\AlwaysSpawnAttribute.cs" />
     <Compile Include="LevelObjects\NelisteNpc.cs" />
     <Compile Include="LevelObjects\SelenNpc.cs" />
     <Compile Include="LevelObjects\CutscenePrologue4.cs" />
     <Compile Include="PlatformHelper.cs" />
-    <Compile Include="Randomisation\ProgressionItemGate.cs" />
     <Compile Include="Randomisation\RoomItemKey.cs" />
     <Compile Include="ReplacementObjects\TimespinnerSpindle.cs" />
     <Compile Include="IntermediateObjects\TriggerAfterLootDrop.cs" />
@@ -78,7 +79,7 @@
     <Compile Include="Randomisation\Gate.cs" />
     <Compile Include="Randomisation\ItemLocationMap.cs" />
     <Compile Include="IntermediateObjects\LootType.cs" />
-    <Compile Include="Randomisation\ProgressionItem.cs" />
+    <Compile Include="Randomisation\Requirement.cs" />
     <Compile Include="Randomisation\ItemLocation.cs" />
     <Compile Include="IntermediateObjects\ItemInfo.cs" />
     <Compile Include="Randomisation\ItemLocationRandomizer.cs" />

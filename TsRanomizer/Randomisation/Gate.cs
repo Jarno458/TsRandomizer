@@ -2,7 +2,7 @@
 {
 	abstract class Gate
 	{
-		public abstract bool CanOpen(ProgressionItem obtainedProgressionItems);
+		public abstract bool CanOpen(Requirement obtainedRequirements);
 
 		public static Gate operator &(Gate a, Gate b)
 		{
@@ -17,43 +17,43 @@
 			return new OrGate(a, b);
 		}
 
-		public static Gate operator &(Gate a, ProgressionItem b)
+		public static Gate operator &(Gate a, Requirement b)
 		{
 			return a & new ProgressionItemGate(b);
 		}
 
-		public static Gate operator &(ProgressionItem b, Gate a)
+		public static Gate operator &(Requirement b, Gate a)
 		{
 			return a & new ProgressionItemGate(b);
 		}
 
-		public static Gate operator |(Gate a, ProgressionItem b)
+		public static Gate operator |(Gate a, Requirement b)
 		{
 			return a | new ProgressionItemGate(b);
 		}
 
-		public static Gate operator |(ProgressionItem b, Gate a)
+		public static Gate operator |(Requirement b, Gate a)
 		{
 			return a | new ProgressionItemGate(b);
 		}
 
-		public static explicit operator Gate(ProgressionItem requiredItems)
+		public static explicit operator Gate(Requirement requiredItems)
 		{
 			return new ProgressionItemGate(requiredItems);
 		}
 
 		class ProgressionItemGate : Gate
 		{
-			public readonly ProgressionItem RequiredItems;
+			public readonly Requirement RequiredItems;
 
-			public ProgressionItemGate(ProgressionItem requiredItems)
+			public ProgressionItemGate(Requirement requiredItems)
 			{
 				RequiredItems = requiredItems;
 			}
 
-			public override bool CanOpen(ProgressionItem obtainedProgressionItems)
+			public override bool CanOpen(Requirement obtainedRequirements)
 			{
-				return RequiredItems == ProgressionItem.None || RequiredItems.HasMatchingFlag(obtainedProgressionItems);
+				return RequiredItems == Requirement.None || RequiredItems.Contains(obtainedRequirements);
 			}
 
 			public override string ToString()
@@ -73,19 +73,19 @@
 				this.b = b;
 			}
 
-			public override bool CanOpen(ProgressionItem obtainedProgressionItems)
+			public override bool CanOpen(Requirement obtainedRequirements)
 			{
-				return a.CanOpen(obtainedProgressionItems) && b.CanOpen(obtainedProgressionItems);
+				return a.CanOpen(obtainedRequirements) && b.CanOpen(obtainedRequirements);
 			}
 
 			public override string ToString()
 			{
 				if (a is ProgressionItemGate x && b is ProgressionItemGate y)
 				{
-					if (x.RequiredItems == ProgressionItem.TimeStop && y.RequiredItems == ProgressionItem.TimespinnerSpindle)
+					if (x.RequiredItems == Requirement.TimeStop && y.RequiredItems == Requirement.TimespinnerSpindle)
 						return "(AccessToPast)";
-					if (x.RequiredItems == (ProgressionItem.DoubleJump | ProgressionItem.Lightwall | ProgressionItem.UpwardDash)
-					    && y.RequiredItems == ProgressionItem.TimeStop)
+					if (x.RequiredItems == (Requirement.DoubleJump | Requirement.UpwardDash) 
+					    && y.RequiredItems == Requirement.TimeStop)
 						return "(DoubleJumpOfNpc)";
 				}
 
@@ -104,9 +104,9 @@
 				this.b = b;
 			}
 
-			public override bool CanOpen(ProgressionItem obtainedProgressionItems)
+			public override bool CanOpen(Requirement obtainedRequirements)
 			{
-				return a.CanOpen(obtainedProgressionItems) || b.CanOpen(obtainedProgressionItems);
+				return a.CanOpen(obtainedRequirements) || b.CanOpen(obtainedRequirements);
 			}
 
 			public override string ToString()

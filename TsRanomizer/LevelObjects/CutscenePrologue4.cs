@@ -2,7 +2,6 @@
 using System.Linq;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
-using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
@@ -13,12 +12,12 @@ namespace TsRanodmizer.LevelObjects
 	// ReSharper disable once UnusedMember.Global
 	class CutscenePrologue4 : LevelObject
 	{
-		readonly GameSave gameSave;
+		readonly Level level;
 		bool hasAwardedMeleeOrb;
 
 		public CutscenePrologue4(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
 		{
-			gameSave = ((Level)Reflected._level).GameSave;
+			level = (Level)Reflected._level;
 		}
 
 		protected override void Initialize()
@@ -38,12 +37,12 @@ namespace TsRanodmizer.LevelObjects
 			if (ItemInfo == null)
 				return;
 
-			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;
+			var orbCollection = level.GameSave.Inventory.OrbInventory.Inventory;
 
 			if (hasAwardedMeleeOrb || !orbCollection.ContainsKey((int)EInventoryOrbType.Blue))
 				return;
 
-			gameSave.AddOrb(ItemInfo.OrbType, ItemInfo.OrbSlot);
+			AwardContainedItem();
 			hasAwardedMeleeOrb = true;
 		}
 	}

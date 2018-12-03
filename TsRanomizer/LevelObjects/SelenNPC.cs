@@ -2,7 +2,6 @@
 using System.Linq;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
-using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
@@ -13,13 +12,13 @@ namespace TsRanodmizer.LevelObjects
 	// ReSharper disable once UnusedMember.Global
 	class SelenNpc : LevelObject
 	{
-		readonly GameSave gameSave;
+		readonly Level level;
 		bool hasReplacedSpellPopup;
 		bool hasAwardedSpellOrb;
 
 		public SelenNpc(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
 		{
-			gameSave = ((Level)Reflected._level).GameSave;
+			level = (Level)Reflected._level;
 		}
 
 		protected override void OnUpdate()
@@ -29,7 +28,7 @@ namespace TsRanodmizer.LevelObjects
 
 			if (!hasReplacedSpellPopup && Reflected._tutorialSection == 2)
 			{
-				var scripts = ((Queue<ScriptAction>)((Level)Reflected._level).Reflect()._waitingScripts).ToArray();
+				var scripts = ((Queue<ScriptAction>)level.Reflect()._waitingScripts).ToArray();
 				var giveOrbScript = scripts.Single(s => s.Reflect().ScriptType == EScriptType.RelicOrbGetToast);
 
 				giveOrbScript.Reflect().ItemToGive = (int)ItemInfo.OrbType;
@@ -40,12 +39,12 @@ namespace TsRanodmizer.LevelObjects
 			if (hasAwardedSpellOrb)
 				return;
 
-			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;
+			var orbCollection = level.GameSave.Inventory.OrbInventory.Inventory;
 			if (!orbCollection.TryGetValue((int)EInventoryOrbType.Blue, out InventoryOrb orb) || !orb.IsSpellUnlocked)
 				return;
 
 			orbCollection[(int)EInventoryOrbType.Blue].IsSpellUnlocked = false;
-			gameSave.AddOrb(ItemInfo.OrbType, EOrbSlot.Spell);
+			AwardContainedItem(level);
 			hasAwardedSpellOrb = true;
 		}
 	}

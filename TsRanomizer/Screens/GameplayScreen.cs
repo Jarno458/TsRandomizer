@@ -16,7 +16,7 @@ namespace TsRanodmizer.Screens
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.InGame.GameplayScreen")]
 	// ReSharper disable once UnusedMember.Global
-	partial class GameplayScreen : Screen
+	class GameplayScreen : Screen
 	{
 		RoomSpecification currentRoom;
 		readonly ItemLocationMap itemLocations;
@@ -27,7 +27,6 @@ namespace TsRanodmizer.Screens
 		public GameplayScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
 			var seed = GetSeed(ScreenReflected.SaveFile);
-			 
 			var levelReflected = Level.Reflect();
 			levelReflected._random = new DeRandomizer(levelReflected._random, seed);
 			itemLocations = ItemLocationMap.FromSeed(seed);
@@ -45,9 +44,6 @@ namespace TsRanodmizer.Screens
 
 		public override void Update(InputState input)
 		{
-			//if (input.IsButtonHold(Buttons.RightStick, PlayerIndex.One, out PlayerIndex playerIndex))
-			//    LoadNextLevel();
-
 			LevelObject.UpdateAll();
 
 			if (IsRoomChanged())

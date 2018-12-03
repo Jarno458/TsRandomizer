@@ -28,8 +28,9 @@ namespace TsRanodmizer.Screens
 		public static SeedSelectionMenuScreen Create(ScreenManager screenManager)
 		{
 			GCM gcm = screenManager.Reflected.GCM;
+			Action noop = () => { };
 
-			var screen = (GameScreen)Activator.CreateInstance(PasswordMenuScreenType, null, gcm);
+			var screen = (GameScreen)Activator.CreateInstance(PasswordMenuScreenType, null, gcm, noop);
 			var seedSelectionMenu = new SeedSelectionMenuScreen(screen);
 
 			seedSelectionMenu.reflected._menuTitle = "Select Seed";

@@ -14,10 +14,9 @@ namespace TsRanodmizer.IntermediateObjects
 			this.treasureChest = treasureChest.Reflect();
 		}
 
-		protected override void OnUpdate()
+		protected override bool ShouldTrigger()
 		{
-			if (treasureChest._hasDroppedLoot)
-				Trigger();
+			return treasureChest._hasDroppedLoot;
 		}
 	}
 }

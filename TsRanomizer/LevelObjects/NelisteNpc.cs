@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
-using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
@@ -13,13 +11,13 @@ namespace TsRanodmizer.LevelObjects
 	// ReSharper disable once UnusedMember.Global
 	class NelisteNpc : LevelObject
 	{
-		readonly GameSave gameSave;
+		readonly Level level;
 		readonly dynamic reflected;
 		int lastSubProgress;
 
 		public NelisteNpc(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
 		{
-			gameSave = ((Level)Reflected._level).GameSave;
+			level = (Level)Reflected._level;
 			reflected = typedObject.Reflect();
 		}
 
@@ -27,8 +25,6 @@ namespace TsRanodmizer.LevelObjects
 		{
 			if (ItemInfo == null)
 				return;
-
-			var itemInfo = new ItemInfo(EInventoryFamiliarType.MerchantCrow);
 
 			var currentSubProgress = reflected.SubProgress;
 
@@ -38,9 +34,9 @@ namespace TsRanodmizer.LevelObjects
 			if (reflected.IsTalking && lastSubProgress == 0 && currentSubProgress == 1)
 			{
 				var scripts = (Queue<ScriptAction>)((Level)Reflected._level).Reflect()._waitingScripts;
-				scripts.UpdateRelicOrbGetToastToItem(itemInfo);
+				scripts.UpdateRelicOrbGetToastToItem(ItemInfo);
 
-				gameSave.AddItem(itemInfo);
+				AwardContainedItem();
 				
 				//((Animate)reflected._fireOrb).Reflect()._unhiddenAnimationIndex = ; uses differnt sprite sheet
 			}

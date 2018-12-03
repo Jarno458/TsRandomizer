@@ -53,7 +53,6 @@ namespace TsRanodmizer.ReplacementObjects
 		public static void ReplaceObjects(Level level, List<Animate> objects)
 		{
 			var levelReflected = level.Reflect();
-			//var newObjects = new List<Animate>();
 			var objectsPerTypes = objects.GroupBy(o => o.GetType());
 
 			foreach (var objectsPerType in objectsPerTypes)
@@ -67,19 +66,13 @@ namespace TsRanodmizer.ReplacementObjects
 					var newObjects = replacer.Replace(level, obj);
 
 					obj.SilentKill();
-					//newObjects.Add(newObject);
 
 					foreach (var newObject in newObjects)
 						levelReflected.RequestAddObject(newObject);
 				}
 			}
-
-			//((List<Mobile>)level.Reflect()._newObjects).AddRange(newObjects);
-			//objects.AddRange(newObjects);
 		}
 		
 		protected abstract IEnumerable<Animate> Replace(Level level, Animate objectToReplace);
-
-		//protected abstract Mobile CreateShadowObject(Level level, Animate objectToReplace);
 	}
 }
