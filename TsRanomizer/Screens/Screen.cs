@@ -59,6 +59,10 @@ namespace TsRanodmizer.Screens
 			ScreenReflected = gameScreen.Reflect();
 		}
 
+		public virtual void Initialize()
+		{
+		}
+
 		public virtual void Update(InputState input)
 		{
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TsRanodmizer.Extensions
@@ -22,6 +23,11 @@ namespace TsRanodmizer.Extensions
 			var listMethod = EnumerableType.GetMethod("ToList")?.MakeGenericMethod(targetType);
 
 			return (IList)listMethod?.Invoke(null, new object[] { enumerable });
+		}
+
+		internal static IEnumerable<T> Append<T>(this IEnumerable<T> items, T item)
+		{
+			return items.Concat(new[] {item});
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +8,10 @@ namespace TsRanodmizer.Randomisation
 {
 	struct Requirement : IEquatable<Requirement>
 	{
+		public static Requirement TeleportationGates { get; }
+
+		static readonly Dictionary<Requirement, string> Flags;
+
 		public static readonly Requirement None = 0;
 		public static readonly Requirement TimeStop = 1 << 0;
 		public static readonly Requirement ForwardDash = 1 << 1;
@@ -31,9 +36,23 @@ namespace TsRanodmizer.Randomisation
 		public static readonly Requirement TimespinnerPiece1 = 1 << 21;
 		public static readonly Requirement TimespinnerPiece2 = 1 << 22;
 		public static readonly Requirement TimespinnerPiece3 = 1 << 23;
-
-		readonly ulong flags;
+		public static readonly Requirement TimespinnerWheel = 1 << 24;
 		
+		readonly ulong flags;
+
+		static Requirement()
+		{
+			Flags = typeof(Requirement)
+				.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+				.Where(f => f.Name != nameof(None))
+				.ToDictionary(f => (Requirement)f.GetValue(null), f => f.Name);
+
+			TeleportationGates = Flags
+				.Where(f => f.Value.StartsWith("Gate"))
+				.Select(f => f.Key)
+				.Aggregate((a, b) => a | b);
+		}
+
 		Requirement(ulong flags)
 		{
 			this.flags = flags;
@@ -43,6 +62,29 @@ namespace TsRanodmizer.Randomisation
 		public bool Contains(Requirement other)
 		{
 			return (flags & other.flags) > 0;
+		}
+
+		[Pure]
+		public bool IsSingleRequirement()
+		{
+			return (flags & (flags - 1)) == 0;
+		}
+
+		[Pure]
+		public Requirement[] Split()
+		{
+			if (IsSingleRequirement())
+				return new[] {this};
+
+			List<Requirement> flaggedRequirements = new List<Requirement>();
+
+			foreach (var flag in Flags)
+			{
+				if (((ulong)flag.Key & flags) == (ulong)flag.Key)
+					flaggedRequirements.Add(flag.Key);
+			}
+
+			return flaggedRequirements.ToArray();
 		}
 
 		[Pure]
@@ -103,7 +145,7 @@ namespace TsRanodmizer.Randomisation
 		{
 			if (flags == None) return "";
 
-			if (flags == (TimeStop | ForwardDash | UpwardDash | DoubleJump))
+			/*if (flags == (TimeStop | ForwardDash | UpwardDash | DoubleJump))
 				return "ForwardJumpOfNpc";
 			if (flags == (TimeStop | UpwardDash | DoubleJump))
 				return "JumpOfNpc";
@@ -114,14 +156,13 @@ namespace TsRanodmizer.Randomisation
 			if (flags == (CardC | CardB | CardA))
 				return "SecurityAccessC";
 			if (flags == (CardB | CardA))
-				return "SecurityAccessB";
+				return "SecurityAccessB";*/
 
-			var flagNames = typeof(Requirement)
-				.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-				.Where(f => ((ulong)(Requirement)f.GetValue(null) & flags) > 0)
-				.Select(f => ToShortName(f.Name));
+			var flagNames = Flags
+				.Where(f => ((ulong)f.Key & flags) > 0)
+				.Select(f => ToShortName(f.Value));
 
-			return string.Join(" | ", flagNames);
+			return string.Join("|", flagNames);
 		}
 
 		static string ToShortName(string name)

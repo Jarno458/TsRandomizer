@@ -7,11 +7,21 @@ namespace TsRanodmizer
 {
 	public static class Program
 	{
+		/*
+		TODO
+		Remove TODO's
+		Fix path calculation
+		Fix spawnning of orb pedistals
+		Add item location of orb pedistals
+		Add ItemList
+		*/
+
 		public static int Main(string[] args)
 		{
 			if (!CheckArguments(args))
 				return -1;
 
+			//TODO: re-enable
 			//if (!Md5CheckPassed("A2F880953099610FACF4E3CC153085E1"))
 			//	return -1;
 
@@ -87,10 +97,10 @@ namespace TsRanodmizer
 		{
 			Console.Out.WriteLine("Starting TimeSpinner...");
 
-			try
-			{
+			/*try
+			{*/
 				new TimeSpinnerGame(DummyPlatformHelper.CreateInstance()).Run();
-			}
+			/*}
 			catch (Exception e)
 			{
 				Console.Error.WriteLine($"Exeception of type {e.GetType()} occured:");
@@ -98,7 +108,7 @@ namespace TsRanodmizer
 				Console.Error.WriteLine(e.StackTrace);
 
 				Console.ReadKey(true);
-			}
+			}*/
 		}
 	}
 }

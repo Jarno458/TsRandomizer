@@ -174,5 +174,24 @@ namespace TsRanodmizer.IntermediateObjects
 				return hashCode;
 			}
 		}
+
+		public override string ToString()
+		{
+			switch (LootType)
+			{
+				case LootType.ConstEquipment:
+					return Enquipment.ToString();
+				case LootType.ConstFamiliar:
+					return Familiar.ToString();
+				case LootType.ConstOrb:
+					return $"{OrbSlot}{OrbType}";
+				case LootType.ConstRelic:
+					return Relic.ToString();
+				case LootType.ConstUseItem:
+					return UseItems.ToString();
+				default:
+					throw new NotImplementedException($"Loottype {LootType}.ToString() isnt implemented");
+			}
+		}
 	}
 }

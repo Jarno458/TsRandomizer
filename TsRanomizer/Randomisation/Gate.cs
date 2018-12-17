@@ -1,8 +1,13 @@
-﻿namespace TsRanodmizer.Randomisation
+﻿using System.Linq;
+using TsRanodmizer.Extensions;
+
+namespace TsRanodmizer.Randomisation
 {
 	abstract class Gate
 	{
 		public abstract bool CanOpen(Requirement obtainedRequirements);
+
+		public abstract bool Requires(Requirement requirementsToCheck);
 
 		public static Gate operator &(Gate a, Gate b)
 		{
@@ -11,107 +16,125 @@
 
 		public static Gate operator |(Gate a, Gate b)
 		{
-			if(a is ProgressionItemGate x && b is ProgressionItemGate y)
-				return new ProgressionItemGate(x.RequiredItems | y.RequiredItems);
+			if(a is RequirementGate requirementGateA && b is RequirementGate requirementGateB)
+				return new RequirementGate(requirementGateA.Requirements | requirementGateB.Requirements);
 
 			return new OrGate(a, b);
 		}
 
 		public static Gate operator &(Gate a, Requirement b)
 		{
-			return a & new ProgressionItemGate(b);
+			return a & new RequirementGate(b);
 		}
 
 		public static Gate operator &(Requirement b, Gate a)
 		{
-			return a & new ProgressionItemGate(b);
+			return a & new RequirementGate(b);
 		}
 
 		public static Gate operator |(Gate a, Requirement b)
 		{
-			return a | new ProgressionItemGate(b);
+			return a | new RequirementGate(b);
 		}
 
 		public static Gate operator |(Requirement b, Gate a)
 		{
-			return a | new ProgressionItemGate(b);
+			return a | new RequirementGate(b);
 		}
 
 		public static explicit operator Gate(Requirement requiredItems)
 		{
-			return new ProgressionItemGate(requiredItems);
+			return new RequirementGate(requiredItems);
 		}
 
-		class ProgressionItemGate : Gate
+		internal class RequirementGate : Gate
 		{
-			public readonly Requirement RequiredItems;
+			public readonly Requirement Requirements;
 
-			public ProgressionItemGate(Requirement requiredItems)
+			public RequirementGate(Requirement requirements)
 			{
-				RequiredItems = requiredItems;
+				Requirements = requirements;
 			}
 
 			public override bool CanOpen(Requirement obtainedRequirements)
 			{
-				return RequiredItems == Requirement.None || RequiredItems.Contains(obtainedRequirements);
+				return Requirements == Requirement.None || Requirements.Contains(obtainedRequirements);
+			}
+
+			public override bool Requires(Requirement requirementsToCheck)
+			{
+				return Requirements == Requirement.None || ((ulong)Requirements & (ulong)requirementsToCheck) > 0;
 			}
 
 			public override string ToString()
 			{
-				return $"({RequiredItems})".Replace(", ", "|");
+				return $" {Requirements} ";
 			}
 		}
 
-		class AndGate : Gate
+		internal class AndGate : Gate
 		{
-			readonly Gate a;
-			readonly Gate b;
+			public Gate[] Gates;
 
 			internal AndGate(Gate a, Gate b)
 			{
-				this.a = a;
-				this.b = b;
+				if (a is AndGate andGateA && b is AndGate andGateB)
+					Gates = andGateA.Gates.Union(andGateB.Gates).ToArray();
+				else if (a is AndGate gateA)
+					Gates = gateA.Gates.Append(b).ToArray();
+				else if (b is AndGate gateB)
+					Gates = gateB.Gates.Append(a).ToArray();
+				else
+					Gates = new[] {a, b};
 			}
 
 			public override bool CanOpen(Requirement obtainedRequirements)
 			{
-				return a.CanOpen(obtainedRequirements) && b.CanOpen(obtainedRequirements);
+				return Gates.All(g => g.CanOpen(obtainedRequirements));
+			}
+
+			public override bool Requires(Requirement requirementsToCheck)
+			{
+				return Gates.Any(g => g.Requires(requirementsToCheck));
 			}
 
 			public override string ToString()
 			{
-				if (a is ProgressionItemGate x && b is ProgressionItemGate y)
-				{
-					if (x.RequiredItems == Requirement.TimeStop && y.RequiredItems == Requirement.TimespinnerSpindle)
-						return "(AccessToPast)";
-					if (x.RequiredItems == (Requirement.DoubleJump | Requirement.UpwardDash) 
-					    && y.RequiredItems == Requirement.TimeStop)
-						return "(DoubleJumpOfNpc)";
-				}
-
-				return $"({a} & {b})";
+				// ReSharper disable once CoVariantArrayConversion
+				return $" ({string.Join("&", (object[])Gates)}) ";
 			}
 		}
 
-		class OrGate : Gate
+		internal class OrGate : Gate
 		{
-			readonly Gate a;
-			readonly Gate b;
+			public Gate[] Gates;
 
 			internal OrGate(Gate a, Gate b)
 			{
-				this.a = a;
-				this.b = b;
+				if (a is OrGate orGateA && b is OrGate orGateB)
+					Gates = orGateA.Gates.Union(orGateB.Gates).ToArray();
+				else if (a is OrGate gateA)
+					Gates = gateA.Gates.Append(b).ToArray();
+				else if (b is OrGate gateB)
+					Gates = gateB.Gates.Append(a).ToArray();
+				else
+					Gates = new[] { a, b };
 			}
 
 			public override bool CanOpen(Requirement obtainedRequirements)
 			{
-				return a.CanOpen(obtainedRequirements) || b.CanOpen(obtainedRequirements);
+				return Gates.Any(g => g.CanOpen(obtainedRequirements));
+			}
+
+			public override bool Requires(Requirement requirementsToCheck)
+			{
+				return Gates.All(g => g.Requires(requirementsToCheck));
 			}
 
 			public override string ToString()
 			{
-				return $"({a} | {b})";
+				// ReSharper disable once CoVariantArrayConversion
+				return $" ({string.Join("|", (object[])Gates)}) ";
 			}
 		}
 	}

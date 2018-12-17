@@ -1,18 +1,12 @@
-﻿using TsRanodmizer.IntermediateObjects;
+﻿using System;
+using TsRanodmizer.IntermediateObjects;
 using TsRanodmizer.ReplacementObjects;
 
 namespace TsRanodmizer.Randomisation
 {
 	class ItemLocationMap : LookupDictionairy<ItemKey, ItemLocation>
 	{
-		static readonly Requirement SecurityAccessA = Requirement.CardA;
-		static readonly Requirement SecurityAccessB = Requirement.CardB | SecurityAccessA;
-		static readonly Requirement SecurityAccessC = Requirement.CardC | SecurityAccessB;
-		static readonly Requirement SecurityAccessD = Requirement.CardD | SecurityAccessC;
-		static readonly Requirement DoubleJump = Requirement.DoubleJump | Requirement.UpwardDash;
-		static readonly Requirement JumpOfNpc = Requirement.TimeStop | DoubleJump;
-		static readonly Requirement ForwardJumpOfNpc = JumpOfNpc | Requirement.ForwardDash;
-		static readonly Gate DoubleJumpOfNpc = DoubleJump & Requirement.TimeStop;
+		static readonly Gate DoubleJumpOfNpc = Requirement.DoubleJump & Requirement.TimeStop;
 
 		public new ItemLocation this[ItemKey key] => GetItemLocationBasedOnKeyOrRoomKey(key);
 
@@ -25,8 +19,8 @@ namespace TsRanodmizer.Randomisation
 
 		public static ItemLocationMap FromSeed(Seed seed)
 		{
-			var itemLocationMap = new ItemLocationMap();
-			ItemLocationRandomizer.AddRandomItemsToLocationMap(itemLocationMap, seed);
+			ItemLocationMap itemLocationMap = new ItemLocationMap();
+			new ItemLocationRandomizer(seed).AddRandomItemsToLocationMap(itemLocationMap);
 			return itemLocationMap;
 		}
 
@@ -42,15 +36,15 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(1, 9, 600, 144 + TimespinnerWheel.YOffset));
 			Add(new ItemKey(1, 14, 40, 176), Requirement.AntiWeed);
 			//lower lake desolation
-			var lowerLakeDesolationBridge = ForwardJumpOfNpc | Requirement.GateKittyBoss | Requirement.GateLeftLibrary;
-			Add(new ItemKey(1, 2, 1016, 384), JumpOfNpc);
+			var lowerLakeDesolationBridge = Requirement.TimeStop | Requirement.ForwardDash | Requirement.GateKittyBoss | Requirement.GateLeftLibrary;
+			Add(new ItemKey(1, 2, 1016, 384), Requirement.TimeStop);
 			Add(new ItemKey(1, 11, 72, 240), lowerLakeDesolationBridge);
-			Add(new ItemKey(1, 3, 56, 176), JumpOfNpc);
+			Add(new ItemKey(1, 3, 56, 176), Requirement.TimeStop);
 			//upper lake desolation
 			var topLakeDesolation = Requirement.AntiWeed;
 			Add(new ItemKey(1, 17, 152, 96), topLakeDesolation);
 			Add(new ItemKey(1, 21, 200, 144), topLakeDesolation);
-			Add(new ItemKey(1, 20, 232, 96), topLakeDesolation & DoubleJump);
+			Add(new ItemKey(1, 20, 232, 96), topLakeDesolation & Requirement.TimeStop);
 			Add(new ItemKey(1, 20, 168, 240), topLakeDesolation);
 			Add(new ItemKey(1, 22, 344, 160), topLakeDesolation);
 			//Add(new ItemKey(1, 18, 1272, 192), topLakeDesolation & Requirement.GassMask); //TODO & KILL all 3 bosses
@@ -64,24 +58,24 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(2, 54, 296, 176), leftLibrary);
 			Add(new ItemKey(2, 44, 680, 368), leftLibrary);
 			Add(new ItemKey(2, 34, 232, 1200), leftLibrary);
-			Add(new ItemKey(2, 47, 216, 208), leftLibrary & SecurityAccessD);
-			Add(new ItemKey(2, 47, 152, 208), leftLibrary & SecurityAccessD);
-			Add(new ItemKey(2, 47, 88, 208), leftLibrary & SecurityAccessD);
+			Add(new ItemKey(2, 47, 216, 208), leftLibrary & Requirement.CardD);
+			Add(new ItemKey(2, 47, 152, 208), leftLibrary & Requirement.CardD);
+			Add(new ItemKey(2, 47, 88, 208), leftLibrary & Requirement.CardD);
 			//libary top
-			var upperLeftLibrary = leftLibrary & (DoubleJump | Requirement.ForwardDash);
+			var upperLeftLibrary = leftLibrary & (Requirement.DoubleJump | Requirement.ForwardDash);
 			Add(new ItemKey(2, 56, 168, 192), upperLeftLibrary);
 			Add(new ItemKey(2, 56, 392, 192), upperLeftLibrary);
 			Add(new ItemKey(2, 56, 616, 192), upperLeftLibrary);
 			Add(new ItemKey(2, 56, 840, 192), upperLeftLibrary);
 			Add(new ItemKey(2, 56, 1064, 192), upperLeftLibrary);
 			//libary mid
-			var midLibrary = leftLibrary & SecurityAccessD;
-			Add(new ItemKey(2, 32, 328, 160), midLibrary & SecurityAccessC);
+			var midLibrary = leftLibrary & Requirement.CardD;
+			Add(new ItemKey(2, 32, 328, 160), midLibrary & Requirement.CardC);
 			Add(new ItemKey(2, 7, 232, 144), midLibrary);
 			Add(new ItemKey(2, 25, 328, 192), midLibrary & Requirement.CardE);
 			//libary right, 
-			var rightSideLibrary = midLibrary & (SecurityAccessC | (SecurityAccessB & Requirement.CardE));
-			var rightSizeLibraryElevator = midLibrary & Requirement.CardE & (SecurityAccessC | SecurityAccessB);
+			var rightSideLibrary = midLibrary & (Requirement.CardC | (Requirement.CardB & Requirement.CardE));
+			var rightSizeLibraryElevator = midLibrary & Requirement.CardE & (Requirement.CardC | Requirement.CardB);
 			Add(new ItemKey(2, 15, 760, 192), rightSideLibrary);
 			Add(new ItemKey(2, 20, 72, 1200), rightSizeLibraryElevator);
 			Add(new ItemKey(2, 23, 72, 560), rightSideLibrary);
@@ -90,8 +84,8 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(2, 11, 104, 192), rightSideLibrary);
 			Add(new ItemKey(2, 29, 280, 222 + TimespinnerSpindle.YOffset), rightSizeLibraryElevator);
 			//Sealed Caves left
-			var sealedCavesLeft = Requirement.DoubleJump | SecurityAccessA;
-			Add(new ItemKey(9, 19, 664, 704), sealedCavesLeft & JumpOfNpc);
+			var sealedCavesLeft = Requirement.DoubleJump | Requirement.CardA;
+			Add(new ItemKey(9, 19, 664, 704), sealedCavesLeft & Requirement.TimeStop);
 			Add(new ItemKey(9, 39, 88, 192), sealedCavesLeft);
 			Add(new ItemKey(9, 41, 312, 192),
 				sealedCavesLeft & (Requirement.UpwardDash | (Requirement.ForwardDash & Requirement.DoubleJump)));
@@ -101,7 +95,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(9, 15, 248, 192), sealedCavesLeft);
 			//Add(new ItemKey(9, 13, ???, ???), sealedCavesLeft); //TODO Timespinner Gear 3
 			//Sealed Caves (sirens)
-			var sealedCavesSirens = (midLibrary & SecurityAccessB) | Requirement.GateSealedSirensCave;
+			var sealedCavesSirens = (midLibrary & Requirement.CardB) | Requirement.GateSealedSirensCave;
 			Add(new ItemKey(9, 5, 88, 496), sealedCavesSirens & Requirement.Swimming);
 			Add(new ItemKey(9, 3, 1848, 576), sealedCavesSirens & Requirement.Swimming);
 			Add(new ItemKey(9, 3, 744, 560), sealedCavesSirens & Requirement.Swimming);
@@ -111,16 +105,16 @@ namespace TsRanodmizer.Randomisation
 			var militairyFortress = rightSideLibrary; //TODO add lazer gates...
 			Add(new ItemKey(10, 3, 264, 128), militairyFortress & DoubleJumpOfNpc);
 			Add(new ItemKey(10, 11, 296, 192), militairyFortress);
-			var militairyFortressHangar = militairyFortress & JumpOfNpc;
+			var militairyFortressHangar = militairyFortress & Requirement.TimeStop;
 			Add(new ItemKey(10, 4, 1064, 176), militairyFortressHangar);
 			Add(new ItemKey(10, 10, 104, 192), militairyFortressHangar);
 			Add(new ItemKey(10, 8, 1080, 176), militairyFortressHangar);
-			var rightSidemilitairyFortressHangar = militairyFortressHangar & DoubleJump;
+			var rightSidemilitairyFortressHangar = militairyFortressHangar & Requirement.DoubleJump;
 			Add(new ItemKey(10, 7, 104, 192), rightSidemilitairyFortressHangar);
 			Add(new ItemKey(10, 7, 152, 192), rightSidemilitairyFortressHangar);
 			//Add(new ItemKey(10, 7, 152, 192), rightSidemilitairyFortressHangar & DoubleJumpOfNpc); TODO Gun Orb
 			// The lab
-			var theLab = militairyFortressHangar & SecurityAccessB;
+			var theLab = militairyFortressHangar & Requirement.CardB;
 			//TODO thelab
 			//Emperors tower
 			var emperorsTower = theLab;
@@ -136,7 +130,7 @@ namespace TsRanodmizer.Randomisation
 
 		void AddPastItemLocations()
 		{
-			var accessToPast = (Requirement.TimeStop & Requirement.TimespinnerSpindle) | Requirement.GateAccessToPast | (Requirement.GateLakeSirine & (JumpOfNpc | Requirement.ForwardDash));
+			var accessToPast = (Requirement.TimeStop & Requirement.TimespinnerSpindle) | Requirement.GateAccessToPast | (Requirement.GateLakeSirine & (Requirement.TimeStop | Requirement.ForwardDash));
 			//Refugee Camp
 			Add(new ItemKey(3, 0, 104, 160), accessToPast); //neliste
 			Add(new ItemKey(3, 30, 296, 176), accessToPast);
@@ -151,7 +145,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(3, 5, 184, 192), accessToPast & Requirement.Swimming);
 			Add(new ItemKey(3, 2, 584, 368), accessToPast);
 			Add(new ItemKey(4, 20, 264, 160), accessToPast);
-			var leftSideForestCaves = (accessToPast & (JumpOfNpc | Requirement.ForwardDash)) | Requirement.GateLakeSirine;
+			var leftSideForestCaves = (accessToPast & (Requirement.TimeStop | Requirement.ForwardDash)) | Requirement.GateLakeSirine;
 			Add(new ItemKey(3, 29, 248, 192), leftSideForestCaves);
 			//Upper Lake Sirine
 			var upperLakeSirine = leftSideForestCaves;
@@ -169,7 +163,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(7, 2, 1016, 384), lowerlakeSirine);
 			//Caves of Banishment
 			var lowerCavesOfBanishment = lowerlakeSirine;
-			Add(new ItemKey(8, 19, 664, 704), lowerCavesOfBanishment & JumpOfNpc);
+			Add(new ItemKey(8, 19, 664, 704), lowerCavesOfBanishment & Requirement.TimeStop);
 			Add(new ItemKey(8, 12, 280, 160), lowerCavesOfBanishment);
 			Add(new ItemKey(8, 48, 104, 160), lowerCavesOfBanishment);
 			Add(new ItemKey(8, 39, 88, 192), lowerCavesOfBanishment);
@@ -200,9 +194,9 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(5, 15, 296, 192), castleKeep);
 			Add(new ItemKey(5, 41, 72, 160), castleKeep);
 			//Add(new ItemKey(???), castleKeep & JumpOfNpc); Sucobus drop
-			Add(new ItemKey(5, 22, 312, 176), castleKeep & (DoubleJump | Requirement.ForwardDash));
+			Add(new ItemKey(5, 22, 312, 176), castleKeep & (Requirement.DoubleJump | Requirement.ForwardDash));
 			//Royal towers
-			var royalTower = castleKeep & DoubleJump;
+			var royalTower = castleKeep & Requirement.DoubleJump;
 			Add(new ItemKey(6, 19, 200, 176), royalTower);
 			var upperRoyalTower = royalTower & DoubleJumpOfNpc;
 			Add(new ItemKey(6, 27, 472, 384), upperRoyalTower);

@@ -81,8 +81,8 @@ namespace TsRanodmizer.LevelObjects
 			Object = typedObject;
 
 			GameSave gameSave = ((Level)Reflected._level).GameSave; //TODO Remove lolz
-			gameSave.AddRelic(EInventoryRelicType.Dash);
-			gameSave.AddRelic(EInventoryRelicType.DoubleJump);
+			gameSave.AddItem(ItemInfo.Get(EInventoryRelicType.Dash));
+			gameSave.AddItem(ItemInfo.Get(EInventoryRelicType.DoubleJump));
 		}
 
 		public static void UpdateAll()

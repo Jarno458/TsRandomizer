@@ -52,6 +52,8 @@ namespace TsRanodmizer.Screens
 				var screenHandler = (Screen)Activator.CreateInstance(handlerType, this, screen);
 				hookedScreens.Add(screenHandler);
 				foundScreens.Add(screen);
+
+				screenHandler.Initialize();
 			}
 
 			if(foundScreens.Count != hookedScreens.Count)

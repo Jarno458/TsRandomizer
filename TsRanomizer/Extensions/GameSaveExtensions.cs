@@ -16,7 +16,7 @@ namespace TsRanodmizer.Extensions
 			.GetMethod("GetLevelNameFromID", BindingFlags.Static | BindingFlags.NonPublic,
 				null, new[] {typeof(int)}, null);
 
-		public static Seed FindSeed(this GameSave gameSave)
+		internal static Seed FindSeed(this GameSave gameSave)
 		{
 			if (gameSave.DataKeyInts.TryGetValue(SeedSaveFileKey, out var seed))
 				return new Seed(seed);
@@ -24,27 +24,27 @@ namespace TsRanodmizer.Extensions
 			return null;
 		}
 
-		public static void SetSeed(this GameSave gameSave, Seed seed)
+		internal static void SetSeed(this GameSave gameSave, Seed seed)
 		{
 			gameSave.DataKeyInts[SeedSaveFileKey] = seed;
 		}
 
-		public static string GetAreaName(this GameSave gameSave)
+		internal static string GetAreaName(this GameSave gameSave)
 		{
 			return (string) GetAreaNameMethod.Invoke(null, new object[] {gameSave.CurrentLevel});
 		}
 
-		public static bool HasMeleeOrb(this GameSave gameSave, EInventoryOrbType orbType)
+		internal static bool HasMeleeOrb(this GameSave gameSave, EInventoryOrbType orbType)
 		{
 			return gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int) orbType);
 		}
 
-		public static bool HasRelic(this GameSave gameSave, EInventoryRelicType relic)
+		internal static bool HasRelic(this GameSave gameSave, EInventoryRelicType relic)
 		{
 			return gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int) relic);
 		}
 
-		public static void AddOrb(this GameSave gameSave, EInventoryOrbType orbType, EOrbSlot orbSlot)
+		static void AddOrb(this GameSave gameSave, EInventoryOrbType orbType, EOrbSlot orbSlot)
 		{
 			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;
 			var orbTypeKey = (int) orbType;
@@ -71,27 +71,27 @@ namespace TsRanodmizer.Extensions
 			}
 		}
 
-		public static void AddEnquipment(this GameSave gameSave, EInventoryEquipmentType enquipment)
+		static void AddEnquipment(this GameSave gameSave, EInventoryEquipmentType enquipment)
 		{
 			gameSave.Inventory.EquipmentInventory.AddItem((int) enquipment);
 		}
 
-		public static void AddUseItem(this GameSave gameSave, EInventoryUseItemType useItem)
+		static void AddUseItem(this GameSave gameSave, EInventoryUseItemType useItem)
 		{
 			gameSave.Inventory.UseItemInventory.AddItem((int)useItem);
 		}
 
-		public static void AddRelic(this GameSave gameSave, EInventoryRelicType relic)
+		static void AddRelic(this GameSave gameSave, EInventoryRelicType relic)
 		{
 			gameSave.Inventory.RelicInventory.AddItem((int)relic);
 		}
 
-		public static void AddFamiliar(this GameSave gameSave, EInventoryFamiliarType familiar)
+		static void AddFamiliar(this GameSave gameSave, EInventoryFamiliarType familiar)
 		{
 			gameSave.Inventory.FamiliarInventory.AddItem((int)familiar);
 		}
 
-		public static void AddItem(this GameSave gameSave, ItemInfo itemInfo)
+		internal static void AddItem(this GameSave gameSave, ItemInfo itemInfo)
 		{
 			switch (itemInfo.LootType)
 			{

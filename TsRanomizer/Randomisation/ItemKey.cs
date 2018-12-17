@@ -47,7 +47,7 @@ namespace TsRanodmizer.Randomisation
 
 		public override string ToString()
 		{
-			return $"L:{LevelId}, R:{RoomId}, X:{X}, Y:{Y}";
+			return $"[{LevelId}.{RoomId}.{X}.{Y}]";
 		}
 	}
 }

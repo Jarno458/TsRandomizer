@@ -30,5 +30,10 @@ namespace TsRanodmizer.Randomisation
 			ItemInfo = item;
 			IsUsed = true;
 		}
+
+		public override string ToString()
+		{
+			return Key.ToString();
+		}
 	}
 }

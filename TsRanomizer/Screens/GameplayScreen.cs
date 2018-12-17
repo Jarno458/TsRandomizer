@@ -19,12 +19,16 @@ namespace TsRanodmizer.Screens
 	class GameplayScreen : Screen
 	{
 		RoomSpecification currentRoom;
-		readonly ItemLocationMap itemLocations;
+		ItemLocationMap itemLocations;
 
 		Level Level => (Level)ScreenReflected._level;
 		dynamic LevelReflected => Level.Reflect();
 
 		public GameplayScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
+		{
+		}
+
+		public override void Initialize()
 		{
 			var seed = GetSeed(ScreenReflected.SaveFile);
 			var levelReflected = Level.Reflect();
