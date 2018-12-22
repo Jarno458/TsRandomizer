@@ -28,16 +28,17 @@ namespace TsRanodmizer.Randomisation
 		public static readonly Requirement DoubleJump = 1 << 13;
 		public static readonly Requirement GassMask = 1 << 14;
 		public static readonly Requirement Teleport = 1 << 15;
-		public static readonly Requirement GateKittyBoss = 1 << 16;
-		public static readonly Requirement GateLeftLibrary = 1 << 17;
-		public static readonly Requirement GateSealedSirensCave = 1 << 18;
-		public static readonly Requirement GateLakeSirine = 1 << 19;
-		public static readonly Requirement GateAccessToPast = 1 << 20;
 		public static readonly Requirement TimespinnerPiece1 = 1 << 21;
 		public static readonly Requirement TimespinnerPiece2 = 1 << 22;
 		public static readonly Requirement TimespinnerPiece3 = 1 << 23;
 		public static readonly Requirement TimespinnerWheel = 1 << 24;
-		
+
+		public static readonly Requirement GateKittyBoss = 1 << 58;
+		public static readonly Requirement GateLeftLibrary = 1 << 59;
+		public static readonly Requirement GateSealedSirensCave = 1 << 60;
+		public static readonly Requirement GateLakeSirine = 1 << 61;
+		public static readonly Requirement GateAccessToPast = 1 << 62;
+
 		readonly ulong flags;
 
 		static Requirement()

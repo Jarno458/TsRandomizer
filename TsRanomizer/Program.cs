@@ -14,6 +14,8 @@ namespace TsRanodmizer
 		Fix spawnning of orb pedistals
 		Add item location of orb pedistals
 		Add ItemList
+		Fix Save game menu seeeeeeeds display
+		Improve item location map with lab
 		*/
 
 		public static int Main(string[] args)
