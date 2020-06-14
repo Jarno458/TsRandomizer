@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRanodmizer.Drawables;
 using TsRanodmizer.Extensions;
@@ -25,9 +26,9 @@ namespace TsRanodmizer.Screens
 		{
 			var entry = MenuEntry.Create("Seed:", SelectSeed);
 			entry.Description = "Select the seed used to generate the randomness";
-			var menuEntries = (IList)ScreenReflected.MenuEntries;
+			var menuEntries = (IList)Reflected.MenuEntries;
 			menuEntries.Insert(0, entry.AsTimeSpinnerMenuEntry());
-			((object)ScreenReflected._primaryMenuCollection).Reflect().SelectedIndex = 2;
+			((object)Reflected._primaryMenuCollection).AsDynamic().SelectedIndex = 2;
 
 			return entry;
 		}
@@ -39,10 +40,8 @@ namespace TsRanodmizer.Screens
 			ScreenManager.AddScreen(selectSeedMenu, pi);
 		}
 
-		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
+		public override void Draw(GCM gcm, SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
-			base.Draw(spriteBatch, menuFont);
-
 			if(GameScreen.IsActive)
 				DrawSeedRepresentation(spriteBatch, menuFont);
 		}
@@ -50,7 +49,7 @@ namespace TsRanodmizer.Screens
 		void DrawSeedRepresentation(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
 			var zoom = (int) TimeSpinnerGame.Constants.InGameZoom;
-			var menuDrawPosition = ((object)ScreenReflected._primaryMenuCollection).Reflect().DrawPosition;
+			var menuDrawPosition = ((object)Reflected._primaryMenuCollection).AsDynamic().DrawPosition;
 
 			seedRepresentation.IconSize = menuFont.LineSpacing * zoom;
 

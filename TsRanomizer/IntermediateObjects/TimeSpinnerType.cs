@@ -1,21 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Timespinner;
 
 namespace TsRanodmizer.IntermediateObjects
 {
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+	[AttributeUsage(AttributeTargets.Class)]
 	public class TimeSpinnerType : Attribute
 	{
+		public static Dictionary<string, Type> TypeCache = new Dictionary<string, Type>(10);
 		public static Assembly TimeSpinnerAssembly = typeof(TimespinnerGame).Assembly;
 
 		public Type Type { get; }
-
-		public TimeSpinnerType(Type type)
-		{
-			Type = type;
-		}
 
 		public TimeSpinnerType(string typeName)
 		{
@@ -24,9 +21,15 @@ namespace TsRanodmizer.IntermediateObjects
 
 		public static Type Get(string typeName)
 		{
-			return TimeSpinnerAssembly
+			if (TypeCache.TryGetValue(typeName, out Type knownType))
+				return knownType;
+
+			var type = TimeSpinnerAssembly
 				.GetTypes()
 				.Single(t => t.FullName == typeName);
+
+			TypeCache.Add(typeName, type);
+			return type;
 		}
 	}
 }

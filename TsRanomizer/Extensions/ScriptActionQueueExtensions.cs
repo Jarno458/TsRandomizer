@@ -9,8 +9,8 @@ namespace TsRanodmizer.Extensions
 	{
 		internal static void UpdateRelicOrbGetToastToItem(this Queue<ScriptAction> scripts, ItemInfo itemInfo)
 		{
-			var giveOrbScript = scripts.Single(s => s.Reflect().ScriptType == EScriptType.RelicOrbGetToast);
-			var reflectedScript = giveOrbScript.Reflect();
+			var giveOrbScript = scripts.Single(s => s.AsDynamic().ScriptType == EScriptType.RelicOrbGetToast);
+			var reflectedScript = giveOrbScript.AsDynamic();
 
 			if (itemInfo.LootType == LootType.ConstStat || itemInfo.LootType == LootType.ConstUseItem)
 				reflectedScript.ScriptType = EScriptType.GiveItem;

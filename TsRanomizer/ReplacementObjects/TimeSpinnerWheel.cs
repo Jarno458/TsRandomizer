@@ -15,7 +15,7 @@ namespace TsRanodmizer.ReplacementObjects
 
 		protected override IEnumerable<Animate> Replace(Level level, Animate obj)
 		{
-			var reflected = obj.Reflect();
+			var reflected = obj.AsDynamic();
 			return new[] {
 				new TreasureChestEvent(level, new Point(obj.Position.X, obj.Position.Y + YOffset), -1, reflected._objectSpec)
 			};

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
@@ -15,15 +16,15 @@ namespace TsRanodmizer.Screens
 	{
 		public OrbMenuScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
-			GameSave saveFile = ScreenReflected._saveFile;
+			GameSave saveFile = Reflected._saveFile;
 
-			RemoveMeleeOrbs(saveFile, ScreenReflected._meleeOrbAInventory);
-			RemoveMeleeOrbs(saveFile, ScreenReflected._meleeOrbBInventory);
+			//RemoveMeleeOrbs(saveFile, Reflected._meleeOrbAInventory); //TODO re-enable
+			//RemoveMeleeOrbs(saveFile, Reflected._meleeOrbBInventory);
 		}
 
 		public void RemoveMeleeOrbs(GameSave saveFile, object inventory)
 		{
-			var reflected = inventory.Reflect();
+			var reflected = inventory.AsDynamic();
 
 			var orbs = ((IEnumerable<InventoryItem>)reflected._items).Cast<InventoryOrb>();
 			var orbsToRemove = orbs
@@ -36,7 +37,7 @@ namespace TsRanodmizer.Screens
 			for (var i = entries.Count - 1; i >= 0; i--)
 			{
 				var entry = entries[i];
-				if (orbsToRemove.Contains(entry.Reflect().Text))
+				if (orbsToRemove.Contains(entry.AsDynamic().Text))
 				{
 					entries.RemoveAt(i);
 					entryMapping.RemoveAt(i);
@@ -44,13 +45,12 @@ namespace TsRanodmizer.Screens
 			}
 		}
 
-		public override void Update(InputState input)
+		public override void Update(GameTime gameTime, InputState input)
 		{
-			var reflected = ((object)ScreenReflected._meleeOrbAInventory).Reflect();
+			/*var reflected = ((object)Reflected._meleeOrbAInventory).Reflect();
 			var entries = (IList)reflected.Entries;
 
-
-			var x = entries;
+			var x = entries;*/
 		}
 	}
 }

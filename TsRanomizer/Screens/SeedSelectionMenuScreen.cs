@@ -22,7 +22,7 @@ namespace TsRanodmizer.Screens
 		SeedSelectionMenuScreen(GameScreen screen)
 		{
 			this.screen = screen;
-			reflected = screen.Reflect();
+			reflected = screen.AsDynamic();
 		}
 
 		public static SeedSelectionMenuScreen Create(ScreenManager screenManager)
@@ -46,16 +46,16 @@ namespace TsRanodmizer.Screens
 				.Cast<object>()
 				.Where(e => IsHex(e) && !IsOkButton(e))
 				.Concat(extraButtons)
-				.ToListOfType(MainMenuEntryType);
+				.ToList(MainMenuEntryType);
 
-			((object)seedSelectionMenu.reflected._primaryMenuCollection).Reflect()._entries = entries;
+			((object)seedSelectionMenu.reflected._primaryMenuCollection).AsDynamic()._entries = entries;
 
 			return seedSelectionMenu;
 		}
 
 		static bool IsHex(object menuEntry)
 		{
-			var reflected = menuEntry.Reflect();
+			var reflected = menuEntry.AsDynamic();
 			var text = (string)reflected.Text;
 
 			return  text.Length == 1 && text[0] >= '0' && text[0] <= '9' || text[0] >= 'A' && text[0] <= 'F';
@@ -63,7 +63,7 @@ namespace TsRanodmizer.Screens
 
 		static bool IsOkButton(object menuEntry)
 		{
-			var reflected = menuEntry.Reflect();
+			var reflected = menuEntry.AsDynamic();
 
 			//TODO: Check for localised version
 			return reflected.Text == "OK";

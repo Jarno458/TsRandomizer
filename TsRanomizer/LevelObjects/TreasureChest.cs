@@ -1,5 +1,6 @@
 ﻿using System;
-using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.GameObjects;
+using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
@@ -19,39 +20,45 @@ namespace TsRanodmizer.LevelObjects
 			if (ItemInfo == null)
 				return;
 
-			Reflected._treasureLootType = ItemInfo.TreasureLootType;
+			Object._treasureLootType = ItemInfo.TreasureLootType;
 
 			switch (ItemInfo.LootType)
 			{
 				case LootType.ConstUseItem:
-					Reflected._lootUseItemType = ItemInfo.UseItem;
+					Object._lootUseItemType = ItemInfo.UseItem;
 					break;
 				case LootType.ConstRelic:
-					Reflected._lootRelicType = ItemInfo.Relic;
+					Object._lootRelicType = ItemInfo.Relic;
 					break;
 				case LootType.ConstEquipment:
-					Reflected._lootEquipmentType = ItemInfo.Enquipment;
+					Object._lootEquipmentType = ItemInfo.Enquipment;
 					break;
 				case LootType.ConstOrb:
-					Reflected._lootOrbType = ItemInfo.OrbType;
-					Reflected._lootOrbSlot = ItemInfo.OrbSlot;
+					Object._lootOrbType = ItemInfo.OrbType;
+					Object._lootOrbSlot = ItemInfo.OrbSlot;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(ItemInfo.LootType), ItemInfo.LootType, $"lootType cannot be droppd by {nameof(TreasureChest)}");
 			}
+
+			var pickedUp = IsPickedUp;
+			Object._isOpened = pickedUp;
+			Object._hasDroppedLoot = pickedUp;
+			hasDroppedLoot = pickedUp;
+			if (pickedUp)
+				((Appendage)Object._lidAppendage).AsDynamic().ChangeAnimation(Object._animationIndexOffset + 5, 1, 1f, EAnimationType.None);
 		}
 
 		protected override void OnUpdate()
 		{
-			if (ItemInfo == null || hasDroppedLoot || !Reflected._hasDroppedLoot)
+			if (ItemInfo == null || hasDroppedLoot || !Object._hasDroppedLoot)
 				return;
-
-			var level = (Level)Reflected._level;
-				
+		
 			if (ItemInfo.LootType == LootType.Orb)
-				level.GameSave.AddItem(ItemInfo);
+				Level.GameSave.AddItem(ItemInfo);
 
-			ItemInfo.OnPickup(level);
+			OnItemPickup();
+
 			hasDroppedLoot = true;
 		}
 	}

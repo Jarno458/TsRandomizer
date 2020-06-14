@@ -29,14 +29,17 @@ namespace TsRanodmizer
 			return lookupTable.TryGetValue(key, out value);
 		}
 
-		public void Filter(IEnumerable<TLookup> intersectionFilter)
+		public void Filter(IEnumerable<TLookup> intersectionFilter, Action<TValue> removeAction = null)
 		{
 			var keysToRemove = lookupTable.Keys
 				.Where(e => !intersectionFilter.Contains(e))
 				.ToList();
 
 			foreach (var key in keysToRemove)
+			{
+				removeAction?.Invoke(lookupTable[key]);
 				lookupTable.Remove(key);
+			}
 		}
 
 		public IEnumerator<TValue> GetEnumerator()

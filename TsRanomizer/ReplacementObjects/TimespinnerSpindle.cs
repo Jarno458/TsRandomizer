@@ -17,8 +17,8 @@ namespace TsRanodmizer.ReplacementObjects
 
 		protected override IEnumerable<Animate> Replace(Level level, Animate obj)
 		{
-			var reflected = obj.Reflect();
-			var levelReflected = level.Reflect();
+			var reflected = obj.AsDynamic();
+			var levelReflected = level.AsDynamic();
 
 			var treasureChest = 
 				new TreasureChestEvent(level, new Point(obj.Position.X, obj.Position.Y + YOffset), -1, reflected._objectSpec);
@@ -30,10 +30,10 @@ namespace TsRanodmizer.ReplacementObjects
 					level.GameSave.Inventory.RelicInventory.Inventory.Remove((int) EInventoryRelicType.TimespinnerSpindle);
 
 				var scripts = ((Queue<ScriptAction>) levelReflected._waitingScripts).ToArray().ToList();
-				var giveOrbScript = scripts.Single(s => s.Reflect().ScriptType == EScriptType.RelicOrbGetToast);
+				var giveOrbScript = scripts.Single(s => s.AsDynamic().ScriptType == EScriptType.RelicOrbGetToast);
 
-				giveOrbScript.Reflect().ScriptType = EScriptType.Wait;
-				giveOrbScript.Reflect().ActionTimer = 0f;
+				giveOrbScript.AsDynamic().ScriptType = EScriptType.Wait;
+				giveOrbScript.AsDynamic().ActionTimer = 0f;
 			});
 
 			return new Animate[] {treasureChest, trigger};

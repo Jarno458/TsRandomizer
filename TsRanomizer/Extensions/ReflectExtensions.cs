@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Dynamic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace TsRanodmizer.Extensions
 {
 	public static class ReflectExtensions
 	{
-		internal static dynamic Reflect(this object instance)
+		internal static dynamic AsDynamic(this object instance)
 		{
 			return new Dynamic(instance);
 		}
@@ -79,7 +80,7 @@ namespace TsRanodmizer.Extensions
 			Type type = instance.GetType();
 			while (type != null)
 			{
-				if (TryGetMethod(type, binder.Name, args, argTypes, out MethodInfo methoidInfo))
+				if (TryGetMethod(type, binder.Name, argTypes, out MethodInfo methoidInfo))
 				{
 					result = methoidInfo.Invoke(instance, args);
 					return true;
@@ -90,6 +91,18 @@ namespace TsRanodmizer.Extensions
 
 			result = null;
 			return false;
+		}
+
+		public override bool TryUnaryOperation(UnaryOperationBinder binder, out object result)
+		{
+			switch (binder.Operation)
+			{
+				case ExpressionType.OnesComplement:
+					result = instance;
+					return true;
+				default:
+					return base.TryUnaryOperation(binder, out result);
+			}
 		}
 
 		static bool TryGetProperty(Type type, string propertyName, out PropertyInfo propertyInfo)
@@ -120,7 +133,7 @@ namespace TsRanodmizer.Extensions
 			}
 		}
 
-		static bool TryGetMethod(Type type, string methodName, object[] args, Type[] argTypes, out MethodInfo methodInfo)
+		static bool TryGetMethod(Type type, string methodName, Type[] argTypes, out MethodInfo methodInfo)
 		{
 			try
 			{

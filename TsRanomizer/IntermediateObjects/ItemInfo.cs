@@ -1,34 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using TsRanodmizer.Extensions;
+using TsRanodmizer.Randomisation;
 
 namespace TsRanodmizer.IntermediateObjects
 {
 	class ItemInfo : IEquatable<ItemInfo>
 	{
-		static readonly Type InventoryItemType = TimeSpinnerType
-			.Get("Timespinner.GameAbstractions.Inventory.InventoryItem");
-		static readonly MethodInfo GetIconFromUseItemMethod = InventoryItemType
-			.GetPrivateStaticMethod("GetIconFromItem", typeof(EInventoryUseItemType));
-		static readonly MethodInfo GetIconFromOrbMethod = InventoryItemType
-			.GetPrivateStaticMethod("GetIconFromItem", typeof(EInventoryOrbType), typeof(EOrbSlot));
-		static readonly MethodInfo GetIconFromRelicMethod = InventoryItemType
-			.GetPrivateStaticMethod("GetIconFromItem", typeof(EInventoryRelicType));
-		static readonly MethodInfo GetIconFromEnquipmentMethod = InventoryItemType
-			.GetPrivateStaticMethod("GetIconFromItem", typeof(EInventoryEquipmentType));
-		static readonly MethodInfo GetIconFromFamilierMethod = InventoryItemType
-			.GetPrivateStaticMethod("GetIconFromItem", typeof(EInventoryFamiliarType));
-		
-		public static ItemInfo Dummy = new ItemInfo(EInventoryEquipmentType.DemonHorn);
+		static readonly MethodInfo GetIconFromUseItemMethod;
+		static readonly MethodInfo GetIconFromOrbMethod;
+		static readonly MethodInfo GetIconFromRelicMethod;
+		static readonly MethodInfo GetIconFromEnquipmentMethod;
+		static readonly MethodInfo GetIconFromFamilierMethod;
 
-		static readonly Dictionary<EInventoryUseItemType, ItemInfo> UseItems = new Dictionary<EInventoryUseItemType, ItemInfo>();
-		static readonly Dictionary<EInventoryRelicType, ItemInfo> RelicItems = new Dictionary<EInventoryRelicType, ItemInfo>();
-		static readonly Dictionary<EInventoryEquipmentType, ItemInfo> EnquipmentItems = new Dictionary<EInventoryEquipmentType, ItemInfo>();
-		static readonly Dictionary<EInventoryFamiliarType, ItemInfo> FamilierItems = new Dictionary<EInventoryFamiliarType, ItemInfo>();
-		static readonly Dictionary<int, ItemInfo> OrbItems = new Dictionary<int, ItemInfo>();
+		static readonly Dictionary<EInventoryUseItemType, ItemInfo> UseItems;
+		static readonly Dictionary<EInventoryRelicType, ItemInfo> RelicItems;
+		static readonly Dictionary<EInventoryEquipmentType, ItemInfo> EnquipmentItems;
+		static readonly Dictionary<EInventoryFamiliarType, ItemInfo> FamilierItems;
+		static readonly Dictionary<int, ItemInfo> OrbItems;
+
+		public static readonly Dictionary<ItemInfo, Requirement> UnlockingMap;
+		public static ItemInfo Dummy;
+		
+		static ItemInfo()
+		{
+			var inventoryItemType = TimeSpinnerType.Get("Timespinner.GameAbstractions.Inventory.InventoryItem");
+			GetIconFromUseItemMethod = inventoryItemType.GetPrivateStaticMethod("GetIconFromItem", typeof(EInventoryUseItemType));
+			GetIconFromOrbMethod = inventoryItemType.GetPrivateStaticMethod("GetIconFromItem", typeof(EInventoryOrbType), typeof(EOrbSlot));
+			GetIconFromRelicMethod = inventoryItemType.GetPrivateStaticMethod("GetIconFromItem", typeof(EInventoryRelicType));
+			GetIconFromEnquipmentMethod = inventoryItemType.GetPrivateStaticMethod("GetIconFromItem", typeof(EInventoryEquipmentType));
+			GetIconFromFamilierMethod = inventoryItemType.GetPrivateStaticMethod("GetIconFromItem", typeof(EInventoryFamiliarType));
+
+			UseItems = new Dictionary<EInventoryUseItemType, ItemInfo>();
+			RelicItems = new Dictionary<EInventoryRelicType, ItemInfo>();
+			EnquipmentItems = new Dictionary<EInventoryEquipmentType, ItemInfo>();
+			FamilierItems = new Dictionary<EInventoryFamiliarType, ItemInfo>();
+			OrbItems = new Dictionary<int, ItemInfo>();
+			
+			UnlockingMap = new Dictionary<ItemInfo, Requirement>
+			{
+				{Get(EInventoryRelicType.TimespinnerWheel), Requirement.TimespinnerWheel | Requirement.TimeStop},
+				{Get(EInventoryRelicType.DoubleJump), Requirement.DoubleJump | Requirement.TimeStop},
+				{Get(EInventoryRelicType.Dash), Requirement.ForwardDash},
+				{Get(EInventoryOrbType.Flame, EOrbSlot.Passive), Requirement.AntiWeed},
+				{Get(EInventoryOrbType.Flame, EOrbSlot.Melee), Requirement.AntiWeed},
+				{Get(EInventoryOrbType.Flame, EOrbSlot.Spell), Requirement.AntiWeed},
+				{Get(EInventoryRelicType.ScienceKeycardA), Requirement.CardA | Requirement.CardB | Requirement.CardC | Requirement.CardD},
+				{Get(EInventoryRelicType.ScienceKeycardB), Requirement.CardB | Requirement.CardC | Requirement.CardD},
+				{Get(EInventoryRelicType.ScienceKeycardC), Requirement.CardC | Requirement.CardD},
+				{Get(EInventoryRelicType.ScienceKeycardD), Requirement.CardD},
+				{Get(EInventoryRelicType.ElevatorKeycard), Requirement.CardE},
+				{Get(EInventoryRelicType.ScienceKeycardV), Requirement.CardV},
+				{Get(EInventoryRelicType.WaterMask), Requirement.Swimming},
+				{Get(EInventoryRelicType.PyramidsKey), Requirement.None}, //Set in ItemLocationRandomizer.CalculateTeleporterPickAction(),
+				{Get(EInventoryRelicType.TimespinnerSpindle), Requirement.TimespinnerSpindle},
+				{Get(EInventoryRelicType.TimespinnerGear1), Requirement.TimespinnerPiece1},
+				{Get(EInventoryRelicType.TimespinnerGear2), Requirement.TimespinnerPiece2},
+				{Get(EInventoryRelicType.TimespinnerGear3), Requirement.TimespinnerPiece3},
+				{Get(EInventoryRelicType.EssenceOfSpace), Requirement.UpwardDash | Requirement.DoubleJump | Requirement.TimeStop},
+				{Get(EInventoryOrbType.Barrier, EOrbSlot.Spell), Requirement.UpwardDash | Requirement.DoubleJump | Requirement.TimeStop}
+			};
+
+			Dummy = new ItemInfo(EInventoryEquipmentType.DemonHorn);
+		}
 
 		public static ItemInfo Get(EInventoryUseItemType useItem)
 		{
@@ -73,10 +111,8 @@ namespace TsRanodmizer.IntermediateObjects
 		public LootType LootType { get; }
 		public int ItemId { get; }
 		public int ItemSubId { get; }
-		Action<Level> PickupAction { get; set; }
-
+		public Requirement Unlocks => GetUnlockedRequirements();
 		public Enum TreasureLootType => LootType.ToETreasureLootType();
-
 		public EInventoryUseItemType UseItem => (EInventoryUseItemType)ItemId;
 		public EInventoryRelicType Relic => (EInventoryRelicType)ItemId;
 		public EInventoryEquipmentType Enquipment => (EInventoryEquipmentType)ItemId;
@@ -85,6 +121,9 @@ namespace TsRanodmizer.IntermediateObjects
 		public EOrbSlot OrbSlot => (EOrbSlot)ItemSubId;
 
 		public int AnimationIndex => GetAnimationIndex();
+		public BestiaryItemDropSpecification BestiaryItemDropSpecification => GetBestiaryItemDropSpecification();
+
+		Action<Level> PickupAction { get; set; }
 
 		ItemInfo(EInventoryUseItemType useItem)
 		{
@@ -148,13 +187,29 @@ namespace TsRanodmizer.IntermediateObjects
 			}
 		}
 
+		BestiaryItemDropSpecification GetBestiaryItemDropSpecification()
+		{
+			return new BestiaryItemDropSpecification
+			{
+				Category = (int)LootType.ToEInventoryCategoryType(),
+				Item = ItemId
+			};
+		}
+		
+		Requirement GetUnlockedRequirements()
+		{
+			if (UnlockingMap.TryGetValue(this, out Requirement requirement))
+				return requirement;
+			return Requirement.None;
+		}
+
 		public bool Equals(ItemInfo other)
 		{
 			if (ReferenceEquals(null, other)) return false;
 			if (ReferenceEquals(this, other)) return true;
 			return LootType.Equals(other.LootType) 
-			       && ItemId == other.ItemId 
-			       && ItemSubId == other.ItemSubId;
+			       && ItemId.Equals(other.ItemId) 
+			       && ItemSubId.Equals(other.ItemSubId);
 		}
 
 		public override bool Equals(object obj)
@@ -170,7 +225,7 @@ namespace TsRanodmizer.IntermediateObjects
 			unchecked
 			{
 				var hashCode = LootType.GetHashCode();
-				hashCode = (hashCode * 397) ^ ((ItemId * 1000) + ItemSubId);
+				hashCode = (hashCode * 397) ^ ((ItemId << 4) + ItemSubId);
 				return hashCode;
 			}
 		}

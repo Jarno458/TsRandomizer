@@ -9,6 +9,8 @@ namespace TsRanodmizer.Drawables
 {
 	class SeedRepresentation : IDrawable
 	{
+		const int NumberOfItemsToDraw = 5;
+
 		public int IconSize { get; set; }
 		readonly Seed seed;
 		Point drawPoint = Point.Zero;
@@ -16,6 +18,8 @@ namespace TsRanodmizer.Drawables
 		readonly GCM gcm;
 		readonly bool drawBackdrop;
 		readonly SpriteSheet menuIcons;
+
+		public float Width => NumberOfItemsToDraw * IconSize;
 
 		public SeedRepresentation(GCM gcm, bool drawBackdrop = true)
 			: this(null, gcm, drawBackdrop)
@@ -27,7 +31,7 @@ namespace TsRanodmizer.Drawables
 			this.seed = seed;
 			this.gcm = gcm;
 			this.drawBackdrop = drawBackdrop;
-			menuIcons = (SpriteSheet)gcm.Reflect().Get("Sprites/Items/MenuIcons");
+			menuIcons = (SpriteSheet)gcm.AsDynamic().Get("Sprites/Items/MenuIcons");
 		}
 
 		public void SetDrawPoint(Point newDrawPoint, Vector2 newOrigin = new Vector2())
@@ -40,12 +44,11 @@ namespace TsRanodmizer.Drawables
 		public void Draw(SpriteBatch spriteBatch)
 		{
 			var random = new Random(~(seed ?? Seed.Current));
-			const int numberOfItemsToDraw = 5;
 
 			if(drawBackdrop)
-				DrawBackdrop(spriteBatch, numberOfItemsToDraw);
+				DrawBackdrop(spriteBatch, NumberOfItemsToDraw);
 
-			for (int i = 0; i < numberOfItemsToDraw; i++)
+			for (int i = 0; i < NumberOfItemsToDraw; i++)
 				DrawItemIcon(spriteBatch, i, random);
 		}
 

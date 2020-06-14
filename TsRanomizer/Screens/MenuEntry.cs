@@ -45,7 +45,7 @@ namespace TsRanodmizer.Screens
 		MenuEntry(object entry)
 		{
 			this.entry = entry;
-			reflected = entry.Reflect();
+			reflected = entry.AsDynamic();
 
 			DoesDrawLargeShadow = true;
 			IsCenterAligned = true;
@@ -53,7 +53,7 @@ namespace TsRanodmizer.Screens
 
 		public static MenuEntry Create(string text, Action<PlayerIndex> handler)
 		{
-			return Create(text, (o, args) => handler(args.Reflect().PlayerIndex));
+			return Create(text, (o, args) => handler(args.AsDynamic().PlayerIndex));
 		}
 		
 		public static MenuEntry Create(string text, Action<object, EventArgs> handler)

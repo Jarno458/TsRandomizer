@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
+using TsRanodmizer.Randomisation;
 
 namespace TsRanodmizer.Screens
 {
@@ -23,7 +26,7 @@ namespace TsRanodmizer.Screens
 		protected readonly ScreenManager ScreenManager;
 		public readonly GameScreen GameScreen;
 
-		protected readonly dynamic ScreenReflected;
+		protected readonly dynamic Reflected;
 
 		static Screen()
 		{
@@ -56,18 +59,22 @@ namespace TsRanodmizer.Screens
 		{
 			ScreenManager = screenManager;
 			GameScreen = gameScreen;
-			ScreenReflected = gameScreen.Reflect();
+			Reflected = gameScreen.AsDynamic();
 		}
 
-		public virtual void Initialize()
+		public virtual void Initialize(ItemLocationMap itemLocationMap)
 		{
 		}
 
-		public virtual void Update(InputState input)
+		public virtual void Unload()
 		{
 		}
 
-		public virtual void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
+		public virtual void Update(GameTime gameTime, InputState input)
+		{
+		}
+
+		public virtual void Draw(GCM gcm, SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
 		}
 	}

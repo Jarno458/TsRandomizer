@@ -10,7 +10,7 @@ namespace TsRanodmizer
 		/*
 		TODO
 		Remove TODO's
-		Fix path calculation
+		Fix items dropped by bosses after leaving room
 		Fix spawnning of orb pedistals
 		Add item location of orb pedistals
 		Add ItemList

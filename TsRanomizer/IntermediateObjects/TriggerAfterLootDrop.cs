@@ -11,7 +11,7 @@ namespace TsRanodmizer.IntermediateObjects
 
 		public TriggerAfterLootDrop(Level inLevel, TreasureChestEvent treasureChest, Action action) : base(inLevel, action)
 		{
-			this.treasureChest = treasureChest.Reflect();
+			this.treasureChest = treasureChest.AsDynamic();
 		}
 
 		protected override bool ShouldTrigger()

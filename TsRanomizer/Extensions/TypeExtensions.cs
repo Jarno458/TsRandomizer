@@ -19,5 +19,21 @@ namespace TsRanodmizer.Extensions
 		{
 			return type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static, null, argTypes, null);
 		}
+
+		internal static object GetEnumValue(this Type type, string enumMemberName)
+		{
+			var underlyingType = Enum.GetUnderlyingType(type);
+			var members = Enum.GetNames(type);
+			var values = Enum.GetValues(type);
+
+			for (var i = 0; i < members.Length; i++)
+			{
+				if (members[i] != enumMemberName) continue;
+
+				return Convert.ChangeType(values.GetValue(i), underlyingType);
+			}
+
+			throw new MissingMemberException(type.FullName, enumMemberName);
+		}
 	}
 }

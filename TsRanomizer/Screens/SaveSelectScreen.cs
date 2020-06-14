@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRanodmizer.Drawables;
@@ -17,15 +18,17 @@ namespace TsRanodmizer.Screens
 		readonly dynamic reflected;
 		readonly Dictionary<object, SeedRepresentation> seedRepresentations = new Dictionary<object, SeedRepresentation>(10);
 
+		int zoom;
+
 		public SaveSelectScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
-			reflected = screen.Reflect();
+			reflected = screen.AsDynamic();
 
-			var saveFileEntries = (IList)((object)reflected._saveFileCollection).Reflect().Entries;
+			var saveFileEntries = (IList)((object)reflected._saveFileCollection).AsDynamic().Entries;
 
 			foreach (var entry in saveFileEntries)
 			{
-				var entryReflected = entry.Reflect();
+				var entryReflected = entry.AsDynamic();
 
 				if (entryReflected.IsEmptySaveSlot)
 					continue;
@@ -37,56 +40,88 @@ namespace TsRanodmizer.Screens
 			}
 		}
 
-		public override void Update(InputState input)
+		public override void Update(GameTime gameTime, InputState input)
 		{
-			var saveFileEntries = (IList)((object)reflected._saveFileCollection).Reflect().Entries;
+			var saveFileEntries = (IList)((object)reflected._saveFileCollection).AsDynamic().Entries;
+
+			if(IsZoomChanged())
+			{
+				UpdateSeedRepresentationIconSize(saveFileEntries);
+				UpdateAreaNameSize(saveFileEntries);
+			}
 
 			foreach (var saveFileEntry in saveFileEntries)
 			{
-				var saveFileReflected = saveFileEntry.Reflect();
+				if (!seedRepresentations.ContainsKey(saveFileEntry)) continue;
 
-				if(saveFileReflected.IsEmptySaveSlot)
+				var entry = saveFileEntry.AsDynamic();
+
+				if (entry.IsEmptySaveSlot || entry.IsCorrupt)
 					continue;
 
-				var saveFile = (GameSave)saveFileReflected._saveFile;
-				var areaName = saveFile.GetAreaName();
+				var drawPosition = (Vector2)entry.DrawPosition;
+				var textXOffset = (int)entry._textOffsetX;
+				var font = (SpriteFont)entry._font;
+				var origin = new Vector2(0.0f, font.LineSpacing / 2f);
 
-				saveFileReflected._areaName = $"{new string(' ', 12)}{areaName}";
+				var drawPoint = new Point(
+					(int) (drawPosition.X + textXOffset + entry._saveColumnOffsetX - seedRepresentations[saveFileEntry].Width), 
+					(int) drawPosition.Y);
+
+				seedRepresentations[saveFileEntry].SetDrawPoint(drawPoint, origin);
 			}
 		}
 
-		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
+		bool IsZoomChanged()
 		{
-			base.Draw(spriteBatch, menuFont);
+			var newZoom = (int)TimeSpinnerGame.Constants.InGameZoom;
 
+			if (zoom == newZoom) return false;
+
+			zoom = newZoom;
+
+			return true;
+		}
+
+		void UpdateSeedRepresentationIconSize(IList saveFileEntries)
+		{
+			foreach (var saveFileEntry in saveFileEntries)
+			{
+				if(!seedRepresentations.ContainsKey(saveFileEntry)) continue;
+
+				var entry = saveFileEntry.AsDynamic();
+				var font = (SpriteFont)entry._font;
+
+				seedRepresentations[saveFileEntry].IconSize = (int)(font.LineSpacing * zoom * 0.75);
+			}
+		}
+
+		void UpdateAreaNameSize(IList saveFileEntries)
+		{
+			foreach (var saveFileEntry in saveFileEntries)
+			{
+				if (!seedRepresentations.ContainsKey(saveFileEntry)) continue;
+
+				var entry = saveFileEntry.AsDynamic();
+				var scrollableTextBlock = ((object)entry._areaNameTextBlock).AsDynamic();
+
+				scrollableTextBlock._baseWidth = 
+					entry._leftColumnWidth - ((int)seedRepresentations[saveFileEntry].Width / zoom);
+
+				scrollableTextBlock.MeasureString();
+			}
+		}
+
+		public override void Draw(GCM gcm, SpriteBatch spriteBatch, SpriteFont menuFont)
+		{
 			if (!GameScreen.IsActive)
 				return;
 
-			var zoom = (int)TimeSpinnerGame.Constants.InGameZoom;
-			var saveMenuCollection = ((object) ScreenReflected._saveFileCollection).Reflect();
-			
-			IList saveFileEntries = saveMenuCollection.Entries;
-
-			foreach (object entry in saveFileEntries)
-			{
-				var reflectedEntry = entry.Reflect();
-
-				if (reflectedEntry.IsEmptySaveSlot)
-					continue;
-
-				var drawPosition = (Vector2)reflectedEntry.DrawPosition;
-				var textXOffset = (int)reflectedEntry._textOffsetX;
-				var font = (SpriteFont)reflectedEntry._font;
-				var origin = new Vector2(0.0f, font.LineSpacing / 2f);
-
-				seedRepresentations[entry].IconSize = (int)(font.LineSpacing * zoom * 0.75);
-				seedRepresentations[entry].SetDrawPoint(new Point((int)(drawPosition.X + textXOffset), (int)drawPosition.Y), origin);
-			}
-
 			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null);
 
-			foreach (var seedRepresentation in seedRepresentations.Values)
-				seedRepresentation.Draw(spriteBatch);
+			foreach (var seedRepresentation in seedRepresentations)
+				if(!seedRepresentation.Key.AsDynamic().IsScrolledOff)
+					seedRepresentation.Value.Draw(spriteBatch);
 
 			spriteBatch.End();
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using TsRanodmizer.Extensions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
@@ -42,6 +43,13 @@ namespace TsRanodmizer.Extensions
 		internal static bool HasRelic(this GameSave gameSave, EInventoryRelicType relic)
 		{
 			return gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int) relic);
+		}
+
+		internal static bool HasCutsceneBeenTriggered(this GameSave gameSave, string cutsceneEnunMember)
+		{
+			var cutsceneEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Cutscene.CutsceneBase+ECutsceneType");
+
+			return gameSave.GetSaveBool($"Cutscene_{cutsceneEnumType.GetEnumValue(cutsceneEnunMember)}");
 		}
 
 		static void AddOrb(this GameSave gameSave, EInventoryOrbType orbType, EOrbSlot orbSlot)

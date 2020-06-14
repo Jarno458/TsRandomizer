@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.Core.Specifications;
+using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
-using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
@@ -19,26 +18,32 @@ namespace TsRanodmizer.Screens
 	class GameplayScreen : Screen
 	{
 		RoomSpecification currentRoom;
-		ItemLocationMap itemLocations;
 
-		Level Level => (Level)ScreenReflected._level;
-		dynamic LevelReflected => Level.Reflect();
+		Level Level => (Level)Reflected._level;
+		dynamic LevelReflected => Level.AsDynamic();
+
+		public ItemLocationMap ItemLocations { get; private set; }
 
 		public GameplayScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
 		}
 
-		public override void Initialize()
+		public override void Initialize(ItemLocationMap itemLocationMap)
 		{
-			var seed = GetSeed(ScreenReflected.SaveFile);
-			var levelReflected = Level.Reflect();
+			var seed = GetSeed(Reflected.SaveFile);
+			var levelReflected = Level.AsDynamic();
+
 			levelReflected._random = new DeRandomizer(levelReflected._random, seed);
-			itemLocations = ItemLocationMap.FromSeed(seed);
+			ItemLocations = new ItemLocationMap(Level.GameSave);
+
+			new ItemLocationRandomizer(seed).AddRandomItemsToLocationMap(ItemLocations);
 		}
 
 		Seed GetSeed(GameSave saveFile)
 		{
 			var seed = saveFile.FindSeed() ?? Seed.Current;
+
+			Console.Out.WriteLine($"Seed: {seed}");
 
 			saveFile.SetSeed(seed);
 			Seed.Current = seed;
@@ -46,20 +51,14 @@ namespace TsRanodmizer.Screens
 			return seed;
 		}
 
-		public override void Update(InputState input)
+		public override void Update(GameTime gameTime, InputState input)
 		{
-			LevelObject.UpdateAll();
-
-			if (IsRoomChanged())
-				LevelObject.OnChangeRoom(itemLocations, Level);
-
-			var newObjects = (List<Mobile>)LevelReflected._newObjects;
-			if (newObjects.Any())
-				LevelObject.GenerateShadowObjects(itemLocations, newObjects);
+			LevelObject.Update(Level, ItemLocations, IsRoomChanged());
 		}
 
-		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
+		public override void Draw(GCM gcm, SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
+#if DEBUG
 			var levelId = LevelReflected._id;
 			var text = $"Level: {levelId}, Room ID: {currentRoom.ID}";
 
@@ -67,9 +66,10 @@ namespace TsRanodmizer.Screens
 			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
 			spriteBatch.DrawString(menuFont, text, new Vector2(30, 130), Color.Red, inGameZoom);
 
-			LevelObject.DrawAll(spriteBatch, menuFont, Level.LevelRenderCenter, itemLocations);
+			LevelObject.Draw(spriteBatch, menuFont, Level.LevelRenderCenter, ItemLocations);
 
 			spriteBatch.End();
+#endif
 		}
 
 		bool IsRoomChanged()

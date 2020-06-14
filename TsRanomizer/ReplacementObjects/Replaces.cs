@@ -52,7 +52,7 @@ namespace TsRanodmizer.ReplacementObjects
 
 		public static void ReplaceObjects(Level level, List<Animate> objects)
 		{
-			var levelReflected = level.Reflect();
+			var levelReflected = level.AsDynamic();
 			var objectsPerTypes = objects.GroupBy(o => o.GetType());
 
 			foreach (var objectsPerType in objectsPerTypes)

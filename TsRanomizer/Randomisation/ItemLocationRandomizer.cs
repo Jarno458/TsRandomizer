@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
+using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
 
 namespace TsRanodmizer.Randomisation
 {
 	class ItemLocationRandomizer
 	{
+		static readonly ItemInfo UpwardsDash = ItemInfo.Get(EInventoryRelicType.EssenceOfSpace);
+		static readonly ItemInfo LightWall = ItemInfo.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell);
+
 		ItemLocationMap itemLocations;
 		readonly Random random;
 
@@ -16,32 +20,9 @@ namespace TsRanodmizer.Randomisation
 		Requirement availableRequirements;
 
 		List<ItemLocation> availableItemLocations;
+
 		readonly Dictionary<ItemInfo, ItemLocation> placedItems;
 		readonly Dictionary<ItemInfo, Requirement> paths;
-
-		readonly Dictionary<ItemInfo, Requirement> unlocks = new Dictionary<ItemInfo, Requirement>
-		{
-			{ItemInfo.Get(EInventoryRelicType.TimespinnerWheel), Requirement.TimespinnerWheel | Requirement.TimeStop},
-			{ItemInfo.Get(EInventoryRelicType.DoubleJump), Requirement.DoubleJump | Requirement.TimeStop},
-			{ItemInfo.Get(EInventoryRelicType.Dash), Requirement.ForwardDash},
-			{ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Passive), Requirement.AntiWeed},
-			{ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Melee), Requirement.AntiWeed},
-			{ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Spell), Requirement.AntiWeed},
-			{ItemInfo.Get(EInventoryRelicType.ScienceKeycardA), Requirement.CardA | Requirement.CardB | Requirement.CardC | Requirement.CardD},
-			{ItemInfo.Get(EInventoryRelicType.ScienceKeycardB), Requirement.CardB | Requirement.CardC | Requirement.CardD},
-			{ItemInfo.Get(EInventoryRelicType.ScienceKeycardC), Requirement.CardC | Requirement.CardD},
-			{ItemInfo.Get(EInventoryRelicType.ScienceKeycardD), Requirement.CardD},
-			{ItemInfo.Get(EInventoryRelicType.ElevatorKeycard), Requirement.CardE},
-			{ItemInfo.Get(EInventoryRelicType.ScienceKeycardV), Requirement.CardV},
-			{ItemInfo.Get(EInventoryRelicType.WaterMask), Requirement.Swimming},
-			{ItemInfo.Get(EInventoryRelicType.PyramidsKey), Requirement.None}, //Set in CalculateTeleporterPickAction(),
-			{ItemInfo.Get(EInventoryRelicType.TimespinnerSpindle), Requirement.TimespinnerSpindle},
-			{ItemInfo.Get(EInventoryRelicType.TimespinnerGear1), Requirement.TimespinnerPiece1},
-			{ItemInfo.Get(EInventoryRelicType.TimespinnerGear2), Requirement.TimespinnerPiece2},
-			{ItemInfo.Get(EInventoryRelicType.TimespinnerGear3), Requirement.TimespinnerPiece3},
-			{ItemInfo.Get(EInventoryRelicType.EssenceOfSpace), Requirement.UpwardDash | Requirement.DoubleJump | Requirement.TimeStop},
-			{ItemInfo.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell), Requirement.UpwardDash | Requirement.DoubleJump | Requirement.TimeStop},
-		};
 
 		public ItemLocationRandomizer(Seed seed)
 		{
@@ -60,9 +41,8 @@ namespace TsRanodmizer.Randomisation
 			CalculateTeleporterPickAction();
 			CalculateTutorial();
 
-			//CalculatePathChain(ItemInfo.Get(EInventoryRelicType.DoubleJump), Requirement.UpwardDash);
-			foreach (var item in unlocks.Keys)
-				CalculatePathChain(item);
+			foreach (var item in ItemInfo.UnlockingMap.Keys)
+				CalculatePathChain(item, Requirement.None);
 
 			foreach (var path in paths)
 				Console.Out.WriteLine($"Requirements For {path.Key}@{placedItems[path.Key]} -> {path.Value}");
@@ -70,19 +50,13 @@ namespace TsRanodmizer.Randomisation
 			FillRemainingChests();
 		}
 
-		void CalculatePathChain(ItemInfo item)
-		{
-			CalculatePathChain(item, Requirement.None);
-		}
-
 		void CalculatePathChain(ItemInfo item, Requirement additionalRequirementsToAvoid)
 		{
-			var unlockingRequirements = unlocks.ContainsKey(item)
-				? additionalRequirementsToAvoid | unlocks[item]
-				: additionalRequirementsToAvoid;
+			if (placedItems.ContainsKey(item))
+				return;
 
+			var unlockingRequirements = additionalRequirementsToAvoid | item.Unlocks;
 			var itemLocation = GetUnusedItemLocationThatDontRequire(unlockingRequirements);
-
 			var chain = CalculatePathChain(itemLocation.Gate, unlockingRequirements);
 
 			PutItemAtLocation(item, itemLocation);
@@ -119,38 +93,39 @@ namespace TsRanodmizer.Randomisation
 
 		Requirement SelectSingleUnlockableRequirement(Requirement requirement, Requirement requirementToAvoid)
 		{
-			var requirements = ((Requirement)((ulong)requirement & (ulong)unlockableRequirements & (~requirementToAvoid | (ulong)availableRequirements )))
-				.Split()
-				.ToArray();
+			var requirements = ((Requirement) ((ulong) requirement & (ulong) unlockableRequirements & (~requirementToAvoid | (ulong) availableRequirements)))
+				.Split();
 			return requirements[random.Next(requirements.Length)];
 		}
 
 		Gate SelectSingleUnlockableGate(Gate[] gates, Requirement requirementToAvoid)
 		{
 			var unlockableGates = gates
-				.Where(g => GateCanBeOpenedWithoutSuppliedRequirements(g, requirementToAvoid))
-				.ToArray();
+				.Where(g => GateCanBeOpenedWithoutSuppliedRequirements(g, requirementToAvoid));
 			
-			return unlockableGates[random.Next(unlockableGates.Length)];
+			return unlockableGates.SelectRandom(random);
 		}
 
 		ItemInfo GetRandomItemThatUnlocksRequirement(Requirement requirement)
 		{
-			var unlockingItems = unlocks
+			var unlockingItems = ItemInfo.UnlockingMap
 				.Where(x => x.Value.Contains(requirement))
-				.Select(x => x.Key)
-				.ToArray();
+				.Select(x => x.Key);
 
-			return unlockingItems[random.Next(unlockingItems.Length)];
+			if (requirement != Requirement.UpwardDash && placedItems.Count <= 10)
+				// ReSharper disable PossibleUnintendedReferenceComparison
+				unlockingItems = unlockingItems.Where(i =>i != UpwardsDash && i != LightWall);
+				// ReSharper restore PossibleUnintendedReferenceComparison
+
+			return unlockingItems.SelectRandom(random);
 		}
 
 		ItemLocation GetUnusedItemLocationThatDontRequire(Requirement requirements)
 		{
 			var locations = itemLocations
-				.Where(l => !l.IsUsed && GateCanBeOpenedWithoutSuppliedRequirements(l.Gate, requirements))
-				.ToArray();
+				.Where(l => !l.IsUsed && GateCanBeOpenedWithoutSuppliedRequirements(l.Gate, requirements));
 
-			return locations[random.Next(locations.Length)];
+			return locations.SelectRandom(random);
 		}
 
 		bool GateCanBeOpenedWithoutSuppliedRequirements(Gate gate, Requirement requirementToAvoid)
@@ -194,8 +169,8 @@ namespace TsRanodmizer.Randomisation
 			var gateProgressionItems = new[] {
 				new {Gate = Requirement.GateKittyBoss, LevelId = 2, RoomId = 55},
 				new {Gate = Requirement.GateLeftLibrary, LevelId = 2, RoomId = 54},
-				new {Gate = Requirement.GateLakeSirine, LevelId = 7, RoomId = 30},
-				new {Gate = Requirement.GateLakeSirine, LevelId = 7, RoomId = 31},
+				new {Gate = Requirement.GateLakeSirineLeft, LevelId = 7, RoomId = 30},
+				new {Gate = Requirement.GateLakeSirineRight, LevelId = 7, RoomId = 31},
 				//new {Gate = Requirement.GateAccessToPast, LevelId = 3, RoomId = 6}, //Refugee Camp, Somehow doesnt work ¯\_(ツ)_/¯
 				new {Gate = Requirement.GateAccessToPast, LevelId = 8, RoomId = 51},
 			};
@@ -207,7 +182,7 @@ namespace TsRanodmizer.Randomisation
 			);
 
 			unlockableRequirements = ((ulong)unlockableRequirements & ~Requirement.TeleportationGates) | selectedGate.Gate;
-			unlocks[ItemInfo.Get(EInventoryRelicType.PyramidsKey)] = selectedGate.Gate;
+			ItemInfo.UnlockingMap[ItemInfo.Get(EInventoryRelicType.PyramidsKey)] = selectedGate.Gate;
 		}
 
 		void CalculateTutorial()
@@ -215,14 +190,14 @@ namespace TsRanodmizer.Randomisation
 			var orbTypes = ((EInventoryOrbType[])Enum.GetValues(typeof(EInventoryOrbType))).ToList();
 
 			var spellOrbTypes = orbTypes
-				.Where(orbType => orbType != EInventoryOrbType.Barrier) //To OP to give as starter item
-				.ToArray();
-			var spellOrbType = spellOrbTypes[random.Next(spellOrbTypes.Length)];
+				.Where(orbType => orbType != EInventoryOrbType.Barrier); //To OP to give as starter item
+
+			var spellOrbType = spellOrbTypes.SelectRandom(random);
 			PutItemAtLocation(ItemInfo.Get(spellOrbType, EOrbSlot.Spell), itemLocations[ItemKey.TutorialSpellOrb]);
 
 			orbTypes.Remove(EInventoryOrbType.Pink); //To annoying as each attack consumes aura power
 
-			var meleeOrbType = orbTypes[random.Next(orbTypes.Count)];
+			var meleeOrbType = orbTypes.SelectRandom(random);
 			PutItemAtLocation(ItemInfo.Get(meleeOrbType, EOrbSlot.Melee), itemLocations[ItemKey.TutorialMeleeOrb]);
 		}
 
@@ -236,19 +211,20 @@ namespace TsRanodmizer.Randomisation
 		void RecalculateAvailableItemLocations()
 		{
 			availableItemLocations = itemLocations
-				.Where(c => !c.IsUsed && c.Gate.CanOpen(availableRequirements))
+				.Where(l => !l.IsUsed && l.Gate.CanOpen(availableRequirements))
 				.ToList();
 		}
 
 		void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)
 		{
 			itemLocation.SetItem(itemInfo);
+
 			if (!placedItems.ContainsKey(itemInfo))
 				placedItems.Add(itemInfo, itemLocation);
 
-			if (unlocks.ContainsKey(itemInfo) && !availableRequirements.Contains(unlocks[itemInfo]))
-			{
-				availableRequirements |= unlocks[itemInfo];
+			if(ItemInfo.UnlockingMap.TryGetValue(itemInfo, out Requirement unlocks) && ((ulong)availableRequirements & (ulong)unlocks) != (ulong)unlocks)
+			{ 
+				availableRequirements |= unlocks;
 				RecalculateAvailableItemLocations();
 			}
 			else

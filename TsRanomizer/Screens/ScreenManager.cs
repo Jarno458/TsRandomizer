@@ -1,28 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Timespinner;
+using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRanodmizer.Extensions;
+using TsRanodmizer.IntermediateObjects;
+using TsRanodmizer.Randomisation;
 
 namespace TsRanodmizer.Screens
 {
 	class ScreenManager : Timespinner.GameStateManagement.ScreenManager.ScreenManager
 	{
+		static readonly Type GamePlayScreenType =
+			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.InGame.GameplayScreen");
+
 		readonly LookupDictionairy<GameScreen, Screen> hookedScreens
 			= new LookupDictionairy<GameScreen, Screen>(s => s.GameScreen);
 		readonly List<GameScreen> foundScreens = new List<GameScreen>(20);
+		
+		ItemLocationMap itemLocationMap;
 
 		public readonly dynamic Reflected;
 
-		public ScreenManager(TimeSpinnerGame game) : base(game)
+		public ScreenManager(TimeSpinnerGame game, PlatformHelper platformHelper) : base(game, platformHelper)
 		{
-			Reflected = this.Reflect();
+			Reflected = this.AsDynamic();
 		}
 
 		public override void Update(GameTime gameTime)
 		{
 			DetectNewScreens();
-			UpdateScreens();
+			UpdateScreens(gameTime);
 
 			base.Update(gameTime);
 		}
@@ -43,6 +52,10 @@ namespace TsRanodmizer.Screens
 				if (hookedScreens.Contains(screen))
 				{
 					foundScreens.Add(screen);
+
+					if (screen.GetType() == GamePlayScreenType)
+						itemLocationMap = ((GameplayScreen)hookedScreens[screen]).ItemLocations;
+
 					continue;
 				}
 
@@ -53,25 +66,26 @@ namespace TsRanodmizer.Screens
 				hookedScreens.Add(screenHandler);
 				foundScreens.Add(screen);
 
-				screenHandler.Initialize();
+				screenHandler.Initialize(itemLocationMap);
 			}
 
-			if(foundScreens.Count != hookedScreens.Count)
-				hookedScreens.Filter(foundScreens);
+			if (foundScreens.Count != hookedScreens.Count)
+				hookedScreens.Filter(foundScreens, s => s.Unload());
 		}
 
-		void UpdateScreens()
+		void UpdateScreens(GameTime gameTime)
 		{
 			var input = (InputState)Reflected._input;
 
 			foreach (var screen in hookedScreens)
-				screen.Update(input);
+				screen.Update(gameTime, input);
 		}
 
 		void DrawGameplayScreens()
 		{
+			var gcm = (GCM)Reflected.GCM;
 			foreach (var screen in hookedScreens)
-				screen.Draw(SpriteBatch, MenuFont);
+				screen.Draw(gcm, SpriteBatch, MenuFont);
 		}
 
 		public void CopyScreensFrom(Timespinner.GameStateManagement.ScreenManager.ScreenManager screenManager)

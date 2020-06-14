@@ -81,9 +81,9 @@ namespace TsRanodmizer.Randomisation
 				if (a is AndGate andGateA && b is AndGate andGateB)
 					Gates = andGateA.Gates.Union(andGateB.Gates).ToArray();
 				else if (a is AndGate gateA)
-					Gates = gateA.Gates.Append(b).ToArray();
+					Gates = gateA.Gates.Concat(b).ToArray();
 				else if (b is AndGate gateB)
-					Gates = gateB.Gates.Append(a).ToArray();
+					Gates = gateB.Gates.Concat(a).ToArray();
 				else
 					Gates = new[] {a, b};
 			}
@@ -114,9 +114,9 @@ namespace TsRanodmizer.Randomisation
 				if (a is OrGate orGateA && b is OrGate orGateB)
 					Gates = orGateA.Gates.Union(orGateB.Gates).ToArray();
 				else if (a is OrGate gateA)
-					Gates = gateA.Gates.Append(b).ToArray();
+					Gates = gateA.Gates.Concat(b).ToArray();
 				else if (b is OrGate gateB)
-					Gates = gateB.Gates.Append(a).ToArray();
+					Gates = gateB.Gates.Concat(a).ToArray();
 				else
 					Gates = new[] { a, b };
 			}

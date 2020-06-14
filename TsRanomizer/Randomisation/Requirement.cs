@@ -12,32 +12,33 @@ namespace TsRanodmizer.Randomisation
 
 		static readonly Dictionary<Requirement, string> Flags;
 
-		public static readonly Requirement None = 0;
-		public static readonly Requirement TimeStop = 1 << 0;
-		public static readonly Requirement ForwardDash = 1 << 1;
-		public static readonly Requirement AntiWeed = 1 << 3;
-		public static readonly Requirement CardA = 1 << 4;
-		public static readonly Requirement CardB = 1 << 5;
-		public static readonly Requirement CardC = 1 << 6;
-		public static readonly Requirement CardD = 1 << 7;
-		public static readonly Requirement CardE = 1 << 8;
-		public static readonly Requirement CardV = 1 << 9;
-		public static readonly Requirement TimespinnerSpindle = 1 << 10;
-		public static readonly Requirement Swimming = 1 << 11;
-		public static readonly Requirement UpwardDash = 1 << 12;
-		public static readonly Requirement DoubleJump = 1 << 13;
-		public static readonly Requirement GassMask = 1 << 14;
-		public static readonly Requirement Teleport = 1 << 15;
-		public static readonly Requirement TimespinnerPiece1 = 1 << 21;
-		public static readonly Requirement TimespinnerPiece2 = 1 << 22;
-		public static readonly Requirement TimespinnerPiece3 = 1 << 23;
-		public static readonly Requirement TimespinnerWheel = 1 << 24;
+		public static readonly Requirement None = 0UL;
+		public static readonly Requirement TimeStop = 1UL << 0;
+		public static readonly Requirement ForwardDash = 1UL << 1;
+		public static readonly Requirement AntiWeed = 1UL << 3;
+		public static readonly Requirement CardA = 1UL << 4;
+		public static readonly Requirement CardB = 1UL << 5;
+		public static readonly Requirement CardC = 1UL << 6;
+		public static readonly Requirement CardD = 1UL << 7;
+		public static readonly Requirement CardE = 1UL << 8;
+		public static readonly Requirement CardV = 1UL << 9;
+		public static readonly Requirement TimespinnerSpindle = 1UL << 10;
+		public static readonly Requirement Swimming = 1UL << 11;
+		public static readonly Requirement UpwardDash = 1UL << 12;
+		public static readonly Requirement DoubleJump = 1UL << 13;
+		public static readonly Requirement GassMask = 1UL << 14;
+		public static readonly Requirement Teleport = 1UL << 15;
+		public static readonly Requirement TimespinnerPiece1 = 1UL << 21;
+		public static readonly Requirement TimespinnerPiece2 = 1UL << 22;
+		public static readonly Requirement TimespinnerPiece3 = 1UL << 23;
+		public static readonly Requirement TimespinnerWheel = 1UL << 24;
 
-		public static readonly Requirement GateKittyBoss = 1 << 58;
-		public static readonly Requirement GateLeftLibrary = 1 << 59;
-		public static readonly Requirement GateSealedSirensCave = 1 << 60;
-		public static readonly Requirement GateLakeSirine = 1 << 61;
-		public static readonly Requirement GateAccessToPast = 1 << 62;
+		public static readonly Requirement GateKittyBoss = 1UL << 50;
+		public static readonly Requirement GateLeftLibrary = 1UL << 51;
+		public static readonly Requirement GateSealedSirensCave = 1UL << 52;
+		public static readonly Requirement GateLakeSirineLeft = 1UL << 53;
+		public static readonly Requirement GateLakeSirineRight = 1UL << 54;
+		public static readonly Requirement GateAccessToPast = 1UL << 55;
 
 		readonly ulong flags;
 
