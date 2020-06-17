@@ -66,6 +66,7 @@
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="IntermediateObjects\GameSaveDataAccess.cs" />
     <Compile Include="IntermediateObjects\TriggerBase.cs" />
     <Compile Include="LevelObjects\AlwaysSpawnAttribute.cs" />
     <Compile Include="LevelObjects\CutsceneKeep1.cs" />
@@ -78,12 +79,14 @@
     <Compile Include="LevelObjects\CutscenePrologue4.cs" />
     <Compile Include="LevelObjects\ItemDropPickup.cs" />
     <Compile Include="PlatformHelper.cs" />
+    <Compile Include="Randomisation\ItemUnlockingMap.cs" />
     <Compile Include="Randomisation\RoomItemKey.cs" />
     <Compile Include="ReplacementObjects\TimespinnerSpindle.cs" />
     <Compile Include="IntermediateObjects\TriggerAfterLootDrop.cs" />
     <Compile Include="DeRandomizer.cs" />
     <Compile Include="Screens\MinimapScreen.cs" />
     <Compile Include="Screens\OrbMenuScreen.cs" />
+    <Compile Include="Randomisation\Randomizer.cs" />
     <Compile Include="Screens\SaveSelectScreen.cs" />
     <Compile Include="Screens\GameDifficultyMenuScreen.cs" />
     <Compile Include="ReplacementObjects\Replaces.cs" />
@@ -96,7 +99,7 @@
     <Compile Include="Randomisation\Requirement.cs" />
     <Compile Include="Randomisation\ItemLocation.cs" />
     <Compile Include="IntermediateObjects\ItemInfo.cs" />
-    <Compile Include="Randomisation\ItemLocationRandomizer.cs" />
+    <Compile Include="Randomisation\ItemPlacers\ForwardFillingItemLocationRandomizer.cs" />
     <Compile Include="LevelObjects\OrbPedestal.cs" />
     <Compile Include="LevelObjects\TreasureChest.cs" />
     <Compile Include="Extensions\GameComponentCollectionExtensions.cs" />

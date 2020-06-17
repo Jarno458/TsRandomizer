@@ -30,25 +30,17 @@ namespace TsRanodmizer.Screens
 
 		public override void Initialize(ItemLocationMap itemLocationMap)
 		{
-			var seed = GetSeed(Reflected.SaveFile);
-			var levelReflected = Level.AsDynamic();
-
-			levelReflected._random = new DeRandomizer(levelReflected._random, seed);
-			ItemLocations = new ItemLocationMap(Level.GameSave);
-
-			new ItemLocationRandomizer(seed).AddRandomItemsToLocationMap(ItemLocations);
-		}
-
-		Seed GetSeed(GameSave saveFile)
-		{
-			var seed = saveFile.FindSeed() ?? Seed.Current;
+			var saveFile = (GameSave)Reflected.SaveFile;
+			var seed = saveFile.GetSeed();
+			var fillingMethod = saveFile.GetFillingMethod();
 
 			Console.Out.WriteLine($"Seed: {seed}");
 
-			saveFile.SetSeed(seed);
-			Seed.Current = seed;
+			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed);
 
-			return seed;
+			var randomizer = new Randomizer(new GameSaveDataAccess(Level.GameSave), seed, fillingMethod);
+
+			ItemLocations = randomizer.Randomize();
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
@@ -63,12 +55,13 @@ namespace TsRanodmizer.Screens
 			var text = $"Level: {levelId}, Room ID: {currentRoom.ID}";
 
 			var inGameZoom = (int)TimeSpinnerGame.Constants.InGameZoom;
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
-			spriteBatch.DrawString(menuFont, text, new Vector2(30, 130), Color.Red, inGameZoom);
 
-			LevelObject.Draw(spriteBatch, menuFont, Level.LevelRenderCenter, ItemLocations);
+			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
+			{
+				spriteBatch.DrawString(menuFont, text, new Vector2(30, 130), Color.Red, inGameZoom);
 
-			spriteBatch.End();
+				LevelObject.Draw(spriteBatch, menuFont, Level.LevelRenderCenter, ItemLocations);
+			}
 #endif
 		}
 

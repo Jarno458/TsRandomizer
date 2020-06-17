@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
 
-namespace TsRanodmizer.Randomisation
+namespace TsRanodmizer.Randomisation.ItemPlacers
 {
-	class ItemLocationRandomizer
+	class ForwardFillingItemLocationRandomizer
 	{
+		readonly ItemUnlockingMap unlockingMap;
 		static readonly ItemInfo UpwardsDash = ItemInfo.Get(EInventoryRelicType.EssenceOfSpace);
 		static readonly ItemInfo LightWall = ItemInfo.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell);
 
-		ItemLocationMap itemLocations;
+		readonly ItemLocationMap itemLocations;
 		readonly Random random;
 
-		Requirement unlockableRequirements; 
+		readonly Requirement unlockableRequirements; 
 		Requirement availableRequirements;
 
 		List<ItemLocation> availableItemLocations;
@@ -24,30 +24,32 @@ namespace TsRanodmizer.Randomisation
 		readonly Dictionary<ItemInfo, ItemLocation> placedItems;
 		readonly Dictionary<ItemInfo, Requirement> paths;
 
-		public ItemLocationRandomizer(Seed seed)
+		public ForwardFillingItemLocationRandomizer(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap)
 		{
+			this.unlockingMap = unlockingMap;
+			itemLocations = itemLocationMap;
+
 			random = new Random(seed);
 			availableRequirements = Requirement.None;
-			unlockableRequirements = ulong.MaxValue;
+			unlockableRequirements = unlockingMap.AllUnlockableRequirements;
 			placedItems = new Dictionary<ItemInfo, ItemLocation>();
 			paths = new Dictionary<ItemInfo, Requirement>();
 		}
 
-		public void AddRandomItemsToLocationMap(ItemLocationMap itemLocationMap)
+		public static void AddRandomItemsToLocationMap(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap)
 		{
-			itemLocations = itemLocationMap;
-			RecalculateAvailableItemLocations();
+			var instance = new ForwardFillingItemLocationRandomizer(seed, unlockingMap, itemLocationMap);
 
-			CalculateTeleporterPickAction();
-			CalculateTutorial();
+			instance.RecalculateAvailableItemLocations();
+			instance.CalculateTutorial();
 
-			foreach (var item in ItemInfo.UnlockingMap.Keys)
-				CalculatePathChain(item, Requirement.None);
+			foreach (var item in unlockingMap.Map.Keys)
+				instance.CalculatePathChain(item, Requirement.None);
 
-			foreach (var path in paths)
-				Console.Out.WriteLine($"Requirements For {path.Key}@{placedItems[path.Key]} -> {path.Value}");
-			
-			FillRemainingChests();
+			foreach (var path in instance.paths)
+				Console.Out.WriteLine($"Requirements For {path.Key}@{instance.placedItems[path.Key]} -> {path.Value}");
+
+			instance.FillRemainingChests();
 		}
 
 		void CalculatePathChain(ItemInfo item, Requirement additionalRequirementsToAvoid)
@@ -55,7 +57,7 @@ namespace TsRanodmizer.Randomisation
 			if (placedItems.ContainsKey(item))
 				return;
 
-			var unlockingRequirements = additionalRequirementsToAvoid | item.Unlocks;
+			var unlockingRequirements = additionalRequirementsToAvoid | unlockingMap.Get(item);
 			var itemLocation = GetUnusedItemLocationThatDontRequire(unlockingRequirements);
 			var chain = CalculatePathChain(itemLocation.Gate, unlockingRequirements);
 
@@ -108,7 +110,7 @@ namespace TsRanodmizer.Randomisation
 
 		ItemInfo GetRandomItemThatUnlocksRequirement(Requirement requirement)
 		{
-			var unlockingItems = ItemInfo.UnlockingMap
+			var unlockingItems = unlockingMap.Map
 				.Where(x => x.Value.Contains(requirement))
 				.Select(x => x.Key);
 
@@ -164,27 +166,6 @@ namespace TsRanodmizer.Randomisation
 			return orGate.Gates.Any(g => GateCanBeOpenedWithoutSuppliedRequirements(g, requirementToAvoid));
 		}
 
-		void CalculateTeleporterPickAction()
-		{
-			var gateProgressionItems = new[] {
-				new {Gate = Requirement.GateKittyBoss, LevelId = 2, RoomId = 55},
-				new {Gate = Requirement.GateLeftLibrary, LevelId = 2, RoomId = 54},
-				new {Gate = Requirement.GateLakeSirineLeft, LevelId = 7, RoomId = 30},
-				new {Gate = Requirement.GateLakeSirineRight, LevelId = 7, RoomId = 31},
-				//new {Gate = Requirement.GateAccessToPast, LevelId = 3, RoomId = 6}, //Refugee Camp, Somehow doesnt work ¯\_(ツ)_/¯
-				new {Gate = Requirement.GateAccessToPast, LevelId = 8, RoomId = 51},
-			};
-
-			var selectedGate = gateProgressionItems[random.Next(gateProgressionItems.Length)];
-
-			ItemInfo.Get(EInventoryRelicType.PyramidsKey).SetPickupAction(
-				level => UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId)
-			);
-
-			unlockableRequirements = ((ulong)unlockableRequirements & ~Requirement.TeleportationGates) | selectedGate.Gate;
-			ItemInfo.UnlockingMap[ItemInfo.Get(EInventoryRelicType.PyramidsKey)] = selectedGate.Gate;
-		}
-
 		void CalculateTutorial()
 		{
 			var orbTypes = ((EInventoryOrbType[])Enum.GetValues(typeof(EInventoryOrbType))).ToList();
@@ -217,14 +198,16 @@ namespace TsRanodmizer.Randomisation
 
 		void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)
 		{
-			itemLocation.SetItem(itemInfo);
+			var itemUnlocks = unlockingMap.Get(itemInfo);
+
+			itemLocation.SetItem(itemInfo, itemUnlocks);
 
 			if (!placedItems.ContainsKey(itemInfo))
 				placedItems.Add(itemInfo, itemLocation);
 
-			if(ItemInfo.UnlockingMap.TryGetValue(itemInfo, out Requirement unlocks) && ((ulong)availableRequirements & (ulong)unlocks) != (ulong)unlocks)
+			if(NewRequirementIsUnlocked(itemUnlocks))
 			{ 
-				availableRequirements |= unlocks;
+				availableRequirements |= itemUnlocks;
 				RecalculateAvailableItemLocations();
 			}
 			else
@@ -233,12 +216,9 @@ namespace TsRanodmizer.Randomisation
 			}
 		}
 
-		static void UnlockRoom(Level level, int levelId, int roomId)
+		bool NewRequirementIsUnlocked(Requirement itemUnlocks)
 		{
-			var minimapRoom = level.Minimap.Areas[levelId].Rooms[roomId];
-
-			minimapRoom.SetKnown(true);
-			minimapRoom.SetVisited(true);
+			return ((ulong)availableRequirements & (ulong)itemUnlocks) != (ulong)itemUnlocks;
 		}
 	}
 }

@@ -1,28 +1,20 @@
 ﻿using System;
-using System.Reflection;
-using TsRanodmizer.Extensions;
-using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using TsRanodmizer.IntermediateObjects;
+using TsRanodmizer.Randomisation;
 
 namespace TsRanodmizer.Extensions
 {
 	static class GameSaveExtensions
 	{
 		const string SeedSaveFileKey = "TsRandomizerSeed";
+		const string FillMethodSaveFileKey = "TsRandomizerFillMethod";
 		const string MeleeOrbPrefixKey = "TsRandomizerHasMeleeOrb";
 
-		static readonly MethodInfo GetAreaNameMethod = typeof(Level)
-			.GetMethod("GetLevelNameFromID", BindingFlags.Static | BindingFlags.NonPublic,
-				null, new[] {typeof(int)}, null);
-
-		internal static Seed FindSeed(this GameSave gameSave)
+		internal static Seed GetSeed(this GameSave gameSave)
 		{
-			if (gameSave.DataKeyInts.TryGetValue(SeedSaveFileKey, out var seed))
-				return new Seed(seed);
-
-			return null;
+			return new Seed(gameSave.DataKeyInts[SeedSaveFileKey]);
 		}
 
 		internal static void SetSeed(this GameSave gameSave, Seed seed)
@@ -30,9 +22,20 @@ namespace TsRanodmizer.Extensions
 			gameSave.DataKeyInts[SeedSaveFileKey] = seed;
 		}
 
-		internal static string GetAreaName(this GameSave gameSave)
+		internal static FillingMethod GetFillingMethod(this GameSave gameSave)
 		{
-			return (string) GetAreaNameMethod.Invoke(null, new object[] {gameSave.CurrentLevel});
+			if(!gameSave.DataKeyStrings.ContainsKey(FillMethodSaveFileKey))
+				return FillingMethod.Forward;
+
+			if(!Enum.TryParse(gameSave.DataKeyStrings[FillMethodSaveFileKey], out FillingMethod fillingMethod))
+				throw new Exception("Cannot parse filling method");
+
+			return fillingMethod;
+		}
+
+		internal static void SetFillingMethod(this GameSave gameSave, FillingMethod fillingMethod)
+		{
+			gameSave.DataKeyStrings[FillMethodSaveFileKey] = fillingMethod.ToString();
 		}
 
 		internal static bool HasMeleeOrb(this GameSave gameSave, EInventoryOrbType orbType)

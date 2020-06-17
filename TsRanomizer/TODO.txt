@@ -1,3 +1,11 @@
-﻿Fix render resizing
-Implement Itemlist
+﻿
+Remove TODO's
+Fix items dropped by bosses after leaving room
+Fix spawnning of orb pedistals
+Add item location of orb pedistals
+Add ItemList
+Improve item location map with lab
+
+Fix render resizing
 Fix Kittybos, shapeshifterboss itemdrop
+Fix forward filling alogirithm to a less front heavy one like assumption filling

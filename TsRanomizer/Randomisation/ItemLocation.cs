@@ -1,5 +1,4 @@
-﻿using Timespinner.GameAbstractions.Saving;
-using TsRanodmizer.IntermediateObjects;
+﻿using TsRanodmizer.IntermediateObjects;
 
 namespace TsRanodmizer.Randomisation
 {
@@ -10,43 +9,47 @@ namespace TsRanodmizer.Randomisation
 		public readonly ItemKey Key;
 		public readonly Gate Gate;
 
-		GameSave gameSave;
+		readonly IGameSaveDataAccess gameSave;
 
 		public bool IsPickedUp { get; private set; }
+
+		public Requirement Unlocks { get; private set; }
 
 		public ItemInfo ItemInfo { get; private set; }
 
 		public bool IsUsed => ItemInfo != null;
 		
-		public ItemLocation(GameSave gameSave, ItemKey key) : this(gameSave, key, Requirement.None)
+		public ItemLocation(IGameSaveDataAccess gameSave, ItemKey key) 
+			: this(gameSave, key, Requirement.None)
 		{
 		}
 
-		public ItemLocation(GameSave gameSave, ItemKey key, Requirement requiredRequirements)
+		public ItemLocation(IGameSaveDataAccess gameSave, ItemKey key, Requirement requiredRequirements)
 			: this(gameSave, key, (Gate)requiredRequirements)
 		{
 		}
 
-		public ItemLocation(GameSave gameSave, ItemKey key, Gate gate)
+		public ItemLocation(IGameSaveDataAccess gameSave, ItemKey key, Gate gate)
 		{
 			Key = key;
 			Gate = gate;
 
 			this.gameSave = gameSave;
 
-			if (gameSave.DataKeyBools.ContainsKey(LootedItemDataString))
+			if (gameSave.HasKey(LootedItemDataString))
 				IsPickedUp = true;
 		}
 
-		public void SetItem(ItemInfo item)
+		public void SetItem(ItemInfo item, Requirement unlocks)
 		{
 			ItemInfo = item;
+			Unlocks = unlocks;
 		}
 
 		public void SetPickedUp()
 		{
 			IsPickedUp = true;
-			gameSave.DataKeyBools[LootedItemDataString] = true;
+			gameSave.SetKey(LootedItemDataString);
 		}
 
 		public override string ToString()

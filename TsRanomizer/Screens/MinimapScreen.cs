@@ -122,8 +122,7 @@ namespace TsRanodmizer.Screens
 		{
 			var requirements = itemLocations
 				.Where(l => l.IsPickedUp)
-				.Select(l => l.ItemInfo)
-				.Aggregate(Requirement.None, (r, i) => r | i.Unlocks);
+				.Aggregate(Requirement.None, (a, b) => a | b.Unlocks);
 			return requirements;
 		}
 

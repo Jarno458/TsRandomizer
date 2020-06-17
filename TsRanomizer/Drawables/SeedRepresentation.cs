@@ -12,9 +12,12 @@ namespace TsRanodmizer.Drawables
 		const int NumberOfItemsToDraw = 5;
 
 		public int IconSize { get; set; }
-		readonly Seed seed;
+
+		Seed seed;
+
 		Point drawPoint = Point.Zero;
 		Vector2 origin = Vector2.Zero;
+
 		readonly GCM gcm;
 		readonly bool drawBackdrop;
 		readonly SpriteSheet menuIcons;
@@ -41,12 +44,19 @@ namespace TsRanodmizer.Drawables
 				origin = newOrigin;
 		}
 
+		public void SetSeed(Seed selectedSeed)
+		{
+			seed = selectedSeed;
+		}
+
 		public void Draw(SpriteBatch spriteBatch)
 		{
-			var random = new Random(~(seed ?? Seed.Current));
-
 			if(drawBackdrop)
 				DrawBackdrop(spriteBatch, NumberOfItemsToDraw);
+
+			if (seed == null) return;
+
+			var random = new Random(~seed);
 
 			for (int i = 0; i < NumberOfItemsToDraw; i++)
 				DrawItemIcon(spriteBatch, i, random);

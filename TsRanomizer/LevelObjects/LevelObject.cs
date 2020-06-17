@@ -86,13 +86,6 @@ namespace TsRanodmizer.LevelObjects
 
 			ItemInfo = itemInfo;
 			Object = typedObject.AsDynamic();
-
-#if DEBUG
-			GameSave gameSave = ((Level)Object._level).GameSave; //TODO Remove lolz
-			gameSave.AddItem(ItemInfo.Get(EInventoryRelicType.Dash));
-			gameSave.AddItem(ItemInfo.Get(EInventoryRelicType.DoubleJump));
-			//gameSave.Inventory.RelicInventory.RemoveItem((int)EInventoryRelicType.ScienceKeycardA);
-#endif
 		}
 
 		public static void Update(Level level, ItemLocationMap itemLocations, bool roomChanged)
@@ -152,6 +145,12 @@ namespace TsRanodmizer.LevelObjects
 		{
 #if DEBUG
 			Console.Out.WriteLine("OnChangeRoom");
+
+			//TODO Remove LOLZ
+			level.GameSave.AddItem(ItemInfo.Get(EInventoryRelicType.Dash));
+			level.GameSave.AddItem(ItemInfo.Get(EInventoryRelicType.DoubleJump));
+			level.GameSave.AddItem(ItemInfo.Get(EInventoryRelicType.EssenceOfSpace));
+
 #endif
 			var levelReflected = level.AsDynamic();
 
@@ -186,7 +185,7 @@ namespace TsRanodmizer.LevelObjects
 				foreach (var obj in objectsPerType)
 				{
 					var itemKey = GetKey(obj);
-					var itemLocation = itemLocations.GetItemLocation(itemKey);
+					var itemLocation = itemLocations[itemKey];
 
 					if (itemLocation == null)
 					{

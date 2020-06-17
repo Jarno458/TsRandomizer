@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
@@ -44,7 +43,7 @@ namespace TsRanodmizer.LevelObjects
 			var roomKey = new RoomItemKey(levelId, roomId);
 
 			if(RoomTriggers.TryGetValue(roomKey, out var trigger))
-				trigger.trigger(level, itemLocations.GetItemLocation(roomKey));
+				trigger.trigger(level, itemLocations[roomKey]);
 		}
 	}
 }

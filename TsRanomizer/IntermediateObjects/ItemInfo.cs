@@ -5,7 +5,6 @@ using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using TsRanodmizer.Extensions;
-using TsRanodmizer.Randomisation;
 
 namespace TsRanodmizer.IntermediateObjects
 {
@@ -23,7 +22,6 @@ namespace TsRanodmizer.IntermediateObjects
 		static readonly Dictionary<EInventoryFamiliarType, ItemInfo> FamilierItems;
 		static readonly Dictionary<int, ItemInfo> OrbItems;
 
-		public static readonly Dictionary<ItemInfo, Requirement> UnlockingMap;
 		public static ItemInfo Dummy;
 		
 		static ItemInfo()
@@ -40,30 +38,6 @@ namespace TsRanodmizer.IntermediateObjects
 			EnquipmentItems = new Dictionary<EInventoryEquipmentType, ItemInfo>();
 			FamilierItems = new Dictionary<EInventoryFamiliarType, ItemInfo>();
 			OrbItems = new Dictionary<int, ItemInfo>();
-			
-			UnlockingMap = new Dictionary<ItemInfo, Requirement>
-			{
-				{Get(EInventoryRelicType.TimespinnerWheel), Requirement.TimespinnerWheel | Requirement.TimeStop},
-				{Get(EInventoryRelicType.DoubleJump), Requirement.DoubleJump | Requirement.TimeStop},
-				{Get(EInventoryRelicType.Dash), Requirement.ForwardDash},
-				{Get(EInventoryOrbType.Flame, EOrbSlot.Passive), Requirement.AntiWeed},
-				{Get(EInventoryOrbType.Flame, EOrbSlot.Melee), Requirement.AntiWeed},
-				{Get(EInventoryOrbType.Flame, EOrbSlot.Spell), Requirement.AntiWeed},
-				{Get(EInventoryRelicType.ScienceKeycardA), Requirement.CardA | Requirement.CardB | Requirement.CardC | Requirement.CardD},
-				{Get(EInventoryRelicType.ScienceKeycardB), Requirement.CardB | Requirement.CardC | Requirement.CardD},
-				{Get(EInventoryRelicType.ScienceKeycardC), Requirement.CardC | Requirement.CardD},
-				{Get(EInventoryRelicType.ScienceKeycardD), Requirement.CardD},
-				{Get(EInventoryRelicType.ElevatorKeycard), Requirement.CardE},
-				{Get(EInventoryRelicType.ScienceKeycardV), Requirement.CardV},
-				{Get(EInventoryRelicType.WaterMask), Requirement.Swimming},
-				{Get(EInventoryRelicType.PyramidsKey), Requirement.None}, //Set in ItemLocationRandomizer.CalculateTeleporterPickAction(),
-				{Get(EInventoryRelicType.TimespinnerSpindle), Requirement.TimespinnerSpindle},
-				{Get(EInventoryRelicType.TimespinnerGear1), Requirement.TimespinnerPiece1},
-				{Get(EInventoryRelicType.TimespinnerGear2), Requirement.TimespinnerPiece2},
-				{Get(EInventoryRelicType.TimespinnerGear3), Requirement.TimespinnerPiece3},
-				{Get(EInventoryRelicType.EssenceOfSpace), Requirement.UpwardDash | Requirement.DoubleJump | Requirement.TimeStop},
-				{Get(EInventoryOrbType.Barrier, EOrbSlot.Spell), Requirement.UpwardDash | Requirement.DoubleJump | Requirement.TimeStop}
-			};
 
 			Dummy = new ItemInfo(EInventoryEquipmentType.DemonHorn);
 		}
@@ -111,7 +85,6 @@ namespace TsRanodmizer.IntermediateObjects
 		public LootType LootType { get; }
 		public int ItemId { get; }
 		public int ItemSubId { get; }
-		public Requirement Unlocks => GetUnlockedRequirements();
 		public Enum TreasureLootType => LootType.ToETreasureLootType();
 		public EInventoryUseItemType UseItem => (EInventoryUseItemType)ItemId;
 		public EInventoryRelicType Relic => (EInventoryRelicType)ItemId;
@@ -194,13 +167,6 @@ namespace TsRanodmizer.IntermediateObjects
 				Category = (int)LootType.ToEInventoryCategoryType(),
 				Item = ItemId
 			};
-		}
-		
-		Requirement GetUnlockedRequirements()
-		{
-			if (UnlockingMap.TryGetValue(this, out Requirement requirement))
-				return requirement;
-			return Requirement.None;
 		}
 
 		public bool Equals(ItemInfo other)

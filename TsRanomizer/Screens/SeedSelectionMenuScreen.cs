@@ -17,30 +17,39 @@ namespace TsRanodmizer.Screens
 			.Get("Timespinner.GameStateManagement.MenuEntry");
 
 		readonly GameScreen screen;
+		readonly GameDifficultyMenuScreen difficultyMenu;
 		readonly dynamic reflected;
 
-		SeedSelectionMenuScreen(GameScreen screen)
+		SeedSelectionMenuScreen(GameScreen screen, GameDifficultyMenuScreen difficultyMenu)
 		{
 			this.screen = screen;
+			this.difficultyMenu = difficultyMenu;
 			reflected = screen.AsDynamic();
 		}
 
-		public static SeedSelectionMenuScreen Create(ScreenManager screenManager)
+		public static SeedSelectionMenuScreen Create(ScreenManager screenManager, GameDifficultyMenuScreen difficultyMenu)
 		{
 			GCM gcm = screenManager.Reflected.GCM;
-			Action noop = () => { };
 
-			var screen = (GameScreen)Activator.CreateInstance(PasswordMenuScreenType, null, gcm, noop);
-			var seedSelectionMenu = new SeedSelectionMenuScreen(screen);
+			void Noop(){}
+
+			var screen = (GameScreen)Activator.CreateInstance(PasswordMenuScreenType, null, gcm, (Action)Noop);
+			var seedSelectionMenu = new SeedSelectionMenuScreen(screen, difficultyMenu);
 
 			seedSelectionMenu.reflected._menuTitle = "Select Seed";
-			seedSelectionMenu.SetSeed(Seed.Current);
 
 			var extraButtons = new[] {
 				MenuEntry.Create("OK", seedSelectionMenu.OnOkayEntrySelected).AsTimeSpinnerMenuEntry(),
 				MenuEntry.Create("New", seedSelectionMenu.OnGenerateSelected).AsTimeSpinnerMenuEntry()
 			};
 
+			ChangeAvailableButtons(seedSelectionMenu, extraButtons);
+
+			return seedSelectionMenu;
+		}
+
+		static void ChangeAvailableButtons(SeedSelectionMenuScreen seedSelectionMenu, object[] extraButtons)
+		{
 			var menuEntries = (IList)seedSelectionMenu.reflected.MenuEntries;
 			var entries = menuEntries
 				.Cast<object>()
@@ -49,8 +58,6 @@ namespace TsRanodmizer.Screens
 				.ToList(MainMenuEntryType);
 
 			((object)seedSelectionMenu.reflected._primaryMenuCollection).AsDynamic()._entries = entries;
-
-			return seedSelectionMenu;
 		}
 
 		static bool IsHex(object menuEntry)
@@ -65,8 +72,7 @@ namespace TsRanodmizer.Screens
 		{
 			var reflected = menuEntry.AsDynamic();
 
-			//TODO: Check for localised version
-			return reflected.Text == "OK";
+			return reflected.Text == "OK"; //not a verry clean check but password menu isnt localised ¯\_(ツ)_/¯
 		}
 
 		void OnOkayEntrySelected(PlayerIndex playerIndex)
@@ -77,15 +83,33 @@ namespace TsRanodmizer.Screens
 			if (hexString.Length == 0)
 				hexString = "0";
 
-			Seed.TrySetFromText(hexString);
-			Console.WriteLine($"Selected Seed: {Seed.Current}");
+			if (!Seed.TrySetFromHexString(hexString, out Seed seed))
+			{
+				ShowErrorDescription("Invallid seed id, it cannot be parsed as hexidecimal");
+				return;
+			}
+			
+			if (!seed.IsBeatable())
+			{
+				ShowErrorDescription("Invallid seed id, it cannot be beated");
+				return;
+			}
+
+			difficultyMenu.SetSeed(seed);
 
 			reflected.OnCancel(playerIndex);
 		}
 
+		void ShowErrorDescription(string message)
+		{
+			var inventoryItemIconType = TimeSpinnerType.Get("Timespinner.GameAbstractions.Inventory.EInventoryItemIcon");
+			reflected.ChangeDescription(message, inventoryItemIconType.GetEnumValue("None"));
+		}
+
 		void OnGenerateSelected(PlayerIndex playerIndex)
 		{
-			SetSeed(new Seed());
+			//TODO generate valid seed, maybe with load menu
+			SetSeed(new Seed(new Random().Next()));
 		}
 
 		void SetSeed(Seed seed)

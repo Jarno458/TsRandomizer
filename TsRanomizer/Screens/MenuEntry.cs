@@ -15,6 +15,15 @@ namespace TsRanodmizer.Screens
 		static readonly Type MainMenuSelectedEventType = MainMenuEntrySelectEventInfo.EventHandlerType;
 		static readonly MethodInfo SelectedEventAddMethod = MainMenuEntrySelectEventInfo.GetAddMethod(true);
 
+		// ReSharper disable PossibleNullReferenceException
+		public static readonly Color UnselectedColor = (Color)MainMenuEntryType
+			.GetField("UnselectedColor", BindingFlags.Static | BindingFlags.Public)
+			.GetValue(null);
+		public static readonly Color UnavailableColor = (Color)MainMenuEntryType
+			.GetField("UnavailableColor", BindingFlags.Static | BindingFlags.Public)
+			.GetValue(null);
+		// ReSharper restore PossibleNullReferenceException
+
 		readonly object entry;
 		readonly dynamic reflected;
 

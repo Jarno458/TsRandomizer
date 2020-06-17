@@ -34,7 +34,7 @@ namespace TsRanodmizer.Screens
 					continue;
 
 				var saveFile = (GameSave)entryReflected._saveFile;
-				var seed = saveFile.FindSeed();
+				var seed = saveFile.GetSeed();
 
 				seedRepresentations.Add(entry, new SeedRepresentation(seed, screenManager.Reflected.GCM, false));
 			}
@@ -117,13 +117,10 @@ namespace TsRanodmizer.Screens
 			if (!GameScreen.IsActive)
 				return;
 
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null);
-
-			foreach (var seedRepresentation in seedRepresentations)
-				if(!seedRepresentation.Key.AsDynamic().IsScrolledOff)
-					seedRepresentation.Value.Draw(spriteBatch);
-
-			spriteBatch.End();
+			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
+				foreach (var seedRepresentation in seedRepresentations)
+					if (!seedRepresentation.Key.AsDynamic().IsScrolledOff)
+						seedRepresentation.Value.Draw(spriteBatch);
 		}
 	}
 }

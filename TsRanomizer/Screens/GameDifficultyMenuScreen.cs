@@ -1,11 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions;
+using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRanodmizer.Drawables;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
+using TsRanodmizer.Randomisation;
 
 namespace TsRanodmizer.Screens
 {
@@ -16,33 +20,127 @@ namespace TsRanodmizer.Screens
 		readonly MenuEntry seedMenuEntry;
 		readonly SeedRepresentation seedRepresentation;
 
+		Seed seed;
+
+		Action<GameSave.EGameDifficultyType> originalOnDifficultyChosenMethod;
+
 		public GameDifficultyMenuScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
-			seedMenuEntry = AddSelectSeedMenu();
+			DisableDefaultDifficultOptions();
+
+			seedMenuEntry = GetSelectSeedMenu();
+			AddMenuEntryAtIndex(0, seedMenuEntry);
+			SetSelectedMenuItemByIndex(0);
+			
 			seedRepresentation = new SeedRepresentation(ScreenManager.Reflected.GCM);
+
+			HookOnDifficultySelectedMethod();
 		}
 
-		MenuEntry AddSelectSeedMenu()
+		void DisableDefaultDifficultOptions()
 		{
-			var entry = MenuEntry.Create("Seed:", SelectSeed);
-			entry.Description = "Select the seed used to generate the randomness";
 			var menuEntries = (IList)Reflected.MenuEntries;
-			menuEntries.Insert(0, entry.AsTimeSpinnerMenuEntry());
-			((object)Reflected._primaryMenuCollection).AsDynamic().SelectedIndex = 2;
+
+			foreach (var menuEntry in menuEntries)
+			{
+				var entry = menuEntry.AsDynamic();
+				entry.BaseDrawColor = MenuEntry.UnavailableColor;
+			}
+		}
+
+		void AddMenuEntryAtIndex(int index, MenuEntry menuEntry)
+		{
+			var menuEntries = (IList)Reflected.MenuEntries;
+			menuEntries.Insert(index, menuEntry.AsTimeSpinnerMenuEntry());
+
+		}
+		void SetSelectedMenuItemByIndex(int index)
+		{
+			((object)Reflected._primaryMenuCollection).AsDynamic().SelectedIndex = index;
+		}
+
+		MenuEntry GetSelectSeedMenu()
+		{
+			var entry = MenuEntry.Create("Choose seed", OpenSelectSeedMenu);
+			entry.Description = "Select the seed used to generate the randomness";
+
+			//((object)Reflected._primaryMenuCollection).AsDynamic().SelectedIndex = 2;
 
 			return entry;
 		}
 
-		void SelectSeed(PlayerIndex pi)
+		void OpenSelectSeedMenu(PlayerIndex pi)
 		{
-			var selectSeedMenu = SeedSelectionMenuScreen.Create(ScreenManager);
+			var selectSeedMenu = SeedSelectionMenuScreen.Create(ScreenManager, this);
 
 			ScreenManager.AddScreen(selectSeedMenu, pi);
 		}
 
+		void HookOnDifficultySelectedMethod()
+		{
+			originalOnDifficultyChosenMethod = Reflected._onDifficultyChosen;
+
+
+			Reflected._onDifficultyChosen = (Action<GameSave.EGameDifficultyType>)NewOnDifficultySelectedMethod;
+		}
+
+		void NewOnDifficultySelectedMethod(GameSave.EGameDifficultyType difficulty)
+		{
+			if(seed == null)
+				return;
+
+			originalOnDifficultyChosenMethod(difficulty);
+			AddSeedToSelectedSave();
+		}
+
+		void AddSeedToSelectedSave()
+		{
+			foreach (var gameScreen in ScreenManager.GetScreens())
+			{
+				if (gameScreen.GetType() == TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.LoadingScreen"))
+				{
+					var loadingScreen = gameScreen.AsDynamic();
+					var gameplayScreen = ((GameScreen[])loadingScreen._screensToLoad)[0];
+					var saveGame = (GameSave)gameplayScreen.AsDynamic().SaveFile;
+
+					saveGame.SetSeed(seed);
+					saveGame.SetFillingMethod(FillingMethod.Forward);
+				}
+			}
+		}
+
+		public void SetSeed(Seed selectedSeed)
+		{
+			seed = selectedSeed;
+			seedRepresentation.SetSeed(selectedSeed);
+
+			seedMenuEntry.Text = "Seed: ";
+
+			EnableAllMenuItems();
+		}
+
+		void EnableAllMenuItems()
+		{
+			var menuEntries = (IList)Reflected.MenuEntries;
+
+			foreach (var menuEntry in menuEntries)
+			{
+				var entry = menuEntry.AsDynamic();
+				entry.BaseDrawColor = MenuEntry.UnselectedColor;
+			}
+		}
+
+		public override void Update(GameTime gameTime, InputState input)
+		{
+			base.Update(gameTime, input);
+
+			if (seed == null)
+				SetSelectedMenuItemByIndex(0);
+		}
+
 		public override void Draw(GCM gcm, SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
-			if(GameScreen.IsActive)
+			if(GameScreen.IsActive && seed != null)
 				DrawSeedRepresentation(spriteBatch, menuFont);
 		}
 
@@ -60,9 +158,8 @@ namespace TsRanodmizer.Screens
 
 			seedRepresentation.SetDrawPoint(seedRepresentationDrawArea);
 
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null);
-			seedRepresentation.Draw(spriteBatch);
-			spriteBatch.End();
+			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp)) 
+				seedRepresentation.Draw(spriteBatch);
 		}
 	}
 }

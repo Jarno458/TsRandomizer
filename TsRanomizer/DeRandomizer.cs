@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events.Misc;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
@@ -24,7 +23,7 @@ namespace TsRanodmizer
 
 			methodsToDeRandimize = new Dictionary<MethodBase, Func<StackTrace, Random>> {
 				// TODO check for moar
-				{typeof(Monster).GetPrivateMethod("DropLoot"), s => RandomizerPerTypeInNamespace(s, "Timespinner.GameObjects.Enemies")},
+				//{typeof(Monster).GetPrivateMethod("DropLoot"), s => RandomizerPerTypeInNamespace(s, "Timespinner.GameObjects.Enemies")}, disabled as this is handled by enabling speedrun mode
 				{typeof(RareEnemySpawnerEvent).GetPrivateMethod("SpawnEnemy"), RandomiserPerType},
 				{TimeSpinnerType.Get("Timespinner.GameObjects.Heroes.Passives.BloodOrbPassive").GetMethod("Update"), RandomiserPerType },
 				{TimeSpinnerType.Get("Timespinner.GameObjects.Heroes.Familiars.FamiliarCrow").GetPrivateMethod("OnSuccessfulEnemyHit"), RandomiserPerType },

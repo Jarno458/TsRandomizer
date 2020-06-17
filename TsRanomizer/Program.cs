@@ -7,22 +7,8 @@ namespace TsRanodmizer
 {
 	public static class Program
 	{
-		/*
-		TODO
-		Remove TODO's
-		Fix items dropped by bosses after leaving room
-		Fix spawnning of orb pedistals
-		Add item location of orb pedistals
-		Add ItemList
-		Fix Save game menu seeeeeeeds display
-		Improve item location map with lab
-		*/
-
 		public static int Main(string[] args)
 		{
-			if (!CheckArguments(args))
-				return -1;
-
 			//TODO: re-enable
 			//if (!Md5CheckPassed("A2F880953099610FACF4E3CC153085E1"))
 			//	return -1;
@@ -30,28 +16,6 @@ namespace TsRanodmizer
 			StartTimeSpinner();
 
 			return 0;
-		}
-
-		static bool CheckArguments(string[] args)
-		{
-			if (args.Length > 1)
-			{
-				Console.Out.WriteLine("Invalid arguments, Usage TsRanodmizer.exe [hex seed]");
-				Console.ReadKey(true);
-				return false;
-			}
-
-			if (args.Length == 1)
-			{
-				if (Seed.TrySetFromText(args[0]))
-					return true;
-
-				Console.Out.WriteLine("Invalid arguments, Usage TsRanodmizer.exe [hex seed]");
-				Console.ReadKey(true);
-				return false;
-			}
-
-			return true;
 		}
 
 		static bool Md5CheckPassed(string knowhash)

@@ -32,6 +32,7 @@ namespace TsRanodmizer.Randomisation
 		public static readonly Requirement TimespinnerPiece2 = 1UL << 22;
 		public static readonly Requirement TimespinnerPiece3 = 1UL << 23;
 		public static readonly Requirement TimespinnerWheel = 1UL << 24;
+		public static readonly Requirement PinkOrb = 1UL << 25;
 
 		public static readonly Requirement GateKittyBoss = 1UL << 50;
 		public static readonly Requirement GateLeftLibrary = 1UL << 51;
@@ -147,19 +148,6 @@ namespace TsRanodmizer.Randomisation
 		{
 			if (flags == None) return "";
 
-			/*if (flags == (TimeStop | ForwardDash | UpwardDash | DoubleJump))
-				return "ForwardJumpOfNpc";
-			if (flags == (TimeStop | UpwardDash | DoubleJump))
-				return "JumpOfNpc";
-			if (flags == (UpwardDash | DoubleJump))
-				return "DoubleJump";
-			if (flags == (CardD | CardC | CardB | CardA))
-				return "SecurityAccessD";
-			if (flags == (CardC | CardB | CardA))
-				return "SecurityAccessC";
-			if (flags == (CardB | CardA))
-				return "SecurityAccessB";*/
-
 			var flagNames = Flags
 				.Where(f => ((ulong)f.Key & flags) > 0)
 				.Select(f => ToShortName(f.Value));
@@ -185,6 +173,7 @@ namespace TsRanodmizer.Randomisation
 				case "Swimming": return "Sw";
 				case "GassMask": return "Gas";
 				case "Teleport": return "TP";
+				case "PinkOrb": return "PO";
 				default:
 					return name;
 			}

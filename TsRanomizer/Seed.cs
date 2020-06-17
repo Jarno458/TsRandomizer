@@ -5,35 +5,32 @@ namespace TsRanodmizer
 {
 	class Seed
 	{
-		public static Seed Current;
-
 		readonly uint value;
-
-		static Seed()
-		{
-			Current = new Seed();
-		}
 
 		public Seed(uint seed)
 		{
 			value = seed;
 		}
 
-		public Seed() : this(new Random().Next())
-		{
-		}
-
 		public Seed(int seed) : this((uint)seed)
 		{
 		}
 
-		public static bool TrySetFromText(string text)
+		public static bool TrySetFromHexString(string text, out Seed seed)
 		{
 			if (!uint.TryParse(text, NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint parsedValue))
+			{
+				seed = null;
 				return false;
+			}
 
-			Current = new Seed(parsedValue);
+			seed = new Seed(parsedValue);
 			return true;
+		}
+
+		public bool IsBeatable()
+		{
+			return true; //TODO Implement
 		}
 
 		public override string ToString()
