@@ -66,7 +66,6 @@
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
-    <Compile Include="IntermediateObjects\GameSaveDataAccess.cs" />
     <Compile Include="IntermediateObjects\TriggerBase.cs" />
     <Compile Include="LevelObjects\AlwaysSpawnAttribute.cs" />
     <Compile Include="LevelObjects\CutsceneKeep1.cs" />

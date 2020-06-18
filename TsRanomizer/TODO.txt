@@ -9,3 +9,5 @@ Improve item location map with lab
 Fix render resizing
 Fix Kittybos, shapeshifterboss itemdrop
 Fix forward filling alogirithm to a less front heavy one like assumption filling
+
+add unit tests

@@ -1,10 +1,14 @@
-﻿using TsRanodmizer.IntermediateObjects;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Timespinner.GameAbstractions.Saving;
 using TsRanodmizer.ReplacementObjects;
 
 namespace TsRanodmizer.Randomisation
 {
 	class ItemLocationMap : LookupDictionairy<ItemKey, ItemLocation>
 	{
+		const int MaxBeatableCheckItterations = 25;
+
 		static readonly Gate DoubleJumpOfNpc = Requirement.DoubleJump & Requirement.TimeStop;
 
 		static readonly Requirement LowerLakeDesolationBridge = Requirement.TimeStop | Requirement.ForwardDash | Requirement.GateKittyBoss | Requirement.GateLeftLibrary;
@@ -48,14 +52,10 @@ namespace TsRanodmizer.Randomisation
 		static readonly Gate LeftPyramid = Requirement.DoubleJump //TODO & access to world 3 accessToTimePortal2
 			& (Requirement.TimespinnerPiece1 & Requirement.TimespinnerPiece2 & Requirement.TimespinnerPiece3); //activateTimePortal2
 
-		readonly IGameSaveDataAccess gameSave;
-
 		public new ItemLocation this[ItemKey key] => GetItemLocationBasedOnKeyOrRoomKey(key);
 
-		public ItemLocationMap(IGameSaveDataAccess gameSave) : base(200, l => l.Key)
+		public ItemLocationMap() : base(200, l => l.Key)
 		{
-			this.gameSave = gameSave;
-
 			AddPresentItemLocations();
 			AddPastItemLocations();
 			AddPyramidItemLocations();
@@ -264,19 +264,60 @@ namespace TsRanodmizer.Randomisation
 					: null;
 		}
 
+		public bool IsBeatable()
+		{
+			var obtainedRequirements = Requirement.None;
+			var itteration = 0;
+
+			do
+			{
+				itteration++;
+				var previusObtainedRequirements = obtainedRequirements;
+
+				GetReachableLocations(obtainedRequirements)
+					.Select(l => l.Unlocks)
+					.Aggregate(obtainedRequirements, (current, unlock) => current | unlock);
+
+				if (obtainedRequirements == previusObtainedRequirements)
+					return false;
+
+			} while (!CanCompleteGame(obtainedRequirements) && itteration < MaxBeatableCheckItterations);
+
+			return true;
+		}
+
+		public IEnumerable<ItemLocation> GetReachableLocations(Requirement obtainedRequirements)
+		{
+			return this.Where(l => l.Gate.CanBeOpenedWith(obtainedRequirements));
+		}
+
+		static bool CanCompleteGame(Requirement obtainedRequirements)
+		{
+			var requirementsNeedToBeatTheGame =
+				Requirement.TimespinnerPiece1 | Requirement.TimespinnerPiece2 | Requirement.TimespinnerPiece3;
+
+			return ((ulong)obtainedRequirements & (ulong)requirementsNeedToBeatTheGame) == (ulong)requirementsNeedToBeatTheGame;
+		}
+
+		public void Initialize(GameSave gameSave)
+		{
+			foreach (var itemLocation in this)
+				itemLocation.BsseOnGameSave(gameSave);
+		}
+
 		void Add(ItemKey itemKey)
 		{
-			Add(new ItemLocation(gameSave, itemKey));
+			Add(new ItemLocation(itemKey));
 		}
 
 		void Add(ItemKey itemKey, Requirement requirement)
 		{
-			Add(new ItemLocation(gameSave, itemKey, requirement));
+			Add(new ItemLocation(itemKey, requirement));
 		}
 
 		void Add(ItemKey itemKey, Gate gate)
 		{
-			Add(new ItemLocation(gameSave, itemKey, gate));
+			Add(new ItemLocation(itemKey, gate));
 		}
 	}
 }

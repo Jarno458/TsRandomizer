@@ -36,11 +36,10 @@ namespace TsRanodmizer.Screens
 
 			Console.Out.WriteLine($"Seed: {seed}");
 
+			ItemLocations = Randomizer.Randomize(seed, fillingMethod);
+			ItemLocations.Initialize(Level.GameSave);
+
 			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed);
-
-			var randomizer = new Randomizer(new GameSaveDataAccess(Level.GameSave), seed, fillingMethod);
-
-			ItemLocations = randomizer.Randomize();
 		}
 
 		public override void Update(GameTime gameTime, InputState input)

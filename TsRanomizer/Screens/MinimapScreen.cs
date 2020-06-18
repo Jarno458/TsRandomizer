@@ -114,7 +114,7 @@ namespace TsRanodmizer.Screens
 		IEnumerable<ItemLocation> GetAvailableItemLocations()
 		{
 			var obtainedRequirements = GetAvailableRequirementsBasedOnObtainedItems();
-			var locations = itemLocations.Where(l => !l.IsPickedUp && l.Gate.CanOpen(obtainedRequirements));
+			var locations = itemLocations.Where(l => !l.IsPickedUp && l.Gate.CanBeOpenedWith(obtainedRequirements));
 			return locations;
 		}
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace TsRanodmizer
 {
@@ -26,11 +25,6 @@ namespace TsRanodmizer
 
 			seed = new Seed(parsedValue);
 			return true;
-		}
-
-		public bool IsBeatable()
-		{
-			return true; //TODO Implement
 		}
 
 		public override string ToString()

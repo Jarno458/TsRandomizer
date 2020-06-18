@@ -64,8 +64,6 @@ namespace TsRanodmizer.Screens
 			var entry = MenuEntry.Create("Choose seed", OpenSelectSeedMenu);
 			entry.Description = "Select the seed used to generate the randomness";
 
-			//((object)Reflected._primaryMenuCollection).AsDynamic().SelectedIndex = 2;
-
 			return entry;
 		}
 
@@ -115,6 +113,8 @@ namespace TsRanodmizer.Screens
 			seedRepresentation.SetSeed(selectedSeed);
 
 			seedMenuEntry.Text = "Seed: ";
+
+			((object)Reflected._primaryMenuCollection).AsDynamic().SelectedIndex = 2;
 
 			EnableAllMenuItems();
 		}

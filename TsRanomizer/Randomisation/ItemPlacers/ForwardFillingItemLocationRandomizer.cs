@@ -24,7 +24,7 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 		readonly Dictionary<ItemInfo, ItemLocation> placedItems;
 		readonly Dictionary<ItemInfo, Requirement> paths;
 
-		public ForwardFillingItemLocationRandomizer(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap)
+		ForwardFillingItemLocationRandomizer(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap)
 		{
 			this.unlockingMap = unlockingMap;
 			itemLocations = itemLocationMap;
@@ -42,6 +42,7 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 
 			instance.RecalculateAvailableItemLocations();
 			instance.CalculateTutorial();
+
 
 			foreach (var item in unlockingMap.Map.Keys)
 				instance.CalculatePathChain(item, Requirement.None);
@@ -180,6 +181,8 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 
 			var meleeOrbType = orbTypes.SelectRandom(random);
 			PutItemAtLocation(ItemInfo.Get(meleeOrbType, EOrbSlot.Melee), itemLocations[ItemKey.TutorialMeleeOrb]);
+
+			RecalculateAvailableItemLocations();
 		}
 
 		void FillRemainingChests()
@@ -192,7 +195,7 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 		void RecalculateAvailableItemLocations()
 		{
 			availableItemLocations = itemLocations
-				.Where(l => !l.IsUsed && l.Gate.CanOpen(availableRequirements))
+				.Where(l => !l.IsUsed && l.Gate.CanBeOpenedWith(availableRequirements))
 				.ToList();
 		}
 

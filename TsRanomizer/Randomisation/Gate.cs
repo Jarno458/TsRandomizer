@@ -5,7 +5,7 @@ namespace TsRanodmizer.Randomisation
 {
 	abstract class Gate
 	{
-		public abstract bool CanOpen(Requirement obtainedRequirements);
+		public abstract bool CanBeOpenedWith(Requirement obtainedRequirements);
 
 		public abstract bool Requires(Requirement requirementsToCheck);
 
@@ -56,7 +56,7 @@ namespace TsRanodmizer.Randomisation
 				Requirements = requirements;
 			}
 
-			public override bool CanOpen(Requirement obtainedRequirements)
+			public override bool CanBeOpenedWith(Requirement obtainedRequirements)
 			{
 				return Requirements == Requirement.None || Requirements.Contains(obtainedRequirements);
 			}
@@ -88,9 +88,9 @@ namespace TsRanodmizer.Randomisation
 					Gates = new[] {a, b};
 			}
 
-			public override bool CanOpen(Requirement obtainedRequirements)
+			public override bool CanBeOpenedWith(Requirement obtainedRequirements)
 			{
-				return Gates.All(g => g.CanOpen(obtainedRequirements));
+				return Gates.All(g => g.CanBeOpenedWith(obtainedRequirements));
 			}
 
 			public override bool Requires(Requirement requirementsToCheck)
@@ -121,9 +121,9 @@ namespace TsRanodmizer.Randomisation
 					Gates = new[] { a, b };
 			}
 
-			public override bool CanOpen(Requirement obtainedRequirements)
+			public override bool CanBeOpenedWith(Requirement obtainedRequirements)
 			{
-				return Gates.Any(g => g.CanOpen(obtainedRequirements));
+				return Gates.Any(g => g.CanBeOpenedWith(obtainedRequirements));
 			}
 
 			public override bool Requires(Requirement requirementsToCheck)
