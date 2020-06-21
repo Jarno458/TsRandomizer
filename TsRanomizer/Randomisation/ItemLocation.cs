@@ -59,8 +59,7 @@ namespace TsRanodmizer.Randomisation
 		{
 			gameSave = save;
 
-			if (gameSave.DataKeyBools.ContainsKey(LootedItemDataString))
-				IsPickedUp = true;
+			IsPickedUp = gameSave.DataKeyBools.ContainsKey(LootedItemDataString);
 		}
 	}
 }

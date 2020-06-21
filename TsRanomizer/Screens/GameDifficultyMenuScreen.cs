@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions;
@@ -20,7 +19,7 @@ namespace TsRanodmizer.Screens
 		readonly MenuEntry seedMenuEntry;
 		readonly SeedRepresentation seedRepresentation;
 
-		Seed seed;
+		Seed? seed;
 
 		Action<GameSave.EGameDifficultyType> originalOnDifficultyChosenMethod;
 
@@ -84,7 +83,7 @@ namespace TsRanodmizer.Screens
 
 		void NewOnDifficultySelectedMethod(GameSave.EGameDifficultyType difficulty)
 		{
-			if(seed == null)
+			if(!seed.HasValue)
 				return;
 
 			originalOnDifficultyChosenMethod(difficulty);
@@ -101,8 +100,8 @@ namespace TsRanodmizer.Screens
 					var gameplayScreen = ((GameScreen[])loadingScreen._screensToLoad)[0];
 					var saveGame = (GameSave)gameplayScreen.AsDynamic().SaveFile;
 
-					saveGame.SetSeed(seed);
-					saveGame.SetFillingMethod(FillingMethod.Forward);
+					saveGame.SetSeed(seed.Value);
+					saveGame.SetFillingMethod(FillingMethod.Random);
 				}
 			}
 		}

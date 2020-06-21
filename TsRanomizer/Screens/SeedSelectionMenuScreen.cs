@@ -91,7 +91,7 @@ namespace TsRanodmizer.Screens
 				return;
 			}
 			
-			if (!IsBeatable(seed, FillingMethod.Forward))
+			if (!Randomizer.IsBeatable(seed, FillingMethod.Random))
 			{
 				ShowErrorDescription("Invallid seed id, it cannot be beated");
 				return;
@@ -110,13 +110,7 @@ namespace TsRanodmizer.Screens
 
 		void OnGenerateSelected(PlayerIndex playerIndex)
 		{
-			Seed seed;
-
-			//TODO maybe with load menu
-			do
-			{
-				seed = new Seed(new Random().Next());
-			} while (!IsBeatable(seed, FillingMethod.Forward));
+			var seed = Randomizer.Generate(FillingMethod.Random).Seed;
 
 			SetSeed(seed);
 		}
@@ -125,11 +119,6 @@ namespace TsRanodmizer.Screens
 		{
 			reflected._currentEnteredPassword = $"{seed}{new string(' ', 4)}";
 			reflected.RefreshDisplayPassword();
-		}
-
-		static bool IsBeatable(Seed seed, FillingMethod fillingMethod)
-		{
-			return Randomizer.Randomize(seed, fillingMethod).IsBeatable();
 		}
 
 		public static implicit operator GameScreen(SeedSelectionMenuScreen value)

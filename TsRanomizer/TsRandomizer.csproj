@@ -78,11 +78,14 @@
     <Compile Include="LevelObjects\CutscenePrologue4.cs" />
     <Compile Include="LevelObjects\ItemDropPickup.cs" />
     <Compile Include="PlatformHelper.cs" />
+    <Compile Include="Randomisation\ItemPlacers\FullRandomItemLocationRandomizer.cs" />
+    <Compile Include="Randomisation\ItemPlacers\ItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemUnlockingMap.cs" />
     <Compile Include="Randomisation\RoomItemKey.cs" />
     <Compile Include="ReplacementObjects\TimespinnerSpindle.cs" />
     <Compile Include="IntermediateObjects\TriggerAfterLootDrop.cs" />
     <Compile Include="DeRandomizer.cs" />
+    <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\MinimapScreen.cs" />
     <Compile Include="Screens\OrbMenuScreen.cs" />
     <Compile Include="Randomisation\Randomizer.cs" />

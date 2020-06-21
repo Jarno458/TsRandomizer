@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Timespinner.Core.Specifications;
-using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
-using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
 
 namespace TsRanodmizer.LevelObjects
@@ -19,7 +15,7 @@ namespace TsRanodmizer.LevelObjects
 
 		static readonly Type SandStreamerEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Misc.SandStreamerEvent");
 
-		public ShapeshifterBoss(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, ItemInfo.Get(EInventoryEquipmentType.AdvisorRobe))
+		public ShapeshifterBoss(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
 		{
 		}
 
@@ -28,7 +24,6 @@ namespace TsRanodmizer.LevelObjects
 
 		protected override void Initialize()
 		{
-			var v = (Point) Object.DeathPosition;
 		}
 
 		protected override void OnUpdate()

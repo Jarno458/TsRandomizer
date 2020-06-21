@@ -10,7 +10,7 @@ namespace TsRanodmizer.LevelObjects
 	{
 		bool hasDroppedLoot;
 
-		public ItemDropPickup(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, ItemInfo.Get(EInventoryEquipmentType.AdvisorRobe))
+		public ItemDropPickup(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
 		{
 		}
 

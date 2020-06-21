@@ -18,8 +18,8 @@ namespace TsRanodmizer.Screens
 		{
 			GameSave saveFile = Reflected._saveFile;
 
-			//RemoveMeleeOrbs(saveFile, Reflected._meleeOrbAInventory); //TODO re-enable
-			//RemoveMeleeOrbs(saveFile, Reflected._meleeOrbBInventory);
+			RemoveMeleeOrbs(saveFile, Reflected._meleeOrbAInventory);
+			RemoveMeleeOrbs(saveFile, Reflected._meleeOrbBInventory);
 		}
 
 		public void RemoveMeleeOrbs(GameSave saveFile, object inventory)

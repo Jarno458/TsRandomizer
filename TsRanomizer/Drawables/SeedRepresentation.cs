@@ -13,7 +13,7 @@ namespace TsRanodmizer.Drawables
 
 		public int IconSize { get; set; }
 
-		Seed seed;
+		Seed? seed;
 
 		Point drawPoint = Point.Zero;
 		Vector2 origin = Vector2.Zero;
@@ -29,7 +29,7 @@ namespace TsRanodmizer.Drawables
 		{
 		}
 
-		public SeedRepresentation(Seed seed, GCM gcm, bool drawBackdrop = true) 
+		public SeedRepresentation(Seed? seed, GCM gcm, bool drawBackdrop = true) 
 		{
 			this.seed = seed;
 			this.gcm = gcm;
@@ -54,9 +54,9 @@ namespace TsRanodmizer.Drawables
 			if(drawBackdrop)
 				DrawBackdrop(spriteBatch, NumberOfItemsToDraw);
 
-			if (seed == null) return;
+			if (!seed.HasValue) return;
 
-			var random = new Random(~seed);
+			var random = new Random(~seed.Value);
 
 			for (int i = 0; i < NumberOfItemsToDraw; i++)
 				DrawItemIcon(spriteBatch, i, random);

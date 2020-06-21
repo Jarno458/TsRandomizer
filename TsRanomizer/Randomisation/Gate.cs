@@ -68,7 +68,7 @@ namespace TsRanodmizer.Randomisation
 
 			public override string ToString()
 			{
-				return $" {Requirements} ";
+				return $"{Requirements}";
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace TsRanodmizer.Randomisation
 			public override string ToString()
 			{
 				// ReSharper disable once CoVariantArrayConversion
-				return $" ({string.Join("&", (object[])Gates)}) ";
+				return $"AND({string.Join(",", (object[])Gates)})";
 			}
 		}
 
@@ -134,7 +134,7 @@ namespace TsRanodmizer.Randomisation
 			public override string ToString()
 			{
 				// ReSharper disable once CoVariantArrayConversion
-				return $" ({string.Join("|", (object[])Gates)}) ";
+				return $"OR({string.Join(",", (object[])Gates)})";
 			}
 		}
 	}

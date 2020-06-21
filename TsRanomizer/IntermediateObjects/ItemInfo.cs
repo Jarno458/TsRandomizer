@@ -171,7 +171,7 @@ namespace TsRanodmizer.IntermediateObjects
 
 		public bool Equals(ItemInfo other)
 		{
-			if (ReferenceEquals(null, other)) return false;
+			if (other is null) return false;
 			if (ReferenceEquals(this, other)) return true;
 			return LootType.Equals(other.LootType) 
 			       && ItemId.Equals(other.ItemId) 
@@ -180,10 +180,11 @@ namespace TsRanodmizer.IntermediateObjects
 
 		public override bool Equals(object obj)
 		{
-			if (ReferenceEquals(null, obj)) return false;
+			if (obj is null) return false;
 			if (ReferenceEquals(this, obj)) return true;
 			if (obj.GetType() != GetType()) return false;
-			return Equals((ItemInfo) obj);
+
+			return Equals((ItemInfo)obj);
 		}
 
 		public override int GetHashCode()
@@ -194,6 +195,19 @@ namespace TsRanodmizer.IntermediateObjects
 				hashCode = (hashCode * 397) ^ ((ItemId << 4) + ItemSubId);
 				return hashCode;
 			}
+		}
+
+		public static bool operator ==(ItemInfo a, ItemInfo b)
+		{
+			if (a is null && b is null)
+				return true;
+
+			return a?.Equals(b) ?? false;
+		}
+
+		public static bool operator !=(ItemInfo a, ItemInfo b)
+		{
+			return !(a == b);
 		}
 
 		public override string ToString()

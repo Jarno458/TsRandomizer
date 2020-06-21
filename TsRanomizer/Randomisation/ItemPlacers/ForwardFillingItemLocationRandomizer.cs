@@ -7,13 +7,12 @@ using TsRanodmizer.IntermediateObjects;
 
 namespace TsRanodmizer.Randomisation.ItemPlacers
 {
-	class ForwardFillingItemLocationRandomizer
+	class ForwardFillingItemLocationRandomizer : ItemLocationRandomizer
 	{
 		readonly ItemUnlockingMap unlockingMap;
 		static readonly ItemInfo UpwardsDash = ItemInfo.Get(EInventoryRelicType.EssenceOfSpace);
 		static readonly ItemInfo LightWall = ItemInfo.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell);
 
-		readonly ItemLocationMap itemLocations;
 		readonly Random random;
 
 		readonly Requirement unlockableRequirements; 
@@ -22,35 +21,47 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 		List<ItemLocation> availableItemLocations;
 
 		readonly Dictionary<ItemInfo, ItemLocation> placedItems;
-		readonly Dictionary<ItemInfo, Requirement> paths;
+		readonly Dictionary<ItemInfo, Gate> paths;
 
-		ForwardFillingItemLocationRandomizer(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap)
+		ForwardFillingItemLocationRandomizer(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap) : base(itemLocationMap)
 		{
 			this.unlockingMap = unlockingMap;
-			itemLocations = itemLocationMap;
 
 			random = new Random(seed);
 			availableRequirements = Requirement.None;
 			unlockableRequirements = unlockingMap.AllUnlockableRequirements;
 			placedItems = new Dictionary<ItemInfo, ItemLocation>();
-			paths = new Dictionary<ItemInfo, Requirement>();
+			paths = new Dictionary<ItemInfo, Gate>();
 		}
 
 		public static void AddRandomItemsToLocationMap(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap)
 		{
-			var instance = new ForwardFillingItemLocationRandomizer(seed, unlockingMap, itemLocationMap);
+			new ForwardFillingItemLocationRandomizer(seed, unlockingMap, itemLocationMap)
+				.AddRandomItemsToLocationMap();
+		}
 
-			instance.RecalculateAvailableItemLocations();
-			instance.CalculateTutorial();
+		void AddRandomItemsToLocationMap()
+		{
+			RecalculateAvailableItemLocations();
+			CalculateTutorial();
 
+			var itemsThatUnlockProgression = unlockingMap.Map.Keys.ToList();
 
-			foreach (var item in unlockingMap.Map.Keys)
-				instance.CalculatePathChain(item, Requirement.None);
+			while (itemsThatUnlockProgression.Count > 0)
+			{
+				var item = itemsThatUnlockProgression.SelectRandom(random);
 
-			foreach (var path in instance.paths)
-				Console.Out.WriteLine($"Requirements For {path.Key}@{instance.placedItems[path.Key]} -> {path.Value}");
+				if (placedItems.ContainsKey(item))
+					return;
 
-			instance.FillRemainingChests();
+				CalculatePathChain(item, Requirement.None);
+				itemsThatUnlockProgression.Remove(item);
+			}
+
+			foreach (var path in paths)
+				Console.Out.WriteLine($"Requirements For {path.Key}@{placedItems[path.Key]} -> {path.Value}");
+
+			FillRemainingChests();
 		}
 
 		void CalculatePathChain(ItemInfo item, Requirement additionalRequirementsToAvoid)
@@ -58,74 +69,100 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 			if (placedItems.ContainsKey(item))
 				return;
 
-			var unlockingRequirements = additionalRequirementsToAvoid | unlockingMap.Get(item);
+			var unlockingRequirements = additionalRequirementsToAvoid | unlockingMap.GetUnlock(item);
 			var itemLocation = GetUnusedItemLocationThatDontRequire(unlockingRequirements);
-			var chain = CalculatePathChain(itemLocation.Gate, unlockingRequirements);
+			
+			CalculatePathChain(itemLocation.Gate, unlockingRequirements);
 
 			PutItemAtLocation(item, itemLocation);
 
-			paths[item] = chain;
+			paths[item] = itemLocation.Gate;
 		}
 
-		Requirement CalculatePathChain(Gate gate, Requirement requirementChain)
+		void CalculatePathChain(Gate gate, Requirement requirementChain)
 		{
 			switch (gate)
 			{
 				case Gate.RequirementGate requirementGate:
-					if (requirementGate.Requirements == Requirement.None)
-						return requirementChain;
-
-					var singleRequirement = SelectSingleUnlockableRequirement(requirementGate.Requirements, requirementChain);
-					var item = GetRandomItemThatUnlocksRequirement(singleRequirement);
-
-					if (placedItems.ContainsKey(item))
-						return requirementChain;
-
-					CalculatePathChain(item, requirementChain | singleRequirement);
-
-					return requirementChain | singleRequirement;
+					CalculatePathChainForRequirementGate(requirementGate, requirementChain);
+					break;
 				case Gate.OrGate orGate:
-					return CalculatePathChain(SelectSingleUnlockableGate(orGate.Gates, requirementChain), requirementChain);
+					CalculatePathChainForOrGate(orGate, requirementChain);
+					break;
 				case Gate.AndGate andGate:
-					return andGate.Gates
-						.Aggregate(requirementChain, (chain, singleGate) => chain | CalculatePathChain(singleGate, chain));
+					CalculatePathChainForAndGate(andGate, requirementChain);
+					break;
 				default:
 					throw new ArgumentOutOfRangeException($"Unknown gate type {gate}");
 			}
 		}
 
-		Requirement SelectSingleUnlockableRequirement(Requirement requirement, Requirement requirementToAvoid)
+		void CalculatePathChainForRequirementGate(Gate.RequirementGate requirementGate, Requirement requirementChain)
 		{
-			var requirements = ((Requirement) ((ulong) requirement & (ulong) unlockableRequirements & (~requirementToAvoid | (ulong) availableRequirements)))
-				.Split();
-			return requirements[random.Next(requirements.Length)];
+			if (requirementGate.Requirements == Requirement.None)
+				return;
+
+			var singleRequirement = SelectSingleUnlockableRequirement(requirementGate.Requirements, requirementChain);
+			var item = GetRandomItemThatUnlocksRequirement(singleRequirement);
+
+			if (placedItems.ContainsKey(item))
+				return;
+
+			CalculatePathChain(item, singleRequirement | requirementChain);
 		}
 
-		Gate SelectSingleUnlockableGate(Gate[] gates, Requirement requirementToAvoid)
+		void CalculatePathChainForOrGate(Gate.OrGate orGate, Requirement requirementToAvoid)
 		{
-			var unlockableGates = gates
-				.Where(g => GateCanBeOpenedWithoutSuppliedRequirements(g, requirementToAvoid));
-			
-			return unlockableGates.SelectRandom(random);
+			var unlockableGates = orGate.Gates
+				.Where(g => GateCanBeOpenedWithoutSuppliedRequirements(g, requirementToAvoid))
+				.ToArray();
+
+			var unlockableGate = unlockableGates[random.Next(unlockableGates.Length)]; //SelectRandom
+
+			CalculatePathChain(unlockableGate, requirementToAvoid);
+		}
+
+		void CalculatePathChainForAndGate(Gate.AndGate andGate, Requirement requirementChain)
+		{
+/*			return andGate.Gates
+				//.InRandomOrder(random) //Aggregate always goes in order of definition it doesnt go in random order
+				.Aggregate(requirementChain, (chain, singleGate) => chain | CalculatePathChain(singleGate, chain));*/
+
+
+			foreach (var gate in andGate.Gates)
+			{
+				CalculatePathChain(gate, requirementChain);
+			}
+		}
+
+		Requirement SelectSingleUnlockableRequirement(Requirement requirement, Requirement requirementToAvoid)
+		{
+			var requirements = ((Requirement)((ulong)requirement & (ulong)unlockableRequirements & (~requirementToAvoid | (ulong)availableRequirements)))
+				.Split();
+			//return requirements.SelectRandom(random);
+			return requirements[random.Next(requirements.Length)];
 		}
 
 		ItemInfo GetRandomItemThatUnlocksRequirement(Requirement requirement)
 		{
 			var unlockingItems = unlockingMap.Map
-				.Where(x => x.Value.Contains(requirement))
+				.Where(x => x.Value.AllUnlocks.Contains(requirement))
 				.Select(x => x.Key);
 
 			if (requirement != Requirement.UpwardDash && placedItems.Count <= 10)
 				// ReSharper disable PossibleUnintendedReferenceComparison
-				unlockingItems = unlockingItems.Where(i =>i != UpwardsDash && i != LightWall);
+				unlockingItems = unlockingItems.Where(i => i != UpwardsDash && i != LightWall);
 				// ReSharper restore PossibleUnintendedReferenceComparison
 
-			return unlockingItems.SelectRandom(random);
+			var unlockingItemsArray = unlockingItems.ToArray();
+
+			//return unlockingItems.SelectRandom(random);
+			return unlockingItemsArray[random.Next(unlockingItemsArray.Length)];
 		}
 
 		ItemLocation GetUnusedItemLocationThatDontRequire(Requirement requirements)
 		{
-			var locations = itemLocations
+			var locations = ItemLocations
 				.Where(l => !l.IsUsed && GateCanBeOpenedWithoutSuppliedRequirements(l.Gate, requirements));
 
 			return locations.SelectRandom(random);
@@ -152,7 +189,7 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 				return true;
 
 			var gateRequirements = (ulong)gate.Requirements & (ulong)unlockableRequirements;
-			var canBeOpened = (gateRequirements & (~requirementToAvoid | (ulong) availableRequirements)) > 0;
+			var canBeOpened = (gateRequirements & (~requirementToAvoid | (ulong)availableRequirements)) > 0;
 
 			return canBeOpened;
 		}
@@ -175,33 +212,26 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 				.Where(orbType => orbType != EInventoryOrbType.Barrier); //To OP to give as starter item
 
 			var spellOrbType = spellOrbTypes.SelectRandom(random);
-			PutItemAtLocation(ItemInfo.Get(spellOrbType, EOrbSlot.Spell), itemLocations[ItemKey.TutorialSpellOrb]);
+			PutItemAtLocation(ItemInfo.Get(spellOrbType, EOrbSlot.Spell), ItemLocations[ItemKey.TutorialSpellOrb]);
 
 			orbTypes.Remove(EInventoryOrbType.Pink); //To annoying as each attack consumes aura power
 
 			var meleeOrbType = orbTypes.SelectRandom(random);
-			PutItemAtLocation(ItemInfo.Get(meleeOrbType, EOrbSlot.Melee), itemLocations[ItemKey.TutorialMeleeOrb]);
+			PutItemAtLocation(ItemInfo.Get(meleeOrbType, EOrbSlot.Melee), ItemLocations[ItemKey.TutorialMeleeOrb]);
 
 			RecalculateAvailableItemLocations();
 		}
 
-		void FillRemainingChests()
-		{
-			foreach (var itemLocation in itemLocations)
-				if (!itemLocation.IsUsed)
-					PutItemAtLocation(ItemInfo.Dummy, itemLocation);
-		}
-
 		void RecalculateAvailableItemLocations()
 		{
-			availableItemLocations = itemLocations
+			availableItemLocations = ItemLocations
 				.Where(l => !l.IsUsed && l.Gate.CanBeOpenedWith(availableRequirements))
 				.ToList();
 		}
 
-		void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)
+		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)
 		{
-			var itemUnlocks = unlockingMap.Get(itemInfo);
+			var itemUnlocks = unlockingMap.GetAllUnlock(itemInfo);
 
 			itemLocation.SetItem(itemInfo, itemUnlocks);
 
@@ -221,7 +251,7 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 
 		bool NewRequirementIsUnlocked(Requirement itemUnlocks)
 		{
-			return ((ulong)availableRequirements & (ulong)itemUnlocks) != (ulong)itemUnlocks;
+			return ((ulong)availableRequirements | (ulong)itemUnlocks) != (ulong)availableRequirements;
 		}
 	}
 }

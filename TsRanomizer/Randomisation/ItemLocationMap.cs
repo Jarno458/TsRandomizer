@@ -14,7 +14,7 @@ namespace TsRanodmizer.Randomisation
 		static readonly Requirement LowerLakeDesolationBridge = Requirement.TimeStop | Requirement.ForwardDash | Requirement.GateKittyBoss | Requirement.GateLeftLibrary;
 		static readonly Gate AccessToPast = 
 			(
-               Requirement.TimespinnerWheel & Requirement.TimespinnerSpindle //activateLibraryTimespinner
+               Requirement.TimeStop & Requirement.TimespinnerSpindle //activateLibraryTimespinner
                & (LowerLakeDesolationBridge & Requirement.CardD) //midLibrary
 			) //libraryTimespinner
 			| (Requirement.GateLakeSirineLeft & (Requirement.TimeStop | Requirement.ForwardDash)) //gateLakeSirine
@@ -42,15 +42,17 @@ namespace TsRanodmizer.Randomisation
 		static readonly Requirement SealedCavesLeft = Requirement.DoubleJump;
 		static readonly Gate SealedCavesLower = SealedCavesLeft & Requirement.CardA;
 		static readonly Gate SealedCavesSirens = (MidLibrary & Requirement.CardB) | Requirement.GateSealedSirensCave;
-		static readonly Gate MilitairyFortress = RightSideLibrary & CastleKeep & UpperRoyalTower; //TODO add lazer gate: Wraith Gate (the maw)
+		static readonly Gate KillAll3MajorBosses = RightSideLibrary & CastleKeep & UpperRoyalTower & AccessToPast & Requirement.Swimming;
+		static readonly Gate MilitairyFortress = KillAll3MajorBosses;
 		static readonly Gate MilitairyFortressHangar = MilitairyFortress & Requirement.TimeStop;
 		static readonly Gate RightSidemilitairyFortressHangar = MilitairyFortressHangar & Requirement.DoubleJump;
 		static readonly Gate TheLab = MilitairyFortressHangar & Requirement.CardB;
 		static readonly Gate TheLabPoweredOff = TheLab & DoubleJumpOfNpc;
 		static readonly Gate EmperorsTower = TheLab;
 
-		static readonly Gate LeftPyramid = Requirement.DoubleJump //TODO & access to world 3 accessToTimePortal2
-			& (Requirement.TimespinnerPiece1 & Requirement.TimespinnerPiece2 & Requirement.TimespinnerPiece3); //activateTimePortal2
+		static readonly Gate LeftPyramid = TheLabPoweredOff
+			& (Requirement.TimespinnerPiece1 & Requirement.TimespinnerPiece2 & Requirement.TimespinnerPiece3);
+		static readonly Gate Nightmare = LeftPyramid & Requirement.UpwardDash;
 
 		public new ItemLocation this[ItemKey key] => GetItemLocationBasedOnKeyOrRoomKey(key);
 
@@ -82,14 +84,14 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(1, 20, 232, 96), UpperLakeDesolation & Requirement.TimeStop);
 			Add(new ItemKey(1, 20, 168, 240), UpperLakeDesolation);
 			Add(new ItemKey(1, 22, 344, 160), UpperLakeDesolation);
-			//Add(new ItemKey(1, 18, 1272, 192), topLakeDesolation & Requirement.GassMask); //TODO & KILL all 3 bosses
-			//Add(new ItemKey(1, 18, 1368, 192), topLakeDesolation & Requirement.GassMask); //TODO & KILL all 3 bosses
-			//TODO shattered orb
+			Add(new ItemKey(1, 18, 1320, 189), UpperLakeDesolation);
+			Add(new ItemKey(1, 18, 1272, 192), UpperLakeDesolation & Requirement.GassMask & KillAll3MajorBosses);
+			Add(new ItemKey(1, 18, 1368, 192), UpperLakeDesolation & Requirement.GassMask & KillAll3MajorBosses);
 			Add(new RoomItemKey(1, 5), UpperLakeDesolation | LowerLakeDesolationBridge); //kitty boss
 			//libary left
 			Add(new ItemKey(2, 60, 328, 160), LeftLibrary);
 			Add(new ItemKey(2, 54, 296, 176), LeftLibrary);
-			Add(new ItemKey(2, 44, 680, 368), LeftLibrary);
+			Add(new ItemKey(2, 44, 600, 368), LeftLibrary);
 			Add(new ItemKey(2, 47, 216, 208), LeftLibrary & Requirement.CardD);
 			Add(new ItemKey(2, 47, 152, 208), LeftLibrary & Requirement.CardD);
 			Add(new ItemKey(2, 47, 88, 208), LeftLibrary & Requirement.CardD);
@@ -140,6 +142,8 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(10, 18, 280, 189), RightSidemilitairyFortressHangar & (DoubleJumpOfNpc | Requirement.ForwardDash & Requirement.DoubleJump));
 			// The lab
 			Add(new ItemKey(11, 36, 312, 192), TheLab);
+			Add(new ItemKey(11, 3, 1528, 192), TheLab & Requirement.DoubleJump);
+			Add(new ItemKey(11, 3, 72, 192), TheLab & DoubleJumpOfNpc);
 			Add(new ItemKey(11, 25, 104, 192), TheLab & Requirement.DoubleJump);
 			Add(new ItemKey(11, 18, 824, 128), TheLabPoweredOff);
 			Add(new ItemKey(11, 39, 200, 156), TheLabPoweredOff);
@@ -160,7 +164,8 @@ namespace TsRanodmizer.Randomisation
 		void AddPastItemLocations()
 		{
 			//Refugee Camp
-			Add(new ItemKey(3, 0, 104, 160), AccessToPast); //neliste
+			Add(new ItemKey(3, 0, 104, 160), Requirement.TimeStop & Requirement.TimespinnerSpindle
+			                                 & (LowerLakeDesolationBridge & Requirement.CardD)); //neliste , if you join past through a gate you dont get it
 			Add(new ItemKey(3, 30, 296, 176), AccessToPast);
 			Add(new ItemKey(3, 30, 232, 176), AccessToPast);
 			Add(new ItemKey(3, 30, 168, 176), AccessToPast);
@@ -186,6 +191,8 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(7, 6, 520, 496), LowerlakeSirine);
 			Add(new ItemKey(7, 11, 88, 240), LowerlakeSirine);
 			Add(new ItemKey(7, 2, 1016, 384), LowerlakeSirine);
+			Add(new ItemKey(7, 20, 248, 96), LowerlakeSirine);
+			Add(new ItemKey(7, 9, 584, 189), LowerlakeSirine);
 			//Caves of Banishment
 			Add(new ItemKey(8, 19, 664, 704), LowerCavesOfBanishment & Requirement.TimeStop);
 			Add(new ItemKey(8, 12, 280, 160), LowerCavesOfBanishment);
@@ -239,20 +246,20 @@ namespace TsRanodmizer.Randomisation
 
 		void AddPyramidItemLocations()
 		{
-			//disabled until requirement is fixed
-			//Add(new ItemKey(16, 14, 312, 192), LeftPyramid);
-			//Add(new ItemKey(16, 3, 88, 192), LeftPyramid);
-			//Add(new ItemKey(16, 22, 200, 192), LeftPyramid);
-			//Add(new ItemKey(16, 16, 1512, 144), LeftPyramid);
+			Add(new ItemKey(16, 14, 312, 192), LeftPyramid);
+			Add(new ItemKey(16, 3, 88, 192), LeftPyramid);
+			Add(new ItemKey(16, 22, 200, 192), LeftPyramid);
+			Add(new ItemKey(16, 16, 1512, 144), LeftPyramid);
+			//Add(new ItemKey(16, 5, 136, 192), LeftPyramid); //Post nightmare
 
-			//var challengeDungion = Requirement.UpwardDash;
-			//Add(new ItemKey(14, 14, 200, 832), challengeDungion); //transition chest 1
-			//Add(new ItemKey(14, 17, 200, 832), challengeDungion); //transition chest 2
-			//Add(new ItemKey(14, 20, 200, 832), challengeDungion); //transition chest 3
-			//Add(new ItemKey(14, 8, 120, 176), challengeDungion); //Ravenlord pre fight
-			//Add(new ItemKey(14, 9, 280, 176), challengeDungion); //Ravenlord post fight
-			//Add(new ItemKey(14, 6, 40, 208), challengeDungion); //ifrid pre fight
-			//Add(new ItemKey(14, 7, 280, 208), challengeDungion); //ifrid post fight
+			/*var challengeDungion = Requirement.UpwardDash;
+			Add(new ItemKey(14, 14, 200, 832), challengeDungion); //transition chest 1
+			Add(new ItemKey(14, 17, 200, 832), challengeDungion); //transition chest 2
+			Add(new ItemKey(14, 20, 200, 832), challengeDungion); //transition chest 3
+			Add(new ItemKey(14, 8, 120, 176), challengeDungion); //Ravenlord pre fight
+			Add(new ItemKey(14, 9, 280, 176), challengeDungion); //Ravenlord post fight
+			Add(new ItemKey(14, 6, 40, 208), challengeDungion); //ifrid pre fight
+			Add(new ItemKey(14, 7, 280, 208), challengeDungion); //ifrid post fight*/
 		}
 
 		ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)
@@ -274,9 +281,9 @@ namespace TsRanodmizer.Randomisation
 				itteration++;
 				var previusObtainedRequirements = obtainedRequirements;
 
-				GetReachableLocations(obtainedRequirements)
+				obtainedRequirements = GetReachableLocations(obtainedRequirements)
 					.Select(l => l.Unlocks)
-					.Aggregate(obtainedRequirements, (current, unlock) => current | unlock);
+					.Aggregate(Requirement.None, (current, unlock) => current | unlock);
 
 				if (obtainedRequirements == previusObtainedRequirements)
 					return false;
@@ -293,13 +300,10 @@ namespace TsRanodmizer.Randomisation
 
 		static bool CanCompleteGame(Requirement obtainedRequirements)
 		{
-			var requirementsNeedToBeatTheGame =
-				Requirement.TimespinnerPiece1 | Requirement.TimespinnerPiece2 | Requirement.TimespinnerPiece3;
-
-			return ((ulong)obtainedRequirements & (ulong)requirementsNeedToBeatTheGame) == (ulong)requirementsNeedToBeatTheGame;
+			return Nightmare.CanBeOpenedWith(obtainedRequirements);
 		}
 
-		public void Initialize(GameSave gameSave)
+		public void BaseOnSave(GameSave gameSave)
 		{
 			foreach (var itemLocation in this)
 				itemLocation.BsseOnGameSave(gameSave);

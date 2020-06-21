@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
@@ -37,7 +38,7 @@ namespace TsRanodmizer.Screens
 			Console.Out.WriteLine($"Seed: {seed}");
 
 			ItemLocations = Randomizer.Randomize(seed, fillingMethod);
-			ItemLocations.Initialize(Level.GameSave);
+			ItemLocations.BaseOnSave(Level.GameSave);
 
 			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed);
 		}
@@ -45,6 +46,25 @@ namespace TsRanodmizer.Screens
 		public override void Update(GameTime gameTime, InputState input)
 		{
 			LevelObject.Update(Level, ItemLocations, IsRoomChanged());
+
+#if DEBUG
+			if (input.IsNewButtonPress(Buttons.DPadLeft, PlayerIndex.One, out _))
+			{
+				Level.RequestChangeRoom(new LevelChangeRequest
+				{
+					LevelID = 1,
+					RoomID = 1,
+				});
+			}
+			if (input.IsNewButtonPress(Buttons.DPadRight, PlayerIndex.One, out _))
+			{
+				Level.RequestChangeRoom(new LevelChangeRequest
+				{
+					LevelID = Level.ID + 1,
+					RoomID = 1,
+				});
+			}
+#endif
 		}
 
 		public override void Draw(GCM gcm, SpriteBatch spriteBatch, SpriteFont menuFont)

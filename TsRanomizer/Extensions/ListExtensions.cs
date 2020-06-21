@@ -12,5 +12,10 @@ namespace TsRanodmizer.Extensions
 		{
 			return areas[roomKey.LevelId].Rooms.Single(r => r.RoomID == roomKey.RoomId); //Room Array Index isnt equal to RoomId
 		}
+
+		internal static T SelectRandom<T>(this IList<T> items, Random r)
+		{
+			return items[r.Next(items.Count)];
+		}
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace TsRanodmizer
 {
-	class Seed
+	struct Seed
 	{
 		readonly uint value;
 
@@ -19,7 +19,7 @@ namespace TsRanodmizer
 		{
 			if (!uint.TryParse(text, NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint parsedValue))
 			{
-				seed = null;
+				seed = default(Seed);
 				return false;
 			}
 

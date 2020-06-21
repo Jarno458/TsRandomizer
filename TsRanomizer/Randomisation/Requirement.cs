@@ -31,7 +31,6 @@ namespace TsRanodmizer.Randomisation
 		public static readonly Requirement TimespinnerPiece1 = 1UL << 21;
 		public static readonly Requirement TimespinnerPiece2 = 1UL << 22;
 		public static readonly Requirement TimespinnerPiece3 = 1UL << 23;
-		public static readonly Requirement TimespinnerWheel = 1UL << 24;
 		public static readonly Requirement PinkOrb = 1UL << 25;
 
 		public static readonly Requirement GateKittyBoss = 1UL << 50;
@@ -93,7 +92,7 @@ namespace TsRanodmizer.Randomisation
 		[Pure]
 		public override bool Equals(object obj)
 		{
-			if (ReferenceEquals(null, obj)) return false;
+			if (obj is null) return false;
 			return obj is Requirement item && Equals(item);
 		}
 
@@ -136,7 +135,7 @@ namespace TsRanodmizer.Randomisation
 
 		public static bool operator !=(Requirement a, Requirement b)
 		{
-			return !a.Equals(b);
+			return !(a == b);
 		}
 
 		public override string ToString()

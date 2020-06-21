@@ -8,21 +8,8 @@ using TsRanodmizer.Randomisation.ItemPlacers;
 namespace TsRandomizer.Tests
 {
 	[TestFixture]
-	class ForwardFillingRandomizerFixture
+	class RandomFillingRandomizerFixture
 	{
-		[Test]
-		public void Should_generate_beatable_seed_in_1_pass()
-		{
-			var itemLocations = new ItemLocationMap();
-
-			var seed = new Seed(1);
-			var unlockingMap = new ItemUnlockingMap(seed);
-
-			ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, unlockingMap, itemLocations);
-
-			Assert.That(itemLocations.IsBeatable(), Is.True);
-		}
-
 		[TestCase(1)]
 		[TestCase(2)]
 		[TestCase(3)]
@@ -35,7 +22,7 @@ namespace TsRandomizer.Tests
 			var seed = new Seed(seedIndex);
 			var unlockingMap = new ItemUnlockingMap(seed);
 
-			ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, unlockingMap, itemLocations);
+			FullRandomItemLocationRandomizer.AddRandomItemsToLocationMap(seed, unlockingMap, itemLocations);
 
 			Assert.That(itemLocations[ItemKey.TutorialMeleeOrb].ItemInfo.LootType, Is.EqualTo(LootType.Orb));
 			Assert.That(itemLocations[ItemKey.TutorialMeleeOrb].ItemInfo.OrbSlot, Is.EqualTo(EOrbSlot.Melee));

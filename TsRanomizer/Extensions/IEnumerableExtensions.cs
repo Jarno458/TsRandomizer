@@ -33,7 +33,12 @@ namespace TsRanodmizer.Extensions
 		internal static T SelectRandom<T>(this IEnumerable<T> items, Random r)
 		{
 			var array = items.ToArray();
-			return array[r.Next(array.Length)];
+			return array.SelectRandom(r);
+		}
+
+		internal static IOrderedEnumerable<T> InRandomOrder<T>(this IEnumerable<T> items, Random r)
+		{
+			return items.OrderBy(i => r.Next());
 		}
 	}
 }

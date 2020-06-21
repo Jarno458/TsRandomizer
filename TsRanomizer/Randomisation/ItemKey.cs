@@ -22,27 +22,38 @@ namespace TsRanodmizer.Randomisation
 
 		public override bool Equals(object obj)
 		{
-			if (ReferenceEquals(null, obj)) return false;
+			if (obj is null) return false;
 			if (ReferenceEquals(this, obj)) return true;
 			if (obj.GetType() != GetType()) return false;
+
 			return Equals((ItemKey)obj);
 		}
 
 		public bool Equals(ItemKey other)
 		{
-			if (ReferenceEquals(null, other)) return false;
+			if (other is null) return false;
 
 			return LevelId == other.LevelId
-						 && RoomId == other.RoomId
-						 && X == other.X
-						 && Y == other.Y;
+				&& RoomId == other.RoomId
+				&& X == other.X
+				&& Y == other.Y;
 		}
 
 		public override int GetHashCode()
 		{
 			return LevelId
-					 + RoomId << 8
-					 + (X ^ Y) << 16;
+				+ RoomId << 8
+				+ (X ^ Y) << 16;
+		}
+
+		public static bool operator ==(ItemKey a, ItemKey b)
+		{
+			return a?.Equals(b) ?? false;
+		}
+
+		public static bool operator !=(ItemKey a, ItemKey b)
+		{
+			return !(a == b);
 		}
 
 		public override string ToString()
