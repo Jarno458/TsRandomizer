@@ -98,7 +98,7 @@ namespace TsRanodmizer.LevelObjects
 			if (newObjects.Any())
 			{
 				GenerateShadowObjects(level.GameSave, itemLocations, newObjects);
-
+		
 				SetMonsterHpTo1(newObjects.OfType<Alive>());
 			}
 

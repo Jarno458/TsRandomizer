@@ -34,8 +34,6 @@ namespace TsRanodmizer.Randomisation
 		{
 			Key = key;
 			Gate = gate;
-
-
 		}
 
 		public void SetItem(ItemInfo item, Requirement unlocks)

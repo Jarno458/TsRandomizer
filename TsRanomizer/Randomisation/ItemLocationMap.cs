@@ -23,7 +23,7 @@ namespace TsRanodmizer.Randomisation
 		//past
 		static readonly Gate AccessLeftSideForestCaves = (AccessToPast & (Requirement.TimeStop | Requirement.ForwardDash)) | Requirement.GateLakeSirineRight;
 		static readonly Gate LeftSideForestCaves = AccessLeftSideForestCaves | Requirement.GateLakeSirineLeft;
-		static readonly Gate CastleRamparts = LeftSideForestCaves;
+		static readonly Gate CastleRamparts = AccessToPast;
 		static readonly Gate CastleKeep = CastleRamparts;
 		static readonly Gate RoyalTower = CastleKeep & Requirement.DoubleJump;
 		static readonly Gate UpperRoyalTower = RoyalTower & DoubleJumpOfNpc;
@@ -33,7 +33,7 @@ namespace TsRanodmizer.Randomisation
 		static readonly Gate UpperCavesOfBanishment = AccessToPast;
 
 		//future
-		static readonly Gate UpperLakeDesolation = AccessToPast & Requirement.AntiWeed;
+		static readonly Gate UpperLakeDesolation = LeftSideForestCaves & Requirement.AntiWeed;
 		static readonly Gate LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge;
 		static readonly Gate UpperLeftLibrary = LeftLibrary & (Requirement.DoubleJump | Requirement.ForwardDash);
 		static readonly Gate MidLibrary = LeftLibrary & Requirement.CardD;
@@ -41,7 +41,7 @@ namespace TsRanodmizer.Randomisation
 		static readonly Gate RightSizeLibraryElevator = MidLibrary & Requirement.CardE & (Requirement.CardC | Requirement.CardB);
 		static readonly Requirement SealedCavesLeft = Requirement.DoubleJump;
 		static readonly Gate SealedCavesLower = SealedCavesLeft & Requirement.CardA;
-		static readonly Gate SealedCavesSirens = (MidLibrary & Requirement.CardB) | Requirement.GateSealedSirensCave;
+		static readonly Gate SealedCavesSirens = (MidLibrary & Requirement.CardB & Requirement.CardE) | Requirement.GateSealedSirensCave;
 		static readonly Gate KillAll3MajorBosses = RightSideLibrary & CastleKeep & UpperRoyalTower & AccessToPast & Requirement.Swimming;
 		static readonly Gate MilitairyFortress = KillAll3MajorBosses;
 		static readonly Gate MilitairyFortressHangar = MilitairyFortress & Requirement.TimeStop;
@@ -91,7 +91,7 @@ namespace TsRanodmizer.Randomisation
 			//libary left
 			Add(new ItemKey(2, 60, 328, 160), LeftLibrary);
 			Add(new ItemKey(2, 54, 296, 176), LeftLibrary);
-			Add(new ItemKey(2, 44, 600, 368), LeftLibrary);
+			Add(new ItemKey(2, 44, 680, 368), LeftLibrary);
 			Add(new ItemKey(2, 47, 216, 208), LeftLibrary & Requirement.CardD);
 			Add(new ItemKey(2, 47, 152, 208), LeftLibrary & Requirement.CardD);
 			Add(new ItemKey(2, 47, 88, 208), LeftLibrary & Requirement.CardD);
@@ -102,7 +102,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(2, 56, 840, 192), UpperLeftLibrary);
 			Add(new ItemKey(2, 56, 1064, 192), UpperLeftLibrary);
 			//libary mid
-			Add(new ItemKey(2, 34, 232, 1200), MidLibrary);
+			Add(new ItemKey(2, 34, 232, 1200), MidLibrary );
 			Add(new ItemKey(2, 40, 344, 176), MidLibrary);
 			Add(new ItemKey(2, 32, 328, 160), MidLibrary & Requirement.CardC);
 			Add(new ItemKey(2, 7, 232, 144), MidLibrary);
@@ -164,8 +164,7 @@ namespace TsRanodmizer.Randomisation
 		void AddPastItemLocations()
 		{
 			//Refugee Camp
-			Add(new ItemKey(3, 0, 104, 160), Requirement.TimeStop & Requirement.TimespinnerSpindle
-			                                 & (LowerLakeDesolationBridge & Requirement.CardD)); //neliste , if you join past through a gate you dont get it
+			Add(new RoomItemKey(3, 0), Requirement.TimeStop & Requirement.TimespinnerSpindle & (LowerLakeDesolationBridge & Requirement.CardD)); //neliste
 			Add(new ItemKey(3, 30, 296, 176), AccessToPast);
 			Add(new ItemKey(3, 30, 232, 176), AccessToPast);
 			Add(new ItemKey(3, 30, 168, 176), AccessToPast);
@@ -185,6 +184,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(7, 19, 168, 240), UpperLakeSirine);
 			Add(new ItemKey(7, 27, 184, 144), UpperLakeSirine);
 			Add(new ItemKey(7, 13, 56, 176), UpperLakeSirine);
+			Add(new ItemKey(7, 30, 296, 176), UpperLakeSirine);
 			//Lower Lake Sirine
 			Add(new ItemKey(7, 3, 440, 1232), LowerlakeSirine);
 			Add(new ItemKey(7, 7, 1432, 576), LowerlakeSirine);

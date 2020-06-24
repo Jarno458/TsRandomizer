@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Timespinner.Core;
@@ -14,9 +15,9 @@ using TsRanodmizer.Extensions;
 namespace TsRanodmizer.LevelObjects
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent")]
-	[AlwaysSpawn(EEventTileType.OrbPedestal)] //TODO Fix spawnning without sprite
+	[AlwaysSpawn(EEventTileType.OrbPedestal)]
 	// ReSharper disable once UnusedMember.Global
-	class OrbPedestal : LevelObject<Mobile>
+	class OrbPedestal : LevelObject<Mobile>, ICustomSpwanMethod
 	{
 		static readonly MethodInfo GetOrbGlowColorByTypeMethod = TimeSpinnerType
 			.Get("Timespinner.GameObjects.Heroes.Orbs.LunaisOrb")
@@ -38,6 +39,12 @@ namespace TsRanodmizer.LevelObjects
 			if (ItemInfo == null)
 				return;
 
+			if (!Object.IsAlive)
+			{
+				SpawnItemInMiddleOfRoom();
+				return;
+			}
+
 			if (ItemInfo.LootType == LootType.Orb)
 			{
 				Object._orbType = ItemInfo.OrbType;
@@ -57,9 +64,19 @@ namespace TsRanodmizer.LevelObjects
 			appendagesCount = Appendages.Count;
 		}
 
+		void SpawnItemInMiddleOfRoom()
+		{
+			var itemDropPickupType = TimeSpinnerType.Get("Timespinner.GameObjects.Items.ItemDropPickup");
+			var itemPosition = new Point(266, 208); //based on CutsceneKeep1 itemPosition
+			var itemDropPickup = Activator.CreateInstance(itemDropPickupType, ItemInfo.BestiaryItemDropSpecification, Level, itemPosition, -1);
+
+			var levelReflected = Level.AsDynamic();
+			levelReflected.RequestAddObject((Item)itemDropPickup);
+		}
+
 		protected override void OnUpdate()
 		{
-			if (ItemInfo == null || hasDroppedLoot)
+			if (ItemInfo == null || hasDroppedLoot || !Object.IsAlive)
 				return;
 
 			if (Appendages.Count != appendagesCount)
@@ -119,6 +136,31 @@ namespace TsRanodmizer.LevelObjects
 			Object._baseOrbGlowColorAsColor = orbGlowColor;
 			((object)Object._glowCircle).AsDynamic().BaseColor = orbGlowColor;
 			((OrbPedestalLeakParticleSystem)Object._pixelLeakParticleSystem).BaseColor = orbGlowColorVector;
+		}
+
+		/*public void ReSpawn(Level level)
+		{
+			var objectTileSpecification = new ObjectTileSpecification(480) { Argument = 2 };
+
+			var gameEvent = Spawn(Level, objectTileSpecification);
+
+			gameEvent.Initialize();
+			gameEvent.ID = level.NextObjectTicketID;
+			
+			level.AddEvent(gameEvent);
+
+			//LevelReflected.RequestAddObject(gameEvent);
+		}*/
+
+		public GameEvent Spawn(Level level, ObjectTileSpecification specification)
+		{
+			var timeSpinnerType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
+			var point = new Point(specification.X * 16 + 8, specification.Y * 16 + 16);
+			var gameEvent = (GameEvent)Activator.CreateInstance(timeSpinnerType, level, point, -1, specification);
+
+			gameEvent.AsDynamic().DoesSpawnDespiteBeingOwned = true;
+
+			return gameEvent;
 		}
 	}
 }

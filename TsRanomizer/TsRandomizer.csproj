@@ -82,6 +82,7 @@
     <Compile Include="Randomisation\ItemPlacers\ItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemUnlockingMap.cs" />
     <Compile Include="Randomisation\RoomItemKey.cs" />
+    <Compile Include="ReplacementObjects\PyramidKeys.cs" />
     <Compile Include="ReplacementObjects\TimespinnerSpindle.cs" />
     <Compile Include="IntermediateObjects\TriggerAfterLootDrop.cs" />
     <Compile Include="DeRandomizer.cs" />

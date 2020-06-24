@@ -14,18 +14,17 @@ namespace TsRanodmizer.LevelObjects
 
 		static RoomTrigger()
 		{
+			RoomTriggers.Add(new RoomTrigger(1, 5, (level, itemLocation) =>
+			{
+				if (itemLocation.IsPickedUp || !level.GameSave.GetSaveBool("IsBossDead_RoboKitty")) return;
+
+				SpawnItemDropPickup(level, itemLocation.ItemInfo, 266, 208);
+			}));
 			RoomTriggers.Add(new RoomTrigger(5,5, (level, itemLocation) =>
 			{
 				if (itemLocation.IsPickedUp || !level.GameSave.HasCutsceneBeenTriggered("Keep0_Demons0")) return;
 
-				var itemInfo = itemLocation.ItemInfo;
-
-				var itemDropPickupType = TimeSpinnerType.Get("Timespinner.GameObjects.Items.ItemDropPickup");
-				var itemPosition = new Point(266, 208); //based on CutsceneKeep1 itemPosition
-				var itemDropPickup = Activator.CreateInstance(itemDropPickupType, itemInfo.BestiaryItemDropSpecification, level, itemPosition, -1);
-
-				var levelReflected = level.AsDynamic();
-				levelReflected.RequestAddObject((Item)itemDropPickup);
+				SpawnItemDropPickup(level, itemLocation.ItemInfo, 266, 208); //based on CutsceneKeep1 itemPosition
 			}));
 		}
 
@@ -44,6 +43,16 @@ namespace TsRanodmizer.LevelObjects
 
 			if(RoomTriggers.TryGetValue(roomKey, out var trigger))
 				trigger.trigger(level, itemLocations[roomKey]);
+		}
+
+		static void SpawnItemDropPickup(Level level, ItemInfo itemInfo, int x, int y)
+		{
+			var itemDropPickupType = TimeSpinnerType.Get("Timespinner.GameObjects.Items.ItemDropPickup");
+			var itemPosition = new Point(x, y);
+			var itemDropPickup = Activator.CreateInstance(itemDropPickupType, itemInfo.BestiaryItemDropSpecification, level, itemPosition, -1);
+
+			var levelReflected = level.AsDynamic();
+			levelReflected.RequestAddObject((Item)itemDropPickup);
 		}
 	}
 }

@@ -1,17 +1,24 @@
 ﻿Remove TODO's
 Fix items dropped by bosses after leaving room (shapeshifterboss itemdrop)
-Add item location of orb pedistals
 Add ItemList
 Improve item location map with lab
-Fix render resizing
 remove orb spell/ring shop
+Fix Relics TalariaAttachment & TimespinnerGearItem
+Add DRM free support
 
 gass blocks of entire lake desolation, so if you are able to kill the maw you should also be able to find a gassmask
+		Add check to beatable if you can reach gassmask with a accessto past & double jump & swimming suit
 
 BUG:
-accesable locations are off
-orb pedestals dont spawn, if you already got the orb they where meant to reward
+orb pedestals dont spawn, if you already got the orb they where meant to reward <- FOCUS
 gear pedistals dont spawn, if you already got the gear they where meant to reward
 
 Minor:
 Deleting save file does not delete seed representation
+Fix render resizing
+orb pedestal spawns without sprite
+disable quests maybe?
+
+Ideas:
+Make ice orb freeze enemies
+
