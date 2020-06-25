@@ -6,18 +6,19 @@ using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
+using TsRanodmizer.Randomisation;
 
-namespace TsRanodmizer.LevelObjects
+namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Relics.RelicKeycardC")]
 	[AlwaysSpawn(EEventTileType.TimespinnerWheelItem, 6)]
 	// ReSharper disable once UnusedMember.Global
-	class RelicKeycardC : LevelObject, ICustomSpwanMethod
+	class RelicKeycardC : ItemManipulator, ICustomSpwanMethod
 	{
 		bool hasDroppedLoot;
 		bool hasCardC;
 
-		public RelicKeycardC(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
+		public RelicKeycardC(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
 		{
 		}
 

@@ -1,16 +1,17 @@
 ﻿using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
+using TsRanodmizer.Randomisation;
 
-namespace TsRanodmizer.LevelObjects
+namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
 	[TimeSpinnerType("Timespinner.GameObjects.NPCs.AstrologerNPC")]
 	// ReSharper disable once UnusedMember.Global
-	class NelisteNpc : LevelObject
+	class NelisteNpc : ItemManipulator
 	{
 		int lastSubProgress;
 
-		public NelisteNpc(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
+		public NelisteNpc(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
 		{
 		}
 

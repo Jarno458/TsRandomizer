@@ -9,15 +9,16 @@ using Timespinner.GameAbstractions.GameObjects;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
-using TsRanodmizer.IntermediateObjects;
 using TsRanodmizer.Extensions;
+using TsRanodmizer.IntermediateObjects;
+using TsRanodmizer.Randomisation;
 
-namespace TsRanodmizer.LevelObjects
+namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent")]
-	[AlwaysSpawn(EEventTileType.OrbPedestal)]
+	[AlwaysSpawn(EEventTileType.OrbPedestal, ignoreArgument: true)]
 	// ReSharper disable once UnusedMember.Global
-	class OrbPedestal : LevelObject<Mobile>, ICustomSpwanMethod
+	class OrbPedestal : ItemManipulator<Mobile>, ICustomSpwanMethod
 	{
 		static readonly MethodInfo GetOrbGlowColorByTypeMethod = TimeSpinnerType
 			.Get("Timespinner.GameObjects.Heroes.Orbs.LunaisOrb")
@@ -29,9 +30,10 @@ namespace TsRanodmizer.LevelObjects
 		int appendagesCount;
 		bool hasDroppedLoot;
 
-		public OrbPedestal(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
+		public OrbPedestal(Mobile typedObject, ItemLocation itemInfo) : base(typedObject, itemInfo)
 		{
-			menuIcons = ((Level)Object._level).GCM.SpMenuIcons;
+			if(Level != null)
+				menuIcons = Level.GCM.SpMenuIcons;
 		}
 		
 		protected override void Initialize()

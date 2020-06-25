@@ -1,16 +1,16 @@
-﻿using Timespinner.GameAbstractions.Inventory;
-using Timespinner.GameObjects.BaseClasses;
+﻿using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.IntermediateObjects;
+using TsRanodmizer.Randomisation;
 
-namespace TsRanodmizer.LevelObjects
+namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Items.ItemDropPickup")]
 	// ReSharper disable once UnusedMember.Global
-	class ItemDropPickup : LevelObject
+	class ItemDropPickup : ItemManipulator
 	{
 		bool hasDroppedLoot;
 
-		public ItemDropPickup(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
+		public ItemDropPickup(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
 		{
 		}
 

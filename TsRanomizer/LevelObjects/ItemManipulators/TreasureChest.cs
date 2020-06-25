@@ -4,14 +4,15 @@ using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
+using TsRanodmizer.Randomisation;
 
-namespace TsRanodmizer.LevelObjects
+namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
-	class TreasureChest : LevelObject<TreasureChestEvent>
+	class TreasureChest : ItemManipulator<TreasureChestEvent>
 	{
 		bool hasDroppedLoot;
 
-		public TreasureChest(TreasureChestEvent treasureChest, ItemInfo itemInfo) : base(treasureChest, itemInfo)
+		public TreasureChest(TreasureChestEvent treasureChest, ItemLocation itemLocation) : base(treasureChest, itemLocation)
 		{
 		}
 

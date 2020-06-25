@@ -3,6 +3,7 @@ using System.Reflection;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
+using TsRanodmizer.Randomisation;
 
 namespace TsRanodmizer.LevelObjects
 {
@@ -11,14 +12,16 @@ namespace TsRanodmizer.LevelObjects
 	{
 		public readonly EEventTileType EventType;
 		public readonly int Argument;
+		public readonly bool IgnoreArgument;
 
 		public Type ObjectType;
 		public Type TimeSpinnerObjectType;
 
-		public AlwaysSpawnAttribute(EEventTileType eventType, int argument = 0)
+		public AlwaysSpawnAttribute(EEventTileType eventType, int argument = 0, bool ignoreArgument = false)
 		{
 			EventType = eventType;
 			Argument = argument;
+			IgnoreArgument = ignoreArgument;
 		}
 	}
 

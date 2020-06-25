@@ -5,16 +5,17 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
+using TsRanodmizer.Randomisation;
 
-namespace TsRanodmizer.LevelObjects
+namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Events.EnvironmentPrefabs.L09_CursedCaves.EnvPrefabCursedCavesCorpse")]
 	// ReSharper disable once UnusedMember.Global
-	class EnvPrefabCursedCavesCorpse : LevelObject
+	class EnvPrefabCursedCavesCorpse : ItemManipulator
 	{
 		bool hasReplacedItemScript;
 
-		public EnvPrefabCursedCavesCorpse(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
+		public EnvPrefabCursedCavesCorpse(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
 		{
 		}
 

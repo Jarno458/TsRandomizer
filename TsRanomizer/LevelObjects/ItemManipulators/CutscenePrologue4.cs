@@ -2,16 +2,17 @@
 using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
+using TsRanodmizer.Randomisation;
 
-namespace TsRanodmizer.LevelObjects
+namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Cutscene.CutscenePrologue4")]
 	// ReSharper disable once UnusedMember.Global
-	class CutscenePrologue4 : LevelObject
+	class CutscenePrologue4 : ItemManipulator
 	{
 		bool hasAwardedMeleeOrb;
 
-		public CutscenePrologue4(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
+		public CutscenePrologue4(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
 		{
 		}
 

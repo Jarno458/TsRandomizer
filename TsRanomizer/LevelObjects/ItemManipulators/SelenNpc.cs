@@ -2,17 +2,18 @@
 using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
+using TsRanodmizer.Randomisation;
 
-namespace TsRanodmizer.LevelObjects
+namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
 	[TimeSpinnerType("Timespinner.GameObjects.NPCs.SelenNPC")]
 	// ReSharper disable once UnusedMember.Global
-	class SelenNpc : LevelObject
+	class SelenNpc : ItemManipulator
 	{
 		bool hasReplacedSpellPopup;
 		bool hasAwardedSpellOrb;
 
-		public SelenNpc(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
+		public SelenNpc(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
 		{
 		}
 

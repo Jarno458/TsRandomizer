@@ -79,7 +79,7 @@ namespace TsRanodmizer.Screens
 			{
 				spriteBatch.DrawString(menuFont, text, new Vector2(30, 130), Color.Red, inGameZoom);
 
-				LevelObject.Draw(spriteBatch, menuFont, Level.LevelRenderCenter, ItemLocations);
+				ItemManipulator.Draw(spriteBatch, menuFont, Level.LevelRenderCenter, ItemLocations);
 			}
 #endif
 		}

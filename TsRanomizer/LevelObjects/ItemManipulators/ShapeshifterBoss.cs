@@ -4,18 +4,19 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.IntermediateObjects;
+using TsRanodmizer.Randomisation;
 
-namespace TsRanodmizer.LevelObjects
+namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.ShapeshifterBoss")]
 	// ReSharper disable once UnusedMember.Global
-	class ShapeshifterBoss : LevelObject
+	class ShapeshifterBoss : ItemManipulator
 	{
 		bool hasReplacedItemScript;
 
 		static readonly Type SandStreamerEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Misc.SandStreamerEvent");
 
-		public ShapeshifterBoss(Mobile typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
+		public ShapeshifterBoss(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
 		{
 		}
 

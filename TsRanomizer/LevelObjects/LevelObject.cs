@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
@@ -20,7 +19,7 @@ namespace TsRanodmizer.LevelObjects
 	{
 		public readonly T TypedObject;
 
-		protected LevelObject(T typedObject, ItemInfo itemInfo) : base(typedObject, itemInfo)
+		protected LevelObject(T typedObject, ItemInfo itemInfo) : base(typedObject)
 		{
 			TypedObject = typedObject;
 		}
@@ -28,21 +27,17 @@ namespace TsRanodmizer.LevelObjects
 
 	abstract class LevelObject
 	{
+		protected static readonly List<LevelObject> Objects = new List<LevelObject>();
+
 		static readonly Dictionary<Type, Type> RegisteredTypes = new Dictionary<Type, Type>(); //ObjectType, EventHandler
 		static readonly Dictionary<EEventTileType, AlwaysSpawnAttribute> AlwaysSpawningEventTypes = new Dictionary<EEventTileType, AlwaysSpawnAttribute>(); //EEventTileType, SpawnerMethod
-		static readonly List<LevelObject> Objects = new List<LevelObject>();
 		static readonly List<int> KnownItemIds = new List<int>();
 
-		public readonly ItemInfo ItemInfo;
 		public readonly dynamic Object;
 
-		public Level Level => (Level)Object._level;
+		public Level Level => (Level)Object?._level;
 		public dynamic LevelReflected => Level.AsDynamic();
 		public Queue<ScriptAction> Scripts => (Queue<ScriptAction>)LevelReflected._waitingScripts;
-
-		public bool IsPickedUp => itemLocation.IsPickedUp;
-
-		ItemLocation itemLocation;
 
 		static LevelObject()
 		{
@@ -52,7 +47,8 @@ namespace TsRanodmizer.LevelObjects
 			var typesDirivedFromLevelObject = levelObjectType.Assembly.GetTypes()
 				.Where(t => levelObjectType.IsAssignableFrom(t)
 						 && !t.IsGenericType
-						 && t != levelObjectType);
+						 && t != levelObjectType
+						 && t != typeof(ItemManipulator));
 
 			foreach (var typeDirivedFromLevelObject in typesDirivedFromLevelObject)
 			{
@@ -79,18 +75,17 @@ namespace TsRanodmizer.LevelObjects
 			}
 		}
 
-		protected LevelObject(Mobile typedObject, ItemInfo itemInfo)
+		protected LevelObject(Mobile typedObject)
 		{
-			if(typedObject == null)
+			if (typedObject == null)
 				return;
 
-			ItemInfo = itemInfo;
 			Object = typedObject.AsDynamic();
 		}
 
 		public static void Update(Level level, ItemLocationMap itemLocations, bool roomChanged)
 		{
-			if(roomChanged)
+			if (roomChanged)
 				OnChangeRoom(level, itemLocations);
 
 			var levelReflected = level.AsDynamic();
@@ -98,18 +93,18 @@ namespace TsRanodmizer.LevelObjects
 			if (newObjects.Any())
 			{
 				GenerateShadowObjects(level.GameSave, itemLocations, newObjects);
-		
+
 				SetMonsterHpTo1(newObjects.OfType<Alive>());
 			}
 
-			var itemsDictionary = (Dictionary<int, Item>) levelReflected._items;
+			var itemsDictionary = (Dictionary<int, Item>)levelReflected._items;
 			var currentItemIds = itemsDictionary.Keys;
 			var newItems = currentItemIds
 				.Except(KnownItemIds)
 				.Select(i => itemsDictionary[i])
 				.ToArray();
 
-			if(newItems.Any())
+			if (newItems.Any())
 				GenerateShadowObjects(level.GameSave, itemLocations, newItems);
 
 			KnownItemIds.Clear();
@@ -117,28 +112,6 @@ namespace TsRanodmizer.LevelObjects
 
 			foreach (var obj in Objects)
 				obj.OnUpdate();
-		}
-
-		public static void Draw(
-			SpriteBatch spriteBatch, SpriteFont menuFont, Vector2 levelRenderCenter, 
-			ItemLocationMap itemLocations
-		)
-		{
-			for (var i = 0; i < Objects.Count; i++)
-			{
-				var obj = Objects[i];
-				var itemLocation = obj.itemLocation;
-				var drawKeyPos = new Vector2(30, 160 + 60 * i);
-				var drawRequirementPos = new Vector2(30, 160 + (60 * i) + 24);
-				var color = obj.ItemInfo != null
-					? obj.ItemInfo != ItemInfo.Dummy
-						? Color.Green
-						: Color.DarkGreen
-					: Color.Red;
-
-				spriteBatch.DrawString(menuFont, $"{itemLocation.Key}", drawKeyPos, color, 2);
-				spriteBatch.DrawString(menuFont, $"Requirement: {itemLocation.Gate}", drawRequirementPos, color, 1.5f);
-			}
 		}
 
 		static void OnChangeRoom(Level level, ItemLocationMap itemLocations)
@@ -150,6 +123,8 @@ namespace TsRanodmizer.LevelObjects
 			level.GameSave.AddItem(ItemInfo.Get(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(ItemInfo.Get(EInventoryRelicType.DoubleJump));
 			level.GameSave.AddItem(ItemInfo.Get(EInventoryRelicType.EssenceOfSpace));
+			level.GameSave.AddItem(ItemInfo.Get(EInventoryOrbType.Iron, EOrbSlot.Melee));
+
 
 #endif
 			var levelReflected = level.AsDynamic();
@@ -162,7 +137,7 @@ namespace TsRanodmizer.LevelObjects
 			IEnumerable<Animate> enemies = levelReflected._enemies.Values;
 
 			SetMonsterHpTo1(levelReflected._enemies.Values);
-			
+
 			var objects = eventObjects
 				.Concat(npcs)
 				.Concat(enemies)
@@ -184,18 +159,15 @@ namespace TsRanodmizer.LevelObjects
 
 				foreach (var obj in objectsPerType)
 				{
-					var itemKey = GetKey(obj);
-					var itemLocation = itemLocations[itemKey];
+					LevelObject levelObject;
 
-					if (itemLocation == null)
-					{
-						Console.Out.WriteLine($"UnmappedItem: {itemKey}");
+					if (typeof(ItemManipulator).IsAssignableFrom(levelObjectType))
+						levelObject = ItemManipulator.GenerateShadowObject(levelObjectType, obj, itemLocations);
+					else
+						levelObject = (LevelObject)Activator.CreateInstance(levelObjectType, obj);
+
+					if (levelObject == null)
 						continue;
-					}
-						
-					var levelObject = (LevelObject)Activator.CreateInstance(levelObjectType, obj, itemLocation.ItemInfo);
-					levelObject.itemLocation = itemLocation;
-
 					Objects.Add(levelObject);
 					levelObject.Initialize();
 				}
@@ -210,13 +182,14 @@ namespace TsRanodmizer.LevelObjects
 			{
 				var eventTileType = alwaysSpawningEventType.Key;
 				var argument = alwaysSpawningEventType.Value.Argument;
+				var ignoreArgument = alwaysSpawningEventType.Value.IgnoreArgument;
 				var objectType = alwaysSpawningEventType.Value.ObjectType;
 				var timeSpinnerType = alwaysSpawningEventType.Value.TimeSpinnerObjectType;
 
 				var eventTilesOfEventType = ((RoomSpecification)levelPrivate.CurrentRoom).ObjectTiles
 					.Values.SelectMany(list => list.ToArray())
 					.Where(t => t.Category == EObjectTileCategory.Event && (EEventTileType)t.ObjectID == eventTileType)
-					.Where(t => (!t.DoesHaveArgument && argument == 0) || t.Argument == argument)
+					.Where(t => ignoreArgument || (!t.DoesHaveArgument && argument == 0) || t.Argument == argument)
 					.ToArray();
 
 				if (!eventTilesOfEventType.Any() || Objects.Any(o => o.GetType() == objectType))
@@ -228,7 +201,7 @@ namespace TsRanodmizer.LevelObjects
 
 					if (typeof(ICustomSpwanMethod).IsAssignableFrom(objectType))
 					{
-						var instance = (ICustomSpwanMethod)Activator.CreateInstance(objectType, new object[] {null, null});
+						var instance = (ICustomSpwanMethod)Activator.CreateInstance(objectType, new object[] { null, null });
 						gameEvent = instance.Spawn(level, specification);
 					}
 					else
@@ -253,7 +226,7 @@ namespace TsRanodmizer.LevelObjects
 #endif
 		}
 
-		static ItemKey GetKey(Mobile obj)
+		protected static ItemKey GetKey(Mobile obj)
 		{
 			var objectPrivate = obj.AsDynamic();
 			var level = (Level)objectPrivate._level;
@@ -269,19 +242,6 @@ namespace TsRanodmizer.LevelObjects
 
 		protected virtual void OnUpdate()
 		{
-		}
-
-		protected void AwardContainedItem()
-		{
-			Level.GameSave.AddItem(ItemInfo);
-
-			OnItemPickup();
-		}
-
-		protected void OnItemPickup()
-		{
-			ItemInfo.OnPickup(Level);
-			itemLocation.SetPickedUp();
 		}
 	}
 }
