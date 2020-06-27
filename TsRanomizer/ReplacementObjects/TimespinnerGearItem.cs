@@ -8,17 +8,22 @@ using TsRanodmizer.IntermediateObjects;
 
 namespace TsRanodmizer.ReplacementObjects
 {
-	[TimeSpinnerType("Timespinner.GameObjects.Events.Relics.PyramidKeys")]
+	[TimeSpinnerType("Timespinner.GameObjects.Events.Relics.TimespinnerGearItem")]
 	// ReSharper disable once UnusedMember.Global
-	class PyramidKeys : Replaces
+	class TimespinnerGearItem : Replaces
 	{
+		const int Yoffset = 42;
+
 		protected override IEnumerable<Animate> Replace(Level level, Animate obj)
 		{
 			var reflected = obj.AsDynamic();
 
-			return new[] {
-				new TreasureChestEvent(level, new Point(296, 176), -1, reflected._objectSpec) //position based on room in the future
-			};
+			var chest = new TreasureChestEvent(level, new Point(obj.Position.X, obj.Position.Y + Yoffset), -1, reflected._objectSpec);
+
+			chest.AsDynamic()._lidAppendage.IsFacingLeft = obj.IsFacingLeft;
+			chest.IsFacingLeft = obj.IsFacingLeft;
+
+			return new[] { chest };
 		}
 	}
 }

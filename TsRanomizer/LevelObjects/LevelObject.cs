@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
+using Timespinner.Core;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
@@ -121,12 +122,9 @@ namespace TsRanodmizer.LevelObjects
 
 			//TODO Remove LOLZ
 			level.GameSave.AddItem(ItemInfo.Get(EInventoryRelicType.Dash));
-			level.GameSave.AddItem(ItemInfo.Get(EInventoryRelicType.DoubleJump));
 			level.GameSave.AddItem(ItemInfo.Get(EInventoryRelicType.EssenceOfSpace));
-			level.GameSave.AddItem(ItemInfo.Get(EInventoryOrbType.Iron, EOrbSlot.Melee));
-
-
 #endif
+
 			var levelReflected = level.AsDynamic();
 
 			Objects.Clear();
@@ -137,7 +135,7 @@ namespace TsRanodmizer.LevelObjects
 			IEnumerable<Animate> enemies = levelReflected._enemies.Values;
 
 			SetMonsterHpTo1(levelReflected._enemies.Values);
-
+			
 			var objects = eventObjects
 				.Concat(npcs)
 				.Concat(enemies)
@@ -210,6 +208,8 @@ namespace TsRanodmizer.LevelObjects
 						gameEvent = (GameEvent)Activator.CreateInstance(timeSpinnerType, level, point, -1, specification);
 					}
 
+					gameEvent.Initialize();
+
 					newObjects.Add(gameEvent);
 				}
 			}
@@ -234,6 +234,20 @@ namespace TsRanodmizer.LevelObjects
 			var position = (Point)objectPrivate._position;
 			var currentRoom = (RoomSpecification)levelPrivate.CurrentRoom;
 			return new ItemKey(levelPrivate._id, currentRoom.ID, position.X, position.Y);
+		}
+
+		static void SetLevelTileSheet(dynamic levelReflected, SpriteSheet spriteSheet)
+		{
+			levelReflected.CurrentTileset = spriteSheet;
+
+			foreach (Tile tile in levelReflected._solidTiles.Values)
+			{
+				var tileReflected = tile.AsDynamic();
+				tileReflected._sprite = spriteSheet;
+
+				if (!tileReflected._isInvisibleSolidTile)
+					tileReflected._drawSource = tileReflected._sprite.GetFrameSource(tileReflected._tileIndex);
+			}
 		}
 
 		protected virtual void Initialize()

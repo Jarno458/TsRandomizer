@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
@@ -18,13 +19,21 @@ namespace TsRanodmizer.LevelObjects
 			{
 				if (itemLocation.IsPickedUp || !level.GameSave.GetSaveBool("IsBossDead_RoboKitty")) return;
 
-				SpawnItemDropPickup(level, itemLocation.ItemInfo, 266, 208);
+				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
 			RoomTriggers.Add(new RoomTrigger(5,5, (level, itemLocation) =>
 			{
 				if (itemLocation.IsPickedUp || !level.GameSave.HasCutsceneBeenTriggered("Keep0_Demons0")) return;
 
-				SpawnItemDropPickup(level, itemLocation.ItemInfo, 266, 208); //based on CutsceneKeep1 itemPosition
+				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
+			}));
+			RoomTriggers.Add(new RoomTrigger(11, 39, (level, itemLocation) =>
+			{
+				if (itemLocation.IsPickedUp 
+					|| !level.GameSave.HasOrb(EInventoryOrbType.Eye)
+				    || !level.GameSave.GetSaveBool("11_LabPower")) return;
+
+				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 176);
 			}));
 		}
 

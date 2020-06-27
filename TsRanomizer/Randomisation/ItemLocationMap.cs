@@ -37,21 +37,24 @@ namespace TsRanodmizer.Randomisation
 		static readonly Gate LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge;
 		static readonly Gate UpperLeftLibrary = LeftLibrary & (Requirement.DoubleJump | Requirement.ForwardDash);
 		static readonly Gate MidLibrary = LeftLibrary & Requirement.CardD;
-		static readonly Gate RightSideLibrary = MidLibrary & (Requirement.CardC | (Requirement.CardB & Requirement.CardE));
+		static readonly Gate UpperRightSideLibrary = MidLibrary & (Requirement.CardC | (Requirement.CardB & Requirement.CardE));
 		static readonly Gate RightSizeLibraryElevator = MidLibrary & Requirement.CardE & (Requirement.CardC | Requirement.CardB);
 		static readonly Requirement SealedCavesLeft = Requirement.DoubleJump;
 		static readonly Gate SealedCavesLower = SealedCavesLeft & Requirement.CardA;
 		static readonly Gate SealedCavesSirens = (MidLibrary & Requirement.CardB & Requirement.CardE) | Requirement.GateSealedSirensCave;
-		static readonly Gate KillAll3MajorBosses = RightSideLibrary & CastleKeep & UpperRoyalTower & AccessToPast & Requirement.Swimming;
+		static readonly Gate KillAll3MajorBosses = UpperRightSideLibrary & CastleKeep & UpperRoyalTower & AccessToPast & Requirement.Swimming;
 		static readonly Gate MilitairyFortress = KillAll3MajorBosses;
 		static readonly Gate MilitairyFortressHangar = MilitairyFortress & Requirement.TimeStop;
 		static readonly Gate RightSidemilitairyFortressHangar = MilitairyFortressHangar & Requirement.DoubleJump;
 		static readonly Gate TheLab = MilitairyFortressHangar & Requirement.CardB;
 		static readonly Gate TheLabPoweredOff = TheLab & DoubleJumpOfNpc;
-		static readonly Gate EmperorsTower = TheLab;
+		static readonly Gate UppereLab = TheLabPoweredOff & Requirement.ForwardDash;
+		static readonly Gate EmperorsTower = UppereLab;
 
-		static readonly Gate LeftPyramid = TheLabPoweredOff
-			& (Requirement.TimespinnerPiece1 & Requirement.TimespinnerPiece2 & Requirement.TimespinnerPiece3);
+		//pyramid
+		static readonly Gate LeftPyramid = UppereLab & (
+			Requirement.TimeStop & Requirement.TimespinnerSpindle &
+			Requirement.TimespinnerPiece1 & Requirement.TimespinnerPiece2 & Requirement.TimespinnerPiece3);
 		static readonly Gate Nightmare = LeftPyramid & Requirement.UpwardDash;
 
 		public new ItemLocation this[ItemKey key] => GetItemLocationBasedOnKeyOrRoomKey(key);
@@ -102,19 +105,20 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(2, 56, 840, 192), UpperLeftLibrary);
 			Add(new ItemKey(2, 56, 1064, 192), UpperLeftLibrary);
 			//libary mid
-			Add(new ItemKey(2, 34, 232, 1200), MidLibrary );
+			Add(new ItemKey(2, 34, 232, 1200), MidLibrary);
 			Add(new ItemKey(2, 40, 344, 176), MidLibrary);
 			Add(new ItemKey(2, 32, 328, 160), MidLibrary & Requirement.CardC);
 			Add(new ItemKey(2, 7, 232, 144), MidLibrary);
 			Add(new ItemKey(2, 25, 328, 192), MidLibrary & Requirement.CardE);
 			//libary right, 
-			Add(new ItemKey(2, 15, 760, 192), RightSideLibrary);
+			Add(new ItemKey(2, 15, 760, 192), UpperRightSideLibrary);
 			Add(new ItemKey(2, 20, 72, 1200), RightSizeLibraryElevator);
-			Add(new ItemKey(2, 23, 72, 560), RightSideLibrary);
-			Add(new ItemKey(2, 23, 1112, 112), RightSideLibrary);
-			Add(new ItemKey(2, 23, 136, 304), RightSideLibrary);
-			Add(new ItemKey(2, 11, 104, 192), RightSideLibrary);
+			Add(new ItemKey(2, 23, 72, 560), UpperRightSideLibrary);
+			Add(new ItemKey(2, 23, 1112, 112), UpperRightSideLibrary);
+			Add(new ItemKey(2, 23, 136, 304), UpperRightSideLibrary);
+			Add(new ItemKey(2, 11, 104, 192), UpperRightSideLibrary);
 			Add(new ItemKey(2, 29, 280, 222 + TimespinnerSpindle.YOffset), RightSizeLibraryElevator);
+			Add(new ItemKey(2, 52, 104, 192), RightSizeLibraryElevator & Requirement.CardA);
 			//Sealed Caves left
 			Add(new ItemKey(9, 10, 248, 848), SealedCavesLeft);
 			Add(new ItemKey(9, 19, 664, 704), SealedCavesLower & Requirement.TimeStop);
@@ -124,7 +128,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(9, 12, 280, 160), SealedCavesLower);
 			Add(new ItemKey(9, 48, 104, 160), SealedCavesLower);
 			Add(new ItemKey(9, 15, 248, 192), SealedCavesLower);
-			//Add(new ItemKey(9, 13, ???, ???), sealedCavesLeft); //TODO Timespinner Gear 3
+			Add(new ItemKey(9, 13, 296, 176), SealedCavesLower);
 			//Sealed Caves (sirens)
 			Add(new ItemKey(9, 5, 88, 496), SealedCavesSirens & Requirement.Swimming);
 			Add(new ItemKey(9, 3, 1848, 576), SealedCavesSirens & Requirement.Swimming);
@@ -146,10 +150,11 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(11, 3, 72, 192), TheLab & DoubleJumpOfNpc);
 			Add(new ItemKey(11, 25, 104, 192), TheLab & Requirement.DoubleJump);
 			Add(new ItemKey(11, 18, 824, 128), TheLabPoweredOff);
-			Add(new ItemKey(11, 39, 200, 156), TheLabPoweredOff);
-			Add(new ItemKey(11, 6, 328, 192), TheLabPoweredOff);
-			Add(new ItemKey(11, 27, 296, 160), TheLabPoweredOff);
+			Add(new RoomItemKey(11, 39), TheLabPoweredOff);
 			Add(new RoomItemKey(11, 21), TheLabPoweredOff);
+			Add(new ItemKey(11, 1, 280, 191), TheLabPoweredOff);
+			Add(new ItemKey(11, 6, 328, 192), UppereLab);
+			Add(new ItemKey(11, 27, 296, 160), UppereLab);
 			//Emperors tower
 			Add(new ItemKey(12, 5, 344, 192), EmperorsTower);
 			Add(new ItemKey(12, 3, 200, 160), EmperorsTower & Requirement.UpwardDash);

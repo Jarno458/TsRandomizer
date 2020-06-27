@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Timespinner.Core;
@@ -41,12 +42,32 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 			if (ItemInfo == null)
 				return;
 
-			if (!Object.IsAlive)
+			if (IsPickedUp)
 			{
-				SpawnItemInMiddleOfRoom();
+				Level.RequestRemoveObject(TypedObject);
 				return;
 			}
 
+			if (!Object.IsAlive)
+			{
+				var labCoreType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.EnvironmentPrefabs.L11_Lab.EnvPrefabLabPowerCore");
+
+				IEnumerable<Animate> eventObjects = LevelReflected._levelEvents.Values;
+				if (eventObjects.All(e => e.GetType() != labCoreType))
+				{
+					SpawnItemInMiddleOfRoom(); // for kittyboss, when you beat him when and already got blade orb
+					hasDroppedLoot = true;
+					return;
+				}
+			}
+
+			UpdateContainedLootSprite();
+			
+			appendagesCount = Appendages.Count;
+		}
+
+		void UpdateContainedLootSprite()
+		{
 			if (ItemInfo.LootType == LootType.Orb)
 			{
 				Object._orbType = ItemInfo.OrbType;
@@ -62,14 +83,12 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 				UpdateSprite();
 				UpdateGlowColor();
 			}
-			
-			appendagesCount = Appendages.Count;
 		}
 
 		void SpawnItemInMiddleOfRoom()
 		{
 			var itemDropPickupType = TimeSpinnerType.Get("Timespinner.GameObjects.Items.ItemDropPickup");
-			var itemPosition = new Point(266, 208); //based on CutsceneKeep1 itemPosition
+			var itemPosition = new Point(266, 208);
 			var itemDropPickup = Activator.CreateInstance(itemDropPickupType, ItemInfo.BestiaryItemDropSpecification, Level, itemPosition, -1);
 
 			var levelReflected = Level.AsDynamic();
@@ -78,7 +97,7 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 
 		protected override void OnUpdate()
 		{
-			if (ItemInfo == null || hasDroppedLoot || !Object.IsAlive)
+			if (ItemInfo == null || hasDroppedLoot)
 				return;
 
 			if (Appendages.Count != appendagesCount)
@@ -139,20 +158,6 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 			((object)Object._glowCircle).AsDynamic().BaseColor = orbGlowColor;
 			((OrbPedestalLeakParticleSystem)Object._pixelLeakParticleSystem).BaseColor = orbGlowColorVector;
 		}
-
-		/*public void ReSpawn(Level level)
-		{
-			var objectTileSpecification = new ObjectTileSpecification(480) { Argument = 2 };
-
-			var gameEvent = Spawn(Level, objectTileSpecification);
-
-			gameEvent.Initialize();
-			gameEvent.ID = level.NextObjectTicketID;
-			
-			level.AddEvent(gameEvent);
-
-			//LevelReflected.RequestAddObject(gameEvent);
-		}*/
 
 		public GameEvent Spawn(Level level, ObjectTileSpecification specification)
 		{

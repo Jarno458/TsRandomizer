@@ -12,6 +12,21 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -68,6 +83,7 @@
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="IntermediateObjects\TriggerBase.cs" />
     <Compile Include="LevelObjects\AlwaysSpawnAttribute.cs" />
+    <Compile Include="LevelObjects\Other\CutsceneLab0.cs" />
     <Compile Include="LevelObjects\Other\EnvPrefabCurtainWinch.cs" />
     <Compile Include="LevelObjects\ItemManipulators\CutsceneKeep1.cs" />
     <Compile Include="LevelObjects\Other\CurtainDrawbridge.cs" />
@@ -85,6 +101,8 @@
     <Compile Include="Randomisation\ItemPlacers\ItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemUnlockingMap.cs" />
     <Compile Include="Randomisation\RoomItemKey.cs" />
+    <Compile Include="ReplacementObjects\TalariaAttachment.cs" />
+    <Compile Include="ReplacementObjects\TimespinnerGearItem.cs" />
     <Compile Include="ReplacementObjects\PyramidKeys.cs" />
     <Compile Include="ReplacementObjects\TimespinnerSpindle.cs" />
     <Compile Include="IntermediateObjects\TriggerAfterLootDrop.cs" />
@@ -129,6 +147,13 @@
     <Content Include="GunOrbIcon.ico" />
     <Content Include="GunOrbLargeT.ico" />
     <Content Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
