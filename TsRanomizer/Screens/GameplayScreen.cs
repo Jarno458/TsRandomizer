@@ -48,22 +48,7 @@ namespace TsRanodmizer.Screens
 			LevelObject.Update(Level, ItemLocations, IsRoomChanged());
 
 #if DEBUG
-			if (input.IsNewButtonPress(Buttons.DPadLeft, PlayerIndex.One, out _))
-			{
-				Level.RequestChangeRoom(new LevelChangeRequest
-				{
-					LevelID = 1,
-					RoomID = 1,
-				});
-			}
-			if (input.IsNewButtonPress(Buttons.DPadRight, PlayerIndex.One, out _))
-			{
-				Level.RequestChangeRoom(new LevelChangeRequest
-				{
-					LevelID = Level.ID + 1,
-					RoomID = 1,
-				});
-			}
+			TimespinnerAfterDark(input);
 #endif
 		}
 
@@ -93,6 +78,18 @@ namespace TsRanodmizer.Screens
 			}
 
 			return false;
+		}
+
+		void TimespinnerAfterDark(InputState input)
+		{
+			if (input.IsNewButtonPress(Buttons.DPadLeft, PlayerIndex.One, out _))
+				Level.RequestChangeLevel(new LevelChangeRequest { LevelID = Math.Max(Level.ID - 1, 0), RoomID = 0 });
+			if (input.IsNewButtonPress(Buttons.DPadRight, PlayerIndex.One, out _))
+				Level.RequestChangeLevel(new LevelChangeRequest { LevelID = Level.ID + 1, RoomID = 0 });
+			if (input.IsNewButtonPress(Buttons.DPadDown, PlayerIndex.One, out _))
+				Level.RequestChangeRoom(new LevelChangeRequest { LevelID = Level.ID, RoomID = Math.Max(Level.RoomID - 1, 0) });
+			if (input.IsNewButtonPress(Buttons.DPadUp, PlayerIndex.One, out _))
+				Level.RequestChangeRoom(new LevelChangeRequest { LevelID = Level.ID, RoomID = Math.Min(Level.RoomID + 1, Level.TotalRooms - 1) });
 		}
 	}
 }

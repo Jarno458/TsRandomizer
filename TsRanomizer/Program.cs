@@ -7,22 +7,35 @@ namespace TsRanodmizer
 {
 	public static class Program
 	{
+		public static bool IsSteam;
+
 		public static int Main(string[] args)
 		{
-			//TODO: re-enable
-			//if (!Md5CheckPassed("A2F880953099610FACF4E3CC153085E1"))
-			//	return -1;
+			var md5 = GetTimespinnerMd5Hash();
+
+			switch (md5)
+			{
+				case "93DC447605E4DF8F349B1FA66342E79A": //win steam v1.032
+					IsSteam = true;
+					break;
+
+				case "2CC3F5AD830F32D9F6294E5205E61FBE": //win DRM free v1.031
+					IsSteam = false;
+					break;
+
+				default:
+					if (!ContinueWithoutMd5Check())
+						return -1;
+					break;
+			}
 
 			StartTimeSpinner();
 
 			return 0;
 		}
 
-		static bool Md5CheckPassed(string knowhash)
+		static bool ContinueWithoutMd5Check()
 		{
-			if (knowhash == GetTimespinnerMd5Hash())
-				return true;
-
 			Console.Out.WriteLine("TsRanodmizer version missmatch!, pleaze update TsRanodmizer");
 			Console.Out.WriteLine("The installed version of TsRanodmizer is not made to work with the installed version of TimeSpinner");
 			Console.Out.WriteLine("If you continue the game might crash at any given point");
@@ -65,7 +78,11 @@ namespace TsRanodmizer
 
 			/*try
 			{*/
-				new TimeSpinnerGame(DummyPlatformHelper.CreateInstance()).Run();
+				var platformHelper = IsSteam
+					? DummyPlatformHelper.CreateStreamInstance()
+					: DummyPlatformHelper.CreateDrmFreeInstance();
+
+				new TimeSpinnerGame(platformHelper).Run();
 			/*}
 			catch (Exception e)
 			{

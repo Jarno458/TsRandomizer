@@ -152,7 +152,7 @@ namespace TsRanodmizer.IntermediateObjects
 				case LootType.ConstRelic:
 					return (int)GetIconFromRelicMethod.InvokeStatic(Relic) - 1; 
 				case LootType.ConstStat:
-					return -1;
+					return -1; //TODO Fixmeh
 				case LootType.ConstUseItem:
 					return (int)GetIconFromUseItemMethod.InvokeStatic(UseItem) - 1; 
 				default:

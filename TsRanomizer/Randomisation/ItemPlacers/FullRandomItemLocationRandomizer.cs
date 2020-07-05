@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Timespinner.GameAbstractions.Inventory;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
 
@@ -25,8 +26,11 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 		void AddRandomItemsToLocationMap(Random random)
 		{
 			CalculateTutorial(random);
+			PlaceGassMaskInALegalSpot(random);
 
-			var itemsThatUnlockProgression = unlockingMap.Map.Keys.ToList();
+			var itemsThatUnlockProgression = unlockingMap.Map.Keys
+				.Where(i => i != ItemInfo.Get(EInventoryRelicType.AirMask))
+				.ToList();
 
 			while (itemsThatUnlockProgression.Count > 0)
 			{

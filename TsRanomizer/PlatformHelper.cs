@@ -8,7 +8,7 @@ namespace TsRanodmizer
 {
 	static class DummyPlatformHelper
 	{
-		public static PlatformHelper CreateInstance()
+		public static PlatformHelper CreateStreamInstance()
 		{
 			var platformHelper = (PlatformHelper)Activator.CreateInstance(TimeSpinnerType.Get("Timespinner.PlatformHelper"), true);
 
@@ -19,6 +19,11 @@ namespace TsRanodmizer
 				process.Kill();
 
 			return platformHelper;
+		}
+
+		public static PlatformHelper CreateDrmFreeInstance()
+		{
+			return (PlatformHelper)Activator.CreateInstance(TimeSpinnerType.Get("Timespinner.PlatformHelper"), true);
 		}
 	}
 }

@@ -1,25 +1,18 @@
-﻿Remove TODO's
-Fix items dropped by bosses after leaving room (shapeshifterboss itemdrop)
-Add ItemList
-remove orb spell/ring shop
-Make 2nd timespinner require timestop & spindle
-Add DRM free support 
+﻿Add ItemList
 Hide Console
-
-Routing issues:
-gass blocks of entire lake desolation, so if you are able to kill the maw you should also be able to find a gassmask
-		Add check to beatable if you can reach gassmask with a accessto past & double jump & swimming suit
-If you got access to the past. it doesnt mean you can go back to the future, plz fix
+Add Randomizer to main menu
+Add Self to credits <- focus
+Add support for stat upgrades (hp, mp, sand)
 
 Minor:
 Deleting save file does not delete seed representation
 Fix render resizing
 disable quests maybe?
+Replace Replaces to Treasure Chest to replaces to ItemDropPickup
 
 Ideas:
 Make ice orb freeze enemies
 Randomize quest items
 Timesanity
-
-For Future:
-Change replacement items to actual visable items
+Upgradeable items (duuble jump => space jump) (Card D => C => B => A)
+Add support for familiers

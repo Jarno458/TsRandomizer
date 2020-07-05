@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
@@ -43,14 +42,6 @@ namespace TsRanodmizer.Screens
 					entryMapping.RemoveAt(i);
 				}
 			}
-		}
-
-		public override void Update(GameTime gameTime, InputState input)
-		{
-			/*var reflected = ((object)Reflected._meleeOrbAInventory).Reflect();
-			var entries = (IList)reflected.Entries;
-
-			var x = entries;*/
 		}
 	}
 }

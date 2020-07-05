@@ -123,6 +123,8 @@ namespace TsRanodmizer.LevelObjects
 			//TODO Remove LOLZ
 			level.GameSave.AddItem(ItemInfo.Get(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(ItemInfo.Get(EInventoryRelicType.EssenceOfSpace));
+			level.GameSave.AddItem(ItemInfo.Get(EInventoryOrbType.Blade, EOrbSlot.Melee));
+			level.GameSave.AddItem(ItemInfo.Get(EInventoryOrbType.Blood, EOrbSlot.Melee));
 #endif
 
 			var levelReflected = level.AsDynamic();

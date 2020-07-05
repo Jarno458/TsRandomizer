@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Timespinner.Core;
@@ -48,19 +47,6 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 				return;
 			}
 
-			if (!Object.IsAlive)
-			{
-				var labCoreType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.EnvironmentPrefabs.L11_Lab.EnvPrefabLabPowerCore");
-
-				IEnumerable<Animate> eventObjects = LevelReflected._levelEvents.Values;
-				if (eventObjects.All(e => e.GetType() != labCoreType))
-				{
-					SpawnItemInMiddleOfRoom(); // for kittyboss, when you beat him when and already got blade orb
-					hasDroppedLoot = true;
-					return;
-				}
-			}
-
 			UpdateContainedLootSprite();
 			
 			appendagesCount = Appendages.Count;
@@ -106,7 +92,15 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 				UpdateSprite();
 			}
 
-			if (!Object.HasBeenPickedUp) return;
+			if (!Object.HasBeenPickedUp) 
+				return;
+
+			if (Scripts.Count == 0) //it didnt spawn since you already own contained orb
+			{
+				SpawnItemInMiddleOfRoom();
+				hasDroppedLoot = true;
+				return;
+			}
 
 			Scripts.UpdateRelicOrbGetToastToItem(ItemInfo);
 

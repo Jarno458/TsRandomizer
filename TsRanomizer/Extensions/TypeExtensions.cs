@@ -35,5 +35,14 @@ namespace TsRanodmizer.Extensions
 
 			throw new MissingMemberException(type.FullName, enumMemberName);
 		}
+
+		internal static object CreateInstance(this Type type, bool nonPublic = false, params object[] args)
+		{
+			var bindingFlags = nonPublic
+				? BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.CreateInstance
+				: BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance;
+
+			return Activator.CreateInstance(type, bindingFlags, null, args, null);
+		}
 	}
 }

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
+using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
@@ -12,6 +15,8 @@ namespace TsRanodmizer.LevelObjects
 	class RoomTrigger
 	{
 		static readonly LookupDictionairy<RoomItemKey, RoomTrigger> RoomTriggers = new LookupDictionairy<RoomItemKey, RoomTrigger>(rt => rt.key);
+
+		static readonly Type TransitionWarpEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.TransitionWarpEvent");
 
 		static RoomTrigger()
 		{
@@ -34,6 +39,27 @@ namespace TsRanodmizer.LevelObjects
 				    || !level.GameSave.GetSaveBool("11_LabPower")) return;
 
 				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 176);
+			}));
+			RoomTriggers.Add(new RoomTrigger(11, 21, (level, itemLocation) =>
+			{
+				if (itemLocation.IsPickedUp
+				    || !level.GameSave.HasRelic(EInventoryRelicType.ScienceKeycardA)
+				    || !level.GameSave.GetSaveBool("IsBossDead_Shapeshift")) return;
+
+				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
+			}));
+			RoomTriggers.Add(new RoomTrigger(3, 6, (level, itemLocation) =>
+			{
+				if (level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)) return;
+
+				CreateSimpelOneWayWarp(level, 2, 54);
+			}));
+			RoomTriggers.Add(new RoomTrigger(2, 54, (level, itemLocation) =>
+			{
+				if (level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)
+					|| !level.GameSave.DataKeyBools.ContainsKey("HasUsedCityTS")) return;
+
+				CreateSimpelOneWayWarp(level, 3, 6);
 			}));
 		}
 
@@ -62,6 +88,33 @@ namespace TsRanodmizer.LevelObjects
 
 			var levelReflected = level.AsDynamic();
 			levelReflected.RequestAddObject((Item)itemDropPickup);
+		}
+
+		static void CreateSimpelOneWayWarp(Level level, int destinationLevelId, int destinationRoomId)
+		{
+			var dynamicLevel = level.AsDynamic();
+
+			Dictionary<int, GameEvent> events = dynamicLevel._levelEvents;
+			var warpTrigger = events.Values.First(e => e.GetType() == TransitionWarpEventType);
+			var dynamicWarpTrigger = warpTrigger.AsDynamic();
+
+			var backToTheFutureWarp =
+				new RequestButtonPressTrigger(level, warpTrigger.Position, dynamicWarpTrigger._objectSpec, (Action)delegate
+				{
+					dynamicWarpTrigger.StartWarpSequence(new LevelChangeRequest
+					{
+						LevelID = destinationLevelId,
+						PreviousLevelID = level.ID,
+						RoomID = destinationRoomId,
+						IsUsingWarp = true,
+						IsUsingWhiteFadeOut = true,
+						AdditionalBlackScreenTime = 0.25f,
+						FadeOutTime = 0.25f,
+						FadeInTime = 1f
+					});
+				});
+
+			dynamicLevel.RequestAddObject(backToTheFutureWarp);
 		}
 	}
 }

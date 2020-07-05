@@ -8,6 +8,7 @@ using TsRanodmizer.Randomisation.ItemPlacers;
 namespace TsRandomizer.Tests
 {
 	[TestFixture]
+	[Ignore("Its broken AF and lost its value")]
 	class ForwardFillingRandomizerFixture
 	{
 		[Test]

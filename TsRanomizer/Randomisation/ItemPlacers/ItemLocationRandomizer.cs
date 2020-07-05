@@ -33,6 +33,18 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 			PutItemAtLocation(ItemInfo.Get(meleeOrbType, EOrbSlot.Melee), ItemLocations[ItemKey.TutorialMeleeOrb]);
 		}
 
+		protected void PlaceGassMaskInALegalSpot(Random random)
+		{
+			var minimalMawRequirements =
+				Requirement.DoubleJump | Requirement.GateAccessToPast | Requirement.Swimming;
+
+			var posableGassMaskLocations = ItemLocations
+				.Where(l => l.Key.LevelId != 1 && !l.IsUsed && l.Gate.CanBeOpenedWith(minimalMawRequirements))
+				.ToArray();
+
+			PutItemAtLocation(ItemInfo.Get(EInventoryRelicType.AirMask), posableGassMaskLocations.SelectRandom(random));
+		}
+
 		protected void FillRemainingChests()
 		{
 			foreach (var itemLocation in ItemLocations.Where(l => !l.IsUsed))

@@ -58,13 +58,8 @@
       <HintPath>..\..\FNA.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Steamworks.NET, Version=11.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Steamworks.NET.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
     <Reference Include="Timespinner">
       <HintPath>..\..\Timespinner.exe</HintPath>
     </Reference>
@@ -81,8 +76,11 @@
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="IntermediateObjects\RequestButtonPressTrigger.cs" />
     <Compile Include="IntermediateObjects\TriggerBase.cs" />
     <Compile Include="LevelObjects\AlwaysSpawnAttribute.cs" />
+    <Compile Include="LevelObjects\Other\GyrePortalEvent.cs" />
+    <Compile Include="LevelObjects\Other\CutsceneLab2.cs" />
     <Compile Include="LevelObjects\Other\CutsceneLab0.cs" />
     <Compile Include="LevelObjects\Other\EnvPrefabCurtainWinch.cs" />
     <Compile Include="LevelObjects\ItemManipulators\CutsceneKeep1.cs" />
@@ -109,6 +107,8 @@
     <Compile Include="DeRandomizer.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\MinimapScreen.cs" />
+    <Compile Include="Screens\CreditsScreen.cs" />
+    <Compile Include="Screens\OrbShopMenuScreen.cs" />
     <Compile Include="Screens\OrbMenuScreen.cs" />
     <Compile Include="Randomisation\Randomizer.cs" />
     <Compile Include="Screens\SaveSelectScreen.cs" />
@@ -144,6 +144,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ChangesFromOriginalGame.txt" />
     <Content Include="GunOrbIcon.ico" />
     <Content Include="GunOrbLargeT.ico" />
     <Content Include="TODO.txt" />

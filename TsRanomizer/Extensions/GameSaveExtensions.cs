@@ -51,7 +51,7 @@ namespace TsRanodmizer.Extensions
 
 		internal static bool HasRelic(this GameSave gameSave, EInventoryRelicType relic)
 		{
-			return gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int) relic);
+			return gameSave.Inventory.RelicInventory.Inventory.ContainsKey((int) relic);
 		}
 
 		internal static bool HasCutsceneBeenTriggered(this GameSave gameSave, string cutsceneEnunMember)
