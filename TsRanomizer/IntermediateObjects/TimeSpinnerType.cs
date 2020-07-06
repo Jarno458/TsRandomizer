@@ -9,7 +9,7 @@ namespace TsRanodmizer.IntermediateObjects
 	[AttributeUsage(AttributeTargets.Class)]
 	public class TimeSpinnerType : Attribute
 	{
-		public static Dictionary<string, Type> TypeCache = new Dictionary<string, Type>(10);
+		public static Dictionary<string, Type> TypeCache = new Dictionary<string, Type>(40);
 		public static Assembly TimeSpinnerAssembly = typeof(TimespinnerGame).Assembly;
 
 		public Type Type { get; }

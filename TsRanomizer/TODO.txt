@@ -1,12 +1,13 @@
 ﻿Add ItemList
 Hide Console
-Add Randomizer to main menu
-Add Self to credits <- focus
-Add support for stat upgrades (hp, mp, sand)
+Add support for stat upgrades (hp, mp, sand) <- focus
 
-Minor:
+Known bugs:
 Deleting save file does not delete seed representation
 Fix render resizing
+Menu tooltip is wrong on diffuclty selection screen
+
+Minor:
 disable quests maybe?
 Replace Replaces to Treasure Chest to replaces to ItemDropPickup
 

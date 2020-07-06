@@ -105,6 +105,7 @@
     <Compile Include="ReplacementObjects\TimespinnerSpindle.cs" />
     <Compile Include="IntermediateObjects\TriggerAfterLootDrop.cs" />
     <Compile Include="DeRandomizer.cs" />
+    <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\MinimapScreen.cs" />
     <Compile Include="Screens\CreditsScreen.cs" />

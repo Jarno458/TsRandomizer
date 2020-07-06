@@ -22,12 +22,12 @@ namespace TsRanodmizer.Screens
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
-		{	
-			if(hasAddedCredits) return;
+		{
+			if (hasAddedCredits) return;
 
 			var creditList = (IList)Reflected._creditsList;
 
-			if(creditList.Count != 26) return;
+			if (creditList.Count != 26) return;
 
 			UpdateMyBackerName(creditList);
 			AddSection(creditList, "Randomizer", "Project Manager, Lead Developer", "Jarno Westhof");
@@ -59,11 +59,10 @@ namespace TsRanodmizer.Screens
 			int previousCreditBottom = Reflected._farthestBottomY;
 			var headerLineSpacing = ((SpriteFont)Reflected._primaryFont).LineSpacing;
 			var subTitleLineSpacing = ((SpriteFont)Reflected._latinFont).LineSpacing;
-			var sectionMargin = headerLineSpacing * 4;
 
 			dynamicSection.CalculateSize(previousCreditBottom, headerLineSpacing, subTitleLineSpacing, Reflected._zoom);
 
-			Reflected._farthestBottomY += dynamicSection.Height + sectionMargin;
+			dynamicSection.TopY = 18500;
 		}
 	}
 }
