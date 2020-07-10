@@ -43,7 +43,7 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 			if(!hasCardC)
 				Level.GameSave.Inventory.RelicInventory.RemoveItem((int)EInventoryRelicType.ScienceKeycardC);
 
-			Scripts.UpdateRelicOrbGetToastToItem(ItemInfo);
+			Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
 
 			AwardContainedItem();
 

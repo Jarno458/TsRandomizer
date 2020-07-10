@@ -21,7 +21,7 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 			if (ItemInfo == null)
 				return;
 
-			Scripts.UpdateRelicOrbGetToastToItem(ItemInfo);
+			Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
 		}
 
 		protected override void OnUpdate()

@@ -56,6 +56,8 @@ namespace TsRanodmizer.IntermediateObjects
 					return EInventoryCategoryType.Relic;
 				case ConstUseItem:
 					return EInventoryCategoryType.UseItem;
+				case ConstStat:
+					return (EInventoryCategoryType)(-1);
 				default:
 					throw new ArgumentOutOfRangeException($"LootType {lootType} isnt supported by EInventoryCategoryType");
 			}

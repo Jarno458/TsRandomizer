@@ -34,7 +34,7 @@ namespace TsRanodmizer.LevelObjects
 
 		protected void AwardContainedItem()
 		{
-			Level.GameSave.AddItem(ItemInfo);
+			Level.GameSave.AddItem(Level, ItemInfo);
 
 			OnItemPickup();
 		}

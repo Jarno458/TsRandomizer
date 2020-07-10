@@ -21,7 +21,7 @@ namespace TsRanodmizer.Randomisation
 			   R.TimeStop & R.TimespinnerSpindle //activateLibraryTimespinner
                & (LowerLakeDesolationBridge & R.CardD) //midLibrary
 			) //libraryTimespinner
-			| (R.GateLakeSirineLeft)
+			| R.GateLakeSirineLeft
 			| R.GateAccessToPast
 			| R.GateLakeSirineRight;
 

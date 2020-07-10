@@ -24,7 +24,7 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 
 			if (!hasReplacedSpellPopup && Object._tutorialSection == 2)
 			{
-				Scripts.UpdateRelicOrbGetToastToItem(ItemInfo);
+				Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
 				hasReplacedSpellPopup = true;
 			}
 			

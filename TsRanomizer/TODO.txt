@@ -1,11 +1,14 @@
 ﻿Add ItemList
 Hide Console
 Add support for stat upgrades (hp, mp, sand) <- focus
+ * For ItemDropPickup
+ * For OrbPedistal
 
 Known bugs:
 Deleting save file does not delete seed representation
 Fix render resizing
 Menu tooltip is wrong on diffuclty selection screen
+Using the transition room near refugee camp without having pyramid keys renders the portal to small
 
 Minor:
 disable quests maybe?

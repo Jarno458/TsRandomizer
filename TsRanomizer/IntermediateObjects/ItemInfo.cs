@@ -4,6 +4,7 @@ using System.Reflection;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
+using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 
 namespace TsRanodmizer.IntermediateObjects
@@ -21,6 +22,7 @@ namespace TsRanodmizer.IntermediateObjects
 		static readonly Dictionary<EInventoryEquipmentType, ItemInfo> EnquipmentItems;
 		static readonly Dictionary<EInventoryFamiliarType, ItemInfo> FamilierItems;
 		static readonly Dictionary<int, ItemInfo> OrbItems;
+		static readonly Dictionary<EItemType, ItemInfo> StatItems;
 
 		public static ItemInfo Dummy;
 		
@@ -38,8 +40,9 @@ namespace TsRanodmizer.IntermediateObjects
 			EnquipmentItems = new Dictionary<EInventoryEquipmentType, ItemInfo>();
 			FamilierItems = new Dictionary<EInventoryFamiliarType, ItemInfo>();
 			OrbItems = new Dictionary<int, ItemInfo>();
+			StatItems = new Dictionary<EItemType, ItemInfo>();
 
-			Dummy = new ItemInfo(EInventoryEquipmentType.DemonHorn);
+			Dummy = new ItemInfo(EItemType.MaxSand);
 		}
 
 		public static ItemInfo Get(EInventoryUseItemType useItem)
@@ -67,6 +70,11 @@ namespace TsRanodmizer.IntermediateObjects
 			return GetOrAdd(OrbItems, GetOrbKey(orbType, orbSlot), () => new ItemInfo(orbType, orbSlot));
 		}
 
+		public static ItemInfo Get(EItemType stat)
+		{
+			return GetOrAdd(StatItems, stat, () => new ItemInfo(stat));
+		}
+
 		static int GetOrbKey(EInventoryOrbType orbType, EOrbSlot orbSlot)
 		{
 			return ((int)orbType * 10) + (int)orbSlot;
@@ -85,14 +93,16 @@ namespace TsRanodmizer.IntermediateObjects
 		public LootType LootType { get; }
 		public int ItemId { get; }
 		public int ItemSubId { get; }
-		public Enum TreasureLootType => LootType.ToETreasureLootType();
+
 		public EInventoryUseItemType UseItem => (EInventoryUseItemType)ItemId;
 		public EInventoryRelicType Relic => (EInventoryRelicType)ItemId;
 		public EInventoryEquipmentType Enquipment => (EInventoryEquipmentType)ItemId;
 		public EInventoryFamiliarType Familiar => (EInventoryFamiliarType)ItemId;
 		public EInventoryOrbType OrbType => (EInventoryOrbType)ItemId;
 		public EOrbSlot OrbSlot => (EOrbSlot)ItemSubId;
+		public EItemType Stat => (EItemType)ItemId;
 
+		public Enum TreasureLootType => LootType.ToETreasureLootType();
 		public int AnimationIndex => GetAnimationIndex();
 		public BestiaryItemDropSpecification BestiaryItemDropSpecification => GetBestiaryItemDropSpecification();
 
@@ -129,6 +139,12 @@ namespace TsRanodmizer.IntermediateObjects
 			ItemId = (int)familiar;
 		}
 
+		ItemInfo(EItemType stat)
+		{
+			LootType = LootType.Stat;
+			ItemId = (int)stat;
+		}
+
 		public void SetPickupAction(Action<Level> onPickUp)
 		{
 			PickupAction = onPickUp;
@@ -152,11 +168,26 @@ namespace TsRanodmizer.IntermediateObjects
 				case LootType.ConstRelic:
 					return (int)GetIconFromRelicMethod.InvokeStatic(Relic) - 1; 
 				case LootType.ConstStat:
-					return -1; //TODO Fixmeh
+					return (int)GetIconFromStat(Stat);
 				case LootType.ConstUseItem:
 					return (int)GetIconFromUseItemMethod.InvokeStatic(UseItem) - 1; 
 				default:
 					throw new ArgumentOutOfRangeException($"LootType {LootType} isnt a valid loot type");
+			}
+		}
+
+		object GetIconFromStat(EItemType itemType)
+		{
+			switch (itemType)
+			{
+				case EItemType.MaxHP:
+					return 24;
+				case EItemType.MaxAura:
+					return 25;
+				case EItemType.MaxSand:
+					return 26;
+				default:
+					throw new ArgumentOutOfRangeException($"Stat {Stat} isnt a valid stat boost type");
 			}
 		}
 
@@ -223,7 +254,9 @@ namespace TsRanodmizer.IntermediateObjects
 				case LootType.ConstRelic:
 					return Relic.ToString();
 				case LootType.ConstUseItem:
-					return UseItems.ToString();
+					return UseItem.ToString();
+				case LootType.ConstStat:
+					return Stat.ToString();
 				default:
 					throw new NotImplementedException($"Loottype {LootType}.ToString() isnt implemented");
 			}

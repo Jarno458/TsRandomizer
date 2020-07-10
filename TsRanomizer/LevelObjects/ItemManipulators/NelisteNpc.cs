@@ -27,7 +27,7 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 
 			if (Object.IsTalking && lastSubProgress == 0 && currentSubProgress == 1)
 			{
-				Scripts.UpdateRelicOrbGetToastToItem(ItemInfo);
+				Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
 
 				AwardContainedItem();
 

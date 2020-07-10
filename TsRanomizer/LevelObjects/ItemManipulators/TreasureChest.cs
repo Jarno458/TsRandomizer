@@ -10,6 +10,8 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
 	class TreasureChest : ItemManipulator<TreasureChestEvent>
 	{
+		static readonly Type ETreasureStatBoostType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.TreasureChestEvent+ETreasureStatBoostType");
+
 		bool hasDroppedLoot;
 
 		public TreasureChest(TreasureChestEvent treasureChest, ItemLocation itemLocation) : base(treasureChest, itemLocation)
@@ -38,6 +40,22 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 					Object._lootOrbType = ItemInfo.OrbType;
 					Object._lootOrbSlot = ItemInfo.OrbSlot;
 					break;
+				case LootType.ConstStat:
+					switch (ItemInfo.Stat)
+					{
+						case EItemType.MaxHP:
+							Object._lootStatBoostType = ETreasureStatBoostType.GetEnumValue("HP");
+							break;
+						case EItemType.MaxAura:
+							Object._lootStatBoostType = ETreasureStatBoostType.GetEnumValue("Aura");
+							break;
+						case EItemType.MaxSand:
+							Object._lootStatBoostType = ETreasureStatBoostType.GetEnumValue("Sand");
+							break;
+						default:
+							throw new ArgumentOutOfRangeException();
+					}
+					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(ItemInfo.LootType), ItemInfo.LootType, $"lootType cannot be droppd by {nameof(TreasureChest)}");
 			}
@@ -55,8 +73,9 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 			if (ItemInfo == null || hasDroppedLoot || !Object._hasDroppedLoot)
 				return;
 		
+			// ReSharper disable once PossibleNullReferenceException
 			if (ItemInfo.LootType == LootType.Orb)
-				Level.GameSave.AddItem(ItemInfo);
+				Level.GameSave.AddItem(Level, ItemInfo);
 
 			OnItemPickup();
 

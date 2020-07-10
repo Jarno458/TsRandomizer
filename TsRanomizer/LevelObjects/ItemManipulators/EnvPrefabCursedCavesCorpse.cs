@@ -36,9 +36,15 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 			if(!Scripts.Any(s => s.AsDynamic().ScriptType == EScriptType.RelicOrbGetToast))
 				return;
 
-			Scripts.UpdateRelicOrbGetToastToItem(ItemInfo);
+			Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
 
-			var rewardItemDelegate = Scripts.Single(s => s.AsDynamic().ScriptType == EScriptType.Delegate);
+			var rewardItemDelegate = Scripts.Single(s =>
+				{
+					var script = s.AsDynamic();
+					return script.ScriptType == EScriptType.Delegate 
+					       && script.Arguments != ScriptActionQueueExtensions.ReplacedArguments;
+				});
+
 			rewardItemDelegate.AsDynamic().Delegate = new Action(() =>
 			{
 				AwardContainedItem();

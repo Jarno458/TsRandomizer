@@ -102,7 +102,7 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 				return;
 			}
 
-			Scripts.UpdateRelicOrbGetToastToItem(ItemInfo);
+			Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
 
 			AwardContainedItem();
 			hasDroppedLoot = true;

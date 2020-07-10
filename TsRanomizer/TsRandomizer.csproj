@@ -142,9 +142,6 @@
     <Compile Include="Screens\SeedSelectionMenuScreen.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="ChangesFromOriginalGame.txt" />
     <Content Include="GunOrbIcon.ico" />
     <Content Include="GunOrbLargeT.ico" />

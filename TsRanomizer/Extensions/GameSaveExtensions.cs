@@ -1,6 +1,8 @@
 ﻿using System;
+using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
+using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.IntermediateObjects;
 using TsRanodmizer.Randomisation;
 
@@ -11,6 +13,8 @@ namespace TsRanodmizer.Extensions
 		const string SeedSaveFileKey = "TsRandomizerSeed";
 		const string FillMethodSaveFileKey = "TsRandomizerFillMethod";
 		const string MeleeOrbPrefixKey = "TsRandomizerHasMeleeOrb";
+
+		static readonly Type LunaisType = TimeSpinnerType.Get("Timespinner.GameObjects.Heroes.LunaisObj");
 
 		internal static Seed GetSeed(this GameSave gameSave)
 		{
@@ -46,7 +50,6 @@ namespace TsRanodmizer.Extensions
 		internal static bool HasOrb(this GameSave gameSave, EInventoryOrbType orbType)
 		{
 			return gameSave.Inventory.OrbInventory.Inventory.ContainsKey((int) orbType);
-
 		}
 
 		internal static bool HasRelic(this GameSave gameSave, EInventoryRelicType relic)
@@ -108,7 +111,35 @@ namespace TsRanodmizer.Extensions
 			gameSave.Inventory.FamiliarInventory.AddItem((int)familiar);
 		}
 
-		internal static void AddItem(this GameSave gameSave, ItemInfo itemInfo)
+		static void AddStat(this GameSave gameSave, Level level, EItemType stat)
+		{
+			if (level.MainHero == null) return;
+
+			var lunais = level.MainHero.AsDynamic();
+
+			switch (stat)
+			{
+				case EItemType.MaxHP:
+					gameSave.CharacterStats.MaxHPFound++;
+					lunais.RefreshCharacterStats(true);
+					lunais.HP = lunais.MaxHP;
+					break;
+				case EItemType.MaxAura:
+					gameSave.CharacterStats.MaxAuraFound++;
+					lunais.RefreshCharacterStats(true);
+					((object)lunais._spellManager).AsDynamic().Aura = (float)lunais.MaxAura;
+					break;
+				case EItemType.MaxSand:
+					gameSave.CharacterStats.MaxSandFound++;
+					lunais.RefreshCharacterStats(true);
+					lunais.MP = lunais.MaxMP;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(stat), stat, null);
+			}
+		}
+
+		internal static void AddItem(this GameSave gameSave, Level level, ItemInfo itemInfo)
 		{
 			switch (itemInfo.LootType)
 			{
@@ -126,6 +157,9 @@ namespace TsRanodmizer.Extensions
 					break;
 				case LootType.ConstFamiliar:
 					gameSave.AddFamiliar(itemInfo.Familiar);
+					break;
+				case LootType.ConstStat:
+					gameSave.AddStat(level, itemInfo.Stat);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException($"LootType {itemInfo.LootType} isnt suppored yet");
