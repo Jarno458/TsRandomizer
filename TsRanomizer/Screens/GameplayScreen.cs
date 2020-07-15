@@ -45,7 +45,7 @@ namespace TsRanodmizer.Screens
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
-			LevelObject.Update(Level, ItemLocations, IsRoomChanged());
+			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged());
 
 #if DEBUG
 			TimespinnerAfterDark(input);
@@ -67,6 +67,11 @@ namespace TsRanodmizer.Screens
 				ItemManipulator.Draw(spriteBatch, menuFont, Level.LevelRenderCenter, ItemLocations);
 			}
 #endif
+		}
+
+		public void HideItemPickupBar()
+		{
+			((object) Reflected._itemGetBanner).AsDynamic()._displayTimer = 3;
 		}
 
 		bool IsRoomChanged()

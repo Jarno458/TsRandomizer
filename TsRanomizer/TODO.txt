@@ -2,13 +2,16 @@
 Hide Console
 Add support for stat upgrades (hp, mp, sand) <- focus
  * For ItemDropPickup
- * For OrbPedistal
+Add support for item drop ppickup for things other then enquipemt / relic / useitem
+* orb
+* familiar
 
 Known bugs:
 Deleting save file does not delete seed representation
 Fix render resizing
 Menu tooltip is wrong on diffuclty selection screen
 Using the transition room near refugee camp without having pyramid keys renders the portal to small
+Neliste, still seems to award a fire orb before you get the item
 
 Minor:
 disable quests maybe?

@@ -5,12 +5,12 @@ Quest are not concidered part of the game, and they wont contain any progression
 	however Neliste will still offer you an item when you talk to her
 
 Gameplay:
-Orb\Ring\Spell shop nolonger available
+Orb\Ring\Spell shop nolonger available, orbs\rings\spells are dropped from random item locations
 Umbra orb is randomized in even if you dont own the password
 Achievements cannot be unlocked
 
 Routing:
 To prevent got getting stuck in the past when items are still available in the present, 
-	the transition room next to the refugee camp can now be used to freely travel back and forth between past and present as long as you atleast controll the timespinner wheel and spindle
+	the transition room next to the refugee camp can now be used to freely travel back and forth between past and present
 When you obtain the pyramid keys, a random transition room is unlocked that could open now routing oppertunities
 The temporal gyre is closed, due to its high randomness inside an already randomized timezone, the timezone would be highly unstable

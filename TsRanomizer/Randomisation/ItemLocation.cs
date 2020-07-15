@@ -44,6 +44,10 @@ namespace TsRanodmizer.Randomisation
 
 		public void SetPickedUp()
 		{
+#if DEBUG
+			if (Key == ItemKey.DebugRoom)return;
+#endif
+
 			IsPickedUp = true;
 			gameSave.DataKeyBools[LootedItemDataString] = true;
 		}

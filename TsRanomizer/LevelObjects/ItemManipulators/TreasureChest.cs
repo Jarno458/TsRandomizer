@@ -5,6 +5,7 @@ using Timespinner.GameObjects.Events;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
 using TsRanodmizer.Randomisation;
+using TsRanodmizer.Screens;
 
 namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
@@ -68,7 +69,7 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 				((Appendage)Object._lidAppendage).AsDynamic().ChangeAnimation(Object._animationIndexOffset + 5, 1, 1f, EAnimationType.None);
 		}
 
-		protected override void OnUpdate()
+		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
 			if (ItemInfo == null || hasDroppedLoot || !Object._hasDroppedLoot)
 				return;

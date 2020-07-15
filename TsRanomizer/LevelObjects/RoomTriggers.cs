@@ -61,6 +61,14 @@ namespace TsRanodmizer.LevelObjects
 
 				CreateSimpelOneWayWarp(level, 3, 6);
 			}));
+
+#if DEBUG
+			RoomTriggers.Add(new RoomTrigger(1, 13, (level, itemLocation) =>
+			{
+				SpawnItemDropPickup(level, ItemInfo.Get(EItemType.MaxHP), 350, 150);
+				SpawnOrbPredestal(level, 300, 150);
+			}));
+#endif
 		}
 
 		readonly RoomItemKey key;
@@ -86,8 +94,31 @@ namespace TsRanodmizer.LevelObjects
 			var itemPosition = new Point(x, y);
 			var itemDropPickup = Activator.CreateInstance(itemDropPickupType, itemInfo.BestiaryItemDropSpecification, level, itemPosition, -1);
 
+			var item = itemDropPickup.AsDynamic();
+			item.Initialize();
+
 			var levelReflected = level.AsDynamic();
 			levelReflected.RequestAddObject((Item)itemDropPickup);
+		}
+
+		static void SpawnOrbPredestal(Level level, int x, int y)
+		{
+			var orbPedestalEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
+			var itemPosition = new Point(x, y);
+			var pedistalSpecification = new TileSpecification
+			{
+				Argument = (int)EInventoryOrbType.Monske,
+				ID = 480, //orb pedistal
+				Layer = ETileLayerType.Objects,
+			};
+			var orbPedestalEvent = Activator.CreateInstance(orbPedestalEventType, level, itemPosition, -1, ObjectTileSpecification.FromTileSpecification(pedistalSpecification));
+
+			var pedestal = orbPedestalEvent.AsDynamic();
+			pedestal.DoesSpawnDespiteBeingOwned = true;
+			pedestal.Initialize();
+
+			var levelReflected = level.AsDynamic();
+			levelReflected.RequestAddObject((GameEvent)orbPedestalEvent);
 		}
 
 		static void CreateSimpelOneWayWarp(Level level, int destinationLevelId, int destinationRoomId)

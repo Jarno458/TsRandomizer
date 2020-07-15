@@ -3,6 +3,7 @@ using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
 using TsRanodmizer.Randomisation;
+using TsRanodmizer.Screens;
 
 namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
@@ -17,7 +18,7 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 		{
 		}
 
-		protected override void OnUpdate()
+		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
 			if (ItemInfo == null)
 				return;

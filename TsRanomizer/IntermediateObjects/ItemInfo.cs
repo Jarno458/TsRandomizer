@@ -42,7 +42,7 @@ namespace TsRanodmizer.IntermediateObjects
 			OrbItems = new Dictionary<int, ItemInfo>();
 			StatItems = new Dictionary<EItemType, ItemInfo>();
 
-			Dummy = new ItemInfo(EItemType.MaxSand);
+			Dummy = new ItemInfo(EInventoryEquipmentType.DemonHorn);
 		}
 
 		public static ItemInfo Get(EInventoryUseItemType useItem)

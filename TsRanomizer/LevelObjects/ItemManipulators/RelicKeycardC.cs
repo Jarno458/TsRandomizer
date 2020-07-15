@@ -7,6 +7,7 @@ using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
 using TsRanodmizer.Randomisation;
+using TsRanodmizer.Screens;
 
 namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
@@ -35,7 +36,7 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 			hasCardC = Level.GameSave.Inventory.RelicInventory.Inventory.ContainsKey((int)EInventoryRelicType.ScienceKeycardC);
 		}
 
-		protected override void OnUpdate()
+		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
 			if (ItemInfo == null || hasDroppedLoot || !Object.IsFading)
 				return;

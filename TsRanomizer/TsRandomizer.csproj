@@ -72,6 +72,7 @@
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\MethodInfoExtensions.cs" />
+    <Compile Include="Extensions\LevelExtensions.cs" />
     <Compile Include="Extensions\ScriptActionQueueExtensions.cs" />
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Constants.cs" />

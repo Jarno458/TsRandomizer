@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Timespinner.GameObjects.BaseClasses;
 using TsRanodmizer.IntermediateObjects;
 using TsRanodmizer.Randomisation;
+using TsRanodmizer.Screens;
 
 namespace TsRanodmizer.LevelObjects.ItemManipulators
 {
@@ -27,7 +28,7 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 		{
 		}
 
-		protected override void OnUpdate()
+		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
 			if (ItemInfo == null || hasReplacedItemScript || (Point)Object.DeathPosition == Point.Zero)
 				return;

@@ -68,6 +68,7 @@ namespace TsRanodmizer.Randomisation
 			AddPresentItemLocations();
 			AddPastItemLocations();
 			AddPyramidItemLocations();
+			AddDebugRoom();
 		}
 
 		void AddPresentItemLocations()
@@ -272,6 +273,15 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(14, 9, 280, 176), challengeDungion); //Ravenlord post fight
 			Add(new ItemKey(14, 6, 40, 208), challengeDungion); //ifrid pre fight
 			Add(new ItemKey(14, 7, 280, 208), challengeDungion); //ifrid post fight*/
+		}
+
+		void AddDebugRoom()
+		{
+#if DEBUG
+			Add(ItemKey.DebugRoom);
+
+			this[ItemKey.DebugRoom].SetItem(ItemInfo.Dummy, R.None);
+#endif
 		}
 
 		ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)

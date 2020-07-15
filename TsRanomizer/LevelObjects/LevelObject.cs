@@ -9,10 +9,12 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
+using Timespinner.GameStateManagement.Screens.InGame;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
 using TsRanodmizer.Randomisation;
 using TsRanodmizer.ReplacementObjects;
+using TsRanodmizer.Screens;
 
 namespace TsRanodmizer.LevelObjects
 {
@@ -84,18 +86,21 @@ namespace TsRanodmizer.LevelObjects
 			Object = typedObject.AsDynamic();
 		}
 
-		public static void Update(Level level, ItemLocationMap itemLocations, bool roomChanged)
+		public static void Update(Level level, GameplayScreen gameplayScreen, ItemLocationMap itemLocations, bool roomChanged)
 		{
 			if (roomChanged)
 				OnChangeRoom(level, itemLocations);
 
 			var levelReflected = level.AsDynamic();
-			var newObjects = (List<Mobile>)levelReflected._newObjects;
-			if (newObjects.Any())
-			{
-				GenerateShadowObjects(level.GameSave, itemLocations, newObjects);
+			var newNonItemObjects = ((List<Mobile>)levelReflected._newObjects)
+				.Where(o => o.BaseType != EGameObjectBaseType.Item)
+				.ToArray();
 
-				SetMonsterHpTo1(newObjects.OfType<Alive>());
+			if (newNonItemObjects.Any())
+			{
+				GenerateShadowObjects(level.GameSave, itemLocations, newNonItemObjects);
+
+				SetMonsterHpTo1(newNonItemObjects.OfType<Alive>());
 			}
 
 			var itemsDictionary = (Dictionary<int, Item>)levelReflected._items;
@@ -112,7 +117,7 @@ namespace TsRanodmizer.LevelObjects
 			KnownItemIds.AddRange(currentItemIds);
 
 			foreach (var obj in Objects)
-				obj.OnUpdate();
+				obj.OnUpdate(gameplayScreen);
 		}
 
 		static void OnChangeRoom(Level level, ItemLocationMap itemLocations)
@@ -256,7 +261,7 @@ namespace TsRanodmizer.LevelObjects
 		{
 		}
 
-		protected virtual void OnUpdate()
+		protected virtual void OnUpdate(GameplayScreen gameplayScreen)
 		{
 		}
 	}
