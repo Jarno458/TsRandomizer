@@ -10,6 +10,7 @@ Umbra orb is randomized in even if you dont own the password
 Achievements cannot be unlocked
 
 Routing:
+The drawbridge is now open by default, and doesnt require you to visit twins
 To prevent got getting stuck in the past when items are still available in the present, 
 	the transition room next to the refugee camp can now be used to freely travel back and forth between past and present
 When you obtain the pyramid keys, a random transition room is unlocked that could open now routing oppertunities

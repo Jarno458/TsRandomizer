@@ -98,9 +98,9 @@ namespace TsRanodmizer.LevelObjects
 
 			if (newNonItemObjects.Any())
 			{
-				GenerateShadowObjects(level.GameSave, itemLocations, newNonItemObjects);
+//				GenerateShadowObjects(level.GameSave, itemLocations, newNonItemObjects);
 
-				SetMonsterHpTo1(newNonItemObjects.OfType<Alive>());
+//				SetMonsterHpTo1(newNonItemObjects.OfType<Alive>());
 			}
 
 			var itemsDictionary = (Dictionary<int, Item>)levelReflected._items;
@@ -128,8 +128,9 @@ namespace TsRanodmizer.LevelObjects
 			//TODO Remove LOLZ
 			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.EssenceOfSpace));
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryOrbType.Blade, EOrbSlot.Melee));
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryOrbType.Blood, EOrbSlot.Melee));
+			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryOrbType.Blue, EOrbSlot.Melee));
+			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryOrbType.Blue, EOrbSlot.Spell));
+			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Melee));
 #endif
 
 			var levelReflected = level.AsDynamic();
@@ -148,10 +149,10 @@ namespace TsRanodmizer.LevelObjects
 				.Concat(enemies)
 				.ToList();
 
-			RoomTrigger.OnChangeRoom(level, itemLocations, levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
-			Replaces.ReplaceObjects(level, objects);
-			GenerateShadowObjects(level.GameSave, itemLocations, objects);
-			SpawnMissingObjects(level, levelReflected);
+//			RoomTrigger.OnChangeRoom(level, itemLocations, levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
+//			Replaces.ReplaceObjects(level, objects);
+//			GenerateShadowObjects(level.GameSave, itemLocations, objects);
+//			SpawnMissingObjects(level, levelReflected);
 		}
 
 		public static void GenerateShadowObjects(GameSave gameSave, ItemLocationMap itemLocations, IEnumerable<Mobile> objects)

@@ -1,10 +1,5 @@
-﻿Add ItemList
+﻿Add ItemList <- focsu
 Hide Console
-Add support for stat upgrades (hp, mp, sand) <- focus
- * For ItemDropPickup
-Add support for item drop ppickup for things other then enquipemt / relic / useitem
-* orb
-* familiar
 
 Known bugs:
 Deleting save file does not delete seed representation

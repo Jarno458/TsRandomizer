@@ -18,22 +18,25 @@ namespace TsRanodmizer.Randomisation
 
 		public ItemInfo ItemInfo { get; private set; }
 
+		public ItemInfo DefaultItem { get; internal set;  }
+
 		public bool IsUsed => ItemInfo != null;
 		
-		public ItemLocation(ItemKey key) 
-			: this(key, Requirement.None)
+		public ItemLocation(ItemKey key, ItemInfo defaultItem) 
+			: this(key, defaultItem, Requirement.None)
 		{
 		}
 
-		public ItemLocation(ItemKey key, Requirement requiredRequirements)
-			: this(key, (Gate)requiredRequirements)
+		public ItemLocation(ItemKey key, ItemInfo defaultItem, Requirement requiredRequirements)
+			: this(key, defaultItem, (Gate)requiredRequirements)
 		{
 		}
 
-		public ItemLocation(ItemKey key, Gate gate)
+		public ItemLocation(ItemKey key, ItemInfo defaultItem, Gate gate)
 		{
 			Key = key;
 			Gate = gate;
+			DefaultItem = defaultItem;
 		}
 
 		public void SetItem(ItemInfo item, Requirement unlocks)
@@ -45,7 +48,7 @@ namespace TsRanodmizer.Randomisation
 		public void SetPickedUp()
 		{
 #if DEBUG
-			if (Key == ItemKey.DebugRoom)return;
+			if (Key == ItemKey.DebugRoom) return;
 #endif
 
 			IsPickedUp = true;
