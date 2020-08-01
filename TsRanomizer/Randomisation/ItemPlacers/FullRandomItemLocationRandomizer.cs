@@ -8,11 +8,8 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 {
 	class FullRandomItemLocationRandomizer : ItemLocationRandomizer
 	{
-		readonly ItemUnlockingMap unlockingMap;
-
-		FullRandomItemLocationRandomizer(ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap) : base(itemLocationMap)
+		FullRandomItemLocationRandomizer(ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap) : base(itemLocationMap, unlockingMap)
 		{
-			this.unlockingMap = unlockingMap;
 		}
 
 		public static void AddRandomItemsToLocationMap(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap)
@@ -25,10 +22,10 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 
 		void AddRandomItemsToLocationMap(Random random)
 		{
-			CalculateTutorial(random);
+			FillTutorial(random);
 			PlaceGassMaskInALegalSpot(random);
 
-			var itemsThatUnlockProgression = unlockingMap.Map.Keys
+			var itemsThatUnlockProgression = UnlockingMap.ItemsThatUnlockProgression
 				.Where(i => i != ItemInfo.Get(EInventoryRelicType.AirMask))
 				.ToList();
 
@@ -43,7 +40,7 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 				itemsThatUnlockProgression.Remove(item);
 			}
 
-			FillRemainingChests();
+			FillRemainingChests(random);
 		}
 
 		ItemLocation GetUnusedItemLocation(Random random)
@@ -56,7 +53,7 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 
 		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)
 		{
-			var itemUnlocks = unlockingMap.GetAllUnlock(itemInfo);
+			var itemUnlocks = UnlockingMap.GetAllUnlock(itemInfo);
 
 			itemLocation.SetItem(itemInfo, itemUnlocks);
 		}

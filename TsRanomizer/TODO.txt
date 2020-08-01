@@ -1,5 +1,4 @@
-﻿Add ItemList <- focsu
-Hide Console
+﻿Spawn item Dash when dash already obtained
 
 Known bugs:
 Deleting save file does not delete seed representation

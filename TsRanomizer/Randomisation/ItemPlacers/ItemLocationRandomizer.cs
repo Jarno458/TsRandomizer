@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using TsRanodmizer.Extensions;
@@ -9,27 +10,51 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 	abstract class ItemLocationRandomizer
 	{
 		protected readonly ItemLocationMap ItemLocations;
+		protected readonly ItemUnlockingMap UnlockingMap;
 
-		protected ItemLocationRandomizer(ItemLocationMap itemLocations)
+		static readonly ItemInfo[] ItemsToRemoveFromGame =
+		{
+			ItemInfo.Get(EInventoryUseItemType.MagicMarbles),
+			ItemInfo.Get(EInventoryUseItemType.GoldRing),
+			ItemInfo.Get(EInventoryUseItemType.GoldNecklace),
+			ItemInfo.Get(EInventoryUseItemType.SilverOre),
+			ItemInfo.Get(EInventoryUseItemType.EssenceCrystal),
+		};
+
+		static readonly ItemInfo[] GenericItems =
+		{
+			ItemInfo.Get(EInventoryUseItemType.Potion),
+			ItemInfo.Get(EInventoryUseItemType.HiPotion),
+			ItemInfo.Get(EInventoryUseItemType.FuturePotion),
+			ItemInfo.Get(EInventoryUseItemType.FutureHiPotion),
+			ItemInfo.Get(EInventoryUseItemType.Ether),
+			ItemInfo.Get(EInventoryUseItemType.HiEther),
+			ItemInfo.Get(EInventoryUseItemType.FutureEther),
+			ItemInfo.Get(EInventoryUseItemType.FutureHiEther),
+			ItemInfo.Get(EInventoryUseItemType.ChaosHeal),
+			ItemInfo.Get(EInventoryUseItemType.Antidote)
+		};
+
+		protected ItemLocationRandomizer(ItemLocationMap itemLocations, ItemUnlockingMap unlockingMap)
 		{
 			ItemLocations = itemLocations;
+			UnlockingMap = unlockingMap;
 		}
 
-		protected void CalculateTutorial(Random random)
+		protected void FillTutorial(Random random)
 		{
-			var orbTypes = ((EInventoryOrbType[])Enum.GetValues(typeof(EInventoryOrbType))).ToList();
+			var orbTypes = ((EInventoryOrbType[])Enum.GetValues(typeof(EInventoryOrbType)))
+					.Where(orbType => orbType != EInventoryOrbType.None //not an actual orb to use
+					                  && orbType != EInventoryOrbType.Monske) //no implemented, yields None orb
+					.ToList();
 
-			var spellOrbTypes = orbTypes
-				.Where(orbType => orbType != EInventoryOrbType.Barrier //To OP to give as starter item
-				                  && orbType != EInventoryOrbType.None //not an actual orb to use
-                                  && orbType != EInventoryOrbType.Monske); //no implemented, yields None orb
+			var spellOrbTypes = orbTypes.Where(orbType => orbType != EInventoryOrbType.Barrier); //To OP to give as starter spell
+			var meleeOrbTypes = orbTypes.Where(orbType => orbType != EInventoryOrbType.Pink); //To annoying as each attack consumes aura power
 
 			var spellOrbType = spellOrbTypes.SelectRandom(random);
 			PutItemAtLocation(ItemInfo.Get(spellOrbType, EOrbSlot.Spell), ItemLocations[ItemKey.TutorialSpellOrb]);
 
-			orbTypes.Remove(EInventoryOrbType.Pink); //To annoying as each attack consumes aura power
-
-			var meleeOrbType = orbTypes.SelectRandom(random);
+			var meleeOrbType = meleeOrbTypes.SelectRandom(random);
 			PutItemAtLocation(ItemInfo.Get(meleeOrbType, EOrbSlot.Melee), ItemLocations[ItemKey.TutorialMeleeOrb]);
 		}
 
@@ -45,10 +70,50 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 			PutItemAtLocation(ItemInfo.Get(EInventoryRelicType.AirMask), posableGassMaskLocations.SelectRandom(random));
 		}
 
-		protected void FillRemainingChests()
+		protected void FillRemainingChests(Random random)
 		{
+			var itemlist = ItemLocations
+				.Select(l => l.DefaultItem)
+				.Where(i => i.LootType != LootType.ConstOrb 
+				            && i.LootType != LootType.ConstFamiliar 
+				            && !ItemsToRemoveFromGame.Contains(i) 
+				            && !UnlockingMap.ItemsThatUnlockProgression.Contains(i) 
+				            && !GenericItems.Contains(i))
+				.ToList();
+
+			AddOrbs(itemlist);
+			AddFamiliers(itemlist);
+
 			foreach (var itemLocation in ItemLocations.Where(l => !l.IsUsed))
-				PutItemAtLocation(ItemInfo.Dummy, itemLocation);
+			{
+				var item = itemlist.Count > 0
+					? itemlist.PopRandom(random)
+					: GenericItems.SelectRandom(random);
+
+				PutItemAtLocation(item, itemLocation);
+			}
+		}
+
+		static void AddFamiliers(List<ItemInfo> itemlist)
+		{
+			var allFamiliers = ((EInventoryFamiliarType[])Enum.GetValues(typeof(EInventoryFamiliarType)))
+				.Where(o => o != EInventoryFamiliarType.None && o != EInventoryFamiliarType.Meyef);
+
+			foreach (var familiar in allFamiliers)
+				itemlist.Add(ItemInfo.Get(familiar));
+		}
+
+		static void AddOrbs(List<ItemInfo> itemlist)
+		{
+			var allOrbs = ((EInventoryOrbType[]) Enum.GetValues(typeof(EInventoryOrbType)))
+				.Where(o => o != EInventoryOrbType.None && o != EInventoryOrbType.Monske);
+
+			foreach (var orb in allOrbs)
+			{
+				itemlist.Add(ItemInfo.Get(orb, EOrbSlot.Melee));
+				itemlist.Add(ItemInfo.Get(orb, EOrbSlot.Spell));
+				itemlist.Add(ItemInfo.Get(orb, EOrbSlot.Passive));
+			}
 		}
 
 		protected abstract void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation);

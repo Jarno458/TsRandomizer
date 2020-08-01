@@ -12,8 +12,6 @@ namespace TsRanodmizer.Randomisation
 {
 	class ItemLocationMap : LookupDictionairy<ItemKey, ItemLocation>
 	{
-		const int MaxBeatableCheckItterations = 25;
-
 		internal static readonly Gate DoubleJumpOfNpc = (R.DoubleJump & R.TimeStop) | R.UpwardDash;
 
 		internal static readonly R LowerLakeDesolationBridge = R.TimeStop | R.ForwardDash | R.DoubleJump | R.GateKittyBoss | R.GateLeftLibrary;
@@ -64,7 +62,7 @@ namespace TsRanodmizer.Randomisation
 
 		public new ItemLocation this[ItemKey key] => GetItemLocationBasedOnKeyOrRoomKey(key);
 
-		public ItemLocationMap() : base(200, l => l.Key)
+		public ItemLocationMap() : base(160, l => l.Key)
 		{
 			AddPresentItemLocations();
 			AddPastItemLocations();
@@ -78,7 +76,7 @@ namespace TsRanodmizer.Randomisation
 			Add(ItemKey.TutorialMeleeOrb, ItemInfo.Get(EInventoryOrbType.Blue, EOrbSlot.Melee));
 			Add(ItemKey.TutorialSpellOrb, ItemInfo.Get(EInventoryOrbType.Blue, EOrbSlot.Spell));
 			//starter lake desolation
-			Add(new ItemKey(1, 1, 1528, 144), ItemInfo.Get(EInventoryUseItemType.Potion));
+			Add(new ItemKey(1, 1, 1528, 144), ItemInfo.Get(EInventoryUseItemType.FuturePotion));
 			Add(new ItemKey(1, 15, 264, 144), ItemInfo.Get(EInventoryEquipmentType.OldCoat));
 			Add(new ItemKey(1, 25, 296, 176), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion));
 			Add(new ItemKey(1, 9, 600, 144 + TimespinnerWheel.YOffset), ItemInfo.Get(EInventoryRelicType.TimespinnerWheel));
@@ -91,7 +89,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(1, 17, 152, 96), ItemInfo.Get(EInventoryUseItemType.GoldRing), UpperLakeDesolation);
 			Add(new ItemKey(1, 21, 200, 144), ItemInfo.Get(EInventoryUseItemType.EssenceCrystal), UpperLakeDesolation);
 			Add(new ItemKey(1, 20, 232, 96), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), UpperLakeDesolation & R.DoubleJump);
-			Add(new ItemKey(1, 20, 168, 240), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), UpperLakeDesolation);
+			Add(new ItemKey(1, 20, 168, 240), ItemInfo.Get(EInventoryUseItemType.FuturePotion), UpperLakeDesolation);
 			Add(new ItemKey(1, 22, 344, 160), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), UpperLakeDesolation);
 			Add(new ItemKey(1, 18, 1320, 189), ItemInfo.Get(EInventoryOrbType.Moon, EOrbSlot.Melee), UpperLakeDesolation);
 			Add(new ItemKey(1, 18, 1272, 192), ItemInfo.Get(EInventoryEquipmentType.CaptainsCap), UpperLakeDesolation & R.GassMask & KillAll3MajorBosses);
@@ -99,7 +97,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new RoomItemKey(1, 5), ItemInfo.Get(EInventoryOrbType.Blade, EOrbSlot.Melee), UpperLakeDesolation | LowerLakeDesolationBridge);
 			//libary left
 			Add(new ItemKey(2, 60, 328, 160), ItemInfo.Get(EItemType.MaxHP), LeftLibrary);
-			Add(new ItemKey(2, 54, 296, 176), ItemInfo.Get(EInventoryRelicType.ScienceKeycardD), LeftLibrary);
+			Add(new ItemKey(2, 54, 296, 176), ItemInfo.Get(EInventoryRelicType.ScienceKeycardD), LeftLibrary); 
 			Add(new ItemKey(2, 44, 680, 368), ItemInfo.Get(EInventoryRelicType.FoeScanner), LeftLibrary);
 			Add(new ItemKey(2, 47, 216, 208), ItemInfo.Get(EInventoryUseItemType.Ether), LeftLibrary & R.CardD);
 			Add(new ItemKey(2, 47, 152, 208), ItemInfo.Get(EInventoryOrbType.Blade, EOrbSlot.Passive), LeftLibrary & R.CardD);
@@ -117,7 +115,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(2, 7, 232, 144), ItemInfo.Get(EItemType.MaxAura), MidLibrary);
 			Add(new ItemKey(2, 25, 328, 192), ItemInfo.Get(EItemType.MaxSand), MidLibrary & R.CardE);
 			//libary right, 
-			Add(new ItemKey(2, 15, 760, 192), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), UpperRightSideLibrary);
+			Add(new ItemKey(2, 15, 760, 192), ItemInfo.Get(EInventoryUseItemType.FuturePotion), UpperRightSideLibrary);
 			Add(new ItemKey(2, 20, 72, 1200), ItemInfo.Get(EInventoryUseItemType.Jerky), RightSizeLibraryElevator);
 			Add(new ItemKey(2, 23, 72, 560), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), UpperRightSideLibrary);
 			Add(new ItemKey(2, 23, 1112, 112), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), UpperRightSideLibrary);
@@ -127,13 +125,13 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(2, 52, 104, 192), ItemInfo.Get(EInventoryRelicType.TimespinnerGear2), RightSizeLibraryElevator & R.CardA);
 			//Sealed Caves left
 			Add(new ItemKey(9, 10, 248, 848), ItemInfo.Get(EInventoryRelicType.ScienceKeycardB), SealedCavesLeft);
-			Add(new ItemKey(9, 19, 664, 704), ItemInfo.Get(EInventoryEquipmentType.BirdStatue), SealedCavesLower & R.TimeStop);
-			Add(new ItemKey(9, 39, 88, 192), ItemInfo.Get(EInventoryEquipmentType.BirdStatue), SealedCavesLower);
+			Add(new ItemKey(9, 19, 664, 704), ItemInfo.Get(EInventoryUseItemType.Antidote), SealedCavesLower & R.TimeStop);
+			Add(new ItemKey(9, 39, 88, 192), ItemInfo.Get(EInventoryUseItemType.Antidote), SealedCavesLower);
 			Add(new ItemKey(9, 41, 312, 192), ItemInfo.Get(EInventoryUseItemType.GalaxyStone), SealedCavesLower & (R.UpwardDash | (R.ForwardDash & R.DoubleJump)));
 			Add(new ItemKey(9, 42, 328, 192), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), SealedCavesLower);
 			Add(new ItemKey(9, 12, 280, 160), ItemInfo.Get(EItemType.MaxHP), SealedCavesLower);
-			Add(new ItemKey(9, 48, 104, 160), ItemInfo.Get(EInventoryEquipmentType.BirdStatue), SealedCavesLower);
-			Add(new ItemKey(9, 15, 248, 192), ItemInfo.Get(EInventoryEquipmentType.BirdStatue), SealedCavesLower);
+			Add(new ItemKey(9, 48, 104, 160), ItemInfo.Get(EInventoryUseItemType.FutureEther), SealedCavesLower);
+			Add(new ItemKey(9, 15, 248, 192), ItemInfo.Get(EInventoryUseItemType.FutureEther), SealedCavesLower);
 			Add(new ItemKey(9, 13, 296, 176), ItemInfo.Get(EInventoryRelicType.TimespinnerGear3), SealedCavesLower);
 			//Sealed Caves (sirens)
 			Add(new ItemKey(9, 5, 88, 496), ItemInfo.Get(EItemType.MaxSand), SealedCavesSirens & R.Swimming);
@@ -144,7 +142,7 @@ namespace TsRanodmizer.Randomisation
 			//Militairy Fortress
 			Add(new ItemKey(10, 3, 264, 128), ItemInfo.Get(EItemType.MaxSand), MilitairyFortress & DoubleJumpOfNpc);
 			Add(new ItemKey(10, 11, 296, 192), ItemInfo.Get(EItemType.MaxAura), MilitairyFortress);
-			Add(new ItemKey(10, 4, 1064, 176), ItemInfo.Get(EInventoryEquipmentType.LabGlasses), MilitairyFortressHangar);
+			Add(new ItemKey(10, 4, 1064, 176), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), MilitairyFortressHangar);
 			Add(new ItemKey(10, 10, 104, 192), ItemInfo.Get(EInventoryRelicType.AirMask), MilitairyFortressHangar);
 			Add(new ItemKey(10, 8, 1080, 176), ItemInfo.Get(EInventoryEquipmentType.LabGlasses), MilitairyFortressHangar);
 			Add(new ItemKey(10, 7, 104, 192), ItemInfo.Get(EInventoryUseItemType.PlasmaIV), RightSidemilitairyFortressHangar & R.CardB);
@@ -153,12 +151,12 @@ namespace TsRanodmizer.Randomisation
 			// The lab
 			Add(new ItemKey(11, 36, 312, 192), ItemInfo.Get(EInventoryUseItemType.FoodSynth), TheLab);
 			Add(new ItemKey(11, 3, 1528, 192), ItemInfo.Get(EItemType.MaxHP), TheLab & R.DoubleJump);
-			Add(new ItemKey(11, 3, 72, 192), ItemInfo.Get(EInventoryEquipmentType.LabCoat), TheLab & DoubleJumpOfNpc);
+			Add(new ItemKey(11, 3, 72, 192), ItemInfo.Get(EInventoryUseItemType.FuturePotion), TheLab & DoubleJumpOfNpc);
 			Add(new ItemKey(11, 25, 104, 192), ItemInfo.Get(EItemType.MaxAura), TheLab & R.DoubleJump);
-			Add(new ItemKey(11, 18, 824, 128), ItemInfo.Get(EInventoryEquipmentType.LabCoat), TheLabPoweredOff);
+			Add(new ItemKey(11, 18, 824, 128), ItemInfo.Get(EInventoryUseItemType.ChaosHeal), TheLabPoweredOff);
 			Add(new RoomItemKey(11, 39), ItemInfo.Get(EInventoryOrbType.Eye, EOrbSlot.Melee), TheLabPoweredOff);
 			Add(new RoomItemKey(11, 21), ItemInfo.Get(EInventoryRelicType.ScienceKeycardA), TheLabPoweredOff);
-			Add(new ItemKey(11, 1, 280, 191), ItemInfo.Dummy, TheLabPoweredOff);
+			Add(new RoomItemKey(11, 1), ItemInfo.Get(EInventoryRelicType.Dash), TheLabPoweredOff);
 			Add(new ItemKey(11, 6, 328, 192), ItemInfo.Get(EInventoryEquipmentType.LabCoat), UppereLab);
 			Add(new ItemKey(11, 27, 296, 160), ItemInfo.Get(EItemType.MaxSand), UppereLab);
 			Add(new RoomItemKey(11, 26), ItemInfo.Get(EInventoryRelicType.TimespinnerGear1), TheLabPoweredOff & R.CardA);
@@ -167,7 +165,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(12, 3, 200, 160), ItemInfo.Get(EInventoryEquipmentType.LachiemCrown), EmperorsTower & R.UpwardDash);
 			Add(new ItemKey(12, 25, 360, 176), ItemInfo.Get(EInventoryEquipmentType.EmpressCoat), EmperorsTower & R.UpwardDash);
 			Add(new ItemKey(12, 22, 56, 192), ItemInfo.Get(EItemType.MaxSand), EmperorsTower);
-			Add(new ItemKey(12, 9, 344, 928), ItemInfo.Get(EInventoryEquipmentType.FiligreeClasp), EmperorsTower);
+			Add(new ItemKey(12, 9, 344, 928), ItemInfo.Get(EInventoryUseItemType.FutureHiEther), EmperorsTower);
 			Add(new ItemKey(12, 19, 72, 192), ItemInfo.Get(EInventoryEquipmentType.FiligreeClasp), EmperorsTower & DoubleJumpOfNpc);
 			Add(new ItemKey(12, 13, 120, 176), ItemInfo.Get(EItemType.MaxHP), EmperorsTower);
 			Add(new ItemKey(12, 11, 264, 208), ItemInfo.Get(EInventoryRelicType.EmpireBrooch), EmperorsTower); 
@@ -182,13 +180,13 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(3, 30, 232, 176), ItemInfo.Get(EInventoryUseItemType.GoldNecklace), AccessToPast);
 			Add(new ItemKey(3, 30, 168, 176), ItemInfo.Get(EInventoryRelicType.JewelryBox), AccessToPast);
 			//Forest
-			Add(new ItemKey(3, 3, 648, 272), ItemInfo.Get(EInventoryEquipmentType.PointyHat), AccessToPast);
+			Add(new ItemKey(3, 3, 648, 272), ItemInfo.Get(EInventoryUseItemType.Herb), AccessToPast);
 			Add(new ItemKey(3, 15, 248, 112), ItemInfo.Get(EItemType.MaxAura), AccessToPast & DoubleJumpOfNpc);
 			Add(new ItemKey(3, 21, 120, 192), ItemInfo.Get(EItemType.MaxSand), AccessToPast);
 			Add(new ItemKey(3, 12, 776, 560), ItemInfo.Get(EInventoryEquipmentType.PointyHat), AccessToPast);
 			Add(new ItemKey(3, 11, 392, 608), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), AccessToPast & R.Swimming);
 			Add(new ItemKey(3, 5, 184, 192), ItemInfo.Get(EInventoryEquipmentType.Pendulum), AccessToPast & R.Swimming);
-			Add(new ItemKey(3, 2, 584, 368), ItemInfo.Get(EInventoryEquipmentType.PointyHat), AccessToPast);
+			Add(new ItemKey(3, 2, 584, 368), ItemInfo.Get(EInventoryUseItemType.Potion), AccessToPast);
 			Add(new ItemKey(4, 20, 264, 160), ItemInfo.Get(EItemType.MaxAura), AccessToPast);
 			Add(new ItemKey(3, 29, 248, 192), ItemInfo.Get(EItemType.MaxHP), LeftSideForestCaves);
 			//Upper Lake Sirine
@@ -199,17 +197,17 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(7, 13, 56, 176), ItemInfo.Get(EInventoryUseItemType.WarpCard), UpperLakeSirine);
 			Add(new ItemKey(7, 30, 296, 176), ItemInfo.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine);
 			//Lower Lake Sirine
-			Add(new ItemKey(7, 3, 440, 1232), ItemInfo.Get(EInventoryEquipmentType.TravelersCloak), LowerlakeSirine);
+			Add(new ItemKey(7, 3, 440, 1232), ItemInfo.Get(EInventoryUseItemType.Potion), LowerlakeSirine);
 			Add(new ItemKey(7, 7, 1432, 576), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), LowerlakeSirine);
-			Add(new ItemKey(7, 6, 520, 496), ItemInfo.Get(EInventoryEquipmentType.TravelersCloak), LowerlakeSirine);
+			Add(new ItemKey(7, 6, 520, 496), ItemInfo.Get(EInventoryUseItemType.Potion), LowerlakeSirine);
 			Add(new ItemKey(7, 11, 88, 240), ItemInfo.Get(EItemType.MaxHP), LowerlakeSirine);
-			Add(new ItemKey(7, 2, 1016, 384), ItemInfo.Get(EInventoryEquipmentType.TravelersCloak), LowerlakeSirine);
+			Add(new ItemKey(7, 2, 1016, 384), ItemInfo.Get(EInventoryUseItemType.Ether), LowerlakeSirine);
 			Add(new ItemKey(7, 20, 248, 96), ItemInfo.Get(EItemType.MaxSand), LowerlakeSirine);
 			Add(new ItemKey(7, 9, 584, 189), ItemInfo.Get(EInventoryOrbType.Ice, EOrbSlot.Melee), LowerlakeSirine);
 			//Caves of Banishment
 			Add(new ItemKey(8, 19, 664, 704), ItemInfo.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment & R.TimeStop);
 			Add(new ItemKey(8, 12, 280, 160), ItemInfo.Get(EItemType.MaxHP), LowerCavesOfBanishment);
-			Add(new ItemKey(8, 48, 104, 160), ItemInfo.Dummy, LowerCavesOfBanishment);
+			Add(new ItemKey(8, 48, 104, 160), ItemInfo.Get(EInventoryUseItemType.Herb), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 39, 88, 192), ItemInfo.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 41, 168, 192), ItemInfo.Get(EInventoryUseItemType.GoldNecklace), LowerCavesOfBanishment & (R.UpwardDash | R.ForwardDash & R.DoubleJump));
 			Add(new ItemKey(8, 41, 216, 192), ItemInfo.Get(EInventoryUseItemType.GoldRing), LowerCavesOfBanishment & (R.UpwardDash | R.ForwardDash & R.DoubleJump));
@@ -234,24 +232,24 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(5, 9, 104, 189), ItemInfo.Get(EInventoryOrbType.Blood, EOrbSlot.Melee), CastleKeep);
 			Add(new ItemKey(5, 10, 104, 192), ItemInfo.Get(EInventoryFamiliarType.Sprite), CastleKeep);
 			Add(new ItemKey(5, 14, 88, 208), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), CastleKeep & R.PinkOrb);
-			Add(new ItemKey(5, 44, 216, 192), ItemInfo.Get(EInventoryEquipmentType.BuckleHat), CastleKeep);
+			Add(new ItemKey(5, 44, 216, 192), ItemInfo.Get(EInventoryUseItemType.Potion), CastleKeep);
 			Add(new ItemKey(5, 45, 104, 192), ItemInfo.Get(EItemType.MaxHP), CastleKeep);
 			Add(new ItemKey(5, 15, 296, 192), ItemInfo.Get(EItemType.MaxAura), CastleKeep);
 			Add(new ItemKey(5, 41, 72, 160), ItemInfo.Get(EInventoryEquipmentType.BuckleHat), CastleKeep);
-			Add(new RoomItemKey(5, 5), ItemInfo.Get(EInventoryRelicType.DoubleJump), CastleKeep); //sucabus //was & Requirement.TimeStop but why?
+			Add(new RoomItemKey(5, 5), ItemInfo.Get(EInventoryRelicType.DoubleJump), CastleKeep & R.TimeStop); //sucabus
 			Add(new ItemKey(5, 22, 312, 176), ItemInfo.Get(EItemType.MaxSand), CastleKeep & (R.DoubleJump | R.ForwardDash));
 			//Royal towers
 			Add(new ItemKey(6, 19, 200, 176), ItemInfo.Get(EItemType.MaxAura), RoyalTower);
 			Add(new ItemKey(6, 27, 472, 384), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), UpperRoyalTower);
-			Add(new ItemKey(6, 1, 1512, 288), ItemInfo.Get(EInventoryEquipmentType.MidnightCloak), UpperRoyalTower);
-			Add(new ItemKey(6, 25, 360, 176), ItemInfo.Get(EInventoryEquipmentType.MidnightCloak), UpperRoyalTower);
+			Add(new ItemKey(6, 1, 1512, 288), ItemInfo.Get(EInventoryUseItemType.Potion), UpperRoyalTower);
+			Add(new ItemKey(6, 25, 360, 176), ItemInfo.Get(EInventoryUseItemType.HiEther), UpperRoyalTower);
 			Add(new ItemKey(6, 3, 120, 208), ItemInfo.Get(EInventoryFamiliarType.Demon), UpperRoyalTower);
 			Add(new ItemKey(6, 17, 200, 112), ItemInfo.Get(EItemType.MaxHP), UpperRoyalTower & R.UpwardDash);
 			Add(new ItemKey(6, 17, 360, 1840), ItemInfo.Get(EInventoryEquipmentType.MidnightCloak), UpperRoyalTower);
 			Add(new ItemKey(6, 17, 56, 448), ItemInfo.Get(EInventoryEquipmentType.VileteCrown), UpperRoyalTower);
 			Add(new ItemKey(6, 13, 120, 176), ItemInfo.Get(EItemType.MaxSand), UpperRoyalTower);
-			Add(new ItemKey(6, 22, 88, 208), ItemInfo.Get(EInventoryEquipmentType.MidnightCloak), UpperRoyalTower);
-			Add(new ItemKey(6, 11, 360, 544), ItemInfo.Get(EInventoryEquipmentType.MidnightCloak), UpperRoyalTower);
+			Add(new ItemKey(6, 22, 88, 208), ItemInfo.Get(EInventoryUseItemType.Ether), UpperRoyalTower);
+			Add(new ItemKey(6, 11, 360, 544), ItemInfo.Get(EInventoryUseItemType.HiPotion), UpperRoyalTower);
 			Add(new ItemKey(6, 23, 856, 208), ItemInfo.Get(EInventoryEquipmentType.VileteDress), UpperRoyalTower);
 			Add(new ItemKey(6, 14, 136, 208), ItemInfo.Get(EInventoryOrbType.Pink, EOrbSlot.Melee), UpperRoyalTower);
 			Add(new ItemKey(6, 14, 184, 205), ItemInfo.Get(EInventoryUseItemType.WarpCard), UpperRoyalTower);
@@ -319,7 +317,7 @@ namespace TsRanodmizer.Randomisation
 				if (obtainedRequirements == previusObtainedRequirements)
 					return false;
 
-			} while (!CanCompleteGame(obtainedRequirements) && itteration < MaxBeatableCheckItterations);
+			} while (!CanCompleteGame(obtainedRequirements) && itteration <= ItemUnlockingMap.ProgressionItemCount);
 
 			return true;
 		}

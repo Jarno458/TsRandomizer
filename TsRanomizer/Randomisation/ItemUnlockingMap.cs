@@ -11,13 +11,16 @@ namespace TsRanodmizer.Randomisation
 {
 	class ItemUnlockingMap
 	{
+		public const int ProgressionItemCount = 22;
+
 		public Dictionary<ItemInfo, UnlockingSpecificaiton> Map;
 
 		public R AllUnlockableRequirements => Map.Values.Aggregate(R.None, (a, b) => a | b.AllUnlocks);
+		public IEnumerable<ItemInfo> ItemsThatUnlockProgression => Map.Keys;
 
 		public ItemUnlockingMap(Seed seed)
 		{
-			Map = new Dictionary<ItemInfo, UnlockingSpecificaiton>
+			Map = new Dictionary<ItemInfo, UnlockingSpecificaiton>(ProgressionItemCount)
 			{
 				{ItemInfo.Get(EInventoryRelicType.TimespinnerWheel), new UnlockingSpecificaiton {Unlocks = R.TimeStop}},
 				{ItemInfo.Get(EInventoryRelicType.DoubleJump), new UnlockingSpecificaiton {Unlocks = R.DoubleJump, AdditionalUnlocks = R.TimeStop}},

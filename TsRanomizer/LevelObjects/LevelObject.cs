@@ -98,9 +98,9 @@ namespace TsRanodmizer.LevelObjects
 
 			if (newNonItemObjects.Any())
 			{
-//				GenerateShadowObjects(level.GameSave, itemLocations, newNonItemObjects);
+				//GenerateShadowObjects(level.GameSave, itemLocations, newNonItemObjects);
 
-//				SetMonsterHpTo1(newNonItemObjects.OfType<Alive>());
+				//SetMonsterHpTo1(newNonItemObjects.OfType<Alive>());
 			}
 
 			var itemsDictionary = (Dictionary<int, Item>)levelReflected._items;
@@ -111,7 +111,7 @@ namespace TsRanodmizer.LevelObjects
 				.ToArray();
 
 			if (newItems.Any())
-				GenerateShadowObjects(level.GameSave, itemLocations, newItems);
+				//GenerateShadowObjects(level.GameSave, itemLocations, newItems);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
@@ -149,10 +149,10 @@ namespace TsRanodmizer.LevelObjects
 				.Concat(enemies)
 				.ToList();
 
-//			RoomTrigger.OnChangeRoom(level, itemLocations, levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
-//			Replaces.ReplaceObjects(level, objects);
-//			GenerateShadowObjects(level.GameSave, itemLocations, objects);
-//			SpawnMissingObjects(level, levelReflected);
+			//RoomTrigger.OnChangeRoom(level, itemLocations, levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
+			//Replaces.ReplaceObjects(level, objects);
+ 			//GenerateShadowObjects(level.GameSave, itemLocations, objects);
+			//SpawnMissingObjects(level, levelReflected);
 		}
 
 		public static void GenerateShadowObjects(GameSave gameSave, ItemLocationMap itemLocations, IEnumerable<Mobile> objects)

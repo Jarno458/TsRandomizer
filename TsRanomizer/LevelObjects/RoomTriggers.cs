@@ -32,6 +32,12 @@ namespace TsRanodmizer.LevelObjects
 
 				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
+			RoomTriggers.Add(new RoomTrigger(11, 1, (level, itemLocation) =>
+			{
+				if (itemLocation.IsPickedUp || !level.GameSave.HasRelic(EInventoryRelicType.Dash)) return;
+
+				SpawnItemDropPickup(level, itemLocation.ItemInfo, 280, 191);
+			}));
 			RoomTriggers.Add(new RoomTrigger(11, 39, (level, itemLocation) =>
 			{
 				if (itemLocation.IsPickedUp 

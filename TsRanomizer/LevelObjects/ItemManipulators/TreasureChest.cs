@@ -41,6 +41,9 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 					Object._lootOrbType = ItemInfo.OrbType;
 					Object._lootOrbSlot = ItemInfo.OrbSlot;
 					break;
+				case LootType.ConstFamiliar:
+					Object._lootFamiliarType = ItemInfo.Familiar;
+					break;
 				case LootType.ConstStat:
 					switch (ItemInfo.Stat)
 					{

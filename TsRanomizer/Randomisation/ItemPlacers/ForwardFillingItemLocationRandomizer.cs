@@ -23,7 +23,7 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 		readonly Dictionary<ItemInfo, ItemLocation> placedItems;
 		readonly Dictionary<ItemInfo, Gate> paths;
 
-		ForwardFillingItemLocationRandomizer(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap) : base(itemLocationMap)
+		ForwardFillingItemLocationRandomizer(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap) : base(itemLocationMap, unlockingMap)
 		{
 			this.unlockingMap = unlockingMap;
 
@@ -61,7 +61,7 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 			foreach (var path in paths)
 				Console.Out.WriteLine($"Requirements For {path.Key}@{placedItems[path.Key]} -> {path.Value}");
 
-			FillRemainingChests();
+			FillRemainingChests(random);
 		}
 
 		void CalculatePathChain(ItemInfo item, Requirement additionalRequirementsToAvoid)
