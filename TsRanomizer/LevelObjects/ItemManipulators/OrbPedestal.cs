@@ -154,7 +154,7 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 			((OrbPedestalLeakParticleSystem)Object._pixelLeakParticleSystem).BaseColor = orbGlowColorVector;
 		}
 
-		public GameEvent Spawn(Level level, ObjectTileSpecification specification)
+		public Mobile Spawn(Level level, ObjectTileSpecification specification)
 		{
 			var timeSpinnerType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 			var point = new Point(specification.X * 16 + 8, specification.Y * 16 + 16);

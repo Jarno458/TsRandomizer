@@ -80,6 +80,7 @@
     <Compile Include="IntermediateObjects\RequestButtonPressTrigger.cs" />
     <Compile Include="IntermediateObjects\TriggerBase.cs" />
     <Compile Include="LevelObjects\AlwaysSpawnAttribute.cs" />
+    <Compile Include="LevelObjects\Other\SaveStatue.cs" />
     <Compile Include="LevelObjects\Other\GyrePortalEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneLab2.cs" />
     <Compile Include="LevelObjects\Other\CutsceneLab0.cs" />

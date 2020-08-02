@@ -24,13 +24,16 @@ namespace TsRanodmizer.Screens
 		dynamic LevelReflected => Level.AsDynamic();
 
 		public ItemLocationMap ItemLocations { get; private set; }
+		public GCM GameContentManager { get; private set; }
 
 		public GameplayScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
 		}
 
-		public override void Initialize(ItemLocationMap itemLocationMap)
+		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
+			GameContentManager = gameContentManager;
+
 			var saveFile = (GameSave)Reflected.SaveFile;
 			var seed = saveFile.GetSeed();
 			var fillingMethod = saveFile.GetFillingMethod();
@@ -52,7 +55,7 @@ namespace TsRanodmizer.Screens
 #endif
 		}
 
-		public override void Draw(GCM gcm, SpriteBatch spriteBatch, SpriteFont menuFont)
+		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
 #if DEBUG
 			var levelId = LevelReflected._id;

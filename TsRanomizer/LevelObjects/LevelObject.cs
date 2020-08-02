@@ -98,9 +98,9 @@ namespace TsRanodmizer.LevelObjects
 
 			if (newNonItemObjects.Any())
 			{
-				//GenerateShadowObjects(level.GameSave, itemLocations, newNonItemObjects);
+				GenerateShadowObjects(level.GameSave, itemLocations, newNonItemObjects);
 
-				//SetMonsterHpTo1(newNonItemObjects.OfType<Alive>());
+				SetMonsterHpTo1(newNonItemObjects.OfType<Alive>());
 			}
 
 			var itemsDictionary = (Dictionary<int, Item>)levelReflected._items;
@@ -111,7 +111,7 @@ namespace TsRanodmizer.LevelObjects
 				.ToArray();
 
 			if (newItems.Any())
-				//GenerateShadowObjects(level.GameSave, itemLocations, newItems);
+				GenerateShadowObjects(level.GameSave, itemLocations, newItems);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
@@ -128,9 +128,11 @@ namespace TsRanodmizer.LevelObjects
 			//TODO Remove LOLZ
 			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.EssenceOfSpace));
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryOrbType.Blue, EOrbSlot.Melee));
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryOrbType.Blue, EOrbSlot.Spell));
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Melee));
+			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.TimespinnerGear1));
+			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.TimespinnerGear2));
+			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.TimespinnerGear3));
+			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.ScienceKeycardA));
+			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.ElevatorKeycard));
 #endif
 
 			var levelReflected = level.AsDynamic();
@@ -149,10 +151,10 @@ namespace TsRanodmizer.LevelObjects
 				.Concat(enemies)
 				.ToList();
 
-			//RoomTrigger.OnChangeRoom(level, itemLocations, levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
-			//Replaces.ReplaceObjects(level, objects);
- 			//GenerateShadowObjects(level.GameSave, itemLocations, objects);
-			//SpawnMissingObjects(level, levelReflected);
+			RoomTrigger.OnChangeRoom(level, itemLocations, levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
+			Replaces.ReplaceObjects(level, objects);
+ 			GenerateShadowObjects(level.GameSave, itemLocations, objects);
+			SpawnMissingObjects(level, levelReflected, itemLocations);
 		}
 
 		public static void GenerateShadowObjects(GameSave gameSave, ItemLocationMap itemLocations, IEnumerable<Mobile> objects)
@@ -180,9 +182,9 @@ namespace TsRanodmizer.LevelObjects
 			}
 		}
 
-		static void SpawnMissingObjects(Level level, dynamic levelPrivate)
+		static void SpawnMissingObjects(Level level, dynamic levelPrivate, ItemLocationMap itemLocations)
 		{
-			var newObjects = new List<GameEvent>();
+			var newObjects = new List<Mobile>();
 
 			foreach (var alwaysSpawningEventType in AlwaysSpawningEventTypes)
 			{
@@ -203,22 +205,26 @@ namespace TsRanodmizer.LevelObjects
 
 				foreach (var specification in eventTilesOfEventType)
 				{
-					GameEvent gameEvent;
+					Mobile mobile;
+					var itemPosition = new Point(specification.X * 16 + 8, specification.Y * 16 + 16);
+					var currentRoom = (RoomSpecification)levelPrivate.CurrentRoom;
+					var itemInfo = itemLocations[new ItemKey(levelPrivate._id, currentRoom.ID, itemPosition.X, itemPosition.Y)];
 
 					if (typeof(ICustomSpwanMethod).IsAssignableFrom(objectType))
 					{
-						var instance = (ICustomSpwanMethod)Activator.CreateInstance(objectType, new object[] { null, null });
-						gameEvent = instance.Spawn(level, specification);
+						var instance = (ICustomSpwanMethod)Activator.CreateInstance(objectType, null, itemInfo);
+						mobile = instance.Spawn(level, specification);
 					}
 					else
 					{
 						var point = new Point(specification.X * 16 + 8, specification.Y * 16 + 16);
-						gameEvent = (GameEvent)Activator.CreateInstance(timeSpinnerType, level, point, -1, specification);
+						mobile = (GameEvent)Activator.CreateInstance(timeSpinnerType, level, point, -1, specification);
 					}
 
-					gameEvent.Initialize();
+					if(mobile is GameEvent gameEvent)
+						gameEvent.Initialize();
 
-					newObjects.Add(gameEvent);
+					newObjects.Add(mobile);
 				}
 			}
 

@@ -32,7 +32,10 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 
 				AwardContainedItem();
 
-				//((Animate)Reflected._fireOrb).Reflect()._unhiddenAnimationIndex = ; //uses differnt sprite sheet
+				var fireOrbAppendage = ((Animate) Object._fireOrb).AsDynamic();
+
+				fireOrbAppendage._sprite = gameplayScreen.GameContentManager.SpMenuIcons;
+				fireOrbAppendage._unhiddenAnimationIndex = ItemInfo.AnimationIndex; //uses differnt sprite sheet
 			}
 
 			lastSubProgress = Object.SubProgress;

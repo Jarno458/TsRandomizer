@@ -41,6 +41,7 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 			if (ItemInfo == null || hasDroppedLoot || !Object.IsFading)
 				return;
 
+			//TODO might crash if you already had card C
 			if(!hasCardC)
 				Level.GameSave.Inventory.RelicInventory.RemoveItem((int)EInventoryRelicType.ScienceKeycardC);
 
@@ -51,13 +52,11 @@ namespace TsRanodmizer.LevelObjects.ItemManipulators
 			hasDroppedLoot = true;
 		}
 
-		public GameEvent Spawn(Level level, ObjectTileSpecification specification)
+		public Mobile Spawn(Level level, ObjectTileSpecification specification)
 		{
-			var timeSpinnerType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Relics.RelicKeycardC");
-
-			var point = new Point(specification.X * 16 + 8, specification.Y * 16 + 16);
-			
-			return (GameEvent) Activator.CreateInstance(timeSpinnerType, level, point, -1, specification, level.GCM.SpMenuIcons);
+			var itemDropPickupType = TimeSpinnerType.Get("Timespinner.GameObjects.Items.ItemDropPickup");
+			var itemPosition = new Point(specification.X * 16 + 8, specification.Y * 16 + 16);
+			return (Item)Activator.CreateInstance(itemDropPickupType, ItemInfo.BestiaryItemDropSpecification, level, itemPosition, -1);
 		}
 	}
 }

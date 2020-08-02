@@ -1,4 +1,5 @@
 ﻿using System;
+using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRanodmizer.IntermediateObjects;
@@ -14,7 +15,7 @@ namespace TsRanodmizer.Screens
 		{
 		}
 
-		public override void Initialize(ItemLocationMap itemLocationMap)
+		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
 			Action<GameSave> originalReloadSaveAction = Reflected._reloadSaveAction;
 

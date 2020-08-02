@@ -112,7 +112,7 @@ namespace TsRanodmizer.Screens
 			}
 		}
 
-		public override void Draw(GCM gcm, SpriteBatch spriteBatch, SpriteFont menuFont)
+		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
 			if (!GameScreen.IsActive)
 				return;

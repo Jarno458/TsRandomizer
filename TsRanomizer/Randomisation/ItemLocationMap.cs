@@ -14,7 +14,7 @@ namespace TsRanodmizer.Randomisation
 	{
 		internal static readonly Gate DoubleJumpOfNpc = (R.DoubleJump & R.TimeStop) | R.UpwardDash;
 
-		internal static readonly R LowerLakeDesolationBridge = R.TimeStop | R.ForwardDash | R.DoubleJump | R.GateKittyBoss | R.GateLeftLibrary;
+		internal static readonly R LowerLakeDesolationBridge = R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary;
 		internal static readonly Gate AccessToPast = 
 			(
 			   R.TimeStop & R.TimespinnerSpindle //activateLibraryTimespinner
@@ -25,14 +25,14 @@ namespace TsRanodmizer.Randomisation
 			| R.GateLakeSirineRight;
 
 		//past
-		internal static readonly Gate LeftSideForestCaves = (AccessToPast & (R.TimeStop | R.ForwardDash | R.DoubleJump)) | R.GateLakeSirineRight | R.GateLakeSirineLeft;
-		internal static readonly Gate UpperLakeSirine = (LeftSideForestCaves & (R.TimeStop | R.ForwardDash | R.DoubleJump)) | R.GateLakeSirineLeft;
+		internal static readonly Gate LeftSideForestCaves = (AccessToPast & (R.TimeStop | R.ForwardDash)) | R.GateLakeSirineRight | R.GateLakeSirineLeft;
+		internal static readonly Gate UpperLakeSirine = (LeftSideForestCaves & (R.TimeStop | R.ForwardDash)) | R.GateLakeSirineLeft;
 		internal static readonly Gate LowerlakeSirine = (LeftSideForestCaves | R.GateLakeSirineLeft) & R.Swimming;
 		internal static readonly Gate LowerCavesOfBanishment = LowerlakeSirine;
 		internal static readonly Gate UpperCavesOfBanishment = AccessToPast;
 		internal static readonly Gate CastleRamparts = AccessToPast;
 		internal static readonly Gate CastleKeep = CastleRamparts;
-		internal static readonly Gate RoyalTower = CastleKeep & (R.DoubleJump | R.UpwardDash);
+		internal static readonly Gate RoyalTower = CastleKeep & R.DoubleJump;
 		internal static readonly Gate UpperRoyalTower = RoyalTower & DoubleJumpOfNpc;
 
 		//future
@@ -122,7 +122,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(2, 23, 136, 304), ItemInfo.Get(EInventoryRelicType.ElevatorKeycard), UpperRightSideLibrary);
 			Add(new ItemKey(2, 11, 104, 192), ItemInfo.Get(EInventoryUseItemType.EssenceCrystal), UpperRightSideLibrary);
 			Add(new ItemKey(2, 29, 280, 222 + TimespinnerSpindle.YOffset), ItemInfo.Get(EInventoryRelicType.TimespinnerSpindle), RightSizeLibraryElevator);
-			Add(new ItemKey(2, 52, 104, 192), ItemInfo.Get(EInventoryRelicType.TimespinnerGear2), RightSizeLibraryElevator & R.CardA);
+			Add(new RoomItemKey(2, 52), ItemInfo.Get(EInventoryRelicType.TimespinnerGear2), RightSizeLibraryElevator & R.CardA);
 			//Sealed Caves left
 			Add(new ItemKey(9, 10, 248, 848), ItemInfo.Get(EInventoryRelicType.ScienceKeycardB), SealedCavesLeft);
 			Add(new ItemKey(9, 19, 664, 704), ItemInfo.Get(EInventoryUseItemType.Antidote), SealedCavesLower & R.TimeStop);
@@ -132,7 +132,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(9, 12, 280, 160), ItemInfo.Get(EItemType.MaxHP), SealedCavesLower);
 			Add(new ItemKey(9, 48, 104, 160), ItemInfo.Get(EInventoryUseItemType.FutureEther), SealedCavesLower);
 			Add(new ItemKey(9, 15, 248, 192), ItemInfo.Get(EInventoryUseItemType.FutureEther), SealedCavesLower);
-			Add(new ItemKey(9, 13, 296, 176), ItemInfo.Get(EInventoryRelicType.TimespinnerGear3), SealedCavesLower);
+			Add(new RoomItemKey(9, 13), ItemInfo.Get(EInventoryRelicType.TimespinnerGear3), SealedCavesLower);
 			//Sealed Caves (sirens)
 			Add(new ItemKey(9, 5, 88, 496), ItemInfo.Get(EItemType.MaxSand), SealedCavesSirens & R.Swimming);
 			Add(new ItemKey(9, 3, 1848, 576), ItemInfo.Get(EInventoryEquipmentType.BirdStatue), SealedCavesSirens & R.Swimming);
@@ -205,7 +205,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(7, 20, 248, 96), ItemInfo.Get(EItemType.MaxSand), LowerlakeSirine);
 			Add(new ItemKey(7, 9, 584, 189), ItemInfo.Get(EInventoryOrbType.Ice, EOrbSlot.Melee), LowerlakeSirine);
 			//Caves of Banishment
-			Add(new ItemKey(8, 19, 664, 704), ItemInfo.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment & R.TimeStop);
+			Add(new ItemKey(8, 19, 664, 704), ItemInfo.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment & R.DoubleJump);
 			Add(new ItemKey(8, 12, 280, 160), ItemInfo.Get(EItemType.MaxHP), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 48, 104, 160), ItemInfo.Get(EInventoryUseItemType.Herb), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 39, 88, 192), ItemInfo.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment);
@@ -231,7 +231,7 @@ namespace TsRanodmizer.Randomisation
 			//Caste Keep
 			Add(new ItemKey(5, 9, 104, 189), ItemInfo.Get(EInventoryOrbType.Blood, EOrbSlot.Melee), CastleKeep);
 			Add(new ItemKey(5, 10, 104, 192), ItemInfo.Get(EInventoryFamiliarType.Sprite), CastleKeep);
-			Add(new ItemKey(5, 14, 88, 208), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), CastleKeep & R.PinkOrb);
+			Add(new ItemKey(5, 14, 88, 208), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), CastleKeep & R.PinkOrb & R.DoubleJump);
 			Add(new ItemKey(5, 44, 216, 192), ItemInfo.Get(EInventoryUseItemType.Potion), CastleKeep);
 			Add(new ItemKey(5, 45, 104, 192), ItemInfo.Get(EItemType.MaxHP), CastleKeep);
 			Add(new ItemKey(5, 15, 296, 192), ItemInfo.Get(EItemType.MaxAura), CastleKeep);

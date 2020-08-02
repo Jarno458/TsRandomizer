@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
+using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRanodmizer.Extensions;
@@ -26,7 +27,7 @@ namespace TsRanodmizer.Screens
 			controllerMapping = screenManager.MenuControllerMapping;
 		}
 
-		public override void Initialize(ItemLocationMap itemLocationMap)
+		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
 			itemLocations = itemLocationMap;
 

@@ -65,7 +65,7 @@ namespace TsRanodmizer.Drawables
 		void DrawItemIcon(SpriteBatch spriteBatch, int i, Random random)
 		{
 			var position = new Rectangle(drawPoint.X + (i * IconSize), drawPoint.Y, IconSize, IconSize);
-			var spritePosition = menuIcons.FrameStarts[random.Next(menuIcons.FrameStarts.Count)];
+			var spritePosition = menuIcons.FrameStarts.SelectRandom(random);
 			var sprite = new Rectangle(spritePosition.X, spritePosition.Y, menuIcons.FrameSize.X, menuIcons.FrameSize.Y);
 
 			spriteBatch.Draw(menuIcons.Texture, position, sprite, Color.White, 0, origin, SpriteEffects.None, 1);

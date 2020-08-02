@@ -137,7 +137,7 @@ namespace TsRanodmizer.Screens
 				SetSelectedMenuItemByIndex(0);
 		}
 
-		public override void Draw(GCM gcm, SpriteBatch spriteBatch, SpriteFont menuFont)
+		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
 			if(GameScreen.IsActive && seed != null)
 				DrawSeedRepresentation(spriteBatch, menuFont);

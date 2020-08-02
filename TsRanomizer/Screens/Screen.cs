@@ -62,7 +62,7 @@ namespace TsRanodmizer.Screens
 			Reflected = gameScreen.AsDynamic();
 		}
 
-		public virtual void Initialize(ItemLocationMap itemLocationMap)
+		public virtual void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
 		}
 
@@ -74,7 +74,7 @@ namespace TsRanodmizer.Screens
 		{
 		}
 
-		public virtual void Draw(GCM gcm, SpriteBatch spriteBatch, SpriteFont menuFont)
+		public virtual void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
 		}
 	}

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Reflection;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
-using TsRanodmizer.Randomisation;
 
 namespace TsRanodmizer.LevelObjects
 {
@@ -27,6 +25,6 @@ namespace TsRanodmizer.LevelObjects
 
 	interface ICustomSpwanMethod
 	{
-		GameEvent Spawn(Level level, ObjectTileSpecification specification);
+		Mobile Spawn(Level level, ObjectTileSpecification specification);
 	}
 }

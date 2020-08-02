@@ -66,7 +66,7 @@ namespace TsRanodmizer.Screens
 				hookedScreens.Add(screenHandler);
 				foundScreens.Add(screen);
 
-				screenHandler.Initialize(itemLocationMap);
+				screenHandler.Initialize(itemLocationMap, (GCM)Reflected.GCM);
 			}
 
 			if (foundScreens.Count != hookedScreens.Count)
@@ -83,9 +83,8 @@ namespace TsRanodmizer.Screens
 
 		void DrawGameplayScreens()
 		{
-			var gcm = (GCM)Reflected.GCM;
 			foreach (var screen in hookedScreens)
-				screen.Draw(gcm, SpriteBatch, MenuFont);
+				screen.Draw(SpriteBatch, MenuFont);
 		}
 
 		public void CopyScreensFrom(Timespinner.GameStateManagement.ScreenManager.ScreenManager screenManager)

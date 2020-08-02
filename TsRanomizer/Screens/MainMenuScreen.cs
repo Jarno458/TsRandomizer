@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRanodmizer.IntermediateObjects;
 using TsRanodmizer.Randomisation;
@@ -13,10 +14,8 @@ namespace TsRanodmizer.Screens
 		{
 		}
 
-		public override void Initialize(ItemLocationMap itemLocationMap)
+		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
-			base.Initialize(itemLocationMap);
-
 			var randomizerVersion = Assembly.GetExecutingAssembly().GetName().Version;
 			Reflected._versionNumber = $"Randomizer: v{randomizerVersion}, Timespinner: {Reflected._versionNumber}";
 

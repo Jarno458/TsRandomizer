@@ -6,6 +6,7 @@ using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
+using Timespinner.GameObjects.Events;
 using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
 using TsRanodmizer.Randomisation;
@@ -53,6 +54,27 @@ namespace TsRanodmizer.LevelObjects
 				    || !level.GameSave.GetSaveBool("IsBossDead_Shapeshift")) return;
 
 				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
+			}));
+			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation) =>
+			{
+				if (itemLocation.IsPickedUp
+				    || !level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear1)) return;
+
+				SpawnTreasureChest(level, true, 136, 192);
+			}));
+			RoomTriggers.Add(new RoomTrigger(2, 52, (level, itemLocation) =>
+			{
+				if (itemLocation.IsPickedUp
+				    || !level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear2)) return;
+
+				SpawnTreasureChest(level, true, 104, 192);
+			}));
+			RoomTriggers.Add(new RoomTrigger(9, 13, (level, itemLocation) =>
+			{
+				if (itemLocation.IsPickedUp
+				    || !level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear3)) return;
+
+				SpawnTreasureChest(level, false, 296, 176);
 			}));
 			RoomTriggers.Add(new RoomTrigger(3, 6, (level, itemLocation) =>
 			{
@@ -105,6 +127,19 @@ namespace TsRanodmizer.LevelObjects
 
 			var levelReflected = level.AsDynamic();
 			levelReflected.RequestAddObject((Item)itemDropPickup);
+		}
+
+		static void SpawnTreasureChest(Level level, bool flipHorizontally, int x, int y)
+		{
+			var itemPosition = new Point(x, y);
+			var specification = new ObjectTileSpecification {IsFlippedHorizontally = flipHorizontally, Layer = ETileLayerType.Objects};
+			var treasureChest = new TreasureChestEvent(level, itemPosition, -1, specification);
+
+			var chest = treasureChest.AsDynamic();
+			chest.Initialize();
+
+			var levelReflected = level.AsDynamic();
+			levelReflected.RequestAddObject(treasureChest);
 		}
 
 		static void SpawnOrbPredestal(Level level, int x, int y)
