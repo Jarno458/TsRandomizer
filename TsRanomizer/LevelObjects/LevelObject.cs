@@ -128,11 +128,7 @@ namespace TsRanodmizer.LevelObjects
 			//TODO Remove LOLZ
 			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.EssenceOfSpace));
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.TimespinnerGear1));
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.TimespinnerGear2));
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.TimespinnerGear3));
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.ScienceKeycardA));
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.ElevatorKeycard));
+			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.PyramidsKey));
 #endif
 
 			var levelReflected = level.AsDynamic();

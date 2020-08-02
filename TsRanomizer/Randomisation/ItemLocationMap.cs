@@ -39,7 +39,7 @@ namespace TsRanodmizer.Randomisation
 		internal static readonly Gate UpperLakeDesolation = LeftSideForestCaves & R.AntiWeed;
 		internal static readonly Gate LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge;
 		internal static readonly Gate UpperLeftLibrary = LeftLibrary & (R.DoubleJump | R.ForwardDash);
-		internal static readonly Gate MidLibrary = LeftLibrary & R.CardD;
+		internal static readonly Gate MidLibrary = (LeftLibrary & R.CardD) | AccessToPast;
 		internal static readonly Gate UpperRightSideLibrary = MidLibrary & (R.CardC | (R.CardB & R.CardE));
 		internal static readonly Gate RightSizeLibraryElevator = MidLibrary & R.CardE & (R.CardC | R.CardB);
 		internal static readonly R SealedCavesLeft = R.DoubleJump;
@@ -224,7 +224,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(8, 5, 88, 496), ItemInfo.Get(EItemType.MaxSand), UpperCavesOfBanishment & R.Swimming);
 			//Caste Ramparts
 			Add(new ItemKey(4, 1, 456, 160), ItemInfo.Get(EItemType.MaxSand), CastleRamparts & R.TimeStop);
-			Add(new ItemKey(4, 3, 136, 144), ItemInfo.Get(EItemType.MaxHP), CastleRamparts);
+			Add(new ItemKey(4, 3, 136, 144), ItemInfo.Get(EItemType.MaxHP), CastleRamparts & R.TimeStop);
 			Add(new ItemKey(4, 10, 56, 192), ItemInfo.Get(EInventoryUseItemType.HiPotion), CastleRamparts);
 			Add(new ItemKey(4, 11, 344, 192), ItemInfo.Get(EInventoryUseItemType.HiPotion), CastleRamparts);
 			Add(new ItemKey(4, 22, 104, 189), ItemInfo.Get(EInventoryOrbType.Iron, EOrbSlot.Melee), CastleRamparts);

@@ -77,21 +77,30 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 				.Where(i => i.LootType != LootType.ConstOrb 
 				            && i.LootType != LootType.ConstFamiliar 
 				            && !ItemsToRemoveFromGame.Contains(i) 
-				            && !UnlockingMap.ItemsThatUnlockProgression.Contains(i) 
 				            && !GenericItems.Contains(i))
 				.ToList();
 
 			AddOrbs(itemlist);
 			AddFamiliers(itemlist);
 
-			foreach (var itemLocation in ItemLocations.Where(l => !l.IsUsed))
+			itemlist = itemlist
+				.Where(i => !UnlockingMap.ItemsThatUnlockProgression.Contains(i))
+				.ToList();
+
+			var freeLocations = ItemLocations
+				.Where(l => !l.IsUsed)
+				.ToList();
+
+			do
 			{
+				var location = freeLocations.PopRandom(random);
 				var item = itemlist.Count > 0
 					? itemlist.PopRandom(random)
 					: GenericItems.SelectRandom(random);
 
-				PutItemAtLocation(item, itemLocation);
-			}
+				PutItemAtLocation(item, location);
+
+			} while (freeLocations.Count > 0);
 		}
 
 		static void AddFamiliers(List<ItemInfo> itemlist)

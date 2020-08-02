@@ -89,6 +89,12 @@ namespace TsRanodmizer.LevelObjects
 
 				CreateSimpelOneWayWarp(level, 3, 6);
 			}));
+			RoomTriggers.Add(new RoomTrigger(7, 30, (level, itemLocation) =>
+			{
+				if (!level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)) return;
+
+				SpawnTreasureChest(level, false, 296, 176);
+			}));
 
 #if DEBUG
 			RoomTriggers.Add(new RoomTrigger(1, 13, (level, itemLocation) =>
