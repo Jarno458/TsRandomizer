@@ -9,14 +9,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsRandomizer.Tests", "TsRan
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug DRM Free|Any CPU = Debug DRM Free|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{694E46C5-FD46-4CC8-8B71-D381E154CCF7}.Debug DRM Free|Any CPU.ActiveCfg = Debug DRM Free|Any CPU
+		{694E46C5-FD46-4CC8-8B71-D381E154CCF7}.Debug DRM Free|Any CPU.Build.0 = Debug DRM Free|Any CPU
 		{694E46C5-FD46-4CC8-8B71-D381E154CCF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{694E46C5-FD46-4CC8-8B71-D381E154CCF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{694E46C5-FD46-4CC8-8B71-D381E154CCF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{694E46C5-FD46-4CC8-8B71-D381E154CCF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4DCDDB6-F4DB-4FD4-B750-1191B00661C7}.Debug DRM Free|Any CPU.ActiveCfg = Debug DRM Free|Any CPU
+		{B4DCDDB6-F4DB-4FD4-B750-1191B00661C7}.Debug DRM Free|Any CPU.Build.0 = Debug DRM Free|Any CPU
 		{B4DCDDB6-F4DB-4FD4-B750-1191B00661C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B4DCDDB6-F4DB-4FD4-B750-1191B00661C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4DCDDB6-F4DB-4FD4-B750-1191B00661C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
