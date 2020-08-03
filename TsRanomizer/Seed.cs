@@ -7,8 +7,10 @@ namespace TsRanodmizer
 		readonly uint value;
 
 		public Seed(uint seed)
-		{
-			value = seed;
+		{value = seed;
+			
+
+			ExceptionLogger.SetSeedContext(seed);
 		}
 
 		public Seed(int seed) : this((uint)seed)

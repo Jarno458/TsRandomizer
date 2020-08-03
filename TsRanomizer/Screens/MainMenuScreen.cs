@@ -17,8 +17,11 @@ namespace TsRanodmizer.Screens
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
 			var randomizerVersion = Assembly.GetExecutingAssembly().GetName().Version;
-			Reflected._versionNumber = $"Randomizer: v{randomizerVersion}, Timespinner: {Reflected._versionNumber}";
+			var newVersionString = $"Randomizer: v{randomizerVersion}, Timespinner: {Reflected._versionNumber}";
 
+			ExceptionLogger.SetVersionContext(newVersionString);
+
+			Reflected._versionNumber = newVersionString;
 			Reflected.RefreshSizes();
 		}
 	}

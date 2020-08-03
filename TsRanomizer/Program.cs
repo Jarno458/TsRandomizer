@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -26,6 +27,8 @@ namespace TsRanodmizer
 				default:
 					if (!ContinueWithoutMd5Check())
 						return -1;
+					else
+						IsSteam = Assembly.GetExecutingAssembly().Location.Contains("steamapps");
 					break;
 			}
 
@@ -76,22 +79,26 @@ namespace TsRanodmizer
 		{
 			Console.Out.WriteLine("Starting TimeSpinner...");
 
-			/*try
-			{*/
+			WithExceptionLogging(() =>
+			{
 				var platformHelper = IsSteam
 					? DummyPlatformHelper.CreateStreamInstance()
 					: DummyPlatformHelper.CreateDrmFreeInstance();
 
 				new TimeSpinnerGame(platformHelper).Run();
-			/*}
+			});
+		}
+
+		static void WithExceptionLogging(Action action)
+		{
+			try
+			{
+				action();
+			}
 			catch (Exception e)
 			{
-				Console.Error.WriteLine($"Exeception of type {e.GetType()} occured:");
-				Console.Error.WriteLine(e.Message);
-				Console.Error.WriteLine(e.StackTrace);
-
-				Console.ReadKey(true);
-			}*/
+				ExceptionLogger.LogException(e);
+			}
 		}
 	}
 }

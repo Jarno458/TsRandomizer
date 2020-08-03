@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Drawables\IDrawable.cs" />
     <Compile Include="Drawables\SeedRepresentation.cs" />
+    <Compile Include="ExceptionLogger.cs" />
     <Compile Include="Extensions\AnimateExtensions.cs" />
     <Compile Include="Extensions\GameSaveExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />

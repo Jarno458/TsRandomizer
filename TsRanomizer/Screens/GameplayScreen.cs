@@ -82,6 +82,9 @@ namespace TsRanodmizer.Screens
 			if (currentRoom == null || LevelReflected.CurrentRoom != currentRoom)
 			{
 				currentRoom = LevelReflected.CurrentRoom;
+
+				ExceptionLogger.SetLevelContext(Level.ID, currentRoom.ID);
+
 				return true;
 			}
 
