@@ -72,6 +72,10 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 
 		protected void FillRemainingChests(Random random)
 		{
+			var alreadyAssingedItems = ItemLocations
+				.Where(l => l.IsUsed)
+				.Select(l => l.ItemInfo);
+			
 			var itemlist = ItemLocations
 				.Select(l => l.DefaultItem)
 				.Where(i => i.LootType != LootType.ConstOrb 
@@ -84,7 +88,7 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 			AddFamiliers(itemlist);
 
 			itemlist = itemlist
-				.Where(i => !UnlockingMap.ItemsThatUnlockProgression.Contains(i))
+				.Except(alreadyAssingedItems)
 				.ToList();
 
 			var freeLocations = ItemLocations

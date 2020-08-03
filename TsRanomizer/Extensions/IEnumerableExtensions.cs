@@ -40,5 +40,10 @@ namespace TsRanodmizer.Extensions
 		{
 			return items.OrderBy(i => r.Next());
 		}
+
+		internal static HashSet<T> ToHashSet<T>(this IEnumerable<T> items)
+		{
+			return new HashSet<T>(items);
+		}
 	}
 }

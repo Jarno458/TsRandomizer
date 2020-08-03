@@ -19,8 +19,6 @@ namespace TsRanodmizer.LevelObjects.Other
 
 		protected override void Initialize()
 		{
-			throw new Exception("OOps");
-
 			if (Level.ID != 2 || Level.RoomID != 20 || Object._isBroken) //Right side libarary elevator room
 				return;
 

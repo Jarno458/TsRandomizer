@@ -39,7 +39,7 @@ namespace TsRanodmizer.Randomisation
 		internal static readonly Gate UpperLakeDesolation = LeftSideForestCaves & R.AntiWeed;
 		internal static readonly Gate LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge;
 		internal static readonly Gate UpperLeftLibrary = LeftLibrary & (R.DoubleJump | R.ForwardDash);
-		internal static readonly Gate MidLibrary = (LeftLibrary & R.CardD) | AccessToPast;
+		internal static readonly Gate MidLibrary = LeftLibrary & R.CardD;
 		internal static readonly Gate UpperRightSideLibrary = MidLibrary & (R.CardC | (R.CardB & R.CardE));
 		internal static readonly Gate RightSizeLibraryElevator = MidLibrary & R.CardE & (R.CardC | R.CardB);
 		internal static readonly R SealedCavesLeft = R.DoubleJump;
