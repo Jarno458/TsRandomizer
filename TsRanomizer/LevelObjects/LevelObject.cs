@@ -125,10 +125,8 @@ namespace TsRanodmizer.LevelObjects
 #if DEBUG
 			Console.Out.WriteLine("OnChangeRoom");
 
-			//TODO Remove LOLZ
 			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.EssenceOfSpace));
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.PyramidsKey));
 #endif
 
 			var levelReflected = level.AsDynamic();

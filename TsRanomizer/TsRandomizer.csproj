@@ -163,10 +163,8 @@
     <Compile Include="Screens\SeedSelectionMenuScreen.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ChangesFromOriginalGame.txt" />
     <Content Include="GunOrbIcon.ico" />
     <Content Include="GunOrbLargeT.ico" />
-    <Content Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

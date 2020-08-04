@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsRandomizer", "TsRanomizer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsRandomizer.Tests", "TsRandomizer.Tests\TsRandomizer.Tests.csproj", "{B4DCDDB6-F4DB-4FD4-B750-1191B00661C7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CD8103A2-141D-4AD0-B2FE-533D86875C9C}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.md = ReadMe.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug DRM Free|Any CPU = Debug DRM Free|Any CPU
