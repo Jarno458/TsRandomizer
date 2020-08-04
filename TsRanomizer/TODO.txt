@@ -1,10 +1,12 @@
-﻿Spawn item Dash when dash already obtained
+Test spawning of timespinner wheel & timespinner spindle item locations when already obtained
+try to hide env prefab for timespinner wheel rooms as they are infront of the chests
 
 Known bugs:
 Deleting save file does not delete seed representation
 Fix render resizing
 Menu tooltip is wrong on diffuclty selection screen
 Using the transition room near refugee camp without having pyramid keys renders the portal to small
+Player obtains meyef when he/she shouldnt yet
 
 Minor:
 disable quests maybe?
@@ -13,6 +15,6 @@ Replace Replaces to Treasure Chest to replaces to ItemDropPickup
 Ideas:
 Make ice orb freeze enemies
 Randomize quest items
-Timesanity
+Timesanity (make transition rooms goto either the past or present rooms)
+Memorysanity (make memory / jounrals / letters / downloads contain items) 
 Upgradeable items (duuble jump => space jump) (Card D => C => B => A)
-Add support for familiers
