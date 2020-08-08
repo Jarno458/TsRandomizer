@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
+using TsRanodmizer.Extensions;
 using TsRanodmizer.IntermediateObjects;
 
 using R = TsRanodmizer.Randomisation.Requirement;
@@ -22,7 +23,7 @@ namespace TsRanodmizer.Randomisation
 		{
 			Map = new Dictionary<ItemInfo, UnlockingSpecificaiton>(ProgressionItemCount)
 			{
-				{ItemInfo.Get(EInventoryRelicType.TimespinnerWheel), new UnlockingSpecificaiton {Unlocks = R.TimeStop}},
+				{ItemInfo.Get(EInventoryRelicType.TimespinnerWheel), new UnlockingSpecificaiton {Unlocks = R.TimespinnerWheel, AdditionalUnlocks = R.TimeStop}},
 				{ItemInfo.Get(EInventoryRelicType.DoubleJump), new UnlockingSpecificaiton {Unlocks = R.DoubleJump, AdditionalUnlocks = R.TimeStop}},
 				{ItemInfo.Get(EInventoryRelicType.Dash), new UnlockingSpecificaiton {Unlocks = R.ForwardDash}},
 				{ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Passive), new UnlockingSpecificaiton {Unlocks = R.AntiWeed}},
@@ -35,7 +36,7 @@ namespace TsRanodmizer.Randomisation
 				{ItemInfo.Get(EInventoryRelicType.ElevatorKeycard), new UnlockingSpecificaiton {Unlocks = R.CardE}},
 				{ItemInfo.Get(EInventoryRelicType.ScienceKeycardV), new UnlockingSpecificaiton {Unlocks = R.CardV}},
 				{ItemInfo.Get(EInventoryRelicType.WaterMask), new UnlockingSpecificaiton {Unlocks = R.Swimming}},
-				{ItemInfo.Get(EInventoryRelicType.PyramidsKey), new UnlockingSpecificaiton {Unlocks = R.None}}, //Set in ForwardFillingItemLocationRandomizer.CalculateTeleporterPickAction(),
+				{ItemInfo.Get(EInventoryRelicType.PyramidsKey), new UnlockingSpecificaiton {Unlocks = R.Teleport, AdditionalUnlocks = R.None}}, //Set in ForwardFillingItemLocationRandomizer.CalculateTeleporterPickAction(),
 				{ItemInfo.Get(EInventoryRelicType.TimespinnerSpindle), new UnlockingSpecificaiton {Unlocks = R.TimespinnerSpindle}},
 				{ItemInfo.Get(EInventoryRelicType.TimespinnerGear1), new UnlockingSpecificaiton {Unlocks = R.TimespinnerPiece1}},
 				{ItemInfo.Get(EInventoryRelicType.TimespinnerGear2), new UnlockingSpecificaiton {Unlocks = R.TimespinnerPiece2}},
@@ -62,13 +63,13 @@ namespace TsRanodmizer.Randomisation
 				new {Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51},
 			};
 
-			var selectedGate = gateProgressionItems[random.Next(gateProgressionItems.Length)];
+			var selectedGate = gateProgressionItems.SelectRandom(random);
 
 			var pyramidKeys = ItemInfo.Get(EInventoryRelicType.PyramidsKey);
 
 			pyramidKeys.SetPickupAction(level => UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId));
 
-			Map[pyramidKeys].Unlocks = selectedGate.Gate;
+			Map[pyramidKeys].AdditionalUnlocks = selectedGate.Gate;
 		}
 
 		public R GetUnlock(ItemInfo itemInfo)

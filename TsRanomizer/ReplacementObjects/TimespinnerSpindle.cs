@@ -23,10 +23,17 @@ namespace TsRanodmizer.ReplacementObjects
 			var treasureChest = 
 				new TreasureChestEvent(level, new Point(obj.Position.X, obj.Position.Y + YOffset), -1, reflected._objectSpec);
 
-			var trigger = new TriggerAfterLootDrop(level, treasureChest, () => {
+			var trigger = new TriggerAfterLootDrop(level, treasureChest, () =>
+			{
+				bool hasSpindle = level.GameSave.HasRelic(EInventoryRelicType.TimespinnerSpindle);
+				if (hasSpindle)
+					level.GameSave.Inventory.RelicInventory.Inventory.Remove((int)EInventoryRelicType.TimespinnerSpindle);
+
+				((Queue<ScriptAction>)levelReflected._waitingScripts).Clear();
+
 				reflected._onPickedUpAction();
 
-				if (!level.GameSave.HasRelic(EInventoryRelicType.TimespinnerSpindle))
+				if (!hasSpindle)
 					level.GameSave.Inventory.RelicInventory.Inventory.Remove((int) EInventoryRelicType.TimespinnerSpindle);
 
 				var scripts = ((Queue<ScriptAction>) levelReflected._waitingScripts).ToArray().ToList();

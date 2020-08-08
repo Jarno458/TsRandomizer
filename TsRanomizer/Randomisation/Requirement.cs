@@ -32,6 +32,7 @@ namespace TsRanodmizer.Randomisation
 		public static readonly Requirement TimespinnerPiece2 = 1UL << 22;
 		public static readonly Requirement TimespinnerPiece3 = 1UL << 23;
 		public static readonly Requirement PinkOrb = 1UL << 25;
+		public static readonly Requirement TimespinnerWheel = 1UL << 26;
 
 		public static readonly Requirement GateKittyBoss = 1UL << 50;
 		public static readonly Requirement GateLeftLibrary = 1UL << 51;

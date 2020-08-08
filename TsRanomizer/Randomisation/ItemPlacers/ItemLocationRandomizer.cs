@@ -88,7 +88,7 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 			AddFamiliers(itemlist);
 
 			itemlist = itemlist
-				.Except(alreadyAssingedItems)
+				.Where(i => !alreadyAssingedItems.Contains(i))
 				.ToList();
 
 			var freeLocations = ItemLocations

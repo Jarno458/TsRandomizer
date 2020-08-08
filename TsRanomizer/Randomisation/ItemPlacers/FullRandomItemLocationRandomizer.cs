@@ -31,13 +31,11 @@ namespace TsRanodmizer.Randomisation.ItemPlacers
 
 			while (itemsThatUnlockProgression.Count > 0)
 			{
-				var item = itemsThatUnlockProgression.SelectRandom(random);
+				var item = itemsThatUnlockProgression.PopRandom(random);
 
 				var location = GetUnusedItemLocation(random);
 
 				PutItemAtLocation(item, location);
-
-				itemsThatUnlockProgression.Remove(item);
 			}
 
 			FillRemainingChests(random);

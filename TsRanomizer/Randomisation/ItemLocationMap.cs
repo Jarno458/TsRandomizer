@@ -13,11 +13,12 @@ namespace TsRanodmizer.Randomisation
 	class ItemLocationMap : LookupDictionairy<ItemKey, ItemLocation>
 	{
 		internal static readonly Gate DoubleJumpOfNpc = (R.DoubleJump & R.TimeStop) | R.UpwardDash;
+		internal static readonly Gate ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
 
 		internal static readonly R LowerLakeDesolationBridge = R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary;
 		internal static readonly Gate AccessToPast = 
 			(
-			   R.TimeStop & R.TimespinnerSpindle //activateLibraryTimespinner
+			   R.TimespinnerWheel & R.TimespinnerSpindle //activateLibraryTimespinner
                & (LowerLakeDesolationBridge & R.CardD) //midLibrary
 			) //libraryTimespinner
 			| R.GateLakeSirineLeft
@@ -42,21 +43,22 @@ namespace TsRanodmizer.Randomisation
 		internal static readonly Gate MidLibrary = LeftLibrary & R.CardD;
 		internal static readonly Gate UpperRightSideLibrary = MidLibrary & (R.CardC | (R.CardB & R.CardE));
 		internal static readonly Gate RightSizeLibraryElevator = MidLibrary & R.CardE & (R.CardC | R.CardB);
+		internal static readonly Gate LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSizeLibraryElevator;
 		internal static readonly R SealedCavesLeft = R.DoubleJump;
 		internal static readonly Gate SealedCavesLower = SealedCavesLeft & R.CardA;
 		internal static readonly Gate SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
-		internal static readonly Gate KillAll3MajorBosses = UpperRightSideLibrary & CastleKeep & UpperRoyalTower & AccessToPast & R.Swimming;
+		internal static readonly Gate KillAll3MajorBosses = LowerRightSideLibrary & CastleKeep & UpperRoyalTower & AccessToPast & R.Swimming;
 		internal static readonly Gate MilitairyFortress = KillAll3MajorBosses;
 		internal static readonly Gate MilitairyFortressHangar = MilitairyFortress & R.TimeStop;
 		internal static readonly Gate RightSidemilitairyFortressHangar = MilitairyFortressHangar & R.DoubleJump;
 		internal static readonly Gate TheLab = MilitairyFortressHangar & R.CardB;
 		internal static readonly Gate TheLabPoweredOff = TheLab & DoubleJumpOfNpc;
-		internal static readonly Gate UppereLab = TheLabPoweredOff & R.ForwardDash;
+		internal static readonly Gate UppereLab = TheLabPoweredOff & ForwardDashDoubleJump;
 		internal static readonly Gate EmperorsTower = UppereLab;
 
 		//pyramid
 		internal static readonly Gate LeftPyramid = UppereLab & (
-			R.TimeStop & R.TimespinnerSpindle &
+			R.TimespinnerWheel & R.TimespinnerSpindle &
 			R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3);
 		internal static readonly Gate Nightmare = LeftPyramid & R.UpwardDash;
 
@@ -67,7 +69,6 @@ namespace TsRanodmizer.Randomisation
 			AddPresentItemLocations();
 			AddPastItemLocations();
 			AddPyramidItemLocations();
-			AddDebugRoom();
 		}
 
 		void AddPresentItemLocations()
@@ -120,14 +121,14 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(2, 23, 72, 560), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), UpperRightSideLibrary);
 			Add(new ItemKey(2, 23, 1112, 112), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), UpperRightSideLibrary);
 			Add(new ItemKey(2, 23, 136, 304), ItemInfo.Get(EInventoryRelicType.ElevatorKeycard), UpperRightSideLibrary);
-			Add(new ItemKey(2, 11, 104, 192), ItemInfo.Get(EInventoryUseItemType.EssenceCrystal), UpperRightSideLibrary);
+			Add(new ItemKey(2, 11, 104, 192), ItemInfo.Get(EInventoryUseItemType.EssenceCrystal), LowerRightSideLibrary);
 			Add(new ItemKey(2, 29, 280, 222 + TimespinnerSpindle.YOffset), ItemInfo.Get(EInventoryRelicType.TimespinnerSpindle), RightSizeLibraryElevator);
 			Add(new RoomItemKey(2, 52), ItemInfo.Get(EInventoryRelicType.TimespinnerGear2), RightSizeLibraryElevator & R.CardA);
 			//Sealed Caves left
 			Add(new ItemKey(9, 10, 248, 848), ItemInfo.Get(EInventoryRelicType.ScienceKeycardB), SealedCavesLeft);
 			Add(new ItemKey(9, 19, 664, 704), ItemInfo.Get(EInventoryUseItemType.Antidote), SealedCavesLower & R.TimeStop);
 			Add(new ItemKey(9, 39, 88, 192), ItemInfo.Get(EInventoryUseItemType.Antidote), SealedCavesLower);
-			Add(new ItemKey(9, 41, 312, 192), ItemInfo.Get(EInventoryUseItemType.GalaxyStone), SealedCavesLower & (R.UpwardDash | (R.ForwardDash & R.DoubleJump)));
+			Add(new ItemKey(9, 41, 312, 192), ItemInfo.Get(EInventoryUseItemType.GalaxyStone), SealedCavesLower & ForwardDashDoubleJump);
 			Add(new ItemKey(9, 42, 328, 192), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), SealedCavesLower);
 			Add(new ItemKey(9, 12, 280, 160), ItemInfo.Get(EItemType.MaxHP), SealedCavesLower);
 			Add(new ItemKey(9, 48, 104, 160), ItemInfo.Get(EInventoryUseItemType.FutureEther), SealedCavesLower);
@@ -147,7 +148,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(10, 8, 1080, 176), ItemInfo.Get(EInventoryEquipmentType.LabGlasses), MilitairyFortressHangar);
 			Add(new ItemKey(10, 7, 104, 192), ItemInfo.Get(EInventoryUseItemType.PlasmaIV), RightSidemilitairyFortressHangar & R.CardB);
 			Add(new ItemKey(10, 7, 152, 192), ItemInfo.Get(EItemType.MaxSand), RightSidemilitairyFortressHangar & R.CardB);
-			Add(new ItemKey(10, 18, 280, 189), ItemInfo.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), RightSidemilitairyFortressHangar & (DoubleJumpOfNpc | R.ForwardDash & R.DoubleJump));
+			Add(new ItemKey(10, 18, 280, 189), ItemInfo.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), RightSidemilitairyFortressHangar & (DoubleJumpOfNpc | ForwardDashDoubleJump));
 			// The lab
 			Add(new ItemKey(11, 36, 312, 192), ItemInfo.Get(EInventoryUseItemType.FoodSynth), TheLab);
 			Add(new ItemKey(11, 3, 1528, 192), ItemInfo.Get(EItemType.MaxHP), TheLab & R.DoubleJump);
@@ -155,7 +156,7 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(11, 25, 104, 192), ItemInfo.Get(EItemType.MaxAura), TheLab & R.DoubleJump);
 			Add(new ItemKey(11, 18, 824, 128), ItemInfo.Get(EInventoryUseItemType.ChaosHeal), TheLabPoweredOff);
 			Add(new RoomItemKey(11, 39), ItemInfo.Get(EInventoryOrbType.Eye, EOrbSlot.Melee), TheLabPoweredOff);
-			Add(new RoomItemKey(11, 21), ItemInfo.Get(EInventoryRelicType.ScienceKeycardA), TheLabPoweredOff);
+			Add(new RoomItemKey(11, 21), ItemInfo.Get(EInventoryRelicType.ScienceKeycardA), UppereLab);
 			Add(new RoomItemKey(11, 1), ItemInfo.Get(EInventoryRelicType.Dash), TheLabPoweredOff);
 			Add(new ItemKey(11, 6, 328, 192), ItemInfo.Get(EInventoryEquipmentType.LabCoat), UppereLab);
 			Add(new ItemKey(11, 27, 296, 160), ItemInfo.Get(EItemType.MaxSand), UppereLab);
@@ -209,11 +210,11 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(8, 12, 280, 160), ItemInfo.Get(EItemType.MaxHP), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 48, 104, 160), ItemInfo.Get(EInventoryUseItemType.Herb), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 39, 88, 192), ItemInfo.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment);
-			Add(new ItemKey(8, 41, 168, 192), ItemInfo.Get(EInventoryUseItemType.GoldNecklace), LowerCavesOfBanishment & (R.UpwardDash | R.ForwardDash & R.DoubleJump));
-			Add(new ItemKey(8, 41, 216, 192), ItemInfo.Get(EInventoryUseItemType.GoldRing), LowerCavesOfBanishment & (R.UpwardDash | R.ForwardDash & R.DoubleJump));
-			Add(new ItemKey(8, 41, 264, 192), ItemInfo.Get(EInventoryUseItemType.EssenceCrystal), LowerCavesOfBanishment & (R.UpwardDash | R.ForwardDash & R.DoubleJump));
-			Add(new ItemKey(8, 41, 312, 192), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & (R.UpwardDash | R.ForwardDash & R.DoubleJump));
-			Add(new ItemKey(8, 42, 216, 189), ItemInfo.Get(EInventoryOrbType.Wind, EOrbSlot.Melee), LowerCavesOfBanishment & (R.UpwardDash | R.ForwardDash & R.DoubleJump));
+			Add(new ItemKey(8, 41, 168, 192), ItemInfo.Get(EInventoryUseItemType.GoldNecklace), LowerCavesOfBanishment & ForwardDashDoubleJump);
+			Add(new ItemKey(8, 41, 216, 192), ItemInfo.Get(EInventoryUseItemType.GoldRing), LowerCavesOfBanishment & ForwardDashDoubleJump);
+			Add(new ItemKey(8, 41, 264, 192), ItemInfo.Get(EInventoryUseItemType.EssenceCrystal), LowerCavesOfBanishment & ForwardDashDoubleJump);
+			Add(new ItemKey(8, 41, 312, 192), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & ForwardDashDoubleJump);
+			Add(new ItemKey(8, 42, 216, 189), ItemInfo.Get(EInventoryOrbType.Wind, EOrbSlot.Melee), LowerCavesOfBanishment & ForwardDashDoubleJump);
 			Add(new ItemKey(8, 15, 248, 192), ItemInfo.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 31, 88, 400), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & R.DoubleJump);
 			//Caves of banishment (sirens)
@@ -273,15 +274,6 @@ namespace TsRanodmizer.Randomisation
 			Add(new ItemKey(14, 9, 280, 176), ItemInfo.Dummy, challengeDungion); //Ravenlord post fight
 			Add(new ItemKey(14, 6, 40, 208), ItemInfo.Dummy, challengeDungion); //ifrid pre fight
 			Add(new ItemKey(14, 7, 280, 208), ItemInfo.Dummy, challengeDungion); //ifrid post fight*/
-		}
-
-		void AddDebugRoom()
-		{
-#if DEBUG
-			Add(ItemKey.DebugRoom, ItemInfo.Dummy);
-
-			this[ItemKey.DebugRoom].SetItem(ItemInfo.Dummy, R.None);
-#endif
 		}
 
 		ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)

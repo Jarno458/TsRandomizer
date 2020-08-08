@@ -95,14 +95,6 @@ namespace TsRanodmizer.LevelObjects
 
 				SpawnTreasureChest(level, false, 296, 176);
 			}));
-
-#if DEBUG
-			RoomTriggers.Add(new RoomTrigger(1, 13, (level, itemLocation) =>
-			{
-				SpawnItemDropPickup(level, ItemInfo.Get(EItemType.MaxHP), 350, 150);
-				SpawnOrbPredestal(level, 300, 150);
-			}));
-#endif
 		}
 
 		readonly RoomItemKey key;
