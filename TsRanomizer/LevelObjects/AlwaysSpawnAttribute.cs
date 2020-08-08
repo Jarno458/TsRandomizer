@@ -3,7 +3,7 @@ using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 
-namespace TsRanodmizer.LevelObjects
+namespace TsRandomizer.LevelObjects
 {
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	class AlwaysSpawnAttribute : Attribute

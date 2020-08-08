@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.GameAbstractions.Gameplay;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer.Extensions
+namespace TsRandomizer.Extensions
 {
 	public static class ScriptActionQueueExtensions
 	{

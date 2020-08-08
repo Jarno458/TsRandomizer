@@ -2,9 +2,9 @@
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.HUD;
 using Timespinner.GameObjects.BaseClasses;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer.LevelObjects.Other
+namespace TsRandomizer.LevelObjects.Other
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Cutscene.CutsceneLab0")]
 	// ReSharper disable once UnusedMember.Global

@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
+using R = TsRandomizer.Randomisation.Requirement;
 
-using R = TsRanodmizer.Randomisation.Requirement;
-
-namespace TsRanodmizer.Randomisation
+namespace TsRandomizer.Randomisation
 {
 	class ItemUnlockingMap
 	{

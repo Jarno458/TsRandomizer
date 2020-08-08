@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using TsRanodmizer;
-using TsRanodmizer.Randomisation;
+using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Tests
 {

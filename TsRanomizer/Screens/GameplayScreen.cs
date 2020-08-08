@@ -7,12 +7,12 @@ using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
-using TsRanodmizer.LevelObjects;
-using TsRanodmizer.Randomisation;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.LevelObjects;
+using TsRandomizer.Randomisation;
 
-namespace TsRanodmizer.Screens
+namespace TsRandomizer.Screens
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.InGame.GameplayScreen")]
 	// ReSharper disable once UnusedMember.Global

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace TsRanodmizer.Extensions
+namespace TsRandomizer.Extensions
 {
 	public static class ReflectExtensions
 	{

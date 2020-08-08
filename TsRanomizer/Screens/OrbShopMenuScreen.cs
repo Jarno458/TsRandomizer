@@ -1,8 +1,8 @@
 ﻿using Timespinner.GameStateManagement.ScreenManager;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer.Screens
+namespace TsRandomizer.Screens
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.Shop.OrbShopMenuScreen")]
 	// ReSharper disable once UnusedMember.Global

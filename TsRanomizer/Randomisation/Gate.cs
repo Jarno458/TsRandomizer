@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using TsRanodmizer.Extensions;
+using TsRandomizer.Extensions;
 
-namespace TsRanodmizer.Randomisation
+namespace TsRandomizer.Randomisation
 {
 	abstract class Gate
 	{

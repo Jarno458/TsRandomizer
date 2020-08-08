@@ -2,15 +2,14 @@
 using System.Collections;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
-using TsRanodmizer.Drawables;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
-using TsRanodmizer.Randomisation;
+using TsRandomizer.Drawables;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
 
-namespace TsRanodmizer.Screens
+namespace TsRandomizer.Screens
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.MainMenu.GameDifficultyMenu")]
 	// ReSharper disable once UnusedMember.Global

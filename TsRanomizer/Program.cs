@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace TsRanodmizer
+namespace TsRandomizer
 {
 	public static class Program
 	{
@@ -39,7 +39,7 @@ namespace TsRanodmizer
 
 		static bool ContinueWithoutMd5Check()
 		{
-			Console.Out.WriteLine("TsRanodmizer version missmatch!, pleaze update TsRanodmizer");
+			Console.Out.WriteLine("TsRandomizer version missmatch!, pleaze update TsRandomizer");
 			Console.Out.WriteLine("The installed version of TsRanodmizer is not made to work with the installed version of TimeSpinner");
 			Console.Out.WriteLine("If you continue the game might crash at any given point");
 

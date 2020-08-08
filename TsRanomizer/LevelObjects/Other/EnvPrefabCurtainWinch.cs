@@ -1,7 +1,7 @@
 ﻿using Timespinner.GameObjects.BaseClasses;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer.LevelObjects.Other
+namespace TsRandomizer.LevelObjects.Other
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Events.EnvironmentPrefabs.EnvPrefabCurtainWinch")]
 	// ReSharper disable once UnusedMember.Global

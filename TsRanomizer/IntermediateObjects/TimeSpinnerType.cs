@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Timespinner;
 
-namespace TsRanodmizer.IntermediateObjects
+namespace TsRandomizer.IntermediateObjects
 {
 	[AttributeUsage(AttributeTargets.Class)]
 	public class TimeSpinnerType : Attribute

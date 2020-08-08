@@ -4,10 +4,10 @@ using System.Linq;
 using System.Reflection;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer.ReplacementObjects
+namespace TsRandomizer.ReplacementObjects
 {
 	abstract class Replaces<T> : Replaces where T : Animate
 	{

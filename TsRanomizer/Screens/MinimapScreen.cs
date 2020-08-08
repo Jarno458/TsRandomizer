@@ -5,11 +5,11 @@ using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameStateManagement.ScreenManager;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
-using TsRanodmizer.Randomisation;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
 
-namespace TsRanodmizer.Screens
+namespace TsRandomizer.Screens
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.MapMenuScreen")]
 	// ReSharper disable once UnusedMember.Global

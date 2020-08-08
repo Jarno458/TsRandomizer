@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 
-namespace TsRanodmizer.Randomisation
+namespace TsRandomizer.Randomisation
 {
 	struct Requirement : IEquatable<Requirement>
 	{

@@ -1,9 +1,8 @@
 ﻿using NUnit.Framework;
 using Timespinner.GameAbstractions.Inventory;
-using TsRanodmizer;
-using TsRanodmizer.IntermediateObjects;
-using TsRanodmizer.Randomisation;
-using TsRanodmizer.Randomisation.ItemPlacers;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
+using TsRandomizer.Randomisation.ItemPlacers;
 
 namespace TsRandomizer.Tests
 {

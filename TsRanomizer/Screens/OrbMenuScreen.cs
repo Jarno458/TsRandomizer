@@ -4,10 +4,10 @@ using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer.Screens
+namespace TsRandomizer.Screens
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.OrbMenuScreen")]
 	// ReSharper disable once UnusedMember.Global

@@ -7,11 +7,11 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
-using TsRanodmizer.Randomisation;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
 
-namespace TsRanodmizer.LevelObjects
+namespace TsRandomizer.LevelObjects
 {
 	class RoomTrigger
 	{

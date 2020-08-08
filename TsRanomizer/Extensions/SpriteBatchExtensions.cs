@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TsRanodmizer.Extensions
+namespace TsRandomizer.Extensions
 {
     static class SpriteBatchExtensions
     {

@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace TsRanodmizer
+namespace TsRandomizer
 {
 	struct Seed
 	{

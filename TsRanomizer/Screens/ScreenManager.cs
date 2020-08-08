@@ -4,11 +4,11 @@ using Microsoft.Xna.Framework;
 using Timespinner;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
-using TsRanodmizer.Randomisation;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
 
-namespace TsRanodmizer.Screens
+namespace TsRandomizer.Screens
 {
 	class ScreenManager : Timespinner.GameStateManagement.ScreenManager.ScreenManager
 	{

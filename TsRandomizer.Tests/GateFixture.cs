@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using TsRanodmizer.Randomisation;
+using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Tests
 {

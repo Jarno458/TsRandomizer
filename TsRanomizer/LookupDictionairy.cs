@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TsRanodmizer
+namespace TsRandomizer
 {
 	class LookupDictionairy<TLookup, TValue> : IEnumerable<TValue>
 	{

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Timespinner.Core.Specifications;
-using TsRanodmizer.Randomisation;
+using TsRandomizer.Randomisation;
 
-namespace TsRanodmizer.Extensions
+namespace TsRandomizer.Extensions
 {
 	static class ListExtensions
 	{

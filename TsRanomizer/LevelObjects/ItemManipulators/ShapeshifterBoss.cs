@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.GameObjects.BaseClasses;
-using TsRanodmizer.IntermediateObjects;
-using TsRanodmizer.Randomisation;
-using TsRanodmizer.Screens;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
+using TsRandomizer.Screens;
 
-namespace TsRanodmizer.LevelObjects.ItemManipulators
+namespace TsRandomizer.LevelObjects.ItemManipulators
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.ShapeshifterBoss")]
 	// ReSharper disable once UnusedMember.Global

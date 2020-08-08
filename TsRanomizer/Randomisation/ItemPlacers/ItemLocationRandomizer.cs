@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer.Randomisation.ItemPlacers
+namespace TsRandomizer.Randomisation.ItemPlacers
 {
 	abstract class ItemLocationRandomizer
 	{

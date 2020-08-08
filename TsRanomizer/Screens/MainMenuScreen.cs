@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
-using TsRanodmizer.IntermediateObjects;
-using TsRanodmizer.Randomisation;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
 
-namespace TsRanodmizer.Screens
+namespace TsRandomizer.Screens
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.MainMenu.MainMenuScreen")]
 	// ReSharper disable once UnusedMember.Global

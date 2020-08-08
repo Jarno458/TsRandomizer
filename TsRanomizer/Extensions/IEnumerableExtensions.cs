@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TsRanodmizer.Extensions
+namespace TsRandomizer.Extensions
 {
 	public static class EnumerableExtensions
 	{

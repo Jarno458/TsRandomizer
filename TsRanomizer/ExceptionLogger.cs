@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace TsRanodmizer
+namespace TsRandomizer
 {
 	static class ExceptionLogger
 	{

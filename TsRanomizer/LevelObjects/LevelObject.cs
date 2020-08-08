@@ -9,14 +9,13 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
-using Timespinner.GameStateManagement.Screens.InGame;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
-using TsRanodmizer.Randomisation;
-using TsRanodmizer.ReplacementObjects;
-using TsRanodmizer.Screens;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
+using TsRandomizer.ReplacementObjects;
+using TsRandomizer.Screens;
 
-namespace TsRanodmizer.LevelObjects
+namespace TsRandomizer.LevelObjects
 {
 	abstract class LevelObject<T> : LevelObject where T : Mobile
 	{

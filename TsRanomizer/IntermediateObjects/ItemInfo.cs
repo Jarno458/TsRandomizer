@@ -5,9 +5,9 @@ using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
-using TsRanodmizer.Extensions;
+using TsRandomizer.Extensions;
 
-namespace TsRanodmizer.IntermediateObjects
+namespace TsRandomizer.IntermediateObjects
 {
 	class ItemInfo : IEquatable<ItemInfo>
 	{

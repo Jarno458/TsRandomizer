@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using TsRanodmizer.Randomisation.ItemPlacers;
+using TsRandomizer.Randomisation.ItemPlacers;
 
-namespace TsRanodmizer.Randomisation
+namespace TsRandomizer.Randomisation
 {
 	class Randomizer
 	{

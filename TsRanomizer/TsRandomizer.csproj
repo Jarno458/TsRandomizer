@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{694E46C5-FD46-4CC8-8B71-D381E154CCF7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>TsRanodmizer</RootNamespace>
+    <RootNamespace>TsRandomizer</RootNamespace>
     <AssemblyName>TsRandomizer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

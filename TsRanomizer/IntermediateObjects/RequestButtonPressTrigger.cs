@@ -5,7 +5,7 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Heroes;
 
-namespace TsRanodmizer.IntermediateObjects
+namespace TsRandomizer.IntermediateObjects
 {
 	class RequestButtonPressTrigger : GameEvent
 	{

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
 using NUnit.Framework;
-using TsRanodmizer.Randomisation;
-
-using R = TsRanodmizer.Randomisation.Requirement;
-using static TsRanodmizer.Randomisation.ItemLocationMap;
+using TsRandomizer.Randomisation;
+using R = TsRandomizer.Randomisation.Requirement;
+using static TsRandomizer.Randomisation.ItemLocationMap;
 
 namespace TsRandomizer.Tests
 {

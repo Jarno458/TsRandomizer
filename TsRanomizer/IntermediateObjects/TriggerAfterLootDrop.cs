@@ -1,9 +1,9 @@
 ﻿using System;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.Events;
-using TsRanodmizer.Extensions;
+using TsRandomizer.Extensions;
 
-namespace TsRanodmizer.IntermediateObjects
+namespace TsRandomizer.IntermediateObjects
 {
 	class TriggerAfterLootDrop : TriggerBase
 	{

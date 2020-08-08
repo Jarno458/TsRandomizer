@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using Timespinner.GameObjects.Events.Misc;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer
+namespace TsRandomizer
 {
 	class DeRandomizer : Random
 	{

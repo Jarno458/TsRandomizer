@@ -1,11 +1,11 @@
 ﻿using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
-using TsRanodmizer.Randomisation;
-using TsRanodmizer.Screens;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
+using TsRandomizer.Screens;
 
-namespace TsRanodmizer.LevelObjects.ItemManipulators
+namespace TsRandomizer.LevelObjects.ItemManipulators
 {
 	[TimeSpinnerType("Timespinner.GameObjects.NPCs.SelenNPC")]
 	// ReSharper disable once UnusedMember.Global

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TsRanodmizer.Drawables
+namespace TsRandomizer.Drawables
 {
 	interface IDrawable
 	{

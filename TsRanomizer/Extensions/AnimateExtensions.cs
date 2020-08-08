@@ -1,6 +1,6 @@
 ﻿using Timespinner.GameObjects.BaseClasses;
 
-namespace TsRanodmizer.Extensions
+namespace TsRandomizer.Extensions
 {
 	public static class AnimateExtensions
 	{

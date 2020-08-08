@@ -4,7 +4,7 @@ using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 
-namespace TsRanodmizer.IntermediateObjects
+namespace TsRandomizer.IntermediateObjects
 {
 	abstract class TriggerBase : GameEvent
 	{

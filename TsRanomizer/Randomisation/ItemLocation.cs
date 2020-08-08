@@ -1,7 +1,7 @@
 ﻿using Timespinner.GameAbstractions.Saving;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer.Randomisation
+namespace TsRandomizer.Randomisation
 {
 	class ItemLocation
 	{

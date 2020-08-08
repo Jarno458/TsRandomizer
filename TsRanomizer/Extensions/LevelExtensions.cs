@@ -1,9 +1,9 @@
 ﻿using System;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer.Extensions
+namespace TsRandomizer.Extensions
 {
 	public static class LevelExtensions
 	{

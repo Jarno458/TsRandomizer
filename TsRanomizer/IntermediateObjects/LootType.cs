@@ -2,7 +2,7 @@
 using System.Diagnostics.Contracts;
 using Timespinner.GameAbstractions.Inventory;
 
-namespace TsRanodmizer.IntermediateObjects
+namespace TsRandomizer.IntermediateObjects
 {
 	struct LootType
 	{

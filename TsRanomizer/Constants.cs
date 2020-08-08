@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Dynamic;
 using System.Reflection;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer
+namespace TsRandomizer
 {
 	class Constants : DynamicObject
 	{

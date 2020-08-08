@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.Xna.Framework;
 
-namespace TsRanodmizer.Extensions
+namespace TsRandomizer.Extensions
 {
     public static class GameComponentCollectionExtensions
     {

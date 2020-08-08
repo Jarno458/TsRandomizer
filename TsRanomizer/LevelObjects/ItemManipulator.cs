@@ -3,11 +3,11 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameObjects.BaseClasses;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
-using TsRanodmizer.Randomisation;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
 
-namespace TsRanodmizer.LevelObjects
+namespace TsRandomizer.LevelObjects
 {
 	abstract class ItemManipulator<T> : ItemManipulator where T : Mobile
 	{

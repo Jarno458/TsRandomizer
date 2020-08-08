@@ -1,8 +1,8 @@
 ﻿using Timespinner;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.Screens;
+using TsRandomizer.Extensions;
+using TsRandomizer.Screens;
 
-namespace TsRanodmizer
+namespace TsRandomizer
 {
 	class TimeSpinnerGame : TimespinnerGame
 	{

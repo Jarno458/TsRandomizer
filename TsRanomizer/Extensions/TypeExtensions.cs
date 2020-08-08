@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace TsRanodmizer.Extensions
+namespace TsRandomizer.Extensions
 {
 	static class TypeExtensions
 	{

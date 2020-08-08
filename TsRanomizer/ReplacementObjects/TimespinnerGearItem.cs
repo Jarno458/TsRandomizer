@@ -3,10 +3,10 @@ using Microsoft.Xna.Framework;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer.ReplacementObjects
+namespace TsRandomizer.ReplacementObjects
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Relics.TimespinnerGearItem")]
 	// ReSharper disable once UnusedMember.Global

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TsRanodmizer.Randomisation
+namespace TsRandomizer.Randomisation
 {
 	class ItemKey : IEquatable<ItemKey>
 	{

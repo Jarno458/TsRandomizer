@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Timespinner.Core.Specifications;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events;
-using TsRanodmizer.Randomisation;
+using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Tests
 {

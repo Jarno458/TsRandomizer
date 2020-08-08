@@ -2,10 +2,10 @@
 using Timespinner.GameAbstractions.Assets.Audio;
 using Timespinner.GameAbstractions.GameObjects;
 using Timespinner.GameObjects.BaseClasses;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer.LevelObjects.Other
+namespace TsRandomizer.LevelObjects.Other
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Events.SaveStatue")]
 	// ReSharper disable once UnusedMember.Global

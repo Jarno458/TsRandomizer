@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Threading;
 using Timespinner;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer
+namespace TsRandomizer
 {
 	static class DummyPlatformHelper
 	{

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.Xna.Framework;
-using TsRanodmizer.Extensions;
-using TsRanodmizer.IntermediateObjects;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
 
-namespace TsRanodmizer.Screens
+namespace TsRandomizer.Screens
 {
 	class MenuEntry
 	{

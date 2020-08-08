@@ -1,4 +1,4 @@
-﻿namespace TsRanodmizer.Randomisation
+﻿namespace TsRandomizer.Randomisation
 {
 	class RoomItemKey : ItemKey
 	{

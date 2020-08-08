@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.Core;
 using Timespinner.GameAbstractions;
-using TsRanodmizer.Extensions;
+using TsRandomizer.Extensions;
 
-namespace TsRanodmizer.Drawables
+namespace TsRandomizer.Drawables
 {
 	class SeedRepresentation : IDrawable
 	{

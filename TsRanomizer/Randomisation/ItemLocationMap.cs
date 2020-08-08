@@ -3,12 +3,11 @@ using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
-using TsRanodmizer.IntermediateObjects;
-using TsRanodmizer.ReplacementObjects;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.ReplacementObjects;
+using R = TsRandomizer.Randomisation.Requirement;
 
-using R = TsRanodmizer.Randomisation.Requirement;
-
-namespace TsRanodmizer.Randomisation
+namespace TsRandomizer.Randomisation
 {
 	class ItemLocationMap : LookupDictionairy<ItemKey, ItemLocation>
 	{
