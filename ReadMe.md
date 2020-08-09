@@ -9,7 +9,7 @@ The game considers nightmare as the final boss,	thus you require atleast access 
 Quest are not concidered part of the game, and they wont contain any progression item, however Neliste will still offer you an item when you talk to her
 
 # Instalation \ Startup
-Download TsRandomizer.exe from the release page https://github.com/JarnoWesthof/TsRanomizer/releases/tag/0.9
+Download TsRandomizer.exe from the release page https://github.com/JarnoWesthof/TsRandomizer/releases
 
 Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located, and start TsRandomizer.exe to start the game with the randomizer enabled, or Timespinner.exe to start the game normaly
 

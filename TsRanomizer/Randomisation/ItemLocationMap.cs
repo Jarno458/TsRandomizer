@@ -151,7 +151,7 @@ namespace TsRandomizer.Randomisation
 			// The lab
 			Add(new ItemKey(11, 36, 312, 192), ItemInfo.Get(EInventoryUseItemType.FoodSynth), TheLab);
 			Add(new ItemKey(11, 3, 1528, 192), ItemInfo.Get(EItemType.MaxHP), TheLab & R.DoubleJump);
-			Add(new ItemKey(11, 3, 72, 192), ItemInfo.Get(EInventoryUseItemType.FuturePotion), TheLab & DoubleJumpOfNpc);
+			Add(new ItemKey(11, 3, 72, 192), ItemInfo.Get(EInventoryUseItemType.FuturePotion), TheLab & R.UpwardDash); //when lab power is only, it only requires DoubleJumpOfNpc, but we cant code for the power state
 			Add(new ItemKey(11, 25, 104, 192), ItemInfo.Get(EItemType.MaxAura), TheLab & R.DoubleJump);
 			Add(new ItemKey(11, 18, 824, 128), ItemInfo.Get(EInventoryUseItemType.ChaosHeal), TheLabPoweredOff);
 			Add(new RoomItemKey(11, 39), ItemInfo.Get(EInventoryOrbType.Eye, EOrbSlot.Melee), TheLabPoweredOff);
