@@ -43,6 +43,8 @@ namespace TsRandomizer.Randomisation
 				{ItemInfo.Get(EInventoryRelicType.EssenceOfSpace), new UnlockingSpecificaiton {Unlocks = R.UpwardDash, AdditionalUnlocks = R.DoubleJump | R.TimeStop}},
 				{ItemInfo.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell), new UnlockingSpecificaiton {Unlocks = R.UpwardDash, AdditionalUnlocks = R.DoubleJump | R.TimeStop}},
 				{ItemInfo.Get(EInventoryOrbType.Pink, EOrbSlot.Melee), new UnlockingSpecificaiton {Unlocks = R.PinkOrb}},
+				{ItemInfo.Get(EInventoryOrbType.Pink, EOrbSlot.Spell), new UnlockingSpecificaiton {Unlocks = R.PinkOrb}},
+				{ItemInfo.Get(EInventoryOrbType.Pink, EOrbSlot.Passive), new UnlockingSpecificaiton {Unlocks = R.PinkOrb}},
 				{ItemInfo.Get(EInventoryRelicType.AirMask), new UnlockingSpecificaiton {Unlocks = R.GassMask}},
 			};
 

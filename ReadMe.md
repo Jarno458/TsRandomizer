@@ -8,6 +8,8 @@ The game considers nightmare as the final boss,	thus you require atleast access 
 
 Quest are not concidered part of the game, and they wont contain any progression item, however Neliste will still offer you an item when you talk to her
 
+When you feel stuck, you can open the minimap and hold X (the key to remove map markers),, it will highligh all locations that you can reach and still have items for you
+
 # Instalation \ Startup
 Download TsRandomizer.exe from the release page https://github.com/JarnoWesthof/TsRandomizer/releases
 
@@ -37,6 +39,7 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 * Menu tooltip is wrong on diffuclty selection screen
 * Using the transition room near refugee camp without having pyramid keys renders the portal to small
 * Player obtains Meyef to early
+* Neliste only shows once when you enter the past without the timespinner
 
 # Minor Todo
 ##### Things i plan on doing in the future
