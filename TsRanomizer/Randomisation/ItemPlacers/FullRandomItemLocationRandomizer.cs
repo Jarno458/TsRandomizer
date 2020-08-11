@@ -25,8 +25,14 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			FillTutorial(random);
 			PlaceGassMaskInALegalSpot(random);
 
+			var alreadyAssingedItems = ItemLocations
+				.Where(l => l.IsUsed)
+				.Select(l => l.ItemInfo)
+				.ToArray();
+
 			var itemsThatUnlockProgression = UnlockingMap.ItemsThatUnlockProgression
 				.Where(i => i != ItemInfo.Get(EInventoryRelicType.AirMask))
+				.Where(i => !alreadyAssingedItems.Contains(i))
 				.ToList();
 
 			while (itemsThatUnlockProgression.Count > 0)

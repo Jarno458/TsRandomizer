@@ -74,7 +74,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		{
 			var alreadyAssingedItems = ItemLocations
 				.Where(l => l.IsUsed)
-				.Select(l => l.ItemInfo);
+				.Select(l => l.ItemInfo)
+				.ToArray();
 			
 			var itemlist = ItemLocations
 				.Select(l => l.DefaultItem)

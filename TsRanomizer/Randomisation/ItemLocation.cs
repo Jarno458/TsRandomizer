@@ -57,7 +57,7 @@ namespace TsRandomizer.Randomisation
 
 		public override string ToString()
 		{
-			return Key.ToString();
+			return $"{Key} [{ItemInfo ?? null}]";
 		}
 
 		public void BsseOnGameSave(GameSave save)
