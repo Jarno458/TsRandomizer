@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 
@@ -23,6 +22,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		void AddRandomItemsToLocationMap(Random random)
 		{
 			FillTutorial(random);
+			PlaceStarterProgressionItem(random);
 			PlaceGassMaskInALegalSpot(random);
 
 			var alreadyAssingedItems = ItemLocations
@@ -31,28 +31,23 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.ToArray();
 
 			var itemsThatUnlockProgression = UnlockingMap.ItemsThatUnlockProgression
-				.Where(i => i != ItemInfo.Get(EInventoryRelicType.AirMask))
 				.Where(i => !alreadyAssingedItems.Contains(i))
+				.ToList();
+
+			var unusedItemLocations = ItemLocations
+				.Where(l => !l.IsUsed)
 				.ToList();
 
 			while (itemsThatUnlockProgression.Count > 0)
 			{
 				var item = itemsThatUnlockProgression.PopRandom(random);
 
-				var location = GetUnusedItemLocation(random);
+				var location = unusedItemLocations.PopRandom(random);
 
 				PutItemAtLocation(item, location);
 			}
 
 			FillRemainingChests(random);
-		}
-
-		ItemLocation GetUnusedItemLocation(Random random)
-		{
-			var locations = ItemLocations
-				.Where(l => !l.IsUsed);
-
-			return locations.SelectRandom(random);
 		}
 
 		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)

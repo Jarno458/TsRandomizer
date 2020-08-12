@@ -126,11 +126,6 @@ namespace TsRandomizer.LevelObjects
 
 			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.EssenceOfSpace));
-
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryOrbType.Pink, EOrbSlot.Passive));
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryOrbType.Pink, EOrbSlot.Spell));
-
-
 #endif
 
 			var levelReflected = level.AsDynamic();

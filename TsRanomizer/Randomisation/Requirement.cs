@@ -34,12 +34,14 @@ namespace TsRandomizer.Randomisation
 		public static readonly Requirement PinkOrb = 1UL << 25;
 		public static readonly Requirement TimespinnerWheel = 1UL << 26;
 
+		public static readonly Requirement GateMilitairyGate = 1UL << 49;
 		public static readonly Requirement GateKittyBoss = 1UL << 50;
 		public static readonly Requirement GateLeftLibrary = 1UL << 51;
 		public static readonly Requirement GateSealedSirensCave = 1UL << 52;
 		public static readonly Requirement GateLakeSirineLeft = 1UL << 53;
 		public static readonly Requirement GateLakeSirineRight = 1UL << 54;
 		public static readonly Requirement GateAccessToPast = 1UL << 55;
+
 
 		readonly ulong flags;
 

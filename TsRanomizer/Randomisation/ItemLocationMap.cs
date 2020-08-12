@@ -14,7 +14,7 @@ namespace TsRandomizer.Randomisation
 		internal static readonly Gate DoubleJumpOfNpc = (R.DoubleJump & R.TimeStop) | R.UpwardDash;
 		internal static readonly Gate ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
 
-		internal static readonly R LowerLakeDesolationBridge = R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary;
+		public static readonly R LowerLakeDesolationBridge = R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary;
 		internal static readonly Gate AccessToPast = 
 			(
 			   R.TimespinnerWheel & R.TimespinnerSpindle //activateLibraryTimespinner
@@ -38,12 +38,12 @@ namespace TsRandomizer.Randomisation
 
 		//future
 		internal static readonly Gate UpperLakeDesolation = LeftSideForestCaves & R.AntiWeed;
-		internal static readonly Gate LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge;
+		internal static readonly Gate LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | (R.GateMilitairyGate & R.CardD & (R.CardB | (R.CardC & R.CardE)));
 		internal static readonly Gate UpperLeftLibrary = LeftLibrary & (R.DoubleJump | R.ForwardDash);
-		internal static readonly Gate MidLibrary = LeftLibrary & R.CardD;
-		internal static readonly Gate UpperRightSideLibrary = MidLibrary & (R.CardC | (R.CardB & R.CardE));
-		internal static readonly Gate RightSizeLibraryElevator = MidLibrary & R.CardE & (R.CardC | R.CardB);
-		internal static readonly Gate LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSizeLibraryElevator;
+		internal static readonly Gate MidLibrary = (LeftLibrary & R.CardD) | (R.GateMilitairyGate & (R.CardB | (R.CardC & R.CardE)));
+		internal static readonly Gate UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | (R.GateMilitairyGate & R.CardE);
+		internal static readonly Gate RightSizeLibraryElevator = (MidLibrary & R.CardE & (R.CardC | R.CardB)) | (R.GateMilitairyGate & R.CardE);
+		internal static readonly Gate LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSizeLibraryElevator | R.GateMilitairyGate;
 		internal static readonly R SealedCavesLeft = R.DoubleJump;
 		internal static readonly Gate SealedCavesLower = SealedCavesLeft & R.CardA;
 		internal static readonly Gate SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
@@ -118,9 +118,9 @@ namespace TsRandomizer.Randomisation
 			//libary right, 
 			Add(new ItemKey(2, 15, 760, 192), ItemInfo.Get(EInventoryUseItemType.FuturePotion), UpperRightSideLibrary);
 			Add(new ItemKey(2, 20, 72, 1200), ItemInfo.Get(EInventoryUseItemType.Jerky), RightSizeLibraryElevator);
-			Add(new ItemKey(2, 23, 72, 560), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), UpperRightSideLibrary);
-			Add(new ItemKey(2, 23, 1112, 112), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), UpperRightSideLibrary);
-			Add(new ItemKey(2, 23, 136, 304), ItemInfo.Get(EInventoryRelicType.ElevatorKeycard), UpperRightSideLibrary);
+			Add(new ItemKey(2, 23, 72, 560), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), UpperRightSideLibrary & (R.CardE | R.DoubleJump)); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
+			Add(new ItemKey(2, 23, 1112, 112), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), UpperRightSideLibrary & (R.CardE | R.DoubleJump)); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
+			Add(new ItemKey(2, 23, 136, 304), ItemInfo.Get(EInventoryRelicType.ElevatorKeycard), UpperRightSideLibrary & (R.CardE | R.DoubleJump)); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
 			Add(new ItemKey(2, 11, 104, 192), ItemInfo.Get(EInventoryUseItemType.EssenceCrystal), LowerRightSideLibrary);
 			Add(new ItemKey(2, 29, 280, 222 + TimespinnerSpindle.YOffset), ItemInfo.Get(EInventoryRelicType.TimespinnerSpindle), RightSizeLibraryElevator);
 			Add(new RoomItemKey(2, 52), ItemInfo.Get(EInventoryRelicType.TimespinnerGear2), RightSizeLibraryElevator & R.CardA);
@@ -261,12 +261,12 @@ namespace TsRandomizer.Randomisation
 			//ancient pyramid
 			Add(new ItemKey(16, 14, 312, 192), ItemInfo.Get(EItemType.MaxSand), LeftPyramid);
 			Add(new ItemKey(16, 3, 88, 192), ItemInfo.Get(EItemType.MaxHP), LeftPyramid);
-			Add(new ItemKey(16, 22, 200, 192), ItemInfo.Get(EItemType.MaxAura), LeftPyramid);
-			Add(new ItemKey(16, 16, 1512, 144), ItemInfo.Get(EInventoryRelicType.EssenceOfSpace), LeftPyramid);
-			//Add(new ItemKey(16, 5, 136, 192), ItemInfo.Get(EInventoryRelicType.EternalBrooch), LeftPyramid); //Post nightmare
+			Add(new ItemKey(16, 22, 200, 192), ItemInfo.Get(EItemType.MaxAura), Nightmare); //only requires  to rach but Nightmate to escape LeftPyramid
+			Add(new ItemKey(16, 16, 1512, 144), ItemInfo.Get(EInventoryRelicType.EssenceOfSpace), Nightmare); //only requires  to rach but Nightmate to escape LeftPyramid
+																											  //Add(new ItemKey(16, 5, 136, 192), ItemInfo.Get(EInventoryRelicType.EternalBrooch), LeftPyramid); //Post nightmare
 
 			//temporal gyre
-			/*var challengeDungion = LeftPyramid & Requirement.UpwardDash;
+			/*var challengeDungion = Nightmare;
 			Add(new ItemKey(14, 14, 200, 832), ItemInfo.Dummy, challengeDungion); //transition chest 1
 			Add(new ItemKey(14, 17, 200, 832), ItemInfo.Dummy, challengeDungion); //transition chest 2
 			Add(new ItemKey(14, 20, 200, 832), ItemInfo.Dummy, challengeDungion); //transition chest 3

@@ -35,7 +35,7 @@ namespace TsRandomizer.Randomisation
 				{ItemInfo.Get(EInventoryRelicType.ElevatorKeycard), new UnlockingSpecificaiton {Unlocks = R.CardE}},
 				{ItemInfo.Get(EInventoryRelicType.ScienceKeycardV), new UnlockingSpecificaiton {Unlocks = R.CardV}},
 				{ItemInfo.Get(EInventoryRelicType.WaterMask), new UnlockingSpecificaiton {Unlocks = R.Swimming}},
-				{ItemInfo.Get(EInventoryRelicType.PyramidsKey), new UnlockingSpecificaiton {Unlocks = R.Teleport, AdditionalUnlocks = R.None}}, //Set in ForwardFillingItemLocationRandomizer.CalculateTeleporterPickAction(),
+				{ItemInfo.Get(EInventoryRelicType.PyramidsKey), new UnlockingSpecificaiton {Unlocks = R.Teleport, AdditionalUnlocks = R.None}}, //Set in CalculateTeleporterPickupAction(),
 				{ItemInfo.Get(EInventoryRelicType.TimespinnerSpindle), new UnlockingSpecificaiton {Unlocks = R.TimespinnerSpindle}},
 				{ItemInfo.Get(EInventoryRelicType.TimespinnerGear1), new UnlockingSpecificaiton {Unlocks = R.TimespinnerPiece1}},
 				{ItemInfo.Get(EInventoryRelicType.TimespinnerGear2), new UnlockingSpecificaiton {Unlocks = R.TimespinnerPiece2}},
@@ -50,19 +50,25 @@ namespace TsRandomizer.Randomisation
 
 			var random = new Random(seed);
 
-			CalculateTeleporterPickAction(random);
+			CalculateTeleporterPickupAction(random);
 		}
 
-		void CalculateTeleporterPickAction(Random random)
+		void CalculateTeleporterPickupAction(Random random)
 		{
 			var gateProgressionItems = new[] {
+				new {Gate = R.GateMilitairyGate, LevelId = 10, RoomId = 12},
+			};
+
+			/*var gateProgressionItems = new[] {
 				new {Gate = R.GateKittyBoss, LevelId = 2, RoomId = 55},
 				new {Gate = R.GateLeftLibrary, LevelId = 2, RoomId = 54},
 				//new {Gate = Requirement.GateLakeSirineLeft, LevelId = 7, RoomId = 30}, //you dont want to spawn with a boss in your face
 				new {Gate = R.GateLakeSirineRight, LevelId = 7, RoomId = 31},
 				//new {Gate = Requirement.GateAccessToPast, LevelId = 3, RoomId = 6}, //Refugee Camp, Somehow doesnt work ¯\_(ツ)_/¯
 				new {Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51},
-			};
+				new {Gate = R.GateMilitairyGate, LevelId = 10, RoomId = 12},
+			};*/
+
 
 			var selectedGate = gateProgressionItems.SelectRandom(random);
 

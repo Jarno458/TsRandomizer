@@ -58,6 +58,32 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			PutItemAtLocation(ItemInfo.Get(meleeOrbType, EOrbSlot.Melee), ItemLocations[ItemKey.TutorialMeleeOrb]);
 		}
 
+		protected void PlaceStarterProgressionItem(Random random)
+		{
+			var starterLocations = ItemLocations
+				.Where(l => l.Key.LevelId != 0 && l.Gate.Requires(Requirement.None))
+				.ToArray();
+
+			var starterProgressionItems = new [] {
+				ItemInfo.Get(EInventoryRelicType.Dash),
+				ItemInfo.Get(EInventoryRelicType.Dash),
+				ItemInfo.Get(EInventoryRelicType.DoubleJump),
+				ItemInfo.Get(EInventoryRelicType.DoubleJump),
+				ItemInfo.Get(EInventoryRelicType.TimespinnerWheel),
+				ItemInfo.Get(EInventoryRelicType.PyramidsKey),
+				ItemInfo.Get(EInventoryRelicType.PyramidsKey),
+				ItemInfo.Get(EInventoryRelicType.PyramidsKey),
+				ItemInfo.Get(EInventoryRelicType.PyramidsKey),
+				ItemInfo.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell),
+				ItemInfo.Get(EInventoryRelicType.EssenceOfSpace)
+			};
+
+			var item = starterProgressionItems.SelectRandom(random);
+			var location = starterLocations.SelectRandom(random);
+
+			PutItemAtLocation(item, location);
+		}
+
 		protected void PlaceGassMaskInALegalSpot(Random random)
 		{
 			var minimalMawRequirements =
