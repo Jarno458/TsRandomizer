@@ -19,18 +19,22 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize()
 		{
-			if (Level.ID != 2 || Level.RoomID != 20 || Object._isBroken) //Right side libarary elevator room
+			if (Object._isBroken) 
+				return;
+
+			if ((Level.ID != 2 || Level.RoomID != 20) //Right side libarary elevator room
+				&& (Level.ID != 16 || Level.RoomID != 21))  //Pyramid Pit
 				return;
 
 			Object._isBroken = true;
 			Object._orbSaveState = SaveOrbStateType.GetEnumValue("Dead");
 
-			var orbAppendage = (Appendage)Object._orbAppendage;
+			var orbAppendage = (Appendage) Object._orbAppendage;
 			orbAppendage.ChangeAnimation(5); //5 = broken
 			orbAppendage.ClearBattleAnimations();
 			orbAppendage.IsGlowing = false;
 
-			((SFXCueInstance)Object._glowCueInstance)?.Stop();
+			((SFXCueInstance) Object._glowCueInstance)?.Stop();
 		}
 	}
 }
