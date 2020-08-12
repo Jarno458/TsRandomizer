@@ -176,7 +176,7 @@ namespace TsRandomizer.Randomisation
 		void AddPastItemLocations()
 		{
 			//Refugee Camp
-			Add(new RoomItemKey(3, 0), ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Melee), R.TimeStop & R.TimespinnerSpindle & (LowerLakeDesolationBridge & R.CardD)); //neliste
+			Add(new RoomItemKey(3, 0), ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Melee), AccessToPast); //neliste
 			Add(new ItemKey(3, 30, 296, 176), ItemInfo.Get(EInventoryUseItemType.EssenceCrystal), AccessToPast);
 			Add(new ItemKey(3, 30, 232, 176), ItemInfo.Get(EInventoryUseItemType.GoldNecklace), AccessToPast);
 			Add(new ItemKey(3, 30, 168, 176), ItemInfo.Get(EInventoryRelicType.JewelryBox), AccessToPast);
