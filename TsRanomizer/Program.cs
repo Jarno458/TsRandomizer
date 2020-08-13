@@ -91,6 +91,9 @@ namespace TsRandomizer
 
 		static void WithExceptionLogging(Action action)
 		{
+#if DEBUG
+			action();
+#else
 			try
 			{
 				action();
@@ -99,6 +102,7 @@ namespace TsRandomizer
 			{
 				ExceptionLogger.LogException(e);
 			}
+#endif
 		}
 	}
 }

@@ -10,6 +10,8 @@ Quest are not concidered part of the game, and they wont contain any progression
 
 When you feel stuck, you can open the minimap and hold X (the key to remove map markers),, it will highligh all locations that you can reach and still have items for you
 
+For questions / remarks and feedback, feel free to join the @randomizer channel on the offical timespinner discord https://discord.gg/Bv6ejQz1
+
 # Instalation \ Startup
 Download TsRandomizer.exe from the release page https://github.com/JarnoWesthof/TsRandomizer/releases
 
@@ -28,7 +30,7 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 # Routing changes
 * The drawbridge is now open by default, and doesnt require you to visit the twins demons
 * Amadues Labaratory now requires keycard B to open
-* To prevent got getting stuck in the past when items are still available in the present, the transition room next to the refugee camp can now be used to freely travel back and forth between past and present
+* To prevent players from getting stuck in the past when items are still available in the present, the transition room next to the refugee camp can now be used to freely travel back and forth between past and present
 * When you obtain the pyramid keys, a random transition room is unlocked that could open new routing oppertunities
 * The temporal gyre is closed, due to its high randomness inside an already randomized timezone, the timezone would be highly unstable
 
@@ -40,6 +42,7 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 * Using the transition room near refugee camp without having pyramid keys renders the portal to small
 * Player obtains Meyef to early
 * Neliste only shows once when you enter the past without the timespinner
+* Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 
 # Minor Todo
 ##### Things i plan on doing in the future

@@ -32,7 +32,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			ItemInfo.Get(EInventoryUseItemType.FutureEther),
 			ItemInfo.Get(EInventoryUseItemType.FutureHiEther),
 			ItemInfo.Get(EInventoryUseItemType.ChaosHeal),
-			ItemInfo.Get(EInventoryUseItemType.Antidote)
+			ItemInfo.Get(EInventoryUseItemType.Antidote),
+			ItemInfo.Get(EInventoryUseItemType.SandBottle),
+			ItemInfo.Get(EInventoryUseItemType.HiSandBottle),
 		};
 
 		protected ItemLocationRandomizer(ItemLocationMap itemLocations, ItemUnlockingMap unlockingMap)

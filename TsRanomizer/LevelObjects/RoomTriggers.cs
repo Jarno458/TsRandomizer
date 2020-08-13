@@ -27,7 +27,7 @@ namespace TsRandomizer.LevelObjects
 
 				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
-			RoomTriggers.Add(new RoomTrigger(5,5, (level, itemLocation) =>
+			RoomTriggers.Add(new RoomTrigger(5, 5, (level, itemLocation) =>
 			{
 				if (itemLocation.IsPickedUp || !level.GameSave.HasCutsceneBeenTriggered("Keep0_Demons0")) return;
 
@@ -49,11 +49,13 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 21, (level, itemLocation) =>
 			{
-				if (itemLocation.IsPickedUp
-				    || !level.GameSave.HasRelic(EInventoryRelicType.ScienceKeycardA)
-				    || !level.GameSave.GetSaveBool("IsBossDead_Shapeshift")) return;
+				if (!itemLocation.IsPickedUp
+				    && level.GameSave.HasRelic(EInventoryRelicType.ScienceKeycardA)
+				    && level.GameSave.GetSaveBool("IsBossDead_Shapeshift")) 
+						SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 
-				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
+				if(level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
+					CreateSimpelOneWayWarp(level, 16, 12);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation) =>
 			{
@@ -165,7 +167,24 @@ namespace TsRandomizer.LevelObjects
 			var dynamicLevel = level.AsDynamic();
 
 			Dictionary<int, GameEvent> events = dynamicLevel._levelEvents;
-			var warpTrigger = events.Values.First(e => e.GetType() == TransitionWarpEventType);
+			var warpTrigger = events.Values.FirstOrDefault(e => e.GetType() == TransitionWarpEventType);
+			if (warpTrigger == null)
+			{
+				var specification = new ObjectTileSpecification
+				{
+					Category = EObjectTileCategory.Event,
+					ID = 468,
+					Layer = ETileLayerType.Objects,
+					ObjectID = 13,
+					X = 12,
+					Y = 12
+				};
+				var point = new Point(specification.X * 16 + 8, specification.Y * 16 + 16);
+				warpTrigger = (GameEvent)TransitionWarpEventType.CreateInstance(false, level, point, -1, specification);
+
+				dynamicLevel.RequestAddObject(warpTrigger);
+			}
+
 			var dynamicWarpTrigger = warpTrigger.AsDynamic();
 
 			var backToTheFutureWarp =
