@@ -10,7 +10,7 @@ Quest are not concidered part of the game, and they wont contain any progression
 
 When you feel stuck, you can open the minimap and hold X (the key to remove map markers),, it will highligh all locations that you can reach and still have items for you
 
-For questions / remarks and feedback, feel free to join the @randomizer channel on the offical timespinner discord https://discord.gg/Bv6ejQz1
+For questions / remarks and feedback, feel free to join the #randomizer channel on the offical timespinner discord https://discord.gg/Bv6ejQz1
 
 # Instalation \ Startup
 Download TsRandomizer.exe from the release page https://github.com/JarnoWesthof/TsRandomizer/releases
