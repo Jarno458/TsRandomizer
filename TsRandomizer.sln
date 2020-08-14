@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsRandomizer", "TsRanomizer\TsRandomizer.csproj", "{694E46C5-FD46-4CC8-8B71-D381E154CCF7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsRandomizer", "TsRandomizer\TsRandomizer.csproj", "{694E46C5-FD46-4CC8-8B71-D381E154CCF7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsRandomizer.Tests", "TsRandomizer.Tests\TsRandomizer.Tests.csproj", "{B4DCDDB6-F4DB-4FD4-B750-1191B00661C7}"
 EndProject
