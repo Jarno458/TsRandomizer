@@ -42,7 +42,6 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 * Menu tooltip is wrong on diffuclty selection screen
 * Using the transition room near refugee camp without having pyramid keys renders the portal to small
 * Player obtains Meyef to early
-* Neliste only shows once when you enter the past without the timespinner
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 
 # Todo

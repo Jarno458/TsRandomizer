@@ -18,6 +18,7 @@ namespace TsRandomizer.LevelObjects
 		static readonly LookupDictionairy<RoomItemKey, RoomTrigger> RoomTriggers = new LookupDictionairy<RoomItemKey, RoomTrigger>(rt => rt.key);
 
 		static readonly Type TransitionWarpEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.TransitionWarpEvent");
+		static readonly Type NelisteNpcType = TimeSpinnerType.Get("Timespinner.GameObjects.NPCs.AstrologerNPC");
 
 		static RoomTrigger()
 		{
@@ -96,6 +97,14 @@ namespace TsRandomizer.LevelObjects
 				if (!level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)) return;
 
 				SpawnTreasureChest(level, false, 296, 176);
+			}));
+			RoomTriggers.Add(new RoomTrigger(3, 0, (level, itemLocation) =>
+			{
+				if (level.GameSave.DataKeyBools.ContainsKey("HasUsedCityTS")
+					|| !level.GameSave.HasCutsceneBeenTriggered("Forest3_Haristel")
+				    || ((Dictionary<int, NPCBase>)level.AsDynamic()._npcs).Values.Any(npc => npc.GetType() == NelisteNpcType)) return;
+
+				SpawnNeliste(level);
 			}));
 		}
 
@@ -204,6 +213,14 @@ namespace TsRandomizer.LevelObjects
 				});
 
 			dynamicLevel.RequestAddObject(backToTheFutureWarp);
+		}
+
+		static void SpawnNeliste(Level level)
+		{
+			var position = new Point(720, 368);
+			var neliste = (NPCBase)NelisteNpcType.CreateInstance(false, level, position, -1, new ObjectTileSpecification());
+
+			level.AddNPC(neliste);
 		}
 	}
 }

@@ -32,7 +32,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 				AwardContainedItem();
 
-				var fireOrbAppendage = ((Animate) Object._fireOrb).AsDynamic();
+				var fireOrbAppendage = ((Animate)Object._fireOrb).AsDynamic();
 
 				fireOrbAppendage._sprite = gameplayScreen.GameContentManager.SpMenuIcons;
 				fireOrbAppendage._unhiddenAnimationIndex = ItemInfo.AnimationIndex; //uses differnt sprite sheet
