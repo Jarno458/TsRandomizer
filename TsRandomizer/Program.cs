@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows.Forms;
 
 namespace TsRandomizer
 {
@@ -23,6 +24,9 @@ namespace TsRandomizer
 				case "2CC3F5AD830F32D9F6294E5205E61FBE": //win DRM free v1.031
 					IsSteam = false;
 					break;
+
+				case null:
+					return -1;
 
 				default:
 					if (!ContinueWithoutMd5Check())
@@ -63,8 +67,17 @@ namespace TsRandomizer
 		static string GetTimespinnerMd5Hash()
 		{
 			var md5 = MD5.Create();
-			using (var fileStream = new FileStream(@"Timespinner.exe", FileMode.Open))
-				return ByteArrayToString(md5.ComputeHash(fileStream));
+
+			try
+			{
+				using (var fileStream = new FileStream(@"Timespinner.exe", FileMode.Open))
+					return ByteArrayToString(md5.ComputeHash(fileStream));
+			}
+			catch (FileNotFoundException)
+			{
+				MessageBox.Show("Timespinner.exe not found in current directory\r\nPleaze place TsRandomizer.exe in the same folder as the original game", "FileNotFound");
+				return null;
+			}
 		}
 
 		static string ByteArrayToString(byte[] bytes)
