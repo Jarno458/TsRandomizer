@@ -220,7 +220,7 @@ namespace TsRandomizer.LevelObjects
 			var position = new Point(720, 368);
 			var neliste = (NPCBase)NelisteNpcType.CreateInstance(false, level, position, -1, new ObjectTileSpecification());
 
-			level.AddNPC(neliste);
+			level.AsDynamic().RequestAddObject(neliste);
 		}
 	}
 }
