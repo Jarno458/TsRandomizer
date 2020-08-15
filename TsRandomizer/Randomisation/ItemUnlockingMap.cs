@@ -49,9 +49,6 @@ namespace TsRandomizer.Randomisation
 				{ItemInfo.Get(EInventoryOrbType.Pink, EOrbSlot.Passive), new UnlockingSpecificaiton {Unlocks = R.PinkOrb}},
 				{ItemInfo.Get(EInventoryRelicType.AirMask), new UnlockingSpecificaiton {Unlocks = R.GassMask}},
 			};
-
-
-			SelectTeleporterPickupAction(random);
 		}
 
 		R SelectTeleporterPickupAction(Random random)
