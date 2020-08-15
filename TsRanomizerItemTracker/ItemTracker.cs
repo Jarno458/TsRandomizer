@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using TsRandomizer.Extensions;
+using TsRandomizerItemTracker.Extensions;
 
 namespace TsRandomizerItemTracker
 {

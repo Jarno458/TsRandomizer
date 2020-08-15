@@ -22,7 +22,10 @@ namespace TsRandomizer.Randomisation
 			) //libraryTimespinner
 			| R.GateLakeSirineLeft
 			| R.GateAccessToPast
-			| R.GateLakeSirineRight;
+			| R.GateLakeSirineRight
+			| R.GateRoyalTowers
+			| R.GateCastleRamparts
+			| R.GateCastleKeep;
 
 		//past
 		internal static readonly Gate LeftSideForestCaves = (AccessToPast & (R.TimeStop | R.ForwardDash)) | R.GateLakeSirineRight | R.GateLakeSirineLeft;
@@ -32,7 +35,7 @@ namespace TsRandomizer.Randomisation
 		internal static readonly Gate UpperCavesOfBanishment = AccessToPast;
 		internal static readonly Gate CastleRamparts = AccessToPast;
 		internal static readonly Gate CastleKeep = CastleRamparts;
-		internal static readonly Gate RoyalTower = CastleKeep & R.DoubleJump;
+		internal static readonly Gate RoyalTower = (CastleKeep & R.DoubleJump) | R.GateRoyalTowers;
 		internal static readonly Gate MidRoyalTower = RoyalTower & (R.TimeStop | ForwardDashDoubleJump);
 		internal static readonly Gate UpperRoyalTower = MidRoyalTower & R.DoubleJump;
 
@@ -240,11 +243,11 @@ namespace TsRandomizer.Randomisation
 			Add(new RoomItemKey(5, 5), ItemInfo.Get(EInventoryRelicType.DoubleJump), CastleKeep & R.TimeStop); //sucabus
 			Add(new ItemKey(5, 22, 312, 176), ItemInfo.Get(EItemType.MaxSand), CastleKeep & (R.DoubleJump | R.ForwardDash));
 			//Royal towers
-			Add(new ItemKey(6, 19, 200, 176), ItemInfo.Get(EItemType.MaxAura), RoyalTower);
+			Add(new ItemKey(6, 19, 200, 176), ItemInfo.Get(EItemType.MaxAura), RoyalTower & R.DoubleJump);
 			Add(new ItemKey(6, 27, 472, 384), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), MidRoyalTower);
 			Add(new ItemKey(6, 1, 1512, 288), ItemInfo.Get(EInventoryUseItemType.Potion), UpperRoyalTower);
-			Add(new ItemKey(6, 25, 360, 176), ItemInfo.Get(EInventoryUseItemType.HiEther), UpperRoyalTower);
-			Add(new ItemKey(6, 3, 120, 208), ItemInfo.Get(EInventoryFamiliarType.Demon), UpperRoyalTower);
+			Add(new ItemKey(6, 25, 360, 176), ItemInfo.Get(EInventoryUseItemType.HiEther), UpperRoyalTower & DoubleJumpOfNpc);
+			Add(new ItemKey(6, 3, 120, 208), ItemInfo.Get(EInventoryFamiliarType.Demon), UpperRoyalTower & DoubleJumpOfNpc);
 			Add(new ItemKey(6, 17, 200, 112), ItemInfo.Get(EItemType.MaxHP), UpperRoyalTower & DoubleJumpOfNpc);
 			Add(new ItemKey(6, 17, 56, 448), ItemInfo.Get(EInventoryEquipmentType.VileteCrown), UpperRoyalTower);
 			Add(new ItemKey(6, 17, 360, 1840), ItemInfo.Get(EInventoryEquipmentType.MidnightCloak), MidRoyalTower);

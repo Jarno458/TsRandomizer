@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TsRandomizer.Extensions
+namespace TsRandomizerItemTracker.Extensions
 {
     static class SpriteBatchExtensions
     {

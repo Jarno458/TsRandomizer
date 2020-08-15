@@ -20,6 +20,8 @@ namespace TsRandomizer.Randomisation
 
 		public ItemUnlockingMap(Seed seed)
 		{
+			var random = new Random(seed);
+
 			Map = new Dictionary<ItemInfo, UnlockingSpecificaiton>(ProgressionItemCount)
 			{
 				{ItemInfo.Get(EInventoryRelicType.TimespinnerWheel), new UnlockingSpecificaiton {Unlocks = R.TimespinnerWheel, AdditionalUnlocks = R.TimeStop}},
@@ -35,7 +37,7 @@ namespace TsRandomizer.Randomisation
 				{ItemInfo.Get(EInventoryRelicType.ElevatorKeycard), new UnlockingSpecificaiton {Unlocks = R.CardE}},
 				{ItemInfo.Get(EInventoryRelicType.ScienceKeycardV), new UnlockingSpecificaiton {Unlocks = R.CardV}},
 				{ItemInfo.Get(EInventoryRelicType.WaterMask), new UnlockingSpecificaiton {Unlocks = R.Swimming}},
-				{ItemInfo.Get(EInventoryRelicType.PyramidsKey), new UnlockingSpecificaiton {Unlocks = R.Teleport, AdditionalUnlocks = R.None}}, //Set in CalculateTeleporterPickupAction(),
+				{ItemInfo.Get(EInventoryRelicType.PyramidsKey), new UnlockingSpecificaiton {Unlocks = R.Teleport, AdditionalUnlocks = SelectTeleporterPickupAction(random)}},
 				{ItemInfo.Get(EInventoryRelicType.TimespinnerSpindle), new UnlockingSpecificaiton {Unlocks = R.TimespinnerSpindle}},
 				{ItemInfo.Get(EInventoryRelicType.TimespinnerGear1), new UnlockingSpecificaiton {Unlocks = R.TimespinnerPiece1}},
 				{ItemInfo.Get(EInventoryRelicType.TimespinnerGear2), new UnlockingSpecificaiton {Unlocks = R.TimespinnerPiece2}},
@@ -48,18 +50,13 @@ namespace TsRandomizer.Randomisation
 				{ItemInfo.Get(EInventoryRelicType.AirMask), new UnlockingSpecificaiton {Unlocks = R.GassMask}},
 			};
 
-			var random = new Random(seed);
 
-			CalculateTeleporterPickupAction(random);
+			SelectTeleporterPickupAction(random);
 		}
 
-		void CalculateTeleporterPickupAction(Random random)
+		R SelectTeleporterPickupAction(Random random)
 		{
 			var gateProgressionItems = new[] {
-				new {Gate = R.GateMilitairyGate, LevelId = 10, RoomId = 12},
-			};
-
-			/*var gateProgressionItems = new[] {
 				new {Gate = R.GateKittyBoss, LevelId = 2, RoomId = 55},
 				new {Gate = R.GateLeftLibrary, LevelId = 2, RoomId = 54},
 				//new {Gate = Requirement.GateLakeSirineLeft, LevelId = 7, RoomId = 30}, //you dont want to spawn with a boss in your face
@@ -67,16 +64,18 @@ namespace TsRandomizer.Randomisation
 				//new {Gate = Requirement.GateAccessToPast, LevelId = 3, RoomId = 6}, //Refugee Camp, Somehow doesnt work ¯\_(ツ)_/¯
 				new {Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51},
 				new {Gate = R.GateMilitairyGate, LevelId = 10, RoomId = 12},
-			};*/
+				new {Gate = R.GateCastleRamparts, LevelId = 4, RoomId = 23},
+				new {Gate = R.GateCastleKeep, LevelId = 5, RoomId = 24},
+				new {Gate = R.GateRoyalTowers, LevelId = 6, RoomId = 0},
+			};
 
 
 			var selectedGate = gateProgressionItems.SelectRandom(random);
 
 			var pyramidKeys = ItemInfo.Get(EInventoryRelicType.PyramidsKey);
-
 			pyramidKeys.SetPickupAction(level => UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId));
 
-			Map[pyramidKeys].AdditionalUnlocks = selectedGate.Gate;
+			return selectedGate.Gate;
 		}
 
 		public R GetUnlock(ItemInfo itemInfo)

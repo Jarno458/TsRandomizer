@@ -34,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug DRM Free|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -49,7 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -67,6 +68,9 @@
     <Reference Include="Timespinner">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\Timespinner.exe</HintPath>
     </Reference>
+    <Reference Include="TsRandomizer">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\TsRandomizer.exe</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ItemLocationMapStaticFixture.cs" />
@@ -80,12 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TsRanomizer\TsRandomizer.csproj">
-      <Project>{694e46c5-fd46-4cc8-8b71-d381e154ccf7}</Project>
-      <Name>TsRandomizer</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -13,7 +13,7 @@ When you feel stuck, you can open the minimap and hold X (the key to remove map 
 For questions / remarks and feedback, feel free to join the #randomizer channel on the offical timespinner discord https://discord.gg/Bv6ejQz1
 
 # Instalation \ Startup
-Download TsRandomizer.exe from the release page https://github.com/JarnoWesthof/TsRandomizer/releases
+Download latests TsRandomizer.exe from the release page https://github.com/JarnoWesthof/TsRandomizer/releases
 
 Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located, and start TsRandomizer.exe to start the game with the randomizer enabled, or Timespinner.exe to start the game normaly
 
@@ -26,6 +26,7 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 * Umbra orb is randomized in even if you dont own the password
 * Achievements cannot be unlocked
 * SaveStatue inside right elevator room is disabled to prevent a softlock
+* SaveStatue down in the pit of the ancient pyramid is disabled to prevent a softlock
 
 # Routing changes
 * The drawbridge is now open by default, and doesnt require you to visit the twins demons
@@ -44,8 +45,9 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 * Neliste only shows once when you enter the past without the timespinner
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 
-# Minor Todo
+# Todo
 ##### Things i plan on doing in the future
+* item tracker
 * disable quests maybe?
 * Replace Replaces to Treasure Chest to replaces to ItemDropPickup
 
@@ -53,5 +55,6 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 ##### Ideas that may never happen but i think will be fun when they are implemenbted
 * Make ice orb freeze enemies
 * Randomize quest items
+* Randomize enemies
 * Timesanity
 * Upgradeable items (duuble jump => space jump) (Card D => C => B => A)

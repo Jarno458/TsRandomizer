@@ -6,6 +6,10 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsRandomizer", "TsRandomizer\TsRandomizer.csproj", "{694E46C5-FD46-4CC8-8B71-D381E154CCF7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsRandomizer.Tests", "TsRandomizer.Tests\TsRandomizer.Tests.csproj", "{B4DCDDB6-F4DB-4FD4-B750-1191B00661C7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4D86B28B-95A2-4452-9BAA-C8E80F026101} = {4D86B28B-95A2-4452-9BAA-C8E80F026101}
+		{694E46C5-FD46-4CC8-8B71-D381E154CCF7} = {694E46C5-FD46-4CC8-8B71-D381E154CCF7}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CD8103A2-141D-4AD0-B2FE-533D86875C9C}"
 	ProjectSection(SolutionItems) = preProject
