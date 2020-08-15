@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="Drawables\IDrawable.cs" />
     <Compile Include="Drawables\SeedRepresentation.cs" />
     <Compile Include="ExceptionLogger.cs" />
@@ -153,7 +154,6 @@
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\ScreenManager.cs" />
     <Compile Include="Seed.cs" />
-    <Compile Include="SimpelTestGame.cs" />
     <Compile Include="TimeSpinnerGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

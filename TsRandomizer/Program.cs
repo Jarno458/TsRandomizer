@@ -85,8 +85,7 @@ namespace TsRandomizer
 					? DummyPlatformHelper.CreateStreamInstance()
 					: DummyPlatformHelper.CreateDrmFreeInstance();
 
-				//new TimeSpinnerGame(platformHelper).Run();
-				new SimpelTestGame();
+				new TimeSpinnerGame(platformHelper).Run();
 			});
 		}
 
