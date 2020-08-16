@@ -100,7 +100,8 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(3, 0, (level, itemLocation) =>
 			{
-				if (level.GameSave.DataKeyBools.ContainsKey("HasUsedCityTS")
+				if (itemLocation.IsPickedUp
+					|| level.GameSave.DataKeyBools.ContainsKey("HasUsedCityTS")
 					|| !level.GameSave.HasCutsceneBeenTriggered("Forest3_Haristel")
 				    || ((Dictionary<int, NPCBase>)level.AsDynamic()._npcs).Values.Any(npc => npc.GetType() == NelisteNpcType)) return;
 
