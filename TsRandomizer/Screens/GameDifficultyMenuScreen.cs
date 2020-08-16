@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions.Saving;
@@ -101,6 +102,7 @@ namespace TsRandomizer.Screens
 
 					saveGame.SetSeed(seed.Value);
 					saveGame.SetFillingMethod(FillingMethod.Random);
+					saveGame.DataKeyStrings["TsRandomizerVersion"] = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 				}
 			}
 		}
