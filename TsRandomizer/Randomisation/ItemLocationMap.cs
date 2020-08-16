@@ -51,7 +51,8 @@ namespace TsRandomizer.Randomisation
 		internal static readonly R SealedCavesLeft = R.DoubleJump;
 		internal static readonly Gate SealedCavesLower = SealedCavesLeft & R.CardA;
 		internal static readonly Gate SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
-		internal static readonly Gate KillAll3MajorBosses = LowerRightSideLibrary & CastleKeep & UpperRoyalTower & AccessToPast & R.Swimming;
+		internal static readonly Gate KillTwinsAndMaw = LowerlakeSirine & CastleKeep;
+		internal static readonly Gate KillAll3MajorBosses = LowerRightSideLibrary & KillTwinsAndMaw & UpperRoyalTower;
 		internal static readonly Gate MilitairyFortress = KillAll3MajorBosses;
 		internal static readonly Gate MilitairyFortressHangar = MilitairyFortress;
 		internal static readonly Gate RightSideMilitairyFortressHangar = MilitairyFortressHangar & R.DoubleJump;
@@ -97,8 +98,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(1, 20, 168, 240), ItemInfo.Get(EInventoryUseItemType.FuturePotion), UpperLakeDesolation);
 			Add(new ItemKey(1, 22, 344, 160), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), UpperLakeDesolation);
 			Add(new ItemKey(1, 18, 1320, 189), ItemInfo.Get(EInventoryOrbType.Moon, EOrbSlot.Melee), UpperLakeDesolation);
-			Add(new ItemKey(1, 18, 1272, 192), ItemInfo.Get(EInventoryEquipmentType.CaptainsCap), UpperLakeDesolation & R.GassMask & KillAll3MajorBosses);
-			Add(new ItemKey(1, 18, 1368, 192), ItemInfo.Get(EInventoryEquipmentType.CaptainsJacket), UpperLakeDesolation & R.GassMask & KillAll3MajorBosses);
+			Add(new ItemKey(1, 18, 1272, 192), ItemInfo.Get(EInventoryEquipmentType.CaptainsCap), UpperLakeDesolation & R.GassMask & KillTwinsAndMaw);
+			Add(new ItemKey(1, 18, 1368, 192), ItemInfo.Get(EInventoryEquipmentType.CaptainsJacket), UpperLakeDesolation & R.GassMask & KillTwinsAndMaw);
 			Add(new RoomItemKey(1, 5), ItemInfo.Get(EInventoryOrbType.Blade, EOrbSlot.Melee), UpperLakeDesolation | LowerLakeDesolationBridge);
 			//libary left
 			Add(new ItemKey(2, 60, 328, 160), ItemInfo.Get(EItemType.MaxHP), LeftLibrary);
@@ -218,7 +219,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(8, 41, 216, 192), ItemInfo.Get(EInventoryUseItemType.GoldRing), LowerCavesOfBanishment & ForwardDashDoubleJump);
 			Add(new ItemKey(8, 41, 264, 192), ItemInfo.Get(EInventoryUseItemType.EssenceCrystal), LowerCavesOfBanishment & ForwardDashDoubleJump);
 			Add(new ItemKey(8, 41, 312, 192), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & ForwardDashDoubleJump);
-			Add(new ItemKey(8, 42, 216, 189), ItemInfo.Get(EInventoryOrbType.Wind, EOrbSlot.Melee), LowerCavesOfBanishment & ForwardDashDoubleJump);
+			Add(new ItemKey(8, 42, 216, 189), ItemInfo.Get(EInventoryOrbType.Wind, EOrbSlot.Melee), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 15, 248, 192), ItemInfo.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 31, 88, 400), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & R.DoubleJump);
 			//Caves of banishment (sirens)

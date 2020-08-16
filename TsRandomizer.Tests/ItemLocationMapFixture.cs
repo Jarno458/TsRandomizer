@@ -35,6 +35,20 @@ namespace TsRandomizer.Tests
 			Assert.That(Contains(accessableLocations, new ItemKey(3, 3, 648, 272)));
 		}
 
+		[Test]
+		public void With_shoud_mark_captians_chests_as_available()
+		{
+			var itemLocations = new ItemLocationMap();
+
+			var accessableLocations = itemLocations.GetReachableLocations(
+					Requirement.GassMask | Requirement.AntiWeed | Requirement.Swimming | Requirement.GateLakeSirineRight | Requirement.UpwardDash)
+				.ToArray();
+
+			Assert.That(Contains(accessableLocations, new ItemKey(1, 18, 1320, 189))); 
+			Assert.That(Contains(accessableLocations, new ItemKey(1, 18, 1272, 192)));
+			Assert.That(Contains(accessableLocations, new ItemKey(1, 18, 1368, 192)));
+		}
+
 		static bool Contains(IEnumerable<ItemLocation> itemLocations, ItemKey itemKey)
 		{
 			return itemLocations.Any(loc => loc.Key == itemKey);
