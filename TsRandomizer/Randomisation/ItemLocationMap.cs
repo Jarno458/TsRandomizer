@@ -11,7 +11,8 @@ namespace TsRandomizer.Randomisation
 {
 	class ItemLocationMap : LookupDictionairy<ItemKey, ItemLocation>
 	{
-		internal static readonly Gate DoubleJumpOfNpc = (R.DoubleJump & R.TimeStop) | R.UpwardDash;
+		internal static readonly R MultipleSmallJumpsOfNpc = R.TimespinnerWheel | R.UpwardDash;
+		internal static readonly Gate DoubleJumpOfNpc = (R.DoubleJump & R.TimespinnerWheel) | R.UpwardDash;
 		internal static readonly Gate ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
 
 		public static readonly R LowerLakeDesolationBridge = R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary;
@@ -28,15 +29,15 @@ namespace TsRandomizer.Randomisation
 			| R.GateCastleKeep;
 
 		//past
-		internal static readonly Gate LeftSideForestCaves = (AccessToPast & (R.TimeStop | R.ForwardDash)) | R.GateLakeSirineRight | R.GateLakeSirineLeft;
-		internal static readonly Gate UpperLakeSirine = (LeftSideForestCaves & (R.TimeStop | R.ForwardDash)) | R.GateLakeSirineLeft;
+		internal static readonly Gate LeftSideForestCaves = (AccessToPast & (R.TimespinnerWheel | R.ForwardDash | R.DoubleJump)) | R.GateLakeSirineRight | R.GateLakeSirineLeft;
+		internal static readonly Gate UpperLakeSirine = (LeftSideForestCaves & R.TimeStop) | R.GateLakeSirineLeft;
 		internal static readonly Gate LowerlakeSirine = (LeftSideForestCaves | R.GateLakeSirineLeft) & R.Swimming;
 		internal static readonly Gate LowerCavesOfBanishment = LowerlakeSirine;
 		internal static readonly Gate UpperCavesOfBanishment = AccessToPast;
 		internal static readonly Gate CastleRamparts = AccessToPast;
 		internal static readonly Gate CastleKeep = CastleRamparts;
 		internal static readonly Gate RoyalTower = (CastleKeep & R.DoubleJump) | R.GateRoyalTowers;
-		internal static readonly Gate MidRoyalTower = RoyalTower & (R.TimeStop | ForwardDashDoubleJump);
+		internal static readonly Gate MidRoyalTower = RoyalTower & (MultipleSmallJumpsOfNpc | ForwardDashDoubleJump);
 		internal static readonly Gate UpperRoyalTower = MidRoyalTower & R.DoubleJump;
 
 		//future
@@ -52,8 +53,8 @@ namespace TsRandomizer.Randomisation
 		internal static readonly Gate SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
 		internal static readonly Gate KillAll3MajorBosses = LowerRightSideLibrary & CastleKeep & UpperRoyalTower & AccessToPast & R.Swimming;
 		internal static readonly Gate MilitairyFortress = KillAll3MajorBosses;
-		internal static readonly Gate MilitairyFortressHangar = MilitairyFortress & R.TimeStop;
-		internal static readonly Gate RightSidemilitairyFortressHangar = MilitairyFortressHangar & R.DoubleJump;
+		internal static readonly Gate MilitairyFortressHangar = MilitairyFortress;
+		internal static readonly Gate RightSideMilitairyFortressHangar = MilitairyFortressHangar & R.DoubleJump;
 		internal static readonly Gate TheLab = MilitairyFortressHangar & R.CardB;
 		internal static readonly Gate TheLabPoweredOff = TheLab & DoubleJumpOfNpc;
 		internal static readonly Gate UppereLab = TheLabPoweredOff & ForwardDashDoubleJump;
@@ -149,9 +150,9 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(10, 4, 1064, 176), ItemInfo.Get(EInventoryUseItemType.FutureHiPotion), MilitairyFortressHangar);
 			Add(new ItemKey(10, 10, 104, 192), ItemInfo.Get(EInventoryRelicType.AirMask), MilitairyFortressHangar);
 			Add(new ItemKey(10, 8, 1080, 176), ItemInfo.Get(EInventoryEquipmentType.LabGlasses), MilitairyFortressHangar);
-			Add(new ItemKey(10, 7, 104, 192), ItemInfo.Get(EInventoryUseItemType.PlasmaIV), RightSidemilitairyFortressHangar & R.CardB);
-			Add(new ItemKey(10, 7, 152, 192), ItemInfo.Get(EItemType.MaxSand), RightSidemilitairyFortressHangar & R.CardB);
-			Add(new ItemKey(10, 18, 280, 189), ItemInfo.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), RightSidemilitairyFortressHangar & (DoubleJumpOfNpc | ForwardDashDoubleJump));
+			Add(new ItemKey(10, 7, 104, 192), ItemInfo.Get(EInventoryUseItemType.PlasmaIV), RightSideMilitairyFortressHangar & R.CardB);
+			Add(new ItemKey(10, 7, 152, 192), ItemInfo.Get(EItemType.MaxSand), RightSideMilitairyFortressHangar & R.CardB);
+			Add(new ItemKey(10, 18, 280, 189), ItemInfo.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), RightSideMilitairyFortressHangar & (DoubleJumpOfNpc | ForwardDashDoubleJump));
 			// The lab
 			Add(new ItemKey(11, 36, 312, 192), ItemInfo.Get(EInventoryUseItemType.FoodSynth), TheLab);
 			Add(new ItemKey(11, 3, 1528, 192), ItemInfo.Get(EItemType.MaxHP), TheLab & R.DoubleJump);
@@ -227,7 +228,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(8, 3, 1848, 576), ItemInfo.Get(EItemType.MaxAura), UpperCavesOfBanishment & R.Swimming);
 			Add(new ItemKey(8, 5, 88, 496), ItemInfo.Get(EItemType.MaxSand), UpperCavesOfBanishment & R.Swimming);
 			//Caste Ramparts
-			Add(new ItemKey(4, 1, 456, 160), ItemInfo.Get(EItemType.MaxSand), CastleRamparts & R.TimeStop);
+			Add(new ItemKey(4, 1, 456, 160), ItemInfo.Get(EItemType.MaxSand), CastleRamparts & MultipleSmallJumpsOfNpc);
 			Add(new ItemKey(4, 3, 136, 144), ItemInfo.Get(EItemType.MaxHP), CastleRamparts & R.TimeStop);
 			Add(new ItemKey(4, 10, 56, 192), ItemInfo.Get(EInventoryUseItemType.HiPotion), CastleRamparts);
 			Add(new ItemKey(4, 11, 344, 192), ItemInfo.Get(EInventoryUseItemType.HiPotion), CastleRamparts);
@@ -241,7 +242,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(5, 15, 296, 192), ItemInfo.Get(EItemType.MaxAura), CastleKeep);
 			Add(new ItemKey(5, 41, 72, 160), ItemInfo.Get(EInventoryEquipmentType.BuckleHat), CastleKeep);
 			Add(new RoomItemKey(5, 5), ItemInfo.Get(EInventoryRelicType.DoubleJump), CastleKeep & R.TimeStop); //sucabus
-			Add(new ItemKey(5, 22, 312, 176), ItemInfo.Get(EItemType.MaxSand), CastleKeep & (R.DoubleJump | R.ForwardDash));
+			Add(new ItemKey(5, 22, 312, 176), ItemInfo.Get(EItemType.MaxSand), CastleKeep & ForwardDashDoubleJump);
 			//Royal towers
 			Add(new ItemKey(6, 19, 200, 176), ItemInfo.Get(EItemType.MaxAura), RoyalTower & R.DoubleJump);
 			Add(new ItemKey(6, 27, 472, 384), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), MidRoyalTower);
