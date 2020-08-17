@@ -43,6 +43,7 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 * Using the transition room near refugee camp without having pyramid keys renders the portal to small
 * Player obtains Meyef to early
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
+* The position of the randomizer credits in the credits screen is way off, sorry
 
 # Todo
 ##### Things i plan on doing in the future
