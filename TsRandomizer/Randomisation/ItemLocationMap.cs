@@ -137,7 +137,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(9, 42, 328, 192), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), SealedCavesLower);
 			Add(new ItemKey(9, 12, 280, 160), ItemInfo.Get(EItemType.MaxHP), SealedCavesLower);
 			Add(new ItemKey(9, 48, 104, 160), ItemInfo.Get(EInventoryUseItemType.FutureEther), SealedCavesLower);
-			Add(new ItemKey(9, 15, 248, 192), ItemInfo.Get(EInventoryUseItemType.FutureEther), SealedCavesLower);
+			Add(new ItemKey(9, 15, 248, 192), ItemInfo.Get(EInventoryUseItemType.FutureEther), SealedCavesLower & R.DoubleJump);
 			Add(new RoomItemKey(9, 13), ItemInfo.Get(EInventoryRelicType.TimespinnerGear3), SealedCavesLower);
 			//Sealed Caves (sirens)
 			Add(new ItemKey(9, 5, 88, 496), ItemInfo.Get(EItemType.MaxSand), SealedCavesSirens & R.Swimming);
@@ -220,7 +220,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(8, 41, 264, 192), ItemInfo.Get(EInventoryUseItemType.EssenceCrystal), LowerCavesOfBanishment & ForwardDashDoubleJump);
 			Add(new ItemKey(8, 41, 312, 192), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & ForwardDashDoubleJump);
 			Add(new ItemKey(8, 42, 216, 189), ItemInfo.Get(EInventoryOrbType.Wind, EOrbSlot.Melee), LowerCavesOfBanishment);
-			Add(new ItemKey(8, 15, 248, 192), ItemInfo.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment);
+			Add(new ItemKey(8, 15, 248, 192), ItemInfo.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment & R.DoubleJump);
 			Add(new ItemKey(8, 31, 88, 400), ItemInfo.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & R.DoubleJump);
 			//Caves of banishment (sirens)
 			Add(new ItemKey(8, 4, 664, 144), ItemInfo.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment);
