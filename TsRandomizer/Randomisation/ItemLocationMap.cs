@@ -41,7 +41,7 @@ namespace TsRandomizer.Randomisation
 		internal static readonly Gate UpperRoyalTower = MidRoyalTower & R.DoubleJump;
 
 		//future
-		internal static readonly Gate UpperLakeDesolation = LeftSideForestCaves & R.AntiWeed;
+		internal static readonly Gate UpperLakeDesolation = UpperLakeSirine & R.AntiWeed;
 		internal static readonly Gate LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | (R.GateMilitairyGate & R.CardD & (R.CardB | (R.CardC & R.CardE)));
 		internal static readonly Gate UpperLeftLibrary = LeftLibrary & (R.DoubleJump | R.ForwardDash);
 		internal static readonly Gate MidLibrary = (LeftLibrary & R.CardD) | (R.GateMilitairyGate & (R.CardB | (R.CardC & R.CardE)));
