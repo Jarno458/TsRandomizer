@@ -12,11 +12,11 @@ namespace TsRandomizer.Randomisation
 
 		GameSave gameSave;
 
-		public bool IsPickedUp { get; private set; }
+		public bool IsPickedUp { get; internal set; }
 
-		public Requirement Unlocks { get; private set; }
+		public Requirement Unlocks { get; internal set; }
 
-		public ItemInfo ItemInfo { get; private set; }
+		public ItemInfo ItemInfo { get; internal set; }
 
 		public ItemInfo DefaultItem { get; internal set;  }
 
@@ -57,7 +57,7 @@ namespace TsRandomizer.Randomisation
 
 		public override string ToString()
 		{
-			return $"{Key} [{ItemInfo ?? null}]";
+			return $"{Key} [{ItemInfo}]";
 		}
 
 		public void BsseOnGameSave(GameSave save)

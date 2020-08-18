@@ -84,7 +84,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Drawables\IDrawable.cs" />
     <Compile Include="Drawables\SeedRepresentation.cs" />
     <Compile Include="ExceptionLogger.cs" />
@@ -100,7 +99,9 @@
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="IntermediateObjects\RequestButtonPressTrigger.cs" />
     <Compile Include="IntermediateObjects\TriggerBase.cs" />
+    <Compile Include="ItemTracker\ItemTrackerState.cs" />
     <Compile Include="LevelObjects\AlwaysSpawnAttribute.cs" />
+    <Compile Include="ItemTracker\ItemTrackerUplink.cs" />
     <Compile Include="LevelObjects\Other\SaveStatue.cs" />
     <Compile Include="LevelObjects\Other\GyrePortalEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneLab2.cs" />

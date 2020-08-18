@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.ItemTracker;
 using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.LevelObjects
@@ -21,6 +22,8 @@ namespace TsRandomizer.LevelObjects
 
 	abstract class ItemManipulator : LevelObject
 	{
+		static ItemLocationMap itemLocationMap;
+
 		public bool IsPickedUp => itemLocation.IsPickedUp;
 
 		public readonly ItemInfo ItemInfo;
@@ -43,6 +46,14 @@ namespace TsRandomizer.LevelObjects
 		{
 			ItemInfo.OnPickup(Level);
 			itemLocation.SetPickedUp();
+
+			if (itemLocation.Unlocks != Requirement.None)
+				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(itemLocationMap));
+		}
+
+		public static void Initialize(ItemLocationMap itemLocations)
+		{
+			itemLocationMap = itemLocations;
 		}
 
 		public static void Draw(

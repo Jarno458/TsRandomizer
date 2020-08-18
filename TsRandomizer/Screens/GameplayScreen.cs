@@ -9,6 +9,7 @@ using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.ItemTracker;
 using TsRandomizer.LevelObjects;
 using TsRandomizer.Randomisation;
 
@@ -43,7 +44,11 @@ namespace TsRandomizer.Screens
 			ItemLocations = Randomizer.Randomize(seed, fillingMethod);
 			ItemLocations.BaseOnSave(Level.GameSave);
 
+			ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(itemLocationMap));
+
 			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed);
+
+			ItemManipulator.Initialize(ItemLocations);
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
