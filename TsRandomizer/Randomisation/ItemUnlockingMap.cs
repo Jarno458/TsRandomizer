@@ -30,6 +30,7 @@ namespace TsRandomizer.Randomisation
 				{ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Passive), new UnlockingSpecificaiton {Unlocks = R.AntiWeed}},
 				{ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Melee), new UnlockingSpecificaiton {Unlocks = R.AntiWeed}},
 				{ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Spell), new UnlockingSpecificaiton {Unlocks = R.AntiWeed}},
+				{ItemInfo.Get(EInventoryOrbType.Book, EOrbSlot.Spell), new UnlockingSpecificaiton {Unlocks = R.AntiWeed}},
 				{ItemInfo.Get(EInventoryRelicType.ScienceKeycardA), new UnlockingSpecificaiton {Unlocks = R.CardA, AdditionalUnlocks = R.CardB | R.CardC | R.CardD}},
 				{ItemInfo.Get(EInventoryRelicType.ScienceKeycardB), new UnlockingSpecificaiton {Unlocks = R.CardB, AdditionalUnlocks = R.CardC | R.CardD}},
 				{ItemInfo.Get(EInventoryRelicType.ScienceKeycardC), new UnlockingSpecificaiton {Unlocks = R.CardC, AdditionalUnlocks = R.CardD}},
@@ -65,7 +66,6 @@ namespace TsRandomizer.Randomisation
 				new {Gate = R.GateCastleKeep, LevelId = 5, RoomId = 24},
 				new {Gate = R.GateRoyalTowers, LevelId = 6, RoomId = 0},
 			};
-
 
 			var selectedGate = gateProgressionItems.SelectRandom(random);
 
