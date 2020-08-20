@@ -3,6 +3,7 @@ using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.ItemTracker;
 using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Screens
@@ -22,6 +23,9 @@ namespace TsRandomizer.Screens
 			void ReloadSave(GameSave gameSave)
 			{
 				itemLocationMap.BaseOnSave(gameSave);
+
+				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(itemLocationMap));
+
 				originalReloadSaveAction(gameSave);
 			}
 

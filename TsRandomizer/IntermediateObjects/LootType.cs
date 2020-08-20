@@ -4,7 +4,7 @@ using Timespinner.GameAbstractions.Inventory;
 
 namespace TsRandomizer.IntermediateObjects
 {
-	struct LootType
+	public struct LootType
 	{
 		public const int ConstUseItem = 0;
 		public const int ConstRelic = 1;

@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using NUnit.Framework;
 using TsRandomizer.ItemTracker;
 
 namespace TsRandomizer.Tests
@@ -33,6 +34,40 @@ namespace TsRandomizer.Tests
 			Assert.IsFalse(retreivedState.CardB);
 			Assert.IsFalse(retreivedState.PyramidKeys);
 			Assert.IsFalse(retreivedState.DinsFire);
+		}
+
+		[Test]
+		public void Parralel_read_and_writes_should_not_throw_exception()
+		{
+			var originalState = new ItemTrackerState
+			{
+				CardA = true,
+				Dash = true,
+				FireRing = true,
+				DoubleJump = true,
+				Timestop = false,
+				CardB = false,
+				PyramidKeys = false,
+				DinsFire = false
+			};
+
+			ItemTrackerUplink.UpdateState(originalState);
+			ItemTrackerUplink.LoadState();
+
+			var writer = Task.Factory.StartNew(() => {
+				for (int i = 0; i < 1000; i++)
+					ItemTrackerUplink.UpdateState(originalState);
+			});
+
+			var reader = Task.Factory.StartNew(() => {
+				for (int i = 0; i < 1000; i++)
+				{
+					var retreivedState = ItemTrackerUplink.LoadState();
+					Assert.IsTrue(retreivedState.CardA);
+				}
+			});
+
+			Task.WaitAll(writer, reader);
 		}
 	}
 }

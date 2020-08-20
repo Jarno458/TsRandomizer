@@ -1,11 +1,14 @@
 ﻿using System.IO;
 using System.IO.MemoryMappedFiles;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace TsRandomizer.ItemTracker
 {
-	static class ItemTrackerUplink
+	public static class ItemTrackerUplink
 	{
+		static ItemTrackerState lastSuccessfullRead;
+
 		public static void UpdateState(ItemTrackerState state)
 		{
 			var formatter = new BinaryFormatter();
@@ -18,16 +21,23 @@ namespace TsRandomizer.ItemTracker
 		{
 			var formatter = new BinaryFormatter();
 
-			using (var stream = GetMemoryMappedFileStream(MemoryMappedFileAccess.Read))
-				return (ItemTrackerState)formatter.Deserialize(stream);
+			try
+			{
+				using (var stream = GetMemoryMappedFileStream(MemoryMappedFileAccess.Read))
+					lastSuccessfullRead = (ItemTrackerState)formatter.Deserialize(stream);
+			}
+			catch (SerializationException)
+			{
+			}
+
+			return lastSuccessfullRead;
 		}
 
 		static Stream GetMemoryMappedFileStream(MemoryMappedFileAccess access)
 		{
 			const int serializerOverheadSize = 500;
-			const int numberOfMembers = 25;
 
-			return GetMemoryMappedFile().CreateViewStream(0, sizeof(bool) * numberOfMembers + serializerOverheadSize, access);
+			return GetMemoryMappedFile().CreateViewStream(0, sizeof(bool) * ItemTrackerState.NumberOfItems + serializerOverheadSize, access);
 		}
 
 		static MemoryMappedFile GetMemoryMappedFile()

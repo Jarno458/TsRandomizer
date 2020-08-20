@@ -9,7 +9,7 @@ using TsRandomizer.Extensions;
 
 namespace TsRandomizer.IntermediateObjects
 {
-	class ItemInfo : IEquatable<ItemInfo>
+	public class ItemInfo : IEquatable<ItemInfo>
 	{
 		static readonly MethodInfo GetIconFromUseItemMethod;
 		static readonly MethodInfo GetIconFromOrbMethod;

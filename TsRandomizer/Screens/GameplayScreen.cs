@@ -31,7 +31,7 @@ namespace TsRandomizer.Screens
 		{
 		}
 
-		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
+		public override void Initialize(ItemLocationMap _, GCM gameContentManager)
 		{
 			GameContentManager = gameContentManager;
 
@@ -44,7 +44,7 @@ namespace TsRandomizer.Screens
 			ItemLocations = Randomizer.Randomize(seed, fillingMethod);
 			ItemLocations.BaseOnSave(Level.GameSave);
 
-			ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(itemLocationMap));
+			ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(ItemLocations));
 
 			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed);
 
