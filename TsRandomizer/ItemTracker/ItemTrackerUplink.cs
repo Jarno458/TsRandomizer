@@ -8,7 +8,7 @@ namespace TsRandomizer.ItemTracker
 {
 	public static class ItemTrackerUplink
 	{
-		//static readonly MemoryMappedFile MemoryMappedFile = GetMemoryMappedFile();
+		static readonly MemoryMappedFile MemoryMappedFile = GetMemoryMappedFile();
 		static ItemTrackerState lastSuccessfullRead;
 
 		public static void UpdateState(ItemTrackerState state)
@@ -46,7 +46,7 @@ namespace TsRandomizer.ItemTracker
 		{
 			const int serializerOverheadSize = 500;
 
-			return GetMemoryMappedFile().CreateViewStream(0, sizeof(bool) * ItemTrackerState.NumberOfItems + serializerOverheadSize, access);
+			return MemoryMappedFile.CreateViewStream(0, sizeof(bool) * ItemTrackerState.NumberOfItems + serializerOverheadSize, access);
 		}
 
 		static MemoryMappedFile GetMemoryMappedFile()
