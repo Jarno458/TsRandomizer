@@ -35,6 +35,14 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 * When you obtain the pyramid keys, a random transition room is unlocked that could open new routing oppertunities
 * The temporal gyre is closed, due to its high randomness inside an already randomized timezone, the timezone would be highly unstable
 
+# Item Tracker
+The TsRandomizer.ItemTracker.exe can be used to automagicly track any progression item you obtain ingame. It can for example be used by streamers that want to display thier current progression items to thier viewers
+The item tracker features a few options:
+* You resize the window width to make it wider or smaller, the items will automaticly align properly
+* You can double click in the window to remove the borders
+* You can use you scroll wheel to make the window bigger of smaller
+* You can click with your right mouse button to change the background to a few pre-defined backgrounds
+
 # Known bugs
 ##### I am aware of these issues, but i found them small enough to fix at this moment
 * Deleting save file does not delete seed representation
@@ -44,6 +52,7 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 * Player obtains Meyef to early
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * The position of the randomizer credits in the credits screen is way off, sorry
+* The textured background for the item tracker is not properly tiled
 
 # Todo
 ##### Things i plan on doing in the future

@@ -39,7 +39,7 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>EyeOrbIcon.ico</ApplicationIcon>
+    <ApplicationIcon>EyeOrbLargeT.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FNA">
@@ -56,11 +56,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackgroundProvider.cs" />
+    <Compile Include="MouseInputHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ItemTracker.cs" />
-    <Compile Include="TrackerStyles\HorizontalTracker.cs" />
-    <Compile Include="TrackerStyles\ITrakcerStyle.cs" />
+    <Compile Include="TrackerRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TsRandomizer\TsRandomizer.csproj">
@@ -70,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="EyeOrbIcon.ico" />
+    <Content Include="EyeOrbLargeT.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

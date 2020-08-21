@@ -70,8 +70,7 @@ namespace TsRandomizer
 
 			try
 			{
-				using (var fileStream = new FileStream(@"Timespinner.exe", FileMode.Open))
-					return ByteArrayToString(md5.ComputeHash(fileStream));
+				return ByteArrayToString(md5.ComputeHash(File.ReadAllBytes("Timespinner.exe")));
 			}
 			catch (FileNotFoundException)
 			{

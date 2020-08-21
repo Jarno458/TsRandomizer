@@ -1,14 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Timespinner.Core;
 using Timespinner.GameAbstractions;
 using TsRandomizer.ItemTracker;
 using TsRandomizer.Extensions;
-using TsRandomizerItemTracker.TrackerStyles;
 
 namespace TsRandomizerItemTracker
 {
@@ -18,9 +13,15 @@ namespace TsRandomizerItemTracker
 		readonly SpriteBatch spriteBatch;
 		
 		ItemTrackerState trackerState;
-		ITrakcerStyle trakcerStyle;
+
+		TrackerRenderer trackerRenderer;
+		BackgroundRenderer backgroundRenderer;
 
 		SpriteFont font;
+
+		double trackerUpdateTimer = 1000;
+
+		MouseInputHandler mouseInputHandler;
 
 		public ItemTracker()
 		{
@@ -34,56 +35,103 @@ namespace TsRandomizerItemTracker
 
 			Content.RootDirectory = "Content";
 
-			var framesPerSecond = 2d;
-			TargetElapsedTime = TimeSpan.FromSeconds(1/framesPerSecond);
+			TargetElapsedTime = TimeSpan.FromSeconds(1/60d); //60 fps
+
+			Window.AllowUserResizing = true;
+			Window.ClientSizeChanged += Window_ClientSizeChanged;
 		}
 
-		protected override void LoadContent()
+		protected override void Initialize()
 		{
-			var gcm = new GCM();
-			var spriteSheet = (SpriteSheet)gcm.AsDynamic().Get("Sprites/Items/MenuIcons", Content);
+			base.Initialize();
 
-			font = Content.Load<SpriteFont>("Fonts/LatinFont");
-			font.LineSpacing = 16;
+			mouseInputHandler = new MouseInputHandler(OnDoubleClick, OnRightClick, OnScroll);
+		}
 
-			trakcerStyle = new HorizontalTracker(spriteSheet, font);
+		void Window_ClientSizeChanged(object sender, EventArgs e)
+		{
+			Window.ClientSizeChanged -= Window_ClientSizeChanged;
 
-			var size = trakcerStyle.GetSize();
+			trackerRenderer.SetWidth(Window.ClientBounds.Width);
 
+			UpdateWindowSize();
+
+			Window.ClientSizeChanged += Window_ClientSizeChanged;
+		}
+
+		void UpdateWindowSize()
+		{
+			var size = trackerRenderer.GetSize();
 			graphics.PreferredBackBufferWidth = size.X;
 			graphics.PreferredBackBufferHeight = size.Y;
 			graphics.ApplyChanges();
 		}
 
+		void OnDoubleClick()
+		{
+			Window.IsBorderlessEXT = !Window.IsBorderlessEXT;
+		}
+
+		void OnRightClick()
+		{
+			backgroundRenderer.NextBackground();
+		}
+
+		void OnScroll(int scrolledAmount)
+		{
+			if (scrolledAmount > 0)
+			{
+				trackerRenderer.IconSize += 2;
+			}
+			else
+			{
+				if (trackerRenderer.IconSize > 8)
+					trackerRenderer.IconSize -= 2;
+			}
+
+			UpdateWindowSize();
+		}
+
+		protected override void LoadContent()
+		{
+			font = Content.Load<SpriteFont>("Fonts/LatinFont");
+			font.LineSpacing = 16;
+
+			var gcm = new GCM();
+
+			trackerRenderer = new TrackerRenderer(gcm, Content);
+			backgroundRenderer = new BackgroundRenderer(gcm, Content);
+
+			UpdateWindowSize();
+		}
+
 		protected override void Update(GameTime gameTime)
 		{
-			//trackerState = ItemTrackerUplink.LoadState();
-			trackerState = new ItemTrackerState();
+			if(IsActive)
+				mouseInputHandler.Update(gameTime);
 
-#if DEBUG
-			Console.Clear();
-			XmlSerializer xsSubmit = new XmlSerializer(typeof(ItemTrackerState));
-
-			using (var sww = new StringWriter())
+			trackerUpdateTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+			if (trackerUpdateTimer > 1000)
 			{
-				using (XmlWriter writer = XmlWriter.Create(sww))
-				{
-					xsSubmit.Serialize(writer, trackerState);
-					Console.WriteLine(sww.ToString());
-				}
+				trackerState = ItemTrackerUplink.LoadState();
+
+				trackerUpdateTimer = 0;
 			}
-#endif
+
+			base.Update(gameTime);
 		}
 
 		protected override void Draw(GameTime gameTime)
 		{
-			graphics.GraphicsDevice.Clear(Color.WhiteSmoke);
+			graphics.GraphicsDevice.Clear(Color.Black);
 
-			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
+			backgroundRenderer.Draw(spriteBatch, graphics.GraphicsDevice.Viewport.Bounds);
+
+			if (trackerState != null)
+				trackerRenderer.Draw(spriteBatch, trackerState);
+			else
 			{
-				if(trackerState != null)
-					trakcerStyle.Draw(spriteBatch, trackerState);
-				else
+				using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
 					spriteBatch.DrawString(font, "Awaiting data", new Vector2(8, 8), Color.Black);
 			}
 
