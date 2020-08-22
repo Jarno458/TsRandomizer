@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -13,17 +12,10 @@ namespace TsRandomizer.ItemTracker
 
 		public static void UpdateState(ItemTrackerState state)
 		{
-			try
-			{
-				var formatter = new BinaryFormatter();
+			var formatter = new BinaryFormatter();
 
-				using (var stream = GetMemoryMappedFileStream(MemoryMappedFileAccess.Write))
-					formatter.Serialize(stream, state);
-			}
-			catch (Exception e)
-			{
-				ExceptionLogger.LogException(e);
-			}
+			using (var stream = GetMemoryMappedFileStream(MemoryMappedFileAccess.Write))
+				formatter.Serialize(stream, state);
 		}
 
 		public static ItemTrackerState LoadState()

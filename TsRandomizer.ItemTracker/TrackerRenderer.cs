@@ -40,6 +40,8 @@ namespace TsRandomizerItemTracker
 
 			if(columnCount > numberOfItems)
 				columnCount = numberOfItems;
+			else if (columnCount == 0)
+				columnCount = 1;
 		}
 
 		public Point GetSize()

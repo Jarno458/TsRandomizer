@@ -9,9 +9,10 @@ namespace TsRandomizerItemTracker
 {
 	class BackgroundRenderer
 	{
-		int currentBackground = 0;
+		int currentBackground;
 
 		readonly Background[] backgrounds;
+		public int NumberOfBackgrounds => backgrounds.Length;
 
 		public BackgroundRenderer(GCM gcm, ContentManager contentManager)
 		{
@@ -35,9 +36,9 @@ namespace TsRandomizerItemTracker
 			};
 		}
 
-		public void NextBackground()
+		public void SetBackground(int index)
 		{
-			currentBackground++;
+			currentBackground = index;
 
 			if (currentBackground >= backgrounds.Length)
 				currentBackground = 0;

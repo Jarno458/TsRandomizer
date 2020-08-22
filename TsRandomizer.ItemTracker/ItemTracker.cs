@@ -11,7 +11,8 @@ namespace TsRandomizerItemTracker
 	{
 		readonly GraphicsDeviceManager graphics;
 		readonly SpriteBatch spriteBatch;
-		
+		readonly TrackerSettings settings;
+
 		ItemTrackerState trackerState;
 
 		TrackerRenderer trackerRenderer;
@@ -22,6 +23,8 @@ namespace TsRandomizerItemTracker
 		double trackerUpdateTimer = 1000;
 
 		MouseInputHandler mouseInputHandler;
+
+		bool oneTimeSetup = true;
 
 		public ItemTracker()
 		{
@@ -37,8 +40,7 @@ namespace TsRandomizerItemTracker
 
 			TargetElapsedTime = TimeSpan.FromSeconds(1/60d); //60 fps
 
-			Window.AllowUserResizing = true;
-			Window.ClientSizeChanged += Window_ClientSizeChanged;
+			settings = TrackerSettings.LoadSettings();
 		}
 
 		protected override void Initialize()
@@ -54,6 +56,8 @@ namespace TsRandomizerItemTracker
 
 			trackerRenderer.SetWidth(Window.ClientBounds.Width);
 
+			settings.WindowSize = trackerRenderer.GetSize();
+
 			UpdateWindowSize();
 
 			Window.ClientSizeChanged += Window_ClientSizeChanged;
@@ -61,33 +65,41 @@ namespace TsRandomizerItemTracker
 
 		void UpdateWindowSize()
 		{
-			var size = trackerRenderer.GetSize();
-			graphics.PreferredBackBufferWidth = size.X;
-			graphics.PreferredBackBufferHeight = size.Y;
+			graphics.PreferredBackBufferWidth = settings.WindowSize.X;
+			graphics.PreferredBackBufferHeight = settings.WindowSize.Y;
 			graphics.ApplyChanges();
 		}
 
 		void OnDoubleClick()
 		{
-			Window.IsBorderlessEXT = !Window.IsBorderlessEXT;
+			settings.Borderless = !settings.Borderless;
+			Window.IsBorderlessEXT = settings.Borderless;
 		}
 
 		void OnRightClick()
 		{
-			backgroundRenderer.NextBackground();
+			settings.BackgrondIndex++;
+
+			if (settings.BackgrondIndex >= backgroundRenderer.NumberOfBackgrounds)
+				settings.BackgrondIndex = 0;
+
+			backgroundRenderer.SetBackground(settings.BackgrondIndex);
 		}
 
 		void OnScroll(int scrolledAmount)
 		{
 			if (scrolledAmount > 0)
 			{
-				trackerRenderer.IconSize += 2;
+				settings.IconSize += 2;
 			}
 			else
 			{
-				if (trackerRenderer.IconSize > 8)
-					trackerRenderer.IconSize -= 2;
+				if (settings.IconSize > 8)
+					settings.IconSize -= 2;
 			}
+
+			trackerRenderer.IconSize = settings.IconSize;
+			settings.WindowSize = trackerRenderer.GetSize();
 
 			UpdateWindowSize();
 		}
@@ -99,15 +111,29 @@ namespace TsRandomizerItemTracker
 
 			var gcm = new GCM();
 
-			trackerRenderer = new TrackerRenderer(gcm, Content);
-			backgroundRenderer = new BackgroundRenderer(gcm, Content);
+			trackerRenderer = new TrackerRenderer(gcm, Content) { IconSize = settings.IconSize };
+			trackerRenderer.SetWidth(settings.WindowSize.X);
 
 			UpdateWindowSize();
+
+			backgroundRenderer = new BackgroundRenderer(gcm, Content);
+			backgroundRenderer.SetBackground(settings.BackgrondIndex);
+
+			Window.IsBorderlessEXT = settings.Borderless;
+
+			settings.EnableSaving();
 		}
 
 		protected override void Update(GameTime gameTime)
 		{
-			if(IsActive)
+			if (oneTimeSetup)
+			{
+				Window.AllowUserResizing = true;
+				Window.ClientSizeChanged += Window_ClientSizeChanged;
+				oneTimeSetup = false;
+			}
+
+			if (IsActive)
 				mouseInputHandler.Update(gameTime);
 
 			trackerUpdateTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
