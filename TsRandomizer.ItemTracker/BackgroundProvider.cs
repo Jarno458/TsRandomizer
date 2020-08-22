@@ -29,6 +29,9 @@ namespace TsRandomizerItemTracker
 				new Background { Texture = blank, Color = Color.Goldenrod },
 				new Background { Texture = blank, Color = Color.GreenYellow },
 				new Background { Texture = blank, Color = Color.DarkKhaki },
+				new Background { Texture = blank, Color = new Color(new Vector3(1,0,1)) },
+				new Background { Texture = blank, Color = new Color(new Vector3(1,1,0)) },
+				new Background { Texture = blank, Color = new Color(new Vector3(0,1,1)) },
 
 				new Background { Texture = pauseMenu.Texture, Souce = new Rectangle(48, 112, 16, 16), Color = Color.White },
 				new Background { Texture = pauseMenu.Texture, Souce = new Rectangle(48, 96, 16, 16), Color = Color.White },
