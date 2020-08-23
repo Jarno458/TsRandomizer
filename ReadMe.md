@@ -10,7 +10,7 @@ Quest are not concidered part of the game, and they wont contain any progression
 
 When you feel stuck, you can open the minimap and hold X (the key to remove map markers),, it will highligh all locations that you can reach and still have items for you
 
-For questions / remarks and feedback, feel free to join the #randomizer channel on the offical timespinner discord https://discord.gg/Bv6ejQz1
+For questions / remarks and feedback, feel free to join the #randomizer channel on the offical timespinner discord https://discord.gg/sZMqD9
 
 # Instalation \ Startup
 Download latests TsRandomizer.exe from the release page https://github.com/JarnoWesthof/TsRandomizer/releases
@@ -56,7 +56,8 @@ The item tracker features a few options:
 
 # Todo
 ##### Things i plan on doing in the future
-* item tracker
+* Make add support for progressive items
+* Make player start with a jewelry box
 * disable quests maybe?
 * Replace Replaces to Treasure Chest to replaces to ItemDropPickup
 
