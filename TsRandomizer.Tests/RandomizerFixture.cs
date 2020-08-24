@@ -19,7 +19,7 @@ namespace TsRandomizer.Tests
 		{
 			var seeds = new LookupDictionairy<Seed, GenerationResult>(r => r.Seed);
 
-			while (seeds.Count != 1000)
+			while (seeds.Count != 100000)
 			{
 				var result = Randomizer.Generate(FillingMethod.Random);
 
