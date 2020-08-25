@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Drawables;
@@ -15,16 +17,13 @@ namespace TsRandomizer.Screens
 	// ReSharper disable once UnusedMember.Global
 	class SaveSelectScreen : Screen
 	{
-		readonly dynamic reflected;
 		readonly Dictionary<object, SeedRepresentation> seedRepresentations = new Dictionary<object, SeedRepresentation>(10);
 
 		int zoom;
 
 		public SaveSelectScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
-			reflected = screen.AsDynamic();
-
-			var saveFileEntries = (IList)((object)reflected._saveFileCollection).AsDynamic().Entries;
+			var saveFileEntries = (IList)((object)Reflected._saveFileCollection).AsDynamic().Entries;
 
 			foreach (var entry in saveFileEntries)
 			{
@@ -42,7 +41,7 @@ namespace TsRandomizer.Screens
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
-			var saveFileEntries = (IList)((object)reflected._saveFileCollection).AsDynamic().Entries;
+			var saveFileEntries = (IList)((object)Reflected._saveFileCollection).AsDynamic().Entries;
 
 			if(IsZoomChanged())
 			{
@@ -50,6 +49,26 @@ namespace TsRandomizer.Screens
 				UpdateAreaNameSize(saveFileEntries);
 			}
 
+			UpdateDrawPositions(saveFileEntries);
+
+			var missingEntries = new List<object>();
+
+			foreach (var seedRepresentation in seedRepresentations)
+			{
+				seedRepresentation.Value.ShowSeedId = false;
+
+				if(!saveFileEntries.Contains(seedRepresentation.Key))
+					missingEntries.Add(seedRepresentation.Key);
+			}
+			
+			foreach (var missingEntry in missingEntries)
+				seedRepresentations.Remove(missingEntry);
+
+			UpdateInput(input);
+		}
+
+		void UpdateDrawPositions(IList saveFileEntries)
+		{
 			foreach (var saveFileEntry in saveFileEntries)
 			{
 				if (!seedRepresentations.ContainsKey(saveFileEntry)) continue;
@@ -59,25 +78,31 @@ namespace TsRandomizer.Screens
 				if (entry.IsEmptySaveSlot || entry.IsCorrupt)
 					continue;
 
-				var drawPosition = (Vector2)entry.DrawPosition;
-				var textXOffset = (int)entry._textOffsetX;
-				var font = (SpriteFont)entry._font;
+				var drawPosition = (Vector2) entry.DrawPosition;
+				var textXOffset = (int) entry._textOffsetX;
+				var font = (SpriteFont) entry._font;
 				var origin = new Vector2(0.0f, font.LineSpacing / 2f);
 
 				var drawPoint = new Point(
-					(int) (drawPosition.X + textXOffset + entry._saveColumnOffsetX - seedRepresentations[saveFileEntry].Width), 
+					(int) (drawPosition.X + textXOffset + entry._saveColumnOffsetX - seedRepresentations[saveFileEntry].Width),
 					(int) drawPosition.Y);
 
 				seedRepresentations[saveFileEntry].SetDrawPoint(drawPoint, origin);
 			}
+		}
 
-			var missingEntries = seedRepresentations
-				.Select(sr => sr.Key)
-				.Where(entry => !saveFileEntries.Contains(entry))
-				.ToArray();
+		void UpdateInput(InputState input)
+		{
+			if (input.IsButtonHold(Buttons.LeftTrigger, null, out PlayerIndex _))
+			{
+				var selectedIndex = Reflected.SelectedIndex;
+				var selectedseedRepresentation = seedRepresentations
+					.Where(sr => ((GameSave)sr.Key.AsDynamic().SaveFile).SaveFileIndex == selectedIndex)
+					.Select(sr => sr.Value);
 
-			foreach (var missingEntry in missingEntries)
-				seedRepresentations.Remove(missingEntry);
+				if (selectedseedRepresentation.Any())
+					selectedseedRepresentation.First().ShowSeedId = true;
+			}
 		}
 
 		bool IsZoomChanged()
