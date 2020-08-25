@@ -13,6 +13,8 @@ namespace TsRandomizer.Drawables
 
 		public int IconSize { get; set; }
 
+		public bool ShowSeedId { get; set; }
+
 		Seed? seed;
 
 		Point drawPoint = Point.Zero;
@@ -54,12 +56,37 @@ namespace TsRandomizer.Drawables
 			if(drawBackdrop)
 				DrawBackdrop(spriteBatch, NumberOfItemsToDraw);
 
-			if (!seed.HasValue) return;
+			if (!seed.HasValue)
+			{
+				DrawSeedString(spriteBatch, "Invallid", Color.Red);
+				return;
+			}
 
-			var random = new Random(~seed.Value);
+			if (ShowSeedId)
+			{
+				DrawSeedString(spriteBatch, seed.Value.ToString());
+			}
+			else
+			{
+				var random = new Random(~seed.Value);
 
-			for (int i = 0; i < NumberOfItemsToDraw; i++)
-				DrawItemIcon(spriteBatch, i, random);
+				for (int i = 0; i < NumberOfItemsToDraw; i++)
+					DrawItemIcon(spriteBatch, i, random);
+			}
+		}
+
+		void DrawSeedString(SpriteBatch spriteBatch, string seedId)
+		{
+			DrawSeedString(spriteBatch, seedId, Color.WhiteSmoke);
+		}
+
+		void DrawSeedString(SpriteBatch spriteBatch, string seedId, Color color)
+		{
+			var font = gcm.LatinFont;
+			var inGameZoom = (int)TimeSpinnerGame.Constants.InGameZoom;
+			var position = new Vector2(drawPoint.X, drawPoint.Y - ((font.LineSpacing / 2) * inGameZoom));
+
+			spriteBatch.DrawString(font, seedId, position, color, inGameZoom);	
 		}
 
 		void DrawItemIcon(SpriteBatch spriteBatch, int i, Random random)

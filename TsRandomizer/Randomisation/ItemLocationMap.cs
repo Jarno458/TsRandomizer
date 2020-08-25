@@ -51,7 +51,7 @@ namespace TsRandomizer.Randomisation
 		internal static readonly R SealedCavesLeft = R.DoubleJump;
 		internal static readonly Gate SealedCavesLower = SealedCavesLeft & R.CardA;
 		internal static readonly Gate SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
-		internal static readonly Gate KillTwinsAndMaw = LowerlakeSirine & CastleKeep;
+		internal static readonly Gate KillTwinsAndMaw = (LowerlakeSirine & R.DoubleJump) & (CastleKeep & R.TimeStop);
 		internal static readonly Gate KillAll3MajorBosses = LowerRightSideLibrary & KillTwinsAndMaw & UpperRoyalTower;
 		internal static readonly Gate MilitairyFortress = KillAll3MajorBosses;
 		internal static readonly Gate MilitairyFortressHangar = MilitairyFortress;

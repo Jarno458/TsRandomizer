@@ -45,7 +45,6 @@ The item tracker features a few options:
 
 # Known bugs
 ##### I am aware of these issues, but i found them small enough to fix at this moment
-* Deleting save file does not delete seed representation
 * Resizing render size, requires a restart of the game
 * Menu tooltip is wrong on diffuclty selection screen
 * Using the transition room near refugee camp without having pyramid keys renders the portal to small

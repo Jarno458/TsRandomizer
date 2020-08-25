@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions.Saving;
@@ -69,6 +70,14 @@ namespace TsRandomizer.Screens
 
 				seedRepresentations[saveFileEntry].SetDrawPoint(drawPoint, origin);
 			}
+
+			var missingEntries = seedRepresentations
+				.Select(sr => sr.Key)
+				.Where(entry => !saveFileEntries.Contains(entry))
+				.ToArray();
+
+			foreach (var missingEntry in missingEntries)
+				seedRepresentations.Remove(missingEntry);
 		}
 
 		bool IsZoomChanged()
