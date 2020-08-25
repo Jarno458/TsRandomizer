@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,6 +12,7 @@ using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Drawables;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Screens
 {
@@ -93,16 +96,65 @@ namespace TsRandomizer.Screens
 
 		void UpdateInput(InputState input)
 		{
+			var selectedIndex = Reflected.SelectedIndex;
+
 			if (input.IsButtonHold(Buttons.LeftTrigger, null, out PlayerIndex _))
 			{
-				var selectedIndex = Reflected.SelectedIndex;
 				var selectedseedRepresentation = seedRepresentations
 					.Where(sr => ((GameSave)sr.Key.AsDynamic().SaveFile).SaveFileIndex == selectedIndex)
 					.Select(sr => sr.Value);
 
+				// ReSharper disable PossibleMultipleEnumeration
 				if (selectedseedRepresentation.Any())
 					selectedseedRepresentation.First().ShowSeedId = true;
+				// ReSharper restore PossibleMultipleEnumeration
 			}
+			else if (input.IsNewButtonPress(Buttons.RightTrigger, null, out PlayerIndex _))
+			{
+				var selectedSaveFile = seedRepresentations
+					.Select(sr => (GameSave)sr.Key.AsDynamic().SaveFile)
+					.FirstOrDefault(save => save.SaveFileIndex == selectedIndex);
+
+				if(selectedSaveFile == null)
+					return;
+
+				ShowSpoilerGenerationDialog(selectedSaveFile);
+			}
+		}
+
+		void ShowSpoilerGenerationDialog(GameSave save)
+		{
+			var messageBox = MessageBox.Create(ScreenManager, "Generate Spoiler log?", (pi) => OnSpoilerLogCreationAccepted(save));
+
+			ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
+		}
+
+		void OnSpoilerLogCreationAccepted(GameSave save)
+		{
+			var seed = save.GetSeed();
+
+			using (var file = new StreamWriter(GetFileName(seed)))
+			{
+				file.WriteLine($"Seed: {seed}");
+				file.WriteLine();
+
+				var progressionItems = Randomizer.Randomize(seed, save.GetFillingMethod())
+					.Where(l => l.Unlocks != Requirement.None);
+
+				foreach (var itemLocation in progressionItems)
+				{
+					file.WriteLine(itemLocation);
+				}
+			}
+		}
+
+		static string GetFileName(Seed seed)
+		{
+			var directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			var fileDateTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH.mm");
+
+			// ReSharper disable once AssignNullToNotNullAttribute
+			return Path.Combine(directory, $"SpoilerLog {seed} {fileDateTime}.txt");
 		}
 
 		bool IsZoomChanged()

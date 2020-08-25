@@ -21,6 +21,12 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			ItemInfo.Get(EInventoryUseItemType.EssenceCrystal),
 		};
 
+		static readonly ItemInfo[] ItemsToAddToGame =
+		{
+			ItemInfo.Get(EInventoryEquipmentType.SelenBangle),
+			ItemInfo.Get(EInventoryEquipmentType.GlassPumpkin)
+		};
+
 		static readonly ItemInfo[] GenericItems =
 		{
 			ItemInfo.Get(EInventoryUseItemType.Potion),
@@ -113,6 +119,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			AddOrbs(itemlist);
 			AddFamiliers(itemlist);
+			AddExtraItems(itemlist);
 
 			itemlist = itemlist
 				.Where(i => !alreadyAssingedItems.Contains(i))
@@ -132,6 +139,12 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				PutItemAtLocation(item, location);
 
 			} while (freeLocations.Count > 0);
+		}
+
+		void AddExtraItems(List<ItemInfo> itemlist)
+		{
+			foreach (var itemInfo in ItemsToAddToGame)
+				itemlist.Add(itemInfo);
 		}
 
 		static void AddFamiliers(List<ItemInfo> itemlist)
