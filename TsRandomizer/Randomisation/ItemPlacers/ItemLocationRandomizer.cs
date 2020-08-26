@@ -24,7 +24,15 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		static readonly ItemInfo[] ItemsToAddToGame =
 		{
 			ItemInfo.Get(EInventoryEquipmentType.SelenBangle),
-			ItemInfo.Get(EInventoryEquipmentType.GlassPumpkin)
+			ItemInfo.Get(EInventoryEquipmentType.GlassPumpkin),
+			ItemInfo.Get(EInventoryEquipmentType.EternalCoat),
+			ItemInfo.Get(EInventoryEquipmentType.EternalTiara),
+			ItemInfo.Get(EInventoryEquipmentType.LibrarianHat),
+			ItemInfo.Get(EInventoryEquipmentType.LibrarianRobe),
+			ItemInfo.Get(EInventoryEquipmentType.MetalWristband),
+			ItemInfo.Get(EInventoryEquipmentType.NelisteEarring),
+			ItemInfo.Get(EInventoryEquipmentType.FamiliarEgg),
+			ItemInfo.Get(EInventoryEquipmentType.LuckyCoin)
 		};
 
 		static readonly ItemInfo[] GenericItems =
