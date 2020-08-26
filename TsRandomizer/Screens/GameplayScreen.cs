@@ -39,14 +39,17 @@ namespace TsRandomizer.Screens
 			var seed = saveFile.GetSeed();
 			var fillingMethod = saveFile.GetFillingMethod();
 
+			if(!seed.HasValue)
+				seed = new Seed(0);
+
 			Console.Out.WriteLine($"Seed: {seed}");
 
-			ItemLocations = Randomizer.Randomize(seed, fillingMethod);
+			ItemLocations = Randomizer.Randomize(seed.Value, fillingMethod);
 			ItemLocations.BaseOnSave(Level.GameSave);
 
 			ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(ItemLocations));
 
-			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed);
+			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed.Value);
 
 			ItemManipulator.Initialize(ItemLocations);
 		}

@@ -124,6 +124,11 @@ namespace TsRandomizer.Screens
 
 		void ShowSpoilerGenerationDialog(GameSave save)
 		{
+			var seed = save.GetSeed();
+
+			if (!seed.HasValue)
+				return;
+
 			var messageBox = MessageBox.Create(ScreenManager, "Generate Spoiler log?", (pi) => OnSpoilerLogCreationAccepted(save));
 
 			ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
@@ -133,12 +138,15 @@ namespace TsRandomizer.Screens
 		{
 			var seed = save.GetSeed();
 
-			using (var file = new StreamWriter(GetFileName(seed)))
+			if (!seed.HasValue)
+				return;
+
+			using (var file = new StreamWriter(GetFileName(seed.Value)))
 			{
 				file.WriteLine($"Seed: {seed}");
 				file.WriteLine();
 
-				var progressionItems = Randomizer.Randomize(seed, save.GetFillingMethod())
+				var progressionItems = Randomizer.Randomize(seed.Value, save.GetFillingMethod())
 					.Where(l => l.Unlocks != Requirement.None);
 
 				foreach (var itemLocation in progressionItems)

@@ -14,11 +14,12 @@ namespace TsRandomizer.Extensions
 		const string FillMethodSaveFileKey = "TsRandomizerFillMethod";
 		const string MeleeOrbPrefixKey = "TsRandomizerHasMeleeOrb";
 
-		static readonly Type LunaisType = TimeSpinnerType.Get("Timespinner.GameObjects.Heroes.LunaisObj");
-
-		internal static Seed GetSeed(this GameSave gameSave)
+		internal static Seed? GetSeed(this GameSave gameSave)
 		{
-			return new Seed(gameSave.DataKeyInts[SeedSaveFileKey]);
+			if (gameSave.DataKeyInts.TryGetValue(SeedSaveFileKey, out int seedId))
+				return new Seed(seedId);
+
+			return null;
 		}
 
 		internal static void SetSeed(this GameSave gameSave, Seed seed)
