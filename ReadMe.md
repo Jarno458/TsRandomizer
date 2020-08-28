@@ -21,6 +21,11 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 * Windows Steam verison 1.32 (latest)
 * Windows DRM Free version 1.31 (latest)
 
+##### Unsupported verisons
+* Windows Store verison (not planned)
+* Linux (maybe later)
+* Max (maybe later)
+
 # Gameplay changes
 * Orb\Ring\Spell shop is nolonger available, orbs\rings\spells are dropped from random item locations instead
 * Umbra orb is randomized in even if you dont own the password
@@ -47,7 +52,6 @@ The item tracker features a few options:
 ##### I am aware of these issues, but i found them small enough to fix at this moment
 * Resizing render size, requires a restart of the game
 * Menu tooltip is wrong on diffuclty selection screen
-* Using the transition room near refugee camp without having pyramid keys renders the portal to small
 * Player obtains Meyef to early
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * The position of the randomizer credits in the credits screen is way off, sorry
@@ -55,10 +59,13 @@ The item tracker features a few options:
 
 # Todo
 ##### Things i plan on doing in the future
-* Make add support for progressive items
+* Make add support for progressive items (gears 1 -> 2 -> 3) (duuble jump => space jump) (Card D => C => B => A))
 * Make player start with a jewelry box
 * disable quests maybe?
 * Replace Replaces to Treasure Chest to replaces to ItemDropPickup
+* Test effect of making each seed valid
+* Seed generation options
+* Extend names of item locations in the spoiler log (with help from community on discord)
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemenbted
@@ -66,4 +73,3 @@ The item tracker features a few options:
 * Randomize quest items
 * Randomize enemies
 * Timesanity
-* Upgradeable items (duuble jump => space jump) (Card D => C => B => A)

@@ -26,13 +26,15 @@ namespace TsRandomizer.Randomisation
 			| R.GateLakeSirineRight
 			| R.GateRoyalTowers
 			| R.GateCastleRamparts
-			| R.GateCastleKeep;
+			| R.GateCastleKeep
+			| (R.GateCavesOfBanishment & (R.DoubleJump | R.Swimming))
+			| (R.GateMaw & R.DoubleJump);
 
 		//past
 		internal static readonly Gate LeftSideForestCaves = (AccessToPast & (R.TimespinnerWheel | R.ForwardDash | R.DoubleJump)) | R.GateLakeSirineRight | R.GateLakeSirineLeft;
 		internal static readonly Gate UpperLakeSirine = (LeftSideForestCaves & (R.TimeStop | R.Swimming)) | R.GateLakeSirineLeft;
 		internal static readonly Gate LowerlakeSirine = (LeftSideForestCaves | R.GateLakeSirineLeft) & R.Swimming;
-		internal static readonly Gate LowerCavesOfBanishment = LowerlakeSirine;
+		internal static readonly Gate LowerCavesOfBanishment = LowerlakeSirine | R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump);
 		internal static readonly Gate UpperCavesOfBanishment = AccessToPast;
 		internal static readonly Gate CastleRamparts = AccessToPast;
 		internal static readonly Gate CastleKeep = CastleRamparts;
@@ -48,7 +50,7 @@ namespace TsRandomizer.Randomisation
 		internal static readonly Gate UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | (R.GateMilitairyGate & R.CardE);
 		internal static readonly Gate RightSizeLibraryElevator = (MidLibrary & R.CardE & (R.CardC | R.CardB)) | (R.GateMilitairyGate & R.CardE);
 		internal static readonly Gate LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSizeLibraryElevator | R.GateMilitairyGate;
-		internal static readonly R SealedCavesLeft = R.DoubleJump;
+		internal static readonly R SealedCavesLeft = R.DoubleJump | R.GateSealedCaves;
 		internal static readonly Gate SealedCavesLower = SealedCavesLeft & R.CardA;
 		internal static readonly Gate SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
 		internal static readonly Gate KillTwinsAndMaw = (LowerlakeSirine & R.DoubleJump) & (CastleKeep & R.TimeStop);

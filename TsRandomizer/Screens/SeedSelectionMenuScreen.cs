@@ -110,7 +110,7 @@ namespace TsRandomizer.Screens
 
 		void OnGenerateSelected(PlayerIndex playerIndex)
 		{
-			var seed = Randomizer.Generate(FillingMethod.Random, true).Seed;
+			var seed = Randomizer.Generate(FillingMethod.Random).Seed;
 
 			SetSeed(seed);
 		}

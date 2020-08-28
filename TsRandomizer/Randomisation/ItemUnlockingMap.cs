@@ -65,6 +65,10 @@ namespace TsRandomizer.Randomisation
 				new {Gate = R.GateCastleRamparts, LevelId = 4, RoomId = 23},
 				new {Gate = R.GateCastleKeep, LevelId = 5, RoomId = 24},
 				new {Gate = R.GateRoyalTowers, LevelId = 6, RoomId = 0},
+				new {Gate = R.GateMaw, LevelId = 8, RoomId = 49},
+				new {Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50},
+				//new {Gate = R.GateSealedCaves, LevelId = 9, RoomId = 49}, // dont want to spawn infront of xarion
+				new {Gate = R.GateSealedCaves, LevelId = 9, RoomId = 50},
 			};
 
 			var selectedGate = gateProgressionItems.SelectRandom(random);

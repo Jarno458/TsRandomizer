@@ -89,7 +89,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfo.Get(EInventoryRelicType.DoubleJump),
 				ItemInfo.Get(EInventoryRelicType.TimespinnerWheel),
 				ItemInfo.Get(EInventoryRelicType.PyramidsKey),
-				ItemInfo.Get(EInventoryRelicType.PyramidsKey),
 				ItemInfo.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell),
 				ItemInfo.Get(EInventoryRelicType.EssenceOfSpace)
 			};

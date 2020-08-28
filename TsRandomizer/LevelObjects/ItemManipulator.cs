@@ -56,30 +56,6 @@ namespace TsRandomizer.LevelObjects
 			itemLocationMap = itemLocations;
 		}
 
-		public static void Draw(
-			SpriteBatch spriteBatch, SpriteFont menuFont, Vector2 levelRenderCenter,
-			ItemLocationMap itemLocations
-		)
-		{
-			var itemManipulators = Objects.OfType<ItemManipulator>().ToArray();
-
-			for (var i = 0; i < itemManipulators.Length; i++)
-			{
-				var obj = itemManipulators[i];
-				var itemLocation = obj.itemLocation;
-				var drawKeyPos = new Vector2(30, 160 + 60 * i);
-				var drawRequirementPos = new Vector2(30, 160 + (60 * i) + 24);
-				var color = obj.ItemInfo != null
-					? obj.ItemInfo != ItemInfo.Dummy
-						? Color.Green
-						: Color.DarkGreen
-					: Color.Red;
-
-				spriteBatch.DrawString(menuFont, $"{itemLocation.Key}", drawKeyPos, color, 2);
-				spriteBatch.DrawString(menuFont, $"Requirement: {itemLocation.Gate}", drawRequirementPos, color, 1.5f);
-			}
-		}
-
 		public static ItemManipulator GenerateShadowObject(Type levelObjectType, Mobile obj, ItemLocationMap itemLocations)
 		{
 			var itemKey = GetKey(obj);
