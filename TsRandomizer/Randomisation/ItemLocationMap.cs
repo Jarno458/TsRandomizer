@@ -200,8 +200,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(7, 19, 248, 96), null, ItemInfo.Get(EItemType.MaxAura), UpperLakeSirine & R.DoubleJump);
 			Add(new ItemKey(7, 19, 168, 240), null, ItemInfo.Get(EInventoryEquipmentType.TravelersCloak), UpperLakeSirine);
 			Add(new ItemKey(7, 27, 184, 144), null, ItemInfo.Get(EInventoryFamiliarType.Griffin), UpperLakeSirine);
-			Add(new ItemKey(7, 13, 56, 176), null, ItemInfo.Get(EInventoryUseItemType.WarpCard), UpperLakeSirine);
-			Add(new ItemKey(7, 30, 296, 176), "Pyramid keys room", ItemInfo.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine);
+			Add(new ItemKey(7, 13, 56, 176), null, ItemInfo.Get(EInventoryUseItemType.WarpCard), UpperLakeSirine | LowerlakeSirine);
+			Add(new ItemKey(7, 30, 296, 176), "Pyramid keys room", ItemInfo.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine | LowerlakeSirine);
 			//Lower Lake Sirine
 			Add(new ItemKey(7, 3, 440, 1232), null, ItemInfo.Get(EInventoryUseItemType.Potion), LowerlakeSirine);
 			Add(new ItemKey(7, 7, 1432, 576), null, ItemInfo.Get(EInventoryUseItemType.MagicMarbles), LowerlakeSirine);
