@@ -11,6 +11,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 	{
 		protected readonly ItemLocationMap ItemLocations;
 		protected readonly ItemUnlockingMap UnlockingMap;
+		protected readonly bool ProgressionOnly;
 
 		static readonly ItemInfo[] ItemsToRemoveFromGame =
 		{
@@ -51,10 +52,11 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			ItemInfo.Get(EInventoryUseItemType.HiSandBottle),
 		};
 
-		protected ItemLocationRandomizer(ItemLocationMap itemLocations, ItemUnlockingMap unlockingMap)
+		protected ItemLocationRandomizer(ItemLocationMap itemLocations, ItemUnlockingMap unlockingMap, bool progressionOnly)
 		{
 			ItemLocations = itemLocations;
 			UnlockingMap = unlockingMap;
+			ProgressionOnly = progressionOnly;
 		}
 
 		protected void FillTutorial(Random random)
@@ -112,6 +114,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void FillRemainingChests(Random random)
 		{
+			if (ProgressionOnly)
+				return;
+
 			var alreadyAssingedItems = ItemLocations
 				.Where(l => l.IsUsed)
 				.Select(l => l.ItemInfo)

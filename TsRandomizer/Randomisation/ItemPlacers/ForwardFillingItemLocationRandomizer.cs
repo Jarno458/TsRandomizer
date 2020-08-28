@@ -23,7 +23,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		readonly Dictionary<ItemInfo, ItemLocation> placedItems;
 		readonly Dictionary<ItemInfo, Gate> paths;
 
-		ForwardFillingItemLocationRandomizer(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap) : base(itemLocationMap, unlockingMap)
+		ForwardFillingItemLocationRandomizer(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly) 
+			: base(itemLocationMap, unlockingMap, progressionOnly)
 		{
 			this.unlockingMap = unlockingMap;
 
@@ -34,9 +35,10 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			paths = new Dictionary<ItemInfo, Gate>();
 		}
 
-		public static void AddRandomItemsToLocationMap(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap)
+		public static void AddRandomItemsToLocationMap(
+			Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly)
 		{
-			new ForwardFillingItemLocationRandomizer(seed, unlockingMap, itemLocationMap)
+			new ForwardFillingItemLocationRandomizer(seed, unlockingMap, itemLocationMap, progressionOnly)
 				.AddRandomItemsToLocationMap();
 		}
 

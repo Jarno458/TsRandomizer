@@ -7,7 +7,7 @@ namespace TsRandomizer.Randomisation
 {
 	class Randomizer
 	{
-		public static ItemLocationMap Randomize(Seed seed, FillingMethod fillingMethod)
+		public static ItemLocationMap Randomize(Seed seed, FillingMethod fillingMethod, bool progressionOnly = false)
 		{
 			switch (fillingMethod)
 			{
@@ -16,7 +16,7 @@ namespace TsRandomizer.Randomisation
 						var itemLocations = new ItemLocationMap();
 						var unlockingMap = new ItemUnlockingMap(seed);
 
-						ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, unlockingMap, itemLocations);
+						ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, unlockingMap, itemLocations, progressionOnly);
 
 						return itemLocations;
 					}
@@ -25,7 +25,7 @@ namespace TsRandomizer.Randomisation
 						var itemLocations = new ItemLocationMap();
 						var unlockingMap = new ItemUnlockingMap(seed);
 
-						FullRandomItemLocationRandomizer.AddRandomItemsToLocationMap(seed, unlockingMap, itemLocations);
+						FullRandomItemLocationRandomizer.AddRandomItemsToLocationMap(seed, unlockingMap, itemLocations, progressionOnly);
 
 						return itemLocations;
 					}
@@ -71,7 +71,7 @@ namespace TsRandomizer.Randomisation
 
 		public static bool IsBeatable(Seed seed, FillingMethod fillingMethod)
 		{
-			return Randomize(seed, fillingMethod).IsBeatable();
+			return Randomize(seed, fillingMethod, true).IsBeatable();
 		}
 	}
 

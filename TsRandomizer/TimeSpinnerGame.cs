@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Timespinner;
+﻿using Timespinner;
 using TsRandomizer.Extensions;
 using TsRandomizer.Screens;
 

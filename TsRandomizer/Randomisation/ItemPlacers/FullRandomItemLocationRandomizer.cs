@@ -7,15 +7,16 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 {
 	class FullRandomItemLocationRandomizer : ItemLocationRandomizer
 	{
-		FullRandomItemLocationRandomizer(ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap) : base(itemLocationMap, unlockingMap)
+		FullRandomItemLocationRandomizer(ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly) 
+			: base(itemLocationMap, unlockingMap, progressionOnly)
 		{
 		}
 
-		public static void AddRandomItemsToLocationMap(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap)
+		public static void AddRandomItemsToLocationMap(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly)
 		{
 			var random = new Random(seed);
 
-			new FullRandomItemLocationRandomizer(unlockingMap, itemLocationMap)
+			new FullRandomItemLocationRandomizer(unlockingMap, itemLocationMap, progressionOnly)
 				.AddRandomItemsToLocationMap(random);
 		}
 

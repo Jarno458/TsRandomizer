@@ -144,15 +144,15 @@ namespace TsRandomizer.Screens
 			using (var file = new StreamWriter(GetFileName(seed.Value)))
 			{
 				file.WriteLine($"Seed: {seed}");
+				file.WriteLine($"Timespinner version: v{TimeSpinnerGame.Constants.GameVersion}");
+				file.WriteLine($"TsRandomizer version: v{Assembly.GetExecutingAssembly().GetName().Version}");
 				file.WriteLine();
 
 				var progressionItems = Randomizer.Randomize(seed.Value, save.GetFillingMethod())
 					.Where(l => l.Unlocks != Requirement.None);
 
 				foreach (var itemLocation in progressionItems)
-				{
 					file.WriteLine(itemLocation);
-				}
 			}
 		}
 

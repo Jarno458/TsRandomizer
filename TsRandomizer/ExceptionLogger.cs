@@ -10,13 +10,7 @@ namespace TsRandomizer
 		static int LevelId;
 		static int RoomId;
 		static uint Seed;
-		static string Versions = "";
 		// ReSharper restore InconsistentNaming
-
-		public static void SetVersionContext(string versions)
-		{
-			Versions = versions;
-		}
 
 		public static void SetSeedContext(uint seed)
 		{
@@ -34,7 +28,7 @@ namespace TsRandomizer
 			using (var file = new StreamWriter(GetFileName()))
 			{
 				file.WriteLine("Context:");
-				file.WriteLine($"Version: {Versions}");
+				file.WriteLine($"Timespinner Version: {TimeSpinnerGame.Constants.GameVersion}, TsRandomizer Version: {Assembly.GetExecutingAssembly().GetName().Version}");
 				file.WriteLine($"Level: {LevelId}, Room: {RoomId}, Seed: {Seed:X8}");
 				file.WriteLine();
 				file.WriteLine("Exceptions:");
