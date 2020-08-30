@@ -13,5 +13,5 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 [assembly: Guid("77705356-2595-478C-B6BF-3BA82A887C8B")]
 [assembly: AssemblyVersion("0.1.1.0")]
-[assembly: AssemblyFileVersion("0.1.1.0")]
+[assembly: AssemblyFileVersion("0.1.2.0")]
 [assembly: InternalsVisibleTo("TsRandomizer.Tests")]

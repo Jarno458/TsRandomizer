@@ -97,7 +97,10 @@
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="IntermediateObjects\ItemInfoProvider.cs" />
+    <Compile Include="IntermediateObjects\PogRessiveItemInfo.cs" />
     <Compile Include="IntermediateObjects\RequestButtonPressTrigger.cs" />
+    <Compile Include="IntermediateObjects\SingleItemInfo.cs" />
     <Compile Include="IntermediateObjects\TriggerBase.cs" />
     <Compile Include="ItemTracker\ItemTrackerState.cs" />
     <Compile Include="LevelObjects\AlwaysSpawnAttribute.cs" />

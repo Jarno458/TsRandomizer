@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,6 +14,8 @@ namespace TsRandomizerItemTracker
 {
 	class TrackerRenderer
 	{
+		static readonly Dictionary<ItemInfo, int> AnimationIndexes = new Dictionary<ItemInfo, int>(ItemTrackerState.NumberOfItems);
+
 		public int IconSize { get; set; } = 32;
 
 		readonly SpriteSheet menuIcons;
@@ -55,24 +58,24 @@ namespace TsRandomizerItemTracker
 
 			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
 			{
-				DrawItem(spriteBatch, state.Timestop, ItemInfo.Get(EInventoryRelicType.TimespinnerWheel));
-				DrawItem(spriteBatch, state.TimeSpindle, ItemInfo.Get(EInventoryRelicType.TimespinnerSpindle));
-				DrawItem(spriteBatch, state.TimeGear1, ItemInfo.Get(EInventoryRelicType.TimespinnerGear1));
-				DrawItem(spriteBatch, state.TimeGear2, ItemInfo.Get(EInventoryRelicType.TimespinnerGear2));
-				DrawItem(spriteBatch, state.TimeGear3, ItemInfo.Get(EInventoryRelicType.TimespinnerGear3));
-				DrawItem(spriteBatch, state.Dash, ItemInfo.Get(EInventoryRelicType.Dash));
-				DrawItem(spriteBatch, state.DoubleJump, ItemInfo.Get(EInventoryRelicType.DoubleJump));
-				DrawItem(spriteBatch, state.Lightwall, ItemInfo.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell));
-				DrawItem(spriteBatch, state.CelestialSash, ItemInfo.Get(EInventoryRelicType.EssenceOfSpace));
-				DrawItem(spriteBatch, state.PyramidKeys, ItemInfo.Get(EInventoryRelicType.PyramidsKey));
-				DrawItem(spriteBatch, state.CardA, ItemInfo.Get(EInventoryRelicType.ScienceKeycardA));
-				DrawItem(spriteBatch, state.CardB, ItemInfo.Get(EInventoryRelicType.ScienceKeycardB));
-				DrawItem(spriteBatch, state.CardC, ItemInfo.Get(EInventoryRelicType.ScienceKeycardC));
-				DrawItem(spriteBatch, state.CardD, ItemInfo.Get(EInventoryRelicType.ScienceKeycardD));
-				DrawItem(spriteBatch, state.CardV, ItemInfo.Get(EInventoryRelicType.ScienceKeycardV));
-				DrawItem(spriteBatch, state.CardE, ItemInfo.Get(EInventoryRelicType.ElevatorKeycard));
-				DrawItem(spriteBatch, state.WaterMask, ItemInfo.Get(EInventoryRelicType.WaterMask));
-				DrawItem(spriteBatch, state.GassMask, ItemInfo.Get(EInventoryRelicType.AirMask));
+				DrawItem(spriteBatch, state.Timestop, new SingleItemInfo(EInventoryRelicType.TimespinnerWheel));
+				DrawItem(spriteBatch, state.TimeSpindle, new SingleItemInfo(EInventoryRelicType.TimespinnerSpindle));
+				DrawItem(spriteBatch, state.TimeGear1, new SingleItemInfo(EInventoryRelicType.TimespinnerGear1));
+				DrawItem(spriteBatch, state.TimeGear2, new SingleItemInfo(EInventoryRelicType.TimespinnerGear2));
+				DrawItem(spriteBatch, state.TimeGear3, new SingleItemInfo(EInventoryRelicType.TimespinnerGear3));
+				DrawItem(spriteBatch, state.Dash, new SingleItemInfo(EInventoryRelicType.Dash));
+				DrawItem(spriteBatch, state.DoubleJump, new SingleItemInfo(EInventoryRelicType.DoubleJump));
+				DrawItem(spriteBatch, state.Lightwall, new SingleItemInfo(EInventoryOrbType.Barrier, EOrbSlot.Spell));
+				DrawItem(spriteBatch, state.CelestialSash, new SingleItemInfo(EInventoryRelicType.EssenceOfSpace));
+				DrawItem(spriteBatch, state.PyramidKeys, new SingleItemInfo(EInventoryRelicType.PyramidsKey));
+				DrawItem(spriteBatch, state.CardA, new SingleItemInfo(EInventoryRelicType.ScienceKeycardA));
+				DrawItem(spriteBatch, state.CardB, new SingleItemInfo(EInventoryRelicType.ScienceKeycardB));
+				DrawItem(spriteBatch, state.CardC, new SingleItemInfo(EInventoryRelicType.ScienceKeycardC));
+				DrawItem(spriteBatch, state.CardD, new SingleItemInfo(EInventoryRelicType.ScienceKeycardD));
+				DrawItem(spriteBatch, state.CardV, new SingleItemInfo(EInventoryRelicType.ScienceKeycardV));
+				DrawItem(spriteBatch, state.CardE, new SingleItemInfo(EInventoryRelicType.ElevatorKeycard));
+				DrawItem(spriteBatch, state.WaterMask, new SingleItemInfo(EInventoryRelicType.WaterMask));
+				DrawItem(spriteBatch, state.GassMask, new SingleItemInfo(EInventoryRelicType.AirMask));
 
 				DrawFireSource(spriteBatch, state);
 				DrawPinkSource(spriteBatch, state);
@@ -82,27 +85,27 @@ namespace TsRandomizerItemTracker
 		void DrawFireSource(SpriteBatch spriteBatch, ItemTrackerState state)
 		{
 			if(state.FireOrb)
-				DrawItem(spriteBatch, state.FireOrb, ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Melee));
+				DrawItem(spriteBatch, state.FireOrb, new SingleItemInfo(EInventoryOrbType.Flame, EOrbSlot.Melee));
 			else if (state.FireSpell)
-				DrawItem(spriteBatch, state.FireSpell, ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Spell));
+				DrawItem(spriteBatch, state.FireSpell, new SingleItemInfo(EInventoryOrbType.Flame, EOrbSlot.Spell));
 			else if (state.DinsFire)
-				DrawItem(spriteBatch, state.DinsFire, ItemInfo.Get(EInventoryOrbType.Book, EOrbSlot.Spell));
+				DrawItem(spriteBatch, state.DinsFire, new SingleItemInfo(EInventoryOrbType.Book, EOrbSlot.Spell));
 			else if (state.FireRing)
-				DrawItem(spriteBatch, state.FireRing, ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Passive));
+				DrawItem(spriteBatch, state.FireRing, new SingleItemInfo(EInventoryOrbType.Flame, EOrbSlot.Passive));
 			else
-				DrawItem(spriteBatch, false, ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Melee));
+				DrawItem(spriteBatch, false, new SingleItemInfo(EInventoryOrbType.Flame, EOrbSlot.Melee));
 		}
 
 		void DrawPinkSource(SpriteBatch spriteBatch, ItemTrackerState state)
 		{
 			if (state.PinkOrb)
-				DrawItem(spriteBatch, state.PinkOrb, ItemInfo.Get(EInventoryOrbType.Pink, EOrbSlot.Melee));
+				DrawItem(spriteBatch, state.PinkOrb, new SingleItemInfo(EInventoryOrbType.Pink, EOrbSlot.Melee));
 			else if (state.PinkSpell)
-				DrawItem(spriteBatch, state.PinkSpell, ItemInfo.Get(EInventoryOrbType.Pink, EOrbSlot.Spell));
+				DrawItem(spriteBatch, state.PinkSpell, new SingleItemInfo(EInventoryOrbType.Pink, EOrbSlot.Spell));
 			else if (state.PinkRing)
-				DrawItem(spriteBatch, state.PinkRing, ItemInfo.Get(EInventoryOrbType.Pink, EOrbSlot.Passive));
+				DrawItem(spriteBatch, state.PinkRing, new SingleItemInfo(EInventoryOrbType.Pink, EOrbSlot.Passive));
 			else
-				DrawItem(spriteBatch, false, ItemInfo.Get(EInventoryOrbType.Pink, EOrbSlot.Melee));
+				DrawItem(spriteBatch, false, new SingleItemInfo(EInventoryOrbType.Pink, EOrbSlot.Melee));
 		}
 
 		void ResetPosition()
@@ -121,7 +124,7 @@ namespace TsRandomizerItemTracker
 
 			var position = new Point(xIndex++ * IconSize, yIndex * IconSize);
 
-			DrawItem(spriteBatch, position, obtained, itemInfo.AnimationIndex);
+			DrawItem(spriteBatch, position, obtained, GetAnimationIndex(itemInfo));
 		}
 
 		void DrawItem(SpriteBatch spriteBatch, Point point, bool obtained, int animationIndex)
@@ -134,6 +137,18 @@ namespace TsRandomizerItemTracker
 			color.A = obtained ? (byte)255 : (byte)50;
 
 			spriteBatch.Draw(menuIcons.Texture, position, sprite, color);
+		}
+
+		static int GetAnimationIndex(ItemInfo itemInfo)
+		{
+			if (AnimationIndexes.TryGetValue(itemInfo, out int index))
+				return index;
+
+			var animationIndex = itemInfo.AnimationIndex;
+
+			AnimationIndexes.Add(itemInfo, animationIndex);
+
+			return animationIndex;
 		}
 	}
 }

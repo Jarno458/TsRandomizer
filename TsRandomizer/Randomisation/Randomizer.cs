@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation.ItemPlacers;
 
 namespace TsRandomizer.Randomisation
@@ -9,29 +10,27 @@ namespace TsRandomizer.Randomisation
 	{
 		public static ItemLocationMap Randomize(Seed seed, FillingMethod fillingMethod, bool progressionOnly = false)
 		{
+			var itemInfoProvider = new ItemInfoProvider();
+			var itemLocations = new ItemLocationMap(itemInfoProvider);
+			var unlockingMap = new ItemUnlockingMap(itemInfoProvider, seed);
+
+			itemInfoProvider.EnableProgressiveItems();
+
 			switch (fillingMethod)
 			{
 				case FillingMethod.Forward:
-					{
-						var itemLocations = new ItemLocationMap();
-						var unlockingMap = new ItemUnlockingMap(seed);
+					ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemInfoProvider, unlockingMap, itemLocations, progressionOnly);
+					break;
 
-						ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, unlockingMap, itemLocations, progressionOnly);
-
-						return itemLocations;
-					}
 				case FillingMethod.Random:
-					{
-						var itemLocations = new ItemLocationMap();
-						var unlockingMap = new ItemUnlockingMap(seed);
+					FullRandomItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemInfoProvider, unlockingMap, itemLocations, progressionOnly);
+					break;
 
-						FullRandomItemLocationRandomizer.AddRandomItemsToLocationMap(seed, unlockingMap, itemLocations, progressionOnly);
-
-						return itemLocations;
-					}
 				default:
 					throw new NotImplementedException($"filling method {fillingMethod} is not implemented");
 			}
+
+			return itemLocations;
 		}
 
 		public static GenerationResult Generate(FillingMethod fillingMethod)
@@ -47,7 +46,7 @@ namespace TsRandomizer.Randomisation
 			do
 			{
 				itterations++;
-				seed = SelectSeed(random);
+				seed = new Seed(random.Next());
 			} while (!IsBeatable(seed, fillingMethod));
 
 			stopwatch.Stop();
@@ -60,13 +59,6 @@ namespace TsRandomizer.Randomisation
 				Itterations = itterations,
 				Elapsed = stopwatch.Elapsed
 			};
-		}
-
-		static Seed SelectSeed(Random random)
-		{
-			//Seed.TrySetFromHexString("18B1A83B", out Seed seed);
-			//return seed;
-			return new Seed(random.Next());
 		}
 
 		public static bool IsBeatable(Seed seed, FillingMethod fillingMethod)

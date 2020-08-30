@@ -1,3 +1,4 @@
+
 # General
 Timespinner Randomizer will randomize the location of items such as enquipment, relics, familiars, stat boosts, use items. The logic makes sure that each game you play is beatable
 
@@ -22,7 +23,7 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 * Windows DRM Free version 1.31 (latest)
 
 ##### Unsupported verisons
-* Windows Store verison (not planned)
+* Windows Store (not planned)
 * Linux (maybe later)
 * Max (maybe later)
 
@@ -59,12 +60,12 @@ The item tracker features a few options:
 
 # Todo
 ##### Things i plan on doing in the future
-* Make add support for progressive items (gears 1 -> 2 -> 3) (duuble jump => space jump) (Card D => C => B => A))
 * Make player start with a jewelry box
 * disable quests maybe?
 * Replace Replaces to Treasure Chest to replaces to ItemDropPickup
 * Test effect of making each seed valid
 * Seed generation options
+** Add option to make cards or jumps progressive (duuble jump => space jump) (Card D => C => B => A))
 * Extend names of item locations in the spoiler log (with help from community on discord)
 
 # Ideas
@@ -73,3 +74,5 @@ The item tracker features a few options:
 * Randomize quest items
 * Randomize enemies
 * Timesanity
+* Make warpshard optionally a progressin item that unlocks all softlocks
+* Make any seed work

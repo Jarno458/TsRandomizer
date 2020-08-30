@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Tests
@@ -11,7 +12,7 @@ namespace TsRandomizer.Tests
 		[Test]
 		public void With_no_items_only_6_item_locatios_should_be_accessable()
 		{
-			var itemLocations = new ItemLocationMap();
+			var itemLocations = new ItemLocationMap(new ItemInfoProvider());
 
 			var accessableLocations = itemLocations.GetReachableLocations(Requirement.None).ToArray();
 
@@ -26,7 +27,7 @@ namespace TsRandomizer.Tests
 		[Test]
 		public void With_doubejump_timestop_spindle_and_cardD_should_get_access_to_past()
 		{
-			var itemLocations = new ItemLocationMap();
+			var itemLocations = new ItemLocationMap(new ItemInfoProvider());
 
 			var accessableLocations = itemLocations.GetReachableLocations(
 					Requirement.DoubleJump | Requirement.GateAccessToPast | Requirement.Swimming)
@@ -36,12 +37,12 @@ namespace TsRandomizer.Tests
 		}
 
 		[Test]
-		public void With_shoud_mark_captians_chests_as_available()
+		public void With_given_requirements_shoud_mark_captians_chests_as_available()
 		{
-			var itemLocations = new ItemLocationMap();
+			var itemLocations = new ItemLocationMap(new ItemInfoProvider());
 
 			var accessableLocations = itemLocations.GetReachableLocations(
-					Requirement.GassMask | Requirement.AntiWeed | Requirement.Swimming | Requirement.GateLakeSirineRight | Requirement.UpwardDash)
+					Requirement.GassMask | Requirement.AntiWeed | Requirement.Swimming | Requirement.GateLakeSirineRight | Requirement.DoubleJump)
 				.ToArray();
 
 			Assert.That(Contains(accessableLocations, new ItemKey(1, 18, 1320, 189))); 

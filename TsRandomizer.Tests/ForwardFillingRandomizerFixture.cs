@@ -13,12 +13,13 @@ namespace TsRandomizer.Tests
 		[Test]
 		public void Should_generate_beatable_seed_in_1_pass()
 		{
-			var itemLocations = new ItemLocationMap();
+			var itemProvder = new ItemInfoProvider();
+			var itemLocations = new ItemLocationMap(itemProvder);
 
 			var seed = new Seed(1);
-			var unlockingMap = new ItemUnlockingMap(seed);
+			var unlockingMap = new ItemUnlockingMap(itemProvder, seed);
 
-			ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, unlockingMap, itemLocations);
+			ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemProvder, unlockingMap, itemLocations, true);
 
 			Assert.That(itemLocations.IsBeatable(), Is.True);
 		}
@@ -30,12 +31,13 @@ namespace TsRandomizer.Tests
 		[TestCase(5)]
 		public void Should_fill_tuturial_with_melee_and_spellorb(int seedIndex)
 		{
-			var itemLocations = new ItemLocationMap();
+			var itemProvder = new ItemInfoProvider();
+			var itemLocations = new ItemLocationMap(itemProvder);
 
 			var seed = new Seed(seedIndex);
-			var unlockingMap = new ItemUnlockingMap(seed);
+			var unlockingMap = new ItemUnlockingMap(itemProvder, seed);
 
-			ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, unlockingMap, itemLocations);
+			ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemProvder, unlockingMap, itemLocations, true);
 
 			Assert.That(itemLocations[ItemKey.TutorialMeleeOrb].ItemInfo.LootType, Is.EqualTo(LootType.Orb));
 			Assert.That(itemLocations[ItemKey.TutorialMeleeOrb].ItemInfo.OrbSlot, Is.EqualTo(EOrbSlot.Melee));

@@ -109,7 +109,6 @@ namespace TsRandomizer.Tests
 			new TC(() => UpperLakeDesolation, R.GateAccessToPast | R.DoubleJump | R.AntiWeed, true),
 			new TC(() => UpperLakeDesolation, R.GateAccessToPast | R.ForwardDash, false),
 			new TC(() => UpperLakeDesolation, R.GateAccessToPast | R.ForwardDash | R.AntiWeed, true),
-
 		};
 
 		[TestCaseSource(nameof(TestCases))]

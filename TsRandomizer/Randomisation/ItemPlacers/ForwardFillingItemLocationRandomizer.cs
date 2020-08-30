@@ -9,10 +9,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 {
 	class ForwardFillingItemLocationRandomizer : ItemLocationRandomizer
 	{
-		readonly ItemUnlockingMap unlockingMap;
-		static readonly ItemInfo UpwardsDash = ItemInfo.Get(EInventoryRelicType.EssenceOfSpace);
-		static readonly ItemInfo LightWall = ItemInfo.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell);
-
 		readonly Random random;
 
 		readonly Requirement unlockableRequirements; 
@@ -23,11 +19,10 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		readonly Dictionary<ItemInfo, ItemLocation> placedItems;
 		readonly Dictionary<ItemInfo, Gate> paths;
 
-		ForwardFillingItemLocationRandomizer(Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly) 
-			: base(itemLocationMap, unlockingMap, progressionOnly)
+		ForwardFillingItemLocationRandomizer(
+			Seed seed, ItemInfoProvider itemProvider, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly) 
+			: base(itemProvider, itemLocationMap, unlockingMap, progressionOnly)
 		{
-			this.unlockingMap = unlockingMap;
-
 			random = new Random(seed);
 			availableRequirements = Requirement.None;
 			unlockableRequirements = unlockingMap.AllUnlockableRequirements;
@@ -36,9 +31,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		}
 
 		public static void AddRandomItemsToLocationMap(
-			Seed seed, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly)
+			Seed seed, ItemInfoProvider itemInfoProvider, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly)
 		{
-			new ForwardFillingItemLocationRandomizer(seed, unlockingMap, itemLocationMap, progressionOnly)
+			new ForwardFillingItemLocationRandomizer(seed, itemInfoProvider, unlockingMap, itemLocationMap, progressionOnly)
 				.AddRandomItemsToLocationMap();
 		}
 
@@ -47,7 +42,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			RecalculateAvailableItemLocations();
 			CalculateTutorial();
 
-			var itemsThatUnlockProgression = unlockingMap.Map.Keys.ToList();
+			var itemsThatUnlockProgression = UnlockingMap.Map.Keys.ToList();
 
 			while (itemsThatUnlockProgression.Count > 0)
 			{
@@ -71,7 +66,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			if (placedItems.ContainsKey(item))
 				return;
 
-			var unlockingRequirements = additionalRequirementsToAvoid | unlockingMap.GetUnlock(item);
+			var unlockingRequirements = additionalRequirementsToAvoid | UnlockingMap.GetUnlock(item);
 			var itemLocation = GetUnusedItemLocationThatDontRequire(unlockingRequirements);
 			
 			CalculatePathChain(itemLocation.Gate, unlockingRequirements);
@@ -147,13 +142,16 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		ItemInfo GetRandomItemThatUnlocksRequirement(Requirement requirement)
 		{
-			var unlockingItems = unlockingMap.Map
+			var upwardsDash = ItemInfoProvider.Get(EInventoryRelicType.EssenceOfSpace);
+			var lightWall = ItemInfoProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell);
+
+			var unlockingItems = UnlockingMap.Map
 				.Where(x => x.Value.AllUnlocks.Contains(requirement))
 				.Select(x => x.Key);
 
 			if (requirement != Requirement.UpwardDash && placedItems.Count <= 10)
 				// ReSharper disable PossibleUnintendedReferenceComparison
-				unlockingItems = unlockingItems.Where(i => i != UpwardsDash && i != LightWall);
+				unlockingItems = unlockingItems.Where(i => i != upwardsDash && i != lightWall);
 				// ReSharper restore PossibleUnintendedReferenceComparison
 
 			var unlockingItemsArray = unlockingItems.ToArray();
@@ -214,12 +212,12 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.Where(orbType => orbType != EInventoryOrbType.Barrier); //To OP to give as starter item
 
 			var spellOrbType = spellOrbTypes.SelectRandom(random);
-			PutItemAtLocation(ItemInfo.Get(spellOrbType, EOrbSlot.Spell), ItemLocations[ItemKey.TutorialSpellOrb]);
+			PutItemAtLocation(ItemInfoProvider.Get(spellOrbType, EOrbSlot.Spell), ItemLocations[ItemKey.TutorialSpellOrb]);
 
 			orbTypes.Remove(EInventoryOrbType.Pink); //To annoying as each attack consumes aura power
 
 			var meleeOrbType = orbTypes.SelectRandom(random);
-			PutItemAtLocation(ItemInfo.Get(meleeOrbType, EOrbSlot.Melee), ItemLocations[ItemKey.TutorialMeleeOrb]);
+			PutItemAtLocation(ItemInfoProvider.Get(meleeOrbType, EOrbSlot.Melee), ItemLocations[ItemKey.TutorialMeleeOrb]);
 
 			RecalculateAvailableItemLocations();
 		}
@@ -233,7 +231,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)
 		{
-			var itemUnlocks = unlockingMap.GetAllUnlock(itemInfo);
+			var itemUnlocks = UnlockingMap.GetAllUnlock(itemInfo);
 
 			itemLocation.SetItem(itemInfo, itemUnlocks);
 

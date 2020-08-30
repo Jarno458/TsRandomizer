@@ -74,13 +74,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ItemInfoFixture.cs" />
     <Compile Include="ItemLocationMapStaticFixture.cs" />
     <Compile Include="ItemLocationMapFixture.cs" />
     <Compile Include="ForwardFillingRandomizerFixture.cs" />
     <Compile Include="GateFixture.cs" />
     <Compile Include="ItemTrackerStateFixture.cs" />
     <Compile Include="ItemTrackerUplinkFixture.cs" />
-    <Compile Include="LoadDefaultItems.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomFillingRandomizerFixture.cs" />
     <Compile Include="RandomizerFixture.cs" />

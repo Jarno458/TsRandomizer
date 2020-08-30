@@ -14,10 +14,10 @@ namespace TsRandomizer.Tests
 		{
 			var itemlocations = new []
 			{
-				GetPickedUpItemLocation(ItemInfo.Get(EInventoryOrbType.Flame, EOrbSlot.Spell), Requirement.AntiWeed),
-				GetPickedUpItemLocation(ItemInfo.Get(EInventoryRelicType.Dash), Requirement.ForwardDash),
-				GetPickedUpItemLocation(ItemInfo.Get(EInventoryRelicType.TimespinnerWheel), Requirement.TimespinnerWheel),
-				GetPickedUpItemLocation(ItemInfo.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell), Requirement.UpwardDash)
+				GetPickedUpItemLocation(new SingleItemInfo(EInventoryOrbType.Flame, EOrbSlot.Spell), Requirement.AntiWeed),
+				GetPickedUpItemLocation(new SingleItemInfo(EInventoryRelicType.Dash), Requirement.ForwardDash),
+				GetPickedUpItemLocation(new SingleItemInfo(EInventoryRelicType.TimespinnerWheel), Requirement.TimespinnerWheel),
+				GetPickedUpItemLocation(new SingleItemInfo(EInventoryOrbType.Barrier, EOrbSlot.Spell), Requirement.UpwardDash)
 			};
 
 			var state = ItemTrackerState.FromItemLocationMap(itemlocations);
@@ -31,7 +31,7 @@ namespace TsRandomizer.Tests
 
 		ItemLocation GetPickedUpItemLocation(ItemInfo item, Requirement requirement)
 		{
-			return new ItemLocation(null, null)
+			return new ItemLocation(null, null, null)
 			{
 				ItemInfo = item,
 				Unlocks = requirement,

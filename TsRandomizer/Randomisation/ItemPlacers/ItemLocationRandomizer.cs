@@ -9,54 +9,61 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 {
 	abstract class ItemLocationRandomizer
 	{
+		protected readonly ItemInfoProvider ItemInfoProvider;
 		protected readonly ItemLocationMap ItemLocations;
 		protected readonly ItemUnlockingMap UnlockingMap;
 		protected readonly bool ProgressionOnly;
 
-		static readonly ItemInfo[] ItemsToRemoveFromGame =
-		{
-			ItemInfo.Get(EInventoryUseItemType.MagicMarbles),
-			ItemInfo.Get(EInventoryUseItemType.GoldRing),
-			ItemInfo.Get(EInventoryUseItemType.GoldNecklace),
-			ItemInfo.Get(EInventoryUseItemType.SilverOre),
-			ItemInfo.Get(EInventoryUseItemType.EssenceCrystal),
-		};
+		readonly ItemInfo[] itemsToRemoveFromGame;
+		readonly ItemInfo[] itemsToAddToGame;
+		readonly ItemInfo[] genericItems;
 
-		static readonly ItemInfo[] ItemsToAddToGame =
+		protected ItemLocationRandomizer(
+			ItemInfoProvider itemInfoProvider, ItemLocationMap itemLocations, ItemUnlockingMap unlockingMap, bool progressionOnly)
 		{
-			ItemInfo.Get(EInventoryEquipmentType.SelenBangle),
-			ItemInfo.Get(EInventoryEquipmentType.GlassPumpkin),
-			ItemInfo.Get(EInventoryEquipmentType.EternalCoat),
-			ItemInfo.Get(EInventoryEquipmentType.EternalTiara),
-			ItemInfo.Get(EInventoryEquipmentType.LibrarianHat),
-			ItemInfo.Get(EInventoryEquipmentType.LibrarianRobe),
-			ItemInfo.Get(EInventoryEquipmentType.MetalWristband),
-			ItemInfo.Get(EInventoryEquipmentType.NelisteEarring),
-			ItemInfo.Get(EInventoryEquipmentType.FamiliarEgg),
-			ItemInfo.Get(EInventoryEquipmentType.LuckyCoin)
-		};
-
-		static readonly ItemInfo[] GenericItems =
-		{
-			ItemInfo.Get(EInventoryUseItemType.Potion),
-			ItemInfo.Get(EInventoryUseItemType.HiPotion),
-			ItemInfo.Get(EInventoryUseItemType.FuturePotion),
-			ItemInfo.Get(EInventoryUseItemType.FutureHiPotion),
-			ItemInfo.Get(EInventoryUseItemType.Ether),
-			ItemInfo.Get(EInventoryUseItemType.HiEther),
-			ItemInfo.Get(EInventoryUseItemType.FutureEther),
-			ItemInfo.Get(EInventoryUseItemType.FutureHiEther),
-			ItemInfo.Get(EInventoryUseItemType.ChaosHeal),
-			ItemInfo.Get(EInventoryUseItemType.Antidote),
-			ItemInfo.Get(EInventoryUseItemType.SandBottle),
-			ItemInfo.Get(EInventoryUseItemType.HiSandBottle),
-		};
-
-		protected ItemLocationRandomizer(ItemLocationMap itemLocations, ItemUnlockingMap unlockingMap, bool progressionOnly)
-		{
+			ItemInfoProvider = itemInfoProvider;
 			ItemLocations = itemLocations;
 			UnlockingMap = unlockingMap;
 			ProgressionOnly = progressionOnly;
+
+			itemsToRemoveFromGame = new []
+			{
+				ItemInfoProvider.Get(EInventoryUseItemType.MagicMarbles),
+				ItemInfoProvider.Get(EInventoryUseItemType.GoldRing),
+				ItemInfoProvider.Get(EInventoryUseItemType.GoldNecklace),
+				ItemInfoProvider.Get(EInventoryUseItemType.SilverOre),
+				ItemInfoProvider.Get(EInventoryUseItemType.EssenceCrystal),
+			};
+
+			itemsToAddToGame = new[]
+			{
+				ItemInfoProvider.Get(EInventoryEquipmentType.SelenBangle),
+				ItemInfoProvider.Get(EInventoryEquipmentType.GlassPumpkin),
+				ItemInfoProvider.Get(EInventoryEquipmentType.EternalCoat),
+				ItemInfoProvider.Get(EInventoryEquipmentType.EternalTiara),
+				ItemInfoProvider.Get(EInventoryEquipmentType.LibrarianHat),
+				ItemInfoProvider.Get(EInventoryEquipmentType.LibrarianRobe),
+				ItemInfoProvider.Get(EInventoryEquipmentType.MetalWristband),
+				ItemInfoProvider.Get(EInventoryEquipmentType.NelisteEarring),
+				ItemInfoProvider.Get(EInventoryEquipmentType.FamiliarEgg),
+				ItemInfoProvider.Get(EInventoryEquipmentType.LuckyCoin)
+			};
+
+			genericItems = new[]
+			{
+				ItemInfoProvider.Get(EInventoryUseItemType.Potion),
+				ItemInfoProvider.Get(EInventoryUseItemType.HiPotion),
+				ItemInfoProvider.Get(EInventoryUseItemType.FuturePotion),
+				ItemInfoProvider.Get(EInventoryUseItemType.FutureHiPotion),
+				ItemInfoProvider.Get(EInventoryUseItemType.Ether),
+				ItemInfoProvider.Get(EInventoryUseItemType.HiEther),
+				ItemInfoProvider.Get(EInventoryUseItemType.FutureEther),
+				ItemInfoProvider.Get(EInventoryUseItemType.FutureHiEther),
+				ItemInfoProvider.Get(EInventoryUseItemType.ChaosHeal),
+				ItemInfoProvider.Get(EInventoryUseItemType.Antidote),
+				ItemInfoProvider.Get(EInventoryUseItemType.SandBottle),
+				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle),
+			};
 		}
 
 		protected void FillTutorial(Random random)
@@ -70,10 +77,10 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			var meleeOrbTypes = orbTypes.Where(orbType => orbType != EInventoryOrbType.Pink); //To annoying as each attack consumes aura power
 
 			var spellOrbType = spellOrbTypes.SelectRandom(random);
-			PutItemAtLocation(ItemInfo.Get(spellOrbType, EOrbSlot.Spell), ItemLocations[ItemKey.TutorialSpellOrb]);
+			PutItemAtLocation(ItemInfoProvider.Get(spellOrbType, EOrbSlot.Spell), ItemLocations[ItemKey.TutorialSpellOrb]);
 
 			var meleeOrbType = meleeOrbTypes.SelectRandom(random);
-			PutItemAtLocation(ItemInfo.Get(meleeOrbType, EOrbSlot.Melee), ItemLocations[ItemKey.TutorialMeleeOrb]);
+			PutItemAtLocation(ItemInfoProvider.Get(meleeOrbType, EOrbSlot.Melee), ItemLocations[ItemKey.TutorialMeleeOrb]);
 		}
 
 		protected void PlaceStarterProgressionItem(Random random)
@@ -83,14 +90,15 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.ToArray();
 
 			var starterProgressionItems = new [] {
-				ItemInfo.Get(EInventoryRelicType.Dash),
-				ItemInfo.Get(EInventoryRelicType.Dash),
-				ItemInfo.Get(EInventoryRelicType.DoubleJump),
-				ItemInfo.Get(EInventoryRelicType.DoubleJump),
-				ItemInfo.Get(EInventoryRelicType.TimespinnerWheel),
-				ItemInfo.Get(EInventoryRelicType.PyramidsKey),
-				ItemInfo.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell),
-				ItemInfo.Get(EInventoryRelicType.EssenceOfSpace)
+				ItemInfoProvider.Get(EInventoryRelicType.Dash),
+				ItemInfoProvider.Get(EInventoryRelicType.Dash),
+				ItemInfoProvider.Get(EInventoryRelicType.DoubleJump),
+				ItemInfoProvider.Get(EInventoryRelicType.DoubleJump),
+				ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel),
+				ItemInfoProvider.Get(EInventoryRelicType.PyramidsKey),
+				ItemInfoProvider.Get(EInventoryRelicType.PyramidsKey),
+				ItemInfoProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell),
+				ItemInfoProvider.Get(EInventoryRelicType.EssenceOfSpace)
 			};
 
 			var item = starterProgressionItems.SelectRandom(random);
@@ -108,7 +116,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.Where(l => l.Key.LevelId != 1 && !l.IsUsed && l.Gate.CanBeOpenedWith(minimalMawRequirements))
 				.ToArray();
 
-			PutItemAtLocation(ItemInfo.Get(EInventoryRelicType.AirMask), posableGassMaskLocations.SelectRandom(random));
+			PutItemAtLocation(ItemInfoProvider.Get(EInventoryRelicType.AirMask), posableGassMaskLocations.SelectRandom(random));
 		}
 
 		protected void FillRemainingChests(Random random)
@@ -125,8 +133,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.Select(l => l.DefaultItem)
 				.Where(i => i.LootType != LootType.ConstOrb 
 				            && i.LootType != LootType.ConstFamiliar 
-				            && !ItemsToRemoveFromGame.Contains(i) 
-				            && !GenericItems.Contains(i))
+				            && !itemsToRemoveFromGame.Contains(i) 
+				            && !genericItems.Contains(i))
 				.ToList();
 
 			AddOrbs(itemlist);
@@ -146,7 +154,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				var location = freeLocations.PopRandom(random);
 				var item = itemlist.Count > 0
 					? itemlist.PopRandom(random)
-					: GenericItems.SelectRandom(random);
+					: genericItems.SelectRandom(random);
 
 				PutItemAtLocation(item, location);
 
@@ -155,29 +163,29 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		void AddExtraItems(List<ItemInfo> itemlist)
 		{
-			foreach (var itemInfo in ItemsToAddToGame)
+			foreach (var itemInfo in itemsToAddToGame)
 				itemlist.Add(itemInfo);
 		}
 
-		static void AddFamiliers(List<ItemInfo> itemlist)
+		void AddFamiliers(List<ItemInfo> itemlist)
 		{
 			var allFamiliers = ((EInventoryFamiliarType[])Enum.GetValues(typeof(EInventoryFamiliarType)))
 				.Where(o => o != EInventoryFamiliarType.None && o != EInventoryFamiliarType.Meyef);
 
 			foreach (var familiar in allFamiliers)
-				itemlist.Add(ItemInfo.Get(familiar));
+				itemlist.Add(ItemInfoProvider.Get(familiar));
 		}
 
-		static void AddOrbs(List<ItemInfo> itemlist)
+		void AddOrbs(List<ItemInfo> itemlist)
 		{
 			var allOrbs = ((EInventoryOrbType[]) Enum.GetValues(typeof(EInventoryOrbType)))
 				.Where(o => o != EInventoryOrbType.None && o != EInventoryOrbType.Monske);
 
 			foreach (var orb in allOrbs)
 			{
-				itemlist.Add(ItemInfo.Get(orb, EOrbSlot.Melee));
-				itemlist.Add(ItemInfo.Get(orb, EOrbSlot.Spell));
-				itemlist.Add(ItemInfo.Get(orb, EOrbSlot.Passive));
+				itemlist.Add(ItemInfoProvider.Get(orb, EOrbSlot.Melee));
+				itemlist.Add(ItemInfoProvider.Get(orb, EOrbSlot.Spell));
+				itemlist.Add(ItemInfoProvider.Get(orb, EOrbSlot.Passive));
 			}
 		}
 

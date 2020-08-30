@@ -124,8 +124,8 @@ namespace TsRandomizer.LevelObjects
 #if DEBUG
 			Console.Out.WriteLine("OnChangeRoom");
 
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.Dash));
-			level.GameSave.AddItem(level, ItemInfo.Get(EInventoryRelicType.EssenceOfSpace));
+			level.GameSave.AddItem(level, new SingleItemInfo(EInventoryRelicType.Dash));
+			level.GameSave.AddItem(level, new SingleItemInfo(EInventoryRelicType.EssenceOfSpace));
 #endif
 
 			var levelReflected = level.AsDynamic();
