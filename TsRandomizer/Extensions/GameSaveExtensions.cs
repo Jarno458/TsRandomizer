@@ -16,15 +16,16 @@ namespace TsRandomizer.Extensions
 
 		internal static Seed? GetSeed(this GameSave gameSave)
 		{
-			if (gameSave.DataKeyInts.TryGetValue(SeedSaveFileKey, out int seedId))
-				return new Seed(seedId);
+			if (gameSave.DataKeyStrings.TryGetValue(SeedSaveFileKey, out var seedString))
+				if(Seed.TrySetFromHexString(seedString, out var seed))
+					return seed;
 
 			return null;
 		}
 
 		internal static void SetSeed(this GameSave gameSave, Seed seed)
 		{
-			gameSave.DataKeyInts[SeedSaveFileKey] = seed;
+			gameSave.DataKeyStrings[SeedSaveFileKey] = seed.ToString();
 		}
 
 		internal static FillingMethod GetFillingMethod(this GameSave gameSave)

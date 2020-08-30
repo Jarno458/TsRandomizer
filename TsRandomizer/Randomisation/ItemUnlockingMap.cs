@@ -38,7 +38,7 @@ namespace TsRandomizer.Randomisation
 				{itemProvider.Get(EInventoryRelicType.ElevatorKeycard), new UnlockingSpecificaiton {Unlocks = R.CardE}},
 				{itemProvider.Get(EInventoryRelicType.ScienceKeycardV), new UnlockingSpecificaiton {Unlocks = R.CardV}},
 				{itemProvider.Get(EInventoryRelicType.WaterMask), new UnlockingSpecificaiton {Unlocks = R.Swimming}},
-				{itemProvider.Get(EInventoryRelicType.PyramidsKey), new UnlockingSpecificaiton {Unlocks = R.Teleport, AdditionalUnlocks = SelectTeleporterPickupAction(random)}},
+				{itemProvider.Get(EInventoryRelicType.PyramidsKey), new UnlockingSpecificaiton {Unlocks = R.Teleport, AdditionalUnlocks = SelectTeleporterPickupAction(itemProvider, random)}},
 				{itemProvider.Get(EInventoryRelicType.TimespinnerSpindle), new UnlockingSpecificaiton {Unlocks = R.TimespinnerSpindle}},
 				{itemProvider.Get(EInventoryRelicType.TimespinnerGear1), new UnlockingSpecificaiton {Unlocks = R.TimespinnerPiece1}},
 				{itemProvider.Get(EInventoryRelicType.TimespinnerGear2), new UnlockingSpecificaiton {Unlocks = R.TimespinnerPiece2}},
