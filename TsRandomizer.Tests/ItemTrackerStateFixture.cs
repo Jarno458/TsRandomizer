@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.ItemTracker;
@@ -14,10 +15,10 @@ namespace TsRandomizer.Tests
 		{
 			var itemlocations = new []
 			{
-				GetPickedUpItemLocation(new SingleItemInfo(EInventoryOrbType.Flame, EOrbSlot.Spell), Requirement.AntiWeed),
-				GetPickedUpItemLocation(new SingleItemInfo(EInventoryRelicType.Dash), Requirement.ForwardDash),
-				GetPickedUpItemLocation(new SingleItemInfo(EInventoryRelicType.TimespinnerWheel), Requirement.TimespinnerWheel),
-				GetPickedUpItemLocation(new SingleItemInfo(EInventoryOrbType.Barrier, EOrbSlot.Spell), Requirement.UpwardDash)
+				GetPickedUpItemLocation(new SingleItemInfo(new ItemUnlockingMap(new Seed(0)), new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Spell))),
+				GetPickedUpItemLocation(new SingleItemInfo(new ItemUnlockingMap(new Seed(0)), new ItemIdentifier(EInventoryRelicType.Dash))),
+				GetPickedUpItemLocation(new SingleItemInfo(new ItemUnlockingMap(new Seed(0)), new ItemIdentifier(EInventoryRelicType.TimespinnerWheel))),
+				GetPickedUpItemLocation(new SingleItemInfo(new ItemUnlockingMap(new Seed(0)), new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Spell)))
 			};
 
 			var state = ItemTrackerState.FromItemLocationMap(itemlocations);
@@ -29,12 +30,11 @@ namespace TsRandomizer.Tests
 			Assert.IsFalse(state.CelestialSash);
 		}
 
-		ItemLocation GetPickedUpItemLocation(ItemInfo item, Requirement requirement)
+		ItemLocation GetPickedUpItemLocation(ItemInfo item)
 		{
 			return new ItemLocation(null, null, null)
 			{
 				ItemInfo = item,
-				Unlocks = requirement,
 				IsPickedUp = true
 			};
 		}

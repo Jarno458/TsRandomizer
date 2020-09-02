@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.IntermediateObjects
 {
-	public class ItemInfoProvider
+	class ItemInfoProvider
 	{
+		readonly ItemUnlockingMap unlockingMap;
+
 		readonly Dictionary<EInventoryUseItemType, ItemInfo> useItems;
 		readonly Dictionary<EInventoryRelicType, ItemInfo> relicItems;
 		readonly Dictionary<EInventoryEquipmentType, ItemInfo> enquipmentItems;
@@ -16,8 +19,9 @@ namespace TsRandomizer.IntermediateObjects
 
 		readonly Dictionary<ItemInfo, PogRessiveItemInfo> progressiveItems;
 
-		public ItemInfoProvider()
+		public ItemInfoProvider(ItemUnlockingMap unlockingMap)
 		{
+			this.unlockingMap = unlockingMap;
 			useItems = new Dictionary<EInventoryUseItemType, ItemInfo>();
 			relicItems = new Dictionary<EInventoryRelicType, ItemInfo>();
 			enquipmentItems = new Dictionary<EInventoryEquipmentType, ItemInfo>();
@@ -25,10 +29,7 @@ namespace TsRandomizer.IntermediateObjects
 			orbItems = new Dictionary<int, ItemInfo>();
 			statItems = new Dictionary<EItemType, ItemInfo>();
 			progressiveItems = new Dictionary<ItemInfo, PogRessiveItemInfo>();
-		}
 
-		public void EnableProgressiveItems()
-		{
 			MakeGearsProgressive();
 		}
 
@@ -45,44 +46,47 @@ namespace TsRandomizer.IntermediateObjects
 			progressiveItems.Add(gear3, progressiveItem);
 		}
 
-		public ItemInfo Get(EInventoryUseItemType useItem)
-		{
-			return GetOrAdd(useItems, useItem, () => new SingleItemInfo(useItem));
-		}
-
 		public ItemInfo Get(EInventoryRelicType relicItem)
 		{
-			var item = GetOrAdd(relicItems, relicItem, () => new SingleItemInfo(relicItem));
+			var item = GetOrAdd(relicItems, relicItem, () => CreateNew(new ItemIdentifier(relicItem)));
 
 			return progressiveItems.TryGetValue(item, out PogRessiveItemInfo progressiveItem)
 				? progressiveItem
 				: item;
 		}
 
-		public ItemInfo Get(EInventoryEquipmentType equipmentItem)
+		public ItemInfo Get(ItemIdentifier identifier)
 		{
-			return GetOrAdd(enquipmentItems, equipmentItem, () => new SingleItemInfo(equipmentItem));
+			switch (identifier.LootType)
+			{
+				case LootType.ConstEquipment: return Get((EInventoryEquipmentType)identifier.ItemId);
+				case LootType.ConstFamiliar: return Get((EInventoryFamiliarType)identifier.ItemId);
+				case LootType.ConstOrb: return Get((EInventoryOrbType)identifier.ItemId, (EOrbSlot)identifier.SubItemId);
+				case LootType.ConstRelic: return Get((EInventoryRelicType)identifier.ItemId);
+				case LootType.ConstStat: return Get((EItemType)identifier.ItemId);
+				case LootType.ConstUseItem: return Get((EInventoryUseItemType)identifier.ItemId);
+				default: throw new ArgumentOutOfRangeException($"Loottype {identifier.LootType} is not supported");
+			}
 		}
 
-		public ItemInfo Get(EInventoryFamiliarType familiarItem)
-		{
-			return GetOrAdd(familierItems, familiarItem, () => new SingleItemInfo(familiarItem));
-		}
+		public ItemInfo Get(EInventoryUseItemType useItem) =>
+			GetOrAdd(useItems, useItem, () => CreateNew(new ItemIdentifier(useItem)));
 
-		public ItemInfo Get(EInventoryOrbType orbType, EOrbSlot orbSlot)
-		{
-			return GetOrAdd(orbItems, GetOrbKey(orbType, orbSlot), () => new SingleItemInfo(orbType, orbSlot));
-		}
+		public ItemInfo Get(EInventoryEquipmentType equipmentItem) =>
+			GetOrAdd(enquipmentItems, equipmentItem, () => CreateNew(new ItemIdentifier(equipmentItem)));
 
-		public ItemInfo Get(EItemType stat)
-		{
-			return GetOrAdd(statItems, stat, () => new SingleItemInfo(stat));
-		}
+		public ItemInfo Get(EInventoryFamiliarType familiarItem) =>
+			GetOrAdd(familierItems, familiarItem, () => CreateNew(new ItemIdentifier(familiarItem)));
 
-		static int GetOrbKey(EInventoryOrbType orbType, EOrbSlot orbSlot)
-		{
-			return ((int)orbType * 10) + (int)orbSlot;
-		}
+		public ItemInfo Get(EInventoryOrbType orbType, EOrbSlot orbSlot) =>
+			GetOrAdd(orbItems, GetOrbKey(orbType, orbSlot), () => CreateNew(new ItemIdentifier(orbType, orbSlot)));
+
+		public ItemInfo Get(EItemType stat) =>
+			GetOrAdd(statItems, stat, () => CreateNew(new ItemIdentifier(stat)));
+
+		static int GetOrbKey(EInventoryOrbType orbType, EOrbSlot orbSlot) => ((int)orbType * 10) + (int)orbSlot;
+
+		ItemInfo CreateNew(ItemIdentifier identifier) => new SingleItemInfo(unlockingMap, identifier);
 
 		static ItemInfo GetOrAdd<T>(IDictionary<T, ItemInfo> dictionary, T item, Func<ItemInfo> createNew)
 		{

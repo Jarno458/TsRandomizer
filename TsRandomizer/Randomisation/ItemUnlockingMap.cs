@@ -11,48 +11,54 @@ namespace TsRandomizer.Randomisation
 {
 	class ItemUnlockingMap
 	{
-		public const int ProgressionItemCount = 22;
+		public const int ProgressionItemCount = 25;
 
-		public Dictionary<ItemInfo, UnlockingSpecificaiton> Map;
+		public List<UnlockingSpecification> UnlockingSpecifications;
 
-		public R AllUnlockableRequirements => Map.Values.Aggregate(R.None, (a, b) => a | b.AllUnlocks);
-		public IEnumerable<ItemInfo> ItemsThatUnlockProgression => Map.Keys;
+		public R AllUnlockableRequirements => UnlockingSpecifications.Aggregate(R.None, (a, b) => a | b.AllUnlocks);
+		public IEnumerable<ItemIdentifier> ItemsThatUnlockProgression => UnlockingSpecifications.Select(us => us.Item);
 
-		public ItemUnlockingMap(ItemInfoProvider itemProvider, Seed seed)
+		public ItemUnlockingMap(Seed seed)
 		{
 			var random = new Random(seed);
 
-			Map = new Dictionary<ItemInfo, UnlockingSpecificaiton>(ProgressionItemCount)
-			{
-				{itemProvider.Get(EInventoryRelicType.TimespinnerWheel), new UnlockingSpecificaiton {Unlocks = R.TimespinnerWheel, AdditionalUnlocks = R.TimeStop}},
-				{itemProvider.Get(EInventoryRelicType.DoubleJump), new UnlockingSpecificaiton {Unlocks = R.DoubleJump, AdditionalUnlocks = R.TimeStop}},
-				{itemProvider.Get(EInventoryRelicType.Dash), new UnlockingSpecificaiton {Unlocks = R.ForwardDash}},
-				{itemProvider.Get(EInventoryOrbType.Flame, EOrbSlot.Passive), new UnlockingSpecificaiton {Unlocks = R.AntiWeed}},
-				{itemProvider.Get(EInventoryOrbType.Flame, EOrbSlot.Melee), new UnlockingSpecificaiton {Unlocks = R.AntiWeed}},
-				{itemProvider.Get(EInventoryOrbType.Flame, EOrbSlot.Spell), new UnlockingSpecificaiton {Unlocks = R.AntiWeed}},
-				{itemProvider.Get(EInventoryOrbType.Book, EOrbSlot.Spell), new UnlockingSpecificaiton {Unlocks = R.AntiWeed}},
-				{itemProvider.Get(EInventoryRelicType.ScienceKeycardA), new UnlockingSpecificaiton {Unlocks = R.CardA, AdditionalUnlocks = R.CardB | R.CardC | R.CardD}},
-				{itemProvider.Get(EInventoryRelicType.ScienceKeycardB), new UnlockingSpecificaiton {Unlocks = R.CardB, AdditionalUnlocks = R.CardC | R.CardD}},
-				{itemProvider.Get(EInventoryRelicType.ScienceKeycardC), new UnlockingSpecificaiton {Unlocks = R.CardC, AdditionalUnlocks = R.CardD}},
-				{itemProvider.Get(EInventoryRelicType.ScienceKeycardD), new UnlockingSpecificaiton {Unlocks = R.CardD}},
-				{itemProvider.Get(EInventoryRelicType.ElevatorKeycard), new UnlockingSpecificaiton {Unlocks = R.CardE}},
-				{itemProvider.Get(EInventoryRelicType.ScienceKeycardV), new UnlockingSpecificaiton {Unlocks = R.CardV}},
-				{itemProvider.Get(EInventoryRelicType.WaterMask), new UnlockingSpecificaiton {Unlocks = R.Swimming}},
-				{itemProvider.Get(EInventoryRelicType.PyramidsKey), new UnlockingSpecificaiton {Unlocks = R.Teleport, AdditionalUnlocks = SelectTeleporterPickupAction(itemProvider, random)}},
-				{itemProvider.Get(EInventoryRelicType.TimespinnerSpindle), new UnlockingSpecificaiton {Unlocks = R.TimespinnerSpindle}},
-				{itemProvider.Get(EInventoryRelicType.TimespinnerGear1), new UnlockingSpecificaiton {Unlocks = R.TimespinnerPiece1}},
-				{itemProvider.Get(EInventoryRelicType.TimespinnerGear2), new UnlockingSpecificaiton {Unlocks = R.TimespinnerPiece2}},
-				{itemProvider.Get(EInventoryRelicType.TimespinnerGear3), new UnlockingSpecificaiton {Unlocks = R.TimespinnerPiece3}},
-				{itemProvider.Get(EInventoryRelicType.EssenceOfSpace), new UnlockingSpecificaiton {Unlocks = R.UpwardDash, AdditionalUnlocks = R.DoubleJump | R.TimeStop}},
-				{itemProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell), new UnlockingSpecificaiton {Unlocks = R.UpwardDash, AdditionalUnlocks = R.DoubleJump | R.TimeStop}},
-				{itemProvider.Get(EInventoryOrbType.Pink, EOrbSlot.Melee), new UnlockingSpecificaiton {Unlocks = R.PinkOrb}},
-				{itemProvider.Get(EInventoryOrbType.Pink, EOrbSlot.Spell), new UnlockingSpecificaiton {Unlocks = R.PinkOrb}},
-				{itemProvider.Get(EInventoryOrbType.Pink, EOrbSlot.Passive), new UnlockingSpecificaiton {Unlocks = R.PinkOrb}},
-				{itemProvider.Get(EInventoryRelicType.AirMask), new UnlockingSpecificaiton {Unlocks = R.GassMask}},
+			UnlockingSpecifications = new List<UnlockingSpecification>(ProgressionItemCount)
+			{ 
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.TimespinnerWheel), R.TimespinnerWheel, R.TimeStop),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.DoubleJump), R.DoubleJump, R.TimeStop),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.Dash), R.ForwardDash),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Passive), R.AntiWeed),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Melee), R.AntiWeed),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Spell), R.AntiWeed),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Book, EOrbSlot.Spell), R.AntiWeed),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.ScienceKeycardA), R.CardA, R.CardB | R.CardC | R.CardD),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.ScienceKeycardB), R.CardB, R.CardC | R.CardD),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.ScienceKeycardC), R.CardC, R.CardD),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.ScienceKeycardD), R.CardD),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.ElevatorKeycard), R.CardE),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.ScienceKeycardV), R.CardV),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.WaterMask), R.Swimming),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.TimespinnerSpindle), R.TimespinnerSpindle),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.TimespinnerGear1), R.TimespinnerPiece1),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.TimespinnerGear2), R.TimespinnerPiece2),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.TimespinnerGear3), R.TimespinnerPiece3),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.EssenceOfSpace), R.UpwardDash, R.DoubleJump | R.TimeStop),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Spell), R.UpwardDash, R.DoubleJump | R.TimeStop),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Melee), R.PinkOrb),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Spell), R.PinkOrb),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Passive), R.PinkOrb),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.AirMask), R.GassMask),
 			};
+
+			var pyramidUnlockingSpecification =
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.Teleport);
+
+			SetTeleporterPickupAction(random, pyramidUnlockingSpecification);
+
+			UnlockingSpecifications.Add(pyramidUnlockingSpecification);
 		}
 
-		R SelectTeleporterPickupAction(ItemInfoProvider itemProvider, Random random)
+		void SetTeleporterPickupAction(Random random, UnlockingSpecification unlockingSpecification)
 		{
 			var gateProgressionItems = new[] {
 				new {Gate = R.GateKittyBoss, LevelId = 2, RoomId = 55},
@@ -73,25 +79,18 @@ namespace TsRandomizer.Randomisation
 
 			var selectedGate = gateProgressionItems.SelectRandom(random);
 
-			var pyramidKeys = itemProvider.Get(EInventoryRelicType.PyramidsKey);
-			pyramidKeys.SetPickupAction(level => UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId));
-
-			return selectedGate.Gate;
+			unlockingSpecification.OnPickup = level => UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
+			unlockingSpecification.Unlocks = selectedGate.Gate;
 		}
 
-		public R GetUnlock(ItemInfo itemInfo)
-		{
-			return Map.TryGetValue(itemInfo, out UnlockingSpecificaiton specificaiton) 
-				? specificaiton.Unlocks 
-				: R.None;
-		}
+		public R GetUnlock(ItemIdentifier identifier) =>
+			UnlockingSpecifications.FirstOrDefault(us => us.Item == identifier)?.Unlocks ?? R.None;
 
-		public R GetAllUnlock(ItemInfo itemInfo)
-		{
-			return Map.TryGetValue(itemInfo, out UnlockingSpecificaiton specificaiton) 
-				? specificaiton.AllUnlocks 
-				: R.None;
-		}
+		public R GetAllUnlock(ItemIdentifier identifier) =>
+			UnlockingSpecifications.FirstOrDefault(us => us.Item == identifier)?.AllUnlocks ?? R.None;
+
+		public Action<Level> GetPickupAction(ItemIdentifier identifier) =>
+			UnlockingSpecifications.FirstOrDefault(us => us.Item == identifier)?.OnPickup;
 
 		static void UnlockRoom(Level level, int levelId, int roomId)
 		{
@@ -101,11 +100,24 @@ namespace TsRandomizer.Randomisation
 			minimapRoom.SetVisited(true);
 		}
 
-		public class UnlockingSpecificaiton
+		public class UnlockingSpecification
 		{
-			public R Unlocks { get; set; }
-			public R AdditionalUnlocks { get; set; }
+			public ItemIdentifier Item { get; }
+			public R Unlocks { get; internal set; }
+			public R AdditionalUnlocks { get; }
 			public R AllUnlocks => Unlocks | AdditionalUnlocks;
+			public Action<Level> OnPickup { get; internal set; }
+
+			public UnlockingSpecification(ItemIdentifier item, R unlocks) : this(item, unlocks, R.None)
+			{
+			}
+
+			public UnlockingSpecification(ItemIdentifier item, R unlocks, R additionalUnlocks)
+			{
+				Item = item;
+				Unlocks = unlocks;
+				AdditionalUnlocks = additionalUnlocks;
+			}
 		}
 	}
 }

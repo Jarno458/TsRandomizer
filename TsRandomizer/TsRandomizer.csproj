@@ -97,6 +97,7 @@
     <Compile Include="Extensions\SpriteBatchExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="IntermediateObjects\ItemIdentifier.cs" />
     <Compile Include="IntermediateObjects\ItemInfoProvider.cs" />
     <Compile Include="IntermediateObjects\PogRessiveItemInfo.cs" />
     <Compile Include="IntermediateObjects\RequestButtonPressTrigger.cs" />

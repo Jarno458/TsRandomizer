@@ -16,7 +16,7 @@ namespace TsRandomizer.Extensions
 			var giveOrbScript = scripts.Single(s => s.AsDynamic().ScriptType == EScriptType.RelicOrbGetToast);
 			var reflectedScript = giveOrbScript.AsDynamic();
 
-			switch (itemInfo.LootType)
+			switch (itemInfo.Identifier.LootType)
 			{
 				case LootType.ConstUseItem:
 					reflectedScript.ScriptType = EScriptType.GiveItem;
@@ -28,9 +28,9 @@ namespace TsRandomizer.Extensions
 					break;
 			}
 
-			reflectedScript.ItemToGiveType = itemInfo.LootType.ToEInventoryCategoryType();
-			reflectedScript.ItemToGive = itemInfo.ItemId;
-			reflectedScript.OrbSlot = itemInfo.OrbSlot;
+			reflectedScript.ItemToGiveType = itemInfo.Identifier.LootType.ToEInventoryCategoryType();
+			reflectedScript.ItemToGive = itemInfo.Identifier.ItemId;
+			reflectedScript.OrbSlot = itemInfo.Identifier.OrbSlot;
 			reflectedScript.Arguments = ReplacedArguments;
 		}
 	}

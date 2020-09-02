@@ -35,20 +35,20 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			}
 			
 			Object._itemData = ItemInfo.BestiaryItemDropSpecification;
-			Object._category = ItemInfo.LootType.ToEInventoryCategoryType();
+			Object._category = ItemInfo.Identifier.LootType.ToEInventoryCategoryType();
 
-			switch (ItemInfo.LootType)
+			switch (ItemInfo.Identifier.LootType)
 			{
 				case LootType.ConstRelic:
-					Object._relicType = ItemInfo.Relic;
+					Object._relicType = ItemInfo.Identifier.Relic;
 					break;
 
 				case LootType.ConstUseItem:
-					Object._useItemType = ItemInfo.UseItem;
+					Object._useItemType = ItemInfo.Identifier.UseItem;
 					break;
 
 				case LootType.ConstEquipment:
-					Object._equipmentType = ItemInfo.Enquipment;
+					Object._equipmentType = ItemInfo.Identifier.Enquipment;
 					break;
 
 				case LootType.ConstStat:
@@ -62,7 +62,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				//TODO familier
 
 				default:
-					throw new NotImplementedException($"LoottType {ItemInfo.LootType} is not supported by ItemDropPickup");
+					throw new NotImplementedException($"LoottType {ItemInfo.Identifier.LootType} is not supported by ItemDropPickup");
 			}
 
 			Object.ChangeAnimation(ItemInfo.AnimationIndex);
@@ -74,7 +74,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				return;
 
 			// ReSharper disable once PossibleNullReferenceException
-			switch (ItemInfo.LootType)
+			switch (ItemInfo.Identifier.LootType)
 			{
 				case LootType.ConstOrb:
 				case LootType.ConstFamiliar:
@@ -96,7 +96,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 					break;
 
 				default:
-					throw new NotImplementedException($"LoottType {ItemInfo.LootType} is not supported by ItemDropPickup");
+					throw new NotImplementedException($"LoottType {ItemInfo.Identifier.LootType} is not supported by ItemDropPickup");
 			}
 
 			hasDroppedLoot = true;
@@ -104,20 +104,20 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 		ScriptAction RelicOrOrbGetPopup()
 		{
-			switch (ItemInfo.LootType)
+			switch (ItemInfo.Identifier.LootType)
 			{
 				case LootType.ConstOrb:
-					return (ScriptAction) typeof(ScriptAction).CreateInstance(true, ItemInfo.OrbType, ItemInfo.OrbSlot);
+					return (ScriptAction) typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.OrbType, ItemInfo.Identifier.OrbSlot);
 				case LootType.ConstFamiliar:
-					return (ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Familiar);
+					return (ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.Familiar);
 				case LootType.ConstRelic:
-					return (ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Relic);
+					return (ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.Relic);
 				case LootType.ConstEquipment:
-					return (ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Enquipment);
+					return (ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.Enquipment);
 				case LootType.ConstUseItem:
-					return (ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.UseItem, 1);
+					return (ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.UseItem, 1);
 				default:
-					throw new NotImplementedException($"Script action is not implemented for LootType {ItemInfo.LootType}");
+					throw new NotImplementedException($"Script action is not implemented for LootType {ItemInfo.Identifier.LootType}");
 			}
 		}
 

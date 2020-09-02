@@ -131,8 +131,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			
 			var itemlist = ItemLocations
 				.Select(l => l.DefaultItem)
-				.Where(i => i.LootType != LootType.ConstOrb 
-				            && i.LootType != LootType.ConstFamiliar 
+				.Where(i => i.Identifier.LootType != LootType.ConstOrb 
+				            && i.Identifier.LootType != LootType.ConstFamiliar 
 				            && !itemsToRemoveFromGame.Contains(i) 
 				            && !genericItems.Contains(i))
 				.ToList();

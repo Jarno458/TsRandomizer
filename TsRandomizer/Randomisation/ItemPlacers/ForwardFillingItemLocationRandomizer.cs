@@ -21,7 +21,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		ForwardFillingItemLocationRandomizer(
 			Seed seed, ItemInfoProvider itemProvider, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly) 
-			: base(itemProvider, itemLocationMap, unlockingMap, progressionOnly)
+				: base(itemProvider, itemLocationMap, unlockingMap, progressionOnly)
 		{
 			random = new Random(seed);
 			availableRequirements = Requirement.None;
@@ -42,7 +42,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			RecalculateAvailableItemLocations();
 			CalculateTutorial();
 
-			var itemsThatUnlockProgression = UnlockingMap.Map.Keys.ToList();
+			var itemsThatUnlockProgression = UnlockingMap.ItemsThatUnlockProgression
+				.Select(i => new SingleItemInfo(UnlockingMap, i)).ToList();
 
 			while (itemsThatUnlockProgression.Count > 0)
 			{
@@ -66,7 +67,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			if (placedItems.ContainsKey(item))
 				return;
 
-			var unlockingRequirements = additionalRequirementsToAvoid | UnlockingMap.GetUnlock(item);
+			var unlockingRequirements = additionalRequirementsToAvoid | UnlockingMap.GetUnlock(item.Identifier);
 			var itemLocation = GetUnusedItemLocationThatDontRequire(unlockingRequirements);
 			
 			CalculatePathChain(itemLocation.Gate, unlockingRequirements);
@@ -136,28 +137,23 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		{
 			var requirements = ((Requirement)((ulong)requirement & (ulong)unlockableRequirements & (~requirementToAvoid | (ulong)availableRequirements)))
 				.Split();
-			//return requirements.SelectRandom(random);
-			return requirements[random.Next(requirements.Length)];
+
+			return requirements.SelectRandom(random);
 		}
 
 		ItemInfo GetRandomItemThatUnlocksRequirement(Requirement requirement)
 		{
-			var upwardsDash = ItemInfoProvider.Get(EInventoryRelicType.EssenceOfSpace);
-			var lightWall = ItemInfoProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell);
+			var upwardsDash = new ItemIdentifier(EInventoryRelicType.EssenceOfSpace);
+			var lightWall = new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Spell);
 
-			var unlockingItems = UnlockingMap.Map
-				.Where(x => x.Value.AllUnlocks.Contains(requirement))
-				.Select(x => x.Key);
+			var unlockingItems = UnlockingMap.UnlockingSpecifications
+				.Where(us => us.AllUnlocks.Contains(requirement))
+				.Select(us => us.Item);
 
 			if (requirement != Requirement.UpwardDash && placedItems.Count <= 10)
-				// ReSharper disable PossibleUnintendedReferenceComparison
 				unlockingItems = unlockingItems.Where(i => i != upwardsDash && i != lightWall);
-				// ReSharper restore PossibleUnintendedReferenceComparison
 
-			var unlockingItemsArray = unlockingItems.ToArray();
-
-			//return unlockingItems.SelectRandom(random);
-			return unlockingItemsArray[random.Next(unlockingItemsArray.Length)];
+			return new SingleItemInfo(UnlockingMap, unlockingItems.ToArray().SelectRandom(random));
 		}
 
 		ItemLocation GetUnusedItemLocationThatDontRequire(Requirement requirements)
@@ -231,16 +227,14 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)
 		{
-			var itemUnlocks = UnlockingMap.GetAllUnlock(itemInfo);
-
-			itemLocation.SetItem(itemInfo, itemUnlocks);
+			itemLocation.SetItem(itemInfo);
 
 			if (!placedItems.ContainsKey(itemInfo))
 				placedItems.Add(itemInfo, itemLocation);
 
-			if(NewRequirementIsUnlocked(itemUnlocks))
+			if(NewRequirementIsUnlocked(itemInfo.Unlocks))
 			{ 
-				availableRequirements |= itemUnlocks;
+				availableRequirements |= itemInfo.Unlocks;
 				RecalculateAvailableItemLocations();
 			}
 			else

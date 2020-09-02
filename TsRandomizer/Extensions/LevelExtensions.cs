@@ -11,7 +11,7 @@ namespace TsRandomizer.Extensions
 
 		internal static void RequestToastPopupForStats(this Level level, ItemInfo itemInfo)
 		{
-			switch (itemInfo.Stat)
+			switch (itemInfo.Identifier.Stat)
 			{
 				case EItemType.MaxHP:
 					level.AsDynamic().RequestToastPopup(ToasterType.GetEnumValue("Health"), 0);

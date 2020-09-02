@@ -12,7 +12,7 @@ namespace TsRandomizer.Tests
 		[Test]
 		public void With_no_items_only_6_item_locatios_should_be_accessable()
 		{
-			var itemLocations = new ItemLocationMap(new ItemInfoProvider());
+			var itemLocations = new ItemLocationMap(new ItemInfoProvider(new ItemUnlockingMap(new Seed(0))));
 
 			var accessableLocations = itemLocations.GetReachableLocations(Requirement.None).ToArray();
 
@@ -27,7 +27,7 @@ namespace TsRandomizer.Tests
 		[Test]
 		public void With_doubejump_timestop_spindle_and_cardD_should_get_access_to_past()
 		{
-			var itemLocations = new ItemLocationMap(new ItemInfoProvider());
+			var itemLocations = new ItemLocationMap(new ItemInfoProvider(new ItemUnlockingMap(new Seed(0))));
 
 			var accessableLocations = itemLocations.GetReachableLocations(
 					Requirement.DoubleJump | Requirement.GateAccessToPast | Requirement.Swimming)
@@ -39,7 +39,7 @@ namespace TsRandomizer.Tests
 		[Test]
 		public void With_given_requirements_shoud_mark_captians_chests_as_available()
 		{
-			var itemLocations = new ItemLocationMap(new ItemInfoProvider());
+			var itemLocations = new ItemLocationMap(new ItemInfoProvider(new ItemUnlockingMap(new Seed(0))));
 
 			var accessableLocations = itemLocations.GetReachableLocations(
 					Requirement.GassMask | Requirement.AntiWeed | Requirement.Swimming | Requirement.GateLakeSirineRight | Requirement.DoubleJump)

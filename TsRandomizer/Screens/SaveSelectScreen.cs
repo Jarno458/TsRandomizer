@@ -149,7 +149,7 @@ namespace TsRandomizer.Screens
 				file.WriteLine();
 
 				var progressionItems = Randomizer.Randomize(seed.Value, save.GetFillingMethod())
-					.Where(l => l.Unlocks != Requirement.None);
+					.Where(l => l.ItemInfo.Unlocks != Requirement.None);
 
 				foreach (var itemLocation in progressionItems)
 					file.WriteLine(itemLocation);

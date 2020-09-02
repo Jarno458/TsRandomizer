@@ -5,6 +5,7 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
+using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.IntermediateObjects
 {
@@ -16,8 +17,6 @@ namespace TsRandomizer.IntermediateObjects
 		static readonly MethodInfo GetIconFromEnquipmentMethod;
 		static readonly MethodInfo GetIconFromFamilierMethod;
 
-		public static ItemInfo Dummy;
-
 		static SingleItemInfo()
 		{
 			var inventoryItemType = TimeSpinnerType.Get("Timespinner.GameAbstractions.Inventory.InventoryItem");
@@ -26,66 +25,27 @@ namespace TsRandomizer.IntermediateObjects
 			GetIconFromRelicMethod = inventoryItemType.GetPrivateStaticMethod("GetIconFromItem", typeof(EInventoryRelicType));
 			GetIconFromEnquipmentMethod = inventoryItemType.GetPrivateStaticMethod("GetIconFromItem", typeof(EInventoryEquipmentType));
 			GetIconFromFamilierMethod = inventoryItemType.GetPrivateStaticMethod("GetIconFromItem", typeof(EInventoryFamiliarType));
-
-			Dummy = new SingleItemInfo(EInventoryEquipmentType.DemonHorn);
 		}
 
-		public override LootType LootType { get; }
-		public override int ItemId { get; }
-		public override EInventoryUseItemType UseItem => (EInventoryUseItemType)ItemId;
-		public override EInventoryRelicType Relic => (EInventoryRelicType)ItemId;
-		public override EInventoryEquipmentType Enquipment => (EInventoryEquipmentType)ItemId;
-		public override EInventoryFamiliarType Familiar => (EInventoryFamiliarType)ItemId;
-		public override EInventoryOrbType OrbType => (EInventoryOrbType)ItemId;
-		public override EOrbSlot OrbSlot { get; }
-		public override EItemType Stat => (EItemType)ItemId;
+		public override ItemIdentifier Identifier { get; }
+		internal override Requirement Unlocks { get; }
 
-		public override Enum TreasureLootType => LootType.ToETreasureLootType();
+		public override Enum TreasureLootType => Identifier.LootType.ToETreasureLootType();
 		public override int AnimationIndex => GetAnimationIndex();
 		public override BestiaryItemDropSpecification BestiaryItemDropSpecification => GetBestiaryItemDropSpecification();
 
-		Action<Level> PickupAction { get; set; }
+		Action<Level> PickupAction { get; }
 
-		public SingleItemInfo(EInventoryUseItemType useItem)
+		public SingleItemInfo(ItemIdentifier identifier)
 		{
-			LootType = LootType.UseItem;
-			ItemId = (int)useItem;
+			Identifier = identifier;
 		}
 
-		public SingleItemInfo(EInventoryRelicType relicType)
+		internal SingleItemInfo(ItemUnlockingMap unlockingMap, ItemIdentifier identifier)
 		{
-			LootType = LootType.Relic;
-			ItemId = (int)relicType;
-		}
-
-		public SingleItemInfo(EInventoryEquipmentType enquipment)
-		{
-			LootType = LootType.Equipment;
-			ItemId = (int)enquipment;
-		}
-
-		public SingleItemInfo(EInventoryOrbType orbType, EOrbSlot orbSlot)
-		{
-			LootType = LootType.Orb;
-			ItemId = (int)orbType;
-			OrbSlot = orbSlot;
-		}
-
-		public SingleItemInfo(EInventoryFamiliarType familiar)
-		{
-			LootType = LootType.Familiar;
-			ItemId = (int)familiar;
-		}
-
-		public SingleItemInfo(EItemType stat)
-		{
-			LootType = LootType.Stat;
-			ItemId = (int)stat;
-		}
-
-		public override void SetPickupAction(Action<Level> onPickUp)
-		{
-			PickupAction = onPickUp;
+			Identifier = identifier;
+			Unlocks = unlockingMap.GetAllUnlock(identifier);
+			PickupAction = unlockingMap.GetPickupAction(identifier);
 		}
 
 		public override void OnPickup(Level level)
@@ -95,22 +55,22 @@ namespace TsRandomizer.IntermediateObjects
 
 		int GetAnimationIndex()
 		{
-			switch (LootType)
+			switch (Identifier.LootType)
 			{
 				case LootType.ConstOrb:
-					return (int)GetIconFromOrbMethod.InvokeStatic(OrbType, OrbSlot) - 1;
+					return (int)GetIconFromOrbMethod.InvokeStatic(Identifier.OrbType, Identifier.OrbSlot) - 1;
 				case LootType.ConstEquipment:
-					return (int)GetIconFromEnquipmentMethod.InvokeStatic(Enquipment) - 1;
+					return (int)GetIconFromEnquipmentMethod.InvokeStatic(Identifier.Enquipment) - 1;
 				case LootType.ConstFamiliar:
-					return (int)GetIconFromFamilierMethod.InvokeStatic(Familiar) - 1;
+					return (int)GetIconFromFamilierMethod.InvokeStatic(Identifier.Familiar) - 1;
 				case LootType.ConstRelic:
-					return (int)GetIconFromRelicMethod.InvokeStatic(Relic) - 1;
+					return (int)GetIconFromRelicMethod.InvokeStatic(Identifier.Relic) - 1;
 				case LootType.ConstStat:
-					return (int)GetIconFromStat(Stat);
+					return (int)GetIconFromStat(Identifier.Stat);
 				case LootType.ConstUseItem:
-					return (int)GetIconFromUseItemMethod.InvokeStatic(UseItem) - 1;
+					return (int)GetIconFromUseItemMethod.InvokeStatic(Identifier.UseItem) - 1;
 				default:
-					throw new ArgumentOutOfRangeException($"LootType {LootType} isnt a valid loot type");
+					throw new ArgumentOutOfRangeException($"LootType {Identifier.LootType} isnt a valid loot type");
 			}
 		}
 
@@ -125,7 +85,7 @@ namespace TsRandomizer.IntermediateObjects
 				case EItemType.MaxSand:
 					return 26;
 				default:
-					throw new ArgumentOutOfRangeException($"Stat {Stat} isnt a valid stat boost type");
+					throw new ArgumentOutOfRangeException($"Stat {Identifier.Stat} isnt a valid stat boost type");
 			}
 		}
 
@@ -133,8 +93,8 @@ namespace TsRandomizer.IntermediateObjects
 		{
 			return new BestiaryItemDropSpecification
 			{
-				Category = (int)LootType.ToEInventoryCategoryType(),
-				Item = ItemId
+				Category = (int)Identifier.LootType.ToEInventoryCategoryType(),
+				Item = Identifier.ItemId
 			};
 		}
 	}

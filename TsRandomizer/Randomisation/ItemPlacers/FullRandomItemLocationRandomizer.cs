@@ -7,8 +7,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 {
 	class FullRandomItemLocationRandomizer : ItemLocationRandomizer
 	{
-		FullRandomItemLocationRandomizer(ItemInfoProvider itemInfoProvider, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly) 
-			: base(itemInfoProvider, itemLocationMap, unlockingMap, progressionOnly)
+		FullRandomItemLocationRandomizer(
+			ItemInfoProvider itemInfoProvider, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly) 
+				: base(itemInfoProvider, itemLocationMap, unlockingMap, progressionOnly)
 		{
 		}
 
@@ -33,7 +34,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.ToArray();
 
 			var itemsThatUnlockProgression = UnlockingMap.ItemsThatUnlockProgression
-				.Where(i => !alreadyAssingedItems.Contains(i))
+				.Where(i => alreadyAssingedItems.All(x => x.Identifier != i))
+				.Select(i => ItemInfoProvider.Get(i))
 				.ToList();
 
 			var unusedItemLocations = ItemLocations
@@ -43,7 +45,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			while (itemsThatUnlockProgression.Count > 0)
 			{
 				var item = itemsThatUnlockProgression.PopRandom(random);
-
 				var location = unusedItemLocations.PopRandom(random);
 
 				PutItemAtLocation(item, location);
@@ -54,9 +55,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)
 		{
-			var itemUnlocks = UnlockingMap.GetAllUnlock(itemInfo);
-
-			itemLocation.SetItem(itemInfo, itemUnlocks);
+			itemLocation.SetItem(itemInfo);
 		}
 	}
 }

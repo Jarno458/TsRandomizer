@@ -1,36 +1,26 @@
 ﻿using System;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameAbstractions.Inventory;
-using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.IntermediateObjects
 {
 	public abstract class ItemInfo : IEquatable<ItemInfo>
 	{
-		public abstract LootType LootType { get; }
-		public abstract int ItemId { get; }
-		public abstract EInventoryUseItemType UseItem { get; }
-		public abstract EInventoryRelicType Relic { get; }
-		public abstract EInventoryEquipmentType Enquipment { get; }
-		public abstract EInventoryFamiliarType Familiar { get; }
-		public abstract EInventoryOrbType OrbType { get; }
-		public abstract EOrbSlot OrbSlot { get; }
-		public abstract EItemType Stat { get; }
+		public abstract ItemIdentifier Identifier { get; }
+
 		public abstract Enum TreasureLootType { get; }
 		public abstract int AnimationIndex { get; }
 		public abstract BestiaryItemDropSpecification BestiaryItemDropSpecification { get; }
-
-		public abstract void SetPickupAction(Action<Level> onPickUp);
+		internal abstract Requirement Unlocks { get; }
 		public abstract void OnPickup(Level level);
 
 		public bool Equals(ItemInfo other)
 		{
 			if (other is null) return false;
 			if (ReferenceEquals(this, other)) return true;
-			return LootType.Equals(other.LootType) 
-			       && ItemId.Equals(other.ItemId) 
-			       && OrbSlot.Equals(other.OrbSlot);
+
+			return Identifier.Equals(other.Identifier);
 		}
 
 		public override bool Equals(object obj)
@@ -42,10 +32,7 @@ namespace TsRandomizer.IntermediateObjects
 			return Equals((ItemInfo)obj);
 		}
 
-		public override int GetHashCode()
-		{
-			return (LootType << 20) + (ItemId << 4) + (int)OrbSlot;
-		}
+		public override int GetHashCode() => Identifier.GetHashCode();
 
 		public static bool operator ==(ItemInfo a, ItemInfo b)
 		{
@@ -55,29 +42,26 @@ namespace TsRandomizer.IntermediateObjects
 			return a?.Equals(b) ?? false;
 		}
 
-		public static bool operator !=(ItemInfo a, ItemInfo b)
-		{
-			return !(a == b);
-		}
+		public static bool operator !=(ItemInfo a, ItemInfo b) => !(a == b);
 
 		public override string ToString()
 		{
-			switch (LootType)
+			switch (Identifier.LootType)
 			{
 				case LootType.ConstEquipment:
-					return Enquipment.ToString();
+					return Identifier.Enquipment.ToString();
 				case LootType.ConstFamiliar:
-					return Familiar.ToString();
+					return Identifier.Familiar.ToString();
 				case LootType.ConstOrb:
-					return $"{OrbSlot}{OrbType}";
+					return $"{Identifier.OrbSlot}{Identifier.OrbType}";
 				case LootType.ConstRelic:
-					return Relic.ToString();
+					return Identifier.Relic.ToString();
 				case LootType.ConstUseItem:
-					return UseItem.ToString();
+					return Identifier.UseItem.ToString();
 				case LootType.ConstStat:
-					return Stat.ToString();
+					return Identifier.Stat.ToString();
 				default:
-					throw new NotImplementedException($"Loottype {LootType}.ToString() isnt implemented");
+					throw new NotImplementedException($"Loottype {Identifier.LootType}.ToString() isnt implemented");
 			}
 		}
 	}

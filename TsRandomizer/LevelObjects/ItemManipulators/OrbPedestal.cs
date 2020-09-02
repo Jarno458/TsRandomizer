@@ -55,12 +55,12 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 		void UpdateContainedLootSprite()
 		{
-			if (ItemInfo.LootType == LootType.Orb)
+			if (ItemInfo.Identifier.LootType == LootType.Orb)
 			{
-				Object._orbType = ItemInfo.OrbType;
+				Object._orbType = ItemInfo.Identifier.OrbType;
 				UpdateOrbGlowColor();
 
-				if (ItemInfo.OrbSlot == EOrbSlot.Melee)
+				if (ItemInfo.Identifier.OrbSlot == EOrbSlot.Melee)
 					UpdateMeleeOrbSprite();
 				else
 					UpdateSprite();
@@ -113,9 +113,9 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		{
 			const int wierdOffset = 19;
 			if (Appendages.Count == 0)
-				((Animate)~Object).ChangeAnimation((int)ItemInfo.OrbType + wierdOffset);
+				((Animate)~Object).ChangeAnimation((int)ItemInfo.Identifier.OrbType + wierdOffset);
 			else
-				((Appendage)Object._orbAppendage).ChangeAnimation((int)ItemInfo.OrbType + wierdOffset);
+				((Appendage)Object._orbAppendage).ChangeAnimation((int)ItemInfo.Identifier.OrbType + wierdOffset);
 		}
 
 		void UpdateSprite()
@@ -136,7 +136,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 		void UpdateOrbGlowColor()
 		{
-			var orbGlowColorVector = (Vector4)GetOrbGlowColorByTypeMethod.InvokeStatic(ItemInfo.OrbType);
+			var orbGlowColorVector = (Vector4)GetOrbGlowColorByTypeMethod.InvokeStatic(ItemInfo.Identifier.OrbType);
 			var orbGlowColor = new Color(orbGlowColorVector);
 			Object._baseOrbGlowColorAsVector = orbGlowColorVector;
 			Object._baseOrbGlowColorAsColor = orbGlowColor;

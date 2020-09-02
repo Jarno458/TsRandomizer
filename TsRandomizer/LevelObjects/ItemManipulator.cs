@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -37,7 +34,7 @@ namespace TsRandomizer.LevelObjects
 
 		protected void AwardContainedItem()
 		{
-			Level.GameSave.AddItem(Level, ItemInfo);
+			Level.GameSave.AddItem(Level, ItemInfo.Identifier);
 
 			OnItemPickup();
 		}
@@ -47,7 +44,7 @@ namespace TsRandomizer.LevelObjects
 			ItemInfo.OnPickup(Level);
 			itemLocation.SetPickedUp();
 
-			if (itemLocation.Unlocks != Requirement.None)
+			if (ItemInfo.Unlocks != Requirement.None)
 				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(itemLocationMap));
 		}
 

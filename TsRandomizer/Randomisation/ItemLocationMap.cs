@@ -300,9 +300,9 @@ namespace TsRandomizer.Randomisation
 		{
 			//gassmask may never be placed in a gass effected place
 			//the verry basics to reach maw shouldd also allow you to get gassmask
-			var gassmarkLocation = this.First(l => l.ItemInfo == itemProvider.Get(EInventoryRelicType.AirMask));
+			var gassmarkLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
 			if (gassmarkLocation.Key.LevelId == 1 || !gassmarkLocation.Gate.CanBeOpenedWith(
-				    R.DoubleJump | R.GateAccessToPast | R.Swimming)) 
+				    R.DoubleJump | R.GateAccessToPast | R.Swimming))
 				return false;
 
 			var obtainedRequirements = R.None;
@@ -313,9 +313,7 @@ namespace TsRandomizer.Randomisation
 				itteration++;
 				var previusObtainedRequirements = obtainedRequirements;
 
-				obtainedRequirements = GetReachableLocations(obtainedRequirements)
-					.Select(l => l.Unlocks)
-					.Aggregate(R.None, (current, unlock) => current | unlock);
+				obtainedRequirements = GetObtainedRequirements(obtainedRequirements);
 
 				if (obtainedRequirements == previusObtainedRequirements)
 					return false;
@@ -323,6 +321,38 @@ namespace TsRandomizer.Randomisation
 			} while (!CanCompleteGame(obtainedRequirements) && itteration <= ItemUnlockingMap.ProgressionItemCount);
 
 			return true;
+		}
+
+		R GetObtainedRequirements(R obtainedRequirements)
+		{
+			var reachableLocations = GetReachableLocations(obtainedRequirements)
+				.Where(l => l.ItemInfo != null)
+				.ToArray();
+
+			var unlockedRequirements = reachableLocations
+				.Where(l => !(l.ItemInfo is PogRessiveItemInfo))
+				.Select(l => l.ItemInfo.Unlocks)
+				.Aggregate(R.None, (current, unlock) => current | unlock);
+
+			var progressiveItemsPerLocations = reachableLocations
+				.Where(l => l.ItemInfo is PogRessiveItemInfo)
+				.GroupBy(l => l.ItemInfo as PogRessiveItemInfo);
+
+			foreach (var progressiveItemsPerLocation in progressiveItemsPerLocations)
+			{
+				var progressiveItem = progressiveItemsPerLocation.Key;
+
+				progressiveItem.Reset();
+
+				for (int i = 0; i < progressiveItemsPerLocation.Count(); i++)
+				{
+					unlockedRequirements |= progressiveItem.Unlocks;
+
+					progressiveItem.Next();
+				}
+			}
+
+			return unlockedRequirements;
 		}
 
 		public IEnumerable<ItemLocation> GetReachableLocations(R obtainedRequirements)
@@ -337,6 +367,13 @@ namespace TsRandomizer.Randomisation
 
 		public void BaseOnSave(GameSave gameSave)
 		{
+			var progressiveItemInfos = this
+				.Where(l => l.ItemInfo is PogRessiveItemInfo)
+				.Select(l => (PogRessiveItemInfo)l.ItemInfo);
+
+			foreach (var progressiveItem in progressiveItemInfos)
+				progressiveItem.Reset();
+
 			foreach (var itemLocation in this)
 				itemLocation.BsseOnGameSave(gameSave);
 		}

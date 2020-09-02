@@ -9,10 +9,7 @@ namespace TsRandomizer.Randomisation
 
 		public abstract bool Requires(Requirement requirementsToCheck);
 
-		public static Gate operator &(Gate a, Gate b)
-		{
-			return new AndGate(a, b);
-		}
+		public static Gate operator &(Gate a, Gate b) => new AndGate(a, b);
 
 		public static Gate operator |(Gate a, Gate b)
 		{
@@ -22,30 +19,15 @@ namespace TsRandomizer.Randomisation
 			return new OrGate(a, b);
 		}
 
-		public static Gate operator &(Gate a, Requirement b)
-		{
-			return a & new RequirementGate(b);
-		}
+		public static Gate operator &(Gate a, Requirement b) => a & new RequirementGate(b);
 
-		public static Gate operator &(Requirement b, Gate a)
-		{
-			return a & new RequirementGate(b);
-		}
+		public static Gate operator &(Requirement b, Gate a) => a & new RequirementGate(b);
 
-		public static Gate operator |(Gate a, Requirement b)
-		{
-			return a | new RequirementGate(b);
-		}
+		public static Gate operator |(Gate a, Requirement b) => a | new RequirementGate(b);
 
-		public static Gate operator |(Requirement b, Gate a)
-		{
-			return a | new RequirementGate(b);
-		}
+		public static Gate operator |(Requirement b, Gate a) => a | new RequirementGate(b);
 
-		public static explicit operator Gate(Requirement requiredItems)
-		{
-			return new RequirementGate(requiredItems);
-		}
+		public static explicit operator Gate(Requirement requiredItems) => new RequirementGate(requiredItems);
 
 		internal class RequirementGate : Gate
 		{
@@ -56,20 +38,13 @@ namespace TsRandomizer.Randomisation
 				Requirements = requirements;
 			}
 
-			public override bool CanBeOpenedWith(Requirement obtainedRequirements)
-			{
-				return Requirements == Requirement.None || Requirements.Contains(obtainedRequirements);
-			}
+			public override bool CanBeOpenedWith(Requirement obtainedRequirements) =>
+				Requirements == Requirement.None || Requirements.Contains(obtainedRequirements);
 
-			public override bool Requires(Requirement requirementsToCheck)
-			{
-				return Requirements == Requirement.None || ((ulong)Requirements & (ulong)requirementsToCheck) > 0;
-			}
+			public override bool Requires(Requirement requirementsToCheck) =>
+				Requirements == Requirement.None || ((ulong)Requirements & (ulong)requirementsToCheck) > 0;
 
-			public override string ToString()
-			{
-				return $"{Requirements}";
-			}
+			public override string ToString() => $"{Requirements}";
 		}
 
 		internal class AndGate : Gate
@@ -88,21 +63,13 @@ namespace TsRandomizer.Randomisation
 					Gates = new[] {a, b};
 			}
 
-			public override bool CanBeOpenedWith(Requirement obtainedRequirements)
-			{
-				return Gates.All(g => g.CanBeOpenedWith(obtainedRequirements));
-			}
+			public override bool CanBeOpenedWith(Requirement obtainedRequirements) =>
+				Gates.All(g => g.CanBeOpenedWith(obtainedRequirements));
 
-			public override bool Requires(Requirement requirementsToCheck)
-			{
-				return Gates.Any(g => g.Requires(requirementsToCheck));
-			}
+			public override bool Requires(Requirement requirementsToCheck) =>
+				Gates.Any(g => g.Requires(requirementsToCheck));
 
-			public override string ToString()
-			{
-				// ReSharper disable once CoVariantArrayConversion
-				return $"AND({string.Join(",", (object[])Gates)})";
-			}
+			public override string ToString() => $"AND({string.Join(",", Gates.Select(g => g.ToString()))})";
 		}
 
 		internal class OrGate : Gate
@@ -121,21 +88,13 @@ namespace TsRandomizer.Randomisation
 					Gates = new[] { a, b };
 			}
 
-			public override bool CanBeOpenedWith(Requirement obtainedRequirements)
-			{
-				return Gates.Any(g => g.CanBeOpenedWith(obtainedRequirements));
-			}
+			public override bool CanBeOpenedWith(Requirement obtainedRequirements) =>
+				Gates.Any(g => g.CanBeOpenedWith(obtainedRequirements));
 
-			public override bool Requires(Requirement requirementsToCheck)
-			{
-				return Gates.All(g => g.Requires(requirementsToCheck));
-			}
+			public override bool Requires(Requirement requirementsToCheck) =>
+				Gates.All(g => g.Requires(requirementsToCheck));
 
-			public override string ToString()
-			{
-				// ReSharper disable once CoVariantArrayConversion
-				return $"OR({string.Join(",", (object[])Gates)})";
-			}
+			public override string ToString() => $"OR({string.Join(",", Gates.Select(g => g.ToString()))})";
 		}
 	}
 }

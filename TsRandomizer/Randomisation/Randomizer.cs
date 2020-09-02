@@ -10,11 +10,9 @@ namespace TsRandomizer.Randomisation
 	{
 		public static ItemLocationMap Randomize(Seed seed, FillingMethod fillingMethod, bool progressionOnly = false)
 		{
-			var itemInfoProvider = new ItemInfoProvider();
+			var unlockingMap = new ItemUnlockingMap(seed);
+			var itemInfoProvider = new ItemInfoProvider(unlockingMap);
 			var itemLocations = new ItemLocationMap(itemInfoProvider);
-			var unlockingMap = new ItemUnlockingMap(itemInfoProvider, seed);
-
-			itemInfoProvider.EnableProgressiveItems();
 
 			switch (fillingMethod)
 			{
@@ -61,40 +59,30 @@ namespace TsRandomizer.Randomisation
 			};
 		}
 
-		public static bool IsBeatable(Seed seed, FillingMethod fillingMethod)
-		{
-			return Randomize(seed, fillingMethod, true).IsBeatable();
-		}
+		public static bool IsBeatable(Seed seed, FillingMethod fillingMethod) =>
+			Randomize(seed, fillingMethod, true).IsBeatable();
 	}
 
-	class GenerationResult
+	class GenerationResult : IEqualityComparer<GenerationResult>
 	{
 		public Seed Seed { get; set; }
 		public int Itterations { get; set; }
 		public TimeSpan Elapsed { get; set; }
 
-		public override string ToString()
+		public override string ToString() => $"Seed: {Seed}, Itterations: {Itterations}, Elapsed: {Elapsed}";
+
+		public bool Equals(GenerationResult a, GenerationResult b)
 		{
-			return $"Seed: {Seed}, Itterations: {Itterations}, Elapsed: {Elapsed}";
+			if (a == null && b == null)
+				return true;
+			if (a == null || b == null)
+				return false;
+
+			return a.Seed == b.Seed;
 		}
 
-		internal class Comparer : IEqualityComparer<GenerationResult>
-		{
-			public bool Equals(GenerationResult a, GenerationResult b)
-			{
-				if (a == null && b == null)
-					return true;
-				if (a == null || b == null)
-					return false;
+		public int GetHashCode(GenerationResult obj) => obj.Seed.GetHashCode();
 
-				return a.Seed == b.Seed;
-			}
-
-			public int GetHashCode(GenerationResult obj)
-			{
-				return obj.Seed.GetHashCode();
-			}
-		}
 	}
 
 	enum FillingMethod

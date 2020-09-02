@@ -16,8 +16,6 @@ namespace TsRandomizer.Randomisation
 
 		public bool IsPickedUp { get; internal set; }
 
-		public Requirement Unlocks { get; internal set; }
-
 		public ItemInfo ItemInfo { get; internal set; }
 
 		public ItemInfo DefaultItem { get; internal set;  }
@@ -42,10 +40,9 @@ namespace TsRandomizer.Randomisation
 			DefaultItem = defaultItem;
 		}
 
-		public void SetItem(ItemInfo item, Requirement unlocks)
+		public void SetItem(ItemInfo item)
 		{
 			ItemInfo = item;
-			Unlocks = unlocks;
 		}
 
 		public void SetPickedUp()
@@ -56,6 +53,9 @@ namespace TsRandomizer.Randomisation
 
 			IsPickedUp = true;
 			gameSave.DataKeyBools[LootedItemDataString] = true;
+
+			if (ItemInfo is PogRessiveItemInfo progressiveItemInfo)
+				progressiveItemInfo.Next();
 		}
 
 		public override string ToString()
@@ -68,6 +68,9 @@ namespace TsRandomizer.Randomisation
 			gameSave = save;
 
 			IsPickedUp = gameSave.DataKeyBools.ContainsKey(LootedItemDataString);
+
+			if(IsPickedUp && ItemInfo is PogRessiveItemInfo progressiveItemInfo)
+				progressiveItemInfo.Next();
 		}
 	}
 }

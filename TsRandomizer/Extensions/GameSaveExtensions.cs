@@ -141,7 +141,7 @@ namespace TsRandomizer.Extensions
 			}
 		}
 
-		internal static void AddItem(this GameSave gameSave, Level level, ItemInfo itemInfo)
+		internal static void AddItem(this GameSave gameSave, Level level, ItemIdentifier itemInfo)
 		{
 			switch (itemInfo.LootType)
 			{

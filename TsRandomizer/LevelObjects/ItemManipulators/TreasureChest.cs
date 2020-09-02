@@ -26,26 +26,26 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 			Object._treasureLootType = ItemInfo.TreasureLootType;
 
-			switch (ItemInfo.LootType)
+			switch (ItemInfo.Identifier.LootType)
 			{
 				case LootType.ConstUseItem:
-					Object._lootUseItemType = ItemInfo.UseItem;
+					Object._lootUseItemType = ItemInfo.Identifier.UseItem;
 					break;
 				case LootType.ConstRelic:
-					Object._lootRelicType = ItemInfo.Relic;
+					Object._lootRelicType = ItemInfo.Identifier.Relic;
 					break;
 				case LootType.ConstEquipment:
-					Object._lootEquipmentType = ItemInfo.Enquipment;
+					Object._lootEquipmentType = ItemInfo.Identifier.Enquipment;
 					break;
 				case LootType.ConstOrb:
-					Object._lootOrbType = ItemInfo.OrbType;
-					Object._lootOrbSlot = ItemInfo.OrbSlot;
+					Object._lootOrbType = ItemInfo.Identifier.OrbType;
+					Object._lootOrbSlot = ItemInfo.Identifier.OrbSlot;
 					break;
 				case LootType.ConstFamiliar:
-					Object._lootFamiliarType = ItemInfo.Familiar;
+					Object._lootFamiliarType = ItemInfo.Identifier.Familiar;
 					break;
 				case LootType.ConstStat:
-					switch (ItemInfo.Stat)
+					switch (ItemInfo.Identifier.Stat)
 					{
 						case EItemType.MaxHP:
 							Object._lootStatBoostType = ETreasureStatBoostType.GetEnumValue("HP");
@@ -61,7 +61,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 					}
 					break;
 				default:
-					throw new ArgumentOutOfRangeException(nameof(ItemInfo.LootType), ItemInfo.LootType, $"lootType cannot be droppd by {nameof(TreasureChest)}");
+					throw new ArgumentOutOfRangeException(nameof(ItemInfo.Identifier.LootType), ItemInfo.Identifier.LootType, $"lootType cannot be droppd by {nameof(TreasureChest)}");
 			}
 
 			var pickedUp = IsPickedUp;
@@ -78,8 +78,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				return;
 		
 			// ReSharper disable once PossibleNullReferenceException
-			if (ItemInfo.LootType == LootType.Orb)
-				Level.GameSave.AddItem(Level, ItemInfo);
+			if (ItemInfo.Identifier.LootType == LootType.Orb)
+				Level.GameSave.AddItem(Level, ItemInfo.Identifier);
 
 			OnItemPickup();
 

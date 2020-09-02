@@ -42,50 +42,61 @@ namespace TsRandomizer.ItemTracker
 
 		internal static ItemTrackerState FromItemLocationMap(IEnumerable<ItemLocation> itemLocations)
 		{
-			var obtainedProgressionItems = itemLocations
-				.Where(l => l.IsPickedUp && l.Unlocks != Requirement.None)
-				.Select(l => l.ItemInfo);
+			var unlockedProgressionItems = itemLocations
+				.Where(l => l.IsPickedUp && l.ItemInfo.Unlocks != Requirement.None)
+				.Select(l => l.ItemInfo)
+				.ToArray();
+
+			var obtainedProgressiveItems = unlockedProgressionItems
+				.OfType<PogRessiveItemInfo>();
+
+			var obtainedSingleItems = unlockedProgressionItems
+				.Where(i => !(i is PogRessiveItemInfo));
+
+			var obtainedItemIdentifiers = obtainedSingleItems
+				.Select(i => i.Identifier)
+				.Concat(obtainedProgressiveItems.SelectMany(pi => pi.GetAllUnlockedItems()));
 
 			var trackerState = new ItemTrackerState();
 
-			foreach (var item in obtainedProgressionItems)
+			foreach (var item in obtainedItemIdentifiers)
 				SetMemberForItem(trackerState, item);
 
 			return trackerState;
 		}
 
-		static readonly Dictionary<ItemInfo, Expression<Func<ItemTrackerState, bool>>> ItemToMemberMap = new Dictionary<ItemInfo, Expression<Func<ItemTrackerState, bool>>>(NumberOfItems)
+		static readonly Dictionary<ItemIdentifier, Expression<Func<ItemTrackerState, bool>>> ItemToMemberMap = 
+			new Dictionary<ItemIdentifier, Expression<Func<ItemTrackerState, bool>>>(NumberOfItems)
 		{
-			{new SingleItemInfo(EInventoryRelicType.TimespinnerWheel), s => s.Timestop},
-			{new SingleItemInfo(EInventoryRelicType.TimespinnerSpindle), s => s.TimeSpindle},
-			{new SingleItemInfo(EInventoryRelicType.TimespinnerGear1), s => s.TimeGear1},
-			{new SingleItemInfo(EInventoryRelicType.TimespinnerGear2), s => s.TimeGear2},
-			{new SingleItemInfo(EInventoryRelicType.TimespinnerGear3), s => s.TimeGear3},
-			{new SingleItemInfo(EInventoryRelicType.DoubleJump), s => s.DoubleJump},
-			{new SingleItemInfo(EInventoryRelicType.Dash), s => s.Dash},
-			{new SingleItemInfo(EInventoryOrbType.Barrier, EOrbSlot.Spell), s => s.Lightwall},
-			{new SingleItemInfo(EInventoryRelicType.EssenceOfSpace), s => s.CelestialSash},
-			{new SingleItemInfo(EInventoryOrbType.Flame, EOrbSlot.Melee), s => s.FireOrb},
-			{new SingleItemInfo(EInventoryOrbType.Flame, EOrbSlot.Spell), s => s.FireSpell},
-			{new SingleItemInfo(EInventoryOrbType.Flame, EOrbSlot.Passive), s => s.FireRing},
-			{new SingleItemInfo(EInventoryOrbType.Book, EOrbSlot.Spell), s => s.DinsFire},
-			{new SingleItemInfo(EInventoryRelicType.ScienceKeycardA), s => s.CardA},
-			{new SingleItemInfo(EInventoryRelicType.ScienceKeycardB), s => s.CardB},
-			{new SingleItemInfo(EInventoryRelicType.ScienceKeycardC), s => s.CardC},
-			{new SingleItemInfo(EInventoryRelicType.ScienceKeycardD), s => s.CardD},
-			{new SingleItemInfo(EInventoryRelicType.ElevatorKeycard), s => s.CardE},
-			{new SingleItemInfo(EInventoryRelicType.ScienceKeycardV), s => s.CardV},
-			{new SingleItemInfo(EInventoryRelicType.WaterMask), s => s.WaterMask},
-			{new SingleItemInfo(EInventoryRelicType.AirMask), s => s.GassMask},
-			{new SingleItemInfo(EInventoryRelicType.PyramidsKey), s => s.PyramidKeys},
-			{new SingleItemInfo(EInventoryOrbType.Pink, EOrbSlot.Melee), s => s.PinkOrb},
-			{new SingleItemInfo(EInventoryOrbType.Pink, EOrbSlot.Spell), s => s.PinkSpell},
-			{new SingleItemInfo(EInventoryOrbType.Pink, EOrbSlot.Passive), s => s.PinkRing},
+			{new ItemIdentifier(EInventoryRelicType.TimespinnerWheel), s => s.Timestop},
+			{new ItemIdentifier(EInventoryRelicType.TimespinnerSpindle), s => s.TimeSpindle},
+			{new ItemIdentifier(EInventoryRelicType.TimespinnerGear1), s => s.TimeGear1},
+			{new ItemIdentifier(EInventoryRelicType.TimespinnerGear2), s => s.TimeGear2},
+			{new ItemIdentifier(EInventoryRelicType.TimespinnerGear3), s => s.TimeGear3},
+			{new ItemIdentifier(EInventoryRelicType.DoubleJump), s => s.DoubleJump},
+			{new ItemIdentifier(EInventoryRelicType.Dash), s => s.Dash},
+			{new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Spell), s => s.Lightwall},
+			{new ItemIdentifier(EInventoryRelicType.EssenceOfSpace), s => s.CelestialSash},
+			{new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Melee), s => s.FireOrb},
+			{new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Spell), s => s.FireSpell},
+			{new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Passive), s => s.FireRing},
+			{new ItemIdentifier(EInventoryOrbType.Book, EOrbSlot.Spell), s => s.DinsFire},
+			{new ItemIdentifier(EInventoryRelicType.ScienceKeycardA), s => s.CardA},
+			{new ItemIdentifier(EInventoryRelicType.ScienceKeycardB), s => s.CardB},
+			{new ItemIdentifier(EInventoryRelicType.ScienceKeycardC), s => s.CardC},
+			{new ItemIdentifier(EInventoryRelicType.ScienceKeycardD), s => s.CardD},
+			{new ItemIdentifier(EInventoryRelicType.ElevatorKeycard), s => s.CardE},
+			{new ItemIdentifier(EInventoryRelicType.ScienceKeycardV), s => s.CardV},
+			{new ItemIdentifier(EInventoryRelicType.WaterMask), s => s.WaterMask},
+			{new ItemIdentifier(EInventoryRelicType.AirMask), s => s.GassMask},
+			{new ItemIdentifier(EInventoryRelicType.PyramidsKey), s => s.PyramidKeys},
+			{new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Melee), s => s.PinkOrb},
+			{new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Spell), s => s.PinkSpell},
+			{new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Passive), s => s.PinkRing},
 		};
 
-		static void SetMemberForItem(ItemTrackerState trackerState, ItemInfo itemInfo)
+		static void SetMemberForItem(ItemTrackerState trackerState, ItemIdentifier itemInfo)
 		{
-			//TODD check if its stil matches
 			if (!ItemToMemberMap.TryGetValue(itemInfo, out Expression<Func<ItemTrackerState, bool>> expression))
 				return;
 
