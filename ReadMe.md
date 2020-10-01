@@ -57,6 +57,7 @@ The item tracker features a few options:
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * The position of the randomizer credits in the credits screen is way off, sorry
 * The textured background for the item tracker is not properly tiled
+* If you pickup items from pedistal and chest quickly at the sametime the game crashes *yikes*
 
 # Todo
 ##### Things i plan on doing in the future
