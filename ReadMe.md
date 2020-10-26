@@ -58,6 +58,9 @@ The item tracker features a few options:
 * The position of the randomizer credits in the credits screen is way off, sorry
 * The textured background for the item tracker is not properly tiled
 * If you pickup items from pedistal and chest quickly at the sametime the game crashes *yikes*
+* If two progressive items are in the same room, you will not be rewarded the next step up in the progression
+* Position of randomizer credits inside credits screen is wrong
+* Starting with an incorrect verison of the randomizer will not show the proper error
 
 # Todo
 ##### Things i plan on doing in the future

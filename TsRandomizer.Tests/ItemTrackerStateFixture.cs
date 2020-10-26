@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.ItemTracker;
@@ -15,10 +14,10 @@ namespace TsRandomizer.Tests
 		{
 			var itemlocations = new []
 			{
-				GetPickedUpItemLocation(new SingleItemInfo(new ItemUnlockingMap(new Seed(0)), new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Spell))),
-				GetPickedUpItemLocation(new SingleItemInfo(new ItemUnlockingMap(new Seed(0)), new ItemIdentifier(EInventoryRelicType.Dash))),
-				GetPickedUpItemLocation(new SingleItemInfo(new ItemUnlockingMap(new Seed(0)), new ItemIdentifier(EInventoryRelicType.TimespinnerWheel))),
-				GetPickedUpItemLocation(new SingleItemInfo(new ItemUnlockingMap(new Seed(0)), new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Spell)))
+				GetPickedUpItemLocation(new SingleItemInfo(new ItemUnlockingMap(Seed.Zero), new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Spell))),
+				GetPickedUpItemLocation(new SingleItemInfo(new ItemUnlockingMap(Seed.Zero), new ItemIdentifier(EInventoryRelicType.Dash))),
+				GetPickedUpItemLocation(new SingleItemInfo(new ItemUnlockingMap(Seed.Zero), new ItemIdentifier(EInventoryRelicType.TimespinnerWheel))),
+				GetPickedUpItemLocation(new SingleItemInfo(new ItemUnlockingMap(Seed.Zero), new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Spell)))
 			};
 
 			var state = ItemTrackerState.FromItemLocationMap(itemlocations);

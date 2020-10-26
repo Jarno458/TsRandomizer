@@ -85,10 +85,10 @@ namespace TsRandomizer.LevelObjects
 			Object = typedObject.AsDynamic();
 		}
 
-		public static void Update(Level level, GameplayScreen gameplayScreen, ItemLocationMap itemLocations, bool roomChanged)
+		public static void Update(Level level, GameplayScreen gameplayScreen, ItemLocationMap itemLocations, bool roomChanged, SeedOptions seedOptions)
 		{
 			if (roomChanged)
-				OnChangeRoom(level, itemLocations);
+				OnChangeRoom(level, itemLocations, seedOptions);
 
 			var levelReflected = level.AsDynamic();
 			var newNonItemObjects = ((List<Mobile>)levelReflected._newObjects)
@@ -119,8 +119,11 @@ namespace TsRandomizer.LevelObjects
 				obj.OnUpdate(gameplayScreen);
 		}
 
-		static void OnChangeRoom(Level level, ItemLocationMap itemLocations)
+		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, SeedOptions seedOptions)
 		{
+			if(seedOptions.StartWithJewelryBox)
+				level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.JewelryBox));
+
 #if DEBUG
 			Console.Out.WriteLine("OnChangeRoom");
 

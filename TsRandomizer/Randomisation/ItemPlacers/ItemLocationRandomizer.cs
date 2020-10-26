@@ -96,7 +96,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryRelicType.DoubleJump),
 				ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel),
 				ItemInfoProvider.Get(EInventoryRelicType.PyramidsKey),
-				ItemInfoProvider.Get(EInventoryRelicType.PyramidsKey),
 				ItemInfoProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell),
 				ItemInfoProvider.Get(EInventoryRelicType.EssenceOfSpace)
 			};
@@ -163,8 +162,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		void AddExtraItems(List<ItemInfo> itemlist)
 		{
-			foreach (var itemInfo in itemsToAddToGame)
-				itemlist.Add(itemInfo);
+			itemlist.AddRange(itemsToAddToGame);
 		}
 
 		void AddFamiliers(List<ItemInfo> itemlist)
@@ -172,8 +170,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			var allFamiliers = ((EInventoryFamiliarType[])Enum.GetValues(typeof(EInventoryFamiliarType)))
 				.Where(o => o != EInventoryFamiliarType.None && o != EInventoryFamiliarType.Meyef);
 
-			foreach (var familiar in allFamiliers)
-				itemlist.Add(ItemInfoProvider.Get(familiar));
+			itemlist.AddRange(allFamiliers.Select(familiar => ItemInfoProvider.Get(familiar)));
 		}
 
 		void AddOrbs(List<ItemInfo> itemlist)

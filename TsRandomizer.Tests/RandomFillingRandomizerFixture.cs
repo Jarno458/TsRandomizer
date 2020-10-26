@@ -9,16 +9,16 @@ namespace TsRandomizer.Tests
 	[TestFixture]
 	class RandomFillingRandomizerFixture
 	{
-		[TestCase(1)]
-		[TestCase(2)]
-		[TestCase(3)]
-		[TestCase(4)]
-		[TestCase(5)]
-		public void Should_fill_tuturial_with_melee_and_spellorb(int seedIndex)
+		[TestCase(1U)]
+		[TestCase(2U)]
+		[TestCase(3U)]
+		[TestCase(4U)]
+		[TestCase(5U)]
+		public void Should_fill_tuturial_with_melee_and_spellorb(uint seedIndex)
 		{
-			var seed = new Seed(seedIndex);
+			var seed = new Seed(seedIndex, SeedOptions.None);
 			var unlockingMap = new ItemUnlockingMap(seed);
-			var itemProvider = new ItemInfoProvider(unlockingMap);
+			var itemProvider = new ItemInfoProvider(SeedOptions.None, unlockingMap);
 			var itemLocations = new ItemLocationMap(itemProvider);
 
 			FullRandomItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemProvider, unlockingMap, itemLocations, true);

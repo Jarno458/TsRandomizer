@@ -20,8 +20,8 @@ namespace TsRandomizer.Tests
 		[Test]
 		public void Should_equal()
 		{
-			var a = new SingleItemInfo(new ItemUnlockingMap(new Seed(0)), new ItemIdentifier(EInventoryRelicType.Dash));
-			var b = new SingleItemInfo(new ItemUnlockingMap(new Seed(0)), new ItemIdentifier(EInventoryRelicType.Dash));
+			var a = new SingleItemInfo(new ItemUnlockingMap(Seed.Zero), new ItemIdentifier(EInventoryRelicType.Dash));
+			var b = new SingleItemInfo(new ItemUnlockingMap(Seed.Zero), new ItemIdentifier(EInventoryRelicType.Dash));
 
 			Assert.That(a, Is.EqualTo(b));
 		}
@@ -29,10 +29,10 @@ namespace TsRandomizer.Tests
 		[Test]
 		public void Should_equal_across_provider()
 		{
-			var providerA = new ItemInfoProvider(new ItemUnlockingMap(new Seed(0)));
+			var providerA = new ItemInfoProvider(SeedOptions.None, new ItemUnlockingMap(Seed.Zero));
 			var a = providerA.Get(EInventoryRelicType.Dash);
 
-			var providerB = new ItemInfoProvider(new ItemUnlockingMap(new Seed(0)));
+			var providerB = new ItemInfoProvider(SeedOptions.None, new ItemUnlockingMap(Seed.Zero));
 			var b = providerB.Get(EInventoryRelicType.Dash);
 
 			Assert.That(a, Is.EqualTo(b));

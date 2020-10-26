@@ -41,5 +41,10 @@ namespace TsRandomizer.IntermediateObjects
 			for (var i = 0; i < index; i++)
 				yield return Items[i].Identifier;
 		}
+
+		public override string ToString()
+		{
+			return string.Join(@" -> ", Items.Select(i => i.ToString()));
+		}
 	}
 }

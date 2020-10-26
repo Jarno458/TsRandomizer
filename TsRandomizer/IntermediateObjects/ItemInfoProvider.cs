@@ -19,9 +19,10 @@ namespace TsRandomizer.IntermediateObjects
 
 		readonly Dictionary<ItemInfo, PogRessiveItemInfo> progressiveItems;
 
-		public ItemInfoProvider(ItemUnlockingMap unlockingMap)
+		public ItemInfoProvider(SeedOptions options, ItemUnlockingMap unlockingMap)
 		{
 			this.unlockingMap = unlockingMap;
+
 			useItems = new Dictionary<EInventoryUseItemType, ItemInfo>();
 			relicItems = new Dictionary<EInventoryRelicType, ItemInfo>();
 			enquipmentItems = new Dictionary<EInventoryEquipmentType, ItemInfo>();
@@ -31,6 +32,12 @@ namespace TsRandomizer.IntermediateObjects
 			progressiveItems = new Dictionary<ItemInfo, PogRessiveItemInfo>();
 
 			MakeGearsProgressive();
+
+			if (options.ProgressiveKeycard)
+				MakeKeycardsProgressive();
+
+			if (options.ProgressiveVerticalMovement)
+				MakeVerticalMovementProgressive();
 		}
 
 		void MakeGearsProgressive()
@@ -46,13 +53,32 @@ namespace TsRandomizer.IntermediateObjects
 			progressiveItems.Add(gear3, progressiveItem);
 		}
 
-		public ItemInfo Get(EInventoryRelicType relicItem)
+		void MakeKeycardsProgressive()
 		{
-			var item = GetOrAdd(relicItems, relicItem, () => CreateNew(new ItemIdentifier(relicItem)));
+			var cardA = Get(EInventoryRelicType.ScienceKeycardA);
+			var cardB = Get(EInventoryRelicType.ScienceKeycardB);
+			var cardC = Get(EInventoryRelicType.ScienceKeycardC);
+			var cardD = Get(EInventoryRelicType.ScienceKeycardD);
 
-			return progressiveItems.TryGetValue(item, out PogRessiveItemInfo progressiveItem)
-				? progressiveItem
-				: item;
+			var progressiveItem = new PogRessiveItemInfo(cardD, cardC, cardB, cardA);
+
+			progressiveItems.Add(cardA, progressiveItem);
+			progressiveItems.Add(cardB, progressiveItem);
+			progressiveItems.Add(cardC, progressiveItem);
+			progressiveItems.Add(cardD, progressiveItem);
+		}
+
+		void MakeVerticalMovementProgressive()
+		{
+			var doubleJump = Get(EInventoryRelicType.DoubleJump);
+			var celestialSash = Get(EInventoryRelicType.EssenceOfSpace);
+			var lightwall = Get(EInventoryOrbType.Barrier, EOrbSlot.Spell);
+
+			var progressiveItem = new PogRessiveItemInfo(doubleJump, celestialSash, lightwall);
+
+			progressiveItems.Add(doubleJump, progressiveItem);
+			progressiveItems.Add(celestialSash, progressiveItem);
+			progressiveItems.Add(lightwall, progressiveItem);
 		}
 
 		public ItemInfo Get(ItemIdentifier identifier)
@@ -69,6 +95,24 @@ namespace TsRandomizer.IntermediateObjects
 			}
 		}
 
+		public ItemInfo Get(EInventoryRelicType relicItem)
+		{
+			var item = GetOrAdd(relicItems, relicItem, () => CreateNew(new ItemIdentifier(relicItem)));
+
+			return progressiveItems.TryGetValue(item, out PogRessiveItemInfo progressiveItem)
+				? progressiveItem
+				: item;
+		}
+
+		public ItemInfo Get(EInventoryOrbType orbType, EOrbSlot orbSlot)
+		{
+			var orb = GetOrAdd(orbItems, GetOrbKey(orbType, orbSlot), () => CreateNew(new ItemIdentifier(orbType, orbSlot)));
+
+			return progressiveItems.TryGetValue(orb, out PogRessiveItemInfo progressiveItem)
+				? progressiveItem
+				: orb;
+		}
+
 		public ItemInfo Get(EInventoryUseItemType useItem) =>
 			GetOrAdd(useItems, useItem, () => CreateNew(new ItemIdentifier(useItem)));
 
@@ -77,9 +121,6 @@ namespace TsRandomizer.IntermediateObjects
 
 		public ItemInfo Get(EInventoryFamiliarType familiarItem) =>
 			GetOrAdd(familierItems, familiarItem, () => CreateNew(new ItemIdentifier(familiarItem)));
-
-		public ItemInfo Get(EInventoryOrbType orbType, EOrbSlot orbSlot) =>
-			GetOrAdd(orbItems, GetOrbKey(orbType, orbSlot), () => CreateNew(new ItemIdentifier(orbType, orbSlot)));
 
 		public ItemInfo Get(EItemType stat) =>
 			GetOrAdd(statItems, stat, () => CreateNew(new ItemIdentifier(stat)));

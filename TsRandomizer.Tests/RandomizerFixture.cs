@@ -10,7 +10,7 @@ namespace TsRandomizer.Tests
 		[Test]
 		public void Should_generate_single_beatable_seed()
 		{
-			var result = Randomizer.Generate(FillingMethod.Random);
+			var result = Randomizer.Generate(FillingMethod.Random, SeedOptions.None);
 			Assert.That(Randomizer.IsBeatable(result.Seed, FillingMethod.Random), Is.True);
 		}
 
@@ -21,7 +21,7 @@ namespace TsRandomizer.Tests
 
 			while (seeds.Count != 100)
 			{
-				var result = Randomizer.Generate(FillingMethod.Random);
+				var result = Randomizer.Generate(FillingMethod.Random, SeedOptions.None);
 
 				if(!seeds.Contains(result.Seed))
 					seeds.Add(result);

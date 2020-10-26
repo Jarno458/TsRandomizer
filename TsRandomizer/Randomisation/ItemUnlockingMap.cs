@@ -20,7 +20,7 @@ namespace TsRandomizer.Randomisation
 
 		public ItemUnlockingMap(Seed seed)
 		{
-			var random = new Random(seed);
+			var random = new Random((int)seed.Id);
 
 			UnlockingSpecifications = new List<UnlockingSpecification>(ProgressionItemCount)
 			{ 

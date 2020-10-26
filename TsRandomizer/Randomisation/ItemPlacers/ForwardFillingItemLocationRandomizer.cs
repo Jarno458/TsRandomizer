@@ -23,7 +23,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			Seed seed, ItemInfoProvider itemProvider, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly) 
 				: base(itemProvider, itemLocationMap, unlockingMap, progressionOnly)
 		{
-			random = new Random(seed);
+			random = new Random((int)seed.Id);
 			availableRequirements = Requirement.None;
 			unlockableRequirements = unlockingMap.AllUnlockableRequirements;
 			placedItems = new Dictionary<ItemInfo, ItemLocation>();

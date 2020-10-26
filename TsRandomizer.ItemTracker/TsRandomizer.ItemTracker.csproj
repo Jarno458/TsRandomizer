@@ -42,7 +42,8 @@
     <ApplicationIcon>EyeOrbLargeT.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FNA">
+    <Reference Include="FNA, Version=19.6.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -65,14 +66,14 @@
     <Compile Include="TrackerSettings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TsRandomizer\TsRandomizer.csproj">
-      <Project>{694E46C5-FD46-4CC8-8B71-D381E154CCF7}</Project>
-      <Name>TsRandomizer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="EyeOrbIcon.ico" />
     <Content Include="EyeOrbLargeT.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TsRandomizer\TsRandomizer.csproj">
+      <Project>{694e46c5-fd46-4cc8-8b71-d381e154ccf7}</Project>
+      <Name>TsRandomizer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

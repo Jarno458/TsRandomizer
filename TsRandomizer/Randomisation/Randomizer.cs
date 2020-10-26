@@ -11,7 +11,7 @@ namespace TsRandomizer.Randomisation
 		public static ItemLocationMap Randomize(Seed seed, FillingMethod fillingMethod, bool progressionOnly = false)
 		{
 			var unlockingMap = new ItemUnlockingMap(seed);
-			var itemInfoProvider = new ItemInfoProvider(unlockingMap);
+			var itemInfoProvider = new ItemInfoProvider(seed.Options, unlockingMap);
 			var itemLocations = new ItemLocationMap(itemInfoProvider);
 
 			switch (fillingMethod)
@@ -31,7 +31,7 @@ namespace TsRandomizer.Randomisation
 			return itemLocations;
 		}
 
-		public static GenerationResult Generate(FillingMethod fillingMethod)
+		public static GenerationResult Generate(FillingMethod fillingMethod, SeedOptions options)
 		{
 			var random = new Random();
 
@@ -44,7 +44,7 @@ namespace TsRandomizer.Randomisation
 			do
 			{
 				itterations++;
-				seed = new Seed(random.Next());
+				seed = Seed.GenerateRandom(options, random);
 			} while (!IsBeatable(seed, fillingMethod));
 
 			stopwatch.Stop();
@@ -78,11 +78,11 @@ namespace TsRandomizer.Randomisation
 			if (a == null || b == null)
 				return false;
 
-			return a.Seed == b.Seed;
+			return a.Seed.Id == b.Seed.Id 
+			       && a.Seed.Options.Flags == b.Seed.Options.Flags;
 		}
 
 		public int GetHashCode(GenerationResult obj) => obj.Seed.GetHashCode();
-
 	}
 
 	enum FillingMethod

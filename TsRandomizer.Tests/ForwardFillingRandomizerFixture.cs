@@ -13,9 +13,9 @@ namespace TsRandomizer.Tests
 		[Test]
 		public void Should_generate_beatable_seed_in_1_pass()
 		{
-			var seed = new Seed(1);
+			var seed = new Seed(1U, SeedOptions.None);
 			var unlockingMap = new ItemUnlockingMap(seed);
-			var itemProvder = new ItemInfoProvider(unlockingMap);
+			var itemProvder = new ItemInfoProvider(SeedOptions.None, unlockingMap);
 			var itemLocations = new ItemLocationMap(itemProvder);
 
 			ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemProvder, unlockingMap, itemLocations, true);
@@ -23,16 +23,16 @@ namespace TsRandomizer.Tests
 			Assert.That(itemLocations.IsBeatable(), Is.True);
 		}
 
-		[TestCase(1)]
-		[TestCase(2)]
-		[TestCase(3)]
-		[TestCase(4)]
-		[TestCase(5)]
-		public void Should_fill_tuturial_with_melee_and_spellorb(int seedIndex)
+		[TestCase(1U)]
+		[TestCase(2U)]
+		[TestCase(3U)]
+		[TestCase(4U)]
+		[TestCase(5U)]
+		public void Should_fill_tuturial_with_melee_and_spellorb(uint seedIndex)
 		{
-			var seed = new Seed(seedIndex);
+			var seed = new Seed(seedIndex, SeedOptions.None);
 			var unlockingMap = new ItemUnlockingMap(seed);
-			var itemProvder = new ItemInfoProvider(unlockingMap);
+			var itemProvder = new ItemInfoProvider(SeedOptions.None, unlockingMap);
 			var itemLocations = new ItemLocationMap(itemProvder);
 
 			ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemProvder, unlockingMap, itemLocations, true);

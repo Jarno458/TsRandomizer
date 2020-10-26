@@ -16,8 +16,8 @@ namespace TsRandomizer.Extensions
 
 		internal static Seed? GetSeed(this GameSave gameSave)
 		{
-			if (gameSave.DataKeyStrings.TryGetValue(SeedSaveFileKey, out var seedString))
-				if(Seed.TrySetFromHexString(seedString, out var seed))
+			if (gameSave.DataKeyStrings.TryGetValue(SeedSaveFileKey, out var seedString)
+				&& Seed.TryParse(seedString, out var seed))
 					return seed;
 
 			return null;

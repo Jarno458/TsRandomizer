@@ -16,7 +16,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		public static void AddRandomItemsToLocationMap(
 			Seed seed, ItemInfoProvider itemInfoProvider, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly)
 		{
-			var random = new Random(seed);
+			var random = new Random((int)seed.Id);
 
 			new FullRandomItemLocationRandomizer(itemInfoProvider, unlockingMap, itemLocationMap, progressionOnly)
 				.AddRandomItemsToLocationMap(random);

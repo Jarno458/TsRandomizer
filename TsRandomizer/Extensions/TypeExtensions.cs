@@ -20,6 +20,18 @@ namespace TsRandomizer.Extensions
 			return type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static, null, argTypes, null);
 		}
 
+		internal static object GetPrivateStaticField(this Type type, string fieldName)
+		{
+			return type.GetField(fieldName, BindingFlags.Static | BindingFlags.NonPublic)
+				?.GetValue(null);
+		}
+
+		internal static void SetPrivateStaticField(this Type type, string fieldName, object value)
+		{
+			type.GetField(fieldName, BindingFlags.Static | BindingFlags.NonPublic)
+				?.SetValue(null, value);
+		}
+
 		internal static object GetEnumValue(this Type type, string enumMemberName)
 		{
 			var underlyingType = Enum.GetUnderlyingType(type);

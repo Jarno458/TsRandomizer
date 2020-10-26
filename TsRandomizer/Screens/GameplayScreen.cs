@@ -20,11 +20,13 @@ namespace TsRandomizer.Screens
 	class GameplayScreen : Screen
 	{
 		RoomSpecification currentRoom;
+		SeedOptions seedOptions;
 
 		Level Level => (Level)Reflected._level;
 		dynamic LevelReflected => Level.AsDynamic();
 
 		public ItemLocationMap ItemLocations { get; private set; }
+
 		public GCM GameContentManager { get; private set; }
 
 		public GameplayScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
@@ -40,9 +42,11 @@ namespace TsRandomizer.Screens
 			var fillingMethod = saveFile.GetFillingMethod();
 
 			if(!seed.HasValue)
-				seed = new Seed(0);
+				seed = Seed.Zero;
 
 			Console.Out.WriteLine($"Seed: {seed}");
+
+			seedOptions = seed.Value.Options;
 
 			ItemLocations = Randomizer.Randomize(seed.Value, fillingMethod);
 			ItemLocations.BaseOnSave(Level.GameSave);
@@ -56,7 +60,7 @@ namespace TsRandomizer.Screens
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
-			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged());
+			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions);
 
 #if DEBUG
 			TimespinnerAfterDark(input);
@@ -78,7 +82,7 @@ namespace TsRandomizer.Screens
 
 		public void HideItemPickupBar()
 		{
-			((object) Reflected._itemGetBanner).AsDynamic()._displayTimer = 3;
+			((object)Reflected._itemGetBanner).AsDynamic()._displayTimer = 3;
 		}
 
 		bool IsRoomChanged()

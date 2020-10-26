@@ -16,7 +16,7 @@ namespace TsRandomizerSeedGeneratah
 
 			while (true)
 			{
-				var result = Randomizer.Generate(FillingMethod.Random);
+				var result = Randomizer.Generate(FillingMethod.Random, SeedOptions.None);
 
 				if (seeds.Contains(result.Seed)) 
 					continue;
@@ -40,13 +40,9 @@ namespace TsRandomizerSeedGeneratah
 			{
 				var segments = line.Split(',');
 
-				if(!Seed.TrySetFromHexString(segments[0], out Seed seed))
-					continue;
-
-				if(!int.TryParse(segments[1], out int itterations))
-					continue;
-
-				if (!TimeSpan.TryParse(segments[1], out TimeSpan time))
+				if (!Seed.TryParse(segments[0], out var seed)
+					|| !int.TryParse(segments[1], out var itterations)
+				    || !TimeSpan.TryParse(segments[1], out var time))
 					continue;
 
 				var result = new GenerationResult

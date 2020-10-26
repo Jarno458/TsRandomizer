@@ -36,8 +36,6 @@ namespace TsRandomizer
 				{TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Z_Raven.RavenBoss").GetPrivateMethod("ResetIdleTimer"), RandomiserPerType },
 				{TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Varndagroth.XarionBossMothProjectile").GetPrivateMethod("Reset"), RandomiserPerType },
 				{TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.OtherBosses.NightmareBoss").GetPrivateMethod("EmitFireBreath"), RandomiserPerType },
-
-
 			};
 		}
 
@@ -90,7 +88,7 @@ namespace TsRandomizer
 			if (randomizersPerKey.TryGetValue(type, out Random randomiserForKey))
 				return randomiserForKey;
 
-			var random = new Random(seed);
+			var random = new Random((int)seed.Id);
 			randomizersPerKey.Add(type, random);
 
 			return random;

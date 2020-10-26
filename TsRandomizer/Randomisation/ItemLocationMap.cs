@@ -152,7 +152,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(9, 2, 184, 176), null, itemProvider.Get(EInventoryUseItemType.WarpCard), SealedCavesSirens);
 			Add(new ItemKey(9, 2, 104, 160), null, itemProvider.Get(EInventoryRelicType.WaterMask), SealedCavesSirens);
 			//Militairy Fortress
-			Add(new ItemKey(10, 3, 264, 128), null, itemProvider.Get(EItemType.MaxSand), MilitairyFortress & DoubleJumpOfNpc);
+			Add(new ItemKey(10, 3, 264, 128), null, itemProvider.Get(EItemType.MaxSand), MilitairyFortress & DoubleJumpOfNpc & R.TimespinnerWheel); //can be reached with just upward dash but not with lightwall unless you got timestop
 			Add(new ItemKey(10, 11, 296, 192), null, itemProvider.Get(EItemType.MaxAura), MilitairyFortress);
 			Add(new ItemKey(10, 4, 1064, 176), null, itemProvider.Get(EInventoryUseItemType.FutureHiPotion), MilitairyFortressHangar);
 			Add(new ItemKey(10, 10, 104, 192), null, itemProvider.Get(EInventoryRelicType.AirMask), MilitairyFortressHangar);
@@ -298,11 +298,8 @@ namespace TsRandomizer.Randomisation
 
 		public bool IsBeatable()
 		{
-			//gassmask may never be placed in a gass effected place
-			//the verry basics to reach maw shouldd also allow you to get gassmask
-			var gassmarkLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
-			if (gassmarkLocation.Key.LevelId == 1 || !gassmarkLocation.Gate.CanBeOpenedWith(
-				    R.DoubleJump | R.GateAccessToPast | R.Swimming))
+			if (!IsGassMaskReachableWithTheMawRequirements()
+				|| ProgressiveItemsOfTheSameTypeAreInTheSameRoom()) 
 				return false;
 
 			var obtainedRequirements = R.None;
@@ -323,6 +320,27 @@ namespace TsRandomizer.Randomisation
 			return true;
 		}
 
+		bool ProgressiveItemsOfTheSameTypeAreInTheSameRoom()
+		{
+			var progressiveItemLocationsPerType = this
+				.Where(l => l.ItemInfo is PogRessiveItemInfo)
+				.GroupBy(l => l.ItemInfo);
+
+			return progressiveItemLocationsPerType.Any(
+				progressiveItemLocationPerType => progressiveItemLocationPerType.Any(
+					progressiveItemLocation => progressiveItemLocationPerType.Any(
+						p => p.Key != progressiveItemLocation.Key && p.Key.ToRoomItemKey() == progressiveItemLocation.Key.ToRoomItemKey())));
+		}
+
+		bool IsGassMaskReachableWithTheMawRequirements()
+		{
+			//gassmask may never be placed in a gass effected place
+			//the verry basics to reach maw shouldd also allow you to get gassmask
+			var gassmarkLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
+			return gassmarkLocation.Key.LevelId != 1 
+			       && gassmarkLocation.Gate.CanBeOpenedWith(R.DoubleJump | R.GateAccessToPast | R.Swimming);
+		}
+
 		R GetObtainedRequirements(R obtainedRequirements)
 		{
 			var reachableLocations = GetReachableLocations(obtainedRequirements)
@@ -334,17 +352,17 @@ namespace TsRandomizer.Randomisation
 				.Select(l => l.ItemInfo.Unlocks)
 				.Aggregate(R.None, (current, unlock) => current | unlock);
 
-			var progressiveItemsPerLocations = reachableLocations
+			var progressiveItemsPerType = reachableLocations
 				.Where(l => l.ItemInfo is PogRessiveItemInfo)
 				.GroupBy(l => l.ItemInfo as PogRessiveItemInfo);
 
-			foreach (var progressiveItemsPerLocation in progressiveItemsPerLocations)
+			foreach (var progressiveItemsType in progressiveItemsPerType)
 			{
-				var progressiveItem = progressiveItemsPerLocation.Key;
+				var progressiveItem = progressiveItemsType.Key;
 
 				progressiveItem.Reset();
 
-				for (int i = 0; i < progressiveItemsPerLocation.Count(); i++)
+				for (var i = 0; i < progressiveItemsType.Count(); i++)
 				{
 					unlockedRequirements |= progressiveItem.Unlocks;
 

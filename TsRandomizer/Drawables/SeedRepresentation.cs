@@ -68,9 +68,9 @@ namespace TsRandomizer.Drawables
 			}
 			else
 			{
-				var random = new Random(~seed.Value);
+				var random = new Random(~(int)seed.Value.Id);
 
-				for (int i = 0; i < NumberOfItemsToDraw; i++)
+				for (var i = 0; i < NumberOfItemsToDraw; i++)
 					DrawItemIcon(spriteBatch, i, random);
 			}
 		}

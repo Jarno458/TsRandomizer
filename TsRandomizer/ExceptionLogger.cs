@@ -9,10 +9,10 @@ namespace TsRandomizer
 		// ReSharper disable InconsistentNaming
 		static int LevelId;
 		static int RoomId;
-		static uint Seed;
+		static string Seed;
 		// ReSharper restore InconsistentNaming
 
-		public static void SetSeedContext(uint seed)
+		public static void SetSeedContext(string seed)
 		{
 			Seed = seed;
 		}
