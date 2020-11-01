@@ -35,8 +35,10 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 
 # New keybinds
 * On the minimap screen, holding X will highligh all locations that you can reach and still have items for you
-* In Load game menu, pressing left trigger will show the seed id in numerical format
+* In Load game menu, holding down left trigger will show the seed id in numerical format
 * In Load game menu, pressing right trigger will the generation of a spoiler log, the spoiler logs are saved in same directory as the TsRandomizer.exe
+* In Seed selection menu, holding down right trigger will allow you to force select a seed even when its logicly unbeatable
+* In Seed selection menu, Ctr+V can now be used to past text in the seed field in order to copy paste seeds into the game
 
 # Routing changes
 * The drawbridge is now open by default, and doesnt require you to visit the twins demons
