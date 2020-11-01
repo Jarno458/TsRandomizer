@@ -1,4 +1,3 @@
-
 # General
 Timespinner Randomizer will randomize the location of items such as enquipment, relics, familiars, stat boosts, use items. The logic makes sure that each game you play is beatable
 
@@ -9,7 +8,7 @@ The game considers nightmare as the final boss,	thus you require atleast access 
 
 Quest are not concidered part of the game, and they wont contain any progression item, however Neliste will still offer you an item when you talk to her
 
-When you feel stuck, you can open the minimap and hold X (the key to remove map markers),, it will highligh all locations that you can reach and still have items for you
+When you feel stuck, you can open the minimap and hold X (the key to remove map markers), it will highligh all locations that you can reach and still have items for you
 
 For questions / remarks and feedback, feel free to join the #randomizer channel on the offical timespinner discord https://discord.gg/sZMqD9
 
@@ -24,8 +23,8 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 
 ##### Unsupported verisons
 * Windows Store (not planned)
-* Linux (maybe later)
-* Max (maybe later)
+* Linux (maybe after 1.0)
+* Max (maybe after 1.0)
 
 # Gameplay changes
 * Orb\Ring\Spell shop is nolonger available, orbs\rings\spells are dropped from random item locations instead
@@ -33,6 +32,11 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 * Achievements cannot be unlocked
 * SaveStatue inside right elevator room is disabled to prevent a softlock
 * SaveStatue down in the pit of the ancient pyramid is disabled to prevent a softlock
+
+# New keybinds
+* On the minimap screen, holding X will highligh all locations that you can reach and still have items for you
+* In Load game menu, pressing left trigger will show the seed id in numerical format
+* In Load game menu, pressing right trigger will the generation of a spoiler log, the spoiler logs are saved in same directory as the TsRandomizer.exe
 
 # Routing changes
 * The drawbridge is now open by default, and doesnt require you to visit the twins demons
@@ -57,20 +61,18 @@ The item tracker features a few options:
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * The position of the randomizer credits in the credits screen is way off, sorry
 * The textured background for the item tracker is not properly tiled
-* If you pickup items from pedistal and chest quickly at the sametime the game crashes *yikes*
-* If two progressive items are in the same room, you will not be rewarded the next step up in the progression
 * Position of randomizer credits inside credits screen is wrong
 * Starting with an incorrect verison of the randomizer will not show the proper error
 
 # Todo
 ##### Things i plan on doing in the future
-* Make player start with a jewelry box
 * disable quests maybe?
 * Replace Replaces to Treasure Chest to replaces to ItemDropPickup
-* Test effect of making each seed valid
-* Seed generation options
-** Add option to make cards or jumps progressive (duuble jump => space jump) (Card D => C => B => A))
 * Extend names of item locations in the spoiler log (with help from community on discord)
+* Put mayef in a box + option to start with mayef
+* Option: Downloadable itemsM (also randomize the tablet), this makes the tablet and v card actually usefull
+* Option: Require Oculus ring for destroyable walls/floor, this makes the Oculus ring actually usefull
+* Maybe make items drop from memories and journals
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemenbted
@@ -80,3 +82,4 @@ The item tracker features a few options:
 * Timesanity
 * Make warpshard optionally a progressin item that unlocks all softlocks
 * Make any seed work
+* Randomize shop(s)
