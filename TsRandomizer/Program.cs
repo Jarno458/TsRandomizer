@@ -11,6 +11,7 @@ namespace TsRandomizer
 	{
 		public static bool IsSteam;
 
+		[STAThread]
 		public static int Main(string[] args)
 		{
 			var md5 = GetTimespinnerMd5Hash();

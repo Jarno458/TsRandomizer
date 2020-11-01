@@ -11,7 +11,6 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1, new SeedOptionInfo { Name = "Start with Jewelry Box", Description = "Start with Jewelry Box unlocked" } },
 			{ 2, new SeedOptionInfo { Name = "Progressive vertical movement", Description = "Always find vertical movement in the following order Succubus Hairpin -> Celestial Sash -> Light Wall" } },
 			{ 4, new SeedOptionInfo { Name = "Progressive keycards", Description = "Always find Security Keycard's in the following order D -> C -> B -> A" } },
-			//{ 8, new SeedOptionInfo { Name = "Memorysanity", Description = "" } },
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)

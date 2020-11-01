@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner;
 using Timespinner.GameAbstractions;
@@ -91,6 +92,11 @@ namespace TsRandomizer.Screens
 		{
 			foreach (var screen in screenManager.GetScreens())
 				AddScreen(screen, null);
+		}
+
+		public T FirstOrDefault<T>() where T : Screen
+		{
+			return (T)hookedScreens.FirstOrDefault(s => s.GetType() == typeof(T));
 		}
 	}
 }

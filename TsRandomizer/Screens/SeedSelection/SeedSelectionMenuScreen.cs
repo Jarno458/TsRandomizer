@@ -1,71 +1,104 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace TsRandomizer.Screens.SeedSelection
 {
-	class SeedSelectionMenuScreen
+	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.Options.PasswordMenuScreen")]
+	class SeedSelectionMenuScreen : Screen
 	{
 		static readonly Type PasswordMenuScreenType = TimeSpinnerType
 			.Get("Timespinner.GameStateManagement.Screens.PauseMenu.Options.PasswordMenuScreen");
 		static readonly Type MainMenuEntryType = TimeSpinnerType
 			.Get("Timespinner.GameStateManagement.MenuEntry");
 
-		readonly ScreenManager screenManager;
-		readonly GameScreen screen;
 		readonly GameDifficultyMenuScreen difficultyMenu;
-		readonly dynamic reflected;
 
-		SeedSelectionMenuScreen(ScreenManager screenManager, GameScreen screen, GameDifficultyMenuScreen difficultyMenu)
+		bool forceSeed;
+		MenuEntry okButton;
+
+		bool IsUsedAsSeedSelectionMenu => difficultyMenu != null;
+
+		public static GameScreen Create(ScreenManager screenManager)
 		{
-			this.screenManager = screenManager;
-			this.screen = screen;
-			this.difficultyMenu = difficultyMenu;
+			void Noop() { }
 
-			reflected = screen.AsDynamic();
+			return (GameScreen)Activator.CreateInstance(PasswordMenuScreenType, null, screenManager.Reflected.GCM, (Action)Noop);
 		}
 
-		public static SeedSelectionMenuScreen Create(ScreenManager screenManager, GameDifficultyMenuScreen difficultyMenu)
+		public SeedSelectionMenuScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
 		{
-			GCM gcm = screenManager.Reflected.GCM;
+			difficultyMenu = screenManager.FirstOrDefault<GameDifficultyMenuScreen>();
+		}
 
-			void Noop(){}
+		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
+		{
+			if (!IsUsedAsSeedSelectionMenu)
+				return;
 
-			var screen = (GameScreen)Activator.CreateInstance(PasswordMenuScreenType, null, gcm, (Action)Noop);
-			var seedSelectionMenu = new SeedSelectionMenuScreen(screenManager, screen, difficultyMenu);
+			Reflected._menuTitle = "Select Seed";
 
-			seedSelectionMenu.reflected._menuTitle = "Select Seed";
+			okButton = MenuEntry.Create("OK", OnOkayEntrySelected);
 
 			var extraButtons = new[] {
-				MenuEntry.Create("OK", seedSelectionMenu.OnOkayEntrySelected).AsTimeSpinnerMenuEntry(),
-				MenuEntry.Create("New", seedSelectionMenu.OnGenerateSelected).AsTimeSpinnerMenuEntry(),
+				okButton.AsTimeSpinnerMenuEntry(),
 				MenuEntry.Create("", _ => {}).AsTimeSpinnerMenuEntry(),
-				MenuEntry.Create("Options", seedSelectionMenu.OnOptionsSelected).AsTimeSpinnerMenuEntry()
+				MenuEntry.Create("New", OnGenerateSelected).AsTimeSpinnerMenuEntry(),
+				MenuEntry.Create("Options", OnOptionsSelected).AsTimeSpinnerMenuEntry()
 			};
 
-			ChangeAvailableButtons(seedSelectionMenu, extraButtons);
-
-
-
-			return seedSelectionMenu;
+			ChangeAvailableButtons(extraButtons);
 		}
 
-		static void ChangeAvailableButtons(SeedSelectionMenuScreen seedSelectionMenu, object[] extraButtons)
+		public override void Update(GameTime gameTime, InputState input)
 		{
-			var menuEntries = (IList)seedSelectionMenu.reflected.MenuEntries;
-			var entries = menuEntries
+			if (input.IsButtonHold(Buttons.RightTrigger, null, out PlayerIndex _))
+			{
+				forceSeed = true;
+				okButton.Text = "Force";
+			}
+			else
+			{
+				forceSeed = false;
+				okButton.Text = "OK";
+			}
+
+			if ((input.IsKeyHold(Keys.LeftControl, null, out PlayerIndex _) || input.IsKeyHold(Keys.RightControl, null, out PlayerIndex _))
+			    && input.IsKeyHold(Keys.V, null, out PlayerIndex _)
+			    && Clipboard.ContainsText())
+			{
+				GetClipboardSeed();
+			}
+		}
+
+		void GetClipboardSeed()
+		{
+			var text = Clipboard.GetText().Trim();
+
+			if (text.Length > Seed.Length)
+				text = text.Substring(0, Seed.Length);
+
+			SetSeed(text);
+		}
+
+		void ChangeAvailableButtons(object[] extraButtons)
+		{
+			var entries = ((IList)Reflected.MenuEntries)
 				.Cast<object>()
 				.Where(e => IsHex(e) || IsDelButton(e))
 				.Concat(extraButtons)
 				.ToList(MainMenuEntryType);
 
-			((object)seedSelectionMenu.reflected._primaryMenuCollection).AsDynamic()._entries = entries;
+			((object)Reflected._primaryMenuCollection).AsDynamic()._entries = entries;
 		}
 
 		static bool IsHex(object menuEntry)
@@ -96,7 +129,7 @@ namespace TsRandomizer.Screens.SeedSelection
 				return;
 			}
 
-			if (!Randomizer.IsBeatable(seed, FillingMethod.Random))
+			if (!forceSeed && !Randomizer.IsBeatable(seed, FillingMethod.Random))
 			{
 				ShowErrorDescription("Invallid seed id, it cannot be beated");
 				return;
@@ -104,23 +137,23 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			difficultyMenu.SetSeed(seed);
 
-			reflected.OnCancel(playerIndex);
+			Reflected.OnCancel(playerIndex);
 		}
 
 		void ShowErrorDescription(string message)
 		{
 			var inventoryItemIconType = TimeSpinnerType.Get("Timespinner.GameAbstractions.Inventory.EInventoryItemIcon");
-			reflected.ChangeDescription(message, inventoryItemIconType.GetEnumValue("None"));
+			Reflected.ChangeDescription(message, inventoryItemIconType.GetEnumValue("None"));
 		}
 
 		void OnOptionsSelected(PlayerIndex playerIndex)
 		{
-			var seedOptionsMenu = SeedOptionsMenuScreen.Create(screenManager, GetCurrentOptions(), OnSeedOptionsUpdated);
+			var seedOptionsMenu = SeedOptionsMenuScreen.Create(ScreenManager, GetCurrentOptions());
 
-			screenManager.AddScreen(seedOptionsMenu, playerIndex);
+			ScreenManager.AddScreen(seedOptionsMenu, playerIndex);
 		}
 
-		void OnSeedOptionsUpdated(SeedOptionsCollection options)
+		internal void OnSeedOptionsUpdated(SeedOptionsCollection options)
 		{
 			var hexString = GetHexString();
 	
@@ -132,11 +165,16 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		void SetSeed(Seed seed)
 		{
-			reflected._currentEnteredPassword = seed.ToString();
-			reflected.RefreshDisplayPassword();
+			SetSeed(seed.ToString());
+		}
+
+		void SetSeed(string seedString)
+		{
+			Reflected._currentEnteredPassword = seedString;
+			Reflected.RefreshDisplayPassword();
 
 			for (var i = 10; i < 12; i++) //RefreshDisplayPassword() only blacks out a single charecter
-				reflected._displayCharacters[i] = " ";
+				Reflected._displayCharacters[i] = " ";
 		}
 
 		void OnGenerateSelected(PlayerIndex playerIndex)
@@ -146,7 +184,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			SetSeed(seed);
 		}
 
-		SeedOptionsCollection GetCurrentOptions()
+		internal SeedOptionsCollection GetCurrentOptions()
 		{
 			var hexString = GetHexString();
 
@@ -157,7 +195,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		string GetHexString()
 		{
-			var hexString = (string)reflected._currentEnteredPassword;
+			var hexString = (string)Reflected._currentEnteredPassword;
 
 			if (hexString.Length > Seed.Length)
 				return hexString.Substring(0, Seed.Length);
@@ -167,11 +205,6 @@ namespace TsRandomizer.Screens.SeedSelection
  				 return hexString + new string('0', Seed.Length - hexString.Length);
 
 			return hexString;
-		}
-
-		public static implicit operator GameScreen(SeedSelectionMenuScreen value)
-		{
-			return value.screen;
 		}
 	}
 }

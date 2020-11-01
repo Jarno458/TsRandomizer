@@ -8,44 +8,46 @@ using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Screens.SeedSelection
 {
-	class SeedOptionsMenuScreen
+	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.RelicsMenuScreen")]
+	class SeedOptionsMenuScreen : Screen
 	{
 		static readonly Type RelicMenuScreenType = TimeSpinnerType
 			.Get("Timespinner.GameStateManagement.Screens.PauseMenu.RelicsMenuScreen");
 
-		readonly GameScreen screen;
-		readonly dynamic reflected;
+		readonly SeedSelectionMenuScreen seedSelectionScreen;
 
-		SeedOptionsMenuScreen(GameScreen screen)
+		bool IsUsedAsSeedOptionsMenu => seedSelectionScreen != null;
+
+		public static GameScreen Create(ScreenManager screenManager, SeedOptionsCollection options)
 		{
-			this.screen = screen;
+			void Noop() { }
 
-			reflected = screen.AsDynamic();
+			return (GameScreen)Activator.CreateInstance(RelicMenuScreenType, GetSave(options), screenManager.Reflected.GCM, (Action)Noop);
 		}
 
-		public static SeedOptionsMenuScreen Create(ScreenManager screenManager, SeedOptionsCollection options, Action<SeedOptionsCollection> onUpdate)
+		public SeedOptionsMenuScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
 		{
-			GCM gcm = screenManager.Reflected.GCM;
+			seedSelectionScreen = screenManager.FirstOrDefault<SeedSelectionMenuScreen>();
+		}
 
-			void Noop(){}
+		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
+		{
+			if(!IsUsedAsSeedOptionsMenu)
+				return;
 
-			var screen = (GameScreen)Activator.CreateInstance(RelicMenuScreenType, GetSave(options), gcm, (Action)Noop);
-			var seedOptionsMenu = new SeedOptionsMenuScreen(screen);
+			Reflected._menuTitle = "Select Seed Options";
 
-			seedOptionsMenu.reflected._menuTitle = "Select Seed Options";
-
-			var relicInventory = ((object)seedOptionsMenu.reflected._relicInventory).AsDynamic();
+			var relicInventory = ((object)Reflected._relicInventory).AsDynamic();
 			relicInventory.ColumnCount = 1;
-			relicInventory.SetColumnWidth(226 * seedOptionsMenu.reflected.Zoom, seedOptionsMenu.reflected.Zoom);
+			relicInventory.SetColumnWidth(226 * Reflected.Zoom, Reflected.Zoom);
 
-			HookOnSelectedAction(relicInventory, options, onUpdate);
+			HookOnSelectedAction(relicInventory);
 
-			UpdateMenuItems(seedOptionsMenu.reflected._relicInventory);
-
-			return seedOptionsMenu;
+			UpdateMenuItems(Reflected._relicInventory);
 		}
 
 		static GameSave GetSave(SeedOptionsCollection options)
@@ -57,7 +59,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			return save;
 		}
 
-		static void HookOnSelectedAction(dynamic relicInventory, SeedOptionsCollection options, Action<SeedOptionsCollection> onUpdate)
+		void HookOnSelectedAction(dynamic relicInventory)
 		{
 			var originalOnSelectedAction = (Action<InventoryRelic>)relicInventory._onSelectedAction;
 
@@ -65,17 +67,22 @@ namespace TsRandomizer.Screens.SeedSelection
 			{
 				originalOnSelectedAction(relic);
 
-				onUpdate(options);
+				seedSelectionScreen.OnSeedOptionsUpdated(GetOptions());
 			}
 
 			relicInventory._onSelectedAction = (Action<InventoryRelic>)OnSelected;
+		}
+
+		SeedOptionsCollection GetOptions()
+		{
+			return (SeedOptionsCollection)((object)Reflected._relicInventory).AsDynamic()._collection;
 		}
 
 		static void UpdateMenuItems(object menuRelicInventory)
 		{
 			var relicInventory = menuRelicInventory.AsDynamic();
 
-			var options = ((IEnumerable<InventoryItem>) relicInventory._items)
+			var options = ((IEnumerable<InventoryItem>)relicInventory._items)
 				.Cast<InventoryRelic>()
 				.Select(r => r.Key)
 				.ToArray();
@@ -91,11 +98,6 @@ namespace TsRandomizer.Screens.SeedSelection
 				entry.SetText(optionInfo.Name);
 				entry.Description = optionInfo.Description;
 			}
-		}
-
-		public static implicit operator GameScreen(SeedOptionsMenuScreen value)
-		{
-			return value.screen;
 		}
 	}
 }

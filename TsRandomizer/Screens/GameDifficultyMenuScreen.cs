@@ -69,7 +69,7 @@ namespace TsRandomizer.Screens
 
 		void OpenSelectSeedMenu(PlayerIndex pi)
 		{
-			var selectSeedMenu = SeedSelectionMenuScreen.Create(ScreenManager, this);
+			var selectSeedMenu = SeedSelectionMenuScreen.Create(ScreenManager);
 
 			ScreenManager.AddScreen(selectSeedMenu, pi);
 		}
