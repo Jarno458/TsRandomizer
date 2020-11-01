@@ -68,10 +68,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void FillTutorial(Random random)
 		{
-			var orbTypes = ((EInventoryOrbType[])Enum.GetValues(typeof(EInventoryOrbType)))
-					.Where(orbType => orbType != EInventoryOrbType.None //not an actual orb to use
-					                  && orbType != EInventoryOrbType.Monske) //no implemented, yields None orb
-					.ToList();
+			var orbTypes = Helper.GetAllOrbs();
 
 			var spellOrbTypes = orbTypes.Where(orbType => orbType != EInventoryOrbType.Barrier); //To OP to give as starter spell
 			var meleeOrbTypes = orbTypes.Where(orbType => orbType != EInventoryOrbType.Pink); //To annoying as each attack consumes aura power
@@ -95,6 +92,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryRelicType.DoubleJump),
 				ItemInfoProvider.Get(EInventoryRelicType.DoubleJump),
 				ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel),
+				ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel),
 				ItemInfoProvider.Get(EInventoryRelicType.PyramidsKey),
 				ItemInfoProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell),
 				ItemInfoProvider.Get(EInventoryRelicType.EssenceOfSpace)
@@ -108,8 +106,14 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceGassMaskInALegalSpot(Random random)
 		{
-			var minimalMawRequirements =
-				Requirement.DoubleJump | Requirement.GateAccessToPast | Requirement.Swimming;
+			var isWatermaskRequiredForMaw = UnlockingMap.PyramidKeysUnlock != Requirement.GateMaw
+			                                && UnlockingMap.PyramidKeysUnlock != Requirement.GateCavesOfBanishment;
+
+			var minimalMawRequirements = Requirement.DoubleJump | Requirement.GateAccessToPast;
+
+			if (isWatermaskRequiredForMaw)
+				minimalMawRequirements |= Requirement.Swimming;
+
 
 			var posableGassMaskLocations = ItemLocations
 				.Where(l => l.Key.LevelId != 1 && !l.IsUsed && l.Gate.CanBeOpenedWith(minimalMawRequirements))
@@ -175,8 +179,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		void AddOrbs(List<ItemInfo> itemlist)
 		{
-			var allOrbs = ((EInventoryOrbType[]) Enum.GetValues(typeof(EInventoryOrbType)))
-				.Where(o => o != EInventoryOrbType.None && o != EInventoryOrbType.Monske);
+			var allOrbs = Helper.GetAllOrbs();
 
 			foreach (var orb in allOrbs)
 			{

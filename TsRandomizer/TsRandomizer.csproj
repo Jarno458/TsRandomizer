@@ -90,6 +90,7 @@
     <Compile Include="ExceptionLogger.cs" />
     <Compile Include="Extensions\AnimateExtensions.cs" />
     <Compile Include="Extensions\GameSaveExtensions.cs" />
+    <Compile Include="Extensions\Helper.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\MethodInfoExtensions.cs" />

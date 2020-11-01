@@ -72,10 +72,12 @@ namespace TsRandomizer.Randomisation
 		public new ItemLocation this[ItemKey key] => GetItemLocationBasedOnKeyOrRoomKey(key);
 
 		readonly ItemInfoProvider itemProvider;
+		readonly ItemUnlockingMap unlockingMap;
 
-		public ItemLocationMap(ItemInfoProvider itemInfoProvider) : base(160, l => l.Key)
+		public ItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap) : base(160, l => l.Key)
 		{
 			itemProvider = itemInfoProvider;
+			unlockingMap = itemUnlockingMap;
 
 			AddPresentItemLocations();
 			AddPastItemLocations();
@@ -335,10 +337,18 @@ namespace TsRandomizer.Randomisation
 		bool IsGassMaskReachableWithTheMawRequirements()
 		{
 			//gassmask may never be placed in a gass effected place
-			//the verry basics to reach maw shouldd also allow you to get gassmask
-			var gassmarkLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
-			return gassmarkLocation.Key.LevelId != 1 
-			       && gassmarkLocation.Gate.CanBeOpenedWith(R.DoubleJump | R.GateAccessToPast | R.Swimming);
+			//the very basics to reach maw shouldd also allow you to get gassmask
+			var gassmaskLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
+
+			var isWatermaskRequiredForMaw = unlockingMap.PyramidKeysUnlock != R.GateMaw 
+			                                && unlockingMap.PyramidKeysUnlock != R.GateCavesOfBanishment;
+
+			var gassmaskRequirements = R.DoubleJump | R.GateAccessToPast;
+
+			if (isWatermaskRequiredForMaw)
+				gassmaskRequirements |= R.Swimming;
+
+			return gassmaskLocation.Key.LevelId != 1 && gassmaskLocation.Gate.CanBeOpenedWith(gassmaskRequirements);
 		}
 
 		R GetObtainedRequirements(R obtainedRequirements)

@@ -12,7 +12,7 @@ namespace TsRandomizer.Randomisation
 		{
 			var unlockingMap = new ItemUnlockingMap(seed);
 			var itemInfoProvider = new ItemInfoProvider(seed.Options, unlockingMap);
-			var itemLocations = new ItemLocationMap(itemInfoProvider);
+			var itemLocations = new ItemLocationMap(itemInfoProvider, unlockingMap);
 
 			switch (fillingMethod)
 			{

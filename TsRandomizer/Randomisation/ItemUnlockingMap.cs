@@ -17,6 +17,7 @@ namespace TsRandomizer.Randomisation
 
 		public R AllUnlockableRequirements => UnlockingSpecifications.Aggregate(R.None, (a, b) => a | b.AllUnlocks);
 		public IEnumerable<ItemIdentifier> ItemsThatUnlockProgression => UnlockingSpecifications.Select(us => us.Item);
+		public R PyramidKeysUnlock => UnlockingSpecifications.Single(us => us.Item == new ItemIdentifier(EInventoryRelicType.PyramidsKey)).Unlocks;
 
 		public ItemUnlockingMap(Seed seed)
 		{
@@ -50,8 +51,8 @@ namespace TsRandomizer.Randomisation
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.AirMask), R.GassMask),
 			};
 
-			var pyramidUnlockingSpecification =
-				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.Teleport);
+			var pyramidUnlockingSpecification = 
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.None, R.Teleport);
 
 			SetTeleporterPickupAction(random, pyramidUnlockingSpecification);
 
