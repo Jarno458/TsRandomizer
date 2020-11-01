@@ -16,7 +16,7 @@ namespace TsRandomizer.Tests
 			var seed = new Seed(1U, SeedOptions.None);
 			var unlockingMap = new ItemUnlockingMap(seed);
 			var itemProvder = new ItemInfoProvider(SeedOptions.None, unlockingMap);
-			var itemLocations = new ItemLocationMap(itemProvder);
+			var itemLocations = new ItemLocationMap(itemProvder, unlockingMap);
 
 			ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemProvder, unlockingMap, itemLocations, true);
 
@@ -33,7 +33,7 @@ namespace TsRandomizer.Tests
 			var seed = new Seed(seedIndex, SeedOptions.None);
 			var unlockingMap = new ItemUnlockingMap(seed);
 			var itemProvder = new ItemInfoProvider(SeedOptions.None, unlockingMap);
-			var itemLocations = new ItemLocationMap(itemProvder);
+			var itemLocations = new ItemLocationMap(itemProvder, unlockingMap);
 
 			ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemProvder, unlockingMap, itemLocations, true);
 
