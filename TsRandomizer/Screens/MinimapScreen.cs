@@ -121,10 +121,23 @@ namespace TsRandomizer.Screens
 
 		Requirement GetAvailableRequirementsBasedOnObtainedItems()
 		{
-			var requirements = itemLocations
-				.Where(l => l.IsPickedUp)
-				.Aggregate(Requirement.None, (r, l) => r | l.ItemInfo.Unlocks);
-			return requirements;
+			var pickedUpProgressionItemLocations = itemLocations
+				.Where(l => l.IsPickedUp && l.ItemInfo.Unlocks != Requirement.None)
+				.ToArray();
+
+			var pickedUpSingleItemLocationUnlocks = pickedUpProgressionItemLocations
+				.Where(l => !(l.ItemInfo is PogRessiveItemInfo))
+				.Select(l => l.ItemInfo.Unlocks);
+
+			var pickedUpProgressiveItemLocationUnlocks = pickedUpProgressionItemLocations
+				.Where(l => l.ItemInfo is PogRessiveItemInfo)
+				.Select(l => ((PogRessiveItemInfo) l.ItemInfo)
+					.GetAllUnlockedItems()
+					.Select(i => i.Unlocks)
+					.Aggregate(Requirement.None, (a, b) => a | b));
+
+			return pickedUpSingleItemLocationUnlocks.Concat(pickedUpProgressiveItemLocationUnlocks)
+				.Aggregate((a, b) => a | b);
 		}
 
 		static void MakeSureEraIsVisable(ICollection<EMinimapEraType> visableAreas, MinimapRoom room)

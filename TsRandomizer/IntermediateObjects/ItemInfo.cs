@@ -8,7 +8,6 @@ namespace TsRandomizer.IntermediateObjects
 	public abstract class ItemInfo : IEquatable<ItemInfo>
 	{
 		public abstract ItemIdentifier Identifier { get; }
-
 		public abstract Enum TreasureLootType { get; }
 		public abstract int AnimationIndex { get; }
 		public abstract BestiaryItemDropSpecification BestiaryItemDropSpecification { get; }

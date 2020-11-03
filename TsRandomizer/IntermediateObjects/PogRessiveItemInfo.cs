@@ -9,7 +9,7 @@ namespace TsRandomizer.IntermediateObjects
 {
 	class PogRessiveItemInfo : ItemInfo
 	{
-		public ItemInfo[] Items { get; }
+		ItemInfo[] Items { get; }
 
 		int index;
 		ItemInfo CurrentItem => index < Items.Length ? Items[index] : Items.Last();
@@ -19,14 +19,22 @@ namespace TsRandomizer.IntermediateObjects
 		public override int AnimationIndex => CurrentItem.AnimationIndex;
 		public override BestiaryItemDropSpecification BestiaryItemDropSpecification => CurrentItem.BestiaryItemDropSpecification;
 		internal override Requirement Unlocks => CurrentItem.Unlocks;
+		public override void OnPickup(Level level) => CurrentItem.OnPickup(level);
 
-		public PogRessiveItemInfo(params ItemInfo[] items)
+		public PogRessiveItemInfo(params ItemInfo[] items) : this(items, 0)
 		{
-			Items = items;
-			index = 0;
 		}
 
-		public override void OnPickup(Level level) => CurrentItem.OnPickup(level);
+		PogRessiveItemInfo(ItemInfo[] items, int i)
+		{
+			Items = items;
+			index = i;
+		}
+
+		public PogRessiveItemInfo Clone()
+		{
+			return new PogRessiveItemInfo(Items, index);
+		}
 
 		public void Reset() => index = 0;
 
@@ -36,10 +44,10 @@ namespace TsRandomizer.IntermediateObjects
 				index++;
 		}
 
-		public IEnumerable<ItemIdentifier> GetAllUnlockedItems()
+		public IEnumerable<ItemInfo> GetAllUnlockedItems()
 		{
 			for (var i = 0; i < index; i++)
-				yield return Items[i].Identifier;
+				yield return Items[i];
 		}
 
 		public override string ToString()

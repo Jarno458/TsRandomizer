@@ -14,19 +14,24 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		protected readonly ItemUnlockingMap UnlockingMap;
 		protected readonly bool ProgressionOnly;
 
-		readonly ItemInfo[] itemsToRemoveFromGame;
+		readonly List<ItemInfo> itemsToRemoveFromGame;
 		readonly ItemInfo[] itemsToAddToGame;
 		readonly ItemInfo[] genericItems;
 
 		protected ItemLocationRandomizer(
-			ItemInfoProvider itemInfoProvider, ItemLocationMap itemLocations, ItemUnlockingMap unlockingMap, bool progressionOnly)
+			SeedOptions options,
+			ItemInfoProvider itemInfoProvider, 
+			ItemLocationMap itemLocations, 
+			ItemUnlockingMap unlockingMap, 
+			bool progressionOnly
+		)
 		{
 			ItemInfoProvider = itemInfoProvider;
 			ItemLocations = itemLocations;
 			UnlockingMap = unlockingMap;
 			ProgressionOnly = progressionOnly;
 
-			itemsToRemoveFromGame = new []
+			itemsToRemoveFromGame = new List<ItemInfo>
 			{
 				ItemInfoProvider.Get(EInventoryUseItemType.MagicMarbles),
 				ItemInfoProvider.Get(EInventoryUseItemType.GoldRing),
@@ -34,6 +39,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.SilverOre),
 				ItemInfoProvider.Get(EInventoryUseItemType.EssenceCrystal),
 			};
+
+			if(options.StartWithJewelryBox)
+				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.JewelryBox));
 
 			itemsToAddToGame = new[]
 			{

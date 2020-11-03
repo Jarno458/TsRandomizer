@@ -21,7 +21,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		ForwardFillingItemLocationRandomizer(
 			Seed seed, ItemInfoProvider itemProvider, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly) 
-				: base(itemProvider, itemLocationMap, unlockingMap, progressionOnly)
+				: base(seed.Options, itemProvider, itemLocationMap, unlockingMap, progressionOnly)
 		{
 			random = new Random((int)seed.Id);
 			availableRequirements = Requirement.None;

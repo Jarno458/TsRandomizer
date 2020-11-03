@@ -61,7 +61,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
-			if (input.IsButtonHold(Buttons.RightTrigger, null, out PlayerIndex _))
+			if (input.IsButtonHold(Buttons.RightTrigger, null, out _))
 			{
 				forceSeed = true;
 				okButton.Text = "Force";
@@ -72,11 +72,12 @@ namespace TsRandomizer.Screens.SeedSelection
 				okButton.Text = "OK";
 			}
 
-			if ((input.IsKeyHold(Keys.LeftControl, null, out PlayerIndex _) || input.IsKeyHold(Keys.RightControl, null, out PlayerIndex _))
-			    && input.IsKeyHold(Keys.V, null, out PlayerIndex _)
-			    && Clipboard.ContainsText())
+			if (input.IsKeyHold(Keys.LeftControl, null, out _) || input.IsKeyHold(Keys.RightControl, null, out _))
 			{
-				GetClipboardSeed();
+				if(input.IsKeyHold(Keys.V, null, out _) && Clipboard.ContainsText())
+					GetClipboardSeed();
+				else if (input.IsKeyHold(Keys.C, null, out _)) 
+					Clipboard.SetText(GetHexString());
 			}
 		}
 

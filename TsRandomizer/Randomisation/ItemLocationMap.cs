@@ -369,14 +369,13 @@ namespace TsRandomizer.Randomisation
 			foreach (var progressiveItemsType in progressiveItemsPerType)
 			{
 				var progressiveItem = progressiveItemsType.Key;
-
-				progressiveItem.Reset();
+				var clone = progressiveItem.Clone();
 
 				for (var i = 0; i < progressiveItemsType.Count(); i++)
 				{
-					unlockedRequirements |= progressiveItem.Unlocks;
+					unlockedRequirements |= clone.Unlocks;
 
-					progressiveItem.Next();
+					clone.Next();
 				}
 			}
 

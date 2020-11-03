@@ -98,7 +98,7 @@ namespace TsRandomizer.Screens
 		{
 			var selectedIndex = Reflected.SelectedIndex;
 
-			if (input.IsButtonHold(Buttons.LeftTrigger, null, out PlayerIndex _))
+			if (input.IsButtonHold(Buttons.LeftTrigger, null, out _))
 			{
 				var selectedseedRepresentation = seedRepresentations
 					.Where(sr => ((GameSave)sr.Key.AsDynamic().SaveFile).SaveFileIndex == selectedIndex)
@@ -109,7 +109,7 @@ namespace TsRandomizer.Screens
 					selectedseedRepresentation.First().ShowSeedId = true;
 				// ReSharper restore PossibleMultipleEnumeration
 			}
-			else if (input.IsNewButtonPress(Buttons.RightTrigger, null, out PlayerIndex _))
+			else if (input.IsNewButtonPress(Buttons.RightTrigger, null, out _))
 			{
 				var selectedSaveFile = seedRepresentations
 					.Select(sr => (GameSave)sr.Key.AsDynamic().SaveFile)

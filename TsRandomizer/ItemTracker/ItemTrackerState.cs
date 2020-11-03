@@ -55,7 +55,7 @@ namespace TsRandomizer.ItemTracker
 
 			var obtainedItemIdentifiers = obtainedSingleItems
 				.Select(i => i.Identifier)
-				.Concat(obtainedProgressiveItems.SelectMany(pi => pi.GetAllUnlockedItems()));
+				.Concat(obtainedProgressiveItems.SelectMany(pi => pi.GetAllUnlockedItems().Select(i => i.Identifier)));
 
 			var trackerState = new ItemTrackerState();
 

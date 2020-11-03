@@ -30,6 +30,11 @@ namespace TsRandomizer.Extensions
 			return items.Concat(new[] {item});
 		}
 
+		public static IEnumerable<T> NotOfType<T,T2>(this IEnumerable<T> items)
+		{
+			return items.Where(i => i.GetType() != typeof(T2));
+		}
+
 		internal static T SelectRandom<T>(this IEnumerable<T> items, Random r)
 		{
 			var array = items.ToArray();
