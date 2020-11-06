@@ -151,7 +151,7 @@ namespace TsRandomizerItemTracker
 		{
 			graphics.GraphicsDevice.Clear(Color.Black);
 
-			backgroundRenderer.Draw(spriteBatch, graphics.GraphicsDevice.Viewport.Bounds);
+			backgroundRenderer.Draw(spriteBatch, graphics.GraphicsDevice.Viewport.Bounds, trackerRenderer.IconSize);
 
 			if (trackerState != null)
 				trackerRenderer.Draw(spriteBatch, trackerState);

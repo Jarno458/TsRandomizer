@@ -9,6 +9,8 @@ namespace TsRandomizerItemTracker
 {
 	class BackgroundRenderer
 	{
+		const int Zoom = 2;
+
 		int currentBackground;
 
 		readonly Background[] backgrounds;
@@ -47,12 +49,22 @@ namespace TsRandomizerItemTracker
 				currentBackground = 0;
 		}
 
-		public void Draw(SpriteBatch spriteBatch, Rectangle backdropArea)
+		public void Draw(SpriteBatch spriteBatch, Rectangle backdropArea, int iconSize)
 		{
 			var background = backgrounds[currentBackground];
+			var size = iconSize / 2;
 
 			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointWrap))
-				spriteBatch.Draw(background.Texture, backdropArea, background.Souce, background.Color);
+			{
+				for (var x = 0; x < backdropArea.Width; x += size)
+				for (var y = 0; y < backdropArea.Height; y += size)
+					DrawBackground(spriteBatch, background, new Rectangle(x, y, size, size));
+			}
+		}
+
+		void DrawBackground(SpriteBatch spriteBatch, Background background, Rectangle targetArea)
+		{
+			spriteBatch.Draw(background.Texture, targetArea, background.Souce, background.Color);
 		}
 
 		class Background

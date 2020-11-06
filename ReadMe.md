@@ -62,10 +62,7 @@ The item tracker features a few options:
 * Menu tooltip is wrong on diffuclty selection screen
 * Player obtains Meyef to early
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
-* The position of the randomizer credits in the credits screen is way off, sorry
-* The textured background for the item tracker is not properly tiled
 * Position of randomizer credits inside credits screen is wrong
-* Starting with an incorrect verison of the randomizer will not show the proper error
 
 # Todo
 ##### Things i plan on doing in the future

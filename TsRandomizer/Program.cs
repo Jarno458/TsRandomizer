@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
@@ -26,43 +25,14 @@ namespace TsRandomizer
 					IsSteam = false;
 					break;
 
-				case null:
-					return -1;
-
 				default:
-					if (!ContinueWithoutMd5Check())
-						return -1;
-					else
-						IsSteam = Assembly.GetExecutingAssembly().Location.Contains("steamapps");
-					break;
+					MessageBox.Show("TsRandomizer version missmatch!, pleaze update TsRandomizer\r\nThe installed version of TsRanodmizer is not made to work with the installed version of TimeSpinner", "VersionMissmatch");
+					return -1;
 			}
 
 			StartTimeSpinner();
 
 			return 0;
-		}
-
-		static bool ContinueWithoutMd5Check()
-		{
-			Console.Out.WriteLine("TsRandomizer version missmatch!, pleaze update TsRandomizer");
-			Console.Out.WriteLine("The installed version of TsRanodmizer is not made to work with the installed version of TimeSpinner");
-			Console.Out.WriteLine("If you continue the game might crash at any given point");
-
-			do
-			{
-				Console.Out.Write("Do you want to continue? Y/N");
-
-				var key = Console.ReadKey().Key;
-				Console.Out.WriteLine();
-
-				switch (key)
-				{
-					case ConsoleKey.Y:
-						return true;
-					case ConsoleKey.N:
-						return false;
-				}
-			} while (true);
 		}
 
 		static string GetTimespinnerMd5Hash()
@@ -82,7 +52,7 @@ namespace TsRandomizer
 
 		static string ByteArrayToString(byte[] bytes)
 		{
-			StringBuilder hex = new StringBuilder(bytes.Length * 2);
+			var hex = new StringBuilder(bytes.Length * 2);
 			foreach (var b in bytes)
 				hex.Append(b.ToString("X2"));
 			return hex.ToString();
