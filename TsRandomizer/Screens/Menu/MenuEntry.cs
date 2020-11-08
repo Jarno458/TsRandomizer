@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 
-namespace TsRandomizer.Screens
+namespace TsRandomizer.Screens.Menu
 {
 	class MenuEntry
 	{
@@ -60,17 +60,26 @@ namespace TsRandomizer.Screens
 			IsCenterAligned = true;
 		}
 
-		public static MenuEntry Create(string text, Action<PlayerIndex> handler)
+		public static MenuEntry Create(string text, Action handler, bool enabled = true)
 		{
-			return Create(text, (o, args) => handler(args.AsDynamic().PlayerIndex));
+			return Create(text, (o, args) => handler(), enabled);
+		}
+
+		public static MenuEntry Create(string text, Action<PlayerIndex> handler, bool enabled = true)
+		{
+			return Create(text, (o, args) => handler(args.AsDynamic().PlayerIndex), enabled);
 		}
 		
-		public static MenuEntry Create(string text, Action<object, EventArgs> handler)
+		static MenuEntry Create(string text, Action<object, EventArgs> handler, bool enabled)
 		{
 			var handlerDelegate = 
 				Delegate.CreateDelegate(MainMenuSelectedEventType, handler.Target, handler.Method);
 
 			var entry = Activator.CreateInstance(MainMenuEntryType, text);
+
+			if(!enabled)
+				entry.AsDynamic().BaseDrawColor = UnavailableColor;
+
 			SelectedEventAddMethod.Invoke(entry, new object[] { handlerDelegate });
 
 			return new MenuEntry(entry);

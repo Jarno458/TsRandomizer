@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Drawables;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Screens.Menu;
 using TsRandomizer.Screens.SeedSelection;
 
 namespace TsRandomizer.Screens
@@ -17,6 +20,9 @@ namespace TsRandomizer.Screens
 	// ReSharper disable once UnusedMember.Global
 	class GameDifficultyMenuScreen : Screen
 	{
+		static readonly Type LoadingScreenType =
+			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.LoadingScreen");
+
 		readonly MenuEntry seedMenuEntry;
 		readonly SeedRepresentation seedRepresentation;
 
@@ -29,12 +35,16 @@ namespace TsRandomizer.Screens
 			DisableDefaultDifficultOptions();
 
 			seedMenuEntry = GetSelectSeedMenu();
-			AddMenuEntryAtIndex(0, seedMenuEntry);
-			SetSelectedMenuItemByIndex(0);
-			
+			AddMenuEntryAtIndex(0, seedMenuEntry); 
+
 			seedRepresentation = new SeedRepresentation(ScreenManager.Reflected.GCM);
 
 			HookOnDifficultySelectedMethod();
+		}
+
+		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
+		{
+			SetSelectedMenuItemByIndex(0);
 		}
 
 		void DisableDefaultDifficultOptions()
@@ -46,17 +56,6 @@ namespace TsRandomizer.Screens
 				var entry = menuEntry.AsDynamic();
 				entry.BaseDrawColor = MenuEntry.UnavailableColor;
 			}
-		}
-
-		void AddMenuEntryAtIndex(int index, MenuEntry menuEntry)
-		{
-			var menuEntries = (IList)Reflected.MenuEntries;
-			menuEntries.Insert(index, menuEntry.AsTimeSpinnerMenuEntry());
-
-		}
-		void SetSelectedMenuItemByIndex(int index)
-		{
-			((object)Reflected._primaryMenuCollection).AsDynamic().SelectedIndex = index;
 		}
 
 		MenuEntry GetSelectSeedMenu()
@@ -78,34 +77,32 @@ namespace TsRandomizer.Screens
 		{
 			originalOnDifficultyChosenMethod = Reflected._onDifficultyChosen;
 
+			void NewOnDifficultySelectedMethod(GameSave.EGameDifficultyType difficulty)
+			{
+				if (!seed.HasValue)
+					return;
+
+				originalOnDifficultyChosenMethod(difficulty);
+
+				AddSeedToSelectedSave();
+			}
 
 			Reflected._onDifficultyChosen = (Action<GameSave.EGameDifficultyType>)NewOnDifficultySelectedMethod;
 		}
 
-		void NewOnDifficultySelectedMethod(GameSave.EGameDifficultyType difficulty)
-		{
-			if(!seed.HasValue)
-				return;
-
-			originalOnDifficultyChosenMethod(difficulty);
-			AddSeedToSelectedSave();
-		}
-
 		void AddSeedToSelectedSave()
 		{
-			foreach (var gameScreen in ScreenManager.GetScreens())
-			{
-				if (gameScreen.GetType() == TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.LoadingScreen"))
-				{
-					var loadingScreen = gameScreen.AsDynamic();
-					var gameplayScreen = ((GameScreen[])loadingScreen._screensToLoad)[0];
-					var saveGame = (GameSave)gameplayScreen.AsDynamic().SaveFile;
+			var loadingScreen = ScreenManager
+				.GetScreens()
+				.First(s => s.GetType() == LoadingScreenType)
+				.AsDynamic();
 
-					saveGame.SetSeed(seed.Value);
-					saveGame.SetFillingMethod(FillingMethod.Random);
-					saveGame.DataKeyStrings["TsRandomizerVersion"] = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-				}
-			}
+			var gameplayScreen = ((GameScreen[])loadingScreen._screensToLoad)[0];
+			var saveGame = (GameSave)gameplayScreen.AsDynamic().SaveFile;
+
+			saveGame.SetSeed(seed.Value);
+			saveGame.SetFillingMethod(FillingMethod.Random);
+			saveGame.DataKeyStrings["TsRandomizerVersion"] = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		}
 
 		public void SetSeed(Seed selectedSeed)
@@ -115,7 +112,7 @@ namespace TsRandomizer.Screens
 
 			seedMenuEntry.Text = "Seed: ";
 
-			((object)Reflected._primaryMenuCollection).AsDynamic().SelectedIndex = 2;
+			SetSelectedMenuItemByIndex(2);
 
 			EnableAllMenuItems();
 		}
@@ -161,6 +158,18 @@ namespace TsRandomizer.Screens
 
 			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp)) 
 				seedRepresentation.Draw(spriteBatch);
+		}
+
+		protected void AddMenuEntryAtIndex(int index, MenuEntry menuEntry)
+		{
+			var menuEntries = (IList)Reflected.MenuEntries;
+			menuEntries.Insert(index, menuEntry.AsTimeSpinnerMenuEntry());
+		}
+
+		protected void SetSelectedMenuItemByIndex(int index)
+		{
+			((object)Reflected._primaryMenuCollection).AsDynamic().SelectedIndex = index;
+			Reflected.OnSelectedEntryChanged(index);
 		}
 	}
 }

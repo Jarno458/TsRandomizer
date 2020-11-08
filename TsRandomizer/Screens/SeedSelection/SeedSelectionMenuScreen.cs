@@ -9,6 +9,7 @@ using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Screens.Menu;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace TsRandomizer.Screens.SeedSelection
@@ -51,7 +52,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			var extraButtons = new[] {
 				okButton.AsTimeSpinnerMenuEntry(),
-				MenuEntry.Create("", _ => {}).AsTimeSpinnerMenuEntry(),
+				MenuEntry.Create("", () => {}, false).AsTimeSpinnerMenuEntry(),
 				MenuEntry.Create("New", OnGenerateSelected).AsTimeSpinnerMenuEntry(),
 				MenuEntry.Create("Options", OnOptionsSelected).AsTimeSpinnerMenuEntry()
 			};
@@ -78,6 +79,15 @@ namespace TsRandomizer.Screens.SeedSelection
 					GetClipboardSeed();
 				else if (input.IsKeyHold(Keys.C, null, out _)) 
 					Clipboard.SetText(GetHexString());
+			}
+
+			var selectedMenuEntryIndex = Reflected.SelectedIndex;
+			if (GetSelectedMenuEntryText(selectedMenuEntryIndex) == "")
+			{
+				if (input.IsButtonHold(Buttons.LeftThumbstickLeft, null, out _))
+					SetSelectedMenuItemByIndex(selectedMenuEntryIndex - 1);
+				else
+					SetSelectedMenuItemByIndex(selectedMenuEntryIndex + 1);
 			}
 		}
 
@@ -178,7 +188,7 @@ namespace TsRandomizer.Screens.SeedSelection
 				Reflected._displayCharacters[i] = " ";
 		}
 
-		void OnGenerateSelected(PlayerIndex playerIndex)
+		void OnGenerateSelected()
 		{
 			var seed = Randomizer.Generate(FillingMethod.Random, GetCurrentOptions()).Seed;
 
@@ -206,6 +216,17 @@ namespace TsRandomizer.Screens.SeedSelection
  				 return hexString + new string('0', Seed.Length - hexString.Length);
 
 			return hexString;
+		}
+
+		protected string GetSelectedMenuEntryText(int selectedMenuEntryIndex)
+		{
+			return ((IList)Reflected.MenuEntries)[selectedMenuEntryIndex].AsDynamic().Text;
+		}
+
+		protected void SetSelectedMenuItemByIndex(int index)
+		{
+			((object)Reflected._primaryMenuCollection).AsDynamic().SelectedIndex = index;
+			Reflected.OnSelectedEntryChanged(index);
 		}
 	}
 }
