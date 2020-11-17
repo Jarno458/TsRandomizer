@@ -71,14 +71,14 @@ namespace TsRandomizer.IntermediateObjects
 		void MakeVerticalMovementProgressive()
 		{
 			var doubleJump = Get(EInventoryRelicType.DoubleJump);
-			var celestialSash = Get(EInventoryRelicType.EssenceOfSpace);
 			var lightwall = Get(EInventoryOrbType.Barrier, EOrbSlot.Spell);
+			var celestialSash = Get(EInventoryRelicType.EssenceOfSpace);
 
-			var progressiveItem = new PogRessiveItemInfo(doubleJump, celestialSash, lightwall);
+			var progressiveItem = new PogRessiveItemInfo(doubleJump, lightwall, celestialSash);
 
 			progressiveItems.Add(doubleJump, progressiveItem);
-			progressiveItems.Add(celestialSash, progressiveItem);
 			progressiveItems.Add(lightwall, progressiveItem);
+			progressiveItems.Add(celestialSash, progressiveItem);
 		}
 
 		public ItemInfo Get(ItemIdentifier identifier)
