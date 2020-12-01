@@ -62,6 +62,9 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
+			if (!IsUsedAsSeedSelectionMenu)
+				return;
+
 			if (input.IsButtonHold(Buttons.RightTrigger, null, out _))
 			{
 				forceSeed = true;

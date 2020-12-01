@@ -62,6 +62,7 @@ The item tracker features a few options:
 * Player obtains Meyef to early
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * Position of randomizer credits inside credits screen is wrong
+* Chest in gear rooms are behind statue
 
 # Todo
 ##### Things i plan on doing in the future
