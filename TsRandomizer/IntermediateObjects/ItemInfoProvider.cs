@@ -29,9 +29,11 @@ namespace TsRandomizer.IntermediateObjects
 			familierItems = new Dictionary<EInventoryFamiliarType, ItemInfo>();
 			orbItems = new Dictionary<int, ItemInfo>();
 			statItems = new Dictionary<EItemType, ItemInfo>();
+
 			progressiveItems = new Dictionary<ItemInfo, PogRessiveItemInfo>();
 
 			MakeGearsProgressive();
+			MakeBroochProgressive();
 
 			if (options.ProgressiveKeycard)
 				MakeKeycardsProgressive();
@@ -51,6 +53,17 @@ namespace TsRandomizer.IntermediateObjects
 			progressiveItems.Add(gear1, progressiveItem);
 			progressiveItems.Add(gear2, progressiveItem);
 			progressiveItems.Add(gear3, progressiveItem);
+		}
+
+		void MakeBroochProgressive()
+		{
+			var empireBrooch = Get(EInventoryRelicType.EmpireBrooch);
+			var godestBrooch = Get(EInventoryRelicType.EternalBrooch);
+
+			var progressiveItem = new PogRessiveItemInfo(empireBrooch, godestBrooch);
+
+			progressiveItems.Add(empireBrooch, progressiveItem);
+			progressiveItems.Add(godestBrooch, progressiveItem);
 		}
 
 		void MakeKeycardsProgressive()
@@ -99,7 +112,7 @@ namespace TsRandomizer.IntermediateObjects
 		{
 			var item = GetOrAdd(relicItems, relicItem, () => CreateNew(new ItemIdentifier(relicItem)));
 
-			return progressiveItems.TryGetValue(item, out PogRessiveItemInfo progressiveItem)
+			return progressiveItems.TryGetValue(item, out var progressiveItem)
 				? progressiveItem
 				: item;
 		}
@@ -108,7 +121,7 @@ namespace TsRandomizer.IntermediateObjects
 		{
 			var orb = GetOrAdd(orbItems, GetOrbKey(orbType, orbSlot), () => CreateNew(new ItemIdentifier(orbType, orbSlot)));
 
-			return progressiveItems.TryGetValue(orb, out PogRessiveItemInfo progressiveItem)
+			return progressiveItems.TryGetValue(orb, out var progressiveItem)
 				? progressiveItem
 				: orb;
 		}

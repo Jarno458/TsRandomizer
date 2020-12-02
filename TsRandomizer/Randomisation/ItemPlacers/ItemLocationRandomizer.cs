@@ -54,7 +54,10 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryEquipmentType.MetalWristband),
 				ItemInfoProvider.Get(EInventoryEquipmentType.NelisteEarring),
 				ItemInfoProvider.Get(EInventoryEquipmentType.FamiliarEgg),
-				ItemInfoProvider.Get(EInventoryEquipmentType.LuckyCoin)
+				ItemInfoProvider.Get(EInventoryEquipmentType.LuckyCoin),
+				ItemInfoProvider.Get(EInventoryRelicType.EternalBrooch),
+				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltMeyef),
+				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow),
 			};
 
 			genericItems = new[]
@@ -121,7 +124,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			if (isWatermaskRequiredForMaw)
 				minimalMawRequirements |= Requirement.Swimming;
-
 
 			var posableGassMaskLocations = ItemLocations
 				.Where(l => l.Key.LevelId != 1 && !l.IsUsed && l.Gate.CanBeOpenedWith(minimalMawRequirements))
