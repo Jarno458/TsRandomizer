@@ -33,5 +33,15 @@ namespace TsRandomizer.Extensions
 			reflectedScript.OrbSlot = itemInfo.Identifier.OrbSlot;
 			reflectedScript.Arguments = ReplacedArguments;
 		}
+
+		internal static void RemoveGiveItem(this Queue<ScriptAction> scripts)
+		{
+			var giveItemScript = scripts.Last(s => s.AsDynamic().ScriptType == EScriptType.GiveItem);
+			var reflectedScript = giveItemScript.AsDynamic();
+
+			reflectedScript.ScriptType = EScriptType.Delegate;
+			reflectedScript.Delegate = (Action)(() => {});
+			reflectedScript.Arguments = ReplacedArguments;
+		}
 	}
 }
