@@ -108,6 +108,7 @@
     <Compile Include="ItemTracker\ItemTrackerState.cs" />
     <Compile Include="LevelObjects\AlwaysSpawnAttribute.cs" />
     <Compile Include="ItemTracker\ItemTrackerUplink.cs" />
+    <Compile Include="LevelObjects\ItemManipulators\JournalComputerEvent.cs" />
     <Compile Include="LevelObjects\ItemManipulators\LibrarianNpc.cs" />
     <Compile Include="LevelObjects\Other\SaveStatue.cs" />
     <Compile Include="LevelObjects\Other\GyrePortalEvent.cs" />

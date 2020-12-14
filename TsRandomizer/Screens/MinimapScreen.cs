@@ -137,7 +137,7 @@ namespace TsRandomizer.Screens
 					.Aggregate(Requirement.None, (a, b) => a | b));
 
 			return pickedUpSingleItemLocationUnlocks.Concat(pickedUpProgressiveItemLocationUnlocks)
-				.Aggregate((a, b) => a | b);
+				.Aggregate(Requirement.None, (a, b) => a | b);
 		}
 
 		static void MakeSureEraIsVisable(ICollection<EMinimapEraType> visableAreas, MinimapRoom room)

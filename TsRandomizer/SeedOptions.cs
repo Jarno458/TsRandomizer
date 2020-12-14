@@ -13,6 +13,7 @@ namespace TsRandomizer
 		public bool StartWithJewelryBox => (Flags & 1) > 0;
 		public bool ProgressiveVerticalMovement => (Flags & 2) > 0;
 		public bool ProgressiveKeycard => (Flags & 4) > 0;
+		public bool DownloadableItems => (Flags & 8) > 0;
 
 		public SeedOptions(uint flags)
 		{
