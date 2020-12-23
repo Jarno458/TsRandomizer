@@ -62,7 +62,8 @@ The item tracker features a few options:
 * Player obtains Meyef to early
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * Position of randomizer credits inside credits screen is wrong
-* Chest in gear rooms are behind statue
+* Sometimes killing kitty boss does not correctly reward your item even when the item pickup message is shown
+* To prevent a crash, the pedistal after killing dad is now temporary not randomized anymore
 
 # Todo
 ##### Things i plan on doing in the future
@@ -70,16 +71,12 @@ The item tracker features a few options:
 * Replace Replaces to Treasure Chest to replaces to ItemDropPickup
 * Extend names of item locations in the spoiler log (with help from community on discord)
 * Put mayef in a box + option to start with mayef
-* Option: Downloadable itemsM (also randomize the tablet), this makes the tablet and v card actually usefull
-* Option: Require Oculus ring for destroyable walls/floor, this makes the Oculus ring actually usefull
 * Maybe make items drop from memories and journals
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemenbted
-* Make ice orb freeze enemies
 * Randomize quest items
 * Randomize enemies
 * Timesanity
 * Make warpshard optionally a progressin item that unlocks all softlocks
-* Make any seed work
 * Randomize shop(s)

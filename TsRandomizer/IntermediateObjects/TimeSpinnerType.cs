@@ -6,7 +6,7 @@ using Timespinner;
 
 namespace TsRandomizer.IntermediateObjects
 {
-	[AttributeUsage(AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public class TimeSpinnerType : Attribute
 	{
 		public static Dictionary<string, Type> TypeCache = new Dictionary<string, Type>(40);

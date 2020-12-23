@@ -19,7 +19,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		{
 		}
 
-		protected override void Initialize()
+		protected override void Initialize(SeedOptions options)
 		{
 			if (ItemInfo == null)
 				return;
@@ -78,15 +78,10 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			{
 				case LootType.ConstOrb:
 				case LootType.ConstFamiliar:
-					AwardContainedItem();
-					UndoBaseGameAwardedEnquipment(gameplayScreen);
-					Level.AddScript(RelicOrOrbGetPopup());
-					break;
-
 				case LootType.ConstStat:
 					AwardContainedItem();
 					UndoBaseGameAwardedEnquipment(gameplayScreen);
-					Level.RequestToastPopupForStats(ItemInfo);
+					ShowItemAwardPopup();
 					break;
 
 				case LootType.ConstRelic:
@@ -100,25 +95,6 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			}
 
 			hasDroppedLoot = true;
-		}
-
-		ScriptAction RelicOrOrbGetPopup()
-		{
-			switch (ItemInfo.Identifier.LootType)
-			{
-				case LootType.ConstOrb:
-					return (ScriptAction) typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.OrbType, ItemInfo.Identifier.OrbSlot);
-				case LootType.ConstFamiliar:
-					return (ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.Familiar);
-				case LootType.ConstRelic:
-					return (ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.Relic);
-				case LootType.ConstEquipment:
-					return (ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.Enquipment);
-				case LootType.ConstUseItem:
-					return (ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.UseItem, 1);
-				default:
-					throw new NotImplementedException($"Script action is not implemented for LootType {ItemInfo.Identifier.LootType}");
-			}
 		}
 
 		void UndoBaseGameAwardedEnquipment(GameplayScreen gameplayScreen)

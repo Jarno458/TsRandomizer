@@ -25,7 +25,6 @@ namespace TsRandomizer.Extensions
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
-
 		}
 	}
 }

@@ -19,7 +19,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		{
 		}
 
-		protected override void Initialize()
+		protected override void Initialize(SeedOptions options)
 		{
 			if (ItemInfo == null)
 				return;

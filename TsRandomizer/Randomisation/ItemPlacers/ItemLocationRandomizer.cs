@@ -143,6 +143,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.ToArray();
 			
 			var itemlist = ItemLocations
+				.Where(l => l.DefaultItem != null)
 				.Select(l => l.DefaultItem)
 				.Where(i => i.Identifier.LootType != LootType.ConstOrb 
 				            && i.Identifier.LootType != LootType.ConstFamiliar 

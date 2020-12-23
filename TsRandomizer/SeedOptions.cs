@@ -10,10 +10,12 @@ namespace TsRandomizer
 
 		public static SeedOptions None = new SeedOptions(0U);
 
-		public bool StartWithJewelryBox => (Flags & 1) > 0;
-		public bool ProgressiveVerticalMovement => (Flags & 2) > 0;
-		public bool ProgressiveKeycard => (Flags & 4) > 0;
-		public bool DownloadableItems => (Flags & 8) > 0;
+		public bool StartWithJewelryBox => (Flags & 1 << 0) > 0;
+		public bool ProgressiveVerticalMovement => (Flags & 1 << 1) > 0;
+		public bool ProgressiveKeycard => (Flags & 1 << 2) > 0;
+		public bool DownloadableItems => (Flags & 1 << 3) > 0;
+		public bool RequireEyeOrbRing => (Flags & 1 << 4) > 0;
+		public bool StartWithMeyef => (Flags & 1 << 5) > 0;
 
 		public SeedOptions(uint flags)
 		{
@@ -33,9 +35,7 @@ namespace TsRandomizer
 			return false;
 		}
 
-		public override string ToString()
-		{
-			return Flags.ToString($"X{Length}");
-		}
+		public override string ToString() =>
+			Flags.ToString($"X{Length}");
 	}
 }

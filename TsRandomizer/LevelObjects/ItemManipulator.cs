@@ -1,4 +1,5 @@
 ﻿using System;
+using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -65,6 +66,33 @@ namespace TsRandomizer.LevelObjects
 			}
 
 			return (ItemManipulator)Activator.CreateInstance(levelObjectType, obj, itemLocation);
+		}
+
+		protected void ShowItemAwardPopup()
+		{
+			switch (ItemInfo.Identifier.LootType)
+			{
+				case LootType.ConstOrb:
+					Level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.OrbType, ItemInfo.Identifier.OrbSlot));
+					break;
+				case LootType.ConstFamiliar:
+					Level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.Familiar));
+					break;
+				case LootType.ConstRelic:
+					Level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.Relic));
+					break;
+				case LootType.ConstEquipment:
+					Level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.Enquipment));
+					break;
+				case LootType.ConstUseItem:
+					Level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, ItemInfo.Identifier.UseItem, 1));
+					break;
+				case LootType.ConstStat:
+					Level.RequestToastPopupForStats(ItemInfo);
+					break; 
+				default:
+					throw new NotImplementedException($"RelicOrOrbGetPopup is not implemented for LootType {ItemInfo.Identifier.LootType}");
+			}
 		}
 	}
 }

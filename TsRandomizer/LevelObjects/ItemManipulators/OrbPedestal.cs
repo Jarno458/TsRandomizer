@@ -37,7 +37,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				menuIcons = Level.GCM.SpMenuIcons;
 		}
 		
-		protected override void Initialize()
+		protected override void Initialize(SeedOptions options)
 		{
 			if (ItemInfo == null)
 				return;

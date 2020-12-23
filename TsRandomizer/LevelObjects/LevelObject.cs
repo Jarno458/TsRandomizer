@@ -21,7 +21,7 @@ namespace TsRandomizer.LevelObjects
 	{
 		public readonly T TypedObject;
 
-		protected LevelObject(T typedObject, ItemInfo itemInfo) : base(typedObject)
+		protected LevelObject(T typedObject) : base(typedObject)
 		{
 			TypedObject = typedObject;
 		}
@@ -54,14 +54,18 @@ namespace TsRandomizer.LevelObjects
 
 			foreach (var typeDirivedFromLevelObject in typesDirivedFromLevelObject)
 			{
-				// ReSharper disable once PossibleNullReferenceException
-				var correspondingTimeSpinnerType = typeDirivedFromLevelObject
+				var timeSpinnerTypes = typeDirivedFromLevelObject
 					.GetCustomAttributes(typeof(TimeSpinnerType), true)
 					.Cast<TimeSpinnerType>()
 					.Select(a => a.Type)
-					.FirstOrDefault() ?? typeDirivedFromLevelObject.BaseType.GetGenericArguments()[0];
+					.ToList();
 
-				RegisteredTypes.Add(correspondingTimeSpinnerType, typeDirivedFromLevelObject);
+				if (timeSpinnerTypes.Count > 0)
+					foreach (var timeSpinnerType in timeSpinnerTypes)
+						RegisteredTypes.Add(timeSpinnerType, typeDirivedFromLevelObject);
+				else
+					// ReSharper disable once PossibleNullReferenceException
+					RegisteredTypes.Add(typeDirivedFromLevelObject.BaseType.GetGenericArguments()[0], typeDirivedFromLevelObject);
 
 				var alwaysSpawnAttribute = (AlwaysSpawnAttribute)typeDirivedFromLevelObject
 					.GetCustomAttributes(typeof(AlwaysSpawnAttribute), true)
@@ -71,7 +75,7 @@ namespace TsRandomizer.LevelObjects
 					continue;
 
 				alwaysSpawnAttribute.ObjectType = typeDirivedFromLevelObject;
-				alwaysSpawnAttribute.TimeSpinnerObjectType = correspondingTimeSpinnerType;
+				alwaysSpawnAttribute.TimeSpinnerObjectType = timeSpinnerTypes.First();
 
 				AlwaysSpawningEventTypes.Add(alwaysSpawnAttribute.EventType, alwaysSpawnAttribute);
 			}
@@ -97,7 +101,7 @@ namespace TsRandomizer.LevelObjects
 
 			if (newNonItemObjects.Any())
 			{
-				GenerateShadowObjects(level.GameSave, itemLocations, newNonItemObjects);
+				GenerateShadowObjects(level.GameSave, itemLocations, newNonItemObjects, seedOptions);
 
 				SetMonsterHpTo1(newNonItemObjects.OfType<Alive>());
 			}
@@ -110,7 +114,7 @@ namespace TsRandomizer.LevelObjects
 				.ToArray();
 
 			if (newItems.Any())
-				GenerateShadowObjects(level.GameSave, itemLocations, newItems);
+				GenerateShadowObjects(level.GameSave, itemLocations, newItems, seedOptions);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
@@ -121,14 +125,15 @@ namespace TsRandomizer.LevelObjects
 
 		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, SeedOptions seedOptions)
 		{
-			if(seedOptions.StartWithJewelryBox)
-				level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.JewelryBox));
+			if (seedOptions.StartWithJewelryBox)
+				level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.JewelryBox)); 
+			if (seedOptions.StartWithMeyef)
+				level.GameSave.AddItem(level, new ItemIdentifier(EInventoryFamiliarType.Meyef));
 
 #if DEBUG
-			Console.Out.WriteLine("OnChangeRoom");
-
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.EssenceOfSpace));
+			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive));
 #endif
 
 			var levelReflected = level.AsDynamic();
@@ -149,11 +154,11 @@ namespace TsRandomizer.LevelObjects
 
 			RoomTrigger.OnChangeRoom(level, itemLocations, levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
 			Replaces.ReplaceObjects(level, objects);
- 			GenerateShadowObjects(level.GameSave, itemLocations, objects);
+ 			GenerateShadowObjects(level.GameSave, itemLocations, objects, seedOptions);
 			SpawnMissingObjects(level, levelReflected, itemLocations);
 		}
 
-		public static void GenerateShadowObjects(GameSave gameSave, ItemLocationMap itemLocations, IEnumerable<Mobile> objects)
+		public static void GenerateShadowObjects(GameSave gameSave, ItemLocationMap itemLocations, IEnumerable<Mobile> objects, SeedOptions options)
 		{
 			var objectsPerTypes = objects.GroupBy(o => o.GetType());
 
@@ -172,8 +177,9 @@ namespace TsRandomizer.LevelObjects
 
 					if (levelObject == null)
 						continue;
+
 					Objects.Add(levelObject);
-					levelObject.Initialize();
+					levelObject.Initialize(options);
 				}
 			}
 		}
@@ -260,7 +266,7 @@ namespace TsRandomizer.LevelObjects
 			}
 		}
 
-		protected virtual void Initialize()
+		protected virtual void Initialize(SeedOptions options)
 		{
 		}
 

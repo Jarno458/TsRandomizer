@@ -49,6 +49,13 @@ namespace TsRandomizer.Extensions
 			return gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int) orbType);
 		}
 
+		internal static bool HasRing(this GameSave gameSave, EInventoryOrbType orbType)
+		{
+			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;
+
+			return orbCollection.TryGetValue((int)orbType, out var orb) && orb.IsPassiveUnlocked;
+		}
+
 		internal static bool HasOrb(this GameSave gameSave, EInventoryOrbType orbType)
 		{
 			return gameSave.Inventory.OrbInventory.Inventory.ContainsKey((int) orbType);

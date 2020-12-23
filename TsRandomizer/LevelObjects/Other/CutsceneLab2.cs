@@ -12,7 +12,7 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 		}
 
-		protected override void Initialize()
+		protected override void Initialize(SeedOptions options)
 		{
 			if (AreTriggerConditionsMet()) return;
 

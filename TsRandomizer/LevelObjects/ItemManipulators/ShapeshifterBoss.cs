@@ -21,13 +21,6 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		{
 		}
 
-		//ShapeshifterBoss.PlaceKeycard
-		//TODO spawn item if boss is dead but you havent lewted it yet
-
-		protected override void Initialize()
-		{
-		}
-
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
 			if (ItemInfo == null || hasReplacedItemScript || (Point)Object.DeathPosition == Point.Zero)

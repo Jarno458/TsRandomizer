@@ -13,28 +13,27 @@ namespace TsRandomizer.Randomisation
 		GameSave gameSave;
 
 		public string Name { get; internal set; }
-
+		public string AreaName { get; internal set; }
 		public bool IsPickedUp { get; internal set; }
-
 		public ItemInfo ItemInfo { get; internal set; }
-
 		public ItemInfo DefaultItem { get; internal set;  }
 
 		public bool IsUsed => ItemInfo != null;
 		
-		public ItemLocation(ItemKey key, string name, ItemInfo defaultItem) 
-			: this(key, name, defaultItem, Requirement.None)
+		public ItemLocation(ItemKey key, string areaName, string name, ItemInfo defaultItem) 
+			: this(key, areaName, name, defaultItem, Requirement.None)
 		{
 		}
 
-		public ItemLocation(ItemKey key, string name, ItemInfo defaultItem, Requirement requiredRequirements)
-			: this(key, name, defaultItem, (Gate)requiredRequirements)
+		public ItemLocation(ItemKey key, string areaName, string name, ItemInfo defaultItem, Requirement requiredRequirements)
+			: this(key, areaName, name, defaultItem, (Gate)requiredRequirements)
 		{
 		}
 
-		public ItemLocation(ItemKey key, string name, ItemInfo defaultItem, Gate gate)
+		public ItemLocation(ItemKey key, string areaName, string name, ItemInfo defaultItem, Gate gate)
 		{
 			Key = key;
+			AreaName = areaName;
 			Name = name;
 			Gate = gate;
 			DefaultItem = defaultItem;
@@ -56,7 +55,7 @@ namespace TsRandomizer.Randomisation
 
 		public override string ToString()
 		{
-			return $"{Name ?? Key.ToString()} [{ItemInfo}]";
+			return $"{AreaName} {Name ?? Key.ToString()} [{ItemInfo}]";
 		}
 
 		public void BsseOnGameSave(GameSave save)

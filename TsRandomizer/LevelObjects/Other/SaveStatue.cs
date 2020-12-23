@@ -11,13 +11,13 @@ namespace TsRandomizer.LevelObjects.Other
 	// ReSharper disable once UnusedMember.Global
 	class SaveStatue : LevelObject
 	{
-		Type SaveOrbStateType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.SaveStatue+ESaveOrbState");
+		static readonly Type SaveOrbStateType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.SaveStatue+ESaveOrbState");
 
 		public SaveStatue(Mobile typedObject) : base(typedObject)
 		{
 		}
 
-		protected override void Initialize()
+		protected override void Initialize(SeedOptions options)
 		{
 			if (Object._isBroken) 
 				return;
@@ -34,7 +34,7 @@ namespace TsRandomizer.LevelObjects.Other
 			orbAppendage.ClearBattleAnimations();
 			orbAppendage.IsGlowing = false;
 
-			((SFXCueInstance) Object._glowCueInstance)?.Stop();
+			((SFXCueInstance)Object._glowCueInstance)?.Stop();
 		}
 	}
 }

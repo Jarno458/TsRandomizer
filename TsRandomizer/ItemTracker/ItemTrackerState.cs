@@ -12,7 +12,7 @@ namespace TsRandomizer.ItemTracker
 	[Serializable]
 	public class ItemTrackerState
 	{
-		public const int NumberOfItems = 25;
+		public const int NumberOfItems = 27;
 
 		public bool Timestop;
 		public bool TimeSpindle;
@@ -39,6 +39,8 @@ namespace TsRandomizer.ItemTracker
 		public bool PinkOrb;
 		public bool PinkSpell;
 		public bool PinkRing;
+		public bool Tablet;
+		public bool EyeRing;
 
 		internal static ItemTrackerState FromItemLocationMap(IEnumerable<ItemLocation> itemLocations)
 		{
@@ -93,6 +95,8 @@ namespace TsRandomizer.ItemTracker
 			{new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Melee), s => s.PinkOrb},
 			{new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Spell), s => s.PinkSpell},
 			{new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Passive), s => s.PinkRing},
+			{new ItemIdentifier(EInventoryRelicType.Tablet), s => s.Tablet},
+			{new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive), s => s.EyeRing},
 		};
 
 		static void SetMemberForItem(ItemTrackerState trackerState, ItemIdentifier itemInfo)

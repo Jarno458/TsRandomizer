@@ -14,7 +14,7 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 		}
 
-		protected override void Initialize()
+		protected override void Initialize(SeedOptions options)
 		{
 			Object.SilentKill();
 

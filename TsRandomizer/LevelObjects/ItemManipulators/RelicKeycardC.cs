@@ -23,7 +23,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		{
 		}
 
-		protected override void Initialize()
+		protected override void Initialize(SeedOptions options)
 		{
 			if (ItemInfo == null)
 				return;
@@ -41,7 +41,6 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (ItemInfo == null || hasDroppedLoot || !Object.IsFading)
 				return;
 
-			//TODO might crash if you already had card C
 			if(!hasCardC)
 				Level.GameSave.Inventory.RelicInventory.RemoveItem((int)EInventoryRelicType.ScienceKeycardC);
 
