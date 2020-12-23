@@ -25,7 +25,7 @@ namespace TsRandomizer
 		public static bool TryParse(string seedString, out SeedOptions options)
 		{
 			if (seedString.Length == Seed.Length
-			    && uint.TryParse(seedString.Substring(8, Length), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out var parsedOptionsKey))
+			    && uint.TryParse(seedString.Substring(Seed.Length - Length, Length), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out var parsedOptionsKey))
 			{
 				options = new SeedOptions(parsedOptionsKey);
 				return true;

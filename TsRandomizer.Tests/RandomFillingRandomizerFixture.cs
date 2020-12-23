@@ -19,7 +19,7 @@ namespace TsRandomizer.Tests
 			var seed = new Seed(seedIndex, SeedOptions.None);
 			var unlockingMap = new ItemUnlockingMap(seed);
 			var itemProvider = new ItemInfoProvider(SeedOptions.None, unlockingMap);
-			var itemLocations = new ItemLocationMap(itemProvider, unlockingMap);
+			var itemLocations = new ItemLocationMap(itemProvider, unlockingMap, SeedOptions.None);
 
 			FullRandomItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemProvider, unlockingMap, itemLocations, true);
 

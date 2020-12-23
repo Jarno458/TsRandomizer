@@ -31,7 +31,7 @@ namespace TsRandomizer.Tests
 
 		ItemLocation GetPickedUpItemLocation(ItemInfo item)
 		{
-			return new ItemLocation(null, null, null)
+			return new ItemLocation(null, null, null, null)
 			{
 				ItemInfo = item,
 				IsPickedUp = true
