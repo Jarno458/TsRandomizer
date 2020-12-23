@@ -206,7 +206,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(12, 19, 72, 192), "Wayyyy up there", itemProvider.Get(EInventoryEquipmentType.FiligreeClasp), EmperorsTower & DoubleJumpOfNpc);
 			Add(new ItemKey(12, 13, 120, 176), "Left tower balcony", itemProvider.Get(EItemType.MaxHP), EmperorsTower);
 			Add(new ItemKey(12, 11, 264, 208), "Dad's Chambers chest", itemProvider.Get(EInventoryRelicType.EmpireBrooch), EmperorsTower); 
-			Add(new ItemKey(12, 11, 136, 205), "Dad's Chambers pedistal", itemProvider.Get(EInventoryOrbType.Empire, EOrbSlot.Melee), EmperorsTower);
+			//TODO: Fix my crashes
+			//Add(new ItemKey(12, 11, 136, 205), "Dad's Chambers pedistal", itemProvider.Get(EInventoryOrbType.Empire, EOrbSlot.Melee), EmperorsTower);
 		}
 
 		void AddPastItemLocations()
