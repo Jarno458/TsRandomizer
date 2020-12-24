@@ -11,20 +11,26 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	class LibrarianNpc : ItemManipulator
 	{
 		bool hasReplacedItem;
+		int initialProgress;
 
 		public LibrarianNpc(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
 		{
 		}
 
+		protected override void Initialize(SeedOptions options)
+		{
+			initialProgress = Object.PrimaryProgress;
+		}
+
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
-			if (ItemInfo == null || hasReplacedItem || Object.PrimaryProgress != 1)
+			if (ItemInfo == null || hasReplacedItem || initialProgress != 0 || Object.PrimaryProgress != 1)
 				return;
 
 			if (Object.IsTalking && Object._isStandingUp)
 			{
-				Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
 				Scripts.RemoveGiveItem();
+				Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
 
 				AwardContainedItem();
 

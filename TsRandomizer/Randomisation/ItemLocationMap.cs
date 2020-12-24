@@ -323,7 +323,7 @@ namespace TsRandomizer.Randomisation
 			areaName = "Libary top";
 			Add(new ItemKey(2, 44, 568, 176), "Backer room terminal", null, UpperLeftLibrary & R.Tablet);
 			areaName = "Varndagroth tower right";
-			Add(new ItemKey(2, 18, 392, 160), "Medbay", null, RightSideLibraryElevator & R.CardB & R.Tablet);
+			Add(new ItemKey(2, 18, 200, 192), "Medbay", null, RightSideLibraryElevator & R.CardB & R.Tablet);
 			areaName = "The lab";
 			Add(new ItemKey(11, 6, 200, 192), null, null, UpperLab & R.Tablet);
 			Add(new ItemKey(11, 15, 152, 176), null, null, TheLabPoweredOff & R.Tablet);

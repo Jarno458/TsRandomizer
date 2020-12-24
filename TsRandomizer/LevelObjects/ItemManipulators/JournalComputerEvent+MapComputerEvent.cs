@@ -8,11 +8,11 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Treasure.JournalComputerEvent")]
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Treasure.MapComputerEvent")]
 	// ReSharper disable once UnusedMember.Global
-	class JournalComputerEvent : ItemManipulator
+	class DownloadEvent : ItemManipulator
 	{
 		bool hasAwardedItem;
 
-		public JournalComputerEvent(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
+		public DownloadEvent(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
 		{
 		}
 
@@ -21,8 +21,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (ItemInfo == null || hasAwardedItem || !Object._isTriggered || !Object._wasActivating)
 				return;
 
-			AwardContainedItem();
 			ShowItemAwardPopup();
+			AwardContainedItem();
 
 			hasAwardedItem = true;
 		}

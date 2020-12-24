@@ -133,7 +133,6 @@ namespace TsRandomizer.LevelObjects
 #if DEBUG
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.EssenceOfSpace));
-			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive));
 #endif
 
 			var levelReflected = level.AsDynamic();

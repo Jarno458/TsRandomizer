@@ -108,14 +108,14 @@
     <Compile Include="ItemTracker\ItemTrackerState.cs" />
     <Compile Include="LevelObjects\AlwaysSpawnAttribute.cs" />
     <Compile Include="ItemTracker\ItemTrackerUplink.cs" />
-    <Compile Include="LevelObjects\ItemManipulators\JournalComputerEvent.cs" />
+    <Compile Include="LevelObjects\ItemManipulators\JournalComputerEvent+MapComputerEvent.cs" />
     <Compile Include="LevelObjects\ItemManipulators\LibrarianNpc.cs" />
     <Compile Include="LevelObjects\Other\BreakableWallEvent.cs" />
     <Compile Include="LevelObjects\Other\EnvPrefabLabPedestal.cs" />
     <Compile Include="LevelObjects\Other\SaveStatue.cs" />
     <Compile Include="LevelObjects\Other\GyrePortalEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneLab2.cs" />
-    <Compile Include="LevelObjects\Other\CutsceneLab0.cs" />
+    <Compile Include="LevelObjects\Other\CutsceneLab0+CutsceneCity5.cs" />
     <Compile Include="LevelObjects\Other\EnvPrefabCurtainWinch.cs" />
     <Compile Include="LevelObjects\ItemManipulators\CutsceneKeep1.cs" />
     <Compile Include="LevelObjects\Other\CurtainDrawbridge.cs" />

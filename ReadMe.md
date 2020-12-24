@@ -64,6 +64,7 @@ The item tracker features a few options:
 * Position of randomizer credits inside credits screen is wrong
 * Sometimes killing kitty boss does not correctly reward your item even when the item pickup message is shown
 * To prevent a crash, the pedistal after killing dad is now temporary not randomized anymore
+* ItemTracker doesnt resizie to fit all new items
 
 # Todo
 ##### Things i plan on doing in the future

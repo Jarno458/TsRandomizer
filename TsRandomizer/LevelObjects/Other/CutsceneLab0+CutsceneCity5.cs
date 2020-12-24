@@ -7,10 +7,11 @@ using TsRandomizer.IntermediateObjects;
 namespace TsRandomizer.LevelObjects.Other
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Cutscene.CutsceneLab0")]
+	[TimeSpinnerType("Timespinner.GameObjects.Events.Cutscene.CutsceneCity5")]
 	// ReSharper disable once UnusedMember.Global
-	class CutsceneLab0 : LevelObject
+	class RemoveCutScenes : LevelObject
 	{
-		public CutsceneLab0(Mobile typedObject) : base(typedObject)
+		public RemoveCutScenes(Mobile typedObject) : base(typedObject)
 		{
 		}
 
