@@ -87,7 +87,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			var selectedMenuEntryIndex = Reflected.SelectedIndex;
 			if (GetSelectedMenuEntryText(selectedMenuEntryIndex) == "")
 			{
-				if (input.IsButtonHold(Buttons.LeftThumbstickLeft, null, out _))
+				if (input.IsPressMenuLeft(null))
 					SetSelectedMenuItemByIndex(selectedMenuEntryIndex - 1);
 				else
 					SetSelectedMenuItemByIndex(selectedMenuEntryIndex + 1);
@@ -221,12 +221,12 @@ namespace TsRandomizer.Screens.SeedSelection
 			return hexString;
 		}
 
-		protected string GetSelectedMenuEntryText(int selectedMenuEntryIndex)
+		string GetSelectedMenuEntryText(int selectedMenuEntryIndex)
 		{
 			return ((IList)Reflected.MenuEntries)[selectedMenuEntryIndex].AsDynamic().Text;
 		}
 
-		protected void SetSelectedMenuItemByIndex(int index)
+		void SetSelectedMenuItemByIndex(int index)
 		{
 			((object)Reflected._primaryMenuCollection).AsDynamic().SelectedIndex = index;
 			Reflected.OnSelectedEntryChanged(index);

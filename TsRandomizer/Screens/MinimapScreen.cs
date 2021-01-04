@@ -36,8 +36,7 @@ namespace TsRandomizer.Screens
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
-			var mapping = controllerMapping.Mappings[(int)ButtonMapping.EDestinationType.Secondary];
-			var shouldShowItemLocationHints = mapping.IsButtonDown(input.CurrentGamePadStates[0], input.CurrentKeyboardStates[0]);
+			var shouldShowItemLocationHints = input.IsPressSecondary(null);
 
 			if ((isShowingAviableLocations && shouldShowItemLocationHints) 
 			    || (!shouldShowItemLocationHints && !isShowingAviableLocations))

@@ -7,6 +7,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Drawables;
@@ -100,14 +101,11 @@ namespace TsRandomizer.Screens
 
 			if (input.IsButtonHold(Buttons.LeftTrigger, null, out _))
 			{
-				var selectedseedRepresentation = seedRepresentations
-					.Where(sr => ((GameSave)sr.Key.AsDynamic().SaveFile).SaveFileIndex == selectedIndex)
-					.Select(sr => sr.Value);
+				var seedRepresentation = seedRepresentations
+					.FirstOrDefault(sr => ((GameSave)sr.Key.AsDynamic().SaveFile).SaveFileIndex == selectedIndex).Value;
 
-				// ReSharper disable PossibleMultipleEnumeration
-				if (selectedseedRepresentation.Any())
-					selectedseedRepresentation.First().ShowSeedId = true;
-				// ReSharper restore PossibleMultipleEnumeration
+				if (seedRepresentation != null)
+					seedRepresentation.ShowSeedId = true;
 			}
 			else if (input.IsNewButtonPress(Buttons.RightTrigger, null, out _))
 			{
