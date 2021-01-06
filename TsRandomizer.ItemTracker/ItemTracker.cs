@@ -114,6 +114,7 @@ namespace TsRandomizerItemTracker
 			trackerRenderer = new TrackerRenderer(gcm, Content) { IconSize = settings.IconSize };
 			trackerRenderer.SetWidth(settings.WindowSize.X);
 
+			settings.WindowSize = trackerRenderer.GetSize();
 			UpdateWindowSize();
 
 			backgroundRenderer = new BackgroundRenderer(gcm, Content);
