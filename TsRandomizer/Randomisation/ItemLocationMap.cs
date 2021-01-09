@@ -279,7 +279,7 @@ namespace TsRandomizer.Randomisation
 			areaName = "Royal towers";
 			Add(new ItemKey(6, 19, 200, 176), null, itemProvider.Get(EItemType.MaxAura), RoyalTower & R.DoubleJump & OculusRift);
 			Add(new ItemKey(6, 27, 472, 384), null, itemProvider.Get(EInventoryUseItemType.MagicMarbles), MidRoyalTower);
-			Add(new ItemKey(6, 1, 1512, 288), null, itemProvider.Get(EInventoryUseItemType.Potion), UpperRoyalTower);
+			Add(new ItemKey(6, 1, 1512, 288), null, itemProvider.Get(EInventoryUseItemType.Potion), MidRoyalTower);
 			Add(new ItemKey(6, 25, 360, 176), null, itemProvider.Get(EInventoryUseItemType.HiEther), UpperRoyalTower & DoubleJumpOfNpc);
 			Add(new ItemKey(6, 3, 120, 208), null, itemProvider.Get(EInventoryFamiliarType.Demon), UpperRoyalTower & DoubleJumpOfNpc);
 			Add(new ItemKey(6, 17, 200, 112), null, itemProvider.Get(EItemType.MaxHP), UpperRoyalTower & DoubleJumpOfNpc);

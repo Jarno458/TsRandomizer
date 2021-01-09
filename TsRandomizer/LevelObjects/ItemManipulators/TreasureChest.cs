@@ -78,7 +78,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				return;
 		
 			// ReSharper disable once PossibleNullReferenceException
-			if (ItemInfo.Identifier.LootType == LootType.Orb)
+			if (ItemInfo.Identifier.LootType == LootType.Orb || ItemInfo.Identifier.LootType == LootType.Familiar)
 				Level.GameSave.AddItem(Level, ItemInfo.Identifier);
 
 			OnItemPickup();

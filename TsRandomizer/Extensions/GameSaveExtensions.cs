@@ -13,6 +13,8 @@ namespace TsRandomizer.Extensions
 		const string SeedSaveFileKey = "TsRandomizerSeed";
 		const string FillMethodSaveFileKey = "TsRandomizerFillMethod";
 		const string MeleeOrbPrefixKey = "TsRandomizerHasMeleeOrb";
+		const string FamilierPrefixKey = "TsRandomizerHasFamiliar";
+
 
 		internal static Seed? GetSeed(this GameSave gameSave)
 		{
@@ -47,6 +49,11 @@ namespace TsRandomizer.Extensions
 		internal static bool HasMeleeOrb(this GameSave gameSave, EInventoryOrbType orbType)
 		{
 			return gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int) orbType);
+		}
+
+		internal static bool HasFamiliar(this GameSave gameSave, EInventoryFamiliarType familiar)
+		{
+			return gameSave.DataKeyBools.ContainsKey(FamilierPrefixKey + (int)familiar);
 		}
 
 		internal static bool HasRing(this GameSave gameSave, EInventoryOrbType orbType)
@@ -118,6 +125,8 @@ namespace TsRandomizer.Extensions
 		static void AddFamiliar(this GameSave gameSave, EInventoryFamiliarType familiar)
 		{
 			gameSave.Inventory.FamiliarInventory.AddItem((int)familiar);
+
+			gameSave.DataKeyBools[FamilierPrefixKey + (int)familiar] = true;
 		}
 
 		static void AddStat(this GameSave gameSave, Level level, EItemType stat)

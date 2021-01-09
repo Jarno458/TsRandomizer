@@ -42,6 +42,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			if(options.StartWithJewelryBox)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.JewelryBox));
+			if (options.StartWithMeyef)
+				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryFamiliarType.Meyef));
 
 			itemsToAddToGame = new[]
 			{
@@ -183,7 +185,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		void AddFamiliers(List<ItemInfo> itemlist)
 		{
 			var allFamiliers = ((EInventoryFamiliarType[])Enum.GetValues(typeof(EInventoryFamiliarType)))
-				.Where(o => o != EInventoryFamiliarType.None && o != EInventoryFamiliarType.Meyef);
+				.Where(o => o != EInventoryFamiliarType.None);
 
 			itemlist.AddRange(allFamiliers.Select(familiar => ItemInfoProvider.Get(familiar)));
 		}

@@ -61,6 +61,7 @@ namespace TsRandomizer.Screens
 		public override void Update(GameTime gameTime, InputState input)
 		{
 			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions);
+			FamiliarManager.Update(Level);
 
 #if DEBUG
 			TimespinnerAfterDark(input);

@@ -59,18 +59,17 @@ The item tracker features a few options:
 # Known bugs
 ##### I am aware of these issues, but i found them small enough not to fix at this moment
 * Resizing render size, requires a restart of the game
-* Player obtains Meyef to early
 * Position of randomizer credits inside credits screen is wrong
 * Sometimes killing kitty boss does not correctly reward your item even when the item pickup message is shown
 * To prevent a crash, the pedistal after killing dad is now temporary not randomized anymore
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
+* Picking up relics of pedistals does not activate them
 
 # Todo
 ##### Things i plan on doing in the future
 * disable quests maybe?
 * Replace Replaces to Treasure Chest to replaces to ItemDropPickup
 * Extend names of item locations in the spoiler log (with help from community on discord)
-* Put mayef in a box
 * Maybe make items drop from memories and journals
 
 # Ideas
