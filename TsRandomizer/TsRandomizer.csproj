@@ -139,7 +139,7 @@
     <Compile Include="ReplacementObjects\TimespinnerSpindle.cs" />
     <Compile Include="IntermediateObjects\TriggerAfterLootDrop.cs" />
     <Compile Include="DeRandomizer.cs" />
-    <Compile Include="Screens\FamiliarManager.cs" />
+    <Compile Include="FamiliarManager.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\MessageBox.cs" />

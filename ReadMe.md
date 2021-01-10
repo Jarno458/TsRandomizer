@@ -63,7 +63,6 @@ The item tracker features a few options:
 * Sometimes killing kitty boss does not correctly reward your item even when the item pickup message is shown
 * To prevent a crash, the pedistal after killing dad is now temporary not randomized anymore
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
-* Picking up relics of pedistals does not activate them
 
 # Todo
 ##### Things i plan on doing in the future
