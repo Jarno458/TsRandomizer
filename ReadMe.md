@@ -58,7 +58,6 @@ The item tracker features a few options:
 
 # Known bugs
 ##### I am aware of these issues, but i found them small enough not to fix at this moment
-* Resizing render size, requires a restart of the game
 * Sometimes killing kitty boss does not correctly reward your item even when the item pickup message is shown
 * To prevent a crash, the pedistal after killing dad is now temporary not randomized anymore
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet

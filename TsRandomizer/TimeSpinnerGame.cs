@@ -20,6 +20,8 @@ namespace TsRandomizer
 			var screenManager = Components.FirstOfType<Timespinner.GameStateManagement.ScreenManager.ScreenManager>();
 			var newScreenManager = new ScreenManager(this, platformHelper);
 
+			this.AsDynamic()._screenManager = newScreenManager;
+
 			newScreenManager.CopyScreensFrom(screenManager);
 
 			Components.ReplaceComponent(screenManager, newScreenManager);
