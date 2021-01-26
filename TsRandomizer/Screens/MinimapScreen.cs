@@ -31,7 +31,7 @@ namespace TsRandomizer.Screens
 		{
 			itemLocations = itemLocationMap;
 
-			Reflected._removeMarkerText = (string)Reflected._removeMarkerText + " / Show where to go next";
+			Dynamic._removeMarkerText = (string)Dynamic._removeMarkerText + " / Show where to go next";
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
@@ -63,8 +63,8 @@ namespace TsRandomizer.Screens
 		{
 			preservedRoomStates = new LookupDictionairy<RoomItemKey, MinimapRoomState>(r => r.RoomKey);
 
-			var visableAreas = (List<EMinimapEraType>)Reflected._availableEras;
-			var areas = ((MinimapSpecification)Reflected._minimap).Areas;
+			var visableAreas = (List<EMinimapEraType>)Dynamic._availableEras;
+			var areas = ((MinimapSpecification)Dynamic._minimap).Areas;
 			
 			foreach (var itemLocation in GetAvailableItemLocations())
 			{
@@ -103,7 +103,7 @@ namespace TsRandomizer.Screens
 			if(preservedRoomStates == null)
 				return;
 
-			var areas = ((MinimapSpecification)Reflected._minimap).Areas;
+			var areas = ((MinimapSpecification)Dynamic._minimap).Areas;
 
 			foreach (var roomState in preservedRoomStates)
 				roomState.ApplyTo(areas.GetRoom(roomState.RoomKey));

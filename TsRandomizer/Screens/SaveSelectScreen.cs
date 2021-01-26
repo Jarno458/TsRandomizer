@@ -7,7 +7,6 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Drawables;
@@ -27,7 +26,7 @@ namespace TsRandomizer.Screens
 
 		public SaveSelectScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
-			var saveFileEntries = (IList)((object)Reflected._saveFileCollection).AsDynamic().Entries;
+			var saveFileEntries = (IList)((object)Dynamic._saveFileCollection).AsDynamic().Entries;
 
 			foreach (var entry in saveFileEntries)
 			{
@@ -45,7 +44,7 @@ namespace TsRandomizer.Screens
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
-			var saveFileEntries = (IList)((object)Reflected._saveFileCollection).AsDynamic().Entries;
+			var saveFileEntries = (IList)((object)Dynamic._saveFileCollection).AsDynamic().Entries;
 
 			if(IsZoomChanged())
 			{
@@ -97,7 +96,7 @@ namespace TsRandomizer.Screens
 
 		void UpdateInput(InputState input)
 		{
-			var selectedIndex = Reflected.SelectedIndex;
+			var selectedIndex = Dynamic.SelectedIndex;
 
 			if (input.IsButtonHold(Buttons.LeftTrigger, null, out _))
 			{
@@ -144,14 +143,49 @@ namespace TsRandomizer.Screens
 				file.WriteLine($"Seed: {seed}");
 				file.WriteLine($"Timespinner version: v{TimeSpinnerGame.Constants.GameVersion}");
 				file.WriteLine($"TsRandomizer version: v{Assembly.GetExecutingAssembly().GetName().Version}");
-				file.WriteLine();
 
-				var progressionItems = Randomizer.Randomize(seed.Value, save.GetFillingMethod())
-					.Where(l => l.ItemInfo.Unlocks != Requirement.None);
+				var itemLocations = Randomizer.Randomize(seed.Value, save.GetFillingMethod());
 
-				foreach (var itemLocation in progressionItems)
-					file.WriteLine(itemLocation);
+				var progressionItems = itemLocations.Where(l => l.ItemInfo.Unlocks != Requirement.None);
+				var otherItems = itemLocations.Where(l => l.ItemInfo.Unlocks == Requirement.None);
+
+				WriteProgressionChain(file, itemLocations);
+				WriteItemListSection(file, progressionItems, "Progression Items:");
+				WriteItemListSection(file, otherItems, "Other Locations:");
 			}
+		}
+
+		void WriteProgressionChain(StreamWriter file, ItemLocationMap itemLocations)
+		{
+			file.WriteLine();
+			file.WriteLine("Progression Chain:");
+			
+			int depth = 0;
+			var progressionChain = itemLocations.GetProgressionChain();
+
+			do
+			{
+				WriteItemList(file, progressionChain.Locations, depth);
+
+				depth++;
+				progressionChain = progressionChain.Sub;
+			} while (progressionChain != null);
+		}
+
+		void WriteItemListSection(StreamWriter file, IEnumerable<ItemLocation> itemLocations, string sectionName)
+		{
+			file.WriteLine();
+			file.WriteLine(sectionName);
+
+			WriteItemList(file, itemLocations, 0);
+		}
+
+		void WriteItemList(StreamWriter file, IEnumerable<ItemLocation> itemLocations, int depth)
+		{
+			var prefix = new string('\t', depth);
+
+			foreach (var itemLocation in itemLocations)
+				file.WriteLine(prefix + itemLocation);
 		}
 
 		static string GetFileName(Seed seed)

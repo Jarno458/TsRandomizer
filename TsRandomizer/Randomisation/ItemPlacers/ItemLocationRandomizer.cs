@@ -9,6 +9,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 {
 	abstract class ItemLocationRandomizer
 	{
+		protected readonly SeedOptions SeedOptions;
 		protected readonly ItemInfoProvider ItemInfoProvider;
 		protected readonly ItemLocationMap ItemLocations;
 		protected readonly ItemUnlockingMap UnlockingMap;
@@ -26,6 +27,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			bool progressionOnly
 		)
 		{
+			SeedOptions = options;
 			ItemInfoProvider = itemInfoProvider;
 			ItemLocations = itemLocations;
 			UnlockingMap = unlockingMap;
@@ -40,10 +42,12 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.EssenceCrystal),
 			};
 
-			if(options.StartWithJewelryBox)
+			if(SeedOptions.StartWithJewelryBox)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.JewelryBox));
-			if (options.StartWithMeyef)
+			if(SeedOptions.StartWithMeyef)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryFamiliarType.Meyef));
+			if(SeedOptions.StartWithTalaria)
+				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));
 
 			itemsToAddToGame = new[]
 			{
@@ -79,27 +83,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			};
 		}
 
-		protected void FillTutorial(Random random)
+		protected void PlaceStarterProgressionItems(Random random)
 		{
-			var orbTypes = Helper.GetAllOrbs();
-
-			var spellOrbTypes = orbTypes.Where(orbType => orbType != EInventoryOrbType.Barrier); //To OP to give as starter spell
-			var meleeOrbTypes = orbTypes.Where(orbType => orbType != EInventoryOrbType.Pink); //To annoying as each attack consumes aura power
-
-			var spellOrbType = spellOrbTypes.SelectRandom(random);
-			PutItemAtLocation(ItemInfoProvider.Get(spellOrbType, EOrbSlot.Spell), ItemLocations[ItemKey.TutorialSpellOrb]);
-
-			var meleeOrbType = meleeOrbTypes.SelectRandom(random);
-			PutItemAtLocation(ItemInfoProvider.Get(meleeOrbType, EOrbSlot.Melee), ItemLocations[ItemKey.TutorialMeleeOrb]);
-		}
-
-		protected void PlaceStarterProgressionItem(Random random)
-		{
-			var starterLocations = ItemLocations
-				.Where(l => l.Key.LevelId != 0 && l.Gate.Requires(Requirement.None))
-				.ToArray();
-
-			var starterProgressionItems = new [] {
+			var starterProgressionItems = new[] {
 				ItemInfoProvider.Get(EInventoryRelicType.Dash),
 				ItemInfoProvider.Get(EInventoryRelicType.Dash),
 				ItemInfoProvider.Get(EInventoryRelicType.DoubleJump),
@@ -111,10 +97,55 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryRelicType.EssenceOfSpace)
 			};
 
-			var item = starterProgressionItems.SelectRandom(random);
+			var starterProgressionItem = starterProgressionItems.SelectRandom(random);
+
+			var shouldGiveLightwallAsSpell = ShouldGiveLightwall(random, starterProgressionItem);
+
+			if (shouldGiveLightwallAsSpell)
+			{
+				FillTutorial(random, true);
+			}
+			else
+			{
+				FillTutorial(random, false);
+
+				if (SeedOptions.StartWithTalaria) return;
+
+				PutStarterProgressionItemInReachableLocation(random, starterProgressionItem);
+			}
+		}
+
+		void PutStarterProgressionItemInReachableLocation(Random random, ItemInfo starterProgressionItem)
+		{
+			var starterLocations = ItemLocations
+				.Where(l => l.Key.LevelId != 0 && l.Gate.Requires(Requirement.None))
+				.ToArray();
+
 			var location = starterLocations.SelectRandom(random);
 
-			PutItemAtLocation(item, location);
+			PutItemAtLocation(starterProgressionItem, location);
+		}
+
+		bool ShouldGiveLightwall(Random random, ItemInfo starterProgressionItem)
+		{
+			return (starterProgressionItem == ItemInfoProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell))
+			       && random.Next(1, 5) == 1;
+		}
+
+		protected void FillTutorial(Random random, bool useLightwallAsSpell)
+		{
+			var orbTypes = Helper.GetAllOrbs();
+
+			var spellOrbTypes = useLightwallAsSpell
+				? orbTypes.Where(orbType => orbType == EInventoryOrbType.Barrier)
+				: orbTypes.Where(orbType => orbType != EInventoryOrbType.Barrier);
+			var meleeOrbTypes = orbTypes.Where(orbType => orbType != EInventoryOrbType.Pink); //To annoying as each attack consumes aura power
+
+			var spellOrbType = spellOrbTypes.SelectRandom(random);
+			PutItemAtLocation(ItemInfoProvider.Get(spellOrbType, EOrbSlot.Spell), ItemLocations[ItemKey.TutorialSpellOrb]);
+
+			var meleeOrbType = meleeOrbTypes.SelectRandom(random);
+			PutItemAtLocation(ItemInfoProvider.Get(meleeOrbType, EOrbSlot.Melee), ItemLocations[ItemKey.TutorialMeleeOrb]);
 		}
 
 		protected void PlaceGassMaskInALegalSpot(Random random)

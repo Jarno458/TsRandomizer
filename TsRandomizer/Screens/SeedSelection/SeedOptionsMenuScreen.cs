@@ -39,15 +39,15 @@ namespace TsRandomizer.Screens.SeedSelection
 			if(!IsUsedAsSeedOptionsMenu)
 				return;
 
-			Reflected._menuTitle = "Select Seed Options";
+			Dynamic._menuTitle = "Select Seed Options";
 
-			var relicInventory = ((object)Reflected._relicInventory).AsDynamic();
+			var relicInventory = ((object)Dynamic._relicInventory).AsDynamic();
 			relicInventory.ColumnCount = 1;
-			relicInventory.SetColumnWidth(226 * Reflected.Zoom, Reflected.Zoom);
+			relicInventory.SetColumnWidth(226 * Dynamic.Zoom, Dynamic.Zoom);
 
 			HookOnSelectedAction(relicInventory);
 
-			UpdateMenuItems(Reflected._relicInventory);
+			UpdateMenuItems(Dynamic._relicInventory);
 		}
 
 		static GameSave GetSave(SeedOptionsCollection options)
@@ -75,7 +75,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		SeedOptionsCollection GetOptions()
 		{
-			return (SeedOptionsCollection)((object)Reflected._relicInventory).AsDynamic()._collection;
+			return (SeedOptionsCollection)((object)Dynamic._relicInventory).AsDynamic()._collection;
 		}
 
 		static void UpdateMenuItems(object menuRelicInventory)

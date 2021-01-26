@@ -18,7 +18,7 @@ namespace TsRandomizer.Screens
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
-			Action<GameSave> originalReloadSaveAction = Reflected._reloadSaveAction;
+			Action<GameSave> originalReloadSaveAction = Dynamic._reloadSaveAction;
 
 			void ReloadSave(GameSave gameSave)
 			{
@@ -29,7 +29,7 @@ namespace TsRandomizer.Screens
 				originalReloadSaveAction(gameSave);
 			}
 
-			Reflected._reloadSaveAction = (Action<GameSave>)ReloadSave;
+			Dynamic._reloadSaveAction = (Action<GameSave>)ReloadSave;
 		}
 	}
 }

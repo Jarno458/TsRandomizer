@@ -15,7 +15,8 @@ namespace TsRandomizer
 		public bool ProgressiveKeycard => (Flags & 1 << 2) > 0;
 		public bool DownloadableItems => (Flags & 1 << 3) > 0;
 		public bool RequireEyeOrbRing => (Flags & 1 << 4) > 0;
-		public bool StartWithMeyef => (Flags & 1 << 5) > 0;
+		public bool StartWithMeyef => (Flags & 1 << 5) > 0; 
+		public bool StartWithTalaria => (Flags & 1 << 6) > 0;
 
 		public SeedOptions(uint flags)
 		{

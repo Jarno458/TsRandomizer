@@ -342,6 +342,42 @@ namespace TsRandomizer.Randomisation
 					: null;
 		}
 
+		public ProgressionChain GetProgressionChain()
+		{
+			var obtainedRequirements = R.None;
+			IEnumerable<ItemLocation> alreadyKnownLocations = new ItemLocation[0];
+
+			var progressionChain = new ProgressionChain();
+			var currentProgressionChain = progressionChain;
+
+			do
+			{
+				var previusObtainedRequirements = obtainedRequirements;
+
+				var reachableProgressionItemLocations = GetReachableProgressionItemLocatioins(obtainedRequirements);
+				obtainedRequirements = GetObtainedRequirements(reachableProgressionItemLocations);
+
+				currentProgressionChain.Sub =
+					new ProgressionChain { Locations = reachableProgressionItemLocations.Except(alreadyKnownLocations) };
+
+				currentProgressionChain = currentProgressionChain.Sub;
+				alreadyKnownLocations = reachableProgressionItemLocations;
+
+				if (obtainedRequirements == previusObtainedRequirements)
+					break;
+
+			} while (true);
+
+			return progressionChain.Sub;
+		}
+
+		ItemLocation[] GetReachableProgressionItemLocatioins(R obtainedRequirements)
+		{
+			return GetReachableLocations(obtainedRequirements)
+				.Where(l => l.ItemInfo != null && l.ItemInfo.Unlocks != R.None)
+				.ToArray();
+		}
+
 		public bool IsBeatable()
 		{
 			if (!IsGassMaskReachableWithTheMawRequirements()
@@ -349,11 +385,9 @@ namespace TsRandomizer.Randomisation
 				return false;
 
 			var obtainedRequirements = R.None;
-			var itteration = 0;
 
 			do
 			{
-				itteration++;
 				var previusObtainedRequirements = obtainedRequirements;
 
 				obtainedRequirements = GetObtainedRequirements(obtainedRequirements);
@@ -361,7 +395,7 @@ namespace TsRandomizer.Randomisation
 				if (obtainedRequirements == previusObtainedRequirements)
 					return false;
 
-			} while (!CanCompleteGame(obtainedRequirements) && itteration <= ItemUnlockingMap.ProgressionItemCount);
+			} while (!CanCompleteGame(obtainedRequirements));
 
 			return true;
 		}
@@ -426,6 +460,33 @@ namespace TsRandomizer.Randomisation
 			return unlockedRequirements;
 		}
 
+		R GetObtainedRequirements(ItemLocation[] reachableLocations)
+		{
+			var unlockedRequirements = reachableLocations
+				.Where(l => !(l.ItemInfo is PogRessiveItemInfo))
+				.Select(l => l.ItemInfo.Unlocks)
+				.Aggregate(R.None, (current, unlock) => current | unlock);
+
+			var progressiveItemsPerType = reachableLocations
+				.Where(l => l.ItemInfo is PogRessiveItemInfo)
+				.GroupBy(l => l.ItemInfo as PogRessiveItemInfo);
+
+			foreach (var progressiveItemsType in progressiveItemsPerType)
+			{
+				var progressiveItem = progressiveItemsType.Key;
+				var clone = progressiveItem.Clone();
+
+				for (var i = 0; i < progressiveItemsType.Count(); i++)
+				{
+					unlockedRequirements |= clone.Unlocks;
+
+					clone.Next();
+				}
+			}
+
+			return unlockedRequirements;
+		}
+
 		public IEnumerable<ItemLocation> GetReachableLocations(R obtainedRequirements)
 		{
 			return this.Where(l => l.Gate.CanBeOpenedWith(obtainedRequirements));
@@ -463,5 +524,11 @@ namespace TsRandomizer.Randomisation
 		{
 			Add(new ItemLocation(itemKey, areaName, name, defaultItem, gate));
 		}
+	}
+
+	class ProgressionChain
+	{
+		public IEnumerable<ItemLocation> Locations { get; set; }
+		public ProgressionChain Sub { get; set; }
 	}
 }

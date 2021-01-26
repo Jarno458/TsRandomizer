@@ -15,10 +15,10 @@ namespace TsRandomizer.Screens
 	{
 		public OrbMenuScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
-			GameSave saveFile = Reflected._saveFile;
+			GameSave saveFile = Dynamic._saveFile;
 
-			RemoveMeleeOrbs(saveFile, Reflected._meleeOrbAInventory);
-			RemoveMeleeOrbs(saveFile, Reflected._meleeOrbBInventory);
+			RemoveMeleeOrbs(saveFile, Dynamic._meleeOrbAInventory);
+			RemoveMeleeOrbs(saveFile, Dynamic._meleeOrbBInventory);
 		}
 
 		public void RemoveMeleeOrbs(GameSave saveFile, object inventory)

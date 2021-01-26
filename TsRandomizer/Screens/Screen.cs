@@ -26,7 +26,7 @@ namespace TsRandomizer.Screens
 		protected readonly ScreenManager ScreenManager;
 		public readonly GameScreen GameScreen;
 
-		protected readonly dynamic Reflected;
+		protected readonly dynamic Dynamic;
 
 		static Screen()
 		{
@@ -59,7 +59,7 @@ namespace TsRandomizer.Screens
 		{
 			ScreenManager = screenManager;
 			GameScreen = gameScreen;
-			Reflected = gameScreen.AsDynamic();
+			Dynamic = gameScreen.AsDynamic();
 		}
 
 		public virtual void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)

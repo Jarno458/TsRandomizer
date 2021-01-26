@@ -46,7 +46,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			if (!IsUsedAsSeedSelectionMenu)
 				return;
 
-			Reflected._menuTitle = "Select Seed";
+			Dynamic._menuTitle = "Select Seed";
 
 			okButton = MenuEntry.Create("OK", OnOkayEntrySelected);
 
@@ -84,7 +84,7 @@ namespace TsRandomizer.Screens.SeedSelection
 					Clipboard.SetText(GetHexString());
 			}
 
-			var selectedMenuEntryIndex = Reflected.SelectedIndex;
+			var selectedMenuEntryIndex = Dynamic.SelectedIndex;
 			if (GetSelectedMenuEntryText(selectedMenuEntryIndex) == "")
 			{
 				if (input.IsPressMenuLeft(null))
@@ -106,13 +106,13 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		void ChangeAvailableButtons(object[] extraButtons)
 		{
-			var entries = ((IList)Reflected.MenuEntries)
+			var entries = ((IList)Dynamic.MenuEntries)
 				.Cast<object>()
 				.Where(e => IsHex(e) || IsDelButton(e))
 				.Concat(extraButtons)
 				.ToList(MainMenuEntryType);
 
-			((object)Reflected._primaryMenuCollection).AsDynamic()._entries = entries;
+			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = entries;
 		}
 
 		static bool IsHex(object menuEntry)
@@ -151,13 +151,13 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			difficultyMenu.SetSeed(seed);
 
-			Reflected.OnCancel(playerIndex);
+			Dynamic.OnCancel(playerIndex);
 		}
 
 		void ShowErrorDescription(string message)
 		{
 			var inventoryItemIconType = TimeSpinnerType.Get("Timespinner.GameAbstractions.Inventory.EInventoryItemIcon");
-			Reflected.ChangeDescription(message, inventoryItemIconType.GetEnumValue("None"));
+			Dynamic.ChangeDescription(message, inventoryItemIconType.GetEnumValue("None"));
 		}
 
 		void OnOptionsSelected(PlayerIndex playerIndex)
@@ -184,11 +184,11 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		void SetSeed(string seedString)
 		{
-			Reflected._currentEnteredPassword = seedString;
-			Reflected.RefreshDisplayPassword();
+			Dynamic._currentEnteredPassword = seedString;
+			Dynamic.RefreshDisplayPassword();
 
 			for (var i = 10; i < 12; i++) //RefreshDisplayPassword() only blacks out a single charecter
-				Reflected._displayCharacters[i] = " ";
+				Dynamic._displayCharacters[i] = " ";
 		}
 
 		void OnGenerateSelected()
@@ -209,7 +209,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		string GetHexString()
 		{
-			var hexString = (string)Reflected._currentEnteredPassword;
+			var hexString = (string)Dynamic._currentEnteredPassword;
 
 			if (hexString.Length > Seed.Length)
 				return hexString.Substring(0, Seed.Length);
@@ -223,13 +223,13 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		string GetSelectedMenuEntryText(int selectedMenuEntryIndex)
 		{
-			return ((IList)Reflected.MenuEntries)[selectedMenuEntryIndex].AsDynamic().Text;
+			return ((IList)Dynamic.MenuEntries)[selectedMenuEntryIndex].AsDynamic().Text;
 		}
 
 		void SetSelectedMenuItemByIndex(int index)
 		{
-			((object)Reflected._primaryMenuCollection).AsDynamic().SelectedIndex = index;
-			Reflected.OnSelectedEntryChanged(index);
+			((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex = index;
+			Dynamic.OnSelectedEntryChanged(index);
 		}
 	}
 }

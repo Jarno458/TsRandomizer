@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -25,7 +24,7 @@ namespace TsRandomizer.Screens
 		{
 			if (hasAddedCredits) return;
 
-			var creditList = (IList)Reflected._creditsList;
+			var creditList = (IList)Dynamic._creditsList;
 
 			if (creditList.Count != 26) return;
 
@@ -40,17 +39,18 @@ namespace TsRandomizer.Screens
 		void RecalcuteCreditSizes(IList creditList)
 		{
 			int previousCreditBottom = 0;
-			int lineSpacing1 = Reflected._primaryFont.LineSpacing;
-			int lineSpacing2 = Reflected._latinFont.LineSpacing;
-			int num = lineSpacing1 * 4;
+			int primaryLineSpacing = Dynamic._primaryFont.LineSpacing;
+			int secondairyLineSpacing = Dynamic._latinFont.LineSpacing;
+			int sectionSpacing = primaryLineSpacing * 4;
+
 			foreach (var section in creditList)
 			{
 				var sectionDynamic = section.AsDynamic();
 
-				sectionDynamic.CalculateSize(previousCreditBottom, lineSpacing1, lineSpacing2, Reflected._zoom);
-				previousCreditBottom += sectionDynamic.Height + num;
+				sectionDynamic.CalculateSize(previousCreditBottom, primaryLineSpacing, secondairyLineSpacing, Dynamic._zoom);
+				previousCreditBottom += sectionDynamic.Height + sectionSpacing;
 			}
-			Reflected._farthestBottomY = previousCreditBottom;
+			Dynamic._farthestBottomY = previousCreditBottom;
 		}
 
 		static void UpdateMyBackerName(IList creditList)
@@ -73,14 +73,6 @@ namespace TsRandomizer.Screens
 			dynamicSection.AddContributor(contributer);
 
 			creditList.Insert(index, section);
-
-			/*int previousCreditBottom = Reflected._farthestBottomY;
-			var headerLineSpacing = ((SpriteFont)Reflected._primaryFont).LineSpacing;
-			var subTitleLineSpacing = ((SpriteFont)Reflected._latinFont).LineSpacing;
-
-			dynamicSection.CalculateSize(previousCreditBottom, headerLineSpacing, subTitleLineSpacing, Reflected._zoom);
-
-			dynamicSection.TopY = 18500;*/
 		}
 	}
 }

@@ -28,8 +28,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		void AddRandomItemsToLocationMap(Random random)
 		{
-			FillTutorial(random);
-			PlaceStarterProgressionItem(random);
+			PlaceStarterProgressionItems(random);
 			PlaceGassMaskInALegalSpot(random);
 
 			var alreadyAssingedItems = ItemLocations

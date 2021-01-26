@@ -14,6 +14,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 3, new SeedOptionInfo { Name = "Downloadable items", Description = "With the tablet you will be able to download items at terminals" } },
 			{ 1 << 4, new SeedOptionInfo { Name = "Facebook mode ", Description = "Requires Oculus Rift(ng) to spot the weakspots in walls and floors" } },
 			{ 1 << 5, new SeedOptionInfo { Name = "Start with Meyef", Description = "Start with Meyef, ideal for when you want to play multiplayer" } },
+			{ 1 << 6, new SeedOptionInfo { Name = "Quick seed", Description = "Start with Talaria Attachment, Nyoom!" } },
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)

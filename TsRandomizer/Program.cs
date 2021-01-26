@@ -60,8 +60,6 @@ namespace TsRandomizer
 
 		static void StartTimeSpinner()
 		{
-			Console.Out.WriteLine("Starting TimeSpinner...");
-
 			WithExceptionLogging(() =>
 			{
 				var platformHelper = IsSteam

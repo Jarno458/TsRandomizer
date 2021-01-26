@@ -15,9 +15,9 @@ namespace TsRandomizer.Screens
 	{
 		public FamiliarMenuScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
-			GameSave saveFile = Reflected._saveFile;
+			GameSave saveFile = Dynamic._saveFile;
 
-			RemoveUnobtainedFamiliars(saveFile, Reflected._familiarMenuInventory);
+			RemoveUnobtainedFamiliars(saveFile, Dynamic._familiarMenuInventory);
 		}
 
 		public void RemoveUnobtainedFamiliars(GameSave saveFile, object inventory)

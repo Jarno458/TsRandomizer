@@ -49,7 +49,7 @@ namespace TsRandomizer.Screens
 
 		void DisableDefaultDifficultOptions()
 		{
-			var menuEntries = (IList)Reflected.MenuEntries;
+			var menuEntries = (IList)Dynamic.MenuEntries;
 
 			foreach (var menuEntry in menuEntries)
 			{
@@ -75,7 +75,7 @@ namespace TsRandomizer.Screens
 
 		void HookOnDifficultySelectedMethod()
 		{
-			originalOnDifficultyChosenMethod = Reflected._onDifficultyChosen;
+			originalOnDifficultyChosenMethod = Dynamic._onDifficultyChosen;
 
 			void NewOnDifficultySelectedMethod(GameSave.EGameDifficultyType difficulty)
 			{
@@ -87,7 +87,7 @@ namespace TsRandomizer.Screens
 				AddSeedToSelectedSave();
 			}
 
-			Reflected._onDifficultyChosen = (Action<GameSave.EGameDifficultyType>)NewOnDifficultySelectedMethod;
+			Dynamic._onDifficultyChosen = (Action<GameSave.EGameDifficultyType>)NewOnDifficultySelectedMethod;
 		}
 
 		void AddSeedToSelectedSave()
@@ -119,7 +119,7 @@ namespace TsRandomizer.Screens
 
 		void EnableAllMenuItems()
 		{
-			var menuEntries = (IList)Reflected.MenuEntries;
+			var menuEntries = (IList)Dynamic.MenuEntries;
 
 			foreach (var menuEntry in menuEntries)
 			{
@@ -145,7 +145,7 @@ namespace TsRandomizer.Screens
 		void DrawSeedRepresentation(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
 			var zoom = (int) TimeSpinnerGame.Constants.InGameZoom;
-			var menuDrawPosition = ((object)Reflected._primaryMenuCollection).AsDynamic().DrawPosition;
+			var menuDrawPosition = ((object)Dynamic._primaryMenuCollection).AsDynamic().DrawPosition;
 
 			seedRepresentation.IconSize = menuFont.LineSpacing * zoom;
 
@@ -162,14 +162,14 @@ namespace TsRandomizer.Screens
 
 		protected void AddMenuEntryAtIndex(int index, MenuEntry menuEntry)
 		{
-			var menuEntries = (IList)Reflected.MenuEntries;
+			var menuEntries = (IList)Dynamic.MenuEntries;
 			menuEntries.Insert(index, menuEntry.AsTimeSpinnerMenuEntry());
 		}
 
 		protected void SetSelectedMenuItemByIndex(int index)
 		{
-			((object)Reflected._primaryMenuCollection).AsDynamic().SelectedIndex = index;
-			Reflected.OnSelectedEntryChanged(index);
+			((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex = index;
+			Dynamic.OnSelectedEntryChanged(index);
 		}
 	}
 }

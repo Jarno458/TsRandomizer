@@ -22,7 +22,7 @@ namespace TsRandomizer.Screens
 		RoomSpecification currentRoom;
 		SeedOptions seedOptions;
 
-		Level Level => (Level)Reflected._level;
+		Level Level => (Level)Dynamic._level;
 		dynamic LevelReflected => Level.AsDynamic();
 
 		public ItemLocationMap ItemLocations { get; private set; }
@@ -37,7 +37,7 @@ namespace TsRandomizer.Screens
 		{
 			GameContentManager = gameContentManager;
 
-			var saveFile = (GameSave)Reflected.SaveFile;
+			var saveFile = (GameSave)Dynamic.SaveFile;
 			var seed = saveFile.GetSeed();
 			var fillingMethod = saveFile.GetFillingMethod();
 
@@ -83,7 +83,7 @@ namespace TsRandomizer.Screens
 
 		public void HideItemPickupBar()
 		{
-			((object)Reflected._itemGetBanner).AsDynamic()._displayTimer = 3;
+			((object)Dynamic._itemGetBanner).AsDynamic()._displayTimer = 3;
 		}
 
 		bool IsRoomChanged()
