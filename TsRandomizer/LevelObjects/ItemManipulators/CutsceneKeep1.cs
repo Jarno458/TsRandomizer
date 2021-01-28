@@ -16,8 +16,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	{
 		bool hasReplacedItemScript;
 
-		dynamic Incubus => ((object)Object._incubus).AsDynamic();
-		dynamic Succubus => ((object)Object._succubus).AsDynamic();
+		dynamic Incubus => ((object)Dynamic._incubus).AsDynamic();
+		dynamic Succubus => ((object)Dynamic._succubus).AsDynamic();
 
 		public CutsceneKeep1(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
 		{

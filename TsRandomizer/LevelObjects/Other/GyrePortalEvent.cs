@@ -9,7 +9,7 @@ namespace TsRandomizer.LevelObjects.Other
 	{
 		public GyrePortalEvent(Mobile typedObject) : base(typedObject)
 		{
-			Object._isUsable = false;
+			Dynamic._isUsable = false;
 		}
 	}
 }

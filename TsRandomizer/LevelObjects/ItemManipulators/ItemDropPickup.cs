@@ -26,36 +26,36 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 			if (IsPickedUp)
 			{
-				Object.Kill();
+				Dynamic.Kill();
 			}
 			else
 			{
-				Object.IsFound = false;
+				Dynamic.IsFound = false;
 				hasDroppedLoot = false;
 			}
 			
-			Object._itemData = ItemInfo.BestiaryItemDropSpecification;
-			Object._category = ItemInfo.Identifier.LootType.ToEInventoryCategoryType();
+			Dynamic._itemData = ItemInfo.BestiaryItemDropSpecification;
+			Dynamic._category = ItemInfo.Identifier.LootType.ToEInventoryCategoryType();
 
 			switch (ItemInfo.Identifier.LootType)
 			{
 				case LootType.ConstRelic:
-					Object._relicType = ItemInfo.Identifier.Relic;
+					Dynamic._relicType = ItemInfo.Identifier.Relic;
 					break;
 
 				case LootType.ConstUseItem:
-					Object._useItemType = ItemInfo.Identifier.UseItem;
+					Dynamic._useItemType = ItemInfo.Identifier.UseItem;
 					break;
 
 				case LootType.ConstEquipment:
-					Object._equipmentType = ItemInfo.Identifier.Enquipment;
+					Dynamic._equipmentType = ItemInfo.Identifier.Enquipment;
 					break;
 
 				case LootType.ConstStat:
 				case LootType.ConstOrb:
 				case LootType.ConstFamiliar:
-					Object._category = EInventoryCategoryType.Equipment;
-					Object._equipmentType = EInventoryEquipmentType.None;
+					Dynamic._category = EInventoryCategoryType.Equipment;
+					Dynamic._equipmentType = EInventoryEquipmentType.None;
 					break;
 
 				//TODO orb 
@@ -65,12 +65,12 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 					throw new NotImplementedException($"LoottType {ItemInfo.Identifier.LootType} is not supported by ItemDropPickup");
 			}
 
-			Object.ChangeAnimation(ItemInfo.AnimationIndex);
+			Dynamic.ChangeAnimation(ItemInfo.AnimationIndex);
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
-			if (ItemInfo == null || hasDroppedLoot || !Object.IsFound)
+			if (ItemInfo == null || hasDroppedLoot || !Dynamic.IsFound)
 				return;
 
 			// ReSharper disable once PossibleNullReferenceException

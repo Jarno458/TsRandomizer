@@ -29,16 +29,16 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				return;
 
 			if(IsPickedUp)
-				Object.Kill();
+				Dynamic.Kill();
 
-			Object.ChangeAnimation(ItemInfo.AnimationIndex);
+			Dynamic.ChangeAnimation(ItemInfo.AnimationIndex);
 
 			hasCardC = Level.GameSave.Inventory.RelicInventory.Inventory.ContainsKey((int)EInventoryRelicType.ScienceKeycardC);
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
-			if (ItemInfo == null || hasDroppedLoot || !Object.IsFading)
+			if (ItemInfo == null || hasDroppedLoot || !Dynamic.IsFading)
 				return;
 
 			if(!hasCardC)

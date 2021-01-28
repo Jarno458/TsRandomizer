@@ -111,6 +111,7 @@
     <Compile Include="LevelObjects\ItemManipulators\JournalComputerEvent+MapComputerEvent.cs" />
     <Compile Include="LevelObjects\ItemManipulators\LibrarianNpc.cs" />
     <Compile Include="LevelObjects\Other\BreakableWallEvent.cs" />
+    <Compile Include="LevelObjects\Other\BossDoorEvent.cs" />
     <Compile Include="LevelObjects\Other\EnvPrefabLabPedestal.cs" />
     <Compile Include="LevelObjects\Other\SaveStatue.cs" />
     <Compile Include="LevelObjects\Other\GyrePortalEvent.cs" />

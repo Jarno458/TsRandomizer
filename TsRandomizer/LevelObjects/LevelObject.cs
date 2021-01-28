@@ -35,9 +35,9 @@ namespace TsRandomizer.LevelObjects
 		static readonly Dictionary<EEventTileType, AlwaysSpawnAttribute> AlwaysSpawningEventTypes = new Dictionary<EEventTileType, AlwaysSpawnAttribute>(); //EEventTileType, SpawnerMethod
 		static readonly List<int> KnownItemIds = new List<int>();
 
-		public readonly dynamic Object;
+		public readonly dynamic Dynamic;
 
-		public Level Level => (Level)Object?._level;
+		public Level Level => (Level)Dynamic?._level;
 		public dynamic LevelReflected => Level.AsDynamic();
 		public Queue<ScriptAction> Scripts => (Queue<ScriptAction>)LevelReflected._waitingScripts;
 
@@ -86,7 +86,7 @@ namespace TsRandomizer.LevelObjects
 			if (typedObject == null)
 				return;
 
-			Object = typedObject.AsDynamic();
+			Dynamic = typedObject.AsDynamic();
 		}
 
 		public static void Update(Level level, GameplayScreen gameplayScreen, ItemLocationMap itemLocations, bool roomChanged, SeedOptions seedOptions)

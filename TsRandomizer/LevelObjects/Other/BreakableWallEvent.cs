@@ -27,8 +27,8 @@ namespace TsRandomizer.LevelObjects.Other
 
 			if (!Level.GameSave.HasRing(EInventoryOrbType.Eye))
 			{
-				Object._invulnerableTimer = 1f;
-				Object._isSolid = true;
+				Dynamic._invulnerableTimer = 1f;
+				Dynamic._isSolid = true;
 			}
 		}
 	}

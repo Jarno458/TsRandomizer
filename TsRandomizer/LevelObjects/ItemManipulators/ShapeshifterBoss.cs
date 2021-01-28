@@ -23,7 +23,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
-			if (ItemInfo == null || hasReplacedItemScript || (Point)Object.DeathPosition == Point.Zero)
+			if (ItemInfo == null || hasReplacedItemScript || (Point)Dynamic.DeathPosition == Point.Zero)
 				return;
 
 			var eventTypes = ((Dictionary<int, GameEvent>)LevelReflected._levelEvents).Values.Select(e => e.GetType());
@@ -33,7 +33,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (((Dictionary<int, Item>)LevelReflected._items).Count == 0)
 			{
 				var itemDropPickupType = TimeSpinnerType.Get("Timespinner.GameObjects.Items.ItemDropPickup");
-				var itemPosition = (Point) Object.Position;
+				var itemPosition = (Point) Dynamic.Position;
 				var itemDropPickup = Activator.CreateInstance(itemDropPickupType, ItemInfo.BestiaryItemDropSpecification, Level, itemPosition, -1);
 
 				LevelReflected.RequestAddObject((Item)itemDropPickup);

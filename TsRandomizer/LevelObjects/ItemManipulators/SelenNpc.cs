@@ -23,7 +23,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (ItemInfo == null)
 				return;
 
-			if (!hasReplacedSpellPopup && Object._tutorialSection == 2)
+			if (!hasReplacedSpellPopup && Dynamic._tutorialSection == 2)
 			{
 				Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
 				hasReplacedSpellPopup = true;

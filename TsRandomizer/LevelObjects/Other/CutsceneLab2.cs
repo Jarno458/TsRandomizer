@@ -16,7 +16,7 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 			if (AreTriggerConditionsMet()) return;
 
-			Object.SilentKill();
+			Dynamic.SilentKill();
 		}
 
 		bool AreTriggerConditionsMet()

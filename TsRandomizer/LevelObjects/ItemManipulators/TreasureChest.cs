@@ -24,37 +24,37 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (ItemInfo == null)
 				return;
 
-			Object._treasureLootType = ItemInfo.TreasureLootType;
+			Dynamic._treasureLootType = ItemInfo.TreasureLootType;
 
 			switch (ItemInfo.Identifier.LootType)
 			{
 				case LootType.ConstUseItem:
-					Object._lootUseItemType = ItemInfo.Identifier.UseItem;
+					Dynamic._lootUseItemType = ItemInfo.Identifier.UseItem;
 					break;
 				case LootType.ConstRelic:
-					Object._lootRelicType = ItemInfo.Identifier.Relic;
+					Dynamic._lootRelicType = ItemInfo.Identifier.Relic;
 					break;
 				case LootType.ConstEquipment:
-					Object._lootEquipmentType = ItemInfo.Identifier.Enquipment;
+					Dynamic._lootEquipmentType = ItemInfo.Identifier.Enquipment;
 					break;
 				case LootType.ConstOrb:
-					Object._lootOrbType = ItemInfo.Identifier.OrbType;
-					Object._lootOrbSlot = ItemInfo.Identifier.OrbSlot;
+					Dynamic._lootOrbType = ItemInfo.Identifier.OrbType;
+					Dynamic._lootOrbSlot = ItemInfo.Identifier.OrbSlot;
 					break;
 				case LootType.ConstFamiliar:
-					Object._lootFamiliarType = ItemInfo.Identifier.Familiar;
+					Dynamic._lootFamiliarType = ItemInfo.Identifier.Familiar;
 					break;
 				case LootType.ConstStat:
 					switch (ItemInfo.Identifier.Stat)
 					{
 						case EItemType.MaxHP:
-							Object._lootStatBoostType = ETreasureStatBoostType.GetEnumValue("HP");
+							Dynamic._lootStatBoostType = ETreasureStatBoostType.GetEnumValue("HP");
 							break;
 						case EItemType.MaxAura:
-							Object._lootStatBoostType = ETreasureStatBoostType.GetEnumValue("Aura");
+							Dynamic._lootStatBoostType = ETreasureStatBoostType.GetEnumValue("Aura");
 							break;
 						case EItemType.MaxSand:
-							Object._lootStatBoostType = ETreasureStatBoostType.GetEnumValue("Sand");
+							Dynamic._lootStatBoostType = ETreasureStatBoostType.GetEnumValue("Sand");
 							break;
 						default:
 							throw new ArgumentOutOfRangeException();
@@ -65,16 +65,16 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			}
 
 			var pickedUp = IsPickedUp;
-			Object._isOpened = pickedUp;
-			Object._hasDroppedLoot = pickedUp;
+			Dynamic._isOpened = pickedUp;
+			Dynamic._hasDroppedLoot = pickedUp;
 			hasDroppedLoot = pickedUp;
 			if (pickedUp)
-				((Appendage)Object._lidAppendage).AsDynamic().ChangeAnimation(Object._animationIndexOffset + 5, 1, 1f, EAnimationType.None);
+				((Appendage)Dynamic._lidAppendage).AsDynamic().ChangeAnimation(Dynamic._animationIndexOffset + 5, 1, 1f, EAnimationType.None);
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
-			if (ItemInfo == null || hasDroppedLoot || !Object._hasDroppedLoot)
+			if (ItemInfo == null || hasDroppedLoot || !Dynamic._hasDroppedLoot)
 				return;
 		
 			// ReSharper disable once PossibleNullReferenceException

@@ -27,7 +27,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 		readonly SpriteSheet menuIcons;
 		
-		List<Appendage> Appendages => Object._appendages;
+		List<Appendage> Appendages => Dynamic._appendages;
 		int appendagesCount;
 		bool hasDroppedLoot;
 
@@ -57,7 +57,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		{
 			if (ItemInfo.Identifier.LootType == LootType.Orb)
 			{
-				Object._orbType = ItemInfo.Identifier.OrbType;
+				Dynamic._orbType = ItemInfo.Identifier.OrbType;
 				UpdateOrbGlowColor();
 
 				if (ItemInfo.Identifier.OrbSlot == EOrbSlot.Melee)
@@ -93,7 +93,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				UpdateSprite();
 			}
 
-			if (!Object.HasBeenPickedUp) 
+			if (!Dynamic.HasBeenPickedUp) 
 				return;
 
 			if (Scripts.Count == 0) //it didnt spawn since you already own contained orb
@@ -113,24 +113,24 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		{
 			const int wierdOffset = 19;
 			if (Appendages.Count == 0)
-				((Animate)~Object).ChangeAnimation((int)ItemInfo.Identifier.OrbType + wierdOffset);
+				((Animate)~Dynamic).ChangeAnimation((int)ItemInfo.Identifier.OrbType + wierdOffset);
 			else
-				((Appendage)Object._orbAppendage).ChangeAnimation((int)ItemInfo.Identifier.OrbType + wierdOffset);
+				((Appendage)Dynamic._orbAppendage).ChangeAnimation((int)ItemInfo.Identifier.OrbType + wierdOffset);
 		}
 
 		void UpdateSprite()
 		{
 			if (Appendages.Count == 0)
 			{
-				Object._sprite = menuIcons;
-				((Animate)~Object).ChangeAnimation(ItemInfo.AnimationIndex);
+				Dynamic._sprite = menuIcons;
+				((Animate)~Dynamic).ChangeAnimation(ItemInfo.AnimationIndex);
 			}
 			else
 			{
-				Appendage orbAppendage = (Appendage)Object._orbAppendage;
+				Appendage orbAppendage = (Appendage)Dynamic._orbAppendage;
 				orbAppendage.AnchorOffset = new Point(-4, -36); //TODO fix glow position
-				((Animate)Object._orbAppendage).AsDynamic()._sprite = menuIcons;
-				((Animate)Object._orbAppendage).ChangeAnimation(ItemInfo.AnimationIndex);
+				((Animate)Dynamic._orbAppendage).AsDynamic()._sprite = menuIcons;
+				((Animate)Dynamic._orbAppendage).ChangeAnimation(ItemInfo.AnimationIndex);
 			}
 		}
 
@@ -138,20 +138,20 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		{
 			var orbGlowColorVector = (Vector4)GetOrbGlowColorByTypeMethod.InvokeStatic(ItemInfo.Identifier.OrbType);
 			var orbGlowColor = new Color(orbGlowColorVector);
-			Object._baseOrbGlowColorAsVector = orbGlowColorVector;
-			Object._baseOrbGlowColorAsColor = orbGlowColor;
-			((object)Object._glowCircle).AsDynamic().BaseColor = orbGlowColor;
-			((OrbPedestalLeakParticleSystem)Object._pixelLeakParticleSystem).BaseColor = orbGlowColorVector;
+			Dynamic._baseOrbGlowColorAsVector = orbGlowColorVector;
+			Dynamic._baseOrbGlowColorAsColor = orbGlowColor;
+			((object)Dynamic._glowCircle).AsDynamic().BaseColor = orbGlowColor;
+			((OrbPedestalLeakParticleSystem)Dynamic._pixelLeakParticleSystem).BaseColor = orbGlowColorVector;
 		}
 
 		void UpdateGlowColor()
 		{
 			var orbGlowColorVector = new Vector4(0.75f);
 			var orbGlowColor = new Color(orbGlowColorVector);
-			Object._baseOrbGlowColorAsVector = orbGlowColorVector;
-			Object._baseOrbGlowColorAsColor = orbGlowColor;
-			((object)Object._glowCircle).AsDynamic().BaseColor = orbGlowColor;
-			((OrbPedestalLeakParticleSystem)Object._pixelLeakParticleSystem).BaseColor = orbGlowColorVector;
+			Dynamic._baseOrbGlowColorAsVector = orbGlowColorVector;
+			Dynamic._baseOrbGlowColorAsColor = orbGlowColor;
+			((object)Dynamic._glowCircle).AsDynamic().BaseColor = orbGlowColor;
+			((OrbPedestalLeakParticleSystem)Dynamic._pixelLeakParticleSystem).BaseColor = orbGlowColorVector;
 		}
 
 		public Mobile Spawn(Level level, ObjectTileSpecification specification)

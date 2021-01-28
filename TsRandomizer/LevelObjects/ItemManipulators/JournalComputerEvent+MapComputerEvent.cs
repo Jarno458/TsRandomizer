@@ -18,7 +18,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
-			if (ItemInfo == null || hasAwardedItem || !Object._isTriggered || !Object._wasActivating)
+			if (ItemInfo == null || hasAwardedItem || !Dynamic._isTriggered || !Dynamic._wasActivating)
 				return;
 
 			ShowItemAwardPopup();

@@ -15,14 +15,14 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 			if (!(!LevelReflected.GetLevelSaveBool("HasWinchBeenUsed") ? false : LevelReflected.GetLevelSaveBool("IsDrawbridgeRaised")))
 			{
-				Object._isEngineerDead = true;
-				Object._isRaising = true;
-				Object._raiseLowerCounter = 0.0f;
+				Dynamic._isEngineerDead = true;
+				Dynamic._isRaising = true;
+				Dynamic._raiseLowerCounter = 0.0f;
 			}
 			else
 			{
-				Object._isRaising = false;
-				Object._raiseLowerCounter = 4f;
+				Dynamic._isRaising = false;
+				Dynamic._raiseLowerCounter = 4f;
 			}
 		}
 	}

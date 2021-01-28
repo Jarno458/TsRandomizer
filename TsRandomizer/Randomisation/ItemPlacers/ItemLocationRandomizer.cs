@@ -85,7 +85,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceStarterProgressionItems(Random random)
 		{
-			var starterProgressionItems = new[] {
+			var starterProgressionItems = new List<ItemInfo> {
 				ItemInfoProvider.Get(EInventoryRelicType.Dash),
 				ItemInfoProvider.Get(EInventoryRelicType.Dash),
 				ItemInfoProvider.Get(EInventoryRelicType.DoubleJump),
@@ -93,9 +93,13 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel),
 				ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel),
 				ItemInfoProvider.Get(EInventoryRelicType.PyramidsKey),
-				ItemInfoProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell),
-				ItemInfoProvider.Get(EInventoryRelicType.EssenceOfSpace)
 			};
+
+			if (!SeedOptions.ProgressiveVerticalMovement)
+			{
+				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell));
+				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.EssenceOfSpace));
+			}
 
 			var starterProgressionItem = starterProgressionItems.SelectRandom(random);
 

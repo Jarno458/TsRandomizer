@@ -21,24 +21,24 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (ItemInfo == null)
 				return;
 
-			var currentSubProgress = Object.SubProgress;
+			var currentSubProgress = Dynamic.SubProgress;
 
-			if (Object.PrimaryProgress != 0 || (currentSubProgress != 0 && currentSubProgress != 1))
+			if (Dynamic.PrimaryProgress != 0 || (currentSubProgress != 0 && currentSubProgress != 1))
 				return;
 
-			if (Object.IsTalking && lastSubProgress == 0 && currentSubProgress == 1)
+			if (Dynamic.IsTalking && lastSubProgress == 0 && currentSubProgress == 1)
 			{
 				Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
 
 				AwardContainedItem();
 
-				var fireOrbAppendage = ((Animate)Object._fireOrb).AsDynamic();
+				var fireOrbAppendage = ((Animate)Dynamic._fireOrb).AsDynamic();
 
 				fireOrbAppendage._sprite = gameplayScreen.GameContentManager.SpMenuIcons;
 				fireOrbAppendage._unhiddenAnimationIndex = ItemInfo.AnimationIndex; //uses differnt sprite sheet
 			}
 
-			lastSubProgress = Object.SubProgress;
+			lastSubProgress = Dynamic.SubProgress;
 		}
 	}
 }

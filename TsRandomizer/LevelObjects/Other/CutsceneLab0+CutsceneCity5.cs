@@ -17,7 +17,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(SeedOptions options)
 		{
-			Object.SilentKill();
+			Dynamic.SilentKill();
 
 			//abort already triggered scripts
 			((List<ScriptAction>)LevelReflected._activeScripts).Clear();

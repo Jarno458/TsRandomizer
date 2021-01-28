@@ -25,7 +25,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (ItemInfo == null)
 				return;
 
-			Object._hasKeycard = !IsPickedUp; 
+			Dynamic._hasKeycard = !IsPickedUp; 
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
@@ -49,10 +49,10 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			rewardItemDelegate.AsDynamic().Delegate = new Action(() =>
 			{
 				AwardContainedItem();
-				var itemPopupAppendage = (Appendage)Object._itemPopupAppendage;
+				var itemPopupAppendage = (Appendage)Dynamic._itemPopupAppendage;
 				itemPopupAppendage.ChangeAnimation(ItemInfo.AnimationIndex);
 				itemPopupAppendage.AsDynamic().IsPopppingUp = true;
-				Object._appendages.Add(itemPopupAppendage);
+				Dynamic._appendages.Add(itemPopupAppendage);
 			});
 
 			hasReplacedItemScript = true;

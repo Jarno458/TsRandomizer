@@ -19,15 +19,15 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 		protected override void Initialize(SeedOptions options)
 		{
-			initialProgress = Object.PrimaryProgress;
+			initialProgress = Dynamic.PrimaryProgress;
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
-			if (ItemInfo == null || hasReplacedItem || initialProgress != 0 || Object.PrimaryProgress != 1)
+			if (ItemInfo == null || hasReplacedItem || initialProgress != 0 || Dynamic.PrimaryProgress != 1)
 				return;
 
-			if (Object.IsTalking && Object._isStandingUp)
+			if (Dynamic.IsTalking && Dynamic._isStandingUp)
 			{
 				Scripts.RemoveGiveItem();
 				Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
