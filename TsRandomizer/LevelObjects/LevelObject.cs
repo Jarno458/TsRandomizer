@@ -131,8 +131,10 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.AddItem(level, new ItemIdentifier(EInventoryFamiliarType.Meyef));
 
 #if DEBUG
-			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.Dash));
+			//level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.EssenceOfSpace));
+
+			level.GameSave.Inventory.RelicInventory.RemoveItem((int)EInventoryRelicType.Dash);
 #endif
 
 			var levelReflected = level.AsDynamic();
