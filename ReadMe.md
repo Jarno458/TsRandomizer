@@ -62,12 +62,11 @@ The item tracker features a few options:
 * To prevent a crash, the pedistal after killing dad is now temporary not randomized anymore
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * Gassmask can be in area like library or xarion caves where the use has to acces to as his only tp is the starter left one
-* Experiment 13 item is inside a chest if you do not own dash
+* make spawning with meyef auto deploy meyef
 
 # Todo
 ##### Things i plan on doing in the future
 * disable quests maybe?
-* Replace Replaces to Treasure Chest to replaces to ItemDropPickup
 * Extend names of item locations in the spoiler log (with help from community on discord)
 * Maybe make items drop from memories and journals
 
