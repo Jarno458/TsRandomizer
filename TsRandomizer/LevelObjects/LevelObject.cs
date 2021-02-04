@@ -125,16 +125,9 @@ namespace TsRandomizer.LevelObjects
 
 		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, SeedOptions seedOptions)
 		{
-			if (seedOptions.StartWithJewelryBox)
-				level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.JewelryBox)); 
-			if (seedOptions.StartWithMeyef)
-				level.GameSave.AddItem(level, new ItemIdentifier(EInventoryFamiliarType.Meyef));
-
 #if DEBUG
-			//level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.Dash));
+			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.EssenceOfSpace));
-
-			level.GameSave.Inventory.RelicInventory.RemoveItem((int)EInventoryRelicType.Dash);
 #endif
 
 			var levelReflected = level.AsDynamic();
@@ -153,7 +146,7 @@ namespace TsRandomizer.LevelObjects
 				.Concat(enemies)
 				.ToList();
 
-			RoomTrigger.OnChangeRoom(level, itemLocations, levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
+			RoomTrigger.OnChangeRoom(level, seedOptions, itemLocations, levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
 			Replaces.ReplaceObjects(level, objects);
  			GenerateShadowObjects(level.GameSave, itemLocations, objects, seedOptions);
 			SpawnMissingObjects(level, levelReflected, itemLocations);
