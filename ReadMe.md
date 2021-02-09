@@ -62,6 +62,7 @@ The item tracker features a few options:
 * To prevent a crash, the pedistal after killing dad is now temporary not randomized anymore
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * Gassmask can be in area like library or xarion caves where the use has to acces to as his only tp is the starter left one
+* Same seed yields different results sometimes
 
 # Todo
 ##### Things i plan on doing in the future

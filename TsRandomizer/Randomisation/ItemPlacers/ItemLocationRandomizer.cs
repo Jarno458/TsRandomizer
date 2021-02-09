@@ -130,9 +130,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			PutItemAtLocation(starterProgressionItem, location);
 		}
 
-		bool ShouldGiveLightwall(Random random, ItemInfo starterProgressionItem)
+		static bool ShouldGiveLightwall(Random random, ItemInfo starterProgressionItem)
 		{
-			return (starterProgressionItem == ItemInfoProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell))
+			return (starterProgressionItem.Identifier == new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Spell))
 			       && random.Next(1, 5) == 1;
 		}
 

@@ -25,7 +25,7 @@ namespace TsRandomizer
 				(Action<bool>)(isGoingRight => SwitchFamiliar(level, luniasObject, isGoingRight));
 		}
 
-		internal static void SwitchFamiliar(Level level, dynamic luniasObject, bool isGoingRight)
+		static void SwitchFamiliar(Level level, dynamic luniasObject, bool isGoingRight)
 		{
 			var familiarTypes = level.GameSave.Inventory.FamiliarInventory.Inventory.Keys
 				.Where(k => level.GameSave.HasFamiliar((EInventoryFamiliarType)k))

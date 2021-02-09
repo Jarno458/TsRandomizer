@@ -11,7 +11,7 @@ namespace TsRandomizer.Randomisation
 {
 	class ItemLocationMap : LookupDictionairy<ItemKey, ItemLocation>
 	{
-		internal static R OculusRift = R.None;
+		internal R OculusRift = R.None;
 		internal static readonly R MultipleSmallJumpsOfNpc = R.TimespinnerWheel | R.UpwardDash;
 		internal static readonly Gate DoubleJumpOfNpc = (R.DoubleJump & R.TimespinnerWheel) | R.UpwardDash;
 		internal static readonly Gate ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
