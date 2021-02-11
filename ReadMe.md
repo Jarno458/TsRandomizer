@@ -32,12 +32,13 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 * Achievements cannot be unlocked
 * SaveStatue inside right elevator room is disabled to prevent a softlock
 * SaveStatue down in the pit of the ancient pyramid is disabled to prevent a softlock
+* Aelana and The Maw nolonger require twins to be killed before thier door unlocks
 
 # New keybinds
-* On the minimap screen, holding secondairy button (default: X) will highligh all locations that you can reach and still have items for you
-* In Load game menu, holding down left trigger will show the seed id in numerical format
-* In Load game menu, pressing right trigger will the generation of a spoiler log, the spoiler logs are saved in same directory as the TsRandomizer.exe
-* In Seed selection menu, holding down right trigger will allow you to force select a seed even when its logicly unbeatable
+* On the minimap screen, holding the secondairy button (default: X) will highligh all locations that you can reach and still have items for you
+* In Load game menu, holding down the last orb button (default: left trigger) will show the seed id in numerical format
+* In Load game menu, pressing the next orb button (default: right trigger) will the generation of a spoiler log, the spoiler logs are saved in same directory as the TsRandomizer.exe
+* In Seed selection menu, holding down the next orb button (default: right trigger) will allow you to force select a seed even when its logicly unbeatable
 * In Seed selection menu, Ctr+V can now be used to past text in the seed field in order to copy paste seeds into the game
 * In Seed selection menu, Ctr+C can now be used to copy seed id to the clipboard
 
