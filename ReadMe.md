@@ -58,15 +58,14 @@ The item tracker features a few options:
 
 # Known bugs
 ##### I am aware of these issues, but i found them small enough not to fix at this moment
-* Sometimes killing kitty boss does not correctly reward your item even when the item pickup message is shown
+* When you already got the blade-orb and kill the kitty boss while standing at the items spawn point you will trigger the item pickup message but no item is rewarded
 * To prevent a crash, the pedistal after killing dad is now temporary not randomized anymore
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * Gassmask can be in area like library or xarion caves where the use has to acces to as his only tp is the starter left one
-* Same seed yields different results sometimes
+* Sometimes do download terminals do not correctly reward thier items
 
 # Todo
 ##### Things i plan on doing in the future
-* disable quests maybe?
 * Extend names of item locations in the spoiler log (with help from community on discord)
 * Maybe make items drop from memories and journals
 

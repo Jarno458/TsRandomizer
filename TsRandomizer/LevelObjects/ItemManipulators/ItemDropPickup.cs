@@ -56,9 +56,6 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 					Dynamic._equipmentType = EInventoryEquipmentType.None;
 					break;
 
-				//TODO orb 
-				//TODO familier
-
 				default:
 					throw new NotImplementedException($"LoottType {ItemInfo.Identifier.LootType} is not supported by ItemDropPickup");
 			}

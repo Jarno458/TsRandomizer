@@ -139,7 +139,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(2, 47, 216, 208), "Storage room chest 1", itemProvider.Get(EInventoryUseItemType.Ether), LeftLibrary & R.CardD);
 			Add(new ItemKey(2, 47, 152, 208), "Storage room chest 2", itemProvider.Get(EInventoryOrbType.Blade, EOrbSlot.Passive), LeftLibrary & R.CardD);
 			Add(new ItemKey(2, 47, 88, 208), "Storage room chest 3", itemProvider.Get(EInventoryOrbType.Blade, EOrbSlot.Spell), LeftLibrary & R.CardD);
-			areaName = "libary top";
+			areaName = "Libary top";
 			Add(new ItemKey(2, 56, 168, 192), "Backer room chest 5", itemProvider.Get(EInventoryUseItemType.GoldNecklace), UpperLeftLibrary);
 			Add(new ItemKey(2, 56, 392, 192), "Backer room chest 4", itemProvider.Get(EInventoryUseItemType.GoldRing), UpperLeftLibrary);
 			Add(new ItemKey(2, 56, 616, 192), "Backer room chest 3", itemProvider.Get(EInventoryUseItemType.EssenceCrystal), UpperLeftLibrary);
@@ -188,7 +188,7 @@ namespace TsRandomizer.Randomisation
 			areaName = "The lab";
 			Add(new ItemKey(11, 36, 312, 192), "Coffee Break chest", itemProvider.Get(EInventoryUseItemType.FoodSynth), TheLab);
 			Add(new ItemKey(11, 3, 1528, 192), "Lower trash right", itemProvider.Get(EItemType.MaxHP), TheLab & R.DoubleJump);
-			Add(new ItemKey(11, 3, 72, 192), "Lower trash left", itemProvider.Get(EInventoryUseItemType.FuturePotion), TheLab & R.UpwardDash); //when lab power is only, it only requires DoubleJumpOfNpc, but we cant code for the power state
+			Add(new ItemKey(11, 3, 72, 192), "Lower trash left", itemProvider.Get(EInventoryUseItemType.FuturePotion), TheLab & R.UpwardDash); //when lab power is on, it only requires DoubleJumpOfNpc, but we cant code for the power state
 			Add(new ItemKey(11, 25, 104, 192), "Single turret room", itemProvider.Get(EItemType.MaxAura), TheLab & R.DoubleJump);
 			Add(new ItemKey(11, 18, 824, 128), "Trash jump room", itemProvider.Get(EInventoryUseItemType.ChaosHeal), TheLabPoweredOff);
 			Add(new RoomItemKey(11, 39), "Dynamo Works", itemProvider.Get(EInventoryOrbType.Eye, EOrbSlot.Melee), TheLabPoweredOff);
@@ -213,7 +213,7 @@ namespace TsRandomizer.Randomisation
 		void AddPastItemLocations()
 		{
 			areaName = "Refugee Camp";
-			Add(new RoomItemKey(3, 0), "Neliste's Bra", itemProvider.Get(EInventoryOrbType.Flame, EOrbSlot.Melee), AccessToPast); //neliste
+			Add(new RoomItemKey(3, 0), "Neliste's Bra", itemProvider.Get(EInventoryOrbType.Flame, EOrbSlot.Melee), AccessToPast);
 			Add(new ItemKey(3, 30, 296, 176), "Refugee camp storage chest 3", itemProvider.Get(EInventoryUseItemType.EssenceCrystal), AccessToPast);
 			Add(new ItemKey(3, 30, 232, 176), "Refugee camp storage chest 2", itemProvider.Get(EInventoryUseItemType.GoldNecklace), AccessToPast);
 			Add(new ItemKey(3, 30, 168, 176), "Refugee camp storage chest 1", itemProvider.Get(EInventoryRelicType.JewelryBox), AccessToPast);
@@ -274,7 +274,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(5, 45, 104, 192), "Omelette chest", itemProvider.Get(EItemType.MaxHP), CastleKeep);
 			Add(new ItemKey(5, 15, 296, 192), null, itemProvider.Get(EItemType.MaxAura), CastleKeep);
 			Add(new ItemKey(5, 41, 72, 160), null, itemProvider.Get(EInventoryEquipmentType.BuckleHat), CastleKeep);
-			Add(new RoomItemKey(5, 5), "Twins", itemProvider.Get(EInventoryRelicType.DoubleJump), CastleKeep & R.TimeStop); //sucabus
+			Add(new RoomItemKey(5, 5), "Twins", itemProvider.Get(EInventoryRelicType.DoubleJump), CastleKeep & R.TimeStop);
 			Add(new ItemKey(5, 22, 312, 176), null, itemProvider.Get(EItemType.MaxSand), CastleKeep & ForwardDashDoubleJump);
 			areaName = "Royal towers";
 			Add(new ItemKey(6, 19, 200, 176), null, itemProvider.Get(EItemType.MaxAura), RoyalTower & R.DoubleJump & OculusRift);
