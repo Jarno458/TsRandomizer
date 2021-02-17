@@ -109,7 +109,7 @@
     <Compile Include="LevelObjects\AlwaysSpawnAttribute.cs" />
     <Compile Include="ItemTracker\ItemTrackerUplink.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalComputerEvent+MapComputerEvent.cs" />
-    <Compile Include="LevelObjects\ItemManipulators\LibrarianNpc.cs" />
+    <Compile Include="LevelObjects\ItemManipulators\LibrarianNPC.cs" />
     <Compile Include="LevelObjects\Other\BreakableWallEvent.cs" />
     <Compile Include="LevelObjects\Other\BossDoorEvent.cs" />
     <Compile Include="LevelObjects\Other\EnvPrefabLabPedestal.cs" />
