@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Timespinner.GameAbstractions;
@@ -11,6 +10,7 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens.Menu;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
+using SDL2;
 
 namespace TsRandomizer.Screens.SeedSelection
 {
@@ -78,10 +78,10 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			if (input.IsKeyHold(Keys.LeftControl, null, out _) || input.IsKeyHold(Keys.RightControl, null, out _))
 			{
-				if(input.IsKeyHold(Keys.V, null, out _) && Clipboard.ContainsText())
+				if(input.IsKeyHold(Keys.V, null, out _) && (SDL.SDL_HasClipboardText() == SDL.SDL_bool.SDL_TRUE))
 					GetClipboardSeed();
 				else if (input.IsKeyHold(Keys.C, null, out _)) 
-					Clipboard.SetText(GetHexString());
+					SDL.SDL_SetClipboardText(GetHexString());
 			}
 
 			var selectedMenuEntryIndex = Dynamic.SelectedIndex;
@@ -96,7 +96,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		void GetClipboardSeed()
 		{
-			var text = Clipboard.GetText().Trim();
+			var text = SDL.SDL_GetClipboardText().Trim();
 
 			if (text.Length > Seed.Length)
 				text = text.Substring(0, Seed.Length);
