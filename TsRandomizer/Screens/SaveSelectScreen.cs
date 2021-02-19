@@ -126,7 +126,7 @@ namespace TsRandomizer.Screens
 			if (!seed.HasValue)
 				return;
 
-			var messageBox = MessageBox.Create(ScreenManager, "Generate Spoiler log?", (pi) => OnSpoilerLogCreationAccepted(save));
+			var messageBox = MessageBox.Create(ScreenManager, "Generate Spoiler log?", _ => OnSpoilerLogCreationAccepted(save));
 
 			ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
 		}
