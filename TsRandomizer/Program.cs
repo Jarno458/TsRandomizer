@@ -2,7 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Windows.Forms;
+using SDL2;
 
 namespace TsRandomizer
 {
@@ -26,7 +26,12 @@ namespace TsRandomizer
 					break;
 
 				default:
-					MessageBox.Show("TsRandomizer version missmatch!, pleaze update TsRandomizer\r\nThe installed version of TsRanodmizer is not made to work with the installed version of TimeSpinner", "VersionMissmatch");
+					SDL2.SDL.SDL_ShowSimpleMessageBox(
+						SDL2.SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR,
+						"VersionMismatch",
+						"TsRandomizer version missmatch!, pleaze update TsRandomizer\r\nThe installed version of TsRanodmizer is not made to work with the installed version of TimeSpinner",
+						IntPtr.Zero
+					);
 					return -1;
 			}
 
@@ -45,7 +50,12 @@ namespace TsRandomizer
 			}
 			catch (FileNotFoundException)
 			{
-				MessageBox.Show("Timespinner.exe not found in current directory\r\nPleaze place TsRandomizer.exe in the same folder as the original game", "FileNotFound");
+				SDL2.SDL.SDL_ShowSimpleMessageBox(
+					SDL2.SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR,
+					"FileNotFound",
+					"Timespinner.exe not found in current directory\r\nPleaze place TsRandomizer.exe in the same folder as the original game",
+					IntPtr.Zero
+				);
 				return null;
 			}
 		}
