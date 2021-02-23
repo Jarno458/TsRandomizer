@@ -184,7 +184,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.Select(l => l.DefaultItem)
 				.Where(i => i.Identifier.LootType != LootType.ConstOrb 
 				            && i.Identifier.LootType != LootType.ConstFamiliar 
-				            && !itemsToRemoveFromGame.Contains(i) 
 				            && !genericItems.Contains(i))
 				.ToList();
 
@@ -193,7 +192,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			AddExtraItems(itemlist);
 
 			itemlist = itemlist
-				.Where(i => !alreadyAssingedItems.Contains(i))
+				.Where(i => !alreadyAssingedItems.Contains(i)
+				            && !itemsToRemoveFromGame.Contains(i))
 				.ToList();
 
 			var freeLocations = ItemLocations
@@ -220,7 +220,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		void AddFamiliers(List<ItemInfo> itemlist)
 		{
 			var allFamiliers = ((EInventoryFamiliarType[])Enum.GetValues(typeof(EInventoryFamiliarType)))
-				.Where(o => o != EInventoryFamiliarType.None);
+				.Where(f => f != EInventoryFamiliarType.None);
 
 			itemlist.AddRange(allFamiliers.Select(familiar => ItemInfoProvider.Get(familiar)));
 		}
