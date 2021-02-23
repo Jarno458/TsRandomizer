@@ -15,6 +15,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	class EnvPrefabCursedCavesCorpse : ItemManipulator
 	{
 		bool hasReplacedItemScript;
+		int animationIndex;
 
 		public EnvPrefabCursedCavesCorpse(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
 		{
@@ -32,9 +33,11 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		{
 			if (ItemInfo == null || hasReplacedItemScript)
 				return;
-			
+
+			animationIndex = ItemInfo.AnimationIndex;
+
 			// ReSharper disable once SimplifyLinqExpression
-			if(!Scripts.Any(s => s.AsDynamic().ScriptType == EScriptType.RelicOrbGetToast))
+			if (!Scripts.Any(s => s.AsDynamic().ScriptType == EScriptType.RelicOrbGetToast))
 				return;
 
 			Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
@@ -50,7 +53,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			{
 				AwardContainedItem();
 				var itemPopupAppendage = (Appendage)Dynamic._itemPopupAppendage;
-				itemPopupAppendage.ChangeAnimation(ItemInfo.AnimationIndex);
+				itemPopupAppendage.ChangeAnimation(animationIndex);
 				itemPopupAppendage.AsDynamic().IsPopppingUp = true;
 				Dynamic._appendages.Add(itemPopupAppendage);
 			});

@@ -66,7 +66,6 @@ The item tracker features a few options:
 * Sometimes do download terminals do not correctly reward thier items
 * Meyef & Talaria should be removed from droplist if they are a starter item
 * Talaria should be tracked if its a starter item and starting progression will nolonger be required
-* Skeleton animation shows the next progressive item but reward the correct one
 * ItemDropPickups also reward a random enquipment
 
 # Todo
