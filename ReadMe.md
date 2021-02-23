@@ -64,7 +64,6 @@ The item tracker features a few options:
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * Gassmask can be in area like library or xarion caves where the use has to acces to as his only tp is the starter left one
 * Sometimes do download terminals do not correctly reward thier items
-* Talaria should be tracked if its a starter item and starting progression will nolonger be required
 * ItemDropPickups also reward a random enquipment
 
 # Todo

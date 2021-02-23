@@ -3,6 +3,7 @@ using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.ReplacementObjects;
 using R = TsRandomizer.Randomisation.Requirement;
@@ -94,6 +95,19 @@ namespace TsRandomizer.Randomisation
 
 			if (options.DownloadableItems)
 				AddDownloadTerminals();
+
+			if (options.StartWithTalaria)
+				PutTalariaIntoDummyLocation(itemInfoProvider);
+		}
+
+		void PutTalariaIntoDummyLocation(ItemInfoProvider itemInfoProvider)
+		{
+			var seedOptionsKey = new ItemKey(0, 0, 0, 0);
+
+			Add(ItemKey.TalariaSeedOption, "SeedOptions", null);
+
+			this[ItemKey.TalariaSeedOption].SetItem(itemInfoProvider.Get(EInventoryRelicType.Dash));
+			//this[seedOptionsKey].SetPickedUp();
 		}
 
 		static int CalculateCapacity(SeedOptions options)
@@ -508,6 +522,10 @@ namespace TsRandomizer.Randomisation
 
 			foreach (var itemLocation in this)
 				itemLocation.BsseOnGameSave(gameSave);
+
+			var seed = gameSave.GetSeed();
+			if(seed.HasValue && seed.Value.Options.StartWithTalaria)
+				this[ItemKey.TalariaSeedOption].SetPickedUp();
 		}
 
 		void Add(ItemKey itemKey, string name, ItemInfo defaultItem)

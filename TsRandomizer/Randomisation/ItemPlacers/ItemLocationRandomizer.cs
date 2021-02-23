@@ -85,6 +85,14 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceStarterProgressionItems(Random random)
 		{
+			if (SeedOptions.StartWithTalaria)
+				GiveOrbsToMom(random, false);
+			else 
+				PlaceStarterProgressionItem(random);
+		}
+
+		void PlaceStarterProgressionItem(Random random)
+		{
 			var starterProgressionItems = new List<ItemInfo> {
 				ItemInfoProvider.Get(EInventoryRelicType.Dash),
 				ItemInfoProvider.Get(EInventoryRelicType.Dash),
@@ -107,11 +115,11 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			if (shouldGiveLightwallAsSpell)
 			{
-				FillTutorial(random, true);
+				GiveOrbsToMom(random, true);
 			}
 			else
 			{
-				FillTutorial(random, false);
+				GiveOrbsToMom(random, false);
 
 				if (SeedOptions.StartWithTalaria) return;
 
@@ -136,7 +144,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			       && random.Next(1, 5) == 1;
 		}
 
-		protected void FillTutorial(Random random, bool useLightwallAsSpell)
+		protected void GiveOrbsToMom(Random random, bool useLightwallAsSpell)
 		{
 			var orbTypes = Helper.GetAllOrbs();
 
