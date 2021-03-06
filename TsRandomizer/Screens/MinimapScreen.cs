@@ -96,6 +96,28 @@ namespace TsRandomizer.Screens
 					}
 				}
 			}
+
+			// Reveal remaining map and show checkpoints/portals
+			foreach (var area in ((MinimapSpecification)Dynamic._minimap).Areas)
+			{
+				foreach (var room in area.Rooms)
+				{
+					var roomKey = new RoomItemKey(area.LevelID, room.RoomID);
+					if(preservedRoomStates.Contains(roomKey))
+						continue;
+
+					preservedRoomStates.Add(new MinimapRoomState(roomKey, room));
+
+					room.SetKnown(true);
+					foreach (var block in room.Blocks.Values)
+					{
+						if (block.IsCheckpoint || block.IsTransition)
+						{
+							block.IsVisited = true;
+						}
+					}
+				}
+			}
 		}
 
 		void ResetMinimap()
