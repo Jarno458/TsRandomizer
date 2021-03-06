@@ -44,7 +44,8 @@
   <ItemGroup>
     <Reference Include="FNA, Version=19.6.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\FNA.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
+      <HintPath>~/.local/share/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
       <HintPath>/opt/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -54,6 +55,7 @@
     <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\Timespinner.exe</HintPath>
+      <HintPath>~/.local/share/Steam/steamapps/common/Timespinner/Timespinner.exe</HintPath>
       <HintPath>/opt/Steam/steamapps/common/Timespinner/Timespinner.exe</HintPath>
     </Reference>
   </ItemGroup>
