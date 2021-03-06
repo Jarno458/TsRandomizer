@@ -32,6 +32,15 @@ namespace TsRandomizer.Screens
 			itemLocations = itemLocationMap;
 
 			Dynamic._removeMarkerText = (string)Dynamic._removeMarkerText + " / Show where to go next";
+			// Turn off display of SaveStatues broken to prevent softlocks
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(2,20).Blocks.Values)
+			{
+				block.IsCheckpoint = false;
+			}
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(16,21).Blocks.Values)
+			{
+				block.IsCheckpoint = false;
+			}
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
