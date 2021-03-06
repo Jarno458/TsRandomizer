@@ -7,6 +7,15 @@ namespace TsRandomizer.ItemTracker
 {
 	public static class ItemTrackerUplink
 	{
+        static readonly string StateFilePath = Path.GetTempPath() + "TsRandomizerItemTrackerState";
+        // FIXME only set delete on close if we're the randomizer!
+        // killing the underlying file can break things - just leave it?
+        //      set listener to attempt reopens on loadstate?
+        // cleanup console logs
+        // createviewstream(int,int,access) fails if it goes beyond the file size...set file big enough to begin works, make this cleaner
+        static readonly FileStream FileStream = new FileStream(StateFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite | FileShare.Delete, 4096, FileOptions.DeleteOnClose);
+        const int serializerOverheadSize = 500;
+        const int fileSize = sizeof(bool) * ItemTrackerState.NumberOfItems + serializerOverheadSize;
 		static readonly MemoryMappedFile MemoryMappedFile = GetMemoryMappedFile();
 		static ItemTrackerState lastSuccessfullRead;
 
@@ -36,14 +45,23 @@ namespace TsRandomizer.ItemTracker
 
 		static Stream GetMemoryMappedFileStream(MemoryMappedFileAccess access)
 		{
-			const int serializerOverheadSize = 500;
-
-			return MemoryMappedFile.CreateViewStream(0, sizeof(bool) * ItemTrackerState.NumberOfItems + serializerOverheadSize, access);
+			return MemoryMappedFile.CreateViewStream(0, FileStream.Length, access);
 		}
 
 		static MemoryMappedFile GetMemoryMappedFile()
 		{
-			return MemoryMappedFile.CreateOrOpen("TsRandomizerItemTrackerState", 30, MemoryMappedFileAccess.ReadWrite);
+            try
+            {
+                FileStream.SetLength(fileSize);
+                System.Console.WriteLine("Opening MemoryMappedFile: " + FileStream.Name);
+                MemoryMappedFile m = MemoryMappedFile.CreateFromFile(FileStream,"TsRandomizerItemTrackerState",FileStream.Length, MemoryMappedFileAccess.ReadWrite, null, HandleInheritability.Inheritable, true);
+                return m;
+            }
+            catch (System.Exception e)
+            {
+                System.Console.WriteLine("ERROR opening MemoryMappedFile: " + e.ToString());
+            }
+            return null;
 		}
 	}
 }
