@@ -115,6 +115,11 @@ namespace TsRandomizer.Screens
 						{
 							block.IsVisited = true;
 						}
+						if (!block.IsVisited && (block.IsBoss || block.IsTimespinner))
+						{
+							block.RoomColor = EMinimapRoomColor.DotRed;
+							block.IsVisited = true;
+						}
 					}
 				}
 			}
