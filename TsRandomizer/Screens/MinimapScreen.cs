@@ -54,6 +54,7 @@ namespace TsRandomizer.Screens
 			if (!isShowingAviableLocations && shouldShowItemLocationHints)
 			{
 				MarkAvailableItemLocations();
+				MarkBasicMapKnowledge();
 				isShowingAviableLocations = true;
 			}
 			else
@@ -105,7 +106,16 @@ namespace TsRandomizer.Screens
 					}
 				}
 			}
+		}
 
+		void MarkBlockAsBossOrTimespinner(MinimapBlock block)
+		{
+			block.RoomColor = EMinimapRoomColor.DotRed;
+			block.IsVisited = true;
+		}
+
+		void MarkBasicMapKnowledge()
+		{
 			// Reveal remaining map and show checkpoints/portals
 			foreach (var area in ((MinimapSpecification)Dynamic._minimap).Areas)
 			{
@@ -126,12 +136,39 @@ namespace TsRandomizer.Screens
 						}
 						if (!block.IsVisited && (block.IsBoss || block.IsTimespinner))
 						{
-							block.RoomColor = EMinimapRoomColor.DotRed;
-							block.IsVisited = true;
+							MarkBlockAsBossOrTimespinner(block);
 						}
 					}
 				}
 			}
+
+			// Golden Idol 5,5
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(5,5).Blocks.Values)
+			{
+				if (!block.IsVisited)
+				{
+					MarkBlockAsBossOrTimespinner(block);
+				}
+			}
+
+			// The Maw Antechamber 8,13
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(8,13).Blocks.Values)
+			{
+				if (!block.IsVisited)
+				{
+					MarkBlockAsBossOrTimespinner(block);
+				}
+			}
+
+			// Xarion 9,7
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(9,7).Blocks.Values)
+			{
+				if (!block.IsVisited)
+				{
+					MarkBlockAsBossOrTimespinner(block);
+				}
+			}
+
 		}
 
 		void ResetMinimap()
