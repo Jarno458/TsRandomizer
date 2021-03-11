@@ -32,15 +32,8 @@ namespace TsRandomizer.Screens
 			itemLocations = itemLocationMap;
 
 			Dynamic._removeMarkerText = (string)Dynamic._removeMarkerText + " / Show where to go next";
-			// Turn off display of SaveStatues broken to prevent softlocks
-			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(2,20).Blocks.Values)
-			{
-				block.IsCheckpoint = false;
-			}
-			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(16,21).Blocks.Values)
-			{
-				block.IsCheckpoint = false;
-			}
+
+			TweakMapBlocks();
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
@@ -95,9 +88,10 @@ namespace TsRandomizer.Screens
 					block.IsKnown = true;
 					block.IsVisited = true;
 
-					if (block.IsTransition)
+					if (block.IsTransition || block.IsCheckpoint || block.IsBoss)
 					{
 						block.IsTransition = false;
+						block.IsCheckpoint = false;
 						block.RoomColor = EMinimapRoomColor.Yellow;
 					}
 					else
@@ -141,34 +135,6 @@ namespace TsRandomizer.Screens
 					}
 				}
 			}
-
-			// Golden Idol 5,5
-			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(5,5).Blocks.Values)
-			{
-				if (!block.IsVisited)
-				{
-					MarkBlockAsBossOrTimespinner(block);
-				}
-			}
-
-			// The Maw Antechamber 8,13
-			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(8,13).Blocks.Values)
-			{
-				if (!block.IsVisited)
-				{
-					MarkBlockAsBossOrTimespinner(block);
-				}
-			}
-
-			// Xarion 9,7
-			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(9,7).Blocks.Values)
-			{
-				if (!block.IsVisited)
-				{
-					MarkBlockAsBossOrTimespinner(block);
-				}
-			}
-
 		}
 
 		void ResetMinimap()
@@ -225,6 +191,39 @@ namespace TsRandomizer.Screens
 						visableAreas.Add(EMinimapEraType.Other);
 					break;
 			}
+		}
+
+		void TweakMapBlocks()
+		{
+			// Turn off display of SaveStatues broken to prevent softlocks
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(2,20).Blocks.Values)
+			{
+				block.IsCheckpoint = false;
+			}
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(16,21).Blocks.Values)
+			{
+				block.IsCheckpoint = false;
+			}
+
+			// Mark missing boss rooms
+			// Golden Idol 5,5
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(5,5).Blocks.Values)
+			{
+				block.IsBoss = true;
+			}
+
+			// The Maw Antechamber 8,13
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(8,13).Blocks.Values)
+			{
+				block.IsBoss = true;
+			}
+
+			// Xarion 9,7
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(9,7).Blocks.Values)
+			{
+				block.IsBoss = true;
+			}
+
 		}
 
 		class MinimapRoomState
