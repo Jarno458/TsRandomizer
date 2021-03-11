@@ -41,7 +41,7 @@ namespace TsRandomizer
 
 		public override string ToString()
 		{
-			return Id.ToString("X8") + Options;
+			return Id.ToString($"X{Length - SeedOptions.Length}") + Options;
 		}
 	}
 }

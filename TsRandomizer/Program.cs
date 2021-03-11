@@ -30,6 +30,9 @@ namespace TsRandomizer
 					IsSteam = false;
 					break;
 
+				case null:
+					return -1;
+
 				default:
 					SDL.SDL_ShowSimpleMessageBox(
 						SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR,

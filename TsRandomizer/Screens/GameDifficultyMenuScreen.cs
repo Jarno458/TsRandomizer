@@ -54,7 +54,7 @@ namespace TsRandomizer.Screens
 			foreach (var menuEntry in menuEntries)
 			{
 				var entry = menuEntry.AsDynamic();
-				entry.BaseDrawColor = MenuEntry.UnavailableColor;
+				entry.BaseDrawColor = MenuEntry.UnAvailableColor;
 			}
 		}
 
@@ -124,7 +124,7 @@ namespace TsRandomizer.Screens
 			foreach (var menuEntry in menuEntries)
 			{
 				var entry = menuEntry.AsDynamic();
-				entry.BaseDrawColor = MenuEntry.UnselectedColor;
+				entry.BaseDrawColor = MenuEntry.UnSelectedColor;
 			}
 		}
 

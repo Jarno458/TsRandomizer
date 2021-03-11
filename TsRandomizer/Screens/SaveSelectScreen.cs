@@ -7,6 +7,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SDL2;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Drawables;
@@ -98,7 +99,7 @@ namespace TsRandomizer.Screens
 		{
 			var selectedIndex = Dynamic.SelectedIndex;
 
-			if (input.IsButtonHold(Buttons.LeftTrigger, null, out _))
+			if (input.IsButtonHold(Buttons.LeftTrigger))
 			{
 				var seedRepresentation = seedRepresentations
 					.FirstOrDefault(sr => ((GameSave)sr.Key.AsDynamic().SaveFile).SaveFileIndex == selectedIndex).Value;
@@ -106,7 +107,7 @@ namespace TsRandomizer.Screens
 				if (seedRepresentation != null)
 					seedRepresentation.ShowSeedId = true;
 			}
-			else if (input.IsNewButtonPress(Buttons.RightTrigger, null, out _))
+			else if (input.IsNewButtonPress(Buttons.RightTrigger))
 			{
 				var selectedSaveFile = seedRepresentations
 					.Select(sr => (GameSave)sr.Key.AsDynamic().SaveFile)
@@ -116,6 +117,19 @@ namespace TsRandomizer.Screens
 					return;
 
 				ShowSpoilerGenerationDialog(selectedSaveFile);
+			}
+
+			if (input.IsControllHold() && input.IsKeyHold(Keys.C))
+			{
+				var seed = seedRepresentations
+					.Select(sr => (GameSave)sr.Key.AsDynamic().SaveFile)
+					.FirstOrDefault(save => save.SaveFileIndex == selectedIndex)
+					?.GetSeed();
+
+				if (!seed.HasValue)
+					return;
+
+				SDL.SDL_SetClipboardText(seed.Value.ToString());
 			}
 		}
 

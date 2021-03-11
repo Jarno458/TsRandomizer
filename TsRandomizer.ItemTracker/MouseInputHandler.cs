@@ -33,13 +33,11 @@ namespace TsRandomizerItemTracker
 			{
 				if (WasDoubleClick(currentState))
 				{
-					Console.WriteLine("MOUSE: double click");
 					doubleClickHandler();
 					previousLeftClickTimer = DoubleClickMaxDelay;
 				}
 				else
 				{
-					Console.WriteLine("MOUSE: single click");
 					previousLeftClickTimer = 0;
 				}
 			}
@@ -49,10 +47,7 @@ namespace TsRandomizerItemTracker
 
 			var scrolledAmount = previousState.ScrollWheelValue - currentState.ScrollWheelValue;
 			if (scrolledAmount != 0)
-			{
-				Console.WriteLine($"MOUSE: scrolled by {scrolledAmount}");
 				scrollHandler(scrolledAmount);
-			}
 
 			previousState = currentState;
 		}

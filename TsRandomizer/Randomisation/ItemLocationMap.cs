@@ -102,12 +102,9 @@ namespace TsRandomizer.Randomisation
 
 		void PutTalariaIntoDummyLocation(ItemInfoProvider itemInfoProvider)
 		{
-			var seedOptionsKey = new ItemKey(0, 0, 0, 0);
-
 			Add(ItemKey.TalariaSeedOption, "SeedOptions", null);
 
 			this[ItemKey.TalariaSeedOption].SetItem(itemInfoProvider.Get(EInventoryRelicType.Dash));
-			//this[seedOptionsKey].SetPickedUp();
 		}
 
 		static int CalculateCapacity(SeedOptions options)

@@ -94,7 +94,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 		void UndoBaseGameAwardedEnquipment(GameplayScreen gameplayScreen)
 		{
-			Level.GameSave.Inventory.EquipmentInventory.RemoveItem((int)EInventoryEquipmentType.None, 1);
+			Level.GameSave.Inventory.EquipmentInventory.RemoveItem(ItemInfo.BestiaryItemDropSpecification.Item, 1);
 			gameplayScreen.HideItemPickupBar();
 		}
 	}

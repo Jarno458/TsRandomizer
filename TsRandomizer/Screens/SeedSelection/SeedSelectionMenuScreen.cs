@@ -67,15 +67,15 @@ namespace TsRandomizer.Screens.SeedSelection
 			if (!IsUsedAsSeedSelectionMenu)
 				return;
 
-			forceSeed = input.IsButtonHold(Buttons.RightTrigger, null, out _);
+			forceSeed = input.IsButtonHold(Buttons.RightTrigger);
 
 			okButton.Text = forceSeed ? "Force" : "OK";
 
-			if (input.IsKeyHold(Keys.LeftControl, null, out _) || input.IsKeyHold(Keys.RightControl, null, out _))
+			if (input.IsControllHold())
 			{
-				if(input.IsKeyHold(Keys.V, null, out _) && SDL.SDL_HasClipboardText() == SDL.SDL_bool.SDL_TRUE)
+				if(input.IsKeyHold(Keys.V) && SDL.SDL_HasClipboardText() == SDL.SDL_bool.SDL_TRUE)
 					GetClipboardSeed();
-				else if (input.IsKeyHold(Keys.C, null, out _)) 
+				else if (input.IsKeyHold(Keys.C)) 
 					SDL.SDL_SetClipboardText(GetHexString());
 			}
 

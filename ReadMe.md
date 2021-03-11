@@ -38,6 +38,7 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 * On the minimap screen, holding the secondairy button (default: X) will highligh all locations that you can reach and still have items for you
 * In Load game menu, holding down the last orb button (default: left trigger) will show the seed id in numerical format
 * In Load game menu, pressing the next orb button (default: right trigger) will the generation of a spoiler log, the spoiler logs are saved in same directory as the TsRandomizer.exe
+* In Load game menu, Ctr+C can now be used to copy seed id of the currently selected save to the clipboard
 * In Seed selection menu, holding down the next orb button (default: right trigger) will allow you to force select a seed even when its logicly unbeatable
 * In Seed selection menu, Ctr+V can now be used to past text in the seed field in order to copy paste seeds into the game
 * In Seed selection menu, Ctr+C can now be used to copy seed id to the clipboard
@@ -64,18 +65,13 @@ The item tracker features a few options:
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * Gassmask can be in area like library or xarion caves where the use has to acces to as his only tp is the starter left one
 * Sometimes do download terminals do not correctly reward thier items
-* Meyef & Talaria should be removed from droplist if they are a starter item
-* Talaria should be tracked if its a starter item and starting progression will nolonger be required
-* Skeleton animation shows the next progressive item but reward the correct one
-* If Timespinner is placed in the incorrect folder it will display two error messages
-* ItemDropPickups also reward a random enquipment
+* If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
 
 # Todo
 ##### Things i plan on doing in the future
 * Extend names of item locations in the spoiler log (with help from community on discord)
 * Maybe make items drop from memories and journals
 * option: make key doors require a specific key
-* Add Ctr + C to the 
 * Quick delete all saves
 * Make nightmare more unlocked by default
 
@@ -83,6 +79,6 @@ The item tracker features a few options:
 ##### Ideas that may never happen but i think will be fun when they are implemenbted
 * Randomize quest items
 * Randomize enemies
-* Timesanity
+* Timesanity (entrance randomizer)
 * Make warpshard optionally a progressin item that unlocks all softlocks
 * Randomize shop(s)

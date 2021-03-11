@@ -97,16 +97,18 @@ namespace TsRandomizer.Screens
 			return true;
 		}
 
+#if DEBUG
 		void TimespinnerAfterDark(InputState input)
 		{
-			if (input.IsNewButtonPress(Buttons.DPadLeft, null, out _))
+			if (input.IsNewButtonPress(Buttons.DPadLeft))
 				Level.RequestChangeLevel(new LevelChangeRequest { LevelID = Math.Max(Level.ID - 1, 0), RoomID = 0 });
-			if (input.IsNewButtonPress(Buttons.DPadRight, null, out _))
+			if (input.IsNewButtonPress(Buttons.DPadRight))
 				Level.RequestChangeLevel(new LevelChangeRequest { LevelID = Level.ID + 1, RoomID = 0 });
-			if (input.IsNewButtonPress(Buttons.DPadDown, null, out _))
+			if (input.IsNewButtonPress(Buttons.DPadDown))
 				Level.RequestChangeRoom(new LevelChangeRequest { LevelID = Level.ID, RoomID = Math.Max(Level.RoomID - 1, 0) });
-			if (input.IsNewButtonPress(Buttons.DPadUp, null, out _))
+			if (input.IsNewButtonPress(Buttons.DPadUp))
 				Level.RequestChangeRoom(new LevelChangeRequest { LevelID = Level.ID, RoomID = Math.Min(Level.RoomID + 1, Level.TotalRooms - 1) });
 		}
+#endif
 	}
 }

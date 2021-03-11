@@ -16,10 +16,10 @@ namespace TsRandomizer.Screens.Menu
 		static readonly MethodInfo SelectedEventAddMethod = MainMenuEntrySelectEventInfo.GetAddMethod(true);
 
 		// ReSharper disable PossibleNullReferenceException
-		public static readonly Color UnselectedColor = (Color)MainMenuEntryType
+		public static readonly Color UnSelectedColor = (Color)MainMenuEntryType
 			.GetField("UnselectedColor", BindingFlags.Static | BindingFlags.Public)
 			.GetValue(null);
-		public static readonly Color UnavailableColor = (Color)MainMenuEntryType
+		public static readonly Color UnAvailableColor = (Color)MainMenuEntryType
 			.GetField("UnavailableColor", BindingFlags.Static | BindingFlags.Public)
 			.GetValue(null);
 		// ReSharper restore PossibleNullReferenceException
@@ -78,7 +78,7 @@ namespace TsRandomizer.Screens.Menu
 			var entry = Activator.CreateInstance(MainMenuEntryType, text);
 
 			if(!enabled)
-				entry.AsDynamic().BaseDrawColor = UnavailableColor;
+				entry.AsDynamic().BaseDrawColor = UnAvailableColor;
 
 			SelectedEventAddMethod.Invoke(entry, new object[] { handlerDelegate });
 
