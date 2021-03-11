@@ -289,7 +289,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(5, 15, 296, 192), null, itemProvider.Get(EItemType.MaxAura), CastleKeep);
 			Add(new ItemKey(5, 41, 72, 160), null, itemProvider.Get(EInventoryEquipmentType.BuckleHat), CastleKeep);
 			Add(new RoomItemKey(5, 5), "Twins", itemProvider.Get(EInventoryRelicType.DoubleJump), CastleKeep & R.TimeStop);
-			Add(new ItemKey(5, 22, 312, 176), null, itemProvider.Get(EItemType.MaxSand), CastleKeep & ForwardDashDoubleJump);
+			Add(new ItemKey(5, 22, 312, 176), null, itemProvider.Get(EItemType.MaxSand), CastleKeep & ForwardDashDoubleJump); //Only required double jump but with just timestop it isnt reachable
 			areaName = "Royal towers";
 			Add(new ItemKey(6, 19, 200, 176), null, itemProvider.Get(EItemType.MaxAura), RoyalTower & R.DoubleJump & OculusRift);
 			Add(new ItemKey(6, 27, 472, 384), null, itemProvider.Get(EInventoryUseItemType.MagicMarbles), MidRoyalTower);

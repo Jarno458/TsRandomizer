@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Timespinner.GameAbstractions;
@@ -10,6 +9,7 @@ using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens.Menu;
+using SDL2;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace TsRandomizer.Screens.SeedSelection
@@ -21,6 +21,8 @@ namespace TsRandomizer.Screens.SeedSelection
 			.Get("Timespinner.GameStateManagement.Screens.PauseMenu.Options.PasswordMenuScreen");
 		static readonly Type MainMenuEntryType = TimeSpinnerType
 			.Get("Timespinner.GameStateManagement.MenuEntry");
+		static readonly Type InventoryItemIconType = TimeSpinnerType
+			.Get("Timespinner.GameAbstractions.Inventory.EInventoryItemIcon");
 
 		readonly GameDifficultyMenuScreen difficultyMenu;
 
@@ -65,23 +67,16 @@ namespace TsRandomizer.Screens.SeedSelection
 			if (!IsUsedAsSeedSelectionMenu)
 				return;
 
-			if (input.IsButtonHold(Buttons.RightTrigger, null, out _))
-			{
-				forceSeed = true;
-				okButton.Text = "Force";
-			}
-			else
-			{
-				forceSeed = false;
-				okButton.Text = "OK";
-			}
+			forceSeed = input.IsButtonHold(Buttons.RightTrigger, null, out _);
+
+			okButton.Text = forceSeed ? "Force" : "OK";
 
 			if (input.IsKeyHold(Keys.LeftControl, null, out _) || input.IsKeyHold(Keys.RightControl, null, out _))
 			{
-				if(input.IsKeyHold(Keys.V, null, out _) && Clipboard.ContainsText())
+				if(input.IsKeyHold(Keys.V, null, out _) && SDL.SDL_HasClipboardText() == SDL.SDL_bool.SDL_TRUE)
 					GetClipboardSeed();
 				else if (input.IsKeyHold(Keys.C, null, out _)) 
-					Clipboard.SetText(GetHexString());
+					SDL.SDL_SetClipboardText(GetHexString());
 			}
 
 			var selectedMenuEntryIndex = Dynamic.SelectedIndex;
@@ -96,7 +91,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		void GetClipboardSeed()
 		{
-			var text = Clipboard.GetText().Trim();
+			var text = SDL.SDL_GetClipboardText().Trim();
 
 			if (text.Length > Seed.Length)
 				text = text.Substring(0, Seed.Length);
@@ -156,8 +151,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		void ShowErrorDescription(string message)
 		{
-			var inventoryItemIconType = TimeSpinnerType.Get("Timespinner.GameAbstractions.Inventory.EInventoryItemIcon");
-			Dynamic.ChangeDescription(message, inventoryItemIconType.GetEnumValue("None"));
+			Dynamic.ChangeDescription(message, InventoryItemIconType.GetEnumValue("None"));
 		}
 
 		void OnOptionsSelected(PlayerIndex playerIndex)

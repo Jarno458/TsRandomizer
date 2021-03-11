@@ -2,12 +2,17 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Windows.Forms;
+using SDL2;
 
 namespace TsRandomizer
 {
 	public static class Program
 	{
+		// ReSharper disable InconsistentNaming
+		const string Win_Steam_V1_032 = "93DC447605E4DF8F349B1FA66342E79A";
+		const string Win_DrmFree_V1_031 = "2CC3F5AD830F32D9F6294E5205E61FBE";
+		// ReSharper restore InconsistentNaming
+
 		public static bool IsSteam;
 
 		[STAThread]
@@ -17,16 +22,21 @@ namespace TsRandomizer
 
 			switch (md5)
 			{
-				case "93DC447605E4DF8F349B1FA66342E79A": //win steam v1.032
+				case Win_Steam_V1_032:
 					IsSteam = true;
 					break;
 
-				case "2CC3F5AD830F32D9F6294E5205E61FBE": //win DRM free v1.031
+				case Win_DrmFree_V1_031:
 					IsSteam = false;
 					break;
 
 				default:
-					MessageBox.Show("TsRandomizer version missmatch!, pleaze update TsRandomizer\r\nThe installed version of TsRanodmizer is not made to work with the installed version of TimeSpinner", "VersionMissmatch");
+					SDL.SDL_ShowSimpleMessageBox(
+						SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR,
+						"VersionMismatch",
+						"TsRandomizer version missmatch!, pleaze update TsRandomizer\r\nThe installed version of TsRanodmizer is not made to work with the installed version of TimeSpinner",
+						IntPtr.Zero
+					);
 					return -1;
 			}
 
@@ -45,7 +55,12 @@ namespace TsRandomizer
 			}
 			catch (FileNotFoundException)
 			{
-				MessageBox.Show("Timespinner.exe not found in current directory\r\nPleaze place TsRandomizer.exe in the same folder as the original game", "FileNotFound");
+				SDL.SDL_ShowSimpleMessageBox(
+					SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR,
+					"FileNotFound",
+					"Timespinner.exe not found in current directory\r\nPleaze place TsRandomizer.exe in the same folder as the original game",
+					IntPtr.Zero
+				);
 				return null;
 			}
 		}
