@@ -67,6 +67,7 @@ The item tracker features a few options:
 * Meyef & Talaria should be removed from droplist if they are a starter item
 * Talaria should be tracked if its a starter item and starting progression will nolonger be required
 * Skeleton animation shows the next progressive item but reward the correct one
+* If Timespinner is placed in the incorrect folder it will display two error messages
 
 # Todo
 ##### Things i plan on doing in the future
