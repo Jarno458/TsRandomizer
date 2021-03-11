@@ -47,6 +47,7 @@ namespace TsRandomizer.Randomisation
 		public void SetPickedUp()
 		{
 			IsPickedUp = true;
+
 			gameSave.DataKeyBools[LootedItemDataString] = true;
 
 			if (ItemInfo is PogRessiveItemInfo progressiveItemInfo)

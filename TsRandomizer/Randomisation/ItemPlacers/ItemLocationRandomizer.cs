@@ -85,6 +85,14 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceStarterProgressionItems(Random random)
 		{
+			if (SeedOptions.StartWithTalaria)
+				GiveOrbsToMom(random, false);
+			else 
+				PlaceStarterProgressionItem(random);
+		}
+
+		void PlaceStarterProgressionItem(Random random)
+		{
 			var starterProgressionItems = new List<ItemInfo> {
 				ItemInfoProvider.Get(EInventoryRelicType.Dash),
 				ItemInfoProvider.Get(EInventoryRelicType.Dash),
@@ -107,11 +115,11 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			if (shouldGiveLightwallAsSpell)
 			{
-				FillTutorial(random, true);
+				GiveOrbsToMom(random, true);
 			}
 			else
 			{
-				FillTutorial(random, false);
+				GiveOrbsToMom(random, false);
 
 				if (SeedOptions.StartWithTalaria) return;
 
@@ -136,7 +144,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			       && random.Next(1, 5) == 1;
 		}
 
-		protected void FillTutorial(Random random, bool useLightwallAsSpell)
+		protected void GiveOrbsToMom(Random random, bool useLightwallAsSpell)
 		{
 			var orbTypes = Helper.GetAllOrbs();
 
@@ -184,7 +192,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.Select(l => l.DefaultItem)
 				.Where(i => i.Identifier.LootType != LootType.ConstOrb 
 				            && i.Identifier.LootType != LootType.ConstFamiliar 
-				            && !itemsToRemoveFromGame.Contains(i) 
 				            && !genericItems.Contains(i))
 				.ToList();
 
@@ -193,7 +200,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			AddExtraItems(itemlist);
 
 			itemlist = itemlist
-				.Where(i => !alreadyAssingedItems.Contains(i))
+				.Where(i => !alreadyAssingedItems.Contains(i)
+				            && !itemsToRemoveFromGame.Contains(i))
 				.ToList();
 
 			var freeLocations = ItemLocations
@@ -220,7 +228,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		void AddFamiliers(List<ItemInfo> itemlist)
 		{
 			var allFamiliers = ((EInventoryFamiliarType[])Enum.GetValues(typeof(EInventoryFamiliarType)))
-				.Where(o => o != EInventoryFamiliarType.None);
+				.Where(f => f != EInventoryFamiliarType.None);
 
 			itemlist.AddRange(allFamiliers.Select(familiar => ItemInfoProvider.Get(familiar)));
 		}

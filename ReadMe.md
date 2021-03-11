@@ -68,12 +68,16 @@ The item tracker features a few options:
 * Talaria should be tracked if its a starter item and starting progression will nolonger be required
 * Skeleton animation shows the next progressive item but reward the correct one
 * If Timespinner is placed in the incorrect folder it will display two error messages
+* ItemDropPickups also reward a random enquipment
 
 # Todo
 ##### Things i plan on doing in the future
 * Extend names of item locations in the spoiler log (with help from community on discord)
 * Maybe make items drop from memories and journals
 * option: make key doors require a specific key
+* Add Ctr + C to the 
+* Quick delete all saves
+* Make nightmare more unlocked by default
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemenbted
