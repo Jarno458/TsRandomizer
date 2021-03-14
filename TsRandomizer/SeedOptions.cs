@@ -17,6 +17,7 @@ namespace TsRandomizer
 		public bool RequireEyeOrbRing => (Flags & 1 << 4) > 0;
 		public bool StartWithMeyef => (Flags & 1 << 5) > 0; 
 		public bool StartWithTalaria => (Flags & 1 << 6) > 0;
+		public bool SpecificKeys => (Flags & 1 << 7) > 0;
 
 		public SeedOptions(uint flags)
 		{

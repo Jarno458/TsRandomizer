@@ -42,7 +42,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			RecalculateAvailableItemLocations();
 			CalculateTutorial();
 
-			var itemsThatUnlockProgression = UnlockingMap.ItemsThatUnlockProgression
+			var itemsThatUnlockProgression = UnlockingMap.AllProgressionItems
 				.Select(i => new SingleItemInfo(UnlockingMap, i)).ToList();
 
 			while (itemsThatUnlockProgression.Count > 0)
@@ -146,9 +146,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			var upwardsDash = new ItemIdentifier(EInventoryRelicType.EssenceOfSpace);
 			var lightWall = new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Spell);
 
-			var unlockingItems = UnlockingMap.UnlockingSpecifications
-				.Where(us => us.AllUnlocks.Contains(requirement))
-				.Select(us => us.Item);
+			var unlockingItems = UnlockingMap.AllItemThatUnlockProgression(requirement);
 
 			if (requirement != Requirement.UpwardDash && placedItems.Count <= 10)
 				unlockingItems = unlockingItems.Where(i => i != upwardsDash && i != lightWall);

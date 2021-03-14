@@ -389,6 +389,27 @@ namespace TsRandomizer.Randomisation
 				.ToArray();
 		}
 
+		public R GetAvailableRequirementsBasedOnObtainedItems()
+		{
+			var pickedUpProgressionItemLocations = this
+				.Where(l => l.IsPickedUp && l.ItemInfo.Unlocks != R.None)
+				.ToArray();
+
+			var pickedUpSingleItemLocationUnlocks = pickedUpProgressionItemLocations
+				.Where(l => !(l.ItemInfo is PogRessiveItemInfo))
+				.Select(l => l.ItemInfo.Unlocks);
+
+			var pickedUpProgressiveItemLocationUnlocks = pickedUpProgressionItemLocations
+				.Where(l => l.ItemInfo is PogRessiveItemInfo)
+				.Select(l => ((PogRessiveItemInfo)l.ItemInfo)
+					.GetAllUnlockedItems()
+					.Select(i => i.Unlocks)
+					.Aggregate(R.None, (a, b) => a | b));
+
+			return pickedUpSingleItemLocationUnlocks.Concat(pickedUpProgressiveItemLocationUnlocks)
+				.Aggregate(R.None, (a, b) => a | b);
+		}
+
 		public bool IsBeatable()
 		{
 			if (!IsGassMaskReachableWithTheMawRequirements()

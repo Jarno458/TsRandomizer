@@ -3,7 +3,6 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions;
-using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -18,13 +17,10 @@ namespace TsRandomizer.Screens
 		ItemLocationMap itemLocations;
 		bool isShowingAviableLocations;
 
-		readonly ControllerMapping controllerMapping;
-
 		LookupDictionairy<RoomItemKey, MinimapRoomState> preservedRoomStates;
 
 		public MinimapScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
-			controllerMapping = screenManager.MenuControllerMapping;
 		}
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
@@ -113,30 +109,9 @@ namespace TsRandomizer.Screens
 
 		IEnumerable<ItemLocation> GetAvailableItemLocations()
 		{
-			var obtainedRequirements = GetAvailableRequirementsBasedOnObtainedItems();
+			var obtainedRequirements = itemLocations.GetAvailableRequirementsBasedOnObtainedItems();
 			var locations = itemLocations.Where(l => !l.IsPickedUp && l.Gate.CanBeOpenedWith(obtainedRequirements));
 			return locations;
-		}
-
-		Requirement GetAvailableRequirementsBasedOnObtainedItems()
-		{
-			var pickedUpProgressionItemLocations = itemLocations
-				.Where(l => l.IsPickedUp && l.ItemInfo.Unlocks != Requirement.None)
-				.ToArray();
-
-			var pickedUpSingleItemLocationUnlocks = pickedUpProgressionItemLocations
-				.Where(l => !(l.ItemInfo is PogRessiveItemInfo))
-				.Select(l => l.ItemInfo.Unlocks);
-
-			var pickedUpProgressiveItemLocationUnlocks = pickedUpProgressionItemLocations
-				.Where(l => l.ItemInfo is PogRessiveItemInfo)
-				.Select(l => ((PogRessiveItemInfo) l.ItemInfo)
-					.GetAllUnlockedItems()
-					.Select(i => i.Unlocks)
-					.Aggregate(Requirement.None, (a, b) => a | b));
-
-			return pickedUpSingleItemLocationUnlocks.Concat(pickedUpProgressiveItemLocationUnlocks)
-				.Aggregate(Requirement.None, (a, b) => a | b);
 		}
 
 		static void MakeSureEraIsVisable(ICollection<EMinimapEraType> visableAreas, MinimapRoom room)

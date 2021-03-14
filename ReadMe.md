@@ -64,14 +64,14 @@ The item tracker features a few options:
 * To prevent a crash, the pedistal after killing dad is now temporary not randomized anymore
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * Gassmask can be in area like library or xarion caves where the use has to acces to as his only tp is the starter left one
-* Sometimes do download terminals do not correctly reward thier items
+* Sometimes the download terminals do not correctly reward thier items (need reproduction instructions)
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
 
 # Todo
 ##### Things i plan on doing in the future
 * Extend names of item locations in the spoiler log (with help from community on discord)
 * Maybe make items drop from memories and journals
-* option: make key doors require a specific key
+-> * option: make key doors require a specific key
 * Quick delete all saves
 * Make nightmare more unlocked by default
 

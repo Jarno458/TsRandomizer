@@ -36,7 +36,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.Select(l => l.ItemInfo)
 				.ToArray();
 
-			var itemsThatUnlockProgression = UnlockingMap.ItemsThatUnlockProgression
+			var itemsThatUnlockProgression = UnlockingMap.AllProgressionItems
 				.Where(i => alreadyAssingedItems.All(x => x.Identifier != i))
 				.Select(i => ItemInfoProvider.Get(i))
 				.ToList();

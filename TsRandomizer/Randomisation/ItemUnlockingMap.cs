@@ -11,19 +11,17 @@ namespace TsRandomizer.Randomisation
 {
 	class ItemUnlockingMap
 	{
-		public const int ProgressionItemCount = 25;
+		readonly LookupDictionairy<ItemIdentifier, UnlockingSpecification> unlockingSpecifications;
 
-		public List<UnlockingSpecification> UnlockingSpecifications;
-
-		public R AllUnlockableRequirements => UnlockingSpecifications.Aggregate(R.None, (a, b) => a | b.AllUnlocks);
-		public IEnumerable<ItemIdentifier> ItemsThatUnlockProgression => UnlockingSpecifications.Select(us => us.Item);
-		public R PyramidKeysUnlock => UnlockingSpecifications.Single(us => us.Item == new ItemIdentifier(EInventoryRelicType.PyramidsKey)).Unlocks;
+		public R AllUnlockableRequirements => unlockingSpecifications.Aggregate(R.None, (a, b) => a | b.AllUnlocks);
+		public IEnumerable<ItemIdentifier> AllProgressionItems => unlockingSpecifications.Select(us => us.Item);
+		public R PyramidKeysUnlock => unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.PyramidsKey)].Unlocks;
 
 		public ItemUnlockingMap(Seed seed)
 		{
 			var random = new Random((int)seed.Id);
 
-			UnlockingSpecifications = new List<UnlockingSpecification>(ProgressionItemCount)
+			unlockingSpecifications = new LookupDictionairy<ItemIdentifier, UnlockingSpecification>(26, s => s.Item)
 			{ 
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.TimespinnerWheel), R.TimespinnerWheel, R.TimeStop),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.DoubleJump), R.DoubleJump, R.TimeStop),
@@ -53,12 +51,23 @@ namespace TsRandomizer.Randomisation
 				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive), R.OculusRift),
 			};
 
+			if (seed.Options.SpecificKeys)
+				MakeKeyCardUnlocksCardSpecific();
+
 			var pyramidUnlockingSpecification = 
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.None, R.Teleport);
 
 			SetTeleporterPickupAction(random, pyramidUnlockingSpecification);
 
-			UnlockingSpecifications.Add(pyramidUnlockingSpecification);
+			unlockingSpecifications.Add(pyramidUnlockingSpecification);
+		}
+
+		void MakeKeyCardUnlocksCardSpecific()
+		{
+			unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardA)].AdditionalUnlocks = R.None;
+			unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardB)].AdditionalUnlocks = R.None;
+			unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardC)].AdditionalUnlocks = R.None;
+			unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardD)].AdditionalUnlocks = R.None;
 		}
 
 		void SetTeleporterPickupAction(Random random, UnlockingSpecification unlockingSpecification)
@@ -87,13 +96,23 @@ namespace TsRandomizer.Randomisation
 		}
 
 		public R GetUnlock(ItemIdentifier identifier) =>
-			UnlockingSpecifications.FirstOrDefault(us => us.Item == identifier)?.Unlocks ?? R.None;
+			unlockingSpecifications.TryGetValue(identifier, out var value)
+				? value.Unlocks
+				: R.None;
 
 		public R GetAllUnlock(ItemIdentifier identifier) =>
-			UnlockingSpecifications.FirstOrDefault(us => us.Item == identifier)?.AllUnlocks ?? R.None;
-
+			unlockingSpecifications.TryGetValue(identifier, out var value)
+				? value.AllUnlocks
+				: R.None;
 		public Action<Level> GetPickupAction(ItemIdentifier identifier) =>
-			UnlockingSpecifications.FirstOrDefault(us => us.Item == identifier)?.OnPickup;
+			unlockingSpecifications.TryGetValue(identifier, out var value)
+				? value.OnPickup
+				: null;
+
+		public IEnumerable<ItemIdentifier> AllItemThatUnlockProgression(R requirement) =>
+			unlockingSpecifications
+				.Where(s => s.AllUnlocks.Contains(requirement))
+				.Select(s => s.Item);
 
 		static void UnlockRoom(Level level, int levelId, int roomId)
 		{
@@ -103,23 +122,19 @@ namespace TsRandomizer.Randomisation
 			minimapRoom.SetVisited(true);
 		}
 
-		public class UnlockingSpecification
+		class UnlockingSpecification
 		{
 			public ItemIdentifier Item { get; }
 			public R Unlocks { get; internal set; }
-			public R AdditionalUnlocks { get; }
+			public R AdditionalUnlocks { get; internal set; }
 			public R AllUnlocks => Unlocks | AdditionalUnlocks;
 			public Action<Level> OnPickup { get; internal set; }
 
-			public UnlockingSpecification(ItemIdentifier item, R unlocks) : this(item, unlocks, R.None)
-			{
-			}
-
-			public UnlockingSpecification(ItemIdentifier item, R unlocks, R additionalUnlocks)
+			public UnlockingSpecification(ItemIdentifier item, R unlocks, R? additionalUnlocks = null)
 			{
 				Item = item;
 				Unlocks = unlocks;
-				AdditionalUnlocks = additionalUnlocks;
+				AdditionalUnlocks = additionalUnlocks.HasValue ? additionalUnlocks.Value : R.None;
 			}
 		}
 	}
