@@ -7,7 +7,9 @@ namespace TsRandomizer
 	class TimeSpinnerGame : TimespinnerGame
 	{
 		readonly PlatformHelper platformHelper;
+
 		public static dynamic Constants => new Constants();
+		public static dynamic Localizar => new Localizer();
 
 		public TimeSpinnerGame(PlatformHelper platformHelper) : base(platformHelper)
 		{

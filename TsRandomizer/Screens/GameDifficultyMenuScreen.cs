@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
@@ -22,6 +23,8 @@ namespace TsRandomizer.Screens
 	{
 		static readonly Type LoadingScreenType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.LoadingScreen");
+		static readonly Type MainMenuEntryType = 
+			TimeSpinnerType.Get("Timespinner.GameStateManagement.MenuEntry");
 
 		readonly MenuEntry seedMenuEntry;
 		readonly SeedRepresentation seedRepresentation;
@@ -32,6 +35,8 @@ namespace TsRandomizer.Screens
 
 		public GameDifficultyMenuScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
+			AddHardModeDifficulties();
+
 			DisableDefaultDifficultOptions();
 
 			seedMenuEntry = GetSelectSeedMenu();
@@ -42,9 +47,47 @@ namespace TsRandomizer.Screens
 			HookOnDifficultySelectedMethod();
 		}
 
+		void AddHardModeDifficulties()
+		{
+			var menuEntriesToAdd = new List<MenuEntry>();
+
+			if (!Dynamic._isHardModeAvailable)
+			{
+				Dynamic._hardMenuEntry.BaseDrawColor = MenuEntry.UnSelectedColor;
+				Dynamic._isHardModeAvailable = true;
+
+				string title = TimeSpinnerGame.Localizar.Get("DifficultyMenuHardCap1");
+				var menuEntry = MenuEntry.Create(title, p => Dynamic.OnHardCap1EntrySelected(null, null));
+				menuEntry.Description = TimeSpinnerGame.Localizar.Get("DifficultyMenuHardLevelCap1Description");
+
+				menuEntriesToAdd.Add(menuEntry);
+			}
+
+			if (!Dynamic._isLevelCap255Available)
+			{
+				string title = TimeSpinnerGame.Localizar.Get("DifficultyMenuHardCap255");
+				var menuEntry = MenuEntry.Create(title, p => Dynamic.OnHardCap1EntrySelected(null, null));
+				menuEntry.Description = TimeSpinnerGame.Localizar.Get("DifficultyMenuHardLevelCap255Description");
+
+				menuEntriesToAdd.Add(menuEntry);
+			}
+
+			ChangeAvailableButtons(menuEntriesToAdd);
+		}
+
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
 			SetSelectedMenuItemByIndex(0);
+		}
+
+		void ChangeAvailableButtons(IEnumerable<MenuEntry> extraMenuEntries)
+		{
+			var entries = ((IList)Dynamic.MenuEntries)
+				.Cast<object>()
+				.Concat(extraMenuEntries.Select(e => e.AsTimeSpinnerMenuEntry()))
+				.ToList(MainMenuEntryType);
+
+			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = entries;
 		}
 
 		void DisableDefaultDifficultOptions()

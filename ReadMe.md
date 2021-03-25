@@ -71,9 +71,7 @@ The item tracker features a few options:
 ##### Things i plan on doing in the future
 * Extend names of item locations in the spoiler log (with help from community on discord)
 * Maybe make items drop from memories and journals
--> * option: make key doors require a specific key
 * Quick delete all saves
-* Make nightmare more unlocked by default
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemenbted
