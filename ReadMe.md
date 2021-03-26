@@ -37,6 +37,7 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 # New keybinds
 * On the minimap screen, holding the secondairy button (default: X) will highligh all locations that you can reach and still have items for you
 * In Load game menu, holding down the last orb button (default: left trigger) will show the seed id in numerical format
+* In Load game menu, holding down the last orb button (default: left trigger) +  the secondairy button (default: X) will delete all saves
 * In Load game menu, pressing the next orb button (default: right trigger) will the generation of a spoiler log, the spoiler logs are saved in same directory as the TsRandomizer.exe
 * In Load game menu, Ctr+C can now be used to copy seed id of the currently selected save to the clipboard
 * In Seed selection menu, holding down the next orb button (default: right trigger) will allow you to force select a seed even when its logicly unbeatable
