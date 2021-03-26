@@ -66,12 +66,12 @@ The item tracker features a few options:
 * Gassmask can be in area like library or xarion caves where the use has to acces to as his only tp is the starter left one
 * Sometimes the download terminals do not correctly reward thier items (need reproduction instructions)
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
+* Non progression progressive items can be in the same room
 
 # Todo
 ##### Things i plan on doing in the future
 * Extend names of item locations in the spoiler log (with help from community on discord)
 * Maybe make items drop from memories and journals
-* Quick delete all saves
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemenbted

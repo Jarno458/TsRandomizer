@@ -21,8 +21,11 @@ namespace TsRandomizer.Screens
 	// ReSharper disable once UnusedMember.Global
 	class SaveSelectScreen : Screen
 	{
+		const int NumberOfSaveFileSlots = 8;
+
 		readonly Dictionary<object, SeedRepresentation> seedRepresentations = new Dictionary<object, SeedRepresentation>(10);
 
+		int fileToDeleteIndex = -1;
 		int zoom;
 
 		public SaveSelectScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
@@ -45,9 +48,17 @@ namespace TsRandomizer.Screens
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
-			var saveFileEntries = (IList)((object)Dynamic._saveFileCollection).AsDynamic().Entries;
+			if (fileToDeleteIndex >= 0)
+				HandleFileDeletion();
+			else
+				HandleUpdate(input);
+		}
 
-			if(IsZoomChanged())
+		void HandleUpdate(InputState input)
+		{
+			var saveFileEntries = (IList) ((object) Dynamic._saveFileCollection).AsDynamic().Entries;
+
+			if (IsZoomChanged())
 			{
 				UpdateSeedRepresentationIconSize(saveFileEntries);
 				UpdateAreaNameSize(saveFileEntries);
@@ -61,14 +72,56 @@ namespace TsRandomizer.Screens
 			{
 				seedRepresentation.Value.ShowSeedId = false;
 
-				if(!saveFileEntries.Contains(seedRepresentation.Key))
+				if (!saveFileEntries.Contains(seedRepresentation.Key))
 					missingEntries.Add(seedRepresentation.Key);
 			}
-			
+
 			foreach (var missingEntry in missingEntries)
 				seedRepresentations.Remove(missingEntry);
 
 			UpdateInput(input);
+		}
+
+		void HandleFileDeletion()
+		{
+			var saveFileCollection = ((object) Dynamic._saveFileCollection).AsDynamic();
+			var saveFileManager = ((object) Dynamic._saveFileManager).AsDynamic();
+
+			if (!saveFileManager.IsFinishedSaving)
+				return;
+
+			var saveFile = GetNextSaveFile(saveFileCollection);
+			if (saveFile == null)
+			{
+				StopDeletion(saveFileCollection);
+				return;
+			}
+
+			saveFileCollection.SelectedIndex = fileToDeleteIndex;
+
+			saveFileManager.RequestGameSaveDelete(saveFile);
+			saveFileCollection.DeleteSelectedFile();
+		}
+
+		GameSave GetNextSaveFile(dynamic saveFileCollection)
+		{
+			while (fileToDeleteIndex < NumberOfSaveFileSlots)
+			{
+				var saveFile = ((IList) saveFileCollection.SaveFiles)[fileToDeleteIndex].AsDynamic().SaveFile;
+
+				if (saveFile != null)
+					return saveFile;
+
+				fileToDeleteIndex++;
+			}
+
+			return null;
+		}
+
+		void StopDeletion(dynamic saveFileCollection)
+		{
+			fileToDeleteIndex = -1;
+			saveFileCollection.SelectedIndex = 0;
 		}
 
 		void UpdateDrawPositions(IList saveFileEntries)
@@ -95,24 +148,36 @@ namespace TsRandomizer.Screens
 			}
 		}
 
+		object CurrentSelectedMenuEntry =>
+			seedRepresentations
+				.FirstOrDefault(sr => ((GameSave)sr.Key.AsDynamic().SaveFile).SaveFileIndex == Dynamic.SelectedIndex)
+				.Key;
+
+		GameSave CurrentSelectedSave => CurrentSelectedMenuEntry?.AsDynamic().SaveFile;
+
 		void UpdateInput(InputState input)
 		{
-			var selectedIndex = Dynamic.SelectedIndex;
-
 			if (input.IsButtonHold(Buttons.LeftTrigger))
 			{
-				var seedRepresentation = seedRepresentations
-					.FirstOrDefault(sr => ((GameSave)sr.Key.AsDynamic().SaveFile).SaveFileIndex == selectedIndex).Value;
+				UpdateDescription(true);
 
-				if (seedRepresentation != null)
-					seedRepresentation.ShowSeedId = true;
+				DisplaySeedId();
+
+				if (input.IsNewButtonPress(Buttons.X))
+				{
+					Dynamic._isDeleting = false;
+
+					ShowDeleteAllDialog();
+				}
 			}
-			else if (input.IsNewButtonPress(Buttons.RightTrigger))
+			else
 			{
-				var selectedSaveFile = seedRepresentations
-					.Select(sr => (GameSave)sr.Key.AsDynamic().SaveFile)
-					.FirstOrDefault(save => save.SaveFileIndex == selectedIndex);
+				UpdateDescription(false);
+			}
 
+			if (input.IsNewButtonPress(Buttons.RightTrigger))
+			{
+				var selectedSaveFile = CurrentSelectedSave;
 				if(selectedSaveFile == null)
 					return;
 
@@ -121,16 +186,61 @@ namespace TsRandomizer.Screens
 
 			if (input.IsControllHold() && input.IsKeyHold(Keys.C))
 			{
-				var seed = seedRepresentations
-					.Select(sr => (GameSave)sr.Key.AsDynamic().SaveFile)
-					.FirstOrDefault(save => save.SaveFileIndex == selectedIndex)
-					?.GetSeed();
+				var seed = CurrentSelectedSave?.GetSeed();
 
 				if (!seed.HasValue)
 					return;
 
 				SDL.SDL_SetClipboardText(seed.Value.ToString());
 			}
+		}
+
+		void UpdateDescription(bool displayDeleteAll)
+		{
+			var x = CurrentSelectedMenuEntry?.AsDynamic();
+			if (x == null) return;
+
+			string desc = (x._isCleared)
+				? TimeSpinnerGame.Localizar.Get("SaveSelectContClearedDescription")
+				: TimeSpinnerGame.Localizar.Get("SaveSelectContinueDescription");
+
+			if (displayDeleteAll)
+			{
+				var xStringStart = desc.IndexOf("$X", StringComparison.InvariantCulture);
+				var xStringEnd = desc.IndexOf("$Y", xStringStart, StringComparison.InvariantCulture);
+
+				var aString = desc.Substring(0, xStringStart + 3);
+				var yString = (xStringEnd != -1)
+					? desc.Substring(xStringEnd -1)
+					: "";
+
+				desc = aString + "to delete all files." + yString;
+			}
+
+			x.Description = desc;
+
+			Dynamic.OnSelectedEntryChanged(Dynamic.SelectedIndex);
+		}
+
+		void DisplaySeedId()
+		{
+			var currentEntry = CurrentSelectedMenuEntry;
+			if (currentEntry != null 
+			   && seedRepresentations.TryGetValue(currentEntry, out var seedRepresentation) 
+			   && seedRepresentation != null)
+					seedRepresentation.ShowSeedId = true;
+		}
+
+		void ShowDeleteAllDialog()
+		{
+			var messageBox = MessageBox.Create(ScreenManager, "Delete all saves?", _ => OnDeleteAllSavesAccepted());
+
+			ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
+		}
+
+		void OnDeleteAllSavesAccepted()
+		{
+			fileToDeleteIndex = 0;
 		}
 
 		void ShowSpoilerGenerationDialog(GameSave save)
@@ -145,7 +255,7 @@ namespace TsRandomizer.Screens
 			ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
 		}
 
-		void OnSpoilerLogCreationAccepted(GameSave save)
+		static void OnSpoilerLogCreationAccepted(GameSave save)
 		{
 			var seed = save.GetSeed();
 
@@ -169,7 +279,7 @@ namespace TsRandomizer.Screens
 			}
 		}
 
-		void WriteProgressionChain(StreamWriter file, ItemLocationMap itemLocations)
+		static void WriteProgressionChain(StreamWriter file, ItemLocationMap itemLocations)
 		{
 			file.WriteLine();
 			file.WriteLine("Progression Chain:");
@@ -186,7 +296,7 @@ namespace TsRandomizer.Screens
 			} while (progressionChain != null);
 		}
 
-		void WriteItemListSection(StreamWriter file, IEnumerable<ItemLocation> itemLocations, string sectionName)
+		static void WriteItemListSection(StreamWriter file, IEnumerable<ItemLocation> itemLocations, string sectionName)
 		{
 			file.WriteLine();
 			file.WriteLine(sectionName);
@@ -194,7 +304,7 @@ namespace TsRandomizer.Screens
 			WriteItemList(file, itemLocations, 0);
 		}
 
-		void WriteItemList(StreamWriter file, IEnumerable<ItemLocation> itemLocations, int depth)
+		static void WriteItemList(StreamWriter file, IEnumerable<ItemLocation> itemLocations, int depth)
 		{
 			var prefix = new string('\t', depth);
 

@@ -34,7 +34,7 @@ namespace TsRandomizer.Screens
 
 		public GameDifficultyMenuScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
-			AddHardModeDifficulties();
+			UpdateHardModeDifficulties();
 
 			DisableDefaultDifficultOptions();
 
@@ -46,11 +46,11 @@ namespace TsRandomizer.Screens
 			HookOnDifficultySelectedMethod();
 		}
 
-		void AddHardModeDifficulties()
+		void UpdateHardModeDifficulties()
 		{
 			if (!Dynamic._isHardModeAvailable)
 			{
-				Dynamic._hardMenuEntry.BaseDrawColor = MenuEntry.UnSelectedColor;
+				((object)Dynamic._hardMenuEntry).AsDynamic().BaseDrawColor = MenuEntry.UnSelectedColor;
 				Dynamic._isHardModeAvailable = true;
 
 				string title = TimeSpinnerGame.Localizar.Get("DifficultyMenuHardCap1");
@@ -65,7 +65,6 @@ namespace TsRandomizer.Screens
 				RemoveLastMenuEntry();
 			}
 		}
-
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
@@ -91,7 +90,6 @@ namespace TsRandomizer.Screens
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = entries;
 		}
-
 
 		void DisableDefaultDifficultOptions()
 		{
