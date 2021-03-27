@@ -16,6 +16,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 5, new SeedOptionInfo { Name = "Start with Meyef", Description = "Start with Meyef, ideal for when you want to play multiplayer" } },
 			{ 1 << 6, new SeedOptionInfo { Name = "Quick seed", Description = "Start with Talaria Attachment, Nyoom!" } },
 			{ 1 << 7, new SeedOptionInfo { Name = "Specific Keycards", Description = "Keycards can only open corresponding doors" } },
+			{ 1 << 8, new SeedOptionInfo { Name = "Inverted", Description = "TODO: Enter description" } },
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)

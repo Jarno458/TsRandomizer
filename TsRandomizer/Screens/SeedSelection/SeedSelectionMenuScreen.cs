@@ -181,7 +181,8 @@ namespace TsRandomizer.Screens.SeedSelection
 			Dynamic._currentEnteredPassword = seedString;
 			Dynamic.RefreshDisplayPassword();
 
-			for (var i = 10; i < 12; i++) //RefreshDisplayPassword() only blacks out a single charecter
+			const int numberOfDisplayDigits = 12;
+			for (var i = Seed.Length; i < numberOfDisplayDigits; i++) //RefreshDisplayPassword() only blacks out a single charecter
 				Dynamic._displayCharacters[i] = " ";
 		}
 

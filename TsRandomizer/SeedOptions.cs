@@ -4,7 +4,7 @@ namespace TsRandomizer
 {
 	struct SeedOptions
 	{
-		public const int Length = 2;
+		public const int Length = 4;
 
 		public readonly uint Flags;
 
@@ -18,6 +18,7 @@ namespace TsRandomizer
 		public bool StartWithMeyef => (Flags & 1 << 5) > 0; 
 		public bool StartWithTalaria => (Flags & 1 << 6) > 0;
 		public bool SpecificKeys => (Flags & 1 << 7) > 0;
+		public bool Inverted => (Flags & 1 << 8) > 0;
 
 		public SeedOptions(uint flags)
 		{
