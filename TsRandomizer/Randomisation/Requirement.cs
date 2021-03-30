@@ -49,6 +49,7 @@ namespace TsRandomizer.Randomisation
 		public static readonly Requirement GateLakeSirineLeft = 1UL << 53;
 		public static readonly Requirement GateLakeSirineRight = 1UL << 54;
 		public static readonly Requirement GateAccessToPast = 1UL << 55;
+		public static readonly Requirement GateLakeDesolation = 1UL << 56;
 
 		readonly ulong flags;
 

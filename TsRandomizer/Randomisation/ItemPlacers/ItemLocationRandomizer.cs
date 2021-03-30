@@ -85,7 +85,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceStarterProgressionItems(Random random)
 		{
-			if (SeedOptions.StartWithTalaria)
+			if (SeedOptions.StartWithTalaria /*|| SeedOptions.Inverted*/)
 				GiveOrbsToMom(random, false);
 			else 
 				PlaceStarterProgressionItem(random);

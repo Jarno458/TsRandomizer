@@ -52,14 +52,12 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			okButton = MenuEntry.Create("OK", OnOkayEntrySelected);
 
-			var extraButtons = new[] {
-				okButton.AsTimeSpinnerMenuEntry(),
-				MenuEntry.Create("", () => {}, false).AsTimeSpinnerMenuEntry(),
-				MenuEntry.Create("New", OnGenerateSelected).AsTimeSpinnerMenuEntry(),
-				MenuEntry.Create("Options", OnOptionsSelected).AsTimeSpinnerMenuEntry()
-			};
-
-			ChangeAvailableButtons(extraButtons);
+			ChangeAvailableButtons(
+				okButton,
+				MenuEntry.Create("", () => { }, false),
+				MenuEntry.Create("New", OnGenerateSelected),
+				MenuEntry.Create("Options", OnOptionsSelected)
+			);
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
@@ -99,12 +97,12 @@ namespace TsRandomizer.Screens.SeedSelection
 			SetSeed(text);
 		}
 
-		void ChangeAvailableButtons(object[] extraButtons)
+		void ChangeAvailableButtons(params MenuEntry[] extraButtons)
 		{
 			var entries = ((IList)Dynamic.MenuEntries)
 				.Cast<object>()
 				.Where(e => IsHex(e) || IsDelButton(e))
-				.Concat(extraButtons)
+				.Concat(extraButtons.Select(b => b.AsTimeSpinnerMenuEntry()))
 				.ToList(MainMenuEntryType);
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = entries;

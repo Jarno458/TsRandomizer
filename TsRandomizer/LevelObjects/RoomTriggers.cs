@@ -42,6 +42,14 @@ namespace TsRandomizer.LevelObjects
 				if (seedOptions.StartWithTalaria)
 					level.AsDynamic().UnlockRelic(EInventoryRelicType.Dash);
 			}));
+			RoomTriggers.Add(new RoomTrigger(1, 0, (level, itemLocation, seedOptions) =>
+			{
+				if (/*!seedOptions.Inverted || */level.GameSave.GetSaveBool("TSRandomizerHasTeleportedPlayer")) return;
+
+				level.GameSave.SetValue("TSRandomizerHasTeleportedPlayer", true);
+
+				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 3, RoomID = 6 }); //Refugee Camp
+			}));
 			RoomTriggers.Add(new RoomTrigger(1, 5, (level, itemLocation, seedOptions) =>
 			{
 				if (itemLocation.IsPickedUp || !level.GameSave.GetSaveBool("IsBossDead_RoboKitty")) return;
@@ -75,7 +83,7 @@ namespace TsRandomizer.LevelObjects
 				    && level.GameSave.GetSaveBool("IsBossDead_Shapeshift")) 
 						SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 
-				if(level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
+				if(/*!seedOptions.Inverted && */level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
 					CreateSimpelOneWayWarp(level, 16, 12);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation, seedOptions) =>
@@ -101,13 +109,14 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(3, 6, (level, itemLocation, seedOptions) =>
 			{
-				if (level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)) return;
+				if (/*seedOptions.Inverted || */level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)) return;
 
 				CreateSimpelOneWayWarp(level, 2, 54);
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 54, (level, itemLocation, seedOptions) =>
 			{
-				if (level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)
+				if (/*seedOptions.Inverted 
+				    || */level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)
 					|| !level.GameSave.DataKeyBools.ContainsKey("HasUsedCityTS")) return;
 
 				CreateSimpelOneWayWarp(level, 3, 6);

@@ -16,7 +16,7 @@ For questions / remarks and feedback, feel free to join the #randomizer channel 
 Download latests TsRandomizer.exe from the release page https://github.com/JarnoWesthof/TsRandomizer/releases
 
 Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located, and start TsRandomizer.exe to start the game with the randomizer enabled, or Timespinner.exe to start the game normaly
-
+ 
 ##### Supported verisons
 * Windows Steam verison 1.32 (latest)
 * Windows DRM Free version 1.31 (latest)
@@ -81,3 +81,4 @@ The item tracker features a few options:
 * Timesanity (entrance randomizer)
 * Make warpshard optionally a progressin item that unlocks all softlocks
 * Randomize shop(s)
+-> * Inverted Mode

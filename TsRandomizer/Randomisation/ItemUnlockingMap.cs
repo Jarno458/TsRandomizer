@@ -11,6 +11,30 @@ namespace TsRandomizer.Randomisation
 {
 	class ItemUnlockingMap
 	{
+		static readonly TeleporterGate[] PresentTeleporterGates =
+		{
+			new TeleporterGate{Gate = R.GateKittyBoss, LevelId = 2, RoomId = 55},
+			new TeleporterGate{Gate = R.GateLeftLibrary, LevelId = 2, RoomId = 54},
+			new TeleporterGate{Gate = R.GateMilitairyGate, LevelId = 10, RoomId = 12},
+			new TeleporterGate{Gate = R.GateSealedCaves, LevelId = 9, RoomId = 50},
+			//new TeleporterGate{Gate = R.GateSealedCaves, LevelId = 9, RoomId = 49}, //dont want to spawn infront of xarion
+			new TeleporterGate{Gate = R.GateSealedSirensCave, LevelId = 9, RoomId = 51},
+			new TeleporterGate{Gate = R.GateLakeDesolation, LevelId = 1, RoomId = 25},
+		};
+
+		static readonly TeleporterGate[] PastTeleporterGates =
+		{
+			//new TeleporterGate{Gate = Requirement.GateLakeSirineLeft, LevelId = 7, RoomId = 30}, //you dont want to spawn with a boss in your face
+			new TeleporterGate{Gate = R.GateLakeSirineRight, LevelId = 7, RoomId = 31},
+			new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51},
+			//new TeleporterGate{Gate = Requirement.GateAccessToPast, LevelId = 3, RoomId = 6}, //Refugee Camp, Somehow doesnt work ¯\_(ツ)_/¯
+			new TeleporterGate{Gate = R.GateCastleRamparts, LevelId = 4, RoomId = 23},
+			new TeleporterGate{Gate = R.GateCastleKeep, LevelId = 5, RoomId = 24},
+			new TeleporterGate{Gate = R.GateRoyalTowers, LevelId = 6, RoomId = 0},
+			new TeleporterGate{Gate = R.GateMaw, LevelId = 8, RoomId = 49},
+			new TeleporterGate{Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50},
+		};
+
 		readonly LookupDictionairy<ItemIdentifier, UnlockingSpecification> unlockingSpecifications;
 
 		public R AllUnlockableRequirements => unlockingSpecifications.Aggregate(R.None, (a, b) => a | b.AllUnlocks);
@@ -22,7 +46,7 @@ namespace TsRandomizer.Randomisation
 			var random = new Random((int)seed.Id);
 
 			unlockingSpecifications = new LookupDictionairy<ItemIdentifier, UnlockingSpecification>(26, s => s.Item)
-			{ 
+			{
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.TimespinnerWheel), R.TimespinnerWheel, R.TimeStop),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.DoubleJump), R.DoubleJump, R.TimeStop),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.Dash), R.ForwardDash),
@@ -54,10 +78,10 @@ namespace TsRandomizer.Randomisation
 			if (seed.Options.SpecificKeys)
 				MakeKeyCardUnlocksCardSpecific();
 
-			var pyramidUnlockingSpecification = 
+			var pyramidUnlockingSpecification =
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.None, R.Teleport);
 
-			SetTeleporterPickupAction(random, pyramidUnlockingSpecification);
+			SetTeleporterPickupAction(random, pyramidUnlockingSpecification, seed.Options);
 
 			unlockingSpecifications.Add(pyramidUnlockingSpecification);
 		}
@@ -70,26 +94,13 @@ namespace TsRandomizer.Randomisation
 			unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardD)].AdditionalUnlocks = R.None;
 		}
 
-		void SetTeleporterPickupAction(Random random, UnlockingSpecification unlockingSpecification)
+		static void SetTeleporterPickupAction(Random random, UnlockingSpecification unlockingSpecification, SeedOptions options)
 		{
-			var gateProgressionItems = new[] {
-				new {Gate = R.GateKittyBoss, LevelId = 2, RoomId = 55},
-				new {Gate = R.GateLeftLibrary, LevelId = 2, RoomId = 54},
-				//new {Gate = Requirement.GateLakeSirineLeft, LevelId = 7, RoomId = 30}, //you dont want to spawn with a boss in your face
-				new {Gate = R.GateLakeSirineRight, LevelId = 7, RoomId = 31},
-				//new {Gate = Requirement.GateAccessToPast, LevelId = 3, RoomId = 6}, //Refugee Camp, Somehow doesnt work ¯\_(ツ)_/¯
-				new {Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51},
-				new {Gate = R.GateMilitairyGate, LevelId = 10, RoomId = 12},
-				new {Gate = R.GateCastleRamparts, LevelId = 4, RoomId = 23},
-				new {Gate = R.GateCastleKeep, LevelId = 5, RoomId = 24},
-				new {Gate = R.GateRoyalTowers, LevelId = 6, RoomId = 0},
-				new {Gate = R.GateMaw, LevelId = 8, RoomId = 49},
-				new {Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50},
-				//new {Gate = R.GateSealedCaves, LevelId = 9, RoomId = 49}, // dont want to spawn infront of xarion
-				new {Gate = R.GateSealedCaves, LevelId = 9, RoomId = 50},
-			};
+			var teleporterGates = true || (!options.Inverted)
+				? PresentTeleporterGates.Union(PastTeleporterGates)
+				: PresentTeleporterGates;
 
-			var selectedGate = gateProgressionItems.SelectRandom(random);
+			var selectedGate = teleporterGates.SelectRandom(random);
 
 			unlockingSpecification.OnPickup = level => UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
 			unlockingSpecification.Unlocks = selectedGate.Gate;
@@ -134,8 +145,15 @@ namespace TsRandomizer.Randomisation
 			{
 				Item = item;
 				Unlocks = unlocks;
-				AdditionalUnlocks = additionalUnlocks.HasValue ? additionalUnlocks.Value : R.None;
+				AdditionalUnlocks = additionalUnlocks ?? R.None;
 			}
+		}
+
+		class TeleporterGate
+		{
+			public R Gate { get; internal set; }
+			public int LevelId { get; internal set; }
+			public int RoomId { get; internal set; }
 		}
 	}
 }

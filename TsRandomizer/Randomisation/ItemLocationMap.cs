@@ -13,65 +13,48 @@ namespace TsRandomizer.Randomisation
 	class ItemLocationMap : LookupDictionairy<ItemKey, ItemLocation>
 	{
 		internal R OculusRift = R.None;
-		internal static readonly R MultipleSmallJumpsOfNpc = R.TimespinnerWheel | R.UpwardDash;
-		internal static readonly Gate DoubleJumpOfNpc = (R.DoubleJump & R.TimespinnerWheel) | R.UpwardDash;
-		internal static readonly Gate ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
 
-		public static readonly R LowerLakeDesolationBridge = R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary;
-		internal static readonly Gate AccessToPast = 
-			(
-			   R.TimespinnerWheel & R.TimespinnerSpindle //activateLibraryTimespinner
-               & (LowerLakeDesolationBridge & R.CardD) //midLibrary
-			) //libraryTimespinner
-			| R.GateLakeSirineLeft
-			| R.GateAccessToPast
-			| R.GateLakeSirineRight
-			| R.GateRoyalTowers
-			| R.GateCastleRamparts
-			| R.GateCastleKeep
-			| (R.GateCavesOfBanishment & (R.DoubleJump | R.Swimming))
-			| (R.GateMaw & R.DoubleJump);
+		internal Gate AccessToPast;
+		internal Gate AccessToLakeDesolation;
+
+		internal Gate MultipleSmallJumpsOfNpc;
+		internal Gate DoubleJumpOfNpc;
+		internal Gate ForwardDashDoubleJump;
+		internal Gate LowerLakeDesolationBridge;
 
 		//past
-		internal static readonly Gate LeftSideForestCaves = (AccessToPast & (R.TimespinnerWheel | R.ForwardDash | R.DoubleJump)) | R.GateLakeSirineRight | R.GateLakeSirineLeft;
-		internal static readonly Gate UpperLakeSirine = (LeftSideForestCaves & (R.TimeStop | R.Swimming)) | R.GateLakeSirineLeft;
-		internal static readonly Gate LowerlakeSirine = (LeftSideForestCaves | R.GateLakeSirineLeft) & R.Swimming;
-		internal static readonly Gate LowerCavesOfBanishment = LowerlakeSirine | R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump);
-		internal static readonly Gate UpperCavesOfBanishment = AccessToPast;
-		internal static readonly Gate CastleRamparts = AccessToPast;
-		internal static readonly Gate CastleKeep = CastleRamparts;
-		internal static readonly Gate RoyalTower = (CastleKeep & R.DoubleJump) | R.GateRoyalTowers;
-		internal static readonly Gate MidRoyalTower = RoyalTower & (MultipleSmallJumpsOfNpc | ForwardDashDoubleJump);
-		internal static readonly Gate UpperRoyalTower = MidRoyalTower & R.DoubleJump;
-
+		internal Gate LeftSideForestCaves;
+		internal Gate UpperLakeSirine;
+		internal Gate LowerlakeSirine;
+		internal Gate LowerCavesOfBanishment;
+		internal Gate UpperCavesOfBanishment;
+		internal Gate CastleRamparts;
+		internal Gate CastleKeep;
+		internal Gate RoyalTower;
+		internal Gate MidRoyalTower;
+		internal Gate UpperRoyalTower;
+		internal Gate KillMaw;
 		//future
-		internal static readonly Gate UpperLakeDesolation = UpperLakeSirine & R.AntiWeed;
-		internal static readonly Gate LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | (R.GateMilitairyGate & R.CardD & (R.CardB | (R.CardC & R.CardE)));
-		internal static readonly Gate UpperLeftLibrary = LeftLibrary & (R.DoubleJump | R.ForwardDash);
-		internal static readonly Gate MidLibrary = (LeftLibrary & R.CardD) | (R.GateMilitairyGate & (R.CardB | (R.CardC & R.CardE)));
-		internal static readonly Gate UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | (R.GateMilitairyGate & R.CardE);
-		internal static readonly Gate RightSideLibraryElevator = (MidLibrary & R.CardE & (R.CardC | R.CardB)) | (R.GateMilitairyGate & R.CardE);
-		internal static readonly Gate LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSideLibraryElevator | R.GateMilitairyGate;
-		internal static readonly R SealedCavesLeft = R.DoubleJump | R.GateSealedCaves;
-		internal static readonly Gate SealedCavesLower = SealedCavesLeft & R.CardA;
-		internal static readonly Gate SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
-		internal static readonly Gate KillMaw = R.DoubleJump & (LowerlakeSirine | R.GateCavesOfBanishment | R.GateMaw);
-		internal static readonly Gate KillTwins = CastleKeep & R.TimeStop;
-		internal static readonly Gate KillTwinsAndMaw = KillMaw & KillTwins;
-		internal static readonly Gate KillAll3MajorBosses = LowerRightSideLibrary & KillTwinsAndMaw & UpperRoyalTower;
-		internal static readonly Gate MilitairyFortress = KillAll3MajorBosses;
-		internal static readonly Gate MilitairyFortressHangar = MilitairyFortress;
-		internal static readonly Gate RightSideMilitairyFortressHangar = MilitairyFortressHangar & R.DoubleJump;
-		internal static readonly Gate TheLab = MilitairyFortressHangar & R.CardB;
-		internal static readonly Gate TheLabPoweredOff = TheLab & DoubleJumpOfNpc;
-		internal static readonly Gate UpperLab = TheLabPoweredOff & ForwardDashDoubleJump;
-		internal static readonly Gate EmperorsTower = UpperLab;
-
+		internal Gate UpperLakeDesolation;
+		internal Gate LeftLibrary;
+		internal Gate UpperLeftLibrary;
+		internal Gate MidLibrary;
+		internal Gate UpperRightSideLibrary;
+		internal Gate RightSideLibraryElevator;
+		internal Gate LowerRightSideLibrary;
+		internal Gate SealedCavesLeft;
+		internal Gate SealedCavesLower;
+		internal Gate SealedCavesSirens;
+		internal Gate MilitairyFortress;
+		internal Gate MilitairyFortressHangar;
+		internal Gate RightSideMilitairyFortressHangar;
+		internal Gate TheLab;
+		internal Gate TheLabPoweredOff;
+		internal Gate UpperLab;
+		internal Gate EmperorsTower;
 		//pyramid
-		internal static readonly Gate LeftPyramid = UpperLab & (
-			R.TimespinnerWheel & R.TimespinnerSpindle &
-			R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3);
-		internal static readonly Gate Nightmare = LeftPyramid & R.UpwardDash;
+		internal Gate LeftPyramid;
+		internal Gate Nightmare;
 
 		public new ItemLocation this[ItemKey key] => GetItemLocationBasedOnKeyOrRoomKey(key);
 
@@ -86,8 +69,7 @@ namespace TsRandomizer.Randomisation
 			itemProvider = itemInfoProvider;
 			unlockingMap = itemUnlockingMap;
 
-			if (options.RequireEyeOrbRing)
-				OculusRift = R.OculusRift;
+			SetupGates(options);
 
 			AddPresentItemLocations();
 			AddPastItemLocations();
@@ -98,6 +80,82 @@ namespace TsRandomizer.Randomisation
 
 			if (options.StartWithTalaria)
 				PutTalariaIntoDummyLocation(itemInfoProvider);
+		}
+
+		void SetupGates(SeedOptions options)
+		{
+			OculusRift = (options.RequireEyeOrbRing)
+				? R.OculusRift
+				: R.None;
+
+			AccessToLakeDesolation = true || (!options.Inverted)
+				? (Gate)R.None
+				: R.GateLakeDesolation
+				| R.GateKittyBoss
+				| R.GateSealedCaves
+				| (R.GateSealedSirensCave & R.CardE)
+				| (R.GateMilitairyGate & ((R.CardC & R.CardE) | R.CardB));
+
+			LowerLakeDesolationBridge = AccessToLakeDesolation & (R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary);
+
+			AccessToPast = false && (options.Inverted)
+				? (Gate)R.None
+				: ( //libraryTimespinner
+					R.TimespinnerWheel & R.TimespinnerSpindle //activateLibraryTimespinner
+						& (LowerLakeDesolationBridge & R.CardD) //midLibrary
+				) 
+				| R.GateLakeSirineLeft
+				| R.GateAccessToPast
+				| R.GateLakeSirineRight
+				| R.GateRoyalTowers
+				| R.GateCastleRamparts
+				| R.GateCastleKeep
+				| (R.GateCavesOfBanishment & (R.DoubleJump | R.Swimming))
+				| (R.GateMaw & R.DoubleJump);
+
+			MultipleSmallJumpsOfNpc = (Gate)(R.TimespinnerWheel | R.UpwardDash);
+			DoubleJumpOfNpc = (R.DoubleJump & R.TimespinnerWheel) | R.UpwardDash;
+			ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
+
+			//past
+			LeftSideForestCaves = (AccessToPast & (R.TimespinnerWheel | R.ForwardDash | R.DoubleJump)) | R.GateLakeSirineRight | R.GateLakeSirineLeft;
+			UpperLakeSirine = (LeftSideForestCaves & (R.TimeStop | R.Swimming)) | R.GateLakeSirineLeft;
+			LowerlakeSirine = (LeftSideForestCaves | R.GateLakeSirineLeft) & R.Swimming;
+			LowerCavesOfBanishment = LowerlakeSirine | R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump);
+			UpperCavesOfBanishment = AccessToPast;
+			CastleRamparts = AccessToPast;
+			CastleKeep = CastleRamparts;
+			RoyalTower = (CastleKeep & R.DoubleJump) | R.GateRoyalTowers;
+			MidRoyalTower = RoyalTower & (MultipleSmallJumpsOfNpc | ForwardDashDoubleJump);
+			UpperRoyalTower = MidRoyalTower & R.DoubleJump;
+			KillMaw = R.DoubleJump & (LowerlakeSirine | R.GateCavesOfBanishment | R.GateMaw);
+			var killTwins = CastleKeep & R.TimeStop;
+			var killAelana = UpperRoyalTower;
+
+			//future
+			UpperLakeDesolation = AccessToLakeDesolation & UpperLakeSirine & R.AntiWeed;
+			LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | (R.CardC & R.CardE)));
+			UpperLeftLibrary = LeftLibrary & (R.DoubleJump | R.ForwardDash);
+			MidLibrary = (LeftLibrary & R.CardD) | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | (R.CardC & R.CardE)));
+			UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | ((R.GateMilitairyGate | R.GateSealedSirensCave) & R.CardE);
+			RightSideLibraryElevator = R.CardE & ((MidLibrary & (R.CardC | R.CardB)) | R.GateMilitairyGate | R.GateSealedSirensCave);
+			LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSideLibraryElevator | R.GateMilitairyGate | (R.GateSealedSirensCave & R.CardE);
+			SealedCavesLeft = (AccessToLakeDesolation & R.DoubleJump) | R.GateSealedCaves;
+			SealedCavesLower = SealedCavesLeft & R.CardA;
+			SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
+			MilitairyFortress = LowerRightSideLibrary & KillMaw & killTwins & killAelana;
+			MilitairyFortressHangar = MilitairyFortress;
+			RightSideMilitairyFortressHangar = MilitairyFortressHangar & R.DoubleJump;
+			TheLab = MilitairyFortressHangar & R.CardB;
+			TheLabPoweredOff = TheLab & DoubleJumpOfNpc;
+			UpperLab = TheLabPoweredOff & ForwardDashDoubleJump;
+			EmperorsTower = UpperLab;
+
+			//pyramid
+			LeftPyramid = UpperLab & (
+	            R.TimespinnerWheel & R.TimespinnerSpindle &
+	            R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3);
+			Nightmare = LeftPyramid & R.UpwardDash;
 		}
 
 		void PutTalariaIntoDummyLocation(ItemInfoProvider itemInfoProvider)
@@ -123,15 +181,15 @@ namespace TsRandomizer.Randomisation
 			Add(ItemKey.TutorialMeleeOrb, "Yo Momma", itemProvider.Get(EInventoryOrbType.Blue, EOrbSlot.Melee));
 			Add(ItemKey.TutorialSpellOrb, "Yo Momma", itemProvider.Get(EInventoryOrbType.Blue, EOrbSlot.Spell));
 			areaName = "Lake desolation";
-			Add(new ItemKey(1, 1, 1528, 144), "Starter chest 2", itemProvider.Get(EInventoryUseItemType.FuturePotion));
-			Add(new ItemKey(1, 15, 264, 144), "Starter chest 3", itemProvider.Get(EInventoryEquipmentType.OldCoat));
-			Add(new ItemKey(1, 25, 296, 176), "Starter chest 1", itemProvider.Get(EInventoryUseItemType.FutureHiPotion));
-			Add(new ItemKey(1, 9, 600, 144 + TimespinnerWheel.YOffset), "Timespinner Wheel room", itemProvider.Get(EInventoryRelicType.TimespinnerWheel));
+			Add(new ItemKey(1, 1, 1528, 144), "Starter chest 2", itemProvider.Get(EInventoryUseItemType.FuturePotion), AccessToLakeDesolation);
+			Add(new ItemKey(1, 15, 264, 144), "Starter chest 3", itemProvider.Get(EInventoryEquipmentType.OldCoat), AccessToLakeDesolation);
+			Add(new ItemKey(1, 25, 296, 176), "Starter chest 1", itemProvider.Get(EInventoryUseItemType.FutureHiPotion), AccessToLakeDesolation);
+			Add(new ItemKey(1, 9, 600, 144 + TimespinnerWheel.YOffset), "Timespinner Wheel room", itemProvider.Get(EInventoryRelicType.TimespinnerWheel), AccessToLakeDesolation);
 			Add(new ItemKey(1, 14, 40, 176), "Forget me not chest", itemProvider.Get(EInventoryUseItemType.EssenceCrystal), UpperLakeDesolation);
 			areaName = "Lower lake desolation";
-			Add(new ItemKey(1, 2, 1016, 384), "Chicken chest", itemProvider.Get(EItemType.MaxSand), R.TimeStop);
+			Add(new ItemKey(1, 2, 1016, 384), "Chicken chest", itemProvider.Get(EItemType.MaxSand), AccessToLakeDesolation & R.TimeStop);
 			Add(new ItemKey(1, 11, 72, 240), "Not so secret room", itemProvider.Get(EItemType.MaxHP), LowerLakeDesolationBridge & OculusRift);
-			Add(new ItemKey(1, 3, 56, 176), "Tank chest", itemProvider.Get(EItemType.MaxAura), R.TimeStop);
+			Add(new ItemKey(1, 3, 56, 176), "Tank chest", itemProvider.Get(EItemType.MaxAura), AccessToLakeDesolation & R.TimeStop);
 			areaName = "Upper lake desolation";
 			Add(new ItemKey(1, 17, 152, 96), null, itemProvider.Get(EInventoryUseItemType.GoldRing), UpperLakeDesolation);
 			Add(new ItemKey(1, 21, 200, 144), null, itemProvider.Get(EInventoryUseItemType.EssenceCrystal), UpperLakeDesolation & OculusRift);
@@ -139,8 +197,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(1, 20, 168, 240), "Double jump cave platform", itemProvider.Get(EInventoryUseItemType.FuturePotion), UpperLakeDesolation);
 			Add(new ItemKey(1, 22, 344, 160), "Fire-Locked sparrow chest", itemProvider.Get(EInventoryUseItemType.FutureHiPotion), UpperLakeDesolation);
 			Add(new ItemKey(1, 18, 1320, 189), "Crash site pedestal", itemProvider.Get(EInventoryOrbType.Moon, EOrbSlot.Melee), UpperLakeDesolation);
-			Add(new ItemKey(1, 18, 1272, 192), "Crash site chest 1", itemProvider.Get(EInventoryEquipmentType.CaptainsCap), UpperLakeDesolation & R.GassMask & KillTwinsAndMaw);
-			Add(new ItemKey(1, 18, 1368, 192), "Crash site chest 2", itemProvider.Get(EInventoryEquipmentType.CaptainsJacket), UpperLakeDesolation & R.GassMask & KillTwinsAndMaw);
+			Add(new ItemKey(1, 18, 1272, 192), "Crash site chest 1", itemProvider.Get(EInventoryEquipmentType.CaptainsCap), UpperLakeDesolation & R.GassMask & KillMaw);
+			Add(new ItemKey(1, 18, 1368, 192), "Crash site chest 2", itemProvider.Get(EInventoryEquipmentType.CaptainsJacket), UpperLakeDesolation & R.GassMask & KillMaw);
 			Add(new RoomItemKey(1, 5), "Kitty Boss", itemProvider.Get(EInventoryOrbType.Blade, EOrbSlot.Melee), UpperLakeDesolation | LowerLakeDesolationBridge);
 			areaName = "Libary";
 			Add(new ItemKey(2, 60, 328, 160), "Basement", itemProvider.Get(EItemType.MaxHP), LeftLibrary);
@@ -524,7 +582,7 @@ namespace TsRandomizer.Randomisation
 			return this.Where(l => l.Gate.CanBeOpenedWith(obtainedRequirements));
 		}
 
-		static bool CanCompleteGame(R obtainedRequirements)
+		bool CanCompleteGame(R obtainedRequirements)
 		{
 			return Nightmare.CanBeOpenedWith(obtainedRequirements);
 		}

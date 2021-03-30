@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -19,6 +20,8 @@ namespace TsRandomizer.Screens
 	// ReSharper disable once UnusedMember.Global
 	class GameplayScreen : Screen
 	{
+		bool hasInverted;
+
 		RoomSpecification currentRoom;
 		SeedOptions seedOptions;
 
@@ -60,6 +63,22 @@ namespace TsRandomizer.Screens
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
+			if (seedOptions.Inverted && !hasInverted)
+			{
+				void SwapMapping(Dictionary<int, ButtonMapping> mapping)
+				{
+					var leftMappings = mapping[(int)ButtonMapping.EDestinationType.Left].Sources;
+					var rightMappings = mapping[(int)ButtonMapping.EDestinationType.Right].Sources;
+
+					mapping[(int)ButtonMapping.EDestinationType.Left].Sources = rightMappings;
+					mapping[(int)ButtonMapping.EDestinationType.Right].Sources = leftMappings;
+				}
+
+				SwapMapping(Level.PlayerControllerMapping.Mappings);
+
+				hasInverted = true;
+			}
+
 			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions);
 			FamiliarManager.Update(Level);
 
