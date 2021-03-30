@@ -20,11 +20,14 @@ Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located,
 ##### Supported verisons
 * Windows Steam verison 1.32 (latest)
 * Windows DRM Free version 1.31 (latest)
+* Linux Steam verison 1.32 (latest)
+* Linux DRM Free version 1.31 (latest)
+* Mac Steam verison 1.32 (latest)
+* Mac DRM Free version 1.31 (latest)
+(Item tracker for Mac and Linux is still under development)
 
 ##### Unsupported verisons
 * Windows Store (not planned)
-* Linux (under construction)
-* Max (under construction)
 
 # Gameplay changes
 * Orb\Ring\Spell shop is nolonger available, orbs\rings\spells are dropped from random item locations instead

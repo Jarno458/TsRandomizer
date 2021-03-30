@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
-using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 
@@ -14,10 +13,25 @@ namespace TsRandomizer.Screens
 	// ReSharper disable once UnusedMember.Global
 	class MinimapScreen : Screen
 	{
+		static readonly Roomkey[] DisabledCheckpoints =
+		{
+			new Roomkey {LevelId = 2, RoomId = 20},
+			new Roomkey {LevelId = 16, RoomId = 21}
+		};
+
+		static readonly Roomkey[] BossRooms =
+		{
+			new Roomkey {LevelId = 5, RoomId = 5},
+			new Roomkey {LevelId = 8, RoomId = 13},
+			new Roomkey {LevelId = 9, RoomId = 7}
+		};
+
 		ItemLocationMap itemLocations;
 		bool isShowingAviableLocations;
 
-		LookupDictionairy<RoomItemKey, MinimapRoomState> preservedRoomStates;
+		LookupDictionairy<Roomkey, MinimapRoomState> preservedRoomStates;
+
+		MinimapSpecification Minimap => Dynamic._minimap;
 
 		public MinimapScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
@@ -29,15 +43,21 @@ namespace TsRandomizer.Screens
 
 			Dynamic._removeMarkerText = (string)Dynamic._removeMarkerText + " / Show where to go next";
 
-			TweakMapBlocks();
+			foreach (var roomkey in DisabledCheckpoints)
+				foreach (var block in GetRoom(roomkey).Blocks.Values)
+					block.IsCheckpoint = false;
+
+			foreach (var roomkey in BossRooms)
+				foreach (var block in GetRoom(roomkey).Blocks.Values)
+					block.IsBoss = true;
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
 			var shouldShowItemLocationHints = input.IsPressSecondary(null);
 
-			if ((isShowingAviableLocations && shouldShowItemLocationHints) 
-			    || (!shouldShowItemLocationHints && !isShowingAviableLocations))
+			if ((isShowingAviableLocations && shouldShowItemLocationHints)
+				|| (!shouldShowItemLocationHints && !isShowingAviableLocations))
 				return;
 
 			if (!isShowingAviableLocations && shouldShowItemLocationHints)
@@ -60,25 +80,29 @@ namespace TsRandomizer.Screens
 
 		void MarkAvailableItemLocations()
 		{
-			preservedRoomStates = new LookupDictionairy<RoomItemKey, MinimapRoomState>(r => r.RoomKey);
+			preservedRoomStates = new LookupDictionairy<Roomkey, MinimapRoomState>(r => r.RoomKey);
 
 			var visableAreas = (List<EMinimapEraType>)Dynamic._availableEras;
-			var areas = ((MinimapSpecification)Dynamic._minimap).Areas;
-			
+
 			foreach (var itemLocation in GetAvailableItemLocations())
 			{
-				var roomKey = itemLocation.Key.ToRoomItemKey();
-				if(preservedRoomStates.Contains(roomKey))
+				var roomKey = new Roomkey
+				{
+					LevelId = itemLocation.Key.LevelId,
+					RoomId = itemLocation.Key.RoomId
+				};
+
+				if (preservedRoomStates.Contains(roomKey))
 					continue;
 
-				var room = areas.GetRoom(roomKey);
+				var room = GetRoom(roomKey);
 
 				MakeSureEraIsVisable(visableAreas, room);
 				preservedRoomStates.Add(new MinimapRoomState(roomKey, room));
 
 				foreach (var block in room.Blocks.Values)
 				{
-					if(block.IsSolidWall)
+					if (block.IsSolidWall)
 						continue;
 
 					block.IsKnown = true;
@@ -98,7 +122,7 @@ namespace TsRandomizer.Screens
 			}
 		}
 
-		void MarkBlockAsBossOrTimespinner(MinimapBlock block)
+		static void MarkBlockAsBossOrTimespinner(MinimapBlock block)
 		{
 			block.RoomColor = EMinimapRoomColor.DotRed;
 			block.IsVisited = true;
@@ -106,28 +130,25 @@ namespace TsRandomizer.Screens
 
 		void MarkBasicMapKnowledge()
 		{
-			// Reveal remaining map and show checkpoints/portals
-			foreach (var area in ((MinimapSpecification)Dynamic._minimap).Areas)
+			foreach (var area in Minimap.Areas)
 			{
 				foreach (var room in area.Rooms)
 				{
-					var roomKey = new RoomItemKey(area.LevelID, room.RoomID);
-					if(preservedRoomStates.Contains(roomKey))
+					var roomKey = new Roomkey { LevelId = area.LevelID, RoomId = room.RoomID };
+					if (preservedRoomStates.Contains(roomKey))
 						continue;
 
 					preservedRoomStates.Add(new MinimapRoomState(roomKey, room));
 
 					room.SetKnown(true);
+
 					foreach (var block in room.Blocks.Values)
 					{
 						if (block.IsCheckpoint || block.IsTransition)
-						{
 							block.IsVisited = true;
-						}
+
 						if (!block.IsVisited && (block.IsBoss || block.IsTimespinner))
-						{
 							MarkBlockAsBossOrTimespinner(block);
-						}
 					}
 				}
 			}
@@ -135,13 +156,11 @@ namespace TsRandomizer.Screens
 
 		void ResetMinimap()
 		{
-			if(preservedRoomStates == null)
+			if (preservedRoomStates == null)
 				return;
 
-			var areas = ((MinimapSpecification)Dynamic._minimap).Areas;
-
 			foreach (var roomState in preservedRoomStates)
-				roomState.ApplyTo(areas.GetRoom(roomState.RoomKey));
+				roomState.ApplyTo(GetRoom(roomState.RoomKey));
 
 			preservedRoomStates = null;
 		}
@@ -157,6 +176,10 @@ namespace TsRandomizer.Screens
 		{
 			switch (room.DefaultColor)
 			{
+				case EMinimapRoomColor.Purple:
+					if (!visableAreas.Contains(EMinimapEraType.Present))
+						visableAreas.Add(EMinimapEraType.Present);
+					break;
 				case EMinimapRoomColor.Blue:
 					if (!visableAreas.Contains(EMinimapEraType.Past))
 						visableAreas.Add(EMinimapEraType.Past);
@@ -168,46 +191,16 @@ namespace TsRandomizer.Screens
 			}
 		}
 
-		void TweakMapBlocks()
-		{
-			// Turn off display of SaveStatues broken to prevent softlocks
-			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(2,20).Blocks.Values)
-			{
-				block.IsCheckpoint = false;
-			}
-			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(16,21).Blocks.Values)
-			{
-				block.IsCheckpoint = false;
-			}
-
-			// Mark missing boss rooms
-			// Golden Idol 5,5
-			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(5,5).Blocks.Values)
-			{
-				block.IsBoss = true;
-			}
-
-			// The Maw Antechamber 8,13
-			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(8,13).Blocks.Values)
-			{
-				block.IsBoss = true;
-			}
-
-			// Xarion 9,7
-			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(9,7).Blocks.Values)
-			{
-				block.IsBoss = true;
-			}
-
-		}
+		MinimapRoom GetRoom(Roomkey roomKey) =>
+			Minimap.GetRoomFromLevelAndRoom(roomKey.LevelId, roomKey.RoomId);
 
 		class MinimapRoomState
 		{
-			public readonly RoomItemKey RoomKey;
+			public readonly Roomkey RoomKey;
 
 			readonly Dictionary<Point, MiniMapBlockState> blockStates;
 
-			public MinimapRoomState(RoomItemKey key, MinimapRoom room)
+			public MinimapRoomState(Roomkey key, MinimapRoom room)
 			{
 				RoomKey = key;
 				blockStates = room.Blocks.ToDictionary(b => b.Key, b => new MiniMapBlockState(b.Value));
@@ -242,6 +235,12 @@ namespace TsRandomizer.Screens
 				block.IsVisited = isVisited;
 				block.IsTransition = isTransition;
 			}
+		}
+
+		class Roomkey
+		{
+			public int LevelId { get; internal set; }
+			public int RoomId { get; internal set; }
 		}
 	}
 }

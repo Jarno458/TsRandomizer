@@ -30,6 +30,7 @@ namespace TsRandomizer.Screens
 
 			UpdateMyBackerName(creditList);
 			AddSection(20, creditList, "Randomizer", "Project Manager, Lead Developer", "Jarno Westhof");
+			AddSection(21, creditList, "Randomizer", "Linux & Max support, Quality of Life", "marcmagus");
 
 			RecalcuteCreditSizes(creditList);
 
