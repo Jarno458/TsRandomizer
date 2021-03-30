@@ -28,6 +28,8 @@ namespace TsRandomizer.Screens
 			itemLocations = itemLocationMap;
 
 			Dynamic._removeMarkerText = (string)Dynamic._removeMarkerText + " / Show where to go next";
+
+			TweakMapBlocks();
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
@@ -41,6 +43,7 @@ namespace TsRandomizer.Screens
 			if (!isShowingAviableLocations && shouldShowItemLocationHints)
 			{
 				MarkAvailableItemLocations();
+				MarkBasicMapKnowledge();
 				isShowingAviableLocations = true;
 			}
 			else
@@ -81,14 +84,50 @@ namespace TsRandomizer.Screens
 					block.IsKnown = true;
 					block.IsVisited = true;
 
-					if (block.IsTransition)
+					if (block.IsTransition || block.IsCheckpoint || block.IsBoss)
 					{
 						block.IsTransition = false;
+						block.IsCheckpoint = false;
 						block.RoomColor = EMinimapRoomColor.Yellow;
 					}
 					else
 					{
 						block.RoomColor = EMinimapRoomColor.Orange;
+					}
+				}
+			}
+		}
+
+		void MarkBlockAsBossOrTimespinner(MinimapBlock block)
+		{
+			block.RoomColor = EMinimapRoomColor.DotRed;
+			block.IsVisited = true;
+		}
+
+		void MarkBasicMapKnowledge()
+		{
+			// Reveal remaining map and show checkpoints/portals
+			foreach (var area in ((MinimapSpecification)Dynamic._minimap).Areas)
+			{
+				foreach (var room in area.Rooms)
+				{
+					var roomKey = new RoomItemKey(area.LevelID, room.RoomID);
+					if(preservedRoomStates.Contains(roomKey))
+						continue;
+
+					preservedRoomStates.Add(new MinimapRoomState(roomKey, room));
+
+					room.SetKnown(true);
+					foreach (var block in room.Blocks.Values)
+					{
+						if (block.IsCheckpoint || block.IsTransition)
+						{
+							block.IsVisited = true;
+						}
+						if (!block.IsVisited && (block.IsBoss || block.IsTimespinner))
+						{
+							MarkBlockAsBossOrTimespinner(block);
+						}
 					}
 				}
 			}
@@ -127,6 +166,39 @@ namespace TsRandomizer.Screens
 						visableAreas.Add(EMinimapEraType.Other);
 					break;
 			}
+		}
+
+		void TweakMapBlocks()
+		{
+			// Turn off display of SaveStatues broken to prevent softlocks
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(2,20).Blocks.Values)
+			{
+				block.IsCheckpoint = false;
+			}
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(16,21).Blocks.Values)
+			{
+				block.IsCheckpoint = false;
+			}
+
+			// Mark missing boss rooms
+			// Golden Idol 5,5
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(5,5).Blocks.Values)
+			{
+				block.IsBoss = true;
+			}
+
+			// The Maw Antechamber 8,13
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(8,13).Blocks.Values)
+			{
+				block.IsBoss = true;
+			}
+
+			// Xarion 9,7
+			foreach (var block in Dynamic._minimap.GetRoomFromLevelAndRoom(9,7).Blocks.Values)
+			{
+				block.IsBoss = true;
+			}
+
 		}
 
 		class MinimapRoomState
