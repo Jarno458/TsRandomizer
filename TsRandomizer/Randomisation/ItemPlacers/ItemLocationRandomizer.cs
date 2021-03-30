@@ -4,6 +4,7 @@ using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using R = TsRandomizer.Randomisation.Requirement;
 
 namespace TsRandomizer.Randomisation.ItemPlacers
 {
@@ -130,7 +131,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		void PutStarterProgressionItemInReachableLocation(Random random, ItemInfo starterProgressionItem)
 		{
 			var starterLocations = ItemLocations
-				.Where(l => l.Key.LevelId != 0 && l.Gate.Requires(Requirement.None))
+				.Where(l => l.Key.LevelId != 0 && l.Gate.Requires(R.None))
 				.ToArray();
 
 			var location = starterLocations.SelectRandom(random);
@@ -162,16 +163,30 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceGassMaskInALegalSpot(Random random)
 		{
-			var isWatermaskRequiredForMaw = UnlockingMap.PyramidKeysUnlock != Requirement.GateMaw
-			                                && UnlockingMap.PyramidKeysUnlock != Requirement.GateCavesOfBanishment;
+			var levelIdsToAvoid = new List<int>{ 1 };
+			R minimalMawRequirements = R.DoubleJump;
 
-			var minimalMawRequirements = Requirement.DoubleJump | Requirement.GateAccessToPast;
+			if (true || !SeedOptions.Inverted)
+			{
+				minimalMawRequirements |= R.GateAccessToPast;
 
-			if (isWatermaskRequiredForMaw)
-				minimalMawRequirements |= Requirement.Swimming;
+				var isWatermaskRequiredForMaw = UnlockingMap.PyramidKeysUnlock != R.GateMaw
+				                                && UnlockingMap.PyramidKeysUnlock != R.GateCavesOfBanishment;
+
+				if (isWatermaskRequiredForMaw)
+					minimalMawRequirements |= R.Swimming;
+
+				levelIdsToAvoid.Add(2); //library
+				levelIdsToAvoid.Add(9); //xarion skelleton
+			}
+			else
+			{
+				minimalMawRequirements |= R.Teleport;
+				minimalMawRequirements |= UnlockingMap.PyramidKeysUnlock;
+			}
 
 			var posableGassMaskLocations = ItemLocations
-				.Where(l => l.Key.LevelId != 1 && !l.IsUsed && l.Gate.CanBeOpenedWith(minimalMawRequirements))
+				.Where(l =>  !l.IsUsed && !levelIdsToAvoid.Contains(l.Key.LevelId) && l.Gate.CanBeOpenedWith(minimalMawRequirements))
 				.ToArray();
 
 			PutItemAtLocation(ItemInfoProvider.Get(EInventoryRelicType.AirMask), posableGassMaskLocations.SelectRandom(random));

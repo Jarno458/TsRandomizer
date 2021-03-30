@@ -13,9 +13,12 @@ When you feel stuck, you can open the minimap and hold X (the key to remove map 
 For questions / remarks and feedback, feel free to join the #randomizer channel on the offical timespinner discord https://discord.gg/sZMqD9
 
 # Instalation \ Startup
-Download latests TsRandomizer.exe from the release page https://github.com/JarnoWesthof/TsRandomizer/releases
+Download latests TsRandomizer.exe or Linux / Mac zip file from the release page https://github.com/JarnoWesthof/TsRandomizer/releases
 
+For windows:
 Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located, and start TsRandomizer.exe to start the game with the randomizer enabled, or Timespinner.exe to start the game normaly
+For Linux and Mac:
+Extract the contents of the corresponding zip file to the same folder as Timespinner.exe is located, and start TsRandomizer.bin.x86_x64 to start the game with the randomizer enabled, or Timespinner.bin.x86_x64 to start the game normaly
  
 ##### Supported verisons
 * Windows Steam verison 1.32 (latest)
@@ -67,7 +70,6 @@ The item tracker features a few options:
 * When you already got the blade-orb and kill the kitty boss while standing at the items spawn point you will trigger the item pickup message but no item is rewarded
 * To prevent a crash, the pedistal after killing dad is now temporary not randomized anymore
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
-* Gassmask can be in area like library or xarion caves where the use has to acces to as his only tp is the starter left one
 * Sometimes the download terminals do not correctly reward thier items (need reproduction instructions)
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
 * Non progression progressive items can be in the same room
@@ -84,4 +86,3 @@ The item tracker features a few options:
 * Timesanity (entrance randomizer)
 * Make warpshard optionally a progressin item that unlocks all softlocks
 * Randomize shop(s)
--> * Inverted Mode

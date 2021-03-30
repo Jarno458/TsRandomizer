@@ -60,6 +60,7 @@ namespace TsRandomizer.Randomisation
 
 		readonly ItemInfoProvider itemProvider;
 		readonly ItemUnlockingMap unlockingMap;
+		readonly SeedOptions seedOptions;
 
 		string areaName;
 
@@ -68,8 +69,9 @@ namespace TsRandomizer.Randomisation
 		{
 			itemProvider = itemInfoProvider;
 			unlockingMap = itemUnlockingMap;
+			seedOptions = options;
 
-			SetupGates(options);
+			SetupGates();
 
 			AddPresentItemLocations();
 			AddPastItemLocations();
@@ -82,23 +84,24 @@ namespace TsRandomizer.Randomisation
 				PutTalariaIntoDummyLocation(itemInfoProvider);
 		}
 
-		void SetupGates(SeedOptions options)
+		void SetupGates()
 		{
-			OculusRift = (options.RequireEyeOrbRing)
+			OculusRift = (seedOptions.RequireEyeOrbRing)
 				? R.OculusRift
 				: R.None;
 
-			AccessToLakeDesolation = true || (!options.Inverted)
+			AccessToLakeDesolation = true || (!seedOptions.Inverted)
 				? (Gate)R.None
 				: R.GateLakeDesolation
 				| R.GateKittyBoss
+				| R.GateLeftLibrary
 				| R.GateSealedCaves
 				| (R.GateSealedSirensCave & R.CardE)
 				| (R.GateMilitairyGate & ((R.CardC & R.CardE) | R.CardB));
 
 			LowerLakeDesolationBridge = AccessToLakeDesolation & (R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary);
 
-			AccessToPast = false && (options.Inverted)
+			AccessToPast = false && (seedOptions.Inverted)
 				? (Gate)R.None
 				: ( //libraryTimespinner
 					R.TimespinnerWheel & R.TimespinnerSpindle //activateLibraryTimespinner
@@ -134,7 +137,7 @@ namespace TsRandomizer.Randomisation
 
 			//future
 			UpperLakeDesolation = AccessToLakeDesolation & UpperLakeSirine & R.AntiWeed;
-			LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | (R.CardC & R.CardE)));
+			LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | R.GateLeftLibrary | R.GateKittyBoss | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | (R.CardC & R.CardE)));
 			UpperLeftLibrary = LeftLibrary & (R.DoubleJump | R.ForwardDash);
 			MidLibrary = (LeftLibrary & R.CardD) | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | (R.CardC & R.CardE)));
 			UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | ((R.GateMilitairyGate | R.GateSealedSirensCave) & R.CardE);
@@ -505,7 +508,8 @@ namespace TsRandomizer.Randomisation
 		bool IsGassMaskReachableWithTheMawRequirements()
 		{
 			//gassmask may never be placed in a gass effected place
-			//the very basics to reach maw shouldd also allow you to get gassmask
+			//the very basics to reach maw should also allow you to get gassmask
+			//unless we run inverted, then we can garantee the user has the pyramid keys before entering lake desolation
 			var gassmaskLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
 
 			var isWatermaskRequiredForMaw = unlockingMap.PyramidKeysUnlock != R.GateMaw 
@@ -517,6 +521,38 @@ namespace TsRandomizer.Randomisation
 				gassmaskRequirements |= R.Swimming;
 
 			return gassmaskLocation.Key.LevelId != 1 && gassmaskLocation.Gate.CanBeOpenedWith(gassmaskRequirements);
+		}
+
+		bool IsGassMaskReachableWithTheMawRequirements2()
+		{
+			//gassmask may never be placed in a gass effected place
+			//the very basics to reach maw should also allow you to get gassmask
+			//unless we run inverted, then we can garantee the user has the pyramid keys before entering lake desolation
+			var gassmaskLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
+
+			var levelIdsToAvoid = new List<int> { 1 }; //lake desolation
+			var gassmaskRequirements = R.DoubleJump;
+
+			if (true || !seedOptions.Inverted)
+			{
+				gassmaskRequirements |= R.GateAccessToPast;
+
+				var isWatermaskRequiredForMaw = unlockingMap.PyramidKeysUnlock != R.GateMaw
+				                                && unlockingMap.PyramidKeysUnlock != R.GateCavesOfBanishment;
+
+				if (isWatermaskRequiredForMaw)
+					gassmaskRequirements |= R.Swimming;
+
+				levelIdsToAvoid.Add(2); //library
+				levelIdsToAvoid.Add(9); //xarion skelleton
+			}
+			else
+			{
+				gassmaskRequirements |= R.Teleport;
+				gassmaskRequirements |= unlockingMap.PyramidKeysUnlock;
+			}
+
+			return !levelIdsToAvoid.Contains(gassmaskLocation.Key.LevelId) && gassmaskLocation.Gate.CanBeOpenedWith(gassmaskRequirements);
 		}
 
 		R GetObtainedRequirements(R obtainedRequirements)
