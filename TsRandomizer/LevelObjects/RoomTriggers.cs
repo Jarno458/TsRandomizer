@@ -9,6 +9,7 @@ using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.LevelObjects.Other;
 using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.LevelObjects
@@ -19,6 +20,7 @@ namespace TsRandomizer.LevelObjects
 
 		static readonly Type TransitionWarpEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.TransitionWarpEvent");
 		static readonly Type NelisteNpcType = TimeSpinnerType.Get("Timespinner.GameObjects.NPCs.AstrologerNPC");
+		static readonly Type PedistalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 
 		static RoomTrigger()
 		{
@@ -44,7 +46,7 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(1, 0, (level, itemLocation, seedOptions) =>
 			{
-				if (/*!seedOptions.Inverted || */level.GameSave.GetSaveBool("TSRandomizerHasTeleportedPlayer")) return;
+				if (true || !seedOptions.Inverted || level.GameSave.GetSaveBool("TSRandomizerHasTeleportedPlayer")) return;
 
 				level.GameSave.SetValue("TSRandomizerHasTeleportedPlayer", true);
 
@@ -136,6 +138,14 @@ namespace TsRandomizer.LevelObjects
 
 				SpawnNeliste(level);
 			}));
+			/*RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions) =>
+			{
+				if (level.GameSave.DataKeyBools.ContainsKey("IsEndingABCleared")) return;
+
+				((Dictionary<int, GameEvent>)level.AsDynamic()._levelEvents).Values
+					.FirstOrDefault(obj => obj.GetType() == PedistalType)
+					?.SilentKill();
+			}));*/
 		}
 
 		readonly RoomItemKey key;

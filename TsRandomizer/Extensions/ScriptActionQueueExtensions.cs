@@ -13,7 +13,10 @@ namespace TsRandomizer.Extensions
 
 		internal static void UpdateRelicOrbGetToastToItem(this Queue<ScriptAction> scripts, Level level, ItemInfo itemInfo)
 		{
-			var giveOrbScript = scripts.Last(s => s.AsDynamic().ScriptType == EScriptType.RelicOrbGetToast);
+			var giveOrbScript = scripts.LastOrDefault(s => s.AsDynamic().ScriptType == EScriptType.RelicOrbGetToast);
+			if(giveOrbScript == null)
+				return;
+
 			var reflectedScript = giveOrbScript.AsDynamic();
 
 			switch (itemInfo.Identifier.LootType)

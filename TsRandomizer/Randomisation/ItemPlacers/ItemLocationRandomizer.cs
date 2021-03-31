@@ -197,27 +197,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			if (ProgressionOnly)
 				return;
 
-			var alreadyAssingedItems = ItemLocations
-				.Where(l => l.IsUsed)
-				.Select(l => l.ItemInfo)
-				.ToArray();
-			
-			var itemlist = ItemLocations
-				.Where(l => l.DefaultItem != null)
-				.Select(l => l.DefaultItem)
-				.Where(i => i.Identifier.LootType != LootType.ConstOrb 
-				            && i.Identifier.LootType != LootType.ConstFamiliar 
-				            && !genericItems.Contains(i))
-				.ToList();
-
-			AddOrbs(itemlist);
-			AddFamiliers(itemlist);
-			AddExtraItems(itemlist);
-
-			itemlist = itemlist
-				.Where(i => !alreadyAssingedItems.Contains(i)
-				            && !itemsToRemoveFromGame.Contains(i))
-				.ToList();
+			var itemlist = GenerateItemList();
 
 			var freeLocations = ItemLocations
 				.Where(l => !l.IsUsed)
@@ -233,6 +213,70 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				PutItemAtLocation(item, location);
 
 			} while (freeLocations.Count > 0);
+
+			FixProgressiveNonProgressionItemsInSameRoom(random);
+		}
+
+		void FixProgressiveNonProgressionItemsInSameRoom(Random random)
+		{
+			var progressiveItemLocationsPerType = ItemLocations
+					.Where(l => l.ItemInfo.Unlocks == R.None)
+					.Where(l => l.ItemInfo is PogRessiveItemInfo)
+					.GroupBy(l => l.ItemInfo);
+
+			foreach (IGrouping<ItemInfo, ItemLocation> progressiveItemLocations in progressiveItemLocationsPerType)
+			{
+				RoomItemKey roomkey = null;
+
+				foreach (var itemLocation in progressiveItemLocations)
+				{
+					if(roomkey == null)
+						roomkey = itemLocation.Key.ToRoomItemKey();
+					else if (roomkey == itemLocation.Key.ToRoomItemKey())
+						SwapItemWithOtherNonProgressionItemsNotInRoom(itemLocation, random);
+				}
+			}
+		}
+
+		void SwapItemWithOtherNonProgressionItemsNotInRoom(ItemLocation itemLocation, Random random)
+		{
+			var roomToAvoid = itemLocation.Key.ToRoomItemKey();
+
+			var newItemLocation = ItemLocations
+				.Where(l => l.ItemInfo.Unlocks == R.None && l.Key.ToRoomItemKey() != roomToAvoid)
+				.SelectRandom(random);
+
+			var itemInfoToMove = itemLocation.ItemInfo;
+			var newItemInfo = newItemLocation.ItemInfo;
+
+			itemLocation.SetItem(newItemInfo);
+			newItemLocation.SetItem(itemInfoToMove);
+		}
+
+		List<ItemInfo> GenerateItemList()
+		{
+			var alreadyAssingedItems = ItemLocations
+				.Where(l => l.IsUsed)
+				.Select(l => l.ItemInfo)
+				.ToArray();
+
+			var itemlist = ItemLocations
+				.Where(l => l.DefaultItem != null)
+				.Select(l => l.DefaultItem)
+				.Where(i => i.Identifier.LootType != LootType.ConstOrb
+				            && i.Identifier.LootType != LootType.ConstFamiliar
+				            && !genericItems.Contains(i))
+				.ToList();
+
+			AddOrbs(itemlist);
+			AddFamiliers(itemlist);
+			AddExtraItems(itemlist);
+
+			itemlist = itemlist
+				.Where(i => !alreadyAssingedItems.Contains(i)
+				            && !itemsToRemoveFromGame.Contains(i))
+				.ToList();
+			return itemlist;
 		}
 
 		void AddExtraItems(List<ItemInfo> itemlist)

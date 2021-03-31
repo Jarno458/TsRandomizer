@@ -126,7 +126,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				//.InRandomOrder(random) //Aggregate always goes in order of definition it doesnt go in random order
 				.Aggregate(requirementChain, (chain, singleGate) => chain | CalculatePathChain(singleGate, chain));*/
 
-
 			foreach (var gate in andGate.Gates)
 			{
 				CalculatePathChain(gate, requirementChain);

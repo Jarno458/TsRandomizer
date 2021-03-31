@@ -3,14 +3,13 @@ using System.Linq.Expressions;
 using NUnit.Framework;
 using TsRandomizer.Randomisation;
 using R = TsRandomizer.Randomisation.Requirement;
-using static TsRandomizer.Randomisation.ItemLocationMap;
 
 namespace TsRandomizer.Tests
 {
 	[TestFixture]
 	class ItemLocationMapStaticFixture
 	{
-		static readonly TC[] TestCases = {
+		/*static readonly TC[] TestCases = {
 			new TC(() => DoubleJumpOfNpc, R.DoubleJump, false),
 			new TC(() => DoubleJumpOfNpc, R.TimeStop, false),
 			new TC(() => DoubleJumpOfNpc, R.ForwardDash, false), 
@@ -151,6 +150,6 @@ namespace TsRandomizer.Tests
 			{
 				return $"{name}, {Requirements}, {ShouldOpen}";
 			}
-		}
+		}*/
 	}
 }
