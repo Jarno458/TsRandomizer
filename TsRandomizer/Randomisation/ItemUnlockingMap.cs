@@ -96,7 +96,7 @@ namespace TsRandomizer.Randomisation
 
 		static void SetTeleporterPickupAction(Random random, UnlockingSpecification unlockingSpecification, SeedOptions options)
 		{
-			var teleporterGates = true || (!options.Inverted)
+			var teleporterGates = (!options.Inverted)
 				? PresentTeleporterGates.Union(PastTeleporterGates)
 				: PresentTeleporterGates;
 

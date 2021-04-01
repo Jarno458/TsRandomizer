@@ -90,7 +90,7 @@ namespace TsRandomizer.Randomisation
 				? R.OculusRift
 				: R.None;
 
-			AccessToLakeDesolation = true || (!seedOptions.Inverted)
+			AccessToLakeDesolation = (!seedOptions.Inverted)
 				? (Gate)R.None
 				: R.GateLakeDesolation
 				| R.GateKittyBoss
@@ -101,7 +101,7 @@ namespace TsRandomizer.Randomisation
 
 			LowerLakeDesolationBridge = AccessToLakeDesolation & (R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary);
 
-			AccessToPast = false && (seedOptions.Inverted)
+			AccessToPast = (seedOptions.Inverted)
 				? (Gate)R.None
 				: ( //libraryTimespinner
 					R.TimespinnerWheel & R.TimespinnerSpindle //activateLibraryTimespinner
@@ -511,28 +511,10 @@ namespace TsRandomizer.Randomisation
 			//unless we run inverted, then we can garantee the user has the pyramid keys before entering lake desolation
 			var gassmaskLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
 
-			var isWatermaskRequiredForMaw = unlockingMap.PyramidKeysUnlock != R.GateMaw 
-			                                && unlockingMap.PyramidKeysUnlock != R.GateCavesOfBanishment;
-
-			var gassmaskRequirements = R.DoubleJump | R.GateAccessToPast;
-
-			if (isWatermaskRequiredForMaw)
-				gassmaskRequirements |= R.Swimming;
-
-			return gassmaskLocation.Key.LevelId != 1 && gassmaskLocation.Gate.CanBeOpenedWith(gassmaskRequirements);
-		}
-
-		bool IsGassMaskReachableWithTheMawRequirements2()
-		{
-			//gassmask may never be placed in a gass effected place
-			//the very basics to reach maw should also allow you to get gassmask
-			//unless we run inverted, then we can garantee the user has the pyramid keys before entering lake desolation
-			var gassmaskLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
-
 			var levelIdsToAvoid = new List<int> { 1 }; //lake desolation
 			var gassmaskRequirements = R.DoubleJump;
 
-			if (true || !seedOptions.Inverted)
+			if (!seedOptions.Inverted)
 			{
 				gassmaskRequirements |= R.GateAccessToPast;
 

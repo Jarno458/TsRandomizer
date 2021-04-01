@@ -86,7 +86,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceStarterProgressionItems(Random random)
 		{
-			if (SeedOptions.StartWithTalaria /*|| SeedOptions.Inverted*/)
+			if (SeedOptions.StartWithTalaria || SeedOptions.Inverted)
 				GiveOrbsToMom(random, false);
 			else 
 				PlaceStarterProgressionItem(random);
@@ -166,7 +166,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			var levelIdsToAvoid = new List<int>{ 1 };
 			R minimalMawRequirements = R.DoubleJump;
 
-			if (true || !SeedOptions.Inverted)
+			if (!SeedOptions.Inverted)
 			{
 				minimalMawRequirements |= R.GateAccessToPast;
 

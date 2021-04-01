@@ -9,7 +9,6 @@ using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
-using TsRandomizer.LevelObjects.Other;
 using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.LevelObjects
@@ -46,7 +45,7 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(1, 0, (level, itemLocation, seedOptions) =>
 			{
-				if (true || !seedOptions.Inverted || level.GameSave.GetSaveBool("TSRandomizerHasTeleportedPlayer")) return;
+				if (!seedOptions.Inverted || level.GameSave.GetSaveBool("TSRandomizerHasTeleportedPlayer")) return;
 
 				level.GameSave.SetValue("TSRandomizerHasTeleportedPlayer", true);
 
@@ -85,7 +84,7 @@ namespace TsRandomizer.LevelObjects
 				    && level.GameSave.GetSaveBool("IsBossDead_Shapeshift")) 
 						SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 
-				if(/*!seedOptions.Inverted && */level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
+				if(!seedOptions.Inverted && level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
 					CreateSimpelOneWayWarp(level, 16, 12);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation, seedOptions) =>
@@ -111,14 +110,14 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(3, 6, (level, itemLocation, seedOptions) =>
 			{
-				if (/*seedOptions.Inverted || */level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)) return;
+				if (seedOptions.Inverted || level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)) return;
 
 				CreateSimpelOneWayWarp(level, 2, 54);
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 54, (level, itemLocation, seedOptions) =>
 			{
-				if (/*seedOptions.Inverted 
-				    || */level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)
+				if (seedOptions.Inverted 
+				    || level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)
 					|| !level.GameSave.DataKeyBools.ContainsKey("HasUsedCityTS")) return;
 
 				CreateSimpelOneWayWarp(level, 3, 6);
