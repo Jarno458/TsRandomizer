@@ -2,21 +2,17 @@
 
 namespace TsRandomizer.Randomisation
 {
-	class ItemKey : IEquatable<ItemKey>
+	class ItemKey : Roomkey, IEquatable<ItemKey>
 	{
 		public static ItemKey TutorialMeleeOrb = new ItemKey(0, 4, 0, 0);
 		public static ItemKey TutorialSpellOrb = new ItemKey(0, 4, 264, 192);
 		public static ItemKey TalariaSeedOption = new ItemKey(0, 0, 0, 0);
 
-		public readonly int LevelId;
-		public readonly int RoomId;
 		public readonly int X;
 		public readonly int Y;
 
-		public ItemKey(int levelId, int roomId, int x, int y)
+		public ItemKey(int levelId, int roomId, int x, int y) : base (levelId, roomId)
 		{
-			LevelId = levelId;
-			RoomId = roomId;
 			X = x;
 			Y = y;
 		}
@@ -40,26 +36,14 @@ namespace TsRandomizer.Randomisation
 				&& Y == other.Y;
 		}
 
-		public override int GetHashCode()
-		{
-			return LevelId
+		public override int GetHashCode() =>
+			LevelId
 				+ RoomId << 8
 				+ (X ^ Y) << 16;
-		}
 
-		public static bool operator ==(ItemKey a, ItemKey b)
-		{
-			return a?.Equals(b) ?? false;
-		}
+		public static bool operator ==(ItemKey a, ItemKey b) => a?.Equals(b) ?? false;
+		public static bool operator !=(ItemKey a, ItemKey b) => !(a == b);
 
-		public static bool operator !=(ItemKey a, ItemKey b)
-		{
-			return !(a == b);
-		}
-
-		public override string ToString()
-		{
-			return $"[{LevelId}.{RoomId}.{X}.{Y}]";
-		}
+		public override string ToString() => $"[{LevelId}.{RoomId}.{X}.{Y}]";
 	}
 }

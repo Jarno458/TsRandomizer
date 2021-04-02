@@ -152,6 +152,7 @@
     <Compile Include="Screens\OrbShopMenuScreen.cs" />
     <Compile Include="Screens\OrbMenuScreen.cs" />
     <Compile Include="Randomisation\Randomizer.cs" />
+    <Compile Include="Randomisation\Roomkey.cs" />
     <Compile Include="Screens\SaveSelectScreen.cs" />
     <Compile Include="Screens\GameDifficultyMenuScreen.cs" />
     <Compile Include="ReplacementObjects\Replaces.cs" />

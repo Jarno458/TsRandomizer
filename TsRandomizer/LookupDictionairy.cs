@@ -24,10 +24,8 @@ namespace TsRandomizer
 
 		public int Count => lookupTable.Count;
 
-		public bool TryGetValue(TLookup key, out TValue value)
-		{
-			return lookupTable.TryGetValue(key, out value);
-		}
+		public bool TryGetValue(TLookup key, out TValue value) =>
+			lookupTable.TryGetValue(key, out value);
 
 		public void Filter(IEnumerable<TLookup> intersectionFilter, Action<TValue> removeAction = null)
 		{
@@ -42,24 +40,16 @@ namespace TsRandomizer
 			}
 		}
 
-		public IEnumerator<TValue> GetEnumerator()
-		{
-			return ((IEnumerable<TValue>)lookupTable.Values).GetEnumerator();
-		}
+		public IEnumerator<TValue> GetEnumerator() =>
+			((IEnumerable<TValue>)lookupTable.Values).GetEnumerator();
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return lookupTable.Values.GetEnumerator();
-		}
+		IEnumerator IEnumerable.GetEnumerator() =>
+			lookupTable.Values.GetEnumerator();
 
-		public void Add(TValue value)
-		{
+		public void Add(TValue value) =>
 			lookupTable.Add(keySelector(value), value);
-		}
 
-		public bool Contains(TLookup key)
-		{
-			return lookupTable.ContainsKey(key);
-		}
+		public bool Contains(TLookup key) =>
+			lookupTable.ContainsKey(key);
 	}
 }

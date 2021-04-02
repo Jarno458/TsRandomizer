@@ -72,16 +72,10 @@ namespace TsRandomizer.Randomisation
 		}
 
 		[Pure]
-		public bool Contains(Requirement other)
-		{
-			return (flags & other.flags) > 0;
-		}
+		public bool Contains(Requirement other) => (flags & other.flags) > 0;
 
 		[Pure]
-		public bool IsSingleRequirement()
-		{
-			return (flags & (flags - 1)) == 0;
-		}
+		public bool IsSingleRequirement() => (flags & (flags - 1)) == 0;
 
 		[Pure]
 		public Requirement[] Split()
@@ -108,51 +102,20 @@ namespace TsRandomizer.Randomisation
 		}
 
 		[Pure]
-		public bool Equals(Requirement other)
-		{
-			return flags == other.flags;
-		}
+		public bool Equals(Requirement other) => flags == other.flags;
 
 		[Pure]
-		public override int GetHashCode()
-		{
-			return flags.GetHashCode();
-		}
+		public override int GetHashCode() => flags.GetHashCode();
 
-		public static implicit operator Requirement(ulong value)
-		{
-			return new Requirement(value);
-		}
+		public static implicit operator Requirement(ulong value) => new Requirement(value);
+		public static implicit operator ulong(Requirement value) => value.flags;
 
-		public static implicit operator ulong(Requirement value)
-		{
-			return value.flags;
-		}
+		public static Requirement operator |(Requirement a, Requirement b) => a.flags | b.flags;
+		public static Gate operator &(Requirement a, Requirement b) => (Gate)a & b;
+		public static bool operator ==(Requirement a, Requirement b) => a.Equals(b);
+		public static bool operator !=(Requirement a, Requirement b) => !(a == b);
 
-		public static Requirement operator |(Requirement a, Requirement b)
-		{
-			return a.flags | b.flags;
-		}
-
-		public static Gate operator &(Requirement a, Requirement b)
-		{
-			return (Gate)a & b;
-		}
-
-		public static bool operator ==(Requirement a, Requirement b)
-		{
-			return a.Equals(b);
-		}
-
-		public static bool operator !=(Requirement a, Requirement b)
-		{
-			return !(a == b);
-		}
-
-		public override string ToString()
-		{
-			return GetFlagNames(flags);
-		}
+		public override string ToString() => GetFlagNames(flags);
 
 		static string GetFlagNames(ulong flags)
 		{

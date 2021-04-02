@@ -39,10 +39,7 @@ namespace TsRandomizer.Randomisation
 			DefaultItem = defaultItem;
 		}
 
-		public void SetItem(ItemInfo item)
-		{
-			ItemInfo = item;
-		}
+		public void SetItem(ItemInfo item) => ItemInfo = item;
 
 		public void SetPickedUp()
 		{
@@ -54,10 +51,8 @@ namespace TsRandomizer.Randomisation
 				progressiveItemInfo.Next();
 		}
 
-		public override string ToString()
-		{
-			return $"{AreaName} {Name ?? Key.ToString()} [{ItemInfo}]";
-		}
+		public override string ToString() =>
+			$"{AreaName} {Name ?? Key.ToString()} [{ItemInfo}]";
 
 		public void BsseOnGameSave(GameSave save)
 		{

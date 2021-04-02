@@ -10,20 +10,21 @@ using TsRandomizer.Randomisation;
 namespace TsRandomizer.Screens
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.MapMenuScreen")]
+	partial
 	// ReSharper disable once UnusedMember.Global
 	class MinimapScreen : Screen
 	{
 		static readonly Roomkey[] DisabledCheckpoints =
 		{
-			new Roomkey {LevelId = 2, RoomId = 20},
-			new Roomkey {LevelId = 16, RoomId = 21}
+			new Roomkey(2, 20),
+			new Roomkey(16, 21)
 		};
 
 		static readonly Roomkey[] BossRooms =
 		{
-			new Roomkey {LevelId = 5, RoomId = 5},
-			new Roomkey {LevelId = 8, RoomId = 13},
-			new Roomkey {LevelId = 9, RoomId = 7}
+			new Roomkey(5, 5),
+			new Roomkey(8, 13),
+			new Roomkey(9, 7)
 		};
 
 		ItemLocationMap itemLocations;
@@ -86,12 +87,7 @@ namespace TsRandomizer.Screens
 
 			foreach (var itemLocation in GetAvailableItemLocations())
 			{
-				var roomKey = new Roomkey
-				{
-					LevelId = itemLocation.Key.LevelId,
-					RoomId = itemLocation.Key.RoomId
-				};
-
+				var roomKey = new Roomkey(itemLocation.Key.LevelId, itemLocation.Key.RoomId); //somehow they keys dont match if we use itemLocation.Key directly
 				if (preservedRoomStates.Contains(roomKey))
 					continue;
 
@@ -134,7 +130,7 @@ namespace TsRandomizer.Screens
 			{
 				foreach (var room in area.Rooms)
 				{
-					var roomKey = new Roomkey { LevelId = area.LevelID, RoomId = room.RoomID };
+					var roomKey = new Roomkey(area.LevelID, room.RoomID);
 					if (preservedRoomStates.Contains(roomKey))
 						continue;
 
@@ -176,10 +172,6 @@ namespace TsRandomizer.Screens
 		{
 			switch (room.DefaultColor)
 			{
-				case EMinimapRoomColor.Purple:
-					if (!visableAreas.Contains(EMinimapEraType.Present))
-						visableAreas.Add(EMinimapEraType.Present);
-					break;
 				case EMinimapRoomColor.Blue:
 					if (!visableAreas.Contains(EMinimapEraType.Past))
 						visableAreas.Add(EMinimapEraType.Past);
@@ -235,12 +227,6 @@ namespace TsRandomizer.Screens
 				block.IsVisited = isVisited;
 				block.IsTransition = isTransition;
 			}
-		}
-
-		class Roomkey
-		{
-			public int LevelId { get; internal set; }
-			public int RoomId { get; internal set; }
 		}
 	}
 }

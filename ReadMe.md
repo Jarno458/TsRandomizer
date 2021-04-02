@@ -10,7 +10,7 @@ Quest are not concidered part of the game, and they wont contain any progression
 
 When you feel stuck, you can open the minimap and hold X (the key to remove map markers), it will highligh all locations that you can reach and still have items for you
 
-For questions / remarks and feedback, feel free to join the #randomizer channel on the offical timespinner discord https://discord.gg/sZMqD9
+For questions / remarks and feedback, feel free to join the #randomizer channel on the offical timespinner discord https://discord.gg/jH2auHTn
 
 # Instalation \ Startup
 Download latests TsRandomizer.exe or Linux / Mac zip file from the release page https://github.com/JarnoWesthof/TsRandomizer/releases
@@ -72,7 +72,6 @@ The item tracker features a few options:
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * Sometimes the download terminals do not correctly reward thier items (need reproduction instructions)
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
-* -> minimap doesnt reset
 
 # Todo
 ##### Things i plan on doing in the future
