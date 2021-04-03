@@ -181,15 +181,16 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			}
 			else
 			{
+				minimalMawRequirements |= R.Swimming;
 				minimalMawRequirements |= R.Teleport;
 				minimalMawRequirements |= UnlockingMap.PyramidKeysUnlock;
 			}
 
-			var posableGassMaskLocations = ItemLocations
+			var gassMaskLocation = ItemLocations
 				.Where(l =>  !l.IsUsed && !levelIdsToAvoid.Contains(l.Key.LevelId) && l.Gate.CanBeOpenedWith(minimalMawRequirements))
-				.ToArray();
+				.SelectRandom(random);
 
-			PutItemAtLocation(ItemInfoProvider.Get(EInventoryRelicType.AirMask), posableGassMaskLocations.SelectRandom(random));
+			PutItemAtLocation(ItemInfoProvider.Get(EInventoryRelicType.AirMask), gassMaskLocation);
 		}
 
 		protected void FillRemainingChests(Random random)

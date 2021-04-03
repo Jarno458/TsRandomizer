@@ -529,6 +529,7 @@ namespace TsRandomizer.Randomisation
 			}
 			else
 			{
+				gassmaskRequirements |= R.Swimming;
 				gassmaskRequirements |= R.Teleport;
 				gassmaskRequirements |= unlockingMap.PyramidKeysUnlock;
 			}
@@ -567,7 +568,7 @@ namespace TsRandomizer.Randomisation
 			return unlockedRequirements;
 		}
 
-		R GetObtainedRequirements(ItemLocation[] reachableLocations)
+		static R GetObtainedRequirements(ItemLocation[] reachableLocations)
 		{
 			var unlockedRequirements = reachableLocations
 				.Where(l => !(l.ItemInfo is PogRessiveItemInfo))
