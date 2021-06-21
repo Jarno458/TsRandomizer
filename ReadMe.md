@@ -72,11 +72,15 @@ The item tracker features a few options:
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
 * Sometimes the download terminals do not correctly reward thier items (need reproduction instructions)
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
+* Entering a door backwards with a higher level keycard will permanantly open it even when specific keycards are on
+* Music wont play in lake desolation until you have done the "oh i lost my monther" cutscene
+* Holding X while spamming select button causes minimap to stay in an all discovered state
 
 # Todo
 ##### Things i plan on doing in the future
 * Extend names of item locations in the spoiler log (with help from community on discord)
 * Randomize shop(s)
+* Implement skin selection
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemenbted

@@ -333,7 +333,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(8, 5, 88, 496), null, itemProvider.Get(EItemType.MaxSand), UpperCavesOfBanishment & R.Swimming);
 			areaName = "Caste Ramparts";
 			Add(new ItemKey(4, 1, 456, 160), "Bomber chest", itemProvider.Get(EItemType.MaxSand), CastleRamparts & MultipleSmallJumpsOfNpc);
-			Add(new ItemKey(4, 3, 136, 144), null, itemProvider.Get(EItemType.MaxHP), CastleRamparts & R.TimeStop);
+			Add(new ItemKey(4, 3, 136, 144), null, itemProvider.Get(EItemType.MaxHP), CastleRamparts & (R.TimeStop | R.ForwardDash));
 			Add(new ItemKey(4, 10, 56, 192), null, itemProvider.Get(EInventoryUseItemType.HiPotion), CastleRamparts);
 			Add(new ItemKey(4, 11, 344, 192), null, itemProvider.Get(EInventoryUseItemType.HiPotion), CastleRamparts);
 			Add(new ItemKey(4, 22, 104, 189), null, itemProvider.Get(EInventoryOrbType.Iron, EOrbSlot.Melee), CastleRamparts);
@@ -625,11 +625,6 @@ namespace TsRandomizer.Randomisation
 		void Add(ItemKey itemKey, string name, ItemInfo defaultItem)
 		{
 			Add(new ItemLocation(itemKey, areaName, name, defaultItem));
-		}
-
-		void Add(ItemKey itemKey, string name, ItemInfo defaultItem, R requirement)
-		{
-			Add(new ItemLocation(itemKey, areaName, name, defaultItem, requirement));
 		}
 
 		void Add(ItemKey itemKey, string name, ItemInfo defaultItem, Gate gate)
