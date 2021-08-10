@@ -8,12 +8,10 @@ namespace TsRandomizer.ItemTracker
 	public static class ItemTrackerUplink
 	{
         static readonly string StateFilePath = Path.GetTempPath() + "TsRandomizerItemTrackerState";
-        // FIXME only set delete on close if we're the randomizer!
-        // killing the underlying file can break things - just leave it?
-        //      set listener to attempt reopens on loadstate?
-        // cleanup console logs
-        // createviewstream(int,int,access) fails if it goes beyond the file size...set file big enough to begin works, make this cleaner
-        static readonly FileStream FileStream = new FileStream(StateFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite | FileShare.Delete, 4096, FileOptions.DeleteOnClose);
+        // NOTE FileOptions.DeleteOnClose is a nice idea but creates issues if a file handle still in use by an active process is unmapped.
+        // This can be done if only the game creates/deletes files and the tracker refreshes until it sees a file.
+        // That would also be a good first step toward supporting multiple simultaneous instances (game could append PID to filename, tracker would need selection UI)
+        static readonly FileStream FileStream = new FileStream(StateFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite | FileShare.Delete, 4096);
         const int serializerOverheadSize = 500;
         const int fileSize = sizeof(bool) * ItemTrackerState.NumberOfItems + serializerOverheadSize;
 		static readonly MemoryMappedFile MemoryMappedFile = GetMemoryMappedFile();
@@ -53,7 +51,6 @@ namespace TsRandomizer.ItemTracker
             try
             {
                 FileStream.SetLength(fileSize);
-                System.Console.WriteLine("Opening MemoryMappedFile: " + FileStream.Name);
                 MemoryMappedFile m = MemoryMappedFile.CreateFromFile(FileStream,"TsRandomizerItemTrackerState",FileStream.Length, MemoryMappedFileAccess.ReadWrite, null, HandleInheritability.Inheritable, true);
                 return m;
             }
