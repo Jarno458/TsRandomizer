@@ -75,17 +75,18 @@ The item tracker features a few options:
 * Entering a door backwards with a higher level keycard will permanantly open it even when specific keycards are on
 * Music wont play in lake desolation until you have done the "oh i lost my monther" cutscene
 * Holding X while spamming select button causes minimap to stay in an all discovered state
+* Posable to softlock in maw area without double jump
 
 # Todo
 ##### Things i plan on doing in the future
 * Extend names of item locations in the spoiler log (with help from community on discord)
-* Randomize shop(s)
 * Implement skin selection
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemenbted
 * Randomize quest items
 * Randomize enemies
+* Randomize shop(s)
 * Timesanity (entrance randomizer)
 * Make warpshard optionally a progressin item that unlocks all softlocks
 * Maybe make items drop from memories and journals
