@@ -163,7 +163,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceGassMaskInALegalSpot(Random random)
 		{
-			var levelIdsToAvoid = new List<int>{ 2 };
+			var levelIdsToAvoid = new List<int>(3){ 1 };
 			R minimalMawRequirements = R.None;
 
 			if (!SeedOptions.Inverted)
