@@ -17,6 +17,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 6, new SeedOptionInfo { Name = "Quick seed", Description = "Start with Talaria Attachment, Nyoom!" } },
 			{ 1 << 7, new SeedOptionInfo { Name = "Specific Keycards", Description = "Keycards can only open corresponding doors" } },
 			{ 1 << 8, new SeedOptionInfo { Name = "Inverted", Description = "Start in the past" } },
+			{ 1 << 9, new SeedOptionInfo { Name = "Stinky Maw", Description = "Require gassmask for Maw" } },
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)

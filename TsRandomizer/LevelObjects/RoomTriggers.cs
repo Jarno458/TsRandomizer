@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
+using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
@@ -20,6 +21,7 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type TransitionWarpEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.TransitionWarpEvent");
 		static readonly Type NelisteNpcType = TimeSpinnerType.Get("Timespinner.GameObjects.NPCs.AstrologerNPC");
 		static readonly Type PedistalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
+		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
 
 		static RoomTrigger()
 		{
@@ -137,7 +139,7 @@ namespace TsRandomizer.LevelObjects
 
 				SpawnNeliste(level);
 			}));
-			/*RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions) =>
+			/*RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions) => //Remove Daddy's pedistal if you havent killed him yet
 			{
 				if (level.GameSave.DataKeyBools.ContainsKey("IsEndingABCleared")) return;
 
@@ -145,6 +147,36 @@ namespace TsRandomizer.LevelObjects
 					.FirstOrDefault(obj => obj.GetType() == PedistalType)
 					?.SilentKill();
 			}));*/
+			RoomTriggers.Add(new RoomTrigger(8, 6, (level, itemLocation, seedOptions) =>
+			{
+				if (seedOptions.GassMaw) return;
+
+				FillRoomWithGass(level);
+			}));
+			RoomTriggers.Add(new RoomTrigger(8, 7, (level, itemLocation, seedOptions) =>
+			{
+				if (seedOptions.GassMaw) return;
+
+				FillRoomWithGass(level);
+			}));
+			RoomTriggers.Add(new RoomTrigger(8, 13, (level, itemLocation, seedOptions) =>
+			{
+				if (seedOptions.GassMaw) return;
+
+				FillRoomWithGass(level);
+			}));
+			RoomTriggers.Add(new RoomTrigger(8, 21, (level, itemLocation, seedOptions) =>
+			{
+				if (seedOptions.GassMaw) return;
+
+				FillRoomWithGass(level);
+			}));
+			RoomTriggers.Add(new RoomTrigger(8, 33, (level, itemLocation, seedOptions) =>
+			{
+				if (seedOptions.GassMaw) return;
+
+				FillRoomWithGass(level);
+			}));
 		}
 
 		readonly RoomItemKey key;
@@ -260,6 +292,21 @@ namespace TsRandomizer.LevelObjects
 			var neliste = (NPCBase)NelisteNpcType.CreateInstance(false, level, position, -1, new ObjectTileSpecification());
 
 			level.AsDynamic().RequestAddObject(neliste);
+		}
+
+		static void FillRoomWithGass(Level level)
+		{
+			var gass = (GameEvent)LakeVacuumLevelEffectType.CreateInstance(false, level, new Point(), -1, new ObjectTileSpecification());
+			
+			level.AsDynamic().RequestAddObject(gass);
+
+			var gassForeground = new Background(new BackgroundSpecification
+			{
+				TextureType = EBackgroundTextureType.Fog
+			}, level);
+
+			((List<Background>)level.AsDynamic()._foregrounds).Add(gassForeground);
+
 		}
 	}
 }

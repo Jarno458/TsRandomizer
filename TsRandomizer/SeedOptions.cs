@@ -19,6 +19,7 @@ namespace TsRandomizer
 		public bool StartWithTalaria => (Flags & 1 << 6) > 0;
 		public bool SpecificKeys => (Flags & 1 << 7) > 0;
 		public bool Inverted => (Flags & 1 << 8) > 0;
+		public bool GassMaw => (Flags & 1 << 9) > 0;
 
 		public SeedOptions(uint flags)
 		{

@@ -163,8 +163,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceGassMaskInALegalSpot(Random random)
 		{
-			var levelIdsToAvoid = new List<int>{ 1 };
-			R minimalMawRequirements = R.DoubleJump;
+			var levelIdsToAvoid = new List<int>{ 2 };
+			R minimalMawRequirements = R.None;
 
 			if (!SeedOptions.Inverted)
 			{
@@ -182,12 +182,13 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			else
 			{
 				minimalMawRequirements |= R.Swimming;
-				minimalMawRequirements |= R.Teleport;
 				minimalMawRequirements |= UnlockingMap.PyramidKeysUnlock;
 			}
 
 			var gassMaskLocation = ItemLocations
-				.Where(l =>  !l.IsUsed && !levelIdsToAvoid.Contains(l.Key.LevelId) && l.Gate.CanBeOpenedWith(minimalMawRequirements))
+				.Where(l => !l.IsUsed 
+				            && !levelIdsToAvoid.Contains(l.Key.LevelId) 
+				            && l.Gate.CanBeOpenedWith(minimalMawRequirements))
 				.SelectRandom(random);
 
 			PutItemAtLocation(ItemInfoProvider.Get(EInventoryRelicType.AirMask), gassMaskLocation);

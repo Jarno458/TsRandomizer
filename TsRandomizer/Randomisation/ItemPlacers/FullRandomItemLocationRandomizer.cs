@@ -23,13 +23,15 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			var random = new Random((int)seed.Id);
 
 			new FullRandomItemLocationRandomizer(seed.Options, itemInfoProvider, unlockingMap, itemLocationMap, progressionOnly)
-				.AddRandomItemsToLocationMap(random);
+				.AddRandomItemsToLocationMap(random, seed.Options);
 		}
 
-		void AddRandomItemsToLocationMap(Random random)
+		void AddRandomItemsToLocationMap(Random random, SeedOptions options)
 		{
 			PlaceStarterProgressionItems(random);
-			PlaceGassMaskInALegalSpot(random);
+
+			if(!options.GassMaw)
+				PlaceGassMaskInALegalSpot(random);
 
 			var alreadyAssingedItems = ItemLocations
 				.Where(l => l.IsUsed)

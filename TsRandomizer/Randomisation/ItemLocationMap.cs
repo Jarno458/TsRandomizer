@@ -12,7 +12,8 @@ namespace TsRandomizer.Randomisation
 {
 	class ItemLocationMap : LookupDictionairy<ItemKey, ItemLocation>
 	{
-		internal R OculusRift = R.None;
+		internal R OculusRift;
+		internal R MawGassMask;
 
 		internal Gate AccessToPast;
 		internal Gate AccessToLakeDesolation;
@@ -90,6 +91,10 @@ namespace TsRandomizer.Randomisation
 				? R.OculusRift
 				: R.None;
 
+			MawGassMask = (seedOptions.GassMaw)
+				? R.GassMask
+				: R.None;
+
 			AccessToLakeDesolation = (!seedOptions.Inverted)
 				? (Gate)R.None
 				: R.GateLakeDesolation
@@ -113,8 +118,8 @@ namespace TsRandomizer.Randomisation
 				| R.GateRoyalTowers
 				| R.GateCastleRamparts
 				| R.GateCastleKeep
-				| (R.GateCavesOfBanishment & (R.DoubleJump | R.Swimming))
-				| (R.GateMaw & R.DoubleJump);
+				| R.GateCavesOfBanishment
+				| R.GateMaw;
 
 			MultipleSmallJumpsOfNpc = (Gate)(R.TimespinnerWheel | R.UpwardDash);
 			DoubleJumpOfNpc = (R.DoubleJump & R.TimespinnerWheel) | R.UpwardDash;
@@ -131,7 +136,7 @@ namespace TsRandomizer.Randomisation
 			RoyalTower = (CastleKeep & R.DoubleJump) | R.GateRoyalTowers;
 			MidRoyalTower = RoyalTower & (MultipleSmallJumpsOfNpc | ForwardDashDoubleJump);
 			UpperRoyalTower = MidRoyalTower & R.DoubleJump;
-			KillMaw = R.DoubleJump & (LowerlakeSirine | R.GateCavesOfBanishment | R.GateMaw);
+			KillMaw = (LowerlakeSirine | R.GateCavesOfBanishment | R.GateMaw) & MawGassMask;
 			var killTwins = CastleKeep & R.TimeStop;
 			var killAelana = UpperRoyalTower;
 
@@ -324,7 +329,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(8, 41, 312, 192), "Jackpot room chest 4", itemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & ForwardDashDoubleJump);
 			Add(new ItemKey(8, 42, 216, 189), null, itemProvider.Get(EInventoryOrbType.Wind, EOrbSlot.Melee), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 15, 248, 192), null, itemProvider.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment & R.DoubleJump);
-			Add(new ItemKey(8, 31, 88, 400), null, itemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & R.DoubleJump);
+			Add(new ItemKey(8, 31, 88, 400), null, itemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & MawGassMask);
 			areaName = "Caves of Banishment (Sirens)";
 			Add(new ItemKey(8, 4, 664, 144), null, itemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment);
 			Add(new ItemKey(8, 3, 808, 144), null, itemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment);
