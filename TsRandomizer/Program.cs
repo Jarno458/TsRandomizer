@@ -9,7 +9,7 @@ namespace TsRandomizer
 	public static class Program
 	{
 		// ReSharper disable InconsistentNaming
-		const string Win_Steam_V1_032 = "93DC447605E4DF8F349B1FA66342E79A";
+		const string Win_Steam_V1_033 = "B7A81613D3B3933FB1CBF5D96E1198CD";
 		const string Win_DrmFree_V1_031 = "2CC3F5AD830F32D9F6294E5205E61FBE";
 		// ReSharper restore InconsistentNaming
 
@@ -22,7 +22,7 @@ namespace TsRandomizer
 
 			switch (md5)
 			{
-				case Win_Steam_V1_032:
+				case Win_Steam_V1_033:
 					IsSteam = true;
 					break;
 

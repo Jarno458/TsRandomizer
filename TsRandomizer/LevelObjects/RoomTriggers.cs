@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
-using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
@@ -300,13 +299,13 @@ namespace TsRandomizer.LevelObjects
 			
 			level.AsDynamic().RequestAddObject(gass);
 
-			var gassForeground = new Background(new BackgroundSpecification
-			{
-				TextureType = EBackgroundTextureType.Fog
-			}, level);
+			var foreground = level.Foregrounds.FirstOrDefault();
 
-			((List<Background>)level.AsDynamic()._foregrounds).Add(gassForeground);
+			if(foreground == null)
+				return;
 
+			foreground.AsDynamic()._baseColor = new Color(8, 16, 2, 12);
+			foreground.DrawColor = new Color(8, 16, 2, 12);
 		}
 	}
 }
