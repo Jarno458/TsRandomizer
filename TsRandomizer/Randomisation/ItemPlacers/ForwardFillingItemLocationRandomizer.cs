@@ -19,9 +19,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		readonly Dictionary<ItemInfo, ItemLocation> placedItems;
 		readonly Dictionary<ItemInfo, Gate> paths;
 
-		ForwardFillingItemLocationRandomizer(
-			Seed seed, ItemInfoProvider itemProvider, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly) 
-				: base(seed.Options, itemProvider, itemLocationMap, unlockingMap, progressionOnly)
+		public ForwardFillingItemLocationRandomizer(
+			Seed seed, ItemInfoProvider itemProvider, ItemUnlockingMap unlockingMap
+		) : base(seed, itemProvider, new ItemLocationMap(itemProvider, unlockingMap, seed.Options), unlockingMap)
 		{
 			random = new Random((int)seed.Id);
 			availableRequirements = Requirement.None;
@@ -30,14 +30,14 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			paths = new Dictionary<ItemInfo, Gate>();
 		}
 
-		public static void AddRandomItemsToLocationMap(
-			Seed seed, ItemInfoProvider itemInfoProvider, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly)
+		public override ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly)
 		{
-			new ForwardFillingItemLocationRandomizer(seed, itemInfoProvider, unlockingMap, itemLocationMap, progressionOnly)
-				.AddRandomItemsToLocationMap();
+			AddRandomItemsToLocationMap(isProgressionOnly);
+
+			return ItemLocations;
 		}
 
-		void AddRandomItemsToLocationMap()
+		void AddRandomItemsToLocationMap(bool isProgressionOnly)
 		{
 			RecalculateAvailableItemLocations();
 			CalculateTutorial();
@@ -59,7 +59,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			foreach (var path in paths)
 				Console.Out.WriteLine($"Requirements For {path.Key}@{placedItems[path.Key]} -> {path.Value}");
 
-			FillRemainingChests(random);
+			if(!isProgressionOnly)
+				FillRemainingChests(random);
 		}
 
 		void CalculatePathChain(ItemInfo item, Requirement additionalRequirementsToAvoid)

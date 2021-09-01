@@ -10,29 +10,28 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 {
 	abstract class ItemLocationRandomizer
 	{
+		protected readonly Seed Seed;
 		protected readonly SeedOptions SeedOptions;
 		protected readonly ItemInfoProvider ItemInfoProvider;
 		protected readonly ItemLocationMap ItemLocations;
 		protected readonly ItemUnlockingMap UnlockingMap;
-		protected readonly bool ProgressionOnly;
 
 		readonly List<ItemInfo> itemsToRemoveFromGame;
 		readonly ItemInfo[] itemsToAddToGame;
 		readonly ItemInfo[] genericItems;
 
 		protected ItemLocationRandomizer(
-			SeedOptions options,
+			Seed seed,
 			ItemInfoProvider itemInfoProvider, 
 			ItemLocationMap itemLocations, 
-			ItemUnlockingMap unlockingMap, 
-			bool progressionOnly
+			ItemUnlockingMap unlockingMap
 		)
 		{
-			SeedOptions = options;
+			Seed = seed;
+			SeedOptions = seed.Options;
 			ItemInfoProvider = itemInfoProvider;
 			ItemLocations = itemLocations;
 			UnlockingMap = unlockingMap;
-			ProgressionOnly = progressionOnly;
 
 			itemsToRemoveFromGame = new List<ItemInfo>
 			{
@@ -83,6 +82,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle),
 			};
 		}
+
+		public abstract ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly);
 
 		protected void PlaceStarterProgressionItems(Random random)
 		{
@@ -196,9 +197,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void FillRemainingChests(Random random)
 		{
-			if (ProgressionOnly)
-				return;
-
 			var itemlist = GenerateItemList();
 
 			var freeLocations = ItemLocations

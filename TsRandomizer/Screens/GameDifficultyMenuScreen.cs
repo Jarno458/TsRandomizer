@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
@@ -29,6 +30,9 @@ namespace TsRandomizer.Screens
 		readonly SeedRepresentation seedRepresentation;
 
 		Seed? seed;
+		bool isArchipelago;
+
+		public PasswordMode PasswordMode = PasswordMode.None;
 
 		Action<GameSave.EGameDifficultyType> originalOnDifficultyChosenMethod;
 
@@ -61,9 +65,7 @@ namespace TsRandomizer.Screens
 			}
 
 			if (Dynamic._isLevelCap255Available)
-			{
 				RemoveLastMenuEntry();
-			}
 		}
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
@@ -112,9 +114,14 @@ namespace TsRandomizer.Screens
 
 		void OpenSelectSeedMenu(PlayerIndex pi)
 		{
-			var selectSeedMenu = SeedSelectionMenuScreen.Create(ScreenManager);
+			if (isArchipelago)
+				PasswordMode = PasswordMode.SelectArchipelagoServer;
+			else
+				PasswordMode = PasswordMode.SelectSeed;
 
-			ScreenManager.AddScreen(selectSeedMenu, pi);
+			var passwordMenu = PasswordMenuScreen.Create(ScreenManager);
+
+			ScreenManager.AddScreen(passwordMenu, pi);
 		}
 
 		void HookOnDifficultySelectedMethod()
@@ -145,7 +152,7 @@ namespace TsRandomizer.Screens
 			var saveGame = (GameSave)gameplayScreen.AsDynamic().SaveFile;
 
 			saveGame.SetSeed(seed.Value);
-			saveGame.SetFillingMethod(FillingMethod.Random);
+			saveGame.SetFillingMethod(FillingMethod.Archipelago);
 			saveGame.DataKeyStrings["TsRandomizerVersion"] = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		}
 
@@ -153,8 +160,6 @@ namespace TsRandomizer.Screens
 		{
 			seed = selectedSeed;
 			seedRepresentation.SetSeed(selectedSeed);
-
-			seedMenuEntry.Text = "Seed: ";
 
 			SetSelectedMenuItemByIndex(2);
 
@@ -178,6 +183,25 @@ namespace TsRandomizer.Screens
 
 			if (seed == null)
 				SetSelectedMenuItemByIndex(0);
+
+			if (input.IsNewButtonPress(Buttons.LeftThumbstickLeft))
+				isArchipelago = !isArchipelago;
+
+			if (isArchipelago)
+			{
+				seedMenuEntry.Text = "Archipelago";
+				seedMenuEntry.Description = "Connect to an Archipelago Multiworld server";
+			}
+			else if (seed == null)
+			{
+				seedMenuEntry.Text = "Choose seed";
+				seedMenuEntry.Description = "Select the seed used to generate the randomness";
+			}
+			else
+			{
+				seedMenuEntry.Text = "Seed: ";
+				seedMenuEntry.Description = "Select the seed used to generate the randomness";
+			}
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
@@ -215,5 +239,14 @@ namespace TsRandomizer.Screens
 			((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex = index;
 			Dynamic.OnSelectedEntryChanged(index);
 		}
+	}
+
+	public enum PasswordMode
+	{
+		None,
+		SelectSeed,
+		SelectArchipelagoServer,
+		SelectUserName,
+		SelectPassword
 	}
 }

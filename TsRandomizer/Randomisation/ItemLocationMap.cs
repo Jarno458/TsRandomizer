@@ -418,7 +418,7 @@ namespace TsRandomizer.Randomisation
 					: null;
 		}
 
-		public ProgressionChain GetProgressionChain()
+		public virtual ProgressionChain GetProgressionChain()
 		{
 			var obtainedRequirements = R.None;
 			IEnumerable<ItemLocation> alreadyKnownLocations = new ItemLocation[0];
@@ -475,7 +475,7 @@ namespace TsRandomizer.Randomisation
 				.Aggregate(R.None, (a, b) => a | b);
 		}
 
-		public bool IsBeatable()
+		public virtual bool IsBeatable()
 		{
 			if (!IsGassMaskReachableWithTheMawRequirements()
 				|| ProgressiveItemsOfTheSameTypeAreInTheSameRoom()) 
@@ -610,7 +610,7 @@ namespace TsRandomizer.Randomisation
 			return Nightmare.CanBeOpenedWith(obtainedRequirements);
 		}
 
-		public void BaseOnSave(GameSave gameSave)
+		public virtual void BaseOnSave(GameSave gameSave)
 		{
 			var progressiveItemInfos = this
 				.Where(l => l.ItemInfo is PogRessiveItemInfo)

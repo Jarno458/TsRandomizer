@@ -14,8 +14,7 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace TsRandomizer.Screens.SeedSelection
 {
-	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.Options.PasswordMenuScreen")]
-	class SeedSelectionMenuScreen : Screen
+	class SeedSelectionMenuScreen : PasswordMenuOverride
 	{
 		static readonly Type PasswordMenuScreenType = TimeSpinnerType
 			.Get("Timespinner.GameStateManagement.Screens.PauseMenu.Options.PasswordMenuScreen");
@@ -30,13 +29,6 @@ namespace TsRandomizer.Screens.SeedSelection
 		MenuEntry okButton;
 
 		bool IsUsedAsSeedSelectionMenu => difficultyMenu != null;
-
-		public static GameScreen Create(ScreenManager screenManager)
-		{
-			void Noop() { }
-
-			return (GameScreen)Activator.CreateInstance(PasswordMenuScreenType, null, screenManager.Reflected.GCM, (Action)Noop);
-		}
 
 		public SeedSelectionMenuScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
 		{

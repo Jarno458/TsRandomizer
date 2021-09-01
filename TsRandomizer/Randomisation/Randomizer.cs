@@ -12,23 +12,28 @@ namespace TsRandomizer.Randomisation
 		{
 			var unlockingMap = new ItemUnlockingMap(seed);
 			var itemInfoProvider = new ItemInfoProvider(seed.Options, unlockingMap);
-			var itemLocations = new ItemLocationMap(itemInfoProvider, unlockingMap, seed.Options);
+
+			ItemLocationRandomizer randomizer;
 
 			switch (fillingMethod)
 			{
 				case FillingMethod.Forward:
-					ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemInfoProvider, unlockingMap, itemLocations, progressionOnly);
+					randomizer = new ForwardFillingItemLocationRandomizer(seed, itemInfoProvider, unlockingMap);
 					break;
 
 				case FillingMethod.Random:
-					FullRandomItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemInfoProvider, unlockingMap, itemLocations, progressionOnly);
+					randomizer = new FullRandomItemLocationRandomizer(seed, itemInfoProvider, unlockingMap);
+					break;
+
+				case FillingMethod.Archipelago:
+					randomizer = new ArchipelagoItemLocationRandomizer(seed, itemInfoProvider, unlockingMap);
 					break;
 
 				default:
 					throw new NotImplementedException($"filling method {fillingMethod} is not implemented");
 			}
 
-			return itemLocations;
+			return randomizer.GenerateItemLocationMap(progressionOnly);
 		}
 
 		public static GenerationResult Generate(FillingMethod fillingMethod, SeedOptions options)
@@ -88,7 +93,7 @@ namespace TsRandomizer.Randomisation
 	enum FillingMethod
 	{
 		Forward,
-		Assumption,
-		Random
+		Random,
+		Archipelago
 	}
 }

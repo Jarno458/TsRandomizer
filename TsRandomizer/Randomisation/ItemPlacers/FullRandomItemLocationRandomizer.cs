@@ -7,30 +7,28 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 {
 	class FullRandomItemLocationRandomizer : ItemLocationRandomizer
 	{
-		FullRandomItemLocationRandomizer(
-			SeedOptions options,
+		public FullRandomItemLocationRandomizer(
+			Seed seed,
 			ItemInfoProvider itemInfoProvider, 
-			ItemUnlockingMap unlockingMap, 
-			ItemLocationMap itemLocationMap, 
-			bool progressionOnly
-			) : base(options, itemInfoProvider, itemLocationMap, unlockingMap, progressionOnly)
+			ItemUnlockingMap unlockingMap
+		) : base(seed, itemInfoProvider, new ItemLocationMap(itemInfoProvider, unlockingMap, seed.Options), unlockingMap)
 		{
 		}
 
-		public static void AddRandomItemsToLocationMap(
-			Seed seed, ItemInfoProvider itemInfoProvider, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly)
+		public override ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly)
 		{
-			var random = new Random((int)seed.Id);
+			var random = new Random((int)Seed.Id);
 
-			new FullRandomItemLocationRandomizer(seed.Options, itemInfoProvider, unlockingMap, itemLocationMap, progressionOnly)
-				.AddRandomItemsToLocationMap(random, seed.Options);
+			AddRandomItemsToLocationMap(random, isProgressionOnly);
+
+			return ItemLocations;
 		}
 
-		void AddRandomItemsToLocationMap(Random random, SeedOptions options)
+		void AddRandomItemsToLocationMap(Random random, bool isProgressionOnly)
 		{
 			PlaceStarterProgressionItems(random);
 
-			if(!options.GassMaw)
+			if(!SeedOptions.GassMaw)
 				PlaceGassMaskInALegalSpot(random);
 
 			var alreadyAssingedItems = ItemLocations
@@ -55,7 +53,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				PutItemAtLocation(item, location);
 			}
 
-			FillRemainingChests(random);
+			if(!isProgressionOnly)
+				FillRemainingChests(random);
 		}
 
 		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)
