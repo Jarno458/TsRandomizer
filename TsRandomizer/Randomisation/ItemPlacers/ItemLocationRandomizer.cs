@@ -170,14 +170,17 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			{
 				minimalMawRequirements |= R.GateAccessToPast;
 
-				var isWatermaskRequiredForMaw = UnlockingMap.PyramidKeysUnlock != R.GateMaw
+				//for non inverted seeds we dont know pyramid keys are required as it can be a classic past seed
+				/*var isWatermaskRequiredForMaw = UnlockingMap.PyramidKeysUnlock != R.GateMaw
 				                                && UnlockingMap.PyramidKeysUnlock != R.GateCavesOfBanishment;
 
 				if (isWatermaskRequiredForMaw)
-					minimalMawRequirements |= R.Swimming;
+					minimalMawRequirements |= R.Swimming;*/
 
 				levelIdsToAvoid.Add(2); //library
-				levelIdsToAvoid.Add(9); //xarion skelleton
+
+				if(UnlockingMap.PyramidKeysUnlock != R.GateSealedCaves)
+					levelIdsToAvoid.Add(9); //xarion skelleton
 			}
 			else
 			{

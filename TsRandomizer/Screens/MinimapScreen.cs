@@ -2,15 +2,16 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
+using Timespinner.Core.Specifications.Minimap;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
+using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Screens
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.MapMenuScreen")]
-	partial
 	// ReSharper disable once UnusedMember.Global
 	class MinimapScreen : Screen
 	{
@@ -32,14 +33,112 @@ namespace TsRandomizer.Screens
 
 		LookupDictionairy<Roomkey, MinimapRoomState> preservedRoomStates;
 
-		MinimapSpecification Minimap => Dynamic._minimap;
+		MinimapSpecification Minimap => ((object)Dynamic._minimapHud).AsDynamic()._minimap;
 
 		public MinimapScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
 		}
 
+		static MinimapSpecification DeepClone(MinimapSpecification spec)
+		{
+			var clone = new MinimapSpecification();
+
+			foreach (var area in spec.Areas)
+			{
+				var cloneArea = new MinimapArea
+				{
+					DefaultColor = area.DefaultColor,
+					LevelID = area.LevelID
+				};
+
+				foreach (var room in area.Rooms)
+				{
+					var cloneRoom = new MinimapRoom(cloneArea)
+					{
+						IsDebug = room.IsDebug,
+						DefaultColor = room.DefaultColor,
+						RoomID = room.RoomID,
+						Width = room.Width,
+						Height = room.Height,
+						Position = room.Position
+					};
+
+					foreach (var kvp in room.Blocks)
+					{
+						var point = kvp.Key;
+						var block = kvp.Value;
+
+						var cloneBlock = new MinimapBlock(cloneRoom)
+						{
+							IsKnown = block.IsKnown,
+							IsVisited = block.IsVisited,
+							IsBoss = block.IsBoss,
+							IsTimespinner = block.IsTimespinner,
+							IsTransition = block.IsTransition,
+							IsCheckpoint = block.IsCheckpoint,
+							IsSolidWall = block.IsSolidWall,
+							HasSolidWallToNW = block.HasSolidWallToNW,
+							RoomColor = block.RoomColor,
+							Position = block.Position
+						};
+
+						var dynamicCloneBlock = cloneBlock.AsDynamic();
+
+						dynamicCloneBlock._walls = block.Walls;
+						dynamicCloneBlock._doors = block.Doors;
+						dynamicCloneBlock._secretDoors = block.SecretDoors;
+
+						cloneRoom.Blocks.Add(point, cloneBlock);
+					}
+
+					cloneArea.Rooms.Add(cloneRoom);
+				}
+
+				clone.Areas.Add(cloneArea);
+			}
+
+			foreach (var kvp in spec.Markers)
+			{
+				var point = kvp.Key;
+				var marker = kvp.Value;
+
+				var cloneMarker = new MinimapMarker
+				{
+					IsVisible = marker.IsVisible,
+					EraColor = marker.EraColor,
+					MarkerColor = marker.MarkerColor,
+					Location = marker.Location,
+					DrawLocationPosition = marker.DrawLocationPosition
+				};
+
+				clone.Markers.Add(point, cloneMarker);
+			}
+
+			foreach (var revealGroup in spec.RevealGroups)
+			{
+				var cloneRevealGroup = new MinimapRevealGroup
+				{
+					ID = revealGroup.ID
+				};
+
+				var cloneRoomList = (List<int>)cloneRevealGroup.AsDynamic()._rooms;
+				foreach (var room in revealGroup.Rooms)
+					cloneRoomList.Add(room);
+
+				clone.RevealGroups.Add(cloneRevealGroup);
+			}
+
+			clone.PopulateAllBlocks();
+
+			return clone;
+		}
+
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
+			var hud = ((object) Dynamic._minimapHud).AsDynamic();
+
+			hud._minimap = DeepClone(Dynamic._minimap);
+
 			itemLocations = itemLocationMap;
 
 			Dynamic._removeMarkerText = (string)Dynamic._removeMarkerText + " / Show where to go next";

@@ -21,11 +21,11 @@ For Linux and Mac:
 Extract the contents of the corresponding zip file to the same folder as Timespinner.exe is located, and start TsRandomizer.bin.x86_x64 to start the game with the randomizer enabled, or Timespinner.bin.x86_x64 to start the game normaly
  
 ##### Supported verisons
-* Windows Steam verison 1.32 (latest)
+* Windows Steam verison 1.33 (latest)
 * Windows DRM Free version 1.31 (latest)
-* Linux Steam verison 1.32 (latest)
+* Linux Steam verison 1.33 (latest)
 * Linux DRM Free version 1.31 (latest)
-* Mac Steam verison 1.32 (latest)
+* Mac Steam verison 1.33 (latest)
 * Mac DRM Free version 1.31 (latest)
 (Item tracker for Mac and Linux is still under development)
 
@@ -70,17 +70,16 @@ The item tracker features a few options:
 * When you already got the blade-orb and kill the kitty boss while standing at the items spawn point you will trigger the item pickup message but no item is rewarded
 * To prevent a crash, the pedistal after killing dad is now temporary not randomized anymore
 * Orb pedistal in room before emperor always spawn even if you didnt kill him yet
-* Sometimes the download terminals do not correctly reward thier items (need reproduction instructions)
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
 * Entering a door backwards with a higher level keycard will permanantly open it even when specific keycards are on
 * Music wont play in lake desolation until you have done the "oh i lost my monther" cutscene
-* Holding X while spamming select button causes minimap to stay in an all discovered state
-* Posable to softlock in maw area without double jump
+--> * Holding X while spamming select button causes minimap to stay in an all discovered state
 
 # Todo
 ##### Things i plan on doing in the future
 * Extend names of item locations in the spoiler log (with help from community on discord)
 * Implement skin selection
+* Achipelago multi world support!!!!
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemenbted
