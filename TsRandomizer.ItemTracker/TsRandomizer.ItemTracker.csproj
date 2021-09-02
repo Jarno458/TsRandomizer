@@ -27,7 +27,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>C:\Program Files %28x86%29\Steam\steamapps\common\Timespinner\</OutputPath>
+    <OutputPath>release/</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -41,8 +41,26 @@
   <PropertyGroup>
     <ApplicationIcon>EyeOrbLargeT.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FNA, Version=19.6.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="FNA, Version=19.5.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
     </Reference>
@@ -52,7 +70,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\Timespinner.exe</HintPath>
+      <HintPath>..\..\TestVersions\SteamVerison\Timespinner.exe</HintPath>
+    </Reference>
+    <Reference Include="TsRandomizer, Version=0.0.9.13, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TestVersions\SteamVerison\TsRandomizer.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -67,12 +89,6 @@
   <ItemGroup>
     <Content Include="EyeOrbIcon.ico" />
     <Content Include="EyeOrbLargeT.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TsRandomizer\TsRandomizer.csproj">
-      <Project>{694e46c5-fd46-4cc8-8b71-d381e154ccf7}</Project>
-      <Name>TsRandomizer</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

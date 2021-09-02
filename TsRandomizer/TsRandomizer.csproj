@@ -42,7 +42,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>C:\Program Files %28x86%29\Steam\steamapps\common\Timespinner\</OutputPath>
+    <OutputPath>release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -73,14 +73,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FNA">
-      <HintPath>..\..\FNA.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
+      <HintPath>~/.local/share/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
+      <HintPath>/opt/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\Timespinner.exe</HintPath>
+      <HintPath>..\..\TestVersions\SteamVerison\Timespinner.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
