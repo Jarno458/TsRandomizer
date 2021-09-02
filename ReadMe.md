@@ -22,12 +22,11 @@ Extract the contents of the corresponding zip file to the same folder as Timespi
  
 ##### Supported verisons
 * Windows Steam verison 1.33 (latest)
-* Windows DRM Free version 1.31 (latest)
+* Windows DRM Free version 1.33 (latest)
 * Linux Steam verison 1.33 (latest)
-* Linux DRM Free version 1.31 (latest)
+* Linux DRM Free version 1.33 (latest)
 * Mac Steam verison 1.33 (latest)
-* Mac DRM Free version 1.31 (latest)
-(Item tracker for Mac and Linux is still under development)
+* Mac DRM Free version 1.33 (latest)
 
 ##### Unsupported verisons
 * Windows Store (not planned)
@@ -73,7 +72,6 @@ The item tracker features a few options:
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
 * Entering a door backwards with a higher level keycard will permanantly open it even when specific keycards are on
 * Music wont play in lake desolation until you have done the "oh i lost my monther" cutscene
---> * Holding X while spamming select button causes minimap to stay in an all discovered state
 
 # Todo
 ##### Things i plan on doing in the future
