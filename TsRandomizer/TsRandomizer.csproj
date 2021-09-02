@@ -42,7 +42,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>release\</OutputPath>
+    <OutputPath>C:\Program Files %28x86%29\Steam\steamapps\common\Timespinner\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -55,7 +55,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug DRM Free|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\TestVersions\DRMFreeVersion\</OutputPath>
+    <OutputPath>..\..\TestVersions\SteamVerison\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -76,6 +76,7 @@
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
       <HintPath>~/.local/share/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
       <HintPath>/opt/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -83,6 +84,7 @@
     <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\TestVersions\SteamVerison\Timespinner.exe</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

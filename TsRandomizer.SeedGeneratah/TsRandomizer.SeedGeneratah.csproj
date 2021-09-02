@@ -37,6 +37,7 @@
     <Reference Include="TsRandomizer, Version=0.0.9.13, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\TestVersions\SteamVerison\TsRandomizer.exe</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
