@@ -118,8 +118,7 @@ namespace TsRandomizer.Randomisation
 				| R.GateRoyalTowers
 				| R.GateCastleRamparts
 				| R.GateCastleKeep
-				| R.GateCavesOfBanishment
-				| R.GateMaw;
+				| (MawGassMask & (R.GateCavesOfBanishment | R.GateMaw));
 
 			MultipleSmallJumpsOfNpc = (Gate)(R.TimespinnerWheel | R.UpwardDash);
 			DoubleJumpOfNpc = (R.DoubleJump & R.TimespinnerWheel) | R.UpwardDash;
