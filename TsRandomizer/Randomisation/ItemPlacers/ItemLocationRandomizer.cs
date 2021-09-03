@@ -164,21 +164,24 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceGassMaskInALegalSpot(Random random)
 		{
-			var levelIdsToAvoid = new List<int>{ 2 };
+			var levelIdsToAvoid = new List<int>(3){ 1 };
 			R minimalMawRequirements = R.None;
 
 			if (!SeedOptions.Inverted)
 			{
 				minimalMawRequirements |= R.GateAccessToPast;
 
-				var isWatermaskRequiredForMaw = UnlockingMap.PyramidKeysUnlock != R.GateMaw
+				//for non inverted seeds we dont know pyramid keys are required as it can be a classic past seed
+				/*var isWatermaskRequiredForMaw = UnlockingMap.PyramidKeysUnlock != R.GateMaw
 				                                && UnlockingMap.PyramidKeysUnlock != R.GateCavesOfBanishment;
 
 				if (isWatermaskRequiredForMaw)
-					minimalMawRequirements |= R.Swimming;
+					minimalMawRequirements |= R.Swimming;*/
 
 				levelIdsToAvoid.Add(2); //library
-				levelIdsToAvoid.Add(9); //xarion skelleton
+
+				if(UnlockingMap.PyramidKeysUnlock != R.GateSealedCaves)
+					levelIdsToAvoid.Add(9); //xarion skelleton
 			}
 			else
 			{

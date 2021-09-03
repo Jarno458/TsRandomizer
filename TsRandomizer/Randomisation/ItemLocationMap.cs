@@ -118,8 +118,7 @@ namespace TsRandomizer.Randomisation
 				| R.GateRoyalTowers
 				| R.GateCastleRamparts
 				| R.GateCastleKeep
-				| R.GateCavesOfBanishment
-				| R.GateMaw;
+				| (MawGassMask & (R.GateCavesOfBanishment | R.GateMaw));
 
 			MultipleSmallJumpsOfNpc = (Gate)(R.TimespinnerWheel | R.UpwardDash);
 			DoubleJumpOfNpc = (R.DoubleJump & R.TimespinnerWheel) | R.UpwardDash;
@@ -235,7 +234,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(2, 23, 1112, 112), "Air vents left", itemProvider.Get(EInventoryUseItemType.FutureHiPotion), UpperRightSideLibrary & (R.CardE | R.DoubleJump)); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
 			Add(new ItemKey(2, 23, 136, 304), "Air Vents right", itemProvider.Get(EInventoryRelicType.ElevatorKeycard), UpperRightSideLibrary & (R.CardE | R.DoubleJump)); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
 			Add(new ItemKey(2, 11, 104, 192), "Right side bottom floor", itemProvider.Get(EInventoryUseItemType.EssenceCrystal), LowerRightSideLibrary);
-			Add(new ItemKey(2, 29, 280, 222 + TimespinnerSpindle.YOffset), "Varndagroth", itemProvider.Get(EInventoryRelicType.TimespinnerSpindle), RightSideLibraryElevator);
+			Add(new ItemKey(2, 29, 280, 222 + TimespinnerSpindle.YOffset), "Varndagroth", itemProvider.Get(EInventoryRelicType.TimespinnerSpindle), RightSideLibraryElevator & R.CardC);
 			Add(new RoomItemKey(2, 52), "Spider hell", itemProvider.Get(EInventoryRelicType.TimespinnerGear2), RightSideLibraryElevator & R.CardA);
 			areaName = "Sealed Caves (Xarion)";
 			Add(new ItemKey(9, 10, 248, 848), "Skeleton", itemProvider.Get(EInventoryRelicType.ScienceKeycardB), SealedCavesLeft);
@@ -477,7 +476,7 @@ namespace TsRandomizer.Randomisation
 
 		public virtual bool IsBeatable()
 		{
-			if (!IsGassMaskReachableWithTheMawRequirements()
+			if ((!seedOptions.GassMaw && !IsGassMaskReachableWithTheMawRequirements())
 				|| ProgressiveItemsOfTheSameTypeAreInTheSameRoom()) 
 				return false;
 
@@ -516,30 +515,32 @@ namespace TsRandomizer.Randomisation
 			//unless we run inverted, then we can garantee the user has the pyramid keys before entering lake desolation
 			var gassmaskLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
 
-			var levelIdsToAvoid = new List<int> { 1 }; //lake desolation
-			var gassmaskRequirements = R.DoubleJump;
+			var levelIdsToAvoid = new List<int>(3) { 1 }; //lake desolation
+			var mawRequirements = R.None;
 
 			if (!seedOptions.Inverted)
 			{
-				gassmaskRequirements |= R.GateAccessToPast;
+				mawRequirements |= R.GateAccessToPast;
 
-				var isWatermaskRequiredForMaw = unlockingMap.PyramidKeysUnlock != R.GateMaw
+				//for non inverted seeds we dont know pyramid keys are required as it can be a classic past seed
+				/*var isWatermaskRequiredForMaw = unlockingMap.PyramidKeysUnlock != R.GateMaw
 				                                && unlockingMap.PyramidKeysUnlock != R.GateCavesOfBanishment;
 
 				if (isWatermaskRequiredForMaw)
-					gassmaskRequirements |= R.Swimming;
+					mawRequirements |= R.Swimming;*/
 
 				levelIdsToAvoid.Add(2); //library
-				levelIdsToAvoid.Add(9); //xarion skelleton
+
+				//if(unlockingMap.PyramidKeysUnlock != R.GateSealedCaves)
+					levelIdsToAvoid.Add(9); //xarion skelleton
 			}
 			else
 			{
-				gassmaskRequirements |= R.Swimming;
-				gassmaskRequirements |= R.Teleport;
-				gassmaskRequirements |= unlockingMap.PyramidKeysUnlock;
+				mawRequirements |= R.Swimming;
+				mawRequirements |= unlockingMap.PyramidKeysUnlock;
 			}
 
-			return !levelIdsToAvoid.Contains(gassmaskLocation.Key.LevelId) && gassmaskLocation.Gate.CanBeOpenedWith(gassmaskRequirements);
+			return !levelIdsToAvoid.Contains(gassmaskLocation.Key.LevelId) && gassmaskLocation.Gate.CanBeOpenedWith(mawRequirements);
 		}
 
 		R GetObtainedRequirements(R obtainedRequirements)

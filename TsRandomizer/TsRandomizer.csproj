@@ -55,7 +55,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug DRM Free|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\TestVersions\DRMFreeVersion\</OutputPath>
+    <OutputPath>..\..\TestVersions\SteamVerison\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -76,7 +76,10 @@
       <HintPath>..\lib\Archipelago.MultiClient.Net.dll</HintPath>
     </Reference>
     <Reference Include="FNA">
-      <HintPath>..\..\FNA.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
+      <HintPath>~/.local/share/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
+      <HintPath>/opt/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -87,7 +90,8 @@
     <Reference Include="System.Core" />
     <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\Timespinner.exe</HintPath>
+      <HintPath>..\..\TestVersions\SteamVerison\Timespinner.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="websocket-sharp">
       <HintPath>..\lib\websocket-sharp.dll</HintPath>

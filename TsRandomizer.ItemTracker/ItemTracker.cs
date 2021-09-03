@@ -10,7 +10,6 @@ namespace TsRandomizerItemTracker
 	class ItemTracker : Game
 	{
 		readonly GraphicsDeviceManager graphics;
-		readonly SpriteBatch spriteBatch;
 		readonly TrackerSettings settings;
 
 		ItemTrackerState trackerState;
@@ -18,6 +17,7 @@ namespace TsRandomizerItemTracker
 		TrackerRenderer trackerRenderer;
 		BackgroundRenderer backgroundRenderer;
 
+		SpriteBatch spriteBatch;
 		SpriteFont font;
 
 		double trackerUpdateTimer = 1000;
@@ -28,17 +28,11 @@ namespace TsRandomizerItemTracker
 
 		public ItemTracker()
 		{
-			graphics = new GraphicsDeviceManager(this)
-			{
-				PreferredBackBufferWidth = 0,
-				PreferredBackBufferHeight = 0
-			};
-
-			spriteBatch = new SpriteBatch(GraphicsDevice);
+			graphics = new GraphicsDeviceManager(this);
 
 			Content.RootDirectory = "Content";
 
-			TargetElapsedTime = TimeSpan.FromSeconds(1/60d); //60 fps
+			TargetElapsedTime = TimeSpan.FromSeconds(1 / 60d); //60 fps
 
 			settings = TrackerSettings.LoadSettings();
 		}
@@ -46,6 +40,8 @@ namespace TsRandomizerItemTracker
 		protected override void Initialize()
 		{
 			base.Initialize();
+
+			spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
 			mouseInputHandler = new MouseInputHandler(OnDoubleClick, OnRightClick, OnScroll);
 		}
