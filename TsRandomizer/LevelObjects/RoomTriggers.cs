@@ -148,31 +148,31 @@ namespace TsRandomizer.LevelObjects
 			}));*/
 			RoomTriggers.Add(new RoomTrigger(8, 6, (level, itemLocation, seedOptions) =>
 			{
-				if (seedOptions.GassMaw) return;
+				if (!seedOptions.GassMaw) return;
 
 				FillRoomWithGass(level);
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 7, (level, itemLocation, seedOptions) =>
 			{
-				if (seedOptions.GassMaw) return;
+				if (!seedOptions.GassMaw) return;
 
 				FillRoomWithGass(level);
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 13, (level, itemLocation, seedOptions) =>
 			{
-				if (seedOptions.GassMaw) return;
+				if (!seedOptions.GassMaw) return;
 
 				FillRoomWithGass(level);
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 21, (level, itemLocation, seedOptions) =>
 			{
-				if (seedOptions.GassMaw) return;
+				if (!seedOptions.GassMaw) return;
 
 				FillRoomWithGass(level);
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 33, (level, itemLocation, seedOptions) =>
 			{
-				if (seedOptions.GassMaw) return;
+				if (!seedOptions.GassMaw) return;
 
 				FillRoomWithGass(level);
 			}));
