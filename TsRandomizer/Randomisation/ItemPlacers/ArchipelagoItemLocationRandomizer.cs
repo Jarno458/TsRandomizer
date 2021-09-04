@@ -1,11 +1,12 @@
 ﻿using TsRandomizer.IntermediateObjects;
-using Archipelago.MultiClient.Net;
 using TsRandomizer.Archipelago;
 
 namespace TsRandomizer.Randomisation.ItemPlacers
 {
 	class ArchipelagoItemLocationRandomizer : ItemLocationRandomizer
 	{
+		Client client;
+
 		public ArchipelagoItemLocationRandomizer(
 			Seed seed,
 			ItemInfoProvider itemInfoProvider, 
@@ -16,9 +17,24 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		public override ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly)
 		{
-			var client = new Client();
+			client = new Client((ArchipelagoItemLocationMap)ItemLocations);
+
+			client.Connect();
+
+			var items = client.GetAllItems();
+
+			foreach (var itemInfo in items)
+				ItemLocations[itemInfo.Key].SetItem(ItemInfoProvider.Get(itemInfo.Value));
+
+			foreach (var itemLocation in ItemLocations)
+				itemLocation.OnPickup = OnItemLocationChecked;
 
 			return ItemLocations;
+		}
+
+		void OnItemLocationChecked(ItemLocation itemLocation)
+		{
+			client.UpdateChecks();
 		}
 
 		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)

@@ -1,4 +1,5 @@
-﻿using Timespinner.GameAbstractions.Saving;
+﻿using System;
+using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.IntermediateObjects;
 
 namespace TsRandomizer.Randomisation
@@ -15,8 +16,9 @@ namespace TsRandomizer.Randomisation
 		public string Name { get; internal set; }
 		public string AreaName { get; internal set; }
 		public bool IsPickedUp { get; internal set; }
+		public Action<ItemLocation> OnPickup { get; set; }
 		public ItemInfo ItemInfo { get; internal set; }
-		public ItemInfo DefaultItem { get; internal set;  }
+		public ItemInfo DefaultItem { get; internal set; }
 
 		public bool IsUsed => ItemInfo != null;
 		
@@ -49,6 +51,8 @@ namespace TsRandomizer.Randomisation
 
 			if (ItemInfo is PogRessiveItemInfo progressiveItemInfo)
 				progressiveItemInfo.Next();
+
+			OnPickup?.Invoke(this);
 		}
 
 		public override string ToString() =>

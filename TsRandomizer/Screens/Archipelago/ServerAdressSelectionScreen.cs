@@ -85,6 +85,9 @@ namespace TsRandomizer.Screens.Archipelago
 		void OnOkayEntrySelected(PlayerIndex playerIndex)
 		{
 			//open player name selection
+			difficultyMenu.SetSeed(new Seed(0, SeedOptions.None));
+
+			Dynamic.OnCancel(playerIndex);
 		}
 
 		void OnCharecterSelect(char charecter)

@@ -16,8 +16,6 @@ namespace TsRandomizer.Screens.SeedSelection
 {
 	class SeedSelectionMenuScreen : PasswordMenuOverride
 	{
-		static readonly Type PasswordMenuScreenType = TimeSpinnerType
-			.Get("Timespinner.GameStateManagement.Screens.PauseMenu.Options.PasswordMenuScreen");
 		static readonly Type MainMenuEntryType = TimeSpinnerType
 			.Get("Timespinner.GameStateManagement.MenuEntry");
 		static readonly Type InventoryItemIconType = TimeSpinnerType
@@ -28,8 +26,6 @@ namespace TsRandomizer.Screens.SeedSelection
 		bool forceSeed;
 		MenuEntry okButton;
 
-		bool IsUsedAsSeedSelectionMenu => difficultyMenu != null;
-
 		public SeedSelectionMenuScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
 		{
 			difficultyMenu = screenManager.FirstOrDefault<GameDifficultyMenuScreen>();
@@ -37,9 +33,6 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
-			if (!IsUsedAsSeedSelectionMenu)
-				return;
-
 			Dynamic._menuTitle = "Select Seed";
 
 			okButton = MenuEntry.Create("OK", OnOkayEntrySelected);
@@ -54,9 +47,6 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
-			if (!IsUsedAsSeedSelectionMenu)
-				return;
-
 			forceSeed = input.IsButtonHold(Buttons.RightTrigger);
 
 			okButton.Text = forceSeed ? "Force" : "OK";
