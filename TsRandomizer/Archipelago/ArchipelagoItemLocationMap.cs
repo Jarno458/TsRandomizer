@@ -37,8 +37,9 @@ namespace TsRandomizer.Archipelago
 			Add(key, "Archipelago Recieved", null);
 
 			this[key].SetItem(itemInfoProvider.Get(itemIdentifier));
-			
 
+			this[key].SetPickedUp();
+			this[key].
 
 			//set pickedup and yield item to player
 		}
