@@ -39,7 +39,7 @@ namespace TsRandomizer.Archipelago
 			this[key].SetItem(itemInfoProvider.Get(itemIdentifier));
 
 			this[key].SetPickedUp();
-			this[key].
+			//this[key].
 
 			//set pickedup and yield item to player
 		}
