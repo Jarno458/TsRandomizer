@@ -75,9 +75,15 @@ The item tracker features a few options:
 
 # Todo
 ##### Things i plan on doing in the future
+* Archipelago TODO:
+** Implement UI to login
+** Implement properly rewarding of remote items
+** Implement handling of non game items
+** Make Uuid unique per save
+
 * Extend names of item locations in the spoiler log (with help from community on discord)
 * Implement skin selection
-* Achipelago multi world support!!!!
+
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemenbted

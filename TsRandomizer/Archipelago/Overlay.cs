@@ -19,7 +19,9 @@ namespace TsRandomizer.Archipelago
 				overlay.Update(gameTime);
 		}
 
-		public abstract void Update(GameTime gameTime);
+		public virtual void Update(GameTime gameTime)
+		{
+		}
 
 		public static void DrawAll(SpriteBatch spriteBatch, Rectangle screenSize)
 		{
@@ -27,6 +29,8 @@ namespace TsRandomizer.Archipelago
 				overlay.Draw(spriteBatch, screenSize);
 		}
 
-		public abstract void Draw(SpriteBatch spriteBatch, Rectangle screenSize);
+		public virtual void Draw(SpriteBatch spriteBatch, Rectangle screenSize)
+		{
+		}
 	}
 }

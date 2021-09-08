@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Timespinner;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
@@ -26,6 +25,8 @@ namespace TsRandomizer.Screens
 
 		public readonly dynamic Reflected;
 
+		public static Log Log;
+
 		public ScreenManager(TimespinnerGame game, PlatformHelper platformHelper) : base(game, platformHelper)
 		{
 			Reflected = this.AsDynamic();
@@ -35,7 +36,7 @@ namespace TsRandomizer.Screens
 		{
 			base.LoadContent();
 
-			_ = new Log(Reflected.GCM);
+			Log = new Log(Reflected.GCM);
 		}
 
 		public override void Update(GameTime gameTime)

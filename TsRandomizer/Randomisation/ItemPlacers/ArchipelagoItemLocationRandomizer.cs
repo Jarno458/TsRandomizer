@@ -19,7 +19,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		{
 			client = new Client((ArchipelagoItemLocationMap)ItemLocations);
 
-			client.Connect();
+			var result = client.Connect(true);
 
 			var items = client.GetAllItems();
 
