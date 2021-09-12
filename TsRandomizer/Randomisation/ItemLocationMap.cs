@@ -260,7 +260,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(10, 8, 1080, 176), "Bridge with Giantess", itemProvider.Get(EInventoryEquipmentType.LabGlasses), MilitairyFortressHangar);
 			Add(new ItemKey(10, 7, 104, 192), "Military B door chest 2", itemProvider.Get(EInventoryUseItemType.PlasmaIV), RightSideMilitairyFortressHangar & R.CardB);
 			Add(new ItemKey(10, 7, 152, 192), "Military B door chest 1", itemProvider.Get(EItemType.MaxSand), RightSideMilitairyFortressHangar & R.CardB);
-			Add(new ItemKey(10, 18, 280, 189), "Military pedistal", itemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), RightSideMilitairyFortressHangar & (DoubleJumpOfNpc | ForwardDashDoubleJump));
+			Add(new ItemKey(10, 18, 280, 189), "Military pedestal", itemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), RightSideMilitairyFortressHangar & (DoubleJumpOfNpc | ForwardDashDoubleJump));
 			areaName = "The lab";
 			Add(new ItemKey(11, 36, 312, 192), "Coffee Break chest", itemProvider.Get(EInventoryUseItemType.FoodSynth), TheLab);
 			Add(new ItemKey(11, 3, 1528, 192), "Lower trash right", itemProvider.Get(EItemType.MaxHP), TheLab & R.DoubleJump);
@@ -318,8 +318,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(7, 20, 248, 96), "Past the eels", itemProvider.Get(EItemType.MaxSand), LowerlakeSirine);
 			Add(new ItemKey(7, 9, 584, 189), "Underwater pedestal", itemProvider.Get(EInventoryOrbType.Ice, EOrbSlot.Melee), LowerlakeSirine);
 			areaName = "Caves of Banishment (Maw)";
-			Add(new ItemKey(8, 19, 664, 704), "Mushroom doublejump", itemProvider.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment & R.DoubleJump);
-			Add(new ItemKey(8, 12, 280, 160), "Caves of banishement secret room", itemProvider.Get(EItemType.MaxHP), LowerCavesOfBanishment & OculusRift);
+			Add(new ItemKey(8, 19, 664, 704), "Mushroom double jump", itemProvider.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment & R.DoubleJump);
+			Add(new ItemKey(8, 12, 280, 160), "Caves of banishment secret room", itemProvider.Get(EItemType.MaxHP), LowerCavesOfBanishment & OculusRift);
 			Add(new ItemKey(8, 48, 104, 160), "Below caves of banishment secret", itemProvider.Get(EInventoryUseItemType.Herb), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 39, 88, 192), "Single shroom room", itemProvider.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 41, 168, 192), "Jackpot room chest 1", itemProvider.Get(EInventoryUseItemType.GoldNecklace), LowerCavesOfBanishment & ForwardDashDoubleJump);
@@ -354,13 +354,13 @@ namespace TsRandomizer.Randomisation
 			areaName = "Royal towers";
 			Add(new ItemKey(6, 19, 200, 176), "Royal towers floor secret", itemProvider.Get(EItemType.MaxAura), RoyalTower & R.DoubleJump & OculusRift);
 			Add(new ItemKey(6, 27, 472, 384), "Above the gap", itemProvider.Get(EInventoryUseItemType.MagicMarbles), MidRoyalTower);
-			Add(new ItemKey(6, 1, 1512, 288), "Under the icemage", itemProvider.Get(EInventoryUseItemType.Potion), MidRoyalTower);
+			Add(new ItemKey(6, 1, 1512, 288), "Under the ice mage", itemProvider.Get(EInventoryUseItemType.Potion), MidRoyalTower);
 			Add(new ItemKey(6, 25, 360, 176), "Next to easy struggle juggle room", itemProvider.Get(EInventoryUseItemType.HiEther), UpperRoyalTower & DoubleJumpOfNpc);
 			Add(new ItemKey(6, 3, 120, 208), "Easy struggle juggle", itemProvider.Get(EInventoryFamiliarType.Demon), UpperRoyalTower & DoubleJumpOfNpc);
 			Add(new ItemKey(6, 17, 200, 112), "Hard struggle juggle", itemProvider.Get(EItemType.MaxHP), UpperRoyalTower & DoubleJumpOfNpc);
 			Add(new ItemKey(6, 17, 56, 448), "No struggle required", itemProvider.Get(EInventoryEquipmentType.VileteCrown), UpperRoyalTower);
 			Add(new ItemKey(6, 17, 360, 1840), "Right tower freebie", itemProvider.Get(EInventoryEquipmentType.MidnightCloak), MidRoyalTower);
-			Add(new ItemKey(6, 13, 120, 176), "Above the icemage", itemProvider.Get(EItemType.MaxSand), UpperRoyalTower);
+			Add(new ItemKey(6, 13, 120, 176), "Above the ice mage", itemProvider.Get(EItemType.MaxSand), UpperRoyalTower);
 			Add(new ItemKey(6, 22, 88, 208), "Royal guard big room", itemProvider.Get(EInventoryUseItemType.Ether), UpperRoyalTower);
 			Add(new ItemKey(6, 11, 360, 544), "Before Aelana", itemProvider.Get(EInventoryUseItemType.HiPotion), UpperRoyalTower);
 			Add(new ItemKey(6, 23, 856, 208), "Statue room", itemProvider.Get(EInventoryEquipmentType.VileteDress), UpperRoyalTower & R.UpwardDash);
