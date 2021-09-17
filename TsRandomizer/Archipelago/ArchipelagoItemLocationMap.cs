@@ -1,5 +1,7 @@
 ﻿using System;
+using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
+using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 
@@ -22,6 +24,9 @@ namespace TsRandomizer.Archipelago
 		public override void BaseOnSave(GameSave gameSave)
 		{
 			base.BaseOnSave(gameSave);
+
+
+			//var x = new ItemIdentifier(EItemType.M);
 
 		}
 

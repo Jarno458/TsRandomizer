@@ -20,6 +20,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			client = new Client((ArchipelagoItemLocationMap)ItemLocations);
 
 			var result = client.Connect(true);
+			if (!result.Success)
+				return null; //TODO show error to user
 
 			var items = client.GetAllItems();
 

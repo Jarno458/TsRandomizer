@@ -194,7 +194,7 @@ namespace TsRandomizer.Archipelago
 			ScreenManager.Log.Add(parts.ToArray());
 		}
 
-		string GetMessage(JsonMessagePart messagePart)
+		static string GetMessage(JsonMessagePart messagePart)
 		{
 			switch (messagePart.Type)
 			{
