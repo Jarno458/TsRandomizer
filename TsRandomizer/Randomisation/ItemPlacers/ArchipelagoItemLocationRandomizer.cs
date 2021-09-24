@@ -1,4 +1,5 @@
-﻿using TsRandomizer.IntermediateObjects;
+﻿using System.Collections.Generic;
+using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Archipelago;
 
 namespace TsRandomizer.Randomisation.ItemPlacers
@@ -17,21 +18,33 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		public override ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly)
 		{
-			client = new Client((ArchipelagoItemLocationMap)ItemLocations);
+			var itemLocations = (ArchipelagoItemLocationMap)ItemLocations;
 
-			var result = client.Connect(true);
+			client = new Client(itemLocations);
+
+			var result = client.Connect(false);
 			if (!result.Success)
 				return null; //TODO show error to user
 
-			var items = client.GetAllItems();
+			if (isProgressionOnly)
+				return itemLocations;
 
-			foreach (var itemInfo in items)
-				ItemLocations[itemInfo.Key].SetItem(ItemInfoProvider.Get(itemInfo.Value));
+			itemLocations.Client = client;
+			itemLocations.CheckedLocations = result.CheckedLocations;
 
-			foreach (var itemLocation in ItemLocations)
+			var items = client.GetAllNonCheckedItems();
+			if (items == null)
+				return null; //TODO show error to user
+
+			foreach (var itemLocation in itemLocations)
+			{
+				if (items.TryGetValue(itemLocation.Key, out var itemInfo))
+					itemLocation.SetItem(ItemInfoProvider.Get(itemInfo));
+
 				itemLocation.OnPickup = OnItemLocationChecked;
+			}
 
-			return ItemLocations;
+			return itemLocations;
 		}
 
 		void OnItemLocationChecked(ItemLocation itemLocation)

@@ -14,6 +14,8 @@ namespace TsRandomizer.IntermediateObjects
 		internal abstract Requirement Unlocks { get; }
 		public abstract void OnPickup(Level level);
 
+		public bool IsProgression => Unlocks != Requirement.None;
+
 		public bool Equals(ItemInfo other)
 		{
 			if (other is null) return false;
@@ -43,25 +45,6 @@ namespace TsRandomizer.IntermediateObjects
 
 		public static bool operator !=(ItemInfo a, ItemInfo b) => !(a == b);
 
-		public override string ToString()
-		{
-			switch (Identifier.LootType)
-			{
-				case LootType.ConstEquipment:
-					return Identifier.Enquipment.ToString();
-				case LootType.ConstFamiliar:
-					return Identifier.Familiar.ToString();
-				case LootType.ConstOrb:
-					return $"{Identifier.OrbSlot}{Identifier.OrbType}";
-				case LootType.ConstRelic:
-					return Identifier.Relic.ToString();
-				case LootType.ConstUseItem:
-					return Identifier.UseItem.ToString();
-				case LootType.ConstStat:
-					return Identifier.Stat.ToString();
-				default:
-					throw new NotImplementedException($"Loottype {Identifier.LootType}.ToString() isnt implemented");
-			}
-		}
+		public override string ToString() => Identifier.ToString();
 	}
 }

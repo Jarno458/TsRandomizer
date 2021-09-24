@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -15,8 +16,9 @@ namespace TsRandomizer.Archipelago
 {
 	class Client
 	{
-		readonly ArchipelagoItemLocationMap itemLocationMap;
+		const int ConnectionTimeoutInSeconds = 99999;
 
+		readonly ItemLocationMap itemLocations;
 		readonly ArchipelagoSession session;
 
 		bool connectionTestOnly;
@@ -29,11 +31,15 @@ namespace TsRandomizer.Archipelago
 
 		static readonly DataCache Chache = new DataCache();
 
+		volatile int slot;
+
+		ConcurrentQueue<ItemIdentifier> receivedItemsQueue = new ConcurrentQueue<ItemIdentifier>();
+
 		int receivedItemIndex;
 
-		public Client(ArchipelagoItemLocationMap itemLocationMap)
+		public Client(ItemLocationMap itemLocationMap)
 		{
-			this.itemLocationMap = itemLocationMap;
+			itemLocations = itemLocationMap;
 			session = new ArchipelagoSession("ws://localhost:38281");
 
 			session.PacketReceived += PackacedReceived;
@@ -55,8 +61,8 @@ namespace TsRandomizer.Archipelago
 
 			while (!hasConnectionResult)
 			{
-				if (DateTime.UtcNow - connectedStartedTime > TimeSpan.FromSeconds(10))
-					return new ConnectionResult(false, "Connection Timedout");
+				if (DateTime.UtcNow - connectedStartedTime > TimeSpan.FromSeconds(ConnectionTimeoutInSeconds))
+					return ConnectionResult.FromFailure("Connection Timedout");
 
 				Thread.Sleep(100);
 			}
@@ -65,9 +71,21 @@ namespace TsRandomizer.Archipelago
 				session.DisconnectAsync();
 
 			if (connectionResult is ConnectionRefusedPacket refused)
-				return new ConnectionResult(false, string.Join(", ", refused.Errors));
+				return ConnectionResult.FromFailure(string.Join(", ", refused.Errors));
+			if (connectionResult is ConnectedPacket success)
+			{
+				slot = success.Slot;
 
-			return new ConnectionResult(true, "");
+				return ConnectionResult.FromSuccess(success.SlotData, success.ItemsChecked);
+			}
+			
+			return ConnectionResult.FromFailure("Unknown package, probably due to version missmatch");
+		}
+
+		public IEnumerable<ItemIdentifier> GetReceivedItems()
+		{
+			while(receivedItemsQueue.TryDequeue(out var itemIdentifier))
+				yield return itemIdentifier;
 		}
 
 		void PackacedReceived(ArchipelagoPacketBase packet)
@@ -115,9 +133,9 @@ namespace TsRandomizer.Archipelago
 		{
 			if (!connectionTestOnly)
 			{
-				Chache.Update(packet.Players);
+				Chache.UpdatePlayerNames(packet.Players);
 			
-				if (!(packet is RoomUpdatePacket))
+				if (packet is RoomUpdatePacket)
 					return;
 
 				Chache.Verify(this, packet.DataPackageVersions);
@@ -128,7 +146,8 @@ namespace TsRandomizer.Archipelago
 				Game = "Timespinner",
 				Name = "YourName1",
 				Version = new Version(0, 1, 7),
-				Uuid = "297802A3-63F5-433C-A200-11D03C870B55" //TODO Fixme, should be unique per save
+				Uuid = "297802A3-63F5-433C-A200-11D03C870B56", //TODO Fixme, should be unique per save
+				Tags = new List<string>(0)
 			};
 
 			session.SendPacket(connectionRequest);
@@ -154,17 +173,22 @@ namespace TsRandomizer.Archipelago
 			if(connectionTestOnly)
 				return;
 
-			foreach (var item in receivedItemsPacket.Items)
-				itemLocationMap.RecieveItem(ItemMap.GetItemIdentifier(item.Item));
-
 			if (receivedItemsPacket.Index != receivedItemIndex)
-			{
-				receivedItemIndex = 0;
+				ReSync();
 
-				session.SendMultiplePackets(new SyncPacket(), GetLocationChecksPacket());
-			}
+			foreach (var item in receivedItemsPacket.Items)
+				receivedItemsQueue.Enqueue(ItemMap.GetItemIdentifier(item.Item));
 
 			receivedItemIndex = receivedItemsPacket.Index++;
+		}
+
+		void ReSync()
+		{
+			receivedItemIndex = 0;
+
+			Interlocked.Exchange(ref receivedItemsQueue, new ConcurrentQueue<ItemIdentifier>());
+
+			session.SendMultiplePackets(new SyncPacket(), GetLocationChecksPacket());
 		}
 
 		void OnPrintPacketReceived(PrintPacket printPacket)
@@ -213,7 +237,6 @@ namespace TsRandomizer.Archipelago
 		{
 			switch (messagePart.Color)
 			{
-
 				case JsonMessagePartColor.Red:
 					return Color.Red;
 				case JsonMessagePartColor.Green:
@@ -246,23 +269,30 @@ namespace TsRandomizer.Archipelago
 				case JsonMessagePartType.ItemId:
 					return Color.Crimson;
 				case JsonMessagePartType.LocationId:
-					return Color.AliceBlue;
+					return Color.Aquamarine;
 				default:
 					return Color.White;
 			}
 		}
 
-		public Dictionary<ItemKey, ItemIdentifier> GetAllItems()
+		public Dictionary<ItemKey, ItemIdentifier> GetAllNonCheckedItems()
 		{
 			var items = new Dictionary<ItemKey, ItemIdentifier>();
 
-			RequestAllItems();
+			RequestAllNonCheckedItems();
 
 			hasItemLocationInfo = false;
 			itemLocationInfoResult = null;
 
+			var connectedStartedTime = DateTime.UtcNow;
+
 			while (!hasItemLocationInfo)
+			{
+				if (DateTime.UtcNow - connectedStartedTime > TimeSpan.FromSeconds(ConnectionTimeoutInSeconds))
+					return null;
+
 				Thread.Sleep(100);
+			}
 
 			foreach (var locationInfo in itemLocationInfoResult.Locations)
 				items.Add(LocationMap.GetItemkey(locationInfo.Location), ItemMap.GetItemIdentifier(locationInfo.Item));
@@ -270,14 +300,17 @@ namespace TsRandomizer.Archipelago
 			return items;
 		}
 
-		void RequestAllItems()
+		void RequestAllNonCheckedItems()
 		{
-			var peekAllItems = new LocationScoutsPacket
+			var peekAllNonCheckedItems = new LocationScoutsPacket
 			{
-				Locations = LocationMap.AllIds.ToList()
+				Locations = itemLocations
+					.Where(l => !l.IsPickedUp)
+					.Select(l => LocationMap.GetLocationId(l.Key))
+					.ToList()
 			};
 
-			session.SendPacket(peekAllItems);
+			session.SendPacket(peekAllNonCheckedItems);
 		}
 
 		public void UpdateChecks()
@@ -289,8 +322,8 @@ namespace TsRandomizer.Archipelago
 		{
 			return new LocationChecksPacket
 			{
-				Locations = itemLocationMap
-					.Where(l => l.IsPickedUp)
+				Locations = itemLocations
+					.Where(l => l.IsPickedUp && !(l is ExteralItemLocation))
 					.Select(l => LocationMap.GetLocationId(l.Key))
 					.ToList()
 			};
@@ -299,13 +332,27 @@ namespace TsRandomizer.Archipelago
 
 	class ConnectionResult
 	{
-		public ConnectionResult(bool success, string errorMessage)
+		ConnectionResult(bool success, string errorMessage, Dictionary<string, object> slotData, List<int> checkedLocations)
 		{
 			Success = success;
 			ErrorMessage = errorMessage;
+			SlotData = slotData;
+			CheckedLocations = checkedLocations;
+		}
+
+		public static ConnectionResult FromSuccess(Dictionary<string, object> slotdata, List<int> checkedLocations)
+		{
+			return new ConnectionResult(true, "", slotdata, checkedLocations);
+		}
+
+		public static ConnectionResult FromFailure(string errorMessage)
+		{
+			return new ConnectionResult(false, errorMessage, null, null);
 		}
 
 		public bool Success { get; }
 		public string ErrorMessage { get; }
+		public Dictionary<string, object> SlotData { get; }
+		public List<int> CheckedLocations { get; }
 	}
 }

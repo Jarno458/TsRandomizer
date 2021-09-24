@@ -1,8 +1,10 @@
 ﻿using System;
-using Timespinner.GameAbstractions.Inventory;
+using System.Collections.Generic;
+using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
-using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.ItemTracker;
 using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Archipelago
@@ -11,23 +13,31 @@ namespace TsRandomizer.Archipelago
 	{
 		readonly ItemInfoProvider itemInfoProvider;
 
+		public Client Client { get; set; }
+		public  List<int> CheckedLocations { get; set; }
+
 		public ArchipelagoItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, SeedOptions options) : base(itemInfoProvider, itemUnlockingMap, options)
 		{
 			this.itemInfoProvider = itemInfoProvider;
 		}
 
-		public override bool IsBeatable()
+		public override bool IsBeatable() => true; //Beatability is handled by Archipelago seed generator
+
+		public override void Initialize(GameSave gameSave)
 		{
-			return true; //Beatability is handled by Archipelago seed generator
+			base.Initialize(gameSave);
+
+			foreach (var locationId in CheckedLocations)
+				this[LocationMap.GetItemkey(locationId)].SetPickedUp();
+
+			foreach (var itemIdentifier in Client.GetReceivedItems())
+				RecieveItem(itemIdentifier, null);
 		}
 
-		public override void BaseOnSave(GameSave gameSave)
+		public override void Update(Level level)
 		{
-			base.BaseOnSave(gameSave);
-
-
-			//var x = new ItemIdentifier(EItemType.M);
-
+			foreach (var itemIdentifier in Client.GetReceivedItems())
+				RecieveItem(itemIdentifier, level);
 		}
 
 		public override ProgressionChain GetProgressionChain()
@@ -35,18 +45,18 @@ namespace TsRandomizer.Archipelago
 			throw new InvalidOperationException("Progression chains arent supported for Archipelago seeds");
 		}
 
-		public void RecieveItem(ItemIdentifier itemIdentifier)
+		void RecieveItem(ItemIdentifier itemIdentifier, Level level)
 		{
-			var key = new ItemKey(0, 0, 0, ItemMap.GetItemId(itemIdentifier));
+			var item = itemInfoProvider.Get(itemIdentifier);
+			item.OnPickup(level);
 
-			Add(key, "Archipelago Recieved", null);
+			if (item.IsProgression)
+			{
+				Add(new ExteralItemLocation(item));
+				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(this));
+			}
 
-			this[key].SetItem(itemInfoProvider.Get(itemIdentifier));
-
-			this[key].SetPickedUp();
-			//this[key].
-
-			//set pickedup and yield item to player
+			level?.ShowItemAwardPopup(itemIdentifier);
 		}
 	}
 }

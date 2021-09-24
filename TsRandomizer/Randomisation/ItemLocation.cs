@@ -43,7 +43,7 @@ namespace TsRandomizer.Randomisation
 
 		public void SetItem(ItemInfo item) => ItemInfo = item;
 
-		public void SetPickedUp()
+		public virtual void SetPickedUp()
 		{
 			IsPickedUp = true;
 
@@ -58,7 +58,7 @@ namespace TsRandomizer.Randomisation
 		public override string ToString() =>
 			$"{AreaName} {Name ?? Key.ToString()} [{ItemInfo}]";
 
-		public void BsseOnGameSave(GameSave save)
+		public virtual void BsseOnGameSave(GameSave save)
 		{
 			gameSave = save;
 

@@ -10,8 +10,6 @@ namespace TsRandomizer.Archipelago
 		static readonly Dictionary<int, ItemKey> MapLocationIdToItemKey;
 		static readonly Dictionary<ItemKey, int> MapItemKeyToLocationId;
 
-		public static IEnumerable<int> AllIds => MapLocationIdToItemKey.Keys;
-
 		static LocationMap()
 		{
 			MapLocationIdToItemKey = new Dictionary<int, ItemKey>(181) {
@@ -26,7 +24,7 @@ namespace TsRandomizer.Archipelago
 				{1337005, new ItemKey(1, 9, 600, 144 + TimespinnerWheel.YOffset)},
 				{1337006, new ItemKey(1, 14, 40, 176)},
 				// Lower lake desolation
-				/*{1337007, new ItemKey(1, 2, 1016, 384)},
+				{1337007, new ItemKey(1, 2, 1016, 384)},
 				{1337008, new ItemKey(1, 11, 72, 240)},
 				{1337009, new ItemKey(1, 3, 56, 176)},
 				// Upper lake desolation
@@ -228,7 +226,7 @@ namespace TsRandomizer.Archipelago
 				{1337246, new ItemKey(16, 14, 312, 192)},
 				{1337247, new ItemKey(16, 3, 88, 192)},
 				{1337248, new ItemKey(16, 22, 200, 192)},
-				{1337249, new ItemKey(16, 16, 1512, 144)},*/
+				{1337249, new ItemKey(16, 16, 1512, 144)}
 
 			};
 

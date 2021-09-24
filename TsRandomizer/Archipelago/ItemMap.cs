@@ -13,7 +13,7 @@ namespace TsRandomizer.Archipelago
 
 		static ItemMap()
 		{
-			MapItemIdToItemItemIdentifier = new Dictionary<int, ItemIdentifier>(218) {
+			MapItemIdToItemItemIdentifier = new Dictionary<int, ItemIdentifier>(182) {
 				{1337000, new ItemIdentifier(EInventoryEquipmentType.Sunglasses)},
 				{1337001, new ItemIdentifier(EInventoryEquipmentType.SecurityVisor)},
 				{1337002, new ItemIdentifier(EInventoryEquipmentType.EngineerGoggles)},
@@ -194,45 +194,8 @@ namespace TsRandomizer.Archipelago
 				{1337177, new ItemIdentifier(EInventoryOrbType.Nether, EOrbSlot.Passive)},
 				{1337178, new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Passive)},
 				{1337179, new ItemIdentifier(EItemType.MaxHP)},
-				{1337180, new ItemIdentifier(EItemType.MaxHP)},
-				{1337181, new ItemIdentifier(EItemType.MaxHP)},
-				{1337182, new ItemIdentifier(EItemType.MaxHP)},
-				{1337183, new ItemIdentifier(EItemType.MaxHP)},
-				{1337184, new ItemIdentifier(EItemType.MaxHP)},
-				{1337185, new ItemIdentifier(EItemType.MaxHP)},
-				{1337186, new ItemIdentifier(EItemType.MaxHP)},
-				{1337187, new ItemIdentifier(EItemType.MaxHP)},
-				{1337188, new ItemIdentifier(EItemType.MaxHP)},
-				{1337189, new ItemIdentifier(EItemType.MaxHP)},
-				{1337190, new ItemIdentifier(EItemType.MaxHP)},
-				{1337191, new ItemIdentifier(EItemType.MaxAura)},
-				{1337192, new ItemIdentifier(EItemType.MaxAura)},
-				{1337193, new ItemIdentifier(EItemType.MaxAura)},
-				{1337194, new ItemIdentifier(EItemType.MaxAura)},
-				{1337195, new ItemIdentifier(EItemType.MaxAura)},
-				{1337196, new ItemIdentifier(EItemType.MaxAura)},
-				{1337197, new ItemIdentifier(EItemType.MaxAura)},
-				{1337198, new ItemIdentifier(EItemType.MaxAura)},
-				{1337199, new ItemIdentifier(EItemType.MaxAura)},
-				{1337200, new ItemIdentifier(EItemType.MaxAura)},
-				{1337201, new ItemIdentifier(EItemType.MaxAura)},
-				{1337202, new ItemIdentifier(EItemType.MaxAura)},
-				{1337203, new ItemIdentifier(EItemType.MaxAura)},
-				{1337204, new ItemIdentifier(EItemType.MaxSand)},
-				{1337205, new ItemIdentifier(EItemType.MaxSand)},
-				{1337206, new ItemIdentifier(EItemType.MaxSand)},
-				{1337207, new ItemIdentifier(EItemType.MaxSand)},
-				{1337208, new ItemIdentifier(EItemType.MaxSand)},
-				{1337209, new ItemIdentifier(EItemType.MaxSand)},
-				{1337210, new ItemIdentifier(EItemType.MaxSand)},
-				{1337211, new ItemIdentifier(EItemType.MaxSand)},
-				{1337212, new ItemIdentifier(EItemType.MaxSand)},
-				{1337213, new ItemIdentifier(EItemType.MaxSand)},
-				{1337214, new ItemIdentifier(EItemType.MaxSand)},
-				{1337215, new ItemIdentifier(EItemType.MaxSand)},
-				{1337216, new ItemIdentifier(EItemType.MaxSand)},
-				{1337017, new ItemIdentifier(EInventoryUseItemType.Jerky)},
-				// 1337218 - 1337248 Reserved
+				{1337180, new ItemIdentifier(EItemType.MaxAura)},
+				// 1337181 - 1337248 Reserved
 				{1337249, new ItemIdentifier(EItemType.MaxSand)}
 			};
 

@@ -85,5 +85,26 @@ namespace TsRandomizer.IntermediateObjects
 		public static bool operator !=(ItemIdentifier a, ItemIdentifier b) => !(a == b);
 
 		public override int GetHashCode() => (LootType << 20) + (ItemId << 4) + SubItemId;
+
+		public override string ToString()
+		{
+			switch (LootType)
+			{
+				case LootType.ConstEquipment:
+					return Enquipment.ToString();
+				case LootType.ConstFamiliar:
+					return Familiar.ToString();
+				case LootType.ConstOrb:
+					return $"{OrbSlot}{OrbType}";
+				case LootType.ConstRelic:
+					return Relic.ToString();
+				case LootType.ConstUseItem:
+					return UseItem.ToString();
+				case LootType.ConstStat:
+					return Stat.ToString();
+				default:
+					throw new NotImplementedException($"Loottype {LootType}.ToString() isnt implemented");
+			}
+		}
 	}
 }

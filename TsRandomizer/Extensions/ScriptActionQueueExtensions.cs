@@ -27,7 +27,7 @@ namespace TsRandomizer.Extensions
 
 				case LootType.ConstStat:
 					reflectedScript.ScriptType = EScriptType.Delegate;
-					reflectedScript.Delegate = (Action)(() => level.RequestToastPopupForStats(itemInfo));
+					reflectedScript.Delegate = (Action)(() => level.RequestToastPopupForStats(itemInfo.Identifier));
 					break;
 			}
 

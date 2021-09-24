@@ -49,7 +49,7 @@ namespace TsRandomizer.Screens
 			seedOptions = seed.Value.Options;
 
 			ItemLocations = Randomizer.Randomize(seed.Value, fillingMethod);
-			ItemLocations.BaseOnSave(Level.GameSave);
+			ItemLocations.Initialize(Level.GameSave);
 
 			ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(ItemLocations));
 

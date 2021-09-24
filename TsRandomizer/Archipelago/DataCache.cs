@@ -105,9 +105,11 @@ namespace TsRandomizer.Archipelago
 
 				TrySaveCache(game, gameData);
 			}
+
+			UpdateItemAndLocationLists();
 		}
 
-		public void Update(List<NetworkPlayer> players)
+		public void UpdatePlayerNames(List<NetworkPlayer> players)
 		{
 			foreach (var player in players)
 			{
