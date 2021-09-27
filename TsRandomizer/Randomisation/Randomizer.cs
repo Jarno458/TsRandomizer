@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation.ItemPlacers;
 
@@ -8,7 +9,7 @@ namespace TsRandomizer.Randomisation
 {
 	class Randomizer
 	{
-		public static ItemLocationMap Randomize(Seed seed, FillingMethod fillingMethod, bool progressionOnly = false)
+		public static ItemLocationMap Randomize(Seed seed, FillingMethod fillingMethod, GameSave saveGame, bool progressionOnly = false)
 		{
 			var unlockingMap = new ItemUnlockingMap(seed);
 			var itemInfoProvider = new ItemInfoProvider(seed.Options, unlockingMap);
@@ -26,7 +27,7 @@ namespace TsRandomizer.Randomisation
 					break;
 
 				case FillingMethod.Archipelago:
-					randomizer = new ArchipelagoItemLocationRandomizer(seed, itemInfoProvider, unlockingMap);
+					randomizer = new ArchipelagoItemLocationRandomizer(seed, itemInfoProvider, unlockingMap, saveGame);
 					break;
 
 				default:
@@ -65,7 +66,7 @@ namespace TsRandomizer.Randomisation
 		}
 
 		public static bool IsBeatable(Seed seed, FillingMethod fillingMethod) =>
-			Randomize(seed, fillingMethod, true).IsBeatable();
+			Randomize(seed, fillingMethod, null, true).IsBeatable();
 	}
 
 	class GenerationResult : IEqualityComparer<GenerationResult>

@@ -99,7 +99,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
+    <Compile Include="Archipelago\ArchipelagoRemoteItem.cs" />
+    <Compile Include="Archipelago\ConnectionResult.cs" />
     <Compile Include="Archipelago\DataCache.cs" />
+    <Compile Include="Archipelago\SlotDataParser.cs" />
     <Compile Include="Randomisation\ExteralItemLocation.cs" />
     <Compile Include="Archipelago\Log.cs" />
     <Compile Include="Archipelago\Client.cs" />
@@ -166,7 +169,7 @@
     <Compile Include="IntermediateObjects\TriggerAfterLootDrop.cs" />
     <Compile Include="DeRandomizer.cs" />
     <Compile Include="FamiliarManager.cs" />
-    <Compile Include="Screens\Archipelago\ServerAdressSelectionScreen.cs" />
+    <Compile Include="Screens\ArchipelagoSelectionScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\MessageBox.cs" />
@@ -196,7 +199,6 @@
     <Compile Include="Extensions\ReflectExtensions.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\ScreenManager.cs" />
-    <Compile Include="Screens\PasswordMenuScreen.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionInfo.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsCollection.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsMenuScreen.cs" />

@@ -31,9 +31,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		public SeedOptionsMenuScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
 		{
-			var passwordMenu = screenManager.FirstOrDefault<PasswordMenuScreen>();
-
-			seedSelectionScreen = (SeedSelectionMenuScreen)passwordMenu.menuOverride;
+			seedSelectionScreen = screenManager.FirstOrDefault<SeedSelectionMenuScreen>();
 		}
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)

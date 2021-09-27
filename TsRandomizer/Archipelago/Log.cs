@@ -1,5 +1,5 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections.Concurrent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions;
@@ -9,6 +9,8 @@ namespace TsRandomizer.Archipelago
 {
 	class Log : Overlay
 	{
+		const int FadeDelayInSeconds = 5;
+
 		readonly GCM gcm;
 
 		readonly ConcurrentQueue<Message> lines = new ConcurrentQueue<Message>();
@@ -28,6 +30,12 @@ namespace TsRandomizer.Archipelago
 		public void Add(params Part[] parts)
 		{
 			lines.Enqueue(new Message(parts));
+		}
+
+		public override void Update(GameTime gameTime)
+		{
+			while (lines.TryPeek(out var message) && DateTime.UtcNow - message.TimeAdded > TimeSpan.FromSeconds(FadeDelayInSeconds))
+				lines.TryDequeue(out _);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, Rectangle screenSize)
@@ -80,17 +88,16 @@ namespace TsRandomizer.Archipelago
 
 	class Message
 	{
+		public DateTime TimeAdded { get; }
 		public Part[] Parts { get; }
 
-		//Add created time for indipendant fading
-
-		public Message(string message)
+		public Message(string message) : this(new []{ new Part(message)})
 		{
-			Parts = new[] {new Part(message)};
 		}
 
 		public Message(Part[] parts)
 		{
+			TimeAdded = DateTime.UtcNow;
 			Parts = parts;
 		}
 	}

@@ -7,11 +7,13 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 {
 	class FullRandomItemLocationRandomizer : ItemLocationRandomizer
 	{
+		ItemLocationMap itemLocations;
+
 		public FullRandomItemLocationRandomizer(
 			Seed seed,
 			ItemInfoProvider itemInfoProvider, 
 			ItemUnlockingMap unlockingMap
-		) : base(seed, itemInfoProvider, new ItemLocationMap(itemInfoProvider, unlockingMap, seed.Options), unlockingMap)
+		) : base(seed, itemInfoProvider, unlockingMap)
 		{
 		}
 
@@ -19,19 +21,21 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		{
 			var random = new Random((int)Seed.Id);
 
+			itemLocations = new ItemLocationMap(ItemInfoProvider, UnlockingMap, Seed.Options);
+
 			AddRandomItemsToLocationMap(random, isProgressionOnly);
 
-			return ItemLocations;
+			return itemLocations;
 		}
 
 		void AddRandomItemsToLocationMap(Random random, bool isProgressionOnly)
 		{
-			PlaceStarterProgressionItems(random);
+			PlaceStarterProgressionItems(random, itemLocations);
 
 			if(!SeedOptions.GassMaw)
-				PlaceGassMaskInALegalSpot(random);
+				PlaceGassMaskInALegalSpot(random, itemLocations);
 
-			var alreadyAssingedItems = ItemLocations
+			var alreadyAssingedItems = itemLocations
 				.Where(l => l.IsUsed)
 				.Select(l => l.ItemInfo)
 				.ToArray();
@@ -41,7 +45,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.Select(i => ItemInfoProvider.Get(i))
 				.ToList();
 
-			var unusedItemLocations = ItemLocations
+			var unusedItemLocations = itemLocations
 				.Where(l => !l.IsUsed)
 				.ToList();
 
@@ -54,7 +58,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			}
 
 			if(!isProgressionOnly)
-				FillRemainingChests(random);
+				FillRemainingChests(random, itemLocations);
 		}
 
 		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)

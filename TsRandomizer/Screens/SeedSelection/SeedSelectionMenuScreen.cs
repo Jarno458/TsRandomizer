@@ -14,8 +14,11 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace TsRandomizer.Screens.SeedSelection
 {
-	class SeedSelectionMenuScreen : PasswordMenuOverride
+	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.Options.PasswordMenuScreen")]
+	class SeedSelectionMenuScreen : Screen
 	{
+		static readonly Type PasswordMenuScreenType = TimeSpinnerType
+			.Get("Timespinner.GameStateManagement.Screens.PauseMenu.Options.PasswordMenuScreen");
 		static readonly Type MainMenuEntryType = TimeSpinnerType
 			.Get("Timespinner.GameStateManagement.MenuEntry");
 		static readonly Type InventoryItemIconType = TimeSpinnerType
@@ -23,16 +26,28 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		readonly GameDifficultyMenuScreen difficultyMenu;
 
+		bool IsUsedAsSeedSelectionMenu => difficultyMenu != null;
+
 		bool forceSeed;
 		MenuEntry okButton;
 
-		public SeedSelectionMenuScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
+		public static GameScreen Create(ScreenManager screenManager)
+		{
+			void Noop() { }
+
+			return (GameScreen)Activator.CreateInstance(PasswordMenuScreenType, null, screenManager.Reflected.GCM, (Action)Noop);
+		}
+
+		public SeedSelectionMenuScreen(ScreenManager screenManager, GameScreen passwordScreen) : base(screenManager, passwordScreen)
 		{
 			difficultyMenu = screenManager.FirstOrDefault<GameDifficultyMenuScreen>();
 		}
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
+			if (!IsUsedAsSeedSelectionMenu)
+				return;
+
 			Dynamic._menuTitle = "Select Seed";
 
 			okButton = MenuEntry.Create("OK", OnOkayEntrySelected);
@@ -47,6 +62,9 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
+			if (!IsUsedAsSeedSelectionMenu)
+				return;
+
 			forceSeed = input.IsButtonHold(Buttons.RightTrigger);
 
 			okButton.Text = forceSeed ? "Force" : "OK";
@@ -124,7 +142,7 @@ namespace TsRandomizer.Screens.SeedSelection
 				return;
 			}
 
-			difficultyMenu.SetSeed(seed);
+			difficultyMenu.SetSeedAndFillingMethod(seed, FillingMethod.Random);
 
 			Dynamic.OnCancel(playerIndex);
 		}

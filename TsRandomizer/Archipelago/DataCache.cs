@@ -26,11 +26,6 @@ namespace TsRandomizer.Archipelago
 		public string GetPlayerName(int slotId) =>
 			playerNames.TryGetValue(slotId, out var playerName) ? playerName : $"Slot #{slotId}";
 
-		static DataCache()
-		{
-			//LoadCache();
-		}
-
 		public void LoadCache()
 		{
 			try
@@ -77,7 +72,7 @@ namespace TsRandomizer.Archipelago
 			}
 		}
 
-		public void Verify(Client client, Dictionary<string, int> versionsPerGame)
+		public void Verify(Dictionary<string, int> versionsPerGame)
 		{
 			var gamesToExcludeFromUpdate = new List<string>();
 
@@ -91,7 +86,7 @@ namespace TsRandomizer.Archipelago
 			}
 
 			if (gamesToExcludeFromUpdate.Count != versionsPerGame.Count)
-				client.RequestGameData(gamesToExcludeFromUpdate);
+				Client.RequestGameData(gamesToExcludeFromUpdate);
 		}
 
 		public void Update(Dictionary<string, GameData> newState)
@@ -111,6 +106,9 @@ namespace TsRandomizer.Archipelago
 
 		public void UpdatePlayerNames(List<NetworkPlayer> players)
 		{
+			if(players == null)
+				return;
+
 			foreach (var player in players)
 			{
 				playerNames.TryAdd(player.Slot, string.IsNullOrEmpty(player.Alias)

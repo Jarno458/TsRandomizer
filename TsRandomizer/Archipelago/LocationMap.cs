@@ -196,8 +196,9 @@ namespace TsRandomizer.Archipelago
 				{1337155, new ItemKey(6, 14, 184, 205)},
 
 				// Download Terminals
+				{1337156, new ItemKey(2, 44, 120, 368)},
 				{1337157, new ItemKey(2, 44, 792, 592)},
-				{1337158, new ItemKey(2, 44, 120, 368)},
+				// 1337158 Lost in time
 				{1337159, new ItemKey(2, 44, 456, 368)},
 				{1337160, new ItemKey(2, 58, 152, 208)},
 				{1337161, new ItemKey(2, 58, 232, 208)},
@@ -227,8 +228,7 @@ namespace TsRandomizer.Archipelago
 				{1337247, new ItemKey(16, 3, 88, 192)},
 				{1337248, new ItemKey(16, 22, 200, 192)},
 				{1337249, new ItemKey(16, 16, 1512, 144)}
-
-			};
+		};
 
 			MapItemKeyToLocationId = new Dictionary<ItemKey, int>(MapLocationIdToItemKey.Count);
 
@@ -242,7 +242,6 @@ namespace TsRandomizer.Archipelago
 				: MapItemKeyToLocationId.TryGetValue(key.ToRoomItemKey(), out var roomLocationId)
 					? roomLocationId
 					: throw new Exception("Key does not map to Archipelago itemlocation");
-			
 
 		public static ItemKey GetItemkey(int locationId) =>
 			MapLocationIdToItemKey.TryGetValue(locationId, out var key)

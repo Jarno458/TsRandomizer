@@ -279,7 +279,7 @@ namespace TsRandomizer.Screens
 				file.WriteLine($"Timespinner version: v{TimeSpinnerGame.Constants.GameVersion}");
 				file.WriteLine($"TsRandomizer version: v{Assembly.GetExecutingAssembly().GetName().Version}");
 
-				var itemLocations = Randomizer.Randomize(seed.Value, fillingMethod);
+				var itemLocations = Randomizer.Randomize(seed.Value, fillingMethod, save);
 
 				var progressionItems = itemLocations.Where(l => l.ItemInfo.Unlocks != Requirement.None);
 				var otherItems = itemLocations.Where(l => l.ItemInfo.Unlocks == Requirement.None);

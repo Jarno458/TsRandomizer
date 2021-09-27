@@ -45,7 +45,7 @@ namespace TsRandomizer.ItemTracker
 		internal static ItemTrackerState FromItemLocationMap(IEnumerable<ItemLocation> itemLocations)
 		{
 			var unlockedProgressionItems = itemLocations
-				.Where(l => l.IsPickedUp && l.ItemInfo.Unlocks != Requirement.None)
+				.Where(l => l.IsPickedUp && l.ItemInfo.IsProgression)
 				.Select(l => l.ItemInfo)
 				.ToArray();
 
