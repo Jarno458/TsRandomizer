@@ -40,6 +40,8 @@
 				return bool.Parse(s);
 			if (o is int i)
 				return i > 0;
+			if (o is long l)
+				return l > 0;
 
 			return false;
 		}

@@ -102,7 +102,9 @@
     <Compile Include="Archipelago\ArchipelagoRemoteItem.cs" />
     <Compile Include="Archipelago\ConnectionResult.cs" />
     <Compile Include="Archipelago\DataCache.cs" />
+    <Compile Include="Archipelago\ReceivedItem.cs" />
     <Compile Include="Archipelago\SlotDataParser.cs" />
+    <Compile Include="LevelObjects\Other\NightmareBoss.cs" />
     <Compile Include="Randomisation\ExteralItemLocation.cs" />
     <Compile Include="Archipelago\Log.cs" />
     <Compile Include="Archipelago\Client.cs" />

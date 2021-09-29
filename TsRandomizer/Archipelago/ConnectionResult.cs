@@ -33,10 +33,10 @@ namespace TsRandomizer.Archipelago
 
 			if (SlotData.TryGetValue("PersonalItems", out object personalItemsDictionary))
 			{
-				var itemPerLocation = (Dictionary<int, int>) personalItemsDictionary;
+				var itemPerLocation = (Dictionary<string, int>)personalItemsDictionary;
 
 				PersonalLocations = itemPerLocation.ToDictionary(
-					kvp => LocationMap.GetItemkey(kvp.Key),
+					kvp => LocationMap.GetItemkey(int.Parse(kvp.Key)),
 					kvp => ItemMap.GetItemIdentifier(kvp.Value));
 			}
 			else

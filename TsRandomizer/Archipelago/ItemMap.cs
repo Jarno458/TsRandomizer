@@ -14,7 +14,7 @@ namespace TsRandomizer.Archipelago
 		static ItemMap()
 		{
 			MapItemIdToItemItemIdentifier = new Dictionary<int, ItemIdentifier>(182) {
-				{1337000, new ItemIdentifier(EInventoryEquipmentType.Sunglasses)},
+				{1337000, new ItemIdentifier(EInventoryEquipmentType.EternalTiara)},
 				{1337001, new ItemIdentifier(EInventoryEquipmentType.SecurityVisor)},
 				{1337002, new ItemIdentifier(EInventoryEquipmentType.EngineerGoggles)},
 				{1337003, new ItemIdentifier(EInventoryEquipmentType.LeatherHelmet)},
@@ -29,7 +29,7 @@ namespace TsRandomizer.Archipelago
 				{1337012, new ItemIdentifier(EInventoryEquipmentType.LabGlasses)},
 				{1337013, new ItemIdentifier(EInventoryEquipmentType.LachiemCrown)},
 				{1337014, new ItemIdentifier(EInventoryEquipmentType.VileteCrown)},
-				{1337015, new ItemIdentifier(EInventoryEquipmentType.EternalTiara)},
+				{1337015, new ItemIdentifier(EInventoryEquipmentType.Sunglasses)},
 				{1337016, new ItemIdentifier(EInventoryEquipmentType.OldCoat)},
 				{1337017, new ItemIdentifier(EInventoryEquipmentType.TrendyJacket)},
 				{1337018, new ItemIdentifier(EInventoryEquipmentType.SecurityVest)},
@@ -141,10 +141,10 @@ namespace TsRandomizer.Archipelago
 				{1337124, new ItemIdentifier(EInventoryRelicType.Tablet)},
 				{1337125, new ItemIdentifier(EInventoryRelicType.ElevatorKeycard)},
 				{1337126, new ItemIdentifier(EInventoryRelicType.JewelryBox)},
-				{1337127, new ItemIdentifier(EInventoryRelicType.EmpireBrooch)},
+				{1337127, new ItemIdentifier(EInventoryRelicType.EternalBrooch)},
 				{1337128, new ItemIdentifier(EInventoryRelicType.FamiliarAltMeyef)},
 				{1337129, new ItemIdentifier(EInventoryRelicType.FamiliarAltCrow)},
-				{1337130, new ItemIdentifier(EInventoryRelicType.EternalBrooch)},
+				{1337130, new ItemIdentifier(EInventoryRelicType.EmpireBrooch)},
 				{1337131, new ItemIdentifier(EInventoryOrbType.Blue, EOrbSlot.Melee)},
 				{1337132, new ItemIdentifier(EInventoryOrbType.Blade, EOrbSlot.Melee)},
 				{1337133, new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Melee)},

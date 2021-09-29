@@ -8,7 +8,6 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using Microsoft.Xna.Framework;
-using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 
@@ -28,9 +27,9 @@ namespace TsRandomizer.Archipelago
 
 		static DataCache chache = new DataCache();
 
-		static volatile int slot;
+		public static volatile int Slot = -1;
 
-		static ConcurrentQueue<ItemIdentifier> receivedItemsQueue = new ConcurrentQueue<ItemIdentifier>();
+		static ConcurrentQueue<ReceivedItem> receivedItemsQueue = new ConcurrentQueue<ReceivedItem>();
 
 		static int receivedItemIndex;
 
@@ -92,10 +91,6 @@ namespace TsRandomizer.Archipelago
 			}
 			if (connectionResult is ConnectedPacket success)
 			{
-				slot = success.Slot;
-
-				chache.UpdatePlayerNames(success.Players);
-
 				IsConnected = true;
 
 				CachedConnectionResult = new Connected(success);
@@ -113,11 +108,12 @@ namespace TsRandomizer.Archipelago
 			session?.DisconnectAsync();
 
 			receivedItemIndex = 0;
+			Slot = -1;
 
 			IsConnected = false;
 
 			chache = new DataCache();
-			receivedItemsQueue = new ConcurrentQueue<ItemIdentifier>();
+			receivedItemsQueue = new ConcurrentQueue<ReceivedItem>();
 
 			hasConnectionResult = false;
 			HasItemLocationInfo = false;
@@ -128,50 +124,29 @@ namespace TsRandomizer.Archipelago
 			CachedConnectionResult = null;
 		}
 
-		public static IEnumerable<ItemIdentifier> GetReceivedItems()
+		public static IEnumerable<ReceivedItem> GetReceivedItems()
 		{
 			while(receivedItemsQueue.TryDequeue(out var itemIdentifier))
 				yield return itemIdentifier;
+		}
+
+		public static void SetStatus(ArchipelagoClientState status)
+		{
+			SendPacket(new StatusUpdatePacket { Status = status });
 		}
 
 		static void PackacedReceived(ArchipelagoPacketBase packet)
 		{
 			switch (packet)
 			{
-				case RoomInfoPacket roomInfoPacket:
-					OnRoomInfoPacketReceived(roomInfoPacket);
-					break;
-
-				case DataPackagePacket dataPacket:
-					OnDataPackagePacketReceived(dataPacket);
-					break;
-
-				case ConnectionRefusedPacket connectionRefusedPacket:
-					hasConnectionResult = true;
-					connectionResult = connectionRefusedPacket;
-					break;
-
-				case ConnectedPacket connectedPacket:
-					hasConnectionResult = true;
-					connectionResult = connectedPacket;
-					break;
-
-				case LocationInfoPacket locationInfoPacket:
-					HasItemLocationInfo = true;
-					LocationScoutResult = locationInfoPacket;
-					break;
-
-				case ReceivedItemsPacket receivedItemsPacket:
-					OnReceivedItemsPacketReceived(receivedItemsPacket);
-					break;
-
-				case PrintPacket printPacket:
-					OnPrintPacketReceived(printPacket);
-					break;
-
-				case PrintJsonPacket printJsonPacket:
-					OnPrinJsontPacketReceived(printJsonPacket);
-					break;
+				case RoomInfoPacket roomInfoPacket: OnRoomInfoPacketReceived(roomInfoPacket); break;
+				case DataPackagePacket dataPacket: OnDataPackagePacketReceived(dataPacket); break;
+				case ConnectionRefusedPacket connectionRefusedPacket: OnConnectionRefusedPacketReceived(connectionRefusedPacket); break;
+				case ConnectedPacket connectedPacket: OnConnectedPacketReceived(connectedPacket); break;
+				case LocationInfoPacket locationInfoPacket: OnLocationInfoPacketReceived(locationInfoPacket); break;
+				case ReceivedItemsPacket receivedItemsPacket: OnReceivedItemsPacketReceived(receivedItemsPacket); break;
+				case PrintPacket printPacket: OnPrintPacketReceived(printPacket); break;
+				case PrintJsonPacket printJsonPacket: OnPrinJsontPacketReceived(printJsonPacket); break;
 			}
 		}
 
@@ -202,6 +177,22 @@ namespace TsRandomizer.Archipelago
 			session.SendPacket(connectionRequest);
 		}
 
+		static void OnConnectedPacketReceived(ConnectedPacket connectedPacket)
+		{
+			Slot = connectedPacket.Slot;
+
+			chache.UpdatePlayerNames(connectedPacket.Players);
+
+			hasConnectionResult = true;
+			connectionResult = connectedPacket;
+		}
+
+		static void OnConnectionRefusedPacketReceived(ConnectionRefusedPacket connectionRefusedPacket)
+		{
+			hasConnectionResult = true;
+			connectionResult = connectionRefusedPacket;
+		}
+
 		public static void RequestGameData(List<string> gamesToExcludeFromUpdate)
 		{
 			var getGameDataPacket = new GetDataPackagePacket
@@ -217,6 +208,12 @@ namespace TsRandomizer.Archipelago
 			chache.Update(dataPacket.DataPackage.Games);
 		}
 
+		static void OnLocationInfoPacketReceived(LocationInfoPacket locationInfoPacket)
+		{
+			HasItemLocationInfo = true;
+			LocationScoutResult = locationInfoPacket;
+		}
+
 		static void OnReceivedItemsPacketReceived(ReceivedItemsPacket receivedItemsPacket)
 		{
 			if (receivedItemsPacket.Index != receivedItemIndex)
@@ -226,16 +223,21 @@ namespace TsRandomizer.Archipelago
 			}
 			else
 			{
-				receivedItemIndex+= receivedItemsPacket.Items.Count;
+				receivedItemIndex += receivedItemsPacket.Items.Count;
 			}
 
 			foreach (var item in receivedItemsPacket.Items)
-				receivedItemsQueue.Enqueue(ItemMap.GetItemIdentifier(item.Item));
+				receivedItemsQueue.Enqueue(
+					new ReceivedItem
+					{
+						PlayerFrom = item.Player,
+						ItemIdentifier = ItemMap.GetItemIdentifier(item.Item)
+					});
 		}
 
 		static void ReSync()
 		{
-			Interlocked.Exchange(ref receivedItemsQueue, new ConcurrentQueue<ItemIdentifier>());
+			Interlocked.Exchange(ref receivedItemsQueue, new ConcurrentQueue<ReceivedItem>());
 
 			session.SendMultiplePackets(new SyncPacket(), GetLocationChecksPacket());
 		}

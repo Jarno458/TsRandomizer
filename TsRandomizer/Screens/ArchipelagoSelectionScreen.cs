@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SDL2;
@@ -265,6 +266,8 @@ namespace TsRandomizer.Screens
 
 					if(!string.IsNullOrEmpty(values[PasswordIndex]))
 						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePasswordKey] = values[PasswordIndex];
+
+					Client.SetStatus(ArchipelagoClientState.ClientPlaying);
 				});
 
 				Dynamic.OnCancel(playerIndex);

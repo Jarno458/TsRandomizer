@@ -197,7 +197,11 @@ namespace TsRandomizer.Screens
 
 			if (input.IsNewButtonPress(Buttons.LeftThumbstickLeft) 
 			    || input.IsNewButtonPress(Buttons.LeftThumbstickRight)
-			    || input.IsNewButtonPress(Buttons.LeftTrigger)
+				|| input.IsNewButtonPress(Buttons.RightThumbstickLeft)
+			    || input.IsNewButtonPress(Buttons.RightThumbstickRight)
+				|| input.IsNewButtonPress(Buttons.DPadLeft)
+			    || input.IsNewButtonPress(Buttons.DPadRight)
+				|| input.IsNewButtonPress(Buttons.LeftTrigger)
 			    || input.IsNewButtonPress(Buttons.RightTrigger))
 				isArchipelago = !isArchipelago;
 
