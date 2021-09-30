@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Archipelago.MultiClient.Net.Packets;
+using Newtonsoft.Json.Linq;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 
@@ -31,12 +32,12 @@ namespace TsRandomizer.Archipelago
 			CheckedLocations = packet.ItemsChecked.Select(LocationMap.GetItemkey).ToArray();
 			UncheckedLocations = packet.MissingChecks.Select(LocationMap.GetItemkey).ToArray();
 
-			if (SlotData.TryGetValue("PersonalItems", out object personalItemsDictionary))
+			if (SlotData.TryGetValue("PersonalItems", out var personalItemsDictionary))
 			{
-				var itemPerLocation = (Dictionary<string, int>)personalItemsDictionary;
+				var itemPerLocation = ((JObject)personalItemsDictionary).ToObject<Dictionary<int, int>>();
 
 				PersonalLocations = itemPerLocation.ToDictionary(
-					kvp => LocationMap.GetItemkey(int.Parse(kvp.Key)),
+					kvp => LocationMap.GetItemkey(kvp.Key),
 					kvp => ItemMap.GetItemIdentifier(kvp.Value));
 			}
 			else
