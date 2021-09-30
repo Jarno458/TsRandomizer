@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Timespinner;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
+using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
@@ -19,20 +20,31 @@ namespace TsRandomizer.Screens
 		readonly LookupDictionairy<GameScreen, Screen> hookedScreens
 			= new LookupDictionairy<GameScreen, Screen>(s => s.GameScreen);
 		readonly List<GameScreen> foundScreens = new List<GameScreen>(20);
-		
+
 		ItemLocationMap itemLocationMap;
 
 		public readonly dynamic Reflected;
 
-		public ScreenManager(TimeSpinnerGame game, PlatformHelper platformHelper) : base(game, platformHelper)
+		public static Log Log;
+
+		public ScreenManager(TimespinnerGame game, PlatformHelper platformHelper) : base(game, platformHelper)
 		{
 			Reflected = this.AsDynamic();
+		}
+
+		protected override void LoadContent()
+		{
+			base.LoadContent();
+
+			Log = new Log(Reflected.GCM);
 		}
 
 		public override void Update(GameTime gameTime)
 		{
 			DetectNewScreens();
 			UpdateScreens(gameTime);
+
+			Overlay.UpdateAll(gameTime);
 
 			base.Update(gameTime);
 		}
@@ -42,6 +54,8 @@ namespace TsRandomizer.Screens
 			base.Draw(gameTime);
 
 			DrawGameplayScreens();
+
+			Overlay.DrawAll(SpriteBatch, new Rectangle(0, 0, ScreenSize.X, ScreenSize.Y));
 		}
 
 		void DetectNewScreens()

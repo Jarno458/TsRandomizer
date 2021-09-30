@@ -255,8 +255,19 @@ namespace TsRandomizer.Screens
 			ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
 		}
 
-		static void OnSpoilerLogCreationAccepted(GameSave save)
+		void OnSpoilerLogCreationAccepted(GameSave save)
 		{
+			var fillingMethod = save.GetFillingMethod();
+
+			if (fillingMethod == FillingMethod.Archipelago)
+			{
+				var messageBox = MessageBox.Create(ScreenManager, "Not supported for Archipelago based seed", _ => { });
+
+				ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
+
+				return;
+			}
+
 			var seed = save.GetSeed();
 
 			if (!seed.HasValue)
@@ -268,7 +279,7 @@ namespace TsRandomizer.Screens
 				file.WriteLine($"Timespinner version: v{TimeSpinnerGame.Constants.GameVersion}");
 				file.WriteLine($"TsRandomizer version: v{Assembly.GetExecutingAssembly().GetName().Version}");
 
-				var itemLocations = Randomizer.Randomize(seed.Value, save.GetFillingMethod());
+				var itemLocations = Randomizer.Randomize(seed.Value, fillingMethod, save);
 
 				var progressionItems = itemLocations.Where(l => l.ItemInfo.Unlocks != Requirement.None);
 				var otherItems = itemLocations.Where(l => l.ItemInfo.Unlocks == Requirement.None);

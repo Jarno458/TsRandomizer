@@ -22,7 +22,7 @@ namespace TsRandomizer.Screens
 
 			void ReloadSave(GameSave gameSave)
 			{
-				itemLocationMap.BaseOnSave(gameSave);
+				itemLocationMap.Initialize(gameSave);
 
 				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(itemLocationMap));
 

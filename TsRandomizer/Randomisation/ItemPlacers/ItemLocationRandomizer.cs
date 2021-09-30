@@ -10,29 +10,21 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 {
 	abstract class ItemLocationRandomizer
 	{
+		protected readonly Seed Seed;
 		protected readonly SeedOptions SeedOptions;
 		protected readonly ItemInfoProvider ItemInfoProvider;
-		protected readonly ItemLocationMap ItemLocations;
 		protected readonly ItemUnlockingMap UnlockingMap;
-		protected readonly bool ProgressionOnly;
 
 		readonly List<ItemInfo> itemsToRemoveFromGame;
 		readonly ItemInfo[] itemsToAddToGame;
 		readonly ItemInfo[] genericItems;
 
-		protected ItemLocationRandomizer(
-			SeedOptions options,
-			ItemInfoProvider itemInfoProvider, 
-			ItemLocationMap itemLocations, 
-			ItemUnlockingMap unlockingMap, 
-			bool progressionOnly
-		)
+		protected ItemLocationRandomizer(Seed seed, ItemInfoProvider itemInfoProvider, ItemUnlockingMap unlockingMap)
 		{
-			SeedOptions = options;
+			Seed = seed;
+			SeedOptions = seed.Options;
 			ItemInfoProvider = itemInfoProvider;
-			ItemLocations = itemLocations;
 			UnlockingMap = unlockingMap;
-			ProgressionOnly = progressionOnly;
 
 			itemsToRemoveFromGame = new List<ItemInfo>
 			{
@@ -84,15 +76,17 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			};
 		}
 
-		protected void PlaceStarterProgressionItems(Random random)
+		public abstract ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly);
+
+		protected void PlaceStarterProgressionItems(Random random, ItemLocationMap itemLocations)
 		{
 			if (SeedOptions.StartWithTalaria || SeedOptions.Inverted)
-				GiveOrbsToMom(random, false);
+				GiveOrbsToMom(random, itemLocations, false);
 			else 
-				PlaceStarterProgressionItem(random);
+				PlaceStarterProgressionItem(random, itemLocations);
 		}
 
-		void PlaceStarterProgressionItem(Random random)
+		void PlaceStarterProgressionItem(Random random, ItemLocationMap itemLocations)
 		{
 			var starterProgressionItems = new List<ItemInfo> {
 				ItemInfoProvider.Get(EInventoryRelicType.Dash),
@@ -116,21 +110,21 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			if (shouldGiveLightwallAsSpell)
 			{
-				GiveOrbsToMom(random, true);
+				GiveOrbsToMom(random, itemLocations, true);
 			}
 			else
 			{
-				GiveOrbsToMom(random, false);
+				GiveOrbsToMom(random, itemLocations, false);
 
 				if (SeedOptions.StartWithTalaria) return;
 
-				PutStarterProgressionItemInReachableLocation(random, starterProgressionItem);
+				PutStarterProgressionItemInReachableLocation(random, itemLocations, starterProgressionItem);
 			}
 		}
 
-		void PutStarterProgressionItemInReachableLocation(Random random, ItemInfo starterProgressionItem)
+		void PutStarterProgressionItemInReachableLocation(Random random, ItemLocationMap itemLocations, ItemInfo starterProgressionItem)
 		{
-			var starterLocations = ItemLocations
+			var starterLocations = itemLocations
 				.Where(l => l.Key.LevelId != 0 && l.Gate.Requires(R.None))
 				.ToArray();
 
@@ -145,7 +139,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			       && random.Next(1, 5) == 1;
 		}
 
-		protected void GiveOrbsToMom(Random random, bool useLightwallAsSpell)
+		protected void GiveOrbsToMom(Random random, ItemLocationMap itemLocations, bool useLightwallAsSpell)
 		{
 			var orbTypes = Helper.GetAllOrbs();
 
@@ -155,13 +149,13 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			var meleeOrbTypes = orbTypes.Where(orbType => orbType != EInventoryOrbType.Pink); //To annoying as each attack consumes aura power
 
 			var spellOrbType = spellOrbTypes.SelectRandom(random);
-			PutItemAtLocation(ItemInfoProvider.Get(spellOrbType, EOrbSlot.Spell), ItemLocations[ItemKey.TutorialSpellOrb]);
+			PutItemAtLocation(ItemInfoProvider.Get(spellOrbType, EOrbSlot.Spell), itemLocations[ItemKey.TutorialSpellOrb]);
 
 			var meleeOrbType = meleeOrbTypes.SelectRandom(random);
-			PutItemAtLocation(ItemInfoProvider.Get(meleeOrbType, EOrbSlot.Melee), ItemLocations[ItemKey.TutorialMeleeOrb]);
+			PutItemAtLocation(ItemInfoProvider.Get(meleeOrbType, EOrbSlot.Melee), itemLocations[ItemKey.TutorialMeleeOrb]);
 		}
 
-		protected void PlaceGassMaskInALegalSpot(Random random)
+		protected void PlaceGassMaskInALegalSpot(Random random, ItemLocationMap itemLocations)
 		{
 			var levelIdsToAvoid = new List<int>(3){ 1 };
 			R minimalMawRequirements = R.None;
@@ -188,7 +182,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				minimalMawRequirements |= UnlockingMap.PyramidKeysUnlock;
 			}
 
-			var gassMaskLocation = ItemLocations
+			var gassMaskLocation = itemLocations
 				.Where(l => !l.IsUsed 
 				            && !levelIdsToAvoid.Contains(l.Key.LevelId) 
 				            && l.Gate.CanBeOpenedWith(minimalMawRequirements))
@@ -197,14 +191,11 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			PutItemAtLocation(ItemInfoProvider.Get(EInventoryRelicType.AirMask), gassMaskLocation);
 		}
 
-		protected void FillRemainingChests(Random random)
+		protected void FillRemainingChests(Random random, ItemLocationMap itemLocations)
 		{
-			if (ProgressionOnly)
-				return;
+			var itemlist = GenerateItemList(itemLocations);
 
-			var itemlist = GenerateItemList();
-
-			var freeLocations = ItemLocations
+			var freeLocations = itemLocations
 				.Where(l => !l.IsUsed)
 				.ToList();
 
@@ -219,12 +210,12 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			} while (freeLocations.Count > 0);
 
-			FixProgressiveNonProgressionItemsInSameRoom(random);
+			FixProgressiveNonProgressionItemsInSameRoom(random, itemLocations);
 		}
 
-		void FixProgressiveNonProgressionItemsInSameRoom(Random random)
+		void FixProgressiveNonProgressionItemsInSameRoom(Random random, ItemLocationMap itemLocations)
 		{
-			var progressiveItemLocationsPerType = ItemLocations
+			var progressiveItemLocationsPerType = itemLocations
 					.Where(l => l.ItemInfo.Unlocks == R.None)
 					.Where(l => l.ItemInfo is PogRessiveItemInfo)
 					.GroupBy(l => l.ItemInfo);
@@ -238,16 +229,16 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 					if(roomkey == null)
 						roomkey = itemLocation.Key.ToRoomItemKey();
 					else if (roomkey == itemLocation.Key.ToRoomItemKey())
-						SwapItemWithOtherNonProgressionItemsNotInRoom(itemLocation, random);
+						SwapItemWithOtherNonProgressionItemsNotInRoom(random, itemLocation, itemLocations);
 				}
 			}
 		}
 
-		void SwapItemWithOtherNonProgressionItemsNotInRoom(ItemLocation itemLocation, Random random)
+		void SwapItemWithOtherNonProgressionItemsNotInRoom(Random random, ItemLocation itemLocation, ItemLocationMap itemLocations)
 		{
 			var roomToAvoid = itemLocation.Key.ToRoomItemKey();
 
-			var newItemLocation = ItemLocations
+			var newItemLocation = itemLocations
 				.Where(l => l.ItemInfo.Unlocks == R.None && l.Key.ToRoomItemKey() != roomToAvoid)
 				.SelectRandom(random);
 
@@ -258,14 +249,14 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			newItemLocation.SetItem(itemInfoToMove);
 		}
 
-		List<ItemInfo> GenerateItemList()
+		List<ItemInfo> GenerateItemList(ItemLocationMap itemLocations)
 		{
-			var alreadyAssingedItems = ItemLocations
+			var alreadyAssingedItems = itemLocations
 				.Where(l => l.IsUsed)
 				.Select(l => l.ItemInfo)
 				.ToArray();
 
-			var itemlist = ItemLocations
+			var itemlist = itemLocations
 				.Where(l => l.DefaultItem != null)
 				.Select(l => l.DefaultItem)
 				.Where(i => i.Identifier.LootType != LootType.ConstOrb

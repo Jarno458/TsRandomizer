@@ -14,14 +14,16 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		readonly Requirement unlockableRequirements; 
 		Requirement availableRequirements;
 
+		ItemLocationMap itemLocations;
+
 		List<ItemLocation> availableItemLocations;
 
 		readonly Dictionary<ItemInfo, ItemLocation> placedItems;
 		readonly Dictionary<ItemInfo, Gate> paths;
 
-		ForwardFillingItemLocationRandomizer(
-			Seed seed, ItemInfoProvider itemProvider, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly) 
-				: base(seed.Options, itemProvider, itemLocationMap, unlockingMap, progressionOnly)
+		public ForwardFillingItemLocationRandomizer(
+			Seed seed, ItemInfoProvider itemProvider, ItemUnlockingMap unlockingMap
+		) : base(seed, itemProvider, unlockingMap)
 		{
 			random = new Random((int)seed.Id);
 			availableRequirements = Requirement.None;
@@ -30,14 +32,16 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			paths = new Dictionary<ItemInfo, Gate>();
 		}
 
-		public static void AddRandomItemsToLocationMap(
-			Seed seed, ItemInfoProvider itemInfoProvider, ItemUnlockingMap unlockingMap, ItemLocationMap itemLocationMap, bool progressionOnly)
+		public override ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly)
 		{
-			new ForwardFillingItemLocationRandomizer(seed, itemInfoProvider, unlockingMap, itemLocationMap, progressionOnly)
-				.AddRandomItemsToLocationMap();
+			AddRandomItemsToLocationMap(isProgressionOnly);
+
+			itemLocations = new ItemLocationMap(ItemInfoProvider, UnlockingMap, Seed.Options);
+
+			return itemLocations;
 		}
 
-		void AddRandomItemsToLocationMap()
+		void AddRandomItemsToLocationMap(bool isProgressionOnly)
 		{
 			RecalculateAvailableItemLocations();
 			CalculateTutorial();
@@ -59,7 +63,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			foreach (var path in paths)
 				Console.Out.WriteLine($"Requirements For {path.Key}@{placedItems[path.Key]} -> {path.Value}");
 
-			FillRemainingChests(random);
+			if(!isProgressionOnly)
+				FillRemainingChests(random, itemLocations);
 		}
 
 		void CalculatePathChain(ItemInfo item, Requirement additionalRequirementsToAvoid)
@@ -155,7 +160,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		ItemLocation GetUnusedItemLocationThatDontRequire(Requirement requirements)
 		{
-			var locations = ItemLocations
+			var locations = itemLocations
 				.Where(l => !l.IsUsed && GateCanBeOpenedWithoutSuppliedRequirements(l.Gate, requirements));
 
 			return locations.SelectRandom(random);
@@ -205,19 +210,19 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.Where(orbType => orbType != EInventoryOrbType.Barrier); //To OP to give as starter item
 
 			var spellOrbType = spellOrbTypes.SelectRandom(random);
-			PutItemAtLocation(ItemInfoProvider.Get(spellOrbType, EOrbSlot.Spell), ItemLocations[ItemKey.TutorialSpellOrb]);
+			PutItemAtLocation(ItemInfoProvider.Get(spellOrbType, EOrbSlot.Spell), itemLocations[ItemKey.TutorialSpellOrb]);
 
 			orbTypes.Remove(EInventoryOrbType.Pink); //To annoying as each attack consumes aura power
 
 			var meleeOrbType = orbTypes.SelectRandom(random);
-			PutItemAtLocation(ItemInfoProvider.Get(meleeOrbType, EOrbSlot.Melee), ItemLocations[ItemKey.TutorialMeleeOrb]);
+			PutItemAtLocation(ItemInfoProvider.Get(meleeOrbType, EOrbSlot.Melee), itemLocations[ItemKey.TutorialMeleeOrb]);
 
 			RecalculateAvailableItemLocations();
 		}
 
 		void RecalculateAvailableItemLocations()
 		{
-			availableItemLocations = ItemLocations
+			availableItemLocations = itemLocations
 				.Where(l => !l.IsUsed && l.Gate.CanBeOpenedWith(availableRequirements))
 				.ToList();
 		}

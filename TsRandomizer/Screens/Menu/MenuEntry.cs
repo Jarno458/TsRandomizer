@@ -30,7 +30,7 @@ namespace TsRandomizer.Screens.Menu
 		public string Text
 		{
 			get => reflected.Text;
-			set => reflected.Text = value;
+			set => reflected.SetText(value);
 		}
 
 		public bool DoesDrawLargeShadow
@@ -49,6 +49,12 @@ namespace TsRandomizer.Screens.Menu
 		{
 			get => reflected.Description;
 			set => reflected.Description = value;
+		}
+
+		public Color BaseDrawColor
+		{
+			get => reflected.BaseDrawColor;
+			set => reflected.BaseDrawColor = value;
 		}
 
 		MenuEntry(object entry)

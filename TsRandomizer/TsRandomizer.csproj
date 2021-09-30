@@ -33,7 +33,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\TestVersions\SteamVerison\</OutputPath>
+    <OutputPath>..\..\TestVersions\DRMFreeVersion\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -72,6 +72,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Archipelago.MultiClient.Net">
+      <HintPath>..\lib\Archipelago.MultiClient.Net.dll</HintPath>
+    </Reference>
     <Reference Include="FNA">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
       <HintPath>~/.local/share/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
@@ -79,6 +82,10 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
@@ -86,8 +93,24 @@
       <HintPath>..\..\TestVersions\SteamVerison\Timespinner.exe</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="websocket-sharp">
+      <HintPath>..\lib\websocket-sharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
+    <Compile Include="Archipelago\ArchipelagoRemoteItem.cs" />
+    <Compile Include="Archipelago\ConnectionResult.cs" />
+    <Compile Include="Archipelago\DataCache.cs" />
+    <Compile Include="Archipelago\ReceivedItem.cs" />
+    <Compile Include="Archipelago\SlotDataParser.cs" />
+    <Compile Include="LevelObjects\Other\NightmareBoss.cs" />
+    <Compile Include="Randomisation\ExteralItemLocation.cs" />
+    <Compile Include="Archipelago\Log.cs" />
+    <Compile Include="Archipelago\Client.cs" />
+    <Compile Include="Archipelago\ItemMap.cs" />
+    <Compile Include="Archipelago\LocationMap.cs" />
+    <Compile Include="Archipelago\Overlay.cs" />
     <Compile Include="Localizer.cs" />
     <Compile Include="Drawables\IDrawable.cs" />
     <Compile Include="Drawables\SeedRepresentation.cs" />
@@ -136,6 +159,7 @@
     <Compile Include="LevelObjects\ItemManipulators\CutscenePrologue4.cs" />
     <Compile Include="LevelObjects\ItemManipulators\ItemDropPickup.cs" />
     <Compile Include="PlatformHelper.cs" />
+    <Compile Include="Randomisation\ItemPlacers\ArchipelagoItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemPlacers\FullRandomItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemPlacers\ItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemUnlockingMap.cs" />
@@ -147,6 +171,7 @@
     <Compile Include="IntermediateObjects\TriggerAfterLootDrop.cs" />
     <Compile Include="DeRandomizer.cs" />
     <Compile Include="FamiliarManager.cs" />
+    <Compile Include="Screens\ArchipelagoSelectionScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\MessageBox.cs" />
@@ -201,5 +226,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

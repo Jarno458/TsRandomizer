@@ -19,9 +19,10 @@ namespace TsRandomizer.Tests
 			var seed = new Seed(seedIndex, SeedOptions.None);
 			var unlockingMap = new ItemUnlockingMap(seed);
 			var itemProvider = new ItemInfoProvider(SeedOptions.None, unlockingMap);
-			var itemLocations = new ItemLocationMap(itemProvider, unlockingMap, SeedOptions.None);
 
-			FullRandomItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemProvider, unlockingMap, itemLocations, true);
+			var randomizer = new FullRandomItemLocationRandomizer(seed, itemProvider, unlockingMap);
+
+			var itemLocations = randomizer.GenerateItemLocationMap(true);
 
 			Assert.That(itemLocations[ItemKey.TutorialMeleeOrb].ItemInfo.Identifier.LootType, Is.EqualTo(LootType.Orb));
 			Assert.That(itemLocations[ItemKey.TutorialMeleeOrb].ItemInfo.Identifier.OrbSlot, Is.EqualTo(EOrbSlot.Melee));

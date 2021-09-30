@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection;
+using Timespinner.Core.Localization;
+using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 
 namespace TsRandomizer
@@ -24,6 +27,23 @@ namespace TsRandomizer
 			{
 				result = null;
 				return false;
+			}
+		}
+
+		public void OverrideKey(string key, string value)
+		{
+			try
+			{
+				var stringLibrary = (StringLibrary) Type
+					.GetField("_currentLibrary", BindingFlags.Static | BindingFlags.NonPublic)
+					.GetValue(null);
+
+				var stringInstances = (Dictionary<string, StringInstance>) stringLibrary.AsDynamic()._stringInstances;
+
+				stringInstances[key].Text = value;
+			}
+			catch
+			{
 			}
 		}
 	}

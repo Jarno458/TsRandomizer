@@ -75,9 +75,11 @@ The item tracker features a few options:
 
 # Todo
 ##### Things i plan on doing in the future
-* Extend names of item locations in the spoiler log (with help from community on discord)
+* Archipelago TODO:
+** Make Uuid unique per save
+** Extend names of item locations in the spoiler log (with help from community on discord)
+** Proper handling on failure to connect
 * Implement skin selection
-* Archipelago multi world support!!!!
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemented

@@ -6,7 +6,6 @@ namespace TsRandomizer.Randomisation
 	{
 		public static ItemKey TutorialMeleeOrb = new ItemKey(0, 4, 0, 0);
 		public static ItemKey TutorialSpellOrb = new ItemKey(0, 4, 264, 192);
-		public static ItemKey TalariaSeedOption = new ItemKey(0, 0, 0, 0);
 
 		public readonly int X;
 		public readonly int Y;

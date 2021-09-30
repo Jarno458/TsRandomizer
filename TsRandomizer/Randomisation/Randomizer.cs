@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation.ItemPlacers;
 
@@ -8,27 +9,32 @@ namespace TsRandomizer.Randomisation
 {
 	class Randomizer
 	{
-		public static ItemLocationMap Randomize(Seed seed, FillingMethod fillingMethod, bool progressionOnly = false)
+		public static ItemLocationMap Randomize(Seed seed, FillingMethod fillingMethod, GameSave saveGame, bool progressionOnly = false)
 		{
 			var unlockingMap = new ItemUnlockingMap(seed);
 			var itemInfoProvider = new ItemInfoProvider(seed.Options, unlockingMap);
-			var itemLocations = new ItemLocationMap(itemInfoProvider, unlockingMap, seed.Options);
+
+			ItemLocationRandomizer randomizer;
 
 			switch (fillingMethod)
 			{
 				case FillingMethod.Forward:
-					ForwardFillingItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemInfoProvider, unlockingMap, itemLocations, progressionOnly);
+					randomizer = new ForwardFillingItemLocationRandomizer(seed, itemInfoProvider, unlockingMap);
 					break;
 
 				case FillingMethod.Random:
-					FullRandomItemLocationRandomizer.AddRandomItemsToLocationMap(seed, itemInfoProvider, unlockingMap, itemLocations, progressionOnly);
+					randomizer = new FullRandomItemLocationRandomizer(seed, itemInfoProvider, unlockingMap);
+					break;
+
+				case FillingMethod.Archipelago:
+					randomizer = new ArchipelagoItemLocationRandomizer(seed, itemInfoProvider, unlockingMap, saveGame);
 					break;
 
 				default:
 					throw new NotImplementedException($"filling method {fillingMethod} is not implemented");
 			}
 
-			return itemLocations;
+			return randomizer.GenerateItemLocationMap(progressionOnly);
 		}
 
 		public static GenerationResult Generate(FillingMethod fillingMethod, SeedOptions options)
@@ -60,7 +66,7 @@ namespace TsRandomizer.Randomisation
 		}
 
 		public static bool IsBeatable(Seed seed, FillingMethod fillingMethod) =>
-			Randomize(seed, fillingMethod, true).IsBeatable();
+			Randomize(seed, fillingMethod, null, true).IsBeatable();
 	}
 
 	class GenerationResult : IEqualityComparer<GenerationResult>
@@ -88,7 +94,7 @@ namespace TsRandomizer.Randomisation
 	enum FillingMethod
 	{
 		Forward,
-		Assumption,
-		Random
+		Random,
+		Archipelago
 	}
 }

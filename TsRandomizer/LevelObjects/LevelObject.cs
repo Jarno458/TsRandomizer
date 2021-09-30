@@ -93,6 +93,8 @@ namespace TsRandomizer.LevelObjects
 		{
 			if (roomChanged)
 				OnChangeRoom(level, itemLocations, seedOptions);
+			else
+				itemLocations.Update(level);
 
 			var levelReflected = level.AsDynamic();
 			var newNonItemObjects = ((List<Mobile>)levelReflected._newObjects)

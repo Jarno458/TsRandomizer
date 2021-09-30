@@ -9,9 +9,36 @@ namespace TsRandomizer.Extensions
 	{
 		static readonly Type ToasterType = TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.InGame.EToastType");
 
-		internal static void RequestToastPopupForStats(this Level level, ItemInfo itemInfo)
+		public static void ShowItemAwardPopup(this Level level, ItemIdentifier itemIdentifier)
 		{
-			switch (itemInfo.Identifier.Stat)
+			switch (itemIdentifier.LootType)
+			{
+				case LootType.ConstOrb:
+					level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, itemIdentifier.OrbType, itemIdentifier.OrbSlot));
+					break;
+				case LootType.ConstFamiliar:
+					level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, itemIdentifier.Familiar));
+					break;
+				case LootType.ConstRelic:
+					level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, itemIdentifier.Relic));
+					break;
+				case LootType.ConstEquipment:
+					level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, itemIdentifier.Enquipment));
+					break;
+				case LootType.ConstUseItem:
+					level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, itemIdentifier.UseItem, 1));
+					break;
+				case LootType.ConstStat:
+					RequestToastPopupForStats(level, itemIdentifier);
+					break;
+				default:
+					throw new NotImplementedException($"RelicOrOrbGetPopup is not implemented for LootType {itemIdentifier.LootType}");
+			}
+		}
+
+		internal static void RequestToastPopupForStats(this Level level, ItemIdentifier itemIdentifier)
+		{
+			switch (itemIdentifier.Stat)
 			{
 				case EItemType.MaxHP:
 					level.AsDynamic().RequestToastPopup(ToasterType.GetEnumValue("Health"), 0);

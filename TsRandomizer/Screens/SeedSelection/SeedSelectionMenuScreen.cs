@@ -26,10 +26,10 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		readonly GameDifficultyMenuScreen difficultyMenu;
 
+		bool IsUsedAsSeedSelectionMenu => difficultyMenu != null;
+
 		bool forceSeed;
 		MenuEntry okButton;
-
-		bool IsUsedAsSeedSelectionMenu => difficultyMenu != null;
 
 		public static GameScreen Create(ScreenManager screenManager)
 		{
@@ -38,7 +38,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			return (GameScreen)Activator.CreateInstance(PasswordMenuScreenType, null, screenManager.Reflected.GCM, (Action)Noop);
 		}
 
-		public SeedSelectionMenuScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
+		public SeedSelectionMenuScreen(ScreenManager screenManager, GameScreen passwordScreen) : base(screenManager, passwordScreen)
 		{
 			difficultyMenu = screenManager.FirstOrDefault<GameDifficultyMenuScreen>();
 		}
@@ -142,7 +142,7 @@ namespace TsRandomizer.Screens.SeedSelection
 				return;
 			}
 
-			difficultyMenu.SetSeed(seed);
+			difficultyMenu.SetSeedAndFillingMethod(seed, FillingMethod.Random);
 
 			Dynamic.OnCancel(playerIndex);
 		}
