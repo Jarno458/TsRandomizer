@@ -2,6 +2,8 @@
 using System.Linq;
 using Timespinner.GameAbstractions.GameObjects;
 using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.HUD;
+using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -34,11 +36,15 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (ItemInfo == null || hasReplacedItemScript)
 				return;
 
-			animationIndex = ItemInfo.AnimationIndex;
-
-			// ReSharper disable once SimplifyLinqExpression
-			if (!Scripts.Any(s => s.AsDynamic().ScriptType == EScriptType.RelicOrbGetToast))
+			var dialogScript = Scripts.FirstOrDefault(s => s.AsDynamic().ScriptType == EScriptType.Dialogue);
+			if (dialogScript == null || ((DialogueBox)dialogScript.AsDynamic().Dialogue).AsDynamic()._speakerEnglish != "Lunais")
 				return;
+
+			var rewardItemScript = Scripts.FirstOrDefault(s => s.AsDynamic().ScriptType == EScriptType.RelicOrbGetToast);
+			if (rewardItemScript == null || rewardItemScript.AsDynamic().ItemToGive != (int)EInventoryRelicType.ScienceKeycardB)
+				return;
+
+			animationIndex = ItemInfo.AnimationIndex;
 
 			Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
 

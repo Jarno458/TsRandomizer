@@ -12,7 +12,6 @@ namespace TsRandomizer.Randomisation
 			SetItem(item);
 
 			IsPickedUp = true;
-			OnPickup?.Invoke(this);
 		}
 
 		public override void SetPickedUp()
