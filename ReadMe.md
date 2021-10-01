@@ -76,9 +76,14 @@ The item tracker features a few options:
 # Todo
 ##### Things i plan on doing in the future
 * Archipelago TODO:
-** Make Uuid unique per save
-** Extend names of item locations in the spoiler log (with help from community on discord)
-** Proper handling on failure to connect
+  * Make Uuid unique per save
+  * Extend names of item locations in the spoiler log (with help from community on discord)
+  * Proper handling on failure to connect
+  * Change logic for items to store received item index on the same, and keeping a full list of received items on server client
+  * Fix bugs
+    * Incorrect pyramid warp is selected by the client
+    * Pyramid keys do not seem to properly be routed in as they can be in an unbeatable location
+    * Killing Kitty boss and reloading a save, and kill him again will spawn no item and thus the doors do not open
 * Implement skin selection
 
 # Ideas
