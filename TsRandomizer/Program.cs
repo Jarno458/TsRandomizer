@@ -11,7 +11,8 @@ namespace TsRandomizer
 	{
 		// ReSharper disable InconsistentNaming
 		const string Win_Steam_V1_033 = "B7A81613D3B3933FB1CBF5D96E1198CD";
-		const string Win_DrmFree_V1_031 = "F207565C0E364F749CCE02E4F46CF027";
+		const string Win_DrmFree_V1_033 = "F207565C0E364F749CCE02E4F46CF027";
+		const string Win_DrmFree_GOG_Galaxy_V1_033 = "F7CDB06A80180A2E494B26438AD9362C";
 		// ReSharper restore InconsistentNaming
 
 		public static bool IsSteam;
@@ -27,7 +28,8 @@ namespace TsRandomizer
 					IsSteam = true;
 					break;
 
-				case Win_DrmFree_V1_031:
+				case Win_DrmFree_V1_033:
+				case Win_DrmFree_GOG_Galaxy_V1_033:
 					IsSteam = false;
 					break;
 
