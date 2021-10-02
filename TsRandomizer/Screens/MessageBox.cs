@@ -22,6 +22,11 @@ namespace TsRandomizer.Screens
 			Screen = screen;
 		}
 
+		public static MessageBox Create(ScreenManager screenManager, string text)
+		{
+			return Create(screenManager, text, _ => {});
+		}
+
 		public static MessageBox Create(ScreenManager screenManager, string text, Action<PlayerIndex> handler)
 		{
 			return Create(screenManager, text, (o, args) => handler(args.AsDynamic().PlayerIndex));

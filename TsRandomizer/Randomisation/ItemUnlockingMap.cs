@@ -106,54 +106,13 @@ namespace TsRandomizer.Randomisation
 			unlockingSpecification.Unlocks = selectedGate.Gate;
 		}
 
-		public void SetTeleporterPickupAction(string gate)
+		public void SetTeleporterPickupAction(R requirement)
 		{
+			var selectedGate = PresentTeleporterGates
+				.Union(PastTeleporterGates)
+				.First(g => g.Gate == requirement);
+
 			var unlockingSpecification = unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.PyramidsKey)];
-
-			TeleporterGate selectedGate = null;
-
-			switch (gate)
-			{
-				case "GateKittyBoss":
-					selectedGate = PresentTeleporterGates.First(g => g.Gate == R.GateKittyBoss);
-					break;
-				case "GateLeftLibrary":
-					selectedGate = PresentTeleporterGates.First(g => g.Gate == R.GateLeftLibrary);
-					break;
-				case "GateMilitairyGate":
-					selectedGate = PresentTeleporterGates.First(g => g.Gate == R.GateMilitairyGate);
-					break;
-				case "GateSealedCaves":
-					selectedGate = PresentTeleporterGates.First(g => g.Gate == R.GateSealedCaves);
-					break;
-				case "GateSealedSirensCave":
-					selectedGate = PresentTeleporterGates.First(g => g.Gate == R.GateSealedSirensCave);
-					break;
-				case "GateLakeDesolation":
-					selectedGate = PresentTeleporterGates.First(g => g.Gate == R.GateLakeDesolation);
-					break;
-				case "GateLakeSirineRight":
-					selectedGate = PastTeleporterGates.First(g => g.Gate == R.GateLakeSirineRight);
-					break;
-				case "GateAccessToPast":
-					selectedGate = PastTeleporterGates.First(g => g.Gate == R.GateAccessToPast);
-					break;
-				case "GateCastleRamparts":
-					selectedGate = PastTeleporterGates.First(g => g.Gate == R.GateCastleRamparts);
-					break;
-				case "GateCastleKeep":
-					selectedGate = PastTeleporterGates.First(g => g.Gate == R.GateCastleKeep);
-					break;
-				case "GateRoyalTowers":
-					selectedGate = PastTeleporterGates.First(g => g.Gate == R.GateRoyalTowers);
-					break;
-				case "GateMaw":
-					selectedGate = PastTeleporterGates.First(g => g.Gate == R.GateMaw);
-					break;
-				case "GateCavesOfBanishment":
-					selectedGate = PastTeleporterGates.First(g => g.Gate == R.GateCavesOfBanishment);
-					break;
-			}
 
 			unlockingSpecification.OnPickup = level => UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
 			unlockingSpecification.Unlocks = selectedGate.Gate;

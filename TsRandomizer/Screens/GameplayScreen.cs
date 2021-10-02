@@ -1,4 +1,5 @@
 ﻿using System;
+using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -7,6 +8,7 @@ using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
+using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.ItemTracker;
@@ -48,12 +50,14 @@ namespace TsRandomizer.Screens
 
 			seedOptions = seed.Value.Options;
 
-			ItemLocations = Randomizer.Randomize(seed.Value, fillingMethod, Level.GameSave);
-
-			if (ItemLocations == null)
+			try
 			{
-				//Send back to main menu
-				throw new NotImplementedException("Cant handle failure of creation of itemmap");
+				ItemLocations = Randomizer.Randomize(seed.Value, fillingMethod, Level.GameSave);
+			}
+			catch (ConnectionFailedException e)
+			{
+				SendBackToMainMenu(e.Message);
+				return;
 			}
 
 			ItemLocations.Initialize(Level.GameSave);
@@ -63,6 +67,28 @@ namespace TsRandomizer.Screens
 			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed.Value);
 
 			ItemManipulator.Initialize(ItemLocations);
+
+			if(fillingMethod == FillingMethod.Archipelago)
+				Client.SetStatus(ArchipelagoClientState.ClientPlaying);
+		}
+
+		void SendBackToMainMenu(string message)
+		{
+			ScreenManager.Jukebox.FadeOutSong(0.5f);
+
+			var LoadingScreenLoadMethod = TimeSpinnerType
+				.Get("Timespinner.GameStateManagement.Screens.BaseClasses.LoadingScreen")
+				.GetPublicStaticMethod("Load");
+
+			var titleBackgroundScreen = (GameScreen)TimeSpinnerType
+				.Get("Timespinner.GameStateManagement.Screens.MainMenu.TitleBackgroundScreen")
+				.CreateInstance(false, true);
+
+			LoadingScreenLoadMethod.InvokeStatic(ScreenManager, false, new PlayerIndex?(), new [] { titleBackgroundScreen });
+
+			var messageBox = MessageBox.Create(ScreenManager, message);
+
+			ScreenManager.AddScreen(messageBox.Screen, null);
 		}
 
 		public override void Update(GameTime gameTime, InputState input)

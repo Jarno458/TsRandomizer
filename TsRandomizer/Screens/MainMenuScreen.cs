@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
+using TsRandomizer.Archipelago;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 
@@ -16,6 +17,8 @@ namespace TsRandomizer.Screens
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
+			Client.Disconnect();
+
 			var randomizerVersion = Assembly.GetExecutingAssembly().GetName().Version;
 			var newVersionString = $"TsRandomizer: v{randomizerVersion}, Timespinner: {Dynamic._versionNumber}";
 

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using Newtonsoft.Json;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Archipelago;
+using TsRandomizer.Extensions;
 
 namespace TsRandomizer.Randomisation.ItemPlacers
 {
@@ -14,6 +15,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		public const string GameSaveServerKey = "ArchipelagoServer";
 		public const string GameSaveUserKey = "ArchipelagoUser";
 		public const string GameSavePasswordKey = "ArchipelagoPassword";
+		public const string GameSaveConnectionId = "ArchipelagoConnectionId";
+		public const string GameSavePyramidsKeysUnlock = "ArchipelagoPyramidsKeysUnlock";
+		public const string GameSavePersonalItemIds = "ArchipelagoPersonalItemIds";
 
 		readonly GameSave saveGame;
 
@@ -37,38 +41,40 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			saveGame.DataKeyStrings.TryGetValue(GameSaveServerKey, out var server);
 			saveGame.DataKeyStrings.TryGetValue(GameSaveUserKey, out var user);
 			saveGame.DataKeyStrings.TryGetValue(GameSavePasswordKey, out var password);
+			saveGame.DataKeyStrings.TryGetValue(GameSaveConnectionId, out var connectionId);
+			saveGame.DataKeyStrings.TryParsePersonalItems(GameSavePersonalItemIds, out var personalLocations);
+			saveGame.DataKeyStrings.TryParsePyramidKeysUnlock(GameSavePyramidsKeysUnlock, out var pyramidKeysUnlock);
 
-			var result = Client.Connect(server, user, password);
+			var result = Client.Connect(server, user, password, GetCheckedLocations, connectionId);
+
 			if (!result.Success)
-				return null; //handle correctly
+				throw new ConnectionFailedException((ConnectionFailed)result, server, user, password);
 
 			itemLocations = new ArchipelagoItemLocationMap(ItemInfoProvider, UnlockingMap, Seed.Options);
-
-			Client.ItemLocations = itemLocations;
 
 			if (isProgressionOnly)
 				return itemLocations;
 
-			var connected = (Connected)Client.CachedConnectionResult;
-
-			UnlockingMap.SetTeleporterPickupAction((string)connected.SlotData["PyramidKeysGate"]);
-
-			itemLocations.CheckedLocations =  connected.CheckedLocations;
-
-			var uncheckedLocations = new HashSet<ItemKey>(connected.UncheckedLocations);
+			UnlockingMap.SetTeleporterPickupAction(pyramidKeysUnlock);
 
 			foreach (var itemLocation in itemLocations)
 			{
-				if (connected.PersonalLocations.TryGetValue(itemLocation.Key, out var personalItemInfo))
+				if (personalLocations.TryGetValue(itemLocation.Key, out var personalItemInfo))
 					itemLocation.SetItem(new SingleItemInfo(UnlockingMap, personalItemInfo)); //avoiding item provider as we cant handle progressive items atm)
 				else
 					itemLocation.SetItem(new ArchipelagoRemoteItem());
 
-				if (uncheckedLocations.Contains(itemLocation.Key))
-					itemLocation.OnPickup = OnItemLocationChecked;
+				itemLocation.OnPickup = OnItemLocationChecked;
 			}
 
 			return itemLocations;
+		}
+
+		IEnumerable<ItemKey> GetCheckedLocations()
+		{
+			return itemLocations
+				.Where(l => l.IsPickedUp)
+				.Select(l => l.Key);
 		}
 
 		void OnItemLocationChecked(ItemLocation itemLocation)
@@ -80,7 +86,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		void RemoveRemoteItemsFromInventory()
 		{
-			itemLocations.GameSave.Inventory.UseItemInventory.RemoveItem((int)EInventoryUseItemType.MagicMarbles, 9);
+			saveGame.Inventory.UseItemInventory.RemoveItem((int)EInventoryUseItemType.MagicMarbles, 9);
 		}
 
 		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)

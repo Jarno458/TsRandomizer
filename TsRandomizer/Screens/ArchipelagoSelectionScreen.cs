@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Newtonsoft.Json;
 using SDL2;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
@@ -19,7 +19,7 @@ namespace TsRandomizer.Screens
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.OptionsMenuScreen")]
 	class ArchipelagoSelectionScreen : Screen
 	{
-		const string ServerPrefix = "Server: ws://";
+		const string ServerPrefix = "Server: ";
 		const string UserPrefix = "User: ";
 		const string PasswordPrefix = "Password: ";
 
@@ -70,7 +70,7 @@ namespace TsRandomizer.Screens
 			if (!IsUsedAsArchipelagoSelectionMenu)
 				return;
 
-			Dynamic._menuTitle = "Enter server url";
+			Dynamic._menuTitle = "Enter Credentails";
 
 			serverMenuEntry = MenuEntry.Create(ServerPrefix, _ => { });
 			userMenuEntry = MenuEntry.Create(UserPrefix, _ => { });
@@ -94,14 +94,14 @@ namespace TsRandomizer.Screens
 			if (selectedIndex > PasswordIndex)
 				return;
 
-			if (input.IsControllHold() && input.IsNewKeyPress(Keys.V, null, out _) && SDL.SDL_HasClipboardText() == SDL.SDL_bool.SDL_TRUE)
+			if (input.IsControllHold() && input.IsNewKeyPress(Keys.V) && SDL.SDL_HasClipboardText() == SDL.SDL_bool.SDL_TRUE)
 				values[selectedIndex] += SDL.SDL_GetClipboardText().Trim();
-			else if (input.IsNewKeyPress(Keys.Back, null, out _))
+			else if (input.IsNewKeyPress(Keys.Back))
 			{
 				if (values[selectedIndex].Length > 0)
 					values[selectedIndex] = values[selectedIndex].Remove(values[selectedIndex].Length - 1);
 			}
-			else if (input.IsNewKeyPress(Keys.Enter, null, out _))
+			else if (input.IsNewKeyPress(Keys.Enter))
 			{
 				//if (selectedIndex < 3)
 				//	SetSelectedMenuItemByIndex(selectedIndex++);
@@ -135,20 +135,72 @@ namespace TsRandomizer.Screens
 			}
 		}
 
+		void ChangeAvailableButtons(params MenuEntry[] newMenuEntries)
+		{
+			foreach (var entry in newMenuEntries)
+			{
+				entry.IsCenterAligned = false;
+				entry.DoesDrawLargeShadow = false;
+			}
+
+			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = newMenuEntries
+				.Select(b => b.AsTimeSpinnerMenuEntry())
+				.ToList(MainMenuEntryType);
+		}
+
+		protected void SetSelectedMenuItemByIndex(int index)
+		{
+			((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex = index;
+			Dynamic.OnSelectedEntryChanged(index);
+		}
+
+		void OnConnectEntrySelected(PlayerIndex playerIndex)
+		{
+			var password = string.IsNullOrEmpty(values[UserIndex]) ? null : values[UserIndex];
+			var result = Client.Connect($"ws://{values[ServerIndex]}", values[UserIndex], password, () => null, null);
+			if (!result.Success)
+			{
+				var failure = (ConnectionFailed)result;
+
+				var messageBox = MessageBox.Create(ScreenManager, $"Connecting to server failed: {failure.ErrorMessage}");
+
+				ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
+			}
+			else
+			{
+				var connected = (Connected)result;
+
+				difficultyMenu.SetSeedAndFillingMethod(connected.Seed, FillingMethod.Archipelago);
+				difficultyMenu.HookOnDifficultySelected(saveGame => {
+					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = $"ws://{values[ServerIndex]}"; 
+					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = values[UserIndex]; 
+					if(!string.IsNullOrEmpty(values[PasswordIndex]))
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePasswordKey] = values[PasswordIndex];
+					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveConnectionId] = connected.ConnectionId;
+					saveGame.DataKeyInts[ArchipelagoItemLocationMap.GameItemIndex] = 0;
+					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePyramidsKeysUnlock] = connected.PyramidKeysGate.ToString();
+					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePersonalItemIds] =
+						JsonConvert.SerializeObject(connected.PersonalLocations);
+				});
+
+				Dynamic.OnCancel(playerIndex);
+			}
+		}
+
 		public static string GetInputFromKeyboard(InputState input)
 		{
 			Keys[] keys = input.CurrentKeyboardStates[0].GetPressedKeys();
 
-			bool shift = input.CurrentKeyboardStates[0].IsKeyDown(Keys.LeftShift) 
-			             || input.CurrentKeyboardStates[0].IsKeyDown(Keys.RightShift);
+			bool shift = input.CurrentKeyboardStates[0].IsKeyDown(Keys.LeftShift)
+						 || input.CurrentKeyboardStates[0].IsKeyDown(Keys.RightShift);
 
 			var text = "";
 
 			foreach (var pressedKey in keys)
 			{
-				if (!input.IsNewKeyPress(pressedKey, null, out _))
+				if (!input.IsNewKeyPress(pressedKey))
 					continue;
-	            
+
 				switch (pressedKey)
 				{
 					//Alphabet keys
@@ -220,58 +272,6 @@ namespace TsRandomizer.Screens
 			}
 
 			return text;
-		}
-
-		void ChangeAvailableButtons(params MenuEntry[] newMenuEntries)
-		{
-			foreach (var entry in newMenuEntries)
-			{
-				entry.IsCenterAligned = false;
-				entry.DoesDrawLargeShadow = false;
-			}
-
-			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = newMenuEntries
-				.Select(b => b.AsTimeSpinnerMenuEntry())
-				.ToList(MainMenuEntryType);
-		}
-
-		protected void SetSelectedMenuItemByIndex(int index)
-		{
-			((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex = index;
-			Dynamic.OnSelectedEntryChanged(index);
-		}
-
-		void OnConnectEntrySelected(PlayerIndex playerIndex)
-		{
-			var password = string.IsNullOrEmpty(values[UserIndex]) ? null : values[UserIndex];
-			var result = Client.Connect($"ws://{values[ServerIndex]}", values[UserIndex], password);
-			if (!result.Success)
-			{
-				var failure = (ConnectionFailed)result;
-
-				var messageBox = MessageBox.Create(ScreenManager, $"Connecting to server failed: {failure.ErrorMessage}" , _ => { });
-
-				ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
-			}
-			else
-			{
-				var connected = (Connected)result;
-
-				var seed = SlotDataParser.GetSeed(connected);
-
-				difficultyMenu.SetSeedAndFillingMethod(seed, FillingMethod.Archipelago);
-				difficultyMenu.HookOnDifficultySelected(saveGame => {
-					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = $"ws://{values[ServerIndex]}"; 
-					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = values[UserIndex]; 
-
-					if(!string.IsNullOrEmpty(values[PasswordIndex]))
-						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePasswordKey] = values[PasswordIndex];
-
-					Client.SetStatus(ArchipelagoClientState.ClientPlaying);
-				});
-
-				Dynamic.OnCancel(playerIndex);
-			}
 		}
 	}
 }

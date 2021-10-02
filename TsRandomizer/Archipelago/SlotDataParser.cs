@@ -1,10 +1,52 @@
-﻿namespace TsRandomizer.Archipelago
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+using Archipelago.MultiClient.Net.Packets;
+using Newtonsoft.Json.Linq;
+using TsRandomizer.Randomisation;
+
+namespace TsRandomizer.Archipelago
 {
 	class SlotDataParser
 	{
-		public static Seed GetSeed(Connected connected)
+		readonly ConnectedPacket connectedPacket;
+		readonly Dictionary<string, object> slotData;
+
+		public SlotDataParser(ConnectedPacket connectedPacket)
 		{
-			var slotData = connected.SlotData;
+			this.connectedPacket = connectedPacket;
+			slotData = connectedPacket.SlotData;
+		}
+
+		public Requirement GetPyramidKeysGate()
+		{
+			return GetPyramidKeysGate((string) slotData["PyramidKeysGate"]);
+		}
+
+		public static Requirement GetPyramidKeysGate(string pyramidKeysGate)
+		{
+			return (Requirement)typeof(Requirement)
+				.GetField(pyramidKeysGate, BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+				.GetValue(null);
+		}
+
+		public Seed GetSeed()
+		{
+			bool IsEnabled(object o)
+			{
+				if (o is bool b)
+					return b;
+				if (o is string s)
+					return bool.Parse(s);
+				if (o is int i)
+					return i > 0;
+				if (o is long l)
+					return l > 0;
+
+				return false;
+			}
 
 			uint flags = 0;
 
@@ -32,18 +74,55 @@
 			return new Seed(0, new SeedOptions(flags));
 		}
 
-		static bool IsEnabled(object o)
+		public Dictionary<int, int> GetPersonalItems()
 		{
-			if (o is bool b)
-				return b;
-			if (o is string s)
-				return bool.Parse(s);
-			if (o is int i)
-				return i > 0;
-			if (o is long l)
-				return l > 0;
+			return slotData.TryGetValue("PersonalItems", out var personalItemsDictionary)
+				? ((JObject)personalItemsDictionary).ToObject<Dictionary<int, int>>()
+				: GetPersonalItemsByLocationScouts();
+		}
 
-			return false;
+		Dictionary<int, int> GetPersonalItemsByLocationScouts()
+		{
+			var items = new Dictionary<int, int>();
+
+			RequestAllItems();
+
+			Client.HasItemLocationInfo = false;
+			Client.LocationScoutResult = null;
+
+			var connectedStartedTime = DateTime.UtcNow;
+
+			while (!Client.HasItemLocationInfo)
+			{
+				if (DateTime.UtcNow - connectedStartedTime > TimeSpan.FromSeconds(Client.ConnectionTimeoutInSeconds))
+					return null;
+
+				Thread.Sleep(100);
+			}
+
+			if (Client.LocationScoutResult == null)
+				throw new Exception("Failed to retreive personal items");
+
+			foreach (var locationInfo in Client.LocationScoutResult.Locations)
+			{
+				if (locationInfo.Player != connectedPacket.Slot)
+					continue;
+
+				items.Add(locationInfo.Location, locationInfo.Item);
+			}
+
+			return items;
+		}
+
+		void RequestAllItems()
+		{
+			var peekAllNonCheckedItems = new LocationScoutsPacket
+			{
+				Locations = connectedPacket.MissingChecks
+					.Concat(connectedPacket.ItemsChecked).ToList()
+			};
+
+			Client.SendPacket(peekAllNonCheckedItems);
 		}
 	}
 }

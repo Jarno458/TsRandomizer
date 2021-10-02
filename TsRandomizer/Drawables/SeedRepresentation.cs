@@ -64,7 +64,10 @@ namespace TsRandomizer.Drawables
 
 			if (ShowSeedId)
 			{
-				DrawSeedString(spriteBatch, seed.Value.ToString());
+				if (seed.Value.Id == 0 && seed.Value.Options.Flags != 0)
+					DrawSeedString(spriteBatch, "Archipelago", Color.Yellow);
+				else
+					DrawSeedString(spriteBatch, seed.Value.ToString());
 			}
 			else
 			{

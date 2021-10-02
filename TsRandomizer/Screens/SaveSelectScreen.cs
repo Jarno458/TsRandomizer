@@ -261,7 +261,7 @@ namespace TsRandomizer.Screens
 
 			if (fillingMethod == FillingMethod.Archipelago)
 			{
-				var messageBox = MessageBox.Create(ScreenManager, "Not supported for Archipelago based seed", _ => { });
+				var messageBox = MessageBox.Create(ScreenManager, "Not supported for Archipelago based seed");
 
 				ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
 

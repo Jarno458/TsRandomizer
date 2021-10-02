@@ -8,6 +8,7 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using Microsoft.Xna.Framework;
+using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 
@@ -29,23 +30,23 @@ namespace TsRandomizer.Archipelago
 
 		public static volatile int Slot = -1;
 
-		static ConcurrentQueue<ReceivedItem> receivedItemsQueue = new ConcurrentQueue<ReceivedItem>();
-
-		static int receivedItemIndex;
+		static ConcurrentDictionary<int, ItemIdentifier> receivedItems = new ConcurrentDictionary<int, ItemIdentifier>();
 
 		public static bool IsConnected;
-
-		public static ItemLocationMap ItemLocations;
 
 		static string serverUrl;
 		static string userName;
 		static string password;
+		static string uuid;
+		static Func<IEnumerable<ItemKey>> getCheckedLocations;
 
 		public static ConnectionResult CachedConnectionResult;
 
-		public static ConnectionResult Connect(string server, string user, string pass)
+		public static ConnectionResult Connect(
+			string server, string user, string pass, 
+			Func<IEnumerable<ItemKey>> getCheckedLocationsCallback, string connectionId)
 		{
-			if (IsConnected)
+			if (IsConnected && session.Connected)
 			{
 				if (serverUrl == server && userName == user && password == pass)
 					return CachedConnectionResult;
@@ -56,6 +57,8 @@ namespace TsRandomizer.Archipelago
 			serverUrl = server;
 			userName = user;
 			password = pass;
+			uuid = connectionId ?? Guid.NewGuid().ToString("N");
+			getCheckedLocations = getCheckedLocationsCallback;
 			
 			session = new ArchipelagoSession(serverUrl);
 			session.PacketReceived += PackacedReceived;
@@ -93,7 +96,7 @@ namespace TsRandomizer.Archipelago
 			{
 				IsConnected = true;
 
-				CachedConnectionResult = new Connected(success);
+				CachedConnectionResult = new Connected(success, uuid);
 				return CachedConnectionResult;
 			}
 
@@ -107,27 +110,31 @@ namespace TsRandomizer.Archipelago
 		{
 			session?.DisconnectAsync();
 
-			receivedItemIndex = 0;
+			serverUrl = null;
+			userName = null;
+			password = null;
+			uuid = null;
+
 			Slot = -1;
 
 			IsConnected = false;
 
 			chache = new DataCache();
-			receivedItemsQueue = new ConcurrentQueue<ReceivedItem>();
+			receivedItems = new ConcurrentDictionary<int, ItemIdentifier>();
 
 			hasConnectionResult = false;
 			HasItemLocationInfo = false;
 
-			ItemLocations = null;
 			session = null;
 
 			CachedConnectionResult = null;
 		}
 
-		public static IEnumerable<ReceivedItem> GetReceivedItems()
+		public static ItemIdentifier GetNextItem(int currentIndex)
 		{
-			while(receivedItemsQueue.TryDequeue(out var itemIdentifier))
-				yield return itemIdentifier;
+			return receivedItems.Count > currentIndex 
+				? receivedItems[currentIndex + 1] 
+				: null;
 		}
 
 		public static void SetStatus(ArchipelagoClientState status)
@@ -170,7 +177,7 @@ namespace TsRandomizer.Archipelago
 				Name = userName,
 				Password = password,
 				Version = new Version(0, 1, 8),
-				Uuid = "297802A3-63F5-433C-A200-11D03C870B56", //TODO Fixme, should be unique per save
+				Uuid = uuid,
 				Tags = new List<string>(0)
 			};
 
@@ -216,30 +223,29 @@ namespace TsRandomizer.Archipelago
 
 		static void OnReceivedItemsPacketReceived(ReceivedItemsPacket receivedItemsPacket)
 		{
-			if (receivedItemsPacket.Index != receivedItemIndex)
-			{
-				receivedItemIndex = 0;
+			if (receivedItemsPacket.Index != receivedItems.Count)
 				ReSync();
-			}
 			else
-			{
-				receivedItemIndex += receivedItemsPacket.Items.Count;
-			}
-
-			foreach (var item in receivedItemsPacket.Items)
-				receivedItemsQueue.Enqueue(
-					new ReceivedItem
-					{
-						PlayerFrom = item.Player,
-						ItemIdentifier = ItemMap.GetItemIdentifier(item.Item)
-					});
+				foreach (var item in receivedItemsPacket.Items)
+					receivedItems.TryAdd(receivedItems.Count + 1, ItemMap.GetItemIdentifier(item.Item));
 		}
 
 		static void ReSync()
 		{
-			Interlocked.Exchange(ref receivedItemsQueue, new ConcurrentQueue<ReceivedItem>());
+			var checkedLocations = getCheckedLocations();
+			if (checkedLocations == null)
+				return;
 
-			session.SendMultiplePackets(new SyncPacket(), GetLocationChecksPacket());
+			Interlocked.Exchange(ref receivedItems, new ConcurrentDictionary<int, ItemIdentifier>());
+
+			var locationsCheckedPacket = new LocationChecksPacket
+			{
+				Locations = getCheckedLocations()
+					.Select(LocationMap.GetLocationId)
+					.ToList()
+			};
+
+			session.SendMultiplePackets(new SyncPacket(), locationsCheckedPacket);
 		}
 
 		static void OnPrintPacketReceived(PrintPacket printPacket)
@@ -322,23 +328,25 @@ namespace TsRandomizer.Archipelago
 
 		public static void UpdateChecks(ItemLocationMap itemLocationMap)
 		{
-			ItemLocations = itemLocationMap;
-
-			session.SendPacket(GetLocationChecksPacket());
-		}
-
-		static LocationChecksPacket GetLocationChecksPacket()
-		{
-			if(ItemLocations == null)
-				return new LocationChecksPacket { Locations = new List<int>(0) };
-
-			return new LocationChecksPacket
+			var locationsCheckedPacket = new LocationChecksPacket
 			{
-				Locations = ItemLocations
+				Locations = itemLocationMap
 					.Where(l => l.IsPickedUp && !(l is ExteralItemLocation))
 					.Select(l => LocationMap.GetLocationId(l.Key))
 					.ToList()
 			};
+
+			ReconnectIfNeeded();
+
+			session.SendPacket(locationsCheckedPacket);
+		}
+
+		static void ReconnectIfNeeded()
+		{
+			if (IsConnected && session.Connected)
+				return;
+
+			Connect(serverUrl, userName, password, getCheckedLocations, uuid);
 		}
 	}
 }

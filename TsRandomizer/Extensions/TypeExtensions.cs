@@ -10,6 +10,11 @@ namespace TsRandomizer.Extensions
 			return type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
 		}
 
+		internal static MethodInfo GetPublicStaticMethod(this Type type, string methodName)
+		{
+			return type.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);
+		}
+
 		internal static MethodInfo GetPrivateMethod(this Type type, string methodName, params Type[] argTypes)
 		{
 			return type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance, null, argTypes, null);
