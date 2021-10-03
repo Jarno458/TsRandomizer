@@ -156,8 +156,13 @@ namespace TsRandomizer.Screens
 
 		void OnConnectEntrySelected(PlayerIndex playerIndex)
 		{
+			var server = values[ServerIndex];
+			if (!server.Contains(":"))
+				server += ":38281";
+
 			var password = string.IsNullOrEmpty(values[UserIndex]) ? null : values[UserIndex];
-			var result = Client.Connect($"ws://{values[ServerIndex]}", values[UserIndex], password, () => null, null);
+
+			var result = Client.Connect($"ws://{server}", values[UserIndex], password, () => null, null);
 			if (!result.Success)
 			{
 				var failure = (ConnectionFailed)result;

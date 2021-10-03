@@ -30,6 +30,8 @@ namespace TsRandomizer.Archipelago
 
 		public static volatile int Slot = -1;
 
+		static int PlayerCount;
+
 		static ConcurrentDictionary<int, ItemIdentifier> receivedItems = new ConcurrentDictionary<int, ItemIdentifier>();
 
 		public static bool IsConnected;
@@ -95,6 +97,7 @@ namespace TsRandomizer.Archipelago
 			if (connectionResult is ConnectedPacket success)
 			{
 				IsConnected = true;
+				PlayerCount = success.Players.Count;
 
 				CachedConnectionResult = new Connected(success, uuid);
 				return CachedConnectionResult;
@@ -261,6 +264,9 @@ namespace TsRandomizer.Archipelago
 
 		static void OnPrinJsontPacketReceived(PrintJsonPacket printJsonPacket)
 		{
+			if (PlayerCount > 20 && !MessageIsAboutCurrentPlayer(printJsonPacket))
+				return;
+
 			var parts = new List<Part>();
 
 			foreach (var messagePart in printJsonPacket.Data)
@@ -269,16 +275,30 @@ namespace TsRandomizer.Archipelago
 			ScreenManager.Log.Add(parts.ToArray());
 		}
 
+		static bool MessageIsAboutCurrentPlayer(PrintJsonPacket printJsonPacket)
+		{
+			return printJsonPacket.Data.Any(
+				p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId
+				     && int.TryParse(p.Text, out var playerId)
+				     && playerId == Slot);
+		}
+
 		static string GetMessage(JsonMessagePart messagePart)
 		{
 			switch (messagePart.Type)
 			{
 				case JsonMessagePartType.PlayerId:
-					return chache.GetPlayerName(int.Parse(messagePart.Text));
+					return int.TryParse(messagePart.Text, out var playerSlot) 
+						? chache.GetPlayerName(playerSlot)
+						: messagePart.Text;
 				case JsonMessagePartType.ItemId:
-					return chache.GetItemName(int.Parse(messagePart.Text));
+					return int.TryParse(messagePart.Text, out var itemId)
+						? chache.GetItemName(itemId)
+						: messagePart.Text;
 				case JsonMessagePartType.LocationId:
-					return chache.GetLocationName(int.Parse(messagePart.Text));
+					return int.TryParse(messagePart.Text, out var locationId)
+						? chache.GetLocationName(locationId)
+						: messagePart.Text;
 				default:
 					return messagePart.Text;
 			}
@@ -305,18 +325,20 @@ namespace TsRandomizer.Archipelago
 				case JsonMessagePartColor.White:
 					return Color.White;
 				case null:
-					return GetColorFromPartType(messagePart.Type);
+					return GetColorFromPartType(messagePart);
 				default:
 					return Color.White;
 			}
 		}
 
-		static Color GetColorFromPartType(JsonMessagePartType? messagePartType)
+		static Color GetColorFromPartType(JsonMessagePart messagePart)
 		{
-			switch (messagePartType)
+			switch (messagePart.Type)
 			{
 				case JsonMessagePartType.PlayerId:
-					return Color.Orange;
+					return (int.TryParse(messagePart.Text, out var playerId) && playerId == Slot)
+						? Color.Yellow
+						: Color.Orange;
 				case JsonMessagePartType.ItemId:
 					return Color.Crimson;
 				case JsonMessagePartType.LocationId:
