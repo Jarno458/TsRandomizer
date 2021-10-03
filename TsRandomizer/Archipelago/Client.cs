@@ -16,7 +16,7 @@ namespace TsRandomizer.Archipelago
 {
 	static class Client
 	{
-		public const int ConnectionTimeoutInSeconds = 10;
+		public const int ConnectionTimeoutInSeconds = 6;
 
 		static ArchipelagoSession session;
 
