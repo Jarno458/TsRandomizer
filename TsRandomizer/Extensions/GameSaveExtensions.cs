@@ -56,11 +56,9 @@ namespace TsRandomizer.Extensions
 			return gameSave.DataKeyBools.ContainsKey(FamilierPrefixKey + (int)familiar);
 		}
 
-		internal static bool HasRing(this GameSave gameSave, EInventoryOrbType orbType)
+		internal static bool HasRelic(this GameSave gameSave, EInventoryRelicType relic)
 		{
-			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;
-
-			return orbCollection.TryGetValue((int)orbType, out var orb) && orb.IsPassiveUnlocked;
+			return gameSave.Inventory.RelicInventory.Inventory.ContainsKey((int)relic);
 		}
 
 		internal static bool HasOrb(this GameSave gameSave, EInventoryOrbType orbType)
@@ -68,9 +66,49 @@ namespace TsRandomizer.Extensions
 			return gameSave.Inventory.OrbInventory.Inventory.ContainsKey((int) orbType);
 		}
 
-		internal static bool HasRelic(this GameSave gameSave, EInventoryRelicType relic)
+		internal static bool HasRing(this GameSave gameSave, EInventoryOrbType orbType)
 		{
-			return gameSave.Inventory.RelicInventory.Inventory.ContainsKey((int) relic);
+			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;
+
+			return orbCollection.TryGetValue((int)orbType, out var orb) && orb.IsPassiveUnlocked;
+		}
+
+		internal static bool HasSpell(this GameSave gameSave, EInventoryOrbType orbType)
+		{
+			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;
+
+			return orbCollection.TryGetValue((int)orbType, out var orb) && orb.IsSpellUnlocked;
+		}
+
+		internal static bool HasItem(this GameSave gameSave, ItemIdentifier item)
+		{
+			switch (item.LootType)
+			{
+				case LootType.ConstEquipment:
+					return gameSave.Inventory.EquipmentInventory.Inventory.ContainsKey((int)item.Enquipment);
+				case LootType.ConstFamiliar:
+					return gameSave.Inventory.FamiliarInventory.Inventory.ContainsKey((int)item.Familiar);
+				case LootType.ConstRelic:
+					return gameSave.Inventory.RelicInventory.Inventory.ContainsKey((int)item.Relic);
+				case LootType.ConstUseItem:
+					return gameSave.Inventory.UseItemInventory.Inventory.ContainsKey((int)item.UseItem);
+				case LootType.ConstOrb:
+					switch (item.OrbSlot)
+					{
+						case EOrbSlot.Melee:
+							return HasMeleeOrb(gameSave, item.OrbType);
+						case EOrbSlot.Spell:
+							return HasSpell(gameSave, item.OrbType);
+						case EOrbSlot.Passive:
+							return HasRing(gameSave, item.OrbType);
+						default:
+							return HasMeleeOrb(gameSave, item.OrbType)
+								&& HasSpell(gameSave, item.OrbType)
+								&& HasRing(gameSave, item.OrbType);
+					}
+				default:
+					throw new NotImplementedException($"PlayerIventory.Contains is not supported for loottype {item.LootType}");
+			}
 		}
 
 		internal static bool HasCutsceneBeenTriggered(this GameSave gameSave, string cutsceneEnunMember)

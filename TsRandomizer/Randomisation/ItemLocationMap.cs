@@ -452,6 +452,15 @@ namespace TsRandomizer.Randomisation
 				.Where(l => l.IsPickedUp && l.ItemInfo.Unlocks != R.None)
 				.ToArray();
 
+			var ca = this.Where(l => l.ItemInfo.Identifier == new ItemIdentifier(EInventoryRelicType.ScienceKeycardA))
+				.ToArray();
+			var cb = this.Where(l => l.ItemInfo.Identifier == new ItemIdentifier(EInventoryRelicType.ScienceKeycardB))
+				.ToArray();
+			var cc = this.Where(l => l.ItemInfo.Identifier == new ItemIdentifier(EInventoryRelicType.ScienceKeycardC))
+				.ToArray();
+			var cd = this.Where(l => l.ItemInfo.Identifier == new ItemIdentifier(EInventoryRelicType.ScienceKeycardD))
+				.ToArray();
+
 			var pickedUpSingleItemLocationUnlocks = pickedUpProgressionItemLocations
 				.Where(l => !(l.ItemInfo is PogRessiveItemInfo))
 				.Select(l => l.ItemInfo.Unlocks);

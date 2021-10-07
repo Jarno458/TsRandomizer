@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.Extensions;
@@ -43,6 +44,8 @@ namespace TsRandomizer.Archipelago
 					receiedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
 				}
 
+				LoadObtainedProgressionItemsFromSave(level);
+
 				firstPass = false;
 			}
 
@@ -51,6 +54,31 @@ namespace TsRandomizer.Archipelago
 			
 			RecieveItem(receiedItem, level);
 			level.GameSave.DataKeyInts[GameItemIndex] = level.GameSave.GetSaveInt(GameItemIndex) + 1;
+		}
+
+		void LoadObtainedProgressionItemsFromSave(Level level)
+		{
+			var itemsInMap = this.Select(l => l.ItemInfo.Identifier)
+				.Distinct().ToHashSet();
+
+			bool updateTracker = false;
+			
+			foreach (var progressionItem in UnlockingMap.AllProgressionItems)
+			{
+				if (level.GameSave.HasItem(progressionItem) && !itemsInMap.Contains(progressionItem))
+				{
+					var item = new SingleItemInfo(UnlockingMap, progressionItem);
+
+					item.OnPickup(level);
+
+					Add(new ExteralItemLocation(item));
+
+					updateTracker = true;
+				}
+			}
+
+			if(updateTracker)
+				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(this));
 		}
 
 		public override ProgressionChain GetProgressionChain()
