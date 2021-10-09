@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events;
+using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Randomisation.ItemPlacers;
+using TsRandomizer.Screens;
 
 namespace TsRandomizer.LevelObjects
 {
@@ -24,7 +28,7 @@ namespace TsRandomizer.LevelObjects
 
 		static RoomTrigger()
 		{
-			RoomTriggers.Add(new RoomTrigger(0, 3, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(0, 3, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (seedOptions.StartWithJewelryBox)
 					level.AsDynamic().UnlockRelic(EInventoryRelicType.JewelryBox);
@@ -44,7 +48,7 @@ namespace TsRandomizer.LevelObjects
 				if (seedOptions.StartWithTalaria)
 					level.AsDynamic().UnlockRelic(EInventoryRelicType.Dash);
 			}));
-			RoomTriggers.Add(new RoomTrigger(1, 0, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(1, 0, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.Inverted || level.GameSave.GetSaveBool("TSRandomizerHasTeleportedPlayer")) return;
 
@@ -52,25 +56,25 @@ namespace TsRandomizer.LevelObjects
 
 				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 3, RoomID = 6 }); //Refugee Camp
 			}));
-			RoomTriggers.Add(new RoomTrigger(1, 5, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(1, 5, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (itemLocation.IsPickedUp || !level.GameSave.GetSaveBool("IsBossDead_RoboKitty")) return;
 
 				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
-			RoomTriggers.Add(new RoomTrigger(5, 5, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(5, 5, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (itemLocation.IsPickedUp || !level.GameSave.HasCutsceneBeenTriggered("Keep0_Demons0")) return;
 
 				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
-			RoomTriggers.Add(new RoomTrigger(11, 1, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(11, 1, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (itemLocation.IsPickedUp || !level.GameSave.HasRelic(EInventoryRelicType.Dash)) return;
 
 				SpawnItemDropPickup(level, itemLocation.ItemInfo, 280, 191);
 			}));
-			RoomTriggers.Add(new RoomTrigger(11, 39, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(11, 39, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (itemLocation.IsPickedUp 
 					|| !level.GameSave.HasOrb(EInventoryOrbType.Eye)
@@ -78,7 +82,7 @@ namespace TsRandomizer.LevelObjects
 
 				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 176);
 			}));
-			RoomTriggers.Add(new RoomTrigger(11, 21, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(11, 21, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!itemLocation.IsPickedUp
 				    && level.GameSave.HasRelic(EInventoryRelicType.ScienceKeycardA)
@@ -88,34 +92,34 @@ namespace TsRandomizer.LevelObjects
 				if(!seedOptions.Inverted && level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
 					CreateSimpelOneWayWarp(level, 16, 12);
 			}));
-			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (itemLocation.IsPickedUp
 				    || !level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear1)) return;
 
 				SpawnTreasureChest(level, true, 136, 192);
 			}));
-			RoomTriggers.Add(new RoomTrigger(2, 52, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(2, 52, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (itemLocation.IsPickedUp
 				    || !level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear2)) return;
 
 				SpawnTreasureChest(level, true, 104, 192);
 			}));
-			RoomTriggers.Add(new RoomTrigger(9, 13, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(9, 13, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (itemLocation.IsPickedUp
 				    || !level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear3)) return;
 
 				SpawnTreasureChest(level, false, 296, 176);
 			}));
-			RoomTriggers.Add(new RoomTrigger(3, 6, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(3, 6, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (seedOptions.Inverted || level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)) return;
 
 				CreateSimpelOneWayWarp(level, 2, 54);
 			}));
-			RoomTriggers.Add(new RoomTrigger(2, 54, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(2, 54, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (seedOptions.Inverted 
 				    || level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)
@@ -123,13 +127,13 @@ namespace TsRandomizer.LevelObjects
 
 				CreateSimpelOneWayWarp(level, 3, 6);
 			}));
-			RoomTriggers.Add(new RoomTrigger(7, 30, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(7, 30, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)) return;
 
 				SpawnTreasureChest(level, false, 296, 176);
 			}));
-			RoomTriggers.Add(new RoomTrigger(3, 0, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(3, 0, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (itemLocation.IsPickedUp
 					|| level.GameSave.DataKeyBools.ContainsKey("HasUsedCityTS")
@@ -138,61 +142,80 @@ namespace TsRandomizer.LevelObjects
 
 				SpawnNeliste(level);
 			}));
-			/*RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions) => //Remove Daddy's pedistal if you havent killed him yet
+			RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions, screenManager) => //Remove Daddy's pedistal if you havent killed him yet
 			{
 				if (level.GameSave.DataKeyBools.ContainsKey("IsEndingABCleared")) return;
 
 				((Dictionary<int, GameEvent>)level.AsDynamic()._levelEvents).Values
 					.FirstOrDefault(obj => obj.GetType() == PedistalType)
 					?.SilentKill();
-			}));*/
-			RoomTriggers.Add(new RoomTrigger(8, 6, (level, itemLocation, seedOptions) =>
+			}));
+			RoomTriggers.Add(new RoomTrigger(8, 6, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GassMaw) return;
 
 				FillRoomWithGass(level);
 			}));
-			RoomTriggers.Add(new RoomTrigger(8, 7, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(8, 7, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GassMaw) return;
 
 				FillRoomWithGass(level);
 			}));
-			RoomTriggers.Add(new RoomTrigger(8, 13, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(8, 13, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GassMaw) return;
 
 				FillRoomWithGass(level);
 			}));
-			RoomTriggers.Add(new RoomTrigger(8, 21, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(8, 21, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GassMaw) return;
 
 				FillRoomWithGass(level);
 			}));
-			RoomTriggers.Add(new RoomTrigger(8, 33, (level, itemLocation, seedOptions) =>
+			RoomTriggers.Add(new RoomTrigger(8, 33, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GassMaw) return;
 
 				FillRoomWithGass(level);
 			}));
+			RoomTriggers.Add(new RoomTrigger(16, 27, (level, itemLocation, seedOptions, screenManager) =>
+			{
+				if (!level.GameSave.DataKeyStrings.ContainsKey(ArchipelagoItemLocationRandomizer.GameSaveServerKey)) return;
+
+				var forfeitFlags = Client.ForfeitPermissions;
+
+				if (!forfeitFlags.HasFlag(Permissions.Auto) &&
+				    (forfeitFlags.HasFlag(Permissions.Enabled) || forfeitFlags.HasFlag(Permissions.Goal)))
+				{
+					var messageBox = MessageBox.Create(screenManager, "Press OK for forfeit remaining item checks", _ => {
+						Client.Forfeit();
+					});
+
+					screenManager.AddScreen(messageBox.Screen, null);
+				}
+			}));
+
 		}
 
 		readonly RoomItemKey key;
-		readonly Action<Level, ItemLocation, SeedOptions> trigger;
+		readonly Action<Level, ItemLocation, SeedOptions, ScreenManager> trigger;
 
-		public RoomTrigger(int levelId, int roomId, Action<Level, ItemLocation, SeedOptions> triggerMethod)
+		public RoomTrigger(int levelId, int roomId, Action<Level, ItemLocation, SeedOptions, ScreenManager> triggerMethod)
 		{
 			key = new RoomItemKey(levelId, roomId);
 			trigger = triggerMethod;
 		}
 
-		public static void OnChangeRoom(Level level, SeedOptions seedOptions, ItemLocationMap itemLocations, int levelId, int roomId)
+		public static void OnChangeRoom(
+			Level level, SeedOptions seedOptions, ItemLocationMap itemLocations, ScreenManager screenManager,
+			int levelId, int roomId)
 		{
 			var roomKey = new RoomItemKey(levelId, roomId);
 
 			if(RoomTriggers.TryGetValue(roomKey, out var trigger))
-				trigger.trigger(level, itemLocations[roomKey], seedOptions);
+				trigger.trigger(level, itemLocations[roomKey], seedOptions, screenManager);
 		}
 
 		static void SpawnItemDropPickup(Level level, ItemInfo itemInfo, int x, int y)

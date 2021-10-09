@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using Archipelago.MultiClient.Net.Packets;
 using Newtonsoft.Json.Linq;
 using TsRandomizer.Randomisation;
@@ -78,51 +76,7 @@ namespace TsRandomizer.Archipelago
 		{
 			return slotData.TryGetValue("PersonalItems", out var personalItemsDictionary)
 				? ((JObject)personalItemsDictionary).ToObject<Dictionary<int, int>>()
-				: GetPersonalItemsByLocationScouts();
-		}
-
-		Dictionary<int, int> GetPersonalItemsByLocationScouts()
-		{
-			var items = new Dictionary<int, int>();
-
-			RequestAllItems();
-
-			Client.HasItemLocationInfo = false;
-			Client.LocationScoutResult = null;
-
-			var connectedStartedTime = DateTime.UtcNow;
-
-			while (!Client.HasItemLocationInfo)
-			{
-				if (DateTime.UtcNow - connectedStartedTime > TimeSpan.FromSeconds(Client.ConnectionTimeoutInSeconds))
-					return null;
-
-				Thread.Sleep(100);
-			}
-
-			if (Client.LocationScoutResult == null)
-				throw new Exception("Failed to retreive personal items");
-
-			foreach (var locationInfo in Client.LocationScoutResult.Locations)
-			{
-				if (locationInfo.Player != connectedPacket.Slot)
-					continue;
-
-				items.Add(locationInfo.Location, locationInfo.Item);
-			}
-
-			return items;
-		}
-
-		void RequestAllItems()
-		{
-			var peekAllNonCheckedItems = new LocationScoutsPacket
-			{
-				Locations = connectedPacket.MissingChecks
-					.Concat(connectedPacket.ItemsChecked).ToList()
-			};
-
-			Client.SendPacket(peekAllNonCheckedItems);
+				: Client.ScoutLocations(connectedPacket.MissingChecks.Concat(connectedPacket.LocationsChecked));
 		}
 	}
 }

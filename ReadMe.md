@@ -76,7 +76,8 @@ The item tracker features a few options:
 # Todo
 ##### Things i plan on doing in the future
 * Archipelago TODO:
-  * Make Uuid unique per save
+  * Implement Chat UI
+  * Add popup to forfeit or not
 * Implement skin selection
 
 # Ideas

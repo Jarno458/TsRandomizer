@@ -16,25 +16,23 @@ namespace TsRandomizer.Archipelago
 {
 	static class Client
 	{
-		public const int ConnectionTimeoutInSeconds = 6;
+		const int ConnectionTimeoutInSeconds = 6;
 
 		static ArchipelagoSession session;
 
 		static volatile bool hasConnectionResult;
 		static ArchipelagoPacketBase connectionResult;
 
-		public static volatile bool HasItemLocationInfo;
-		public static LocationInfoPacket LocationScoutResult;
+		static volatile bool hasItemLocationInfo;
+		static LocationInfoPacket locationScoutResult;
 
 		static DataCache chache = new DataCache();
 
-		public static volatile int Slot = -1;
+		static volatile int slot = -1;
 
-		static int PlayerCount;
+		static int playerCount;
 
 		static ConcurrentDictionary<int, ItemIdentifier> receivedItems = new ConcurrentDictionary<int, ItemIdentifier>();
-
-		public static bool IsConnected;
 
 		static string serverUrl;
 		static string userName;
@@ -42,16 +40,20 @@ namespace TsRandomizer.Archipelago
 		static string uuid;
 		static Func<IEnumerable<ItemKey>> getCheckedLocations;
 
-		public static ConnectionResult CachedConnectionResult;
+		static ConnectionResult cachedConnectionResult;
+
+		public static bool IsConnected;
+
+		public static Permissions ForfeitPermissions = 0;
 
 		public static ConnectionResult Connect(
 			string server, string user, string pass, 
 			Func<IEnumerable<ItemKey>> getCheckedLocationsCallback, string connectionId)
 		{
-			if (IsConnected && session.Connected)
+			if (IsConnected && session.Connected && cachedConnectionResult != null)
 			{
 				if (serverUrl == server && userName == user && password == pass)
-					return CachedConnectionResult;
+					return cachedConnectionResult;
 				
 				Disconnect();
 			}
@@ -80,8 +82,7 @@ namespace TsRandomizer.Archipelago
 				{
 					Disconnect();
 
-					CachedConnectionResult = new ConnectionFailed("Connection Timedout");
-					return CachedConnectionResult;
+					return new ConnectionFailed("Connection Timedout");
 				}
 
 				Thread.Sleep(100);
@@ -91,22 +92,20 @@ namespace TsRandomizer.Archipelago
 			{
 				Disconnect();
 
-				CachedConnectionResult = new ConnectionFailed(string.Join(", ", refused.Errors));
-				return CachedConnectionResult;
+				return new ConnectionFailed(string.Join(", ", refused.Errors));
 			}
 			if (connectionResult is ConnectedPacket success)
 			{
 				IsConnected = true;
-				PlayerCount = success.Players.Count;
-
-				CachedConnectionResult = new Connected(success, uuid);
-				return CachedConnectionResult;
+				playerCount = success.Players.Count;
+				
+				cachedConnectionResult = new Connected(success, uuid);
+				return cachedConnectionResult;
 			}
 
 			Disconnect();
 
-			CachedConnectionResult = new ConnectionFailed("Unknown package, probably due to version missmatch");
-			return CachedConnectionResult;
+			return new ConnectionFailed("Unknown package, probably due to version missmatch");
 		}
 
 		public static void Disconnect()
@@ -118,7 +117,7 @@ namespace TsRandomizer.Archipelago
 			password = null;
 			uuid = null;
 
-			Slot = -1;
+			slot = -1;
 
 			IsConnected = false;
 
@@ -126,11 +125,13 @@ namespace TsRandomizer.Archipelago
 			receivedItems = new ConcurrentDictionary<int, ItemIdentifier>();
 
 			hasConnectionResult = false;
-			HasItemLocationInfo = false;
+			hasItemLocationInfo = false;
 
 			session = null;
 
-			CachedConnectionResult = null;
+			ForfeitPermissions = 0;
+
+			cachedConnectionResult = null;
 		}
 
 		public static ItemIdentifier GetNextItem(int currentIndex)
@@ -160,17 +161,58 @@ namespace TsRandomizer.Archipelago
 			}
 		}
 
-		public static void SendPacket(ArchipelagoPacketBase packet)
+		static void SendPacket(ArchipelagoPacketBase packet)
 		{
 			session?.SendPacket(packet);
 		}
 
+		public static void Forfeit()
+		{
+			SendPacket(new SayPacket { Text = "!forfeit" });
+		}
+
+		public static Dictionary<int, int> ScoutLocations(IEnumerable<int> locationIdsToScout)
+		{
+			SendPacket(new LocationScoutsPacket { Locations = locationIdsToScout.ToList() });
+
+			hasItemLocationInfo = false;
+			locationScoutResult = null;
+
+			var connectedStartedTime = DateTime.UtcNow;
+
+			while (!hasItemLocationInfo)
+			{
+				if (DateTime.UtcNow - connectedStartedTime > TimeSpan.FromSeconds(ConnectionTimeoutInSeconds))
+					return null;
+
+				Thread.Sleep(100);
+			}
+
+			if (locationScoutResult == null)
+				throw new Exception("Failed to retreive personal items");
+
+			var items = new Dictionary<int, int>();
+
+			foreach (var locationInfo in locationScoutResult.Locations)
+			{
+				if (locationInfo.Player != slot)
+					continue;
+
+				items.Add(locationInfo.Location, locationInfo.Item);
+			}
+
+			return items;
+		}
+	
 		static void OnRoomInfoPacketReceived(RoomInfoPacket packet)
 		{
 			chache.UpdatePlayerNames(packet.Players);
 		
 			if (packet is RoomUpdatePacket)
 				return;
+
+			if (packet.Permissions != null && packet.Permissions.TryGetValue("forfeit", out var permissions))
+				ForfeitPermissions = permissions;
 
 			chache.Verify(packet.DataPackageVersions);
 
@@ -189,7 +231,7 @@ namespace TsRandomizer.Archipelago
 
 		static void OnConnectedPacketReceived(ConnectedPacket connectedPacket)
 		{
-			Slot = connectedPacket.Slot;
+			slot = connectedPacket.Slot;
 
 			chache.UpdatePlayerNames(connectedPacket.Players);
 
@@ -220,8 +262,8 @@ namespace TsRandomizer.Archipelago
 
 		static void OnLocationInfoPacketReceived(LocationInfoPacket locationInfoPacket)
 		{
-			HasItemLocationInfo = true;
-			LocationScoutResult = locationInfoPacket;
+			hasItemLocationInfo = true;
+			locationScoutResult = locationInfoPacket;
 		}
 
 		static void OnReceivedItemsPacketReceived(ReceivedItemsPacket receivedItemsPacket)
@@ -264,7 +306,7 @@ namespace TsRandomizer.Archipelago
 
 		static void OnPrinJsontPacketReceived(PrintJsonPacket printJsonPacket)
 		{
-			if (PlayerCount > 20 && !MessageIsAboutCurrentPlayer(printJsonPacket))
+			if (playerCount > 20 && !MessageIsAboutCurrentPlayer(printJsonPacket))
 				return;
 
 			var parts = new List<Part>();
@@ -280,7 +322,7 @@ namespace TsRandomizer.Archipelago
 			return printJsonPacket.Data.Any(
 				p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId
 				     && int.TryParse(p.Text, out var playerId)
-				     && playerId == Slot);
+				     && playerId == slot);
 		}
 
 		static string GetMessage(JsonMessagePart messagePart)
@@ -336,7 +378,7 @@ namespace TsRandomizer.Archipelago
 			switch (messagePart.Type)
 			{
 				case JsonMessagePartType.PlayerId:
-					return (int.TryParse(messagePart.Text, out var playerId) && playerId == Slot)
+					return (int.TryParse(messagePart.Text, out var playerId) && playerId == slot)
 						? Color.Yellow
 						: Color.Orange;
 				case JsonMessagePartType.ItemId:

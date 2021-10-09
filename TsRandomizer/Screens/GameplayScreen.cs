@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,6 +22,13 @@ namespace TsRandomizer.Screens
 	// ReSharper disable once UnusedMember.Global
 	class GameplayScreen : Screen
 	{
+		static readonly MethodInfo LoadingScreenLoadMethod = TimeSpinnerType
+			.Get("Timespinner.GameStateManagement.Screens.BaseClasses.LoadingScreen")
+			.GetPublicStaticMethod("Load");
+
+		static readonly Type TitleBackgroundScreenType = TimeSpinnerType
+			.Get("Timespinner.GameStateManagement.Screens.MainMenu.TitleBackgroundScreen");
+
 		RoomSpecification currentRoom;
 		SeedOptions seedOptions;
 
@@ -76,13 +84,7 @@ namespace TsRandomizer.Screens
 		{
 			ScreenManager.Jukebox.FadeOutSong(0.5f);
 
-			var LoadingScreenLoadMethod = TimeSpinnerType
-				.Get("Timespinner.GameStateManagement.Screens.BaseClasses.LoadingScreen")
-				.GetPublicStaticMethod("Load");
-
-			var titleBackgroundScreen = (GameScreen)TimeSpinnerType
-				.Get("Timespinner.GameStateManagement.Screens.MainMenu.TitleBackgroundScreen")
-				.CreateInstance(false, true);
+			var titleBackgroundScreen = (GameScreen)TitleBackgroundScreenType.CreateInstance(false, true);
 
 			LoadingScreenLoadMethod.InvokeStatic(ScreenManager, false, new PlayerIndex?(), new [] { titleBackgroundScreen });
 
@@ -93,7 +95,10 @@ namespace TsRandomizer.Screens
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
-			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions);
+			if (ItemLocations == null)
+				return;
+
+			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions, ScreenManager);
 
 			FamiliarManager.Update(Level);
 
@@ -104,6 +109,8 @@ namespace TsRandomizer.Screens
 
 		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
+			if (ItemLocations == null || currentRoom == null)
+				return;
 #if DEBUG
 			var levelId = LevelReflected._id;
 			var text = $"Level: {levelId}, Room ID: {currentRoom.ID}";

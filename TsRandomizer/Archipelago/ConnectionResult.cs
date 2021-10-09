@@ -27,7 +27,7 @@ namespace TsRandomizer.Archipelago
 
 		public Connected(ConnectedPacket packet, string connectionId) : base(true)
 		{
-			CheckedLocations = packet.ItemsChecked.Select(LocationMap.GetItemkey).ToArray();
+			CheckedLocations = packet.LocationsChecked.Select(LocationMap.GetItemkey).ToArray();
 			UncheckedLocations = packet.MissingChecks.Select(LocationMap.GetItemkey).ToArray();
 
 			ConnectionId = connectionId;
