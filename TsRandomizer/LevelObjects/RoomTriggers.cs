@@ -196,7 +196,6 @@ namespace TsRandomizer.LevelObjects
 					screenManager.AddScreen(messageBox.Screen, null);
 				}
 			}));
-
 		}
 
 		readonly RoomItemKey key;
