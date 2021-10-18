@@ -301,20 +301,17 @@ namespace TsRandomizer.Archipelago
 			var lines = printPacket.Text.Split('\n');
 
 			foreach (var line in lines)
-				ScreenManager.Log.Add(line);
+				ScreenManager.Log.Add(true, new Part(line));
 		}
 
 		static void OnPrinJsontPacketReceived(PrintJsonPacket printJsonPacket)
 		{
-			if (playerCount > 20 && !MessageIsAboutCurrentPlayer(printJsonPacket))
-				return;
-
 			var parts = new List<Part>();
 
 			foreach (var messagePart in printJsonPacket.Data)
 				parts.Add(new Part(GetMessage(messagePart), GetColor(messagePart)));
 
-			ScreenManager.Log.Add(parts.ToArray());
+			ScreenManager.Log.Add(MessageIsAboutCurrentPlayer(printJsonPacket), parts.ToArray());
 		}
 
 		static bool MessageIsAboutCurrentPlayer(PrintJsonPacket printJsonPacket)

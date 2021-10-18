@@ -9,11 +9,13 @@ namespace TsRandomizer.Archipelago
 {
 	class Log : Overlay
 	{
-		const int FadeDelayInSeconds = 5;
+		const double FadeDelayInSeconds = 5;
 
 		readonly GCM gcm;
 
 		readonly ConcurrentQueue<Message> lines = new ConcurrentQueue<Message>();
+		readonly ConcurrentQueue<Message> pendingImportantLines = new ConcurrentQueue<Message>();
+		readonly ConcurrentQueue<Message> pendingLines = new ConcurrentQueue<Message>();
 
 		public Log(GCM gcm)
 		{
@@ -22,20 +24,35 @@ namespace TsRandomizer.Archipelago
 			Add(this);
 		}
 
-		public void Add(string message)
+		public void Add(bool important, params Part[] parts)
 		{
-			lines.Enqueue(new Message(message));
-		}
-
-		public void Add(params Part[] parts)
-		{
-			lines.Enqueue(new Message(parts));
+			if (important)
+				pendingImportantLines.Enqueue(new Message(parts));
+			else
+				pendingLines.Enqueue(new Message(parts));
 		}
 
 		public override void Update(GameTime gameTime)
 		{
 			while (lines.TryPeek(out var message) && DateTime.UtcNow - message.TimeAdded > TimeSpan.FromSeconds(FadeDelayInSeconds))
 				lines.TryDequeue(out _);
+
+			CopyMessagesBetweenQueues(lines, pendingImportantLines);
+			CopyMessagesBetweenQueues(lines, pendingLines);
+		}
+
+		static void CopyMessagesBetweenQueues(
+			ConcurrentQueue<Message> destination, ConcurrentQueue<Message> source, int maxDestinationCount = 6)
+		{
+			while (destination.Count < maxDestinationCount && source.Count > 1)
+			{
+				if (!source.TryDequeue(out var message))
+					return;
+
+				message.TimeAdded = DateTime.UtcNow;
+
+				destination.Enqueue(message);
+			}
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, Rectangle screenSize)
@@ -88,16 +105,11 @@ namespace TsRandomizer.Archipelago
 
 	class Message
 	{
-		public DateTime TimeAdded { get; }
+		public DateTime TimeAdded { get; set; }
 		public Part[] Parts { get; }
-
-		public Message(string message) : this(new []{ new Part(message)})
-		{
-		}
 
 		public Message(Part[] parts)
 		{
-			TimeAdded = DateTime.UtcNow;
 			Parts = parts;
 		}
 	}
