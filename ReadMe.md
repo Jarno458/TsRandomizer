@@ -77,7 +77,8 @@ The item tracker features a few options:
 ##### Things i plan on doing in the future
 * Archipelago TODO:
   * Implement Chat UI
-  * Add popup to forfeit or not
+  * Make sending checks async so it wont freeze the game everytime you pick something up
+  * Add bouncy to hopefully fix connection losses like due to ip changes
 * Implement skin selection
 
 # Ideas
