@@ -105,13 +105,18 @@ namespace TsRandomizer.Randomisation
 				| (R.GateMilitairyGate & (R.CardE | R.CardB));
 
 			LowerLakeDesolationBridge = AccessToLakeDesolation & (R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary);
-			UpperLakeDesolation = AccessToLakeDesolation & UpperLakeSirine & R.AntiWeed;
-			LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | R.GateLeftLibrary | R.GateKittyBoss | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | R.CardE));
-			MidLibrary = (LeftLibrary & R.CardD) | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | R.CardE));
+
 
 			AccessToPast = (SeedOptions.Inverted)
 				? (Gate)R.None
-				: (R.TimespinnerWheel & R.TimespinnerSpindle & MidLibrary) //libraryTimespinner
+				: (
+					R.TimespinnerWheel & R.TimespinnerSpindle 
+					& (
+						(LowerLakeDesolationBridge & R.CardD) 
+						| (R.GateSealedSirensCave & R.CardE) 
+						| (R.GateMilitairyGate & (R.CardB | R.CardE))
+					)
+				) //libraryTimespinner
 				| R.GateLakeSirineLeft
 				| R.GateAccessToPast
 				| R.GateLakeSirineRight
@@ -140,6 +145,9 @@ namespace TsRandomizer.Randomisation
 			var killAelana = UpperRoyalTower;
 
 			//future
+			UpperLakeDesolation = AccessToLakeDesolation & UpperLakeSirine & R.AntiWeed;
+			LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | R.GateLeftLibrary | R.GateKittyBoss | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | R.CardE));
+			MidLibrary = (LeftLibrary & R.CardD) | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | R.CardE));
 			UpperLeftLibrary = LeftLibrary & (R.DoubleJump | R.ForwardDash);
 			UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | ((R.GateMilitairyGate | R.GateSealedSirensCave) & R.CardE);
 			RightSideLibraryElevator = R.CardE & ((MidLibrary & (R.CardC | R.CardB)) | R.GateMilitairyGate | R.GateSealedSirensCave);
