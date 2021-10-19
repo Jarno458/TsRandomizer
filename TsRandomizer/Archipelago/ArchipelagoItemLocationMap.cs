@@ -89,7 +89,6 @@ namespace TsRandomizer.Archipelago
 		void RecieveItem(ItemIdentifier itemIdentifier, Level level)
 		{
 			// itemInfoProvider's cache is out of date here when it comes to pyramid unlocks
-
 			var item = new SingleItemInfo(UnlockingMap, itemIdentifier);
 
 			item.OnPickup(level);

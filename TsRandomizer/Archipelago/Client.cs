@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
@@ -23,14 +24,9 @@ namespace TsRandomizer.Archipelago
 		static volatile bool hasConnectionResult;
 		static ArchipelagoPacketBase connectionResult;
 
-		static volatile bool hasItemLocationInfo;
-		static LocationInfoPacket locationScoutResult;
-
 		static DataCache chache = new DataCache();
 
 		static volatile int slot = -1;
-
-		static int playerCount;
 
 		static ConcurrentDictionary<int, ItemIdentifier> receivedItems = new ConcurrentDictionary<int, ItemIdentifier>();
 
@@ -97,7 +93,6 @@ namespace TsRandomizer.Archipelago
 			if (connectionResult is ConnectedPacket success)
 			{
 				IsConnected = true;
-				playerCount = success.Players.Count;
 				
 				cachedConnectionResult = new Connected(success, uuid);
 				return cachedConnectionResult;
@@ -125,7 +120,6 @@ namespace TsRandomizer.Archipelago
 			receivedItems = new ConcurrentDictionary<int, ItemIdentifier>();
 
 			hasConnectionResult = false;
-			hasItemLocationInfo = false;
 
 			session = null;
 
@@ -154,7 +148,6 @@ namespace TsRandomizer.Archipelago
 				case DataPackagePacket dataPacket: OnDataPackagePacketReceived(dataPacket); break;
 				case ConnectionRefusedPacket connectionRefusedPacket: OnConnectionRefusedPacketReceived(connectionRefusedPacket); break;
 				case ConnectedPacket connectedPacket: OnConnectedPacketReceived(connectedPacket); break;
-				case LocationInfoPacket locationInfoPacket: OnLocationInfoPacketReceived(locationInfoPacket); break;
 				case ReceivedItemsPacket receivedItemsPacket: OnReceivedItemsPacketReceived(receivedItemsPacket); break;
 				case PrintPacket printPacket: OnPrintPacketReceived(printPacket); break;
 				case PrintJsonPacket printJsonPacket: OnPrinJsontPacketReceived(printJsonPacket); break;
@@ -171,39 +164,6 @@ namespace TsRandomizer.Archipelago
 			SendPacket(new SayPacket { Text = "!forfeit" });
 		}
 
-		public static Dictionary<int, int> ScoutLocations(IEnumerable<int> locationIdsToScout)
-		{
-			SendPacket(new LocationScoutsPacket { Locations = locationIdsToScout.ToList() });
-
-			hasItemLocationInfo = false;
-			locationScoutResult = null;
-
-			var connectedStartedTime = DateTime.UtcNow;
-
-			while (!hasItemLocationInfo)
-			{
-				if (DateTime.UtcNow - connectedStartedTime > TimeSpan.FromSeconds(ConnectionTimeoutInSeconds))
-					return null;
-
-				Thread.Sleep(100);
-			}
-
-			if (locationScoutResult == null)
-				throw new Exception("Failed to retreive personal items");
-
-			var items = new Dictionary<int, int>();
-
-			foreach (var locationInfo in locationScoutResult.Locations)
-			{
-				if (locationInfo.Player != slot)
-					continue;
-
-				items.Add(locationInfo.Location, locationInfo.Item);
-			}
-
-			return items;
-		}
-	
 		static void OnRoomInfoPacketReceived(RoomInfoPacket packet)
 		{
 			chache.UpdatePlayerNames(packet.Players);
@@ -221,7 +181,7 @@ namespace TsRandomizer.Archipelago
 				Game = "Timespinner",
 				Name = userName,
 				Password = password,
-				Version = new Version(0, 1, 8),
+				Version = new Version(0, 1, 9),
 				Uuid = uuid,
 				Tags = new List<string>(0)
 			};
@@ -258,12 +218,6 @@ namespace TsRandomizer.Archipelago
 		static void OnDataPackagePacketReceived(DataPackagePacket dataPacket)
 		{
 			chache.Update(dataPacket.DataPackage.Games);
-		}
-
-		static void OnLocationInfoPacketReceived(LocationInfoPacket locationInfoPacket)
-		{
-			hasItemLocationInfo = true;
-			locationScoutResult = locationInfoPacket;
 		}
 
 		static void OnReceivedItemsPacketReceived(ReceivedItemsPacket receivedItemsPacket)
@@ -388,6 +342,11 @@ namespace TsRandomizer.Archipelago
 		}
 
 		public static void UpdateChecks(ItemLocationMap itemLocationMap)
+		{
+			Task.Factory.StartNew(() => { UpdateChecksTask(itemLocationMap); });
+		}
+
+		public static void UpdateChecksTask(ItemLocationMap itemLocationMap)
 		{
 			var locationsCheckedPacket = new LocationChecksPacket
 			{

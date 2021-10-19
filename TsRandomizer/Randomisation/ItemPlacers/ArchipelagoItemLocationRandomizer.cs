@@ -58,7 +58,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			foreach (var itemLocation in itemLocations)
 			{
 				if (personalLocations.TryGetValue(itemLocation.Key, out var personalItemInfo))
-					itemLocation.SetItem(new SingleItemInfo(UnlockingMap, personalItemInfo)); //avoiding item provider as we cant handle progressive items atm)
+					itemLocation.SetItem(new SingleItemInfo(UnlockingMap, personalItemInfo)); //avoiding item provider as we cant handle progressive items atm
 				else
 					itemLocation.SetItem(new ArchipelagoRemoteItem());
 
@@ -84,7 +84,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		void RemoveRemoteItemsFromInventory()
 		{
-			saveGame.Inventory.UseItemInventory.RemoveItem((int)EInventoryUseItemType.MagicMarbles, 9);
+			saveGame.Inventory.UseItemInventory.RemoveItem((int)EInventoryUseItemType.MagicMarbles, 999);
 		}
 
 		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Archipelago.MultiClient.Net.Packets;
 using Newtonsoft.Json.Linq;
@@ -9,18 +8,16 @@ namespace TsRandomizer.Archipelago
 {
 	class SlotDataParser
 	{
-		readonly ConnectedPacket connectedPacket;
 		readonly Dictionary<string, object> slotData;
 
 		public SlotDataParser(ConnectedPacket connectedPacket)
 		{
-			this.connectedPacket = connectedPacket;
 			slotData = connectedPacket.SlotData;
 		}
 
 		public Requirement GetPyramidKeysGate()
 		{
-			return GetPyramidKeysGate((string) slotData["PyramidKeysGate"]);
+			return GetPyramidKeysGate((string)slotData["PyramidKeysGate"]);
 		}
 
 		public static Requirement GetPyramidKeysGate(string pyramidKeysGate)
@@ -74,9 +71,7 @@ namespace TsRandomizer.Archipelago
 
 		public Dictionary<int, int> GetPersonalItems()
 		{
-			return slotData.TryGetValue("PersonalItems", out var personalItemsDictionary)
-				? ((JObject)personalItemsDictionary).ToObject<Dictionary<int, int>>()
-				: Client.ScoutLocations(connectedPacket.MissingChecks.Concat(connectedPacket.LocationsChecked));
+			return ((JObject)slotData["PersonalItems"]).ToObject<Dictionary<int, int>>();
 		}
 	}
 }
