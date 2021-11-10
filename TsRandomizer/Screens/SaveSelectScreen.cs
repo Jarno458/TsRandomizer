@@ -56,7 +56,7 @@ namespace TsRandomizer.Screens
 
 		void HandleUpdate(InputState input)
 		{
-			var saveFileEntries = (IList) ((object) Dynamic._saveFileCollection).AsDynamic().Entries;
+			var saveFileEntries = (IList)((object)Dynamic._saveFileCollection).AsDynamic().Entries;
 
 			if (IsZoomChanged())
 			{
@@ -275,7 +275,7 @@ namespace TsRandomizer.Screens
 
 			using (var file = new StreamWriter(GetFileName(seed.Value)))
 			{
-				file.WriteLine($"Seed: {seed}");
+				file.WriteLine($"Seed: {seed.Value.ToDisplayString()}");
 				file.WriteLine($"Timespinner version: v{TimeSpinnerGame.Constants.GameVersion}");
 				file.WriteLine($"TsRandomizer version: v{Assembly.GetExecutingAssembly().GetName().Version}");
 

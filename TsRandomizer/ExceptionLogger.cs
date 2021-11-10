@@ -29,7 +29,7 @@ namespace TsRandomizer
 			{
 				file.WriteLine("Context:");
 				file.WriteLine($"Timespinner Version: {TimeSpinnerGame.Constants.GameVersion}, TsRandomizer Version: {Assembly.GetExecutingAssembly().GetName().Version}");
-				file.WriteLine($"Level: {LevelId}, Room: {RoomId}, Seed: {Seed:X8}");
+				file.WriteLine($"Level: {LevelId}, Room: {RoomId}, Seed: {Seed}");
 				file.WriteLine();
 				file.WriteLine("Exceptions:");
 

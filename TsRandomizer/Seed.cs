@@ -39,9 +39,10 @@ namespace TsRandomizer
 			return false;
 		}
 
-		public override string ToString()
-		{
-			return Id.ToString($"X{Length - SeedOptions.Length}") + Options;
-		}
+		public override string ToString() =>
+			Id.ToString($"X{Length - SeedOptions.Length}") + Options;
+
+		public string ToDisplayString() =>
+			Id.ToString($"X{Length - SeedOptions.Length}") + Options.ToDisplayString();
 	}
 }

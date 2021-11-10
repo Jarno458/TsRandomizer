@@ -1,4 +1,7 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.Linq.Expressions;
 
 namespace TsRandomizer
 {
@@ -21,15 +24,58 @@ namespace TsRandomizer
 		public bool Inverted => (Flags & 1 << 8) > 0;
 		public bool GassMaw => (Flags & 1 << 9) > 0;
 
+		//Non visable flags
+		public bool Archipelago => (Flags & 1 << 16) > 0;
+		public bool DeathLink => (Flags & 1 << 17) > 0;
+
 		public SeedOptions(uint flags)
 		{
 			Flags = flags;
 		}
 
+		public SeedOptions(Dictionary<string, object> slotData)
+		{
+			Flags = 1 << 16; //Archipelago
+
+			var stringToFlagMapping = new Dictionary<string, uint>(11)
+			{
+				{"StartWithJewelryBox", 1U << 0},
+				{"ProgressiveVerticalMovement", 1U << 1},
+				{"ProgressiveKeycards", 1U << 2},
+				{"DownloadableItems", 1U << 3},
+				{"FacebookMode", 1U << 4},
+				{"StartWithMeyef", 1U << 5},
+				{"QuickSeed", 1U << 6},
+				{"SpecificKeycards", 1U << 7},
+				{"Inverted", 1U << 8},
+				{"StinkyMaw", 1U << 9},
+				{"DeathLink", 1U << 17}
+			};
+
+			foreach (var kvp in stringToFlagMapping)
+			{
+				var key = kvp.Key;
+				var flag = kvp.Value;
+
+				if (slotData.TryGetValue(key, out var value) && IsTrue(value))
+					Flags |= flag;
+			}
+		}
+
+		static bool IsTrue(object o)
+		{
+			if (o is bool b) return b;
+			if (o is string s) return bool.Parse(s);
+			if (o is int i) return i > 0;
+			if (o is long l) return l > 0;
+
+			return false;
+		}
+
 		public static bool TryParse(string seedString, out SeedOptions options)
 		{
 			if (seedString.Length == Seed.Length
-			    && uint.TryParse(seedString.Substring(Seed.Length - Length, Length), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out var parsedOptionsKey))
+			    && uint.TryParse(seedString.Substring(Seed.Length - Length), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out var parsedOptionsKey))
 			{
 				options = new SeedOptions(parsedOptionsKey);
 				return true;
@@ -40,6 +86,10 @@ namespace TsRandomizer
 		}
 
 		public override string ToString() =>
-			Flags.ToString($"X{Length}");
+			Flags.ToString("X");
+
+		[Pure]
+		public string ToDisplayString() =>
+			(Flags & 0xFFFF).ToString($"X{Length}");
 	}
 }

@@ -292,7 +292,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(3, 30, 168, 176), "Refugee camp storage chest 1", ItemProvider.Get(EInventoryRelicType.JewelryBox), AccessToPast);
 			areaName = "Forest";
 			Add(new ItemKey(3, 3, 648, 272), "Refugee camp roof", ItemProvider.Get(EInventoryUseItemType.Herb), AccessToPast);
-			Add(new ItemKey(3, 15, 248, 112), "Bat jump chest", ItemProvider.Get(EItemType.MaxAura), AccessToPast & (DoubleJumpOfNpc | ForwardDashDoubleJump));
+			Add(new ItemKey(3, 15, 248, 112), "Bat jump chest", ItemProvider.Get(EItemType.MaxAura), AccessToPast & (DoubleJumpOfNpc | ForwardDashDoubleJump | (R.TimeStop & R.ForwardDash)));
 			Add(new ItemKey(3, 21, 120, 192), "Green platform secret", ItemProvider.Get(EItemType.MaxSand), AccessToPast & OculusRift);
 			Add(new ItemKey(3, 12, 776, 560), "Rats guarded chest", ItemProvider.Get(EInventoryEquipmentType.PointyHat), AccessToPast);
 			Add(new ItemKey(3, 11, 392, 608), "Waterfall chest 1", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), AccessToPast & R.Swimming);
@@ -348,7 +348,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(5, 15, 296, 192), "Just an egg", ItemProvider.Get(EItemType.MaxAura), CastleKeep);
 			Add(new ItemKey(5, 41, 72, 160), "Out of the way", ItemProvider.Get(EInventoryEquipmentType.BuckleHat), CastleKeep);
 			Add(new RoomItemKey(5, 5), "Twins", ItemProvider.Get(EInventoryRelicType.DoubleJump), CastleKeep & R.TimeStop);
-			Add(new ItemKey(5, 22, 312, 176), "Royal guard tiny room", ItemProvider.Get(EItemType.MaxSand), CastleKeep & R.DoubleJump);
+			Add(new ItemKey(5, 22, 312, 176), "Royal guard tiny room", ItemProvider.Get(EItemType.MaxSand), CastleKeep & ((R.TimeStop & R.ForwardDash) | R.DoubleJump));
 			areaName = "Royal towers";
 			Add(new ItemKey(6, 19, 200, 176), "Royal towers floor secret", ItemProvider.Get(EItemType.MaxAura), RoyalTower & R.DoubleJump & OculusRift);
 			Add(new ItemKey(6, 27, 472, 384), "Above the gap", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), MidRoyalTower);
