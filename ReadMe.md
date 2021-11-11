@@ -77,8 +77,8 @@ The item tracker features a few options:
 ##### Things i plan on doing in the future
 * Archipelago TODO:
   * Implement Chat UI
-  * Make sending checks async so it wont freeze the game everytime you pick something up
   * Add bouncy to hopefully fix connection losses like due to ip changes
+  * Change save game menu to make AP seeds more clear like adding player name & server (optionally)
 * Implement skin selection
 
 # Ideas

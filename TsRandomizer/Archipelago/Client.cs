@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -24,17 +23,12 @@ namespace TsRandomizer.Archipelago
 		static volatile bool hasConnectionResult;
 		static ArchipelagoPacketBase connectionResult;
 
-		static DataCache chache = new DataCache();
-
 		static volatile int slot = -1;
-
-		static ConcurrentDictionary<int, ItemIdentifier> receivedItems = new ConcurrentDictionary<int, ItemIdentifier>();
 
 		static string serverUrl;
 		static string userName;
 		static string password;
 		static string uuid;
-		static Func<IEnumerable<ItemKey>> getCheckedLocations;
 
 		static ConnectionResult cachedConnectionResult;
 
@@ -42,11 +36,9 @@ namespace TsRandomizer.Archipelago
 
 		public static Permissions ForfeitPermissions = 0;
 
-		public static ConnectionResult Connect(
-			string server, string user, string pass, 
-			Func<IEnumerable<ItemKey>> getCheckedLocationsCallback, string connectionId)
+		public static ConnectionResult Connect(string server, string user, string pass, string connectionId)
 		{
-			if (IsConnected && session.Connected && cachedConnectionResult != null)
+			if (IsConnected && session.Socket.Connected && cachedConnectionResult != null)
 			{
 				if (serverUrl == server && userName == user && password == pass)
 					return cachedConnectionResult;
@@ -58,14 +50,11 @@ namespace TsRandomizer.Archipelago
 			userName = user;
 			password = pass;
 			uuid = connectionId ?? Guid.NewGuid().ToString("N");
-			getCheckedLocations = getCheckedLocationsCallback;
 			
-			session = new ArchipelagoSession(serverUrl);
-			session.PacketReceived += PackacedReceived;
+			session = ArchipelagoSessionFactory.CreateSession(new Uri(serverUrl));
+			session.Socket.PacketReceived += PackacedReceived;
 
-			session.ConnectAsync();
-
-			chache.LoadCache();
+			session.AttemptConnectAndLogin("Timespinner", userName, new Version(0, 2, 0), new List<string>(0), password, uuid);
 
 			hasConnectionResult = false;
 			connectionResult = null;
@@ -105,7 +94,7 @@ namespace TsRandomizer.Archipelago
 
 		public static void Disconnect()
 		{
-			session?.DisconnectAsync();
+			session?.Socket?.DisconnectAsync();
 
 			serverUrl = null;
 			userName = null;
@@ -115,9 +104,6 @@ namespace TsRandomizer.Archipelago
 			slot = -1;
 
 			IsConnected = false;
-
-			chache = new DataCache();
-			receivedItems = new ConcurrentDictionary<int, ItemIdentifier>();
 
 			hasConnectionResult = false;
 
@@ -130,8 +116,8 @@ namespace TsRandomizer.Archipelago
 
 		public static ItemIdentifier GetNextItem(int currentIndex)
 		{
-			return receivedItems.Count > currentIndex 
-				? receivedItems[currentIndex + 1] 
+			return session.Items.AllItemsReceived.Count > currentIndex 
+				? ItemMap.GetItemIdentifier(session.Items.AllItemsReceived[currentIndex + 1].Item)
 				: null;
 		}
 
@@ -145,10 +131,8 @@ namespace TsRandomizer.Archipelago
 			switch (packet)
 			{
 				case RoomInfoPacket roomInfoPacket: OnRoomInfoPacketReceived(roomInfoPacket); break;
-				case DataPackagePacket dataPacket: OnDataPackagePacketReceived(dataPacket); break;
 				case ConnectionRefusedPacket connectionRefusedPacket: OnConnectionRefusedPacketReceived(connectionRefusedPacket); break;
 				case ConnectedPacket connectedPacket: OnConnectedPacketReceived(connectedPacket); break;
-				case ReceivedItemsPacket receivedItemsPacket: OnReceivedItemsPacketReceived(receivedItemsPacket); break;
 				case PrintPacket printPacket: OnPrintPacketReceived(printPacket); break;
 				case PrintJsonPacket printJsonPacket: OnPrinJsontPacketReceived(printJsonPacket); break;
 			}
@@ -156,7 +140,7 @@ namespace TsRandomizer.Archipelago
 
 		static void SendPacket(ArchipelagoPacketBase packet)
 		{
-			session?.SendPacket(packet);
+			session?.Socket?.SendPacket(packet);
 		}
 
 		public static void Forfeit()
@@ -166,34 +150,13 @@ namespace TsRandomizer.Archipelago
 
 		static void OnRoomInfoPacketReceived(RoomInfoPacket packet)
 		{
-			chache.UpdatePlayerNames(packet.Players);
-		
-			if (packet is RoomUpdatePacket)
-				return;
-
 			if (packet.Permissions != null && packet.Permissions.TryGetValue("forfeit", out var permissions))
 				ForfeitPermissions = permissions;
-
-			chache.Verify(packet.DataPackageVersions);
-
-			var connectionRequest = new ConnectPacket
-			{
-				Game = "Timespinner",
-				Name = userName,
-				Password = password,
-				Version = new Version(0, 1, 9),
-				Uuid = uuid,
-				Tags = new List<string>(0)
-			};
-
-			session.SendPacket(connectionRequest);
 		}
 
 		static void OnConnectedPacketReceived(ConnectedPacket connectedPacket)
 		{
 			slot = connectedPacket.Slot;
-
-			chache.UpdatePlayerNames(connectedPacket.Players);
 
 			hasConnectionResult = true;
 			connectionResult = connectedPacket;
@@ -201,50 +164,10 @@ namespace TsRandomizer.Archipelago
 
 		static void OnConnectionRefusedPacketReceived(ConnectionRefusedPacket connectionRefusedPacket)
 		{
+			slot = -1;
+
 			hasConnectionResult = true;
 			connectionResult = connectionRefusedPacket;
-		}
-
-		public static void RequestGameData(List<string> gamesToExcludeFromUpdate)
-		{
-			var getGameDataPacket = new GetDataPackagePacket
-			{
-				Exclusions = gamesToExcludeFromUpdate
-			};
-
-			session.SendPacket(getGameDataPacket);
-		}
-
-		static void OnDataPackagePacketReceived(DataPackagePacket dataPacket)
-		{
-			chache.Update(dataPacket.DataPackage.Games);
-		}
-
-		static void OnReceivedItemsPacketReceived(ReceivedItemsPacket receivedItemsPacket)
-		{
-			if (receivedItemsPacket.Index != receivedItems.Count)
-				ReSync();
-			else
-				foreach (var item in receivedItemsPacket.Items)
-					receivedItems.TryAdd(receivedItems.Count + 1, ItemMap.GetItemIdentifier(item.Item));
-		}
-
-		static void ReSync()
-		{
-			var checkedLocations = getCheckedLocations();
-			if (checkedLocations == null)
-				return;
-
-			Interlocked.Exchange(ref receivedItems, new ConcurrentDictionary<int, ItemIdentifier>());
-
-			var locationsCheckedPacket = new LocationChecksPacket
-			{
-				Locations = getCheckedLocations()
-					.Select(LocationMap.GetLocationId)
-					.ToList()
-			};
-
-			session.SendMultiplePackets(new SyncPacket(), locationsCheckedPacket);
 		}
 
 		static void OnPrintPacketReceived(PrintPacket printPacket)
@@ -282,15 +205,15 @@ namespace TsRandomizer.Archipelago
 			{
 				case JsonMessagePartType.PlayerId:
 					return int.TryParse(messagePart.Text, out var playerSlot) 
-						? chache.GetPlayerName(playerSlot)
+						? session.Players.GetPlayerAliasAndName(playerSlot)
 						: messagePart.Text;
 				case JsonMessagePartType.ItemId:
 					return int.TryParse(messagePart.Text, out var itemId)
-						? chache.GetItemName(itemId)
+						? session.Items.GetItemName(itemId)
 						: messagePart.Text;
 				case JsonMessagePartType.LocationId:
 					return int.TryParse(messagePart.Text, out var locationId)
-						? chache.GetLocationName(locationId)
+						? session.Locations.GetLocationNameFromId(locationId)
 						: messagePart.Text;
 				default:
 					return messagePart.Text;
@@ -348,25 +271,22 @@ namespace TsRandomizer.Archipelago
 
 		public static void UpdateChecksTask(ItemLocationMap itemLocationMap)
 		{
-			var locationsCheckedPacket = new LocationChecksPacket
-			{
-				Locations = itemLocationMap
-					.Where(l => l.IsPickedUp && !(l is ExteralItemLocation))
-					.Select(l => LocationMap.GetLocationId(l.Key))
-					.ToList()
-			};
+			var locations = itemLocationMap
+				.Where(l => l.IsPickedUp && !(l is ExteralItemLocation))
+				.Select(l => LocationMap.GetLocationId(l.Key))
+				.ToArray();
 
 			ReconnectIfNeeded();
 
-			session.SendPacket(locationsCheckedPacket);
+			session.Locations.CompleteLocationChecks(locations);
 		}
 
 		static void ReconnectIfNeeded()
 		{
-			if (IsConnected && session.Connected)
+			if (IsConnected && session.Socket.Connected)
 				return;
 
-			Connect(serverUrl, userName, password, getCheckedLocations, uuid);
+			Connect(serverUrl, userName, password, uuid);
 		}
 	}
 }

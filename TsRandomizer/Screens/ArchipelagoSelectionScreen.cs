@@ -162,7 +162,7 @@ namespace TsRandomizer.Screens
 
 			var password = string.IsNullOrEmpty(values[UserIndex]) ? null : values[UserIndex];
 
-			var result = Client.Connect(server, values[UserIndex], password, () => null, null);
+			var result = Client.Connect(server, values[UserIndex], password, null);
 			if (!result.Success)
 			{
 				var failure = (ConnectionFailed)result;

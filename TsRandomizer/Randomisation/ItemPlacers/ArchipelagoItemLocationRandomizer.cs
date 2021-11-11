@@ -43,7 +43,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			saveGame.DataKeyStrings.TryParsePersonalItems(GameSavePersonalItemIds, out var personalLocations);
 			saveGame.DataKeyStrings.TryParsePyramidKeysUnlock(GameSavePyramidsKeysUnlock, out var pyramidKeysUnlock);
 
-			var result = Client.Connect(server, user, password, GetCheckedLocations, connectionId);
+			var result = Client.Connect(server, user, password, connectionId);
 
 			if (!result.Success)
 				throw new ConnectionFailedException((ConnectionFailed)result, server, user, password);
@@ -66,13 +66,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			}
 
 			return itemLocations;
-		}
-
-		IEnumerable<ItemKey> GetCheckedLocations()
-		{
-			return itemLocations
-				.Where(l => l.IsPickedUp)
-				.Select(l => l.Key);
 		}
 
 		void OnItemLocationChecked(ItemLocation itemLocation)
