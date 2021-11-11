@@ -102,7 +102,7 @@ namespace TsRandomizer.Randomisation
 				| R.GateLeftLibrary
 				| R.GateSealedCaves
 				| (R.GateSealedSirensCave & R.CardE)
-				| (R.GateMilitairyGate & (R.CardE | R.CardB));
+				| (R.GateMilitaryGate & (R.CardE | R.CardB));
 
 			LowerLakeDesolationBridge = AccessToLakeDesolation & (R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary);
 
@@ -114,12 +114,12 @@ namespace TsRandomizer.Randomisation
 					& (
 						(LowerLakeDesolationBridge & R.CardD) 
 						| (R.GateSealedSirensCave & R.CardE) 
-						| (R.GateMilitairyGate & (R.CardB | R.CardE))
+						| (R.GateMilitaryGate & (R.CardB | R.CardE))
 					)
 				) //libraryTimespinner
-				| R.GateLakeSirineLeft
+				| R.GateLakeSereneLeft
 				| R.GateAccessToPast
-				| R.GateLakeSirineRight
+				| R.GateLakeSereneRight
 				| R.GateRoyalTowers
 				| R.GateCastleRamparts
 				| R.GateCastleKeep
@@ -130,9 +130,9 @@ namespace TsRandomizer.Randomisation
 			ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
 
 			//past
-			LeftSideForestCaves = (AccessToPast & (R.TimespinnerWheel | R.ForwardDash | R.DoubleJump)) | R.GateLakeSirineRight | R.GateLakeSirineLeft;
-			UpperLakeSirine = (LeftSideForestCaves & (R.TimeStop | R.Swimming)) | R.GateLakeSirineLeft;
-			LowerlakeSirine = (LeftSideForestCaves | R.GateLakeSirineLeft) & R.Swimming;
+			LeftSideForestCaves = (AccessToPast & (R.TimespinnerWheel | R.ForwardDash | R.DoubleJump)) | R.GateLakeSereneRight | R.GateLakeSereneLeft;
+			UpperLakeSirine = (LeftSideForestCaves & (R.TimeStop | R.Swimming)) | R.GateLakeSereneLeft;
+			LowerlakeSirine = (LeftSideForestCaves | R.GateLakeSereneLeft) & R.Swimming;
 			LowerCavesOfBanishment = LowerlakeSirine | R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump);
 			UpperCavesOfBanishment = AccessToPast;
 			CastleRamparts = AccessToPast;
@@ -146,12 +146,12 @@ namespace TsRandomizer.Randomisation
 
 			//future
 			UpperLakeDesolation = AccessToLakeDesolation & UpperLakeSirine & R.AntiWeed;
-			LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | R.GateLeftLibrary | R.GateKittyBoss | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | R.CardE));
-			MidLibrary = (LeftLibrary & R.CardD) | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | R.CardE));
+			LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | R.GateLeftLibrary | R.GateKittyBoss | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitaryGate & (R.CardB | R.CardE));
+			MidLibrary = (LeftLibrary & R.CardD) | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitaryGate & (R.CardB | R.CardE));
 			UpperLeftLibrary = LeftLibrary & (R.DoubleJump | R.ForwardDash);
-			UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | ((R.GateMilitairyGate | R.GateSealedSirensCave) & R.CardE);
-			RightSideLibraryElevator = R.CardE & ((MidLibrary & (R.CardC | R.CardB)) | R.GateMilitairyGate | R.GateSealedSirensCave);
-			LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSideLibraryElevator | R.GateMilitairyGate | (R.GateSealedSirensCave & R.CardE);
+			UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | ((R.GateMilitaryGate | R.GateSealedSirensCave) & R.CardE);
+			RightSideLibraryElevator = R.CardE & ((MidLibrary & (R.CardC | R.CardB)) | R.GateMilitaryGate | R.GateSealedSirensCave);
+			LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSideLibraryElevator | R.GateMilitaryGate | (R.GateSealedSirensCave & R.CardE);
 			SealedCavesLeft = (AccessToLakeDesolation & R.DoubleJump) | R.GateSealedCaves;
 			SealedCavesLower = SealedCavesLeft & R.CardA;
 			SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
