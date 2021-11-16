@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Archipelago.MultiClient.Net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Newtonsoft.Json;
@@ -160,32 +161,34 @@ namespace TsRandomizer.Screens
 			if (!values[ServerIndex].Contains(":"))
 				server += ":38281";
 
-			var password = string.IsNullOrEmpty(values[UserIndex]) ? null : values[UserIndex];
+			var password = string.IsNullOrEmpty(values[PasswordIndex]) ? null : values[PasswordIndex];
 
 			var result = Client.Connect(server, values[UserIndex], password, null);
-			if (!result.Success)
+			if (!result.Successful)
 			{
-				var failure = (ConnectionFailed)result;
+				var failure = (LoginFailure)result;
 
-				var messageBox = MessageBox.Create(ScreenManager, $"Connecting to server failed: {failure.ErrorMessage}");
+				var messageBox = MessageBox.Create(ScreenManager, $"Connecting to server failed: {string.Join(", ", failure.Errors)}");
 
 				ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
 			}
 			else
 			{
-				var connected = (Connected)result;
+				var connected = (LoginSuccessful)result;
 
-				difficultyMenu.SetSeedAndFillingMethod(connected.Seed, FillingMethod.Archipelago);
+				var slotDataParser = new SlotDataParser(connected.SlotData);
+
+				difficultyMenu.SetSeedAndFillingMethod(slotDataParser.GetSeed(), FillingMethod.Archipelago);
 				difficultyMenu.HookOnDifficultySelected(saveGame => {
 					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = server; 
 					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = values[UserIndex]; 
 					if(!string.IsNullOrEmpty(values[PasswordIndex]))
 						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePasswordKey] = values[PasswordIndex];
-					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveConnectionId] = connected.ConnectionId;
+					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveConnectionId] = Client.ConnectionId;
 					saveGame.DataKeyInts[ArchipelagoItemLocationMap.GameItemIndex] = 0;
-					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePyramidsKeysUnlock] = connected.PyramidKeysGate.ToString();
+					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePyramidsKeysUnlock] = slotDataParser.GetPyramidKeysGate().ToString();
 					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePersonalItemIds] =
-						JsonConvert.SerializeObject(connected.PersonalLocations);
+						JsonConvert.SerializeObject(slotDataParser.GetPersonalItems());
 				});
 
 				Dynamic.OnCancel(playerIndex);

@@ -15,17 +15,25 @@ namespace TsRandomizer.ItemTracker
 
 		public static void UpdateState(ItemTrackerState state)
 		{
-			var formatter = new BinaryFormatter();
-
-			using (var fileStream = new FileStream(StateFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite, FileSize))
+			try
 			{
-				fileStream.SetLength(FileSize);
+				var formatter = new BinaryFormatter();
 
-				using (var memmoryMappedFIle = MemoryMappedFile.CreateFromFile(fileStream, "TsRandomizerItemTrackerState", 0, MemoryMappedFileAccess.ReadWrite, null, HandleInheritability.Inheritable, true))
-				using (var stream = memmoryMappedFIle.CreateViewStream(0, 0, MemoryMappedFileAccess.Write))
-					formatter.Serialize(stream, state);
+				using (var fileStream = new FileStream(StateFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite,
+					FileShare.ReadWrite, FileSize))
+				{
+					fileStream.SetLength(FileSize);
+
+					using (var memmoryMappedFIle = MemoryMappedFile.CreateFromFile(fileStream,
+						"TsRandomizerItemTrackerState", 0, MemoryMappedFileAccess.ReadWrite, null,
+						HandleInheritability.Inheritable, true))
+					using (var stream = memmoryMappedFIle.CreateViewStream(0, 0, MemoryMappedFileAccess.Write))
+						formatter.Serialize(stream, state);
+				}
 			}
-
+			catch
+			{
+			}
 		}
 
 		public static ItemTrackerState LoadState()

@@ -191,7 +191,7 @@ namespace TsRandomizer.Screens
 				if (!seed.HasValue)
 					return;
 
-				SDL.SDL_SetClipboardText(seed.Value.ToString());
+				SDL.SDL_SetClipboardText(seed.Value.ToDisplayString());
 			}
 		}
 

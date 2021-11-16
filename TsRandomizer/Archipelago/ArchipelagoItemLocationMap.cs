@@ -32,16 +32,16 @@ namespace TsRandomizer.Archipelago
 
 		public override void Update(Level level)
 		{
-			ItemIdentifier receiedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
+			ItemIdentifier receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
 
 			if (firstPass)
 			{
-				while (receiedItem != null)
+				while (receivedItem != null)
 				{
-					RecieveItem(receiedItem, level);
+					RecieveItem(receivedItem, level);
 					level.GameSave.DataKeyInts[GameItemIndex] = level.GameSave.GetSaveInt(GameItemIndex) + 1;
 
-					receiedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
+					receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
 				}
 
 				LoadObtainedProgressionItemsFromSave(level);
@@ -49,10 +49,10 @@ namespace TsRandomizer.Archipelago
 				firstPass = false;
 			}
 
-			if(receiedItem == null)
+			if(receivedItem == null)
 				return;
 			
-			RecieveItem(receiedItem, level);
+			RecieveItem(receivedItem, level);
 			level.GameSave.DataKeyInts[GameItemIndex] = level.GameSave.GetSaveInt(GameItemIndex) + 1;
 		}
 

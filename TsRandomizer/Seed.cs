@@ -6,6 +6,7 @@ namespace TsRandomizer
 	struct Seed
 	{
 		public const int Length = 8 + SeedOptions.Length;
+		public const int DisplayLength = 12;
 
 		public readonly uint Id;
 		public readonly SeedOptions Options;

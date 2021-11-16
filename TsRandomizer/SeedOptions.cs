@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.Linq.Expressions;
 
 namespace TsRandomizer
 {
 	struct SeedOptions
 	{
-		public const int Length = 4;
+		public const int Length = 8;
 
 		public readonly uint Flags;
 
@@ -86,10 +85,10 @@ namespace TsRandomizer
 		}
 
 		public override string ToString() =>
-			Flags.ToString("X");
+			Flags.ToString($"X{Length}");
 
 		[Pure]
 		public string ToDisplayString() =>
-			(Flags & 0xFFFF).ToString($"X{Length}");
+			(Flags & 0xFFFF).ToString("X4");
 	}
 }

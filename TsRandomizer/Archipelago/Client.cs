@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
@@ -16,12 +15,7 @@ namespace TsRandomizer.Archipelago
 {
 	static class Client
 	{
-		const int ConnectionTimeoutInSeconds = 6;
-
 		static ArchipelagoSession session;
-
-		static volatile bool hasConnectionResult;
-		static ArchipelagoPacketBase connectionResult;
 
 		static volatile int slot = -1;
 
@@ -30,13 +24,15 @@ namespace TsRandomizer.Archipelago
 		static string password;
 		static string uuid;
 
-		static ConnectionResult cachedConnectionResult;
+		static LoginResult cachedConnectionResult;
 
 		public static bool IsConnected;
 
 		public static Permissions ForfeitPermissions = 0;
 
-		public static ConnectionResult Connect(string server, string user, string pass, string connectionId)
+		public static string ConnectionId = "";
+
+		public static LoginResult Connect(string server, string user, string pass, string connectionId)
 		{
 			if (IsConnected && session.Socket.Connected && cachedConnectionResult != null)
 			{
@@ -49,47 +45,16 @@ namespace TsRandomizer.Archipelago
 			serverUrl = server;
 			userName = user;
 			password = pass;
-			uuid = connectionId ?? Guid.NewGuid().ToString("N");
+			ConnectionId = connectionId ?? Guid.NewGuid().ToString("N");
 			
 			session = ArchipelagoSessionFactory.CreateSession(new Uri(serverUrl));
-			session.Socket.PacketReceived += PackacedReceived;
+			session.Socket.PacketReceived += PackageReceived;
 
-			session.AttemptConnectAndLogin("Timespinner", userName, new Version(0, 2, 0), new List<string>(0), password, uuid);
+			var result = session.TryConnectAndLogin("Timespinner", userName, new Version(0, 2, 0), new List<string>(0), ConnectionId, password);
 
-			hasConnectionResult = false;
-			connectionResult = null;
-
-			var connectedStartedTime = DateTime.UtcNow;
-
-			while (!hasConnectionResult)
-			{
-				if (DateTime.UtcNow - connectedStartedTime > TimeSpan.FromSeconds(ConnectionTimeoutInSeconds))
-				{
-					Disconnect();
-
-					return new ConnectionFailed("Connection Timedout");
-				}
-
-				Thread.Sleep(100);
-			}
-
-			if (connectionResult is ConnectionRefusedPacket refused)
-			{
-				Disconnect();
-
-				return new ConnectionFailed(string.Join(", ", refused.Errors));
-			}
-			if (connectionResult is ConnectedPacket success)
-			{
-				IsConnected = true;
-				
-				cachedConnectionResult = new Connected(success, uuid);
-				return cachedConnectionResult;
-			}
-
-			Disconnect();
-
-			return new ConnectionFailed("Unknown package, probably due to version missmatch");
+			IsConnected = result.Successful;
+			cachedConnectionResult = result;
+			return result;
 		}
 
 		public static void Disconnect()
@@ -105,8 +70,6 @@ namespace TsRandomizer.Archipelago
 
 			IsConnected = false;
 
-			hasConnectionResult = false;
-
 			session = null;
 
 			ForfeitPermissions = 0;
@@ -117,7 +80,7 @@ namespace TsRandomizer.Archipelago
 		public static ItemIdentifier GetNextItem(int currentIndex)
 		{
 			return session.Items.AllItemsReceived.Count > currentIndex 
-				? ItemMap.GetItemIdentifier(session.Items.AllItemsReceived[currentIndex + 1].Item)
+				? ItemMap.GetItemIdentifier(session.Items.AllItemsReceived[currentIndex].Item)
 				: null;
 		}
 
@@ -126,15 +89,13 @@ namespace TsRandomizer.Archipelago
 			SendPacket(new StatusUpdatePacket { Status = status });
 		}
 
-		static void PackacedReceived(ArchipelagoPacketBase packet)
+		static void PackageReceived(ArchipelagoPacketBase packet)
 		{
 			switch (packet)
 			{
 				case RoomInfoPacket roomInfoPacket: OnRoomInfoPacketReceived(roomInfoPacket); break;
-				case ConnectionRefusedPacket connectionRefusedPacket: OnConnectionRefusedPacketReceived(connectionRefusedPacket); break;
-				case ConnectedPacket connectedPacket: OnConnectedPacketReceived(connectedPacket); break;
 				case PrintPacket printPacket: OnPrintPacketReceived(printPacket); break;
-				case PrintJsonPacket printJsonPacket: OnPrinJsontPacketReceived(printJsonPacket); break;
+				case PrintJsonPacket printJsonPacket: OnPrintJsonPacketReceived(printJsonPacket); break;
 			}
 		}
 
@@ -154,22 +115,6 @@ namespace TsRandomizer.Archipelago
 				ForfeitPermissions = permissions;
 		}
 
-		static void OnConnectedPacketReceived(ConnectedPacket connectedPacket)
-		{
-			slot = connectedPacket.Slot;
-
-			hasConnectionResult = true;
-			connectionResult = connectedPacket;
-		}
-
-		static void OnConnectionRefusedPacketReceived(ConnectionRefusedPacket connectionRefusedPacket)
-		{
-			slot = -1;
-
-			hasConnectionResult = true;
-			connectionResult = connectionRefusedPacket;
-		}
-
 		static void OnPrintPacketReceived(PrintPacket printPacket)
 		{
 			if (printPacket.Text == null)
@@ -181,7 +126,7 @@ namespace TsRandomizer.Archipelago
 				ScreenManager.Log.Add(true, new Part(line));
 		}
 
-		static void OnPrinJsontPacketReceived(PrintJsonPacket printJsonPacket)
+		static void OnPrintJsonPacketReceived(PrintJsonPacket printJsonPacket)
 		{
 			var parts = new List<Part>();
 

@@ -91,8 +91,8 @@ namespace TsRandomizer.Screens.SeedSelection
 		{
 			var text = SDL.SDL_GetClipboardText().Trim();
 
-			if (text.Length > Seed.Length)
-				text = text.Substring(0, Seed.Length);
+			if (text.Length > Seed.DisplayLength)
+				text = text.Substring(0, Seed.DisplayLength);
 
 			SetSeed(text);
 		}
@@ -128,7 +128,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		void OnOkayEntrySelected(PlayerIndex playerIndex)
 		{
-			var hexString = GetHexString();
+			var hexString = GetHexString().Insert(8, "0000");
 
 			if (!Seed.TryParse(hexString, out var seed))
 			{
@@ -161,7 +161,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		internal void OnSeedOptionsUpdated(SeedOptionsCollection options)
 		{
-			var hexString = GetHexString();
+			var hexString = GetHexString().Insert(8, "0000");
 	
 			var seedId = hexString.Substring(0, Seed.Length - SeedOptions.Length);
 
@@ -171,7 +171,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		void SetSeed(Seed seed)
 		{
-			SetSeed(seed.ToString());
+			SetSeed(seed.ToDisplayString());
 		}
 
 		void SetSeed(string seedString)
@@ -193,7 +193,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		internal SeedOptionsCollection GetCurrentOptions()
 		{
-			var hexString = GetHexString();
+			var hexString = GetHexString().Insert(8, "0000");
 
 			return !Seed.TryParse(hexString, out var seed) 
 				? new SeedOptionsCollection(SeedOptions.None) 
@@ -204,12 +204,12 @@ namespace TsRandomizer.Screens.SeedSelection
 		{
 			var hexString = (string)Dynamic._currentEnteredPassword;
 
-			if (hexString.Length > Seed.Length)
-				return hexString.Substring(0, Seed.Length);
+			if (hexString.Length > Seed.DisplayLength)
+				return hexString.Substring(0, Seed.DisplayLength);
 			if (hexString.Length == 0)
-				return new string('0', Seed.Length);
-			if (hexString.Length < Seed.Length)
- 				 return hexString + new string('0', Seed.Length - hexString.Length);
+				return new string('0', Seed.DisplayLength);
+			if (hexString.Length < Seed.DisplayLength)
+ 				 return hexString + new string('0', Seed.DisplayLength - hexString.Length);
 
 			return hexString;
 		}

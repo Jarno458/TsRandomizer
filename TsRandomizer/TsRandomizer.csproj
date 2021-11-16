@@ -101,7 +101,6 @@
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
     <Compile Include="Archipelago\ArchipelagoRemoteItem.cs" />
     <Compile Include="Archipelago\ConnectionFailedException.cs" />
-    <Compile Include="Archipelago\ConnectionResult.cs" />
     <Compile Include="Archipelago\SlotDataParser.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="LevelObjects\Other\NightmareBoss.cs" />

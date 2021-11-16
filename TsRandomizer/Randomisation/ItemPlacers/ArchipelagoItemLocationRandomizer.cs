@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Archipelago.MultiClient.Net;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.IntermediateObjects;
@@ -45,8 +46,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			var result = Client.Connect(server, user, password, connectionId);
 
-			if (!result.Success)
-				throw new ConnectionFailedException((ConnectionFailed)result, server, user, password);
+			if (!result.Successful)
+				throw new ConnectionFailedException((LoginFailure)result, server, user, password);
 
 			itemLocations = new ArchipelagoItemLocationMap(ItemInfoProvider, UnlockingMap, Seed.Options);
 

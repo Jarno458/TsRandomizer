@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Archipelago.MultiClient.Net.Packets;
 using Newtonsoft.Json.Linq;
 using TsRandomizer.Randomisation;
 
@@ -10,9 +9,9 @@ namespace TsRandomizer.Archipelago
 	{
 		readonly Dictionary<string, object> slotData;
 
-		public SlotDataParser(ConnectedPacket connectedPacket)
+		public SlotDataParser(Dictionary<string, object> slotData)
 		{
-			slotData = connectedPacket.SlotData;
+			this.slotData = slotData;
 		}
 
 		public Requirement GetPyramidKeysGate()
