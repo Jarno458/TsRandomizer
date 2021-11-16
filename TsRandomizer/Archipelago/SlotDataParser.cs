@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
 using TsRandomizer.Randomisation;
@@ -8,10 +9,12 @@ namespace TsRandomizer.Archipelago
 	class SlotDataParser
 	{
 		readonly Dictionary<string, object> slotData;
+		readonly string seedString;
 
-		public SlotDataParser(Dictionary<string, object> slotData)
+		public SlotDataParser(Dictionary<string, object> slotData, string seedString)
 		{
 			this.slotData = slotData;
+			this.seedString = seedString;
 		}
 
 		public Requirement GetPyramidKeysGate()
@@ -36,7 +39,12 @@ namespace TsRandomizer.Archipelago
 
 		public Seed GetSeed()
 		{
-			return new Seed(0, new SeedOptions(slotData));
+			uint seedId = 0;
+
+			if (seedString != null && seedString.Length > 9)
+				uint.TryParse(seedString.Substring(seedString.Length - 9), NumberStyles.Integer, CultureInfo.InvariantCulture, out seedId);
+			
+			return new Seed(seedId, new SeedOptions(slotData));
 		}
 
 		public Dictionary<int, int> GetPersonalItems()

@@ -32,6 +32,8 @@ namespace TsRandomizer.Archipelago
 
 		public static string ConnectionId = "";
 
+		public static string SeedString = "";
+
 		public static LoginResult Connect(string server, string user, string pass, string connectionId)
 		{
 			if (IsConnected && session.Socket.Connected && cachedConnectionResult != null)
@@ -75,6 +77,10 @@ namespace TsRandomizer.Archipelago
 			ForfeitPermissions = 0;
 
 			cachedConnectionResult = null;
+
+			ConnectionId = "";
+
+			SeedString = "";
 		}
 
 		public static ItemIdentifier GetNextItem(int currentIndex)
@@ -113,6 +119,8 @@ namespace TsRandomizer.Archipelago
 		{
 			if (packet.Permissions != null && packet.Permissions.TryGetValue("forfeit", out var permissions))
 				ForfeitPermissions = permissions;
+
+			SeedString = packet.SeedName ?? "0";
 		}
 
 		static void OnPrintPacketReceived(PrintPacket printPacket)

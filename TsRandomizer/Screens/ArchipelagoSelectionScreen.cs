@@ -176,7 +176,7 @@ namespace TsRandomizer.Screens
 			{
 				var connected = (LoginSuccessful)result;
 
-				var slotDataParser = new SlotDataParser(connected.SlotData);
+				var slotDataParser = new SlotDataParser(connected.SlotData, Client.SeedString);
 
 				difficultyMenu.SetSeedAndFillingMethod(slotDataParser.GetSeed(), FillingMethod.Archipelago);
 				difficultyMenu.HookOnDifficultySelected(saveGame => {
