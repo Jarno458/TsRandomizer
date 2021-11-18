@@ -59,9 +59,9 @@ namespace TsRandomizer.Screens
 				((object)Dynamic._hardMenuEntry).AsDynamic().BaseDrawColor = MenuEntry.UnSelectedColor;
 				Dynamic._isHardModeAvailable = true;
 
-				string title = TimeSpinnerGame.Localizar.Get("DifficultyMenuHardCap1");
+				string title = TimeSpinnerGame.Localizer.Get("DifficultyMenuHardCap1");
 				var menuEntry = MenuEntry.Create(title, p => Dynamic.OnHardCap1EntrySelected(null, null));
-				menuEntry.Description = TimeSpinnerGame.Localizar.Get("DifficultyMenuHardLevelCap1Description");
+				menuEntry.Description = TimeSpinnerGame.Localizer.Get("DifficultyMenuHardLevelCap1Description");
 
 				AddMenuEntry(menuEntry);
 			}

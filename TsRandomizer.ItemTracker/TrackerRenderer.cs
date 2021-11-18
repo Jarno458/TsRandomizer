@@ -78,7 +78,8 @@ namespace TsRandomizerItemTracker
 				DrawItem(spriteBatch, state.CardE, new ItemIdentifier(EInventoryRelicType.ElevatorKeycard));
 				DrawItem(spriteBatch, state.WaterMask, new ItemIdentifier(EInventoryRelicType.WaterMask));
 				DrawItem(spriteBatch, state.GassMask, new ItemIdentifier(EInventoryRelicType.AirMask));
-
+				DrawItem(spriteBatch, state.Kobo, new ItemIdentifier(EInventoryFamiliarType.Kobo));
+				DrawItem(spriteBatch, state.MerchantCrow, new ItemIdentifier(EInventoryFamiliarType.MerchantCrow));
 				DrawFireSource(spriteBatch, state);
 				DrawPinkSource(spriteBatch, state);
 			}

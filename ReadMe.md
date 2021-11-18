@@ -37,6 +37,7 @@ Extract the contents of the corresponding zip file to the same folder as Timespi
 * Achievements cannot be unlocked
 * SaveStatue inside right elevator room is disabled to prevent a softlock
 * SaveStatue down in the pit of the ancient pyramid is disabled to prevent a softlock
+* SaveStatues in front of Temportal Gyre bosses Ifrit and Ravenlord are disabled to prevent softlocks
 * Aelana and The Maw no longer require twins to be killed before their door unlocks
 
 # New keybinds
@@ -50,11 +51,11 @@ Extract the contents of the corresponding zip file to the same folder as Timespi
 * In Seed selection menu, Ctr+C can now be used to copy seed id to the clipboard
 
 # Routing changes
-* The drawbridge is now open by default, and doesn't require you to visit the twins demons
+* The drawbridge is now open by default, and doesn't require you to visit the demon twins
 * Amadeus Laboratory now requires keycard B to open
 * To prevent players from getting stuck in the past when items are still available in the present, the transition room next to the refugee camp can now be used to freely travel back and forth between past and present
 * When you obtain the pyramid keys, a random transition room is unlocked that could open new routing opportunities
-* The temporal gyre is closed, due to its high randomness inside an already randomized timezone, the timezone would be highly unstable
+* The Temporal Gyre's boss rooms are disconnected from its main loop, which instead exits to its entrance. When using the "Gyre Archives" flag, Ifrit can be reached by aquiring Kobo and proceeding to the room in the northwestern most room in the Library, while Ravenlord can be reached by aquiring Merchant Crow and proceeding to the room in Amadeus' Library containing the Historical Archives
 
 # Item Tracker
 The TsRandomizer.ItemTracker.exe can be used to automagicly track any progression item you obtain ingame. It can for example be used by streamers that want to display their current progression items to their viewers

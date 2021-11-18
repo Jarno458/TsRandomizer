@@ -28,6 +28,40 @@ namespace TsRandomizer.Screens
 			new Roomkey(9, 7)
 		};
 
+		static readonly Roomkey[] GyreRooms =
+		{
+			// Gyre Path
+			new Roomkey(14, 11),
+			new Roomkey(14, 12),
+			new Roomkey(14, 13),
+			new Roomkey(14, 14),
+			new Roomkey(14, 15),
+			new Roomkey(14, 16),
+			new Roomkey(14, 17),
+			new Roomkey(14, 18),
+			new Roomkey(14, 19),
+			new Roomkey(14, 20),
+			new Roomkey(14, 21),
+			new Roomkey(14, 22),
+			new Roomkey(14, 23),
+			// Ravenlord
+			new Roomkey(14, 8),
+			new Roomkey(14, 4),
+			new Roomkey(14, 9),
+			new Roomkey(14, 24),
+			// Ifrit
+			new Roomkey(14, 6),
+			new Roomkey(14, 5),
+			new Roomkey(14, 7),
+			new Roomkey(14, 25)
+		};
+
+		static readonly Roomkey[] FalseWarpRooms =
+		{
+			new Roomkey(11, 4), // Lab cabinet
+			new Roomkey(2, 51) // Backer memory room
+		};
+
 		ItemLocationMap itemLocations;
 		bool isShowingAviableLocations;
 
@@ -62,6 +96,7 @@ namespace TsRandomizer.Screens
 						Height = room.Height,
 						Position = room.Position
 					};
+
 
 					foreach (var kvp in room.Blocks)
 					{
@@ -137,6 +172,9 @@ namespace TsRandomizer.Screens
 		{
 			var hud = ((object) Dynamic._minimapHud).AsDynamic();
 
+			foreach (var roomkey in GyreRooms)
+				GetRoom(roomkey).IsDebug = false;
+
 			hud._minimap = DeepClone(Dynamic._minimap);
 
 			itemLocations = itemLocationMap;
@@ -150,6 +188,10 @@ namespace TsRandomizer.Screens
 			foreach (var roomkey in BossRooms)
 				foreach (var block in GetRoom(roomkey).Blocks.Values)
 					block.IsBoss = true;
+
+			foreach (var roomkey in FalseWarpRooms)
+				foreach (var block in GetRoom(roomkey).Blocks.Values)
+					block.IsTimespinner = true;
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
