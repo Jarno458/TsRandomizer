@@ -25,20 +25,6 @@ namespace TsRandomizer.LevelObjects.Other
 				Dynamic._portalType = 2; // post-dungeon
 				LevelReflected.SetLevelSaveInt("GyreDungeonSeed", 1); // Warp to Ifrit
 			}
-
-			// TODO (currently have auto-warps on room entry)
-			// Ravenlord exit
-			/*
-			else if (typedObject.Level.ID == 14 && typedObject.Level.RoomID == 24)
-            {
-				
-			}
-
-			// Ifrit exit
-			else if (typedObject.Level.ID == 14 && typedObject.Level.RoomID == 25)
-			{
-				
-			}*/
 		}
 	}
 }
