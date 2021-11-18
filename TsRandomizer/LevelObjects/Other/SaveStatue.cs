@@ -22,8 +22,10 @@ namespace TsRandomizer.LevelObjects.Other
 			if (Dynamic._isBroken) 
 				return;
 
-			if ((Level.ID != 2 || Level.RoomID != 20) //Right side libarary elevator room
-				&& (Level.ID != 16 || Level.RoomID != 21))  //Pyramid Pit
+			if ((Level.ID != 2 || Level.RoomID != 20) // Right side libarary elevator room
+				&& (Level.ID != 16 || Level.RoomID != 21) // Pyramid pit
+				&& (Level.ID != 14 || Level.RoomID != 8) // Ravenlord
+				&& (Level.ID != 14 || Level.RoomID != 6))  // Ifrit
 				return;
 
 			Dynamic._isBroken = true;

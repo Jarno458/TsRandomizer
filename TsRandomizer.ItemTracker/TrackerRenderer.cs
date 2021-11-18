@@ -69,6 +69,7 @@ namespace TsRandomizerItemTracker
 				DrawItem(spriteBatch, state.CelestialSash, new ItemIdentifier(EInventoryRelicType.EssenceOfSpace));
 				DrawItem(spriteBatch, state.PyramidKeys, new ItemIdentifier(EInventoryRelicType.PyramidsKey));
 				DrawItem(spriteBatch, state.EyeRing, new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive));
+				DrawItem(spriteBatch, state.Kobo, new ItemIdentifier(EInventoryFamiliarType.Kobo));
 				DrawItem(spriteBatch, state.CardA, new ItemIdentifier(EInventoryRelicType.ScienceKeycardA));
 				DrawItem(spriteBatch, state.CardB, new ItemIdentifier(EInventoryRelicType.ScienceKeycardB));
 				DrawItem(spriteBatch, state.CardC, new ItemIdentifier(EInventoryRelicType.ScienceKeycardC));
@@ -78,9 +79,9 @@ namespace TsRandomizerItemTracker
 				DrawItem(spriteBatch, state.CardE, new ItemIdentifier(EInventoryRelicType.ElevatorKeycard));
 				DrawItem(spriteBatch, state.WaterMask, new ItemIdentifier(EInventoryRelicType.WaterMask));
 				DrawItem(spriteBatch, state.GassMask, new ItemIdentifier(EInventoryRelicType.AirMask));
-
 				DrawFireSource(spriteBatch, state);
 				DrawPinkSource(spriteBatch, state);
+				DrawItem(spriteBatch, state.MerchantCrow, new ItemIdentifier(EInventoryFamiliarType.MerchantCrow));
 			}
 		}
 

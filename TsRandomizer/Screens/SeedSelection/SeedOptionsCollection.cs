@@ -18,6 +18,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 7, new SeedOptionInfo { Name = "Specific Keycards", Description = "Keycards can only open corresponding doors" } },
 			{ 1 << 8, new SeedOptionInfo { Name = "Inverted", Description = "Start in the past" } },
 			{ 1 << 9, new SeedOptionInfo { Name = "Stinky Maw", Description = "Require gassmask for Maw" } },
+			{ 1 << 10, new SeedOptionInfo { Name = "Gyre Archives", Description = "Gyre locations are in logic. New warps are gated by Merchant Crow and Kobo." } },
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)
