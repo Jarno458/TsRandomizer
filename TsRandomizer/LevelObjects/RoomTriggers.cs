@@ -144,7 +144,7 @@ namespace TsRandomizer.LevelObjects
 
 				SpawnNeliste(level);
 			}));
-			// Placeholder Gyre hooks TODO make objects for these
+			// Spawn gyre portals when applicable
 			RoomTriggers.Add(new RoomTrigger(11, 4, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GyreArchives || !level.GameSave.HasFamiliar(EInventoryFamiliarType.MerchantCrow)) return;
@@ -153,7 +153,7 @@ namespace TsRandomizer.LevelObjects
 			RoomTriggers.Add(new RoomTrigger(14, 24, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GyreArchives) return;
-				SpawnGyreWarp(level, 11, 6); // ravenlord to lab
+				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 11, RoomID = 4 });// ravenlord to lab
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 51, (level, itemLocation, seedOptions, screenManager) =>
 			{
@@ -170,7 +170,7 @@ namespace TsRandomizer.LevelObjects
 			RoomTriggers.Add(new RoomTrigger(14, 25, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GyreArchives) return;
-				SpawnGyreWarp(level, 2, 3); // Ifrit to shop
+				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 2, RoomID = 51 }); // Ifrit to backer room
 			}));
 			RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions, screenManager) => //Remove Daddy's pedistal if you havent killed him yet
 			{
@@ -355,7 +355,10 @@ namespace TsRandomizer.LevelObjects
 
 		static void SpawnGyreWarp(Level level, int LevelId, int RoomId)
 		{
-			level.RequestChangeLevel(new LevelChangeRequest { LevelID = LevelId, RoomID = RoomId });
+			var position = new Point(200, 200);
+			var gyrePortal = GyreType.CreateInstance(false, level, position, -1, new ObjectTileSpecification());
+
+			level.AsDynamic().RequestAddObject(gyrePortal);
 		}
 
 		static void FillRoomWithGass(Level level)

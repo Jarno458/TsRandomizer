@@ -10,9 +10,28 @@ namespace TsRandomizer.LevelObjects.Other
 		public GyrePortalEvent(Mobile typedObject) : base(typedObject)
 		{
 			Dynamic._isUsable = true;
-			// Closed loop (end of dungeon becomes post-boss warp type)
+			// Closed loop
 			if (typedObject.Level.ID == 14 && typedObject.Level.RoomID == 23)
-				Dynamic._portalType = 3;
+				Dynamic._portalType = 3; // post-boss
+			// Lab file cabinet room
+			else if (typedObject.Level.ID == 11 && typedObject.Level.RoomID == 4)
+				Dynamic._portalType = 2; // post-dungeon
+			else if (typedObject.Level.ID == 2 && typedObject.Level.RoomID == 51)
+				Dynamic._portalType = 2; // post-dungeon
+
+			// TODO (currently have auto-warps on room entry)
+			// Ravenlord exit
+			/*
+			else if (typedObject.Level.ID == 14 && typedObject.Level.RoomID == 24)
+            {
+				
+			}
+
+			// Ifrit exit
+			else if (typedObject.Level.ID == 14 && typedObject.Level.RoomID == 25)
+			{
+				
+			}*/
 		}
 	}
 }
