@@ -24,6 +24,7 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type TransitionWarpEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.TransitionWarpEvent");
 		static readonly Type GyreType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.GyrePortalEvent");
 		static readonly Type NelisteNpcType = TimeSpinnerType.Get("Timespinner.GameObjects.NPCs.AstrologerNPC");
+		static readonly Type YorneNpcType = TimeSpinnerType.Get("Timespinner.GameObjects.NPCs.YorneNPC");
 		static readonly Type PedistalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
 
@@ -156,8 +157,15 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 51, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				if (!seedOptions.GyreArchives || !level.GameSave.HasFamiliar(EInventoryFamiliarType.Kobo)) return;
-				SpawnGyreWarp(level, 14, 6); // backer room to Ifrit
+				if (!seedOptions.GyreArchives) return;
+
+				if (level.GameSave.HasFamiliar(EInventoryFamiliarType.Kobo)) {
+					SpawnGyreWarp(level, 14, 6); // backer room to Ifrit
+					return;
+				};
+
+				if (((Dictionary<int, NPCBase>)level.AsDynamic()._npcs).Values.Any(npc => npc.GetType() == YorneNpcType)) return;
+				SpawnYorne(level); // Dialog for needing Kobo
 			}));
 			RoomTriggers.Add(new RoomTrigger(14, 25, (level, itemLocation, seedOptions, screenManager) =>
 			{
@@ -339,6 +347,14 @@ namespace TsRandomizer.LevelObjects
 			var neliste = (NPCBase)NelisteNpcType.CreateInstance(false, level, position, -1, new ObjectTileSpecification());
 
 			level.AsDynamic().RequestAddObject(neliste);
+		}
+
+		static void SpawnYorne(Level level)
+		{
+			var position = new Point(240, 150);
+			var yorne = (NPCBase)YorneNpcType.CreateInstance(false, level, position, -1, new ObjectTileSpecification());
+
+			level.AsDynamic().RequestAddObject(yorne);
 		}
 
 		static void SpawnGyreWarp(Level level, int LevelId, int RoomId)
