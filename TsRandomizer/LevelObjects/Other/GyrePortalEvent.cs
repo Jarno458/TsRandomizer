@@ -17,13 +17,13 @@ namespace TsRandomizer.LevelObjects.Other
 			else if (typedObject.Level.ID == 11 && typedObject.Level.RoomID == 4)
             {
 				Dynamic._portalType = 2; // post-dungeon
-				typedObject.Level.GameSave.LevelSaveInts["GyreDungeonSeed"] = 0; // Warp to Ravenlord
+				LevelReflected.SetLevelSaveInt("GyreDungeonSeed", 0); // Warp to Ravenlord
 			}
 			// Backer room
 			else if (typedObject.Level.ID == 2 && typedObject.Level.RoomID == 51)
             {
 				Dynamic._portalType = 2; // post-dungeon
-				typedObject.Level.GameSave.LevelSaveInts["GyreDungeonSeed"] = 1; // Warp to Ifrit
+				LevelReflected.SetLevelSaveInt("GyreDungeonSeed", 1); // Warp to Ifrit
 			}
 
 			// TODO (currently have auto-warps on room entry)
