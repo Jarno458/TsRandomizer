@@ -9,7 +9,6 @@ namespace TsRandomizer.LevelObjects.Other
 	{
 		public GyrePortalEvent(Mobile typedObject) : base(typedObject)
 		{
-			int gyreSeed = typedObject.Level.GameSave.GetSaveInt("GyreDungeonSeed");
 			Dynamic._isUsable = true;
 			// Closed loop
 			if (typedObject.Level.ID == 14 && typedObject.Level.RoomID == 23)
@@ -18,13 +17,13 @@ namespace TsRandomizer.LevelObjects.Other
 			else if (typedObject.Level.ID == 11 && typedObject.Level.RoomID == 4)
             {
 				Dynamic._portalType = 2; // post-dungeon
-				typedObject.Level.GameSave.DataKeyInts["GyreDungeonSeed"] = gyreSeed % 2; // Warp to Ravenlord
+				typedObject.Level.GameSave.LevelSaveInts["GyreDungeonSeed"] = 0; // Warp to Ravenlord
 			}
 			// Backer room
 			else if (typedObject.Level.ID == 2 && typedObject.Level.RoomID == 51)
             {
 				Dynamic._portalType = 2; // post-dungeon
-				typedObject.Level.GameSave.DataKeyInts["GyreDungeonSeed"] = gyreSeed % 2 + 1; // Warp to Ifrit
+				typedObject.Level.GameSave.LevelSaveInts["GyreDungeonSeed"] = 1; // Warp to Ifrit
 			}
 
 			// TODO (currently have auto-warps on room entry)
