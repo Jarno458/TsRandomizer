@@ -144,23 +144,23 @@ namespace TsRandomizer.LevelObjects
 
 				SpawnNeliste(level);
 			}));
-			// Spawn gyre portals when applicable
+			// Spawn Gyre portals when applicable
 			RoomTriggers.Add(new RoomTrigger(11, 4, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GyreArchives || !level.GameSave.HasFamiliar(EInventoryFamiliarType.MerchantCrow)) return;
-				SpawnGyreWarp(level, 14, 8); // lab to ravenlord
+				SpawnGyreWarp(level, 14, 8); // Historical Documents room to Ravenlord
 			}));
 			RoomTriggers.Add(new RoomTrigger(14, 24, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GyreArchives) return;
-				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 11, RoomID = 4 });// ravenlord to lab
+				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 11, RoomID = 4 }); // Ravenlord to Historical Documents room
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 51, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GyreArchives) return;
 
 				if (level.GameSave.HasFamiliar(EInventoryFamiliarType.Kobo)) {
-					SpawnGyreWarp(level, 14, 6); // backer room to Ifrit
+					SpawnGyreWarp(level, 14, 6); // Portrait room to Ifrit
 					return;
 				};
 
@@ -170,7 +170,7 @@ namespace TsRandomizer.LevelObjects
 			RoomTriggers.Add(new RoomTrigger(14, 25, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GyreArchives) return;
-				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 2, RoomID = 51 }); // Ifrit to backer room
+				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 2, RoomID = 51 }); // Ifrit to Portrait room
 			}));
 			RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions, screenManager) => //Remove Daddy's pedistal if you havent killed him yet
 			{

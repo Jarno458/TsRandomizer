@@ -55,7 +55,7 @@ Extract the contents of the corresponding zip file to the same folder as Timespi
 * Amadeus Laboratory now requires keycard B to open
 * To prevent players from getting stuck in the past when items are still available in the present, the transition room next to the refugee camp can now be used to freely travel back and forth between past and present
 * When you obtain the pyramid keys, a random transition room is unlocked that could open new routing opportunities
-* The Temporal Gyre's boss rooms are disconnected from its main loop, which instead exits to its entrance. When using the "Gyre Archives" flag, Ifrit can be reached by aquiring Kobo and proceeding to the room in the northwestern most room in the Library, while Ravenlord can be reached by aquiring Merchant Crow and proceeding to the room in Amadeus' Library containing the Historical Archives
+* The Temporal Gyre's boss rooms are disconnected from its main loop, which instead exits to its entrance. When using the "Gyre Archives" flag, Ifrit can be reached by aquiring Kobo and proceeding to the portrait room in the Library, while Ravenlord can be reached by aquiring Merchant Crow and proceeding to the room in Amadeus' Library containing the Historical Archives
 
 # Item Tracker
 The TsRandomizer.ItemTracker.exe can be used to automagicly track any progression item you obtain ingame. It can for example be used by streamers that want to display their current progression items to their viewers
