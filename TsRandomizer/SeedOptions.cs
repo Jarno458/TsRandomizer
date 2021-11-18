@@ -22,6 +22,7 @@ namespace TsRandomizer
 		public bool SpecificKeys => (Flags & 1 << 7) > 0;
 		public bool Inverted => (Flags & 1 << 8) > 0;
 		public bool GassMaw => (Flags & 1 << 9) > 0;
+		public bool IncludeQuestPickups => (Flags & 1 << 10) > 0;
 
 		//Non visable flags
 		public bool Archipelago => (Flags & 1 << 16) > 0;
@@ -48,6 +49,7 @@ namespace TsRandomizer
 				{"SpecificKeycards", 1U << 7},
 				{"Inverted", 1U << 8},
 				{"StinkyMaw", 1U << 9},
+				{"IncludeQuestPickups", 1U << 10},
 				{"DeathLink", 1U << 17}
 			};
 
