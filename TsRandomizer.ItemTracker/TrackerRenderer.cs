@@ -86,28 +86,28 @@ namespace TsRandomizerItemTracker
 
 		void DrawFireSource(SpriteBatch spriteBatch, ItemTrackerState state)
 		{
-			if(state.FireOrb)
-				DrawItem(spriteBatch, state.FireOrb, new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Melee));
-			else if (state.FireSpell)
-				DrawItem(spriteBatch, state.FireSpell, new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Spell));
-			else if (state.DinsFire)
+			if(state.DinsFire)
 				DrawItem(spriteBatch, state.DinsFire, new ItemIdentifier(EInventoryOrbType.Book, EOrbSlot.Spell));
 			else if (state.FireRing)
 				DrawItem(spriteBatch, state.FireRing, new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Passive));
+			else if (state.FireOrb)
+				DrawItem(spriteBatch, state.FireOrb, new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Melee));
+			else if (state.FireSpell)
+				DrawItem(spriteBatch, state.FireSpell, new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Spell));
 			else
-				DrawItem(spriteBatch, false, new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Melee));
+				DrawItem(spriteBatch, false, new ItemIdentifier(EInventoryOrbType.Book, EOrbSlot.Spell));
 		}
 
 		void DrawPinkSource(SpriteBatch spriteBatch, ItemTrackerState state)
 		{
-			if (state.PinkOrb)
-				DrawItem(spriteBatch, state.PinkOrb, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Melee));
+			if (state.PinkRing)
+				DrawItem(spriteBatch, state.PinkRing, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Passive));
 			else if (state.PinkSpell)
 				DrawItem(spriteBatch, state.PinkSpell, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Spell));
-			else if (state.PinkRing)
-				DrawItem(spriteBatch, state.PinkRing, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Passive));
+			else if (state.PinkOrb)
+				DrawItem(spriteBatch, state.PinkOrb, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Melee));
 			else
-				DrawItem(spriteBatch, false, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Melee));
+				DrawItem(spriteBatch, false, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Passive));
 		}
 
 		void ResetPosition()
