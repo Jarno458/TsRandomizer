@@ -172,10 +172,6 @@ namespace TsRandomizer.LevelObjects
 				if (!seedOptions.GyreArchives) return;
 				SpawnGyreWarp(level, 2, 3); // Ifrit to shop
 			}));
-			RoomTriggers.Add(new RoomTrigger(14, 23, (level, itemLocation, seedOptions, screenManager) =>
-			{
-				SpawnGyreWarp(level, 14, 0); // gyre closed loop
-			}));
 			RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions, screenManager) => //Remove Daddy's pedistal if you havent killed him yet
 			{
 				if (level.GameSave.DataKeyBools.ContainsKey("IsEndingABCleared")) return;
