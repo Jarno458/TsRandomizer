@@ -419,7 +419,7 @@ namespace TsRandomizer.Randomisation
 			areaName = "Upper Lake Sirine";
 			Add(new RoomItemKey(7, 28), "Before Big Bird", ItemProvider.Get(EInventoryUseItemType.AlchemistTools), UpperLakeSirine);
 			areaName = "Caves of Banishment (Sirens)";
-			Add(new RoomItemKey(8, 3), "Underwater sirens right 2", ItemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment & R.Swimming);
+			Add(new ItemKey(8, 3, 1256, 544), "Underwater sirens right 2", ItemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment & R.Swimming);
 		}
 
 		ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)
