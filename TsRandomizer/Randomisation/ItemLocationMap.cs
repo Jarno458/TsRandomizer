@@ -83,9 +83,6 @@ namespace TsRandomizer.Randomisation
 
 			if (options.StartWithTalaria)
 				Add(new ExteralItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
-
-			if (options.IncludeQuestPickups)
-				AddQuestPickups();
 		}
 
 		void SetupGates()
@@ -175,13 +172,10 @@ namespace TsRandomizer.Randomisation
 
 		static int CalculateCapacity(SeedOptions options)
 		{
-			var capacity = 160;
+			var capacity = 165;
 
 			if (options.DownloadableItems)
 				capacity += 14;
-
-			if (options.IncludeQuestPickups)
-				capacity += 3;
 
 			return capacity;
 		}
@@ -311,9 +305,11 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(7, 19, 248, 96), "Double jump cave platform", ItemProvider.Get(EItemType.MaxAura), UpperLakeSirine & R.DoubleJump);
 			Add(new ItemKey(7, 19, 168, 240), "Double jump cave floor", ItemProvider.Get(EInventoryEquipmentType.TravelersCloak), UpperLakeSirine);
 			Add(new ItemKey(7, 27, 184, 144), "West lake serene cave secret", ItemProvider.Get(EInventoryFamiliarType.Griffin), UpperLakeSirine & OculusRift);
+			Add(new RoomItemKey(7, 28), "Before Big Bird", ItemProvider.Get(EInventoryUseItemType.AlchemistTools), UpperLakeSirine);
 			Add(new ItemKey(7, 13, 56, 176), "Chest behind vines", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperLakeSirine);
 			Add(new ItemKey(7, 30, 296, 176), "Pyramid keys room", ItemProvider.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine);
 			areaName = "Lower Lake Sirine";
+			Add(new ItemKey(7, 3, 120, 208), "Chicken ledge", null, LowerlakeSirine & (R.TimeStop | R.Swimming));
 			Add(new ItemKey(7, 3, 440, 1232), "Deep dive", ItemProvider.Get(EInventoryUseItemType.Potion), LowerlakeSirine);
 			Add(new ItemKey(7, 7, 1432, 576), "Under the eels", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerlakeSirine);
 			Add(new ItemKey(7, 6, 520, 496), "Water spikes room", ItemProvider.Get(EInventoryUseItemType.Potion), LowerlakeSirine);
@@ -332,12 +328,14 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(8, 41, 312, 192), "Jackpot room chest 4", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & ForwardDashDoubleJump);
 			Add(new ItemKey(8, 42, 216, 189), "Banishment pedestal", ItemProvider.Get(EInventoryOrbType.Wind, EOrbSlot.Melee), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 15, 248, 192), "Last chance before Maw", ItemProvider.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment & R.DoubleJump);
+			Add(new RoomItemKey(8, 21), "Plasma Crystal", ItemProvider.Get(EInventoryUseItemType.RadiationCrystal), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 31, 88, 400), "Mineshaft", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & MawGassMask);
 			areaName = "Caves of Banishment (Sirens)";
 			Add(new ItemKey(8, 4, 664, 144), "Wyvern room", ItemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment);
 			Add(new ItemKey(8, 3, 808, 144), "Above water sirens", ItemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment);
 			Add(new ItemKey(8, 3, 744, 560), "Underwater sirens left", ItemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment & R.Swimming);
 			Add(new ItemKey(8, 3, 1848, 576), "Underwater sirens right", ItemProvider.Get(EItemType.MaxAura), UpperCavesOfBanishment & R.Swimming);
+			Add(new ItemKey(8, 3, 1256, 544), "Underwater sirens right ground", ItemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment & R.Swimming);
 			Add(new ItemKey(8, 5, 88, 496), "water hook", ItemProvider.Get(EItemType.MaxSand), UpperCavesOfBanishment & R.Swimming);
 			areaName = "Caste Ramparts";
 			Add(new ItemKey(4, 1, 456, 160), "Bomber chest", ItemProvider.Get(EItemType.MaxSand), CastleRamparts & MultipleSmallJumpsOfNpc);
@@ -353,6 +351,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(5, 45, 104, 192), "Omelette chest", ItemProvider.Get(EItemType.MaxHP), CastleKeep);
 			Add(new ItemKey(5, 15, 296, 192), "Just an egg", ItemProvider.Get(EItemType.MaxAura), CastleKeep);
 			Add(new ItemKey(5, 41, 72, 160), "Out of the way", ItemProvider.Get(EInventoryEquipmentType.BuckleHat), CastleKeep);
+			Add(new ItemKey(5, 20, 504, 48), "Advisor jump", null, CastleKeep & R.TimeStop);
 			Add(new RoomItemKey(5, 5), "Twins", ItemProvider.Get(EInventoryRelicType.DoubleJump), CastleKeep & R.TimeStop);
 			Add(new ItemKey(5, 22, 312, 176), "Royal guard tiny room", ItemProvider.Get(EItemType.MaxSand), CastleKeep & ((R.TimeStop & R.ForwardDash) | R.DoubleJump));
 			areaName = "Royal towers";
@@ -410,16 +409,6 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(11, 34, 200, 192), "Experiment 13 terminal", null, TheLab & R.Tablet);
 			Add(new ItemKey(11, 37, 200, 192), "Lab terminal left", null, TheLab & R.Tablet);
 			Add(new ItemKey(11, 38, 120, 176), "Lab terminal right", null, TheLabPoweredOff & R.Tablet);
-		}
-
-		void AddQuestPickups()
-        {
-			areaName = "Caves of Banishment (Maw)";
-			Add(new RoomItemKey(8, 21), "Plasma Crystal", ItemProvider.Get(EInventoryUseItemType.RadiationCrystal), LowerCavesOfBanishment);
-			areaName = "Upper Lake Sirine";
-			Add(new RoomItemKey(7, 28), "Before Big Bird", ItemProvider.Get(EInventoryUseItemType.AlchemistTools), UpperLakeSirine);
-			areaName = "Caves of Banishment (Sirens)";
-			Add(new ItemKey(8, 3, 1256, 544), "Underwater sirens right 2", ItemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment & R.Swimming);
 		}
 
 		ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)

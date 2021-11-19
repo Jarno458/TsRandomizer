@@ -42,7 +42,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			if(SeedOptions.StartWithTalaria)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));
 
-			ItemInfo[] defaultItemsToAddToGame = new[]
+			itemsToAddToGame = new[]
 			{
 				ItemInfoProvider.Get(EInventoryEquipmentType.SelenBangle),
 				ItemInfoProvider.Get(EInventoryEquipmentType.GlassPumpkin),
@@ -56,19 +56,11 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryEquipmentType.LuckyCoin),
 				ItemInfoProvider.Get(EInventoryRelicType.EternalBrooch),
 				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltMeyef),
-				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow)
-			};
-
-			ItemInfo[] questPickups = new[]
-			{
+				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow),
 				ItemInfoProvider.Get(EInventoryUseItemType.SilverOre),
 				ItemInfoProvider.Get(EInventoryUseItemType.RadiationCrystal),
 				ItemInfoProvider.Get(EInventoryUseItemType.AlchemistTools)
 			};
-
-			itemsToAddToGame = SeedOptions.IncludeQuestPickups 
-				? defaultItemsToAddToGame.Concat(questPickups).ToArray() 
-				: defaultItemsToAddToGame;
 
 			genericItems = new[]
 			{

@@ -18,7 +18,6 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 7, new SeedOptionInfo { Name = "Specific Keycards", Description = "Keycards can only open corresponding doors" } },
 			{ 1 << 8, new SeedOptionInfo { Name = "Inverted", Description = "Start in the past" } },
 			{ 1 << 9, new SeedOptionInfo { Name = "Stinky Maw", Description = "Require gassmask for Maw" } },
-			{ 1 << 10, new SeedOptionInfo { Name = "Include quest pickups", Description = "Add Alchemy Tools, Silver Ore, and Plasma Crystal to item pool" } },
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)
