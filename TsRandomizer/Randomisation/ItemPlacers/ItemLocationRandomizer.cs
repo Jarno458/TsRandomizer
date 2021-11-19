@@ -56,10 +56,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryEquipmentType.LuckyCoin),
 				ItemInfoProvider.Get(EInventoryRelicType.EternalBrooch),
 				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltMeyef),
-				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow),
-				ItemInfoProvider.Get(EInventoryUseItemType.SilverOre),
-				ItemInfoProvider.Get(EInventoryUseItemType.RadiationCrystal),
-				ItemInfoProvider.Get(EInventoryUseItemType.AlchemistTools)
+				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow)
 			};
 
 			genericItems = new[]
