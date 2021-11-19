@@ -35,6 +35,8 @@ namespace TsRandomizer.Randomisation
 		public static readonly Requirement TimespinnerWheel = 1UL << 26;
 		public static readonly Requirement Tablet = 1UL << 27;
 		public static readonly Requirement OculusRift = 1UL << 28;
+		public static readonly Requirement Kobo = 1UL << 29;
+		public static readonly Requirement MerchantCrow = 1UL << 30;
 
 		public static readonly Requirement GateSealedCaves = 1UL << 43;
 		public static readonly Requirement GateMaw = 1UL << 44;

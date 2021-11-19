@@ -73,6 +73,8 @@ namespace TsRandomizer.Randomisation
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.AirMask), R.GassMask),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.Tablet), R.Tablet),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive), R.OculusRift),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.Kobo), R.Kobo),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.MerchantCrow), R.MerchantCrow),
 			};
 
 			if (seed.Options.SpecificKeys)
