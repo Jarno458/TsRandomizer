@@ -29,6 +29,8 @@ namespace TsRandomizer.LevelObjects.Other
                 _merchandiseInventory.AddItem(EInventoryUseItemType.Ether);
             }
             _merchandiseInventory.AddItem(EInventoryUseItemType.Biscuit);
+            _merchandiseInventory.AddItem(EInventoryUseItemType.Ether);
+            _merchandiseInventory.AddItem(EInventoryUseItemType.SandBottle);
             _merchandiseInventory.AddItem(EInventoryUseItemType.ChaosHeal);
 
             Dynamic._merchandiseInventory = _merchandiseInventory;

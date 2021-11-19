@@ -68,6 +68,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.HiPotion),
 				ItemInfoProvider.Get(EInventoryUseItemType.FuturePotion),
 				ItemInfoProvider.Get(EInventoryUseItemType.FutureHiPotion),
+				ItemInfoProvider.Get(EInventoryUseItemType.Biscuit),
 				ItemInfoProvider.Get(EInventoryUseItemType.Ether),
 				ItemInfoProvider.Get(EInventoryUseItemType.HiEther),
 				ItemInfoProvider.Get(EInventoryUseItemType.FutureEther),
