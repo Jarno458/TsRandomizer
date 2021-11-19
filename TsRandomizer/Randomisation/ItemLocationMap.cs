@@ -312,7 +312,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(7, 13, 56, 176), "Chest behind vines", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperLakeSirine);
 			Add(new ItemKey(7, 30, 296, 176), "Pyramid keys room", ItemProvider.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine);
 			areaName = "Lower Lake Sirine";
-			Add(new ItemKey(7, 3, 120, 208), "Chicken ledge", null, LowerlakeSirine & (R.TimeStop | R.Swimming));
+			Add(new ItemKey(7, 3, 120, 204), "Chicken ledge", null, LowerlakeSirine & (R.TimeStop | R.Swimming));
 			Add(new ItemKey(7, 3, 440, 1232), "Deep dive", ItemProvider.Get(EInventoryUseItemType.Potion), LowerlakeSirine);
 			Add(new ItemKey(7, 7, 1432, 576), "Under the eels", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerlakeSirine);
 			Add(new ItemKey(7, 6, 520, 496), "Water spikes room", ItemProvider.Get(EInventoryUseItemType.Potion), LowerlakeSirine);
