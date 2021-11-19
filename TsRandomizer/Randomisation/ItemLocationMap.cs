@@ -179,6 +179,8 @@ namespace TsRandomizer.Randomisation
 
 			if (options.DownloadableItems)
 				capacity += 14;
+			if (options.GyreArchives)
+				capacity += 9;
 
 			return capacity;
 		}
