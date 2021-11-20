@@ -201,8 +201,8 @@ namespace TsRandomizer.Screens
 			if (x == null) return;
 
 			string desc = (x._isCleared)
-				? TimeSpinnerGame.Localizar.Get("SaveSelectContClearedDescription")
-				: TimeSpinnerGame.Localizar.Get("SaveSelectContinueDescription");
+				? TimeSpinnerGame.Localizer.Get("SaveSelectContClearedDescription")
+				: TimeSpinnerGame.Localizer.Get("SaveSelectContinueDescription");
 
 			if (displayDeleteAll)
 			{

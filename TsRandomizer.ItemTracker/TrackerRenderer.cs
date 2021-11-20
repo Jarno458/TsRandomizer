@@ -69,6 +69,7 @@ namespace TsRandomizerItemTracker
 				DrawItem(spriteBatch, state.CelestialSash, new ItemIdentifier(EInventoryRelicType.EssenceOfSpace));
 				DrawItem(spriteBatch, state.PyramidKeys, new ItemIdentifier(EInventoryRelicType.PyramidsKey));
 				DrawItem(spriteBatch, state.EyeRing, new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive));
+				DrawItem(spriteBatch, state.Kobo, new ItemIdentifier(EInventoryFamiliarType.Kobo));
 				DrawItem(spriteBatch, state.CardA, new ItemIdentifier(EInventoryRelicType.ScienceKeycardA));
 				DrawItem(spriteBatch, state.CardB, new ItemIdentifier(EInventoryRelicType.ScienceKeycardB));
 				DrawItem(spriteBatch, state.CardC, new ItemIdentifier(EInventoryRelicType.ScienceKeycardC));
@@ -78,36 +79,36 @@ namespace TsRandomizerItemTracker
 				DrawItem(spriteBatch, state.CardE, new ItemIdentifier(EInventoryRelicType.ElevatorKeycard));
 				DrawItem(spriteBatch, state.WaterMask, new ItemIdentifier(EInventoryRelicType.WaterMask));
 				DrawItem(spriteBatch, state.GassMask, new ItemIdentifier(EInventoryRelicType.AirMask));
-
 				DrawFireSource(spriteBatch, state);
 				DrawPinkSource(spriteBatch, state);
+				DrawItem(spriteBatch, state.MerchantCrow, new ItemIdentifier(EInventoryFamiliarType.MerchantCrow));
 			}
 		}
 
 		void DrawFireSource(SpriteBatch spriteBatch, ItemTrackerState state)
 		{
-			if(state.FireOrb)
-				DrawItem(spriteBatch, state.FireOrb, new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Melee));
-			else if (state.FireSpell)
-				DrawItem(spriteBatch, state.FireSpell, new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Spell));
-			else if (state.DinsFire)
+			if(state.DinsFire)
 				DrawItem(spriteBatch, state.DinsFire, new ItemIdentifier(EInventoryOrbType.Book, EOrbSlot.Spell));
 			else if (state.FireRing)
 				DrawItem(spriteBatch, state.FireRing, new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Passive));
+			else if (state.FireOrb)
+				DrawItem(spriteBatch, state.FireOrb, new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Melee));
+			else if (state.FireSpell)
+				DrawItem(spriteBatch, state.FireSpell, new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Spell));
 			else
-				DrawItem(spriteBatch, false, new ItemIdentifier(EInventoryOrbType.Flame, EOrbSlot.Melee));
+				DrawItem(spriteBatch, false, new ItemIdentifier(EInventoryOrbType.Book, EOrbSlot.Spell));
 		}
 
 		void DrawPinkSource(SpriteBatch spriteBatch, ItemTrackerState state)
 		{
-			if (state.PinkOrb)
-				DrawItem(spriteBatch, state.PinkOrb, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Melee));
+			if (state.PinkRing)
+				DrawItem(spriteBatch, state.PinkRing, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Passive));
 			else if (state.PinkSpell)
 				DrawItem(spriteBatch, state.PinkSpell, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Spell));
-			else if (state.PinkRing)
-				DrawItem(spriteBatch, state.PinkRing, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Passive));
+			else if (state.PinkOrb)
+				DrawItem(spriteBatch, state.PinkOrb, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Melee));
 			else
-				DrawItem(spriteBatch, false, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Melee));
+				DrawItem(spriteBatch, false, new ItemIdentifier(EInventoryOrbType.Pink, EOrbSlot.Passive));
 		}
 
 		void ResetPosition()
