@@ -37,7 +37,7 @@ namespace TsRandomizer.Archipelago
 				{1337016, new ItemKey(1, 18, 1272, 192)},
 				{1337017, new ItemKey(1, 18, 1368, 192)},
 				{1337018, new RoomItemKey(1, 5)},
-				// Libary
+				// Library
 				{1337019, new ItemKey(2, 60, 328, 160)},
 				{1337020, new ItemKey(2, 54, 296, 176)},
 				{1337021, new ItemKey(2, 41, 404, 246)},
@@ -45,7 +45,7 @@ namespace TsRandomizer.Archipelago
 				{1337023, new ItemKey(2, 47, 216, 208)},
 				{1337024, new ItemKey(2, 47, 152, 208)},
 				{1337025, new ItemKey(2, 47, 88, 208)},
-				// Libary top
+				// Library top
 				{1337026, new ItemKey(2, 56, 168, 192)},
 				{1337027, new ItemKey(2, 56, 392, 192)},
 				{1337028, new ItemKey(2, 56, 616, 192)},
@@ -82,7 +82,7 @@ namespace TsRandomizer.Archipelago
 				{1337055, new ItemKey(9, 3, 744, 560)},
 				{1337056, new ItemKey(9, 2, 184, 176)},
 				{1337057, new ItemKey(9, 2, 104, 160)},
-				// Militairy Fortress
+				// Military Fortress
 				{1337058, new ItemKey(10, 3, 264, 128)},
 				{1337059, new ItemKey(10, 11, 296, 192)},
 				{1337060, new ItemKey(10, 4, 1064, 176)},
@@ -130,14 +130,14 @@ namespace TsRandomizer.Archipelago
 				{1337096, new ItemKey(3, 2, 584, 368)},
 				{1337097, new ItemKey(4, 20, 264, 160)},
 				{1337098, new ItemKey(3, 29, 248, 192)},
-				// Upper Lake Sirine
+				// Upper Lake Serene
 				{1337099, new ItemKey(7, 16, 152, 96)},
 				{1337100, new ItemKey(7, 19, 248, 96)},
 				{1337101, new ItemKey(7, 19, 168, 240)},
 				{1337102, new ItemKey(7, 27, 184, 144)},
 				{1337103, new ItemKey(7, 13, 56, 176)},
 				{1337104, new ItemKey(7, 30, 296, 176)},
-				// Lower Lake Sirine
+				// Lower Lake Serene
 				{1337105, new ItemKey(7, 3, 440, 1232)},
 				{1337106, new ItemKey(7, 7, 1432, 576)},
 				{1337107, new ItemKey(7, 6, 520, 496)},
