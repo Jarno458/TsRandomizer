@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
@@ -34,6 +35,8 @@ namespace TsRandomizer.Archipelago
 
 		public static string SeedString = "";
 
+		public static DeathLinkService GetDeathLinkService() => session.CreateDeathLinkServiceAndEnable();
+
 		public static LoginResult Connect(string server, string user, string pass, string connectionId)
 		{
 			if (IsConnected && session.Socket.Connected && cachedConnectionResult != null)
@@ -56,6 +59,7 @@ namespace TsRandomizer.Archipelago
 
 			IsConnected = result.Successful;
 			cachedConnectionResult = result;
+
 			return result;
 		}
 

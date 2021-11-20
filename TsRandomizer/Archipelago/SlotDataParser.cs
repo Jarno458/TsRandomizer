@@ -15,6 +15,8 @@ namespace TsRandomizer.Archipelago
 		{
 			this.slotData = slotData;
 			this.seedString = seedString;
+
+			this.slotData["DeathLink"] = true;
 		}
 
 		public Requirement GetPyramidKeysGate()

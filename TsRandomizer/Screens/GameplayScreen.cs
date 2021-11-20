@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -39,6 +40,8 @@ namespace TsRandomizer.Screens
 
 		public GCM GameContentManager { get; private set; }
 
+		DeathLinker deathLinkService;
+
 		public GameplayScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
 		}
@@ -76,8 +79,13 @@ namespace TsRandomizer.Screens
 
 			ItemManipulator.Initialize(ItemLocations);
 
-			if(fillingMethod == FillingMethod.Archipelago)
+			if (seedOptions.Archipelago)
+			{
 				Client.SetStatus(ArchipelagoClientState.ClientPlaying);
+
+				if (seedOptions.DeathLink)
+					deathLinkService = new DeathLinker(Client.GetDeathLinkService());
+			}
 		}
 
 		void SendBackToMainMenu(string message)
@@ -101,6 +109,9 @@ namespace TsRandomizer.Screens
 			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions, ScreenManager);
 
 			FamiliarManager.Update(Level);
+
+			if (seedOptions.DeathLink && deathLinkService != null)
+				deathLinkService.Update(Level, ScreenManager);
 
 #if DEBUG
 			TimespinnerAfterDark(input);
