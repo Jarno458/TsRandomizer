@@ -59,7 +59,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryEquipmentType.ShinyRock),
 				ItemInfoProvider.Get(EInventoryRelicType.EternalBrooch),
 				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltMeyef),
-				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow),
+				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow)
 			};
 
 			genericItems = new[]
