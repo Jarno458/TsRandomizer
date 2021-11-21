@@ -52,11 +52,14 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryEquipmentType.LibrarianRobe),
 				ItemInfoProvider.Get(EInventoryEquipmentType.MetalWristband),
 				ItemInfoProvider.Get(EInventoryEquipmentType.NelisteEarring),
+				ItemInfoProvider.Get(EInventoryEquipmentType.Sunglasses),
+				ItemInfoProvider.Get(EInventoryEquipmentType.TrendyJacket),
 				ItemInfoProvider.Get(EInventoryEquipmentType.FamiliarEgg),
 				ItemInfoProvider.Get(EInventoryEquipmentType.LuckyCoin),
+				ItemInfoProvider.Get(EInventoryEquipmentType.ShinyRock),
 				ItemInfoProvider.Get(EInventoryRelicType.EternalBrooch),
 				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltMeyef),
-				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow),
+				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow)
 			};
 
 			genericItems = new[]
