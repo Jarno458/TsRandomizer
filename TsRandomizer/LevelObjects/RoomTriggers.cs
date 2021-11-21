@@ -200,9 +200,14 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 21, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				if (!seedOptions.GassMaw) return;
+				if (seedOptions.GassMaw) FillRoomWithGass(level);
 
-				FillRoomWithGass(level);
+				var levelReflected = level.AsDynamic();
+				IEnumerable<Animate> eventObjects = levelReflected._levelEvents.Values;
+				if (!itemLocation.IsPickedUp && 
+					!eventObjects.Any(o => o.GetType().ToString() == 
+						"Timespinner.GameObjects.Events.EnvironmentPrefabs.EnvPrefabCavesRadiationCrystal")) 
+					SpawnItemDropPickup(level, itemLocation.ItemInfo, 312, 912);
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 33, (level, itemLocation, seedOptions, screenManager) =>
 			{
