@@ -204,6 +204,7 @@ namespace TsRandomizer.LevelObjects
 
 				var levelReflected = level.AsDynamic();
 				IEnumerable<Animate> eventObjects = levelReflected._levelEvents.Values;
+
 				if (!itemLocation.IsPickedUp && 
 					!eventObjects.Any(o => o.GetType().ToString() == 
 						"Timespinner.GameObjects.Events.EnvironmentPrefabs.EnvPrefabCavesRadiationCrystal")) 

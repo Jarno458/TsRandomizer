@@ -211,14 +211,11 @@ namespace TsRandomizer.Archipelago
 				{1337168, new ItemKey(11, 34, 200, 192)},
 				{1337169, new ItemKey(11, 37, 200, 192)},
 				{1337170, new ItemKey(11, 38, 120, 176)},
-
 				{1337171, new ItemKey(5, 20, 504, 48)}, //new
 				{1337172, new ItemKey(8, 3, 1256, 544)}, //new
-				{1337173, new ItemKey(8, 21, 303, 888)}, //new
+				{1337173, new RoomItemKey(8, 21)}, //new
 				{1337174, new ItemKey(7, 3, 120, 204)}, //new
 				{1337175, new ItemKey(7, 28, 143, 206)}, //new
-
-				//OH FFS Add https://github.com/JarnoWesthof/TsRandomizer/pull/29/files
 
 				// 1337176 - 1337236 Reserved
 
