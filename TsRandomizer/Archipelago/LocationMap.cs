@@ -212,10 +212,20 @@ namespace TsRandomizer.Archipelago
 				{1337169, new ItemKey(11, 37, 200, 192)},
 				{1337170, new ItemKey(11, 38, 120, 176)},
 
-				// 1337171 - 1337238 Reserved
+				{1337171, new ItemKey(5, 20, 504, 48)}, //new
+				{1337172, new ItemKey(8, 3, 1256, 544)}, //new
+				{1337173, new ItemKey(8, 21, 303, 888)}, //new
+				{1337174, new ItemKey(7, 3, 120, 204)}, //new
+				{1337175, new ItemKey(7, 28, 143, 206)}, //new
+
+				//OH FFS Add https://github.com/JarnoWesthof/TsRandomizer/pull/29/files
+
+				// 1337176 - 1337236 Reserved
 
 				// Pyramid
 				// Temporal Gyre
+				{1337237, new ItemKey(14, 9, 280, 176)}, //new
+				{1337238, new ItemKey(14, 7, 200, 205)}, //new
 				{1337239, new ItemKey(14, 14, 200, 832)},
 				{1337240, new ItemKey(14, 17, 200, 832)},
 				{1337241, new ItemKey(14, 20, 200, 832)},

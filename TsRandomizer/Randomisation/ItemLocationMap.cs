@@ -310,7 +310,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(7, 19, 248, 96), "Double jump cave platform", ItemProvider.Get(EItemType.MaxAura), UpperLakeSirine & R.DoubleJump);
 			Add(new ItemKey(7, 19, 168, 240), "Double jump cave floor", ItemProvider.Get(EInventoryEquipmentType.TravelersCloak), UpperLakeSirine);
 			Add(new ItemKey(7, 27, 184, 144), "West lake serene cave secret", ItemProvider.Get(EInventoryFamiliarType.Griffin), UpperLakeSirine & OculusRift);
-			Add(new RoomItemKey(7, 28), "Before Big Bird", ItemProvider.Get(EInventoryUseItemType.AlchemistTools), UpperLakeSirine);
+			Add(new ItemKey(7, 28, 143, 206), "Before Big Bird", ItemProvider.Get(EInventoryUseItemType.AlchemistTools), UpperLakeSirine);
 			Add(new ItemKey(7, 13, 56, 176), "Chest behind vines", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperLakeSirine);
 			Add(new ItemKey(7, 30, 296, 176), "Pyramid keys room", ItemProvider.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine);
 			areaName = "Lower Lake Sirine";
@@ -333,7 +333,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(8, 41, 312, 192), "Jackpot room chest 4", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & ForwardDashDoubleJump);
 			Add(new ItemKey(8, 42, 216, 189), "Banishment pedestal", ItemProvider.Get(EInventoryOrbType.Wind, EOrbSlot.Melee), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 15, 248, 192), "Last chance before Maw", ItemProvider.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment & R.DoubleJump);
-			Add(new RoomItemKey(8, 21), "Plasma Crystal", ItemProvider.Get(EInventoryUseItemType.RadiationCrystal), LowerCavesOfBanishment);
+			Add(new ItemKey(8, 21, 303, 888), "Plasma Crystal", ItemProvider.Get(EInventoryUseItemType.RadiationCrystal), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 31, 88, 400), "Mineshaft", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & MawGassMask);
 			areaName = "Caves of Banishment (Sirens)";
 			Add(new ItemKey(8, 4, 664, 144), "Wyvern room", ItemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment);
