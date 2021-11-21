@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Timespinner;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
@@ -23,20 +25,25 @@ namespace TsRandomizer.Screens
 
 		ItemLocationMap itemLocationMap;
 
-		public readonly dynamic Reflected;
+		public readonly dynamic Dynamic;
+
+		public SpriteFont ChineseFont;
+		public SpriteFont JapaneseFont;
 
 		public static Log Log;
 
 		public ScreenManager(TimespinnerGame game, PlatformHelper platformHelper) : base(game, platformHelper)
 		{
-			Reflected = this.AsDynamic();
+			Dynamic = this.AsDynamic();
 		}
 
 		protected override void LoadContent()
 		{
 			base.LoadContent();
 
-			Log = new Log(Reflected.GCM);
+			Dynamic.GCM.LatinFont.DefaultCharacter = '_';
+
+			Log = new Log(Dynamic.GCM, ChineseFont, JapaneseFont);
 		}
 
 		public override void Update(GameTime gameTime)
@@ -81,7 +88,7 @@ namespace TsRandomizer.Screens
 				hookedScreens.Add(screenHandler);
 				foundScreens.Add(screen);
 
-				screenHandler.Initialize(itemLocationMap, (GCM)Reflected.GCM);
+				screenHandler.Initialize(itemLocationMap, (GCM)Dynamic.GCM);
 			}
 
 			if (foundScreens.Count != hookedScreens.Count)
@@ -90,7 +97,7 @@ namespace TsRandomizer.Screens
 
 		void UpdateScreens(GameTime gameTime)
 		{
-			var input = (InputState)Reflected._input;
+			var input = (InputState)Dynamic._input;
 
 			foreach (var screen in hookedScreens)
 				screen.Update(gameTime, input);

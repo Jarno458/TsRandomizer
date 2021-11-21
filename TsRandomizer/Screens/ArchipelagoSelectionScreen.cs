@@ -50,7 +50,7 @@ namespace TsRandomizer.Screens
 
 			var gameConfig = GameConfigSave.EditorSave;
 
-			return (GameScreen)Activator.CreateInstance(VideoMenuScreen, null, gameConfig, screenManager.Reflected.GCM, (Action)Noop);
+			return (GameScreen)Activator.CreateInstance(VideoMenuScreen, null, gameConfig, screenManager.Dynamic.GCM, (Action)Noop);
 		}
 
 		public ArchipelagoSelectionScreen(ScreenManager screenManager, GameScreen videoScreen) : base(screenManager, videoScreen)

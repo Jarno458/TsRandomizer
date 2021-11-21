@@ -105,7 +105,7 @@ namespace TsRandomizer.LevelObjects
 
 			if (newNonItemObjects.Any())
 			{
-				GenerateShadowObjects(level.GameSave, itemLocations, newNonItemObjects, seedOptions);
+				GenerateShadowObjects(itemLocations, newNonItemObjects, seedOptions);
 
 				SetMonsterHpTo1(newNonItemObjects.OfType<Alive>());
 			}
@@ -118,7 +118,7 @@ namespace TsRandomizer.LevelObjects
 				.ToArray();
 
 			if (newItems.Any())
-				GenerateShadowObjects(level.GameSave, itemLocations, newItems, seedOptions);
+				GenerateShadowObjects(itemLocations, newItems, seedOptions);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
@@ -154,11 +154,11 @@ namespace TsRandomizer.LevelObjects
 				level, seedOptions, itemLocations, screenManager,
 				levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
 			Replaces.ReplaceObjects(level, objects);
- 			GenerateShadowObjects(level.GameSave, itemLocations, objects, seedOptions);
+ 			GenerateShadowObjects(itemLocations, objects, seedOptions);
 			SpawnMissingObjects(level, levelReflected, itemLocations);
 		}
 
-		public static void GenerateShadowObjects(GameSave gameSave, ItemLocationMap itemLocations, IEnumerable<Mobile> objects, SeedOptions options)
+		public static void GenerateShadowObjects(ItemLocationMap itemLocations, IEnumerable<Mobile> objects, SeedOptions options)
 		{
 			var objectsPerTypes = objects.GroupBy(o => o.GetType());
 

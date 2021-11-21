@@ -35,7 +35,7 @@ namespace TsRandomizer.Screens.SeedSelection
 		{
 			void Noop() { }
 
-			return (GameScreen)Activator.CreateInstance(PasswordMenuScreenType, null, screenManager.Reflected.GCM, (Action)Noop);
+			return (GameScreen)Activator.CreateInstance(PasswordMenuScreenType, null, screenManager.Dynamic.GCM, (Action)Noop);
 		}
 
 		public SeedSelectionMenuScreen(ScreenManager screenManager, GameScreen passwordScreen) : base(screenManager, passwordScreen)

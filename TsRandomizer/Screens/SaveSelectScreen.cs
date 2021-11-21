@@ -42,7 +42,7 @@ namespace TsRandomizer.Screens
 				var saveFile = (GameSave)entryReflected._saveFile;
 				var seed = saveFile.GetSeed();
 
-				seedRepresentations.Add(entry, new SeedRepresentation(seed, screenManager.Reflected.GCM, false));
+				seedRepresentations.Add(entry, new SeedRepresentation(seed, screenManager.Dynamic.GCM, false));
 			}
 		}
 

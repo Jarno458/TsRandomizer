@@ -22,9 +22,14 @@ namespace TsRandomizer.Archipelago
 		readonly ConcurrentQueue<Message> pendingImportantLines = new ConcurrentQueue<Message>();
 		readonly ConcurrentQueue<Message> pendingLines = new ConcurrentQueue<Message>();
 
-		public Log(GCM gcm)
+		readonly SpriteFont chineseFont;
+		readonly SpriteFont japaneseFont;
+
+		public Log(GCM gcm, SpriteFont chineseFont, SpriteFont japaneseFont)
 		{
 			this.gcm = gcm;
+			this.chineseFont = chineseFont;
+			this.japaneseFont = japaneseFont;
 
 			Add(this);
 		}
@@ -44,6 +49,12 @@ namespace TsRandomizer.Archipelago
 
 			CopyMessagesBetweenQueues(lines, pendingImportantLines);
 			CopyMessagesBetweenQueues(lines, pendingLines);
+
+			if (gameTime.TotalGameTime.Seconds % 2 == 0)
+			{
+				//Add(true, new Part("Test"));
+				//Add(true, new Part("サイバー❚スーパーメトロイド: Test"));
+			}
 		}
 
 		static void CopyMessagesBetweenQueues(
@@ -98,6 +109,7 @@ namespace TsRandomizer.Archipelago
 		void DrawMessage(SpriteBatch spriteBatch, Point drawPoint, Message message, double alpha)
 		{
 			var font = gcm.LatinFont;
+
 			var inGameZoom = (int)TimeSpinnerGame.Constants.InGameZoom;
 			float partOffset = 0;
 

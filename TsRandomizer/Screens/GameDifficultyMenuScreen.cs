@@ -47,7 +47,7 @@ namespace TsRandomizer.Screens
 			seedMenuEntry = GetSelectSeedMenu();
 			AddMenuEntryAtIndex(0, seedMenuEntry); 
 
-			seedRepresentation = new SeedRepresentation(ScreenManager.Reflected.GCM);
+			seedRepresentation = new SeedRepresentation(ScreenManager.Dynamic.GCM);
 
 			HookOnDifficultySelectedMethod();
 		}
