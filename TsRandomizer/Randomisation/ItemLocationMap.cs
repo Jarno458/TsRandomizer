@@ -86,8 +86,6 @@ namespace TsRandomizer.Randomisation
 
 			if (options.StartWithTalaria)
 				Add(new ExteralItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
-
-			this[new ItemKey(5, 20, 504, 48)].SetItem(itemInfoProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee));
 		}
 
 		void SetupGates()
