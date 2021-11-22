@@ -175,12 +175,12 @@ namespace TsRandomizer.Randomisation
 
 		static int CalculateCapacity(SeedOptions options)
 		{
-			var capacity = 165;
+			var capacity = 168;
 
 			if (options.DownloadableItems)
 				capacity += 14;
 			if (options.GyreArchives)
-				capacity += 9;
+				capacity += 6;
 
 			return capacity;
 		}
