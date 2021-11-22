@@ -33,7 +33,6 @@ namespace TsRandomizer.LevelObjects.Other
                 _merchandiseInventory.AddItem(EInventoryUseItemType.Ether);
             }
             _merchandiseInventory.AddItem(EInventoryUseItemType.Biscuit);
-            _merchandiseInventory.AddItem(EInventoryUseItemType.Ether);
             _merchandiseInventory.AddItem(EInventoryUseItemType.Antidote);
             _merchandiseInventory.AddItem(EInventoryUseItemType.SandBottle);
             _merchandiseInventory.AddItem(EInventoryUseItemType.ChaosHeal);
