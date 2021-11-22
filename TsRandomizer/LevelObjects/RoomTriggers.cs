@@ -370,7 +370,7 @@ namespace TsRandomizer.LevelObjects
 
 		static void SpawnYorne(Level level)
 		{
-			var position = new Point(240, 150);
+			var position = new Point(240, 215);
 			var yorne = (NPCBase)YorneNpcType.CreateInstance(false, level, position, -1, new ObjectTileSpecification());
 
 			level.AsDynamic().RequestAddObject(yorne);
