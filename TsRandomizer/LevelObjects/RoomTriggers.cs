@@ -153,7 +153,16 @@ namespace TsRandomizer.LevelObjects
 			RoomTriggers.Add(new RoomTrigger(14, 24, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GyreArchives) return;
-				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 11, RoomID = 4 }); // Ravenlord to Historical Documents room
+
+				level.JukeBox.StopSong();
+				level.RequestChangeLevel(new LevelChangeRequest { 
+					LevelID = 11,
+					RoomID = 4,
+					IsUsingWarp = true,
+					IsUsingWhiteFadeOut = true,
+					FadeInTime = 0.5f,
+					FadeOutTime = 0.25f
+				}); // Ravenlord to Historical Documents room
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 51, (level, itemLocation, seedOptions, screenManager) =>
 			{
@@ -170,7 +179,15 @@ namespace TsRandomizer.LevelObjects
 			RoomTriggers.Add(new RoomTrigger(14, 25, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GyreArchives) return;
-				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 2, RoomID = 51 }); // Ifrit to Portrait room
+				level.JukeBox.StopSong();
+				level.RequestChangeLevel(new LevelChangeRequest {
+					LevelID = 2,
+					RoomID = 51,
+					IsUsingWarp = true,
+					IsUsingWhiteFadeOut = true,
+					FadeInTime = 0.5f,
+					FadeOutTime = 0.25f
+				}); // Ifrit to Portrait room
 			}));
 			RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions, screenManager) => //Remove Daddy's pedistal if you havent killed him yet
 			{
