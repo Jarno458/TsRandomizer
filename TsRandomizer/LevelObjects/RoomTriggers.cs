@@ -94,6 +94,14 @@ namespace TsRandomizer.LevelObjects
 				if(!seedOptions.Inverted && level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
 					CreateSimpelOneWayWarp(level, 16, 12);
 			}));
+			RoomTriggers.Add(new RoomTrigger(7, 5, (level, itemLocation, seedOptions, screenManager) =>
+			{
+				// if (!itemLocation.IsPickedUp)
+				// 	SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
+				// TODO make this conditional or Cantoran will constantly respawn on all subsequent visits
+				level.GameSave.SetValue("IsCantoranActive", true);
+				// level.SetLevelSaveInt("GyreDungeonSeed", 0);
+			}));
 			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (itemLocation.IsPickedUp
