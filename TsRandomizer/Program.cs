@@ -92,7 +92,7 @@ namespace TsRandomizer
 
 		static void WithExceptionLogging(Action action)
 		{
-#if !DEBUG
+#if DEBUG
 			action();
 #else
 			try
