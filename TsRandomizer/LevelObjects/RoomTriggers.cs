@@ -163,6 +163,7 @@ namespace TsRandomizer.LevelObjects
 					FadeInTime = 0.5f,
 					FadeOutTime = 0.25f
 				}); // Ravenlord to Historical Documents room
+				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Level11);
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 51, (level, itemLocation, seedOptions, screenManager) =>
 			{
@@ -188,6 +189,7 @@ namespace TsRandomizer.LevelObjects
 					FadeInTime = 0.5f,
 					FadeOutTime = 0.25f
 				}); // Ifrit to Portrait room
+				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Library);
 			}));
 			RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions, screenManager) => //Remove Daddy's pedistal if you havent killed him yet
 			{
