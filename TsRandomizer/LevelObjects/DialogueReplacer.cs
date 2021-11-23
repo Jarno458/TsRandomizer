@@ -9,13 +9,14 @@ namespace TsRandomizer.LevelObjects
 {
     class DialogueReplacer
     {
-        public Dictionary<Roomkey, Action> Overrides;
+        public Dictionary<Roomkey, Action> Overrides = new Dictionary<Roomkey, Action>();
         public DialogueReplacer(Level level, SeedOptions options)
         {
 			Overrides.Add(new Roomkey(16, 27), () =>
 			{
 				int concussions = level.GameSave.GetConcussionCount();
-				string replacement = "What—? I know I didn't hit my head...";
+				
+				string replacement = "What—? I don't *think* I hit my head...";
 				switch (concussions)
 				{
 					case 1:

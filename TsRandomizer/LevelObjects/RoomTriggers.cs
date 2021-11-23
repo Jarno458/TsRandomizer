@@ -237,6 +237,7 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(16, 27, (level, itemLocation, seedOptions, screenManager) =>
 			{
+				level.ReplaceDialogue(seedOptions);
 				if (!level.GameSave.DataKeyStrings.ContainsKey(ArchipelagoItemLocationRandomizer.GameSaveServerKey)) return;
 
 				var forfeitFlags = Client.ForfeitPermissions;

@@ -104,8 +104,8 @@
     <Compile Include="Archipelago\DeathLinker.cs" />
     <Compile Include="Archipelago\SlotDataParser.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="LevelObjects\DialogueReplacer.cs" />
     <Compile Include="LevelObjects\Other\HistoricalDocuments.cs" />
-    <Compile Include="LevelObjects\Other\LunaisObj.cs" />
     <Compile Include="LevelObjects\Other\MerchantCrowNPC.cs" />
     <Compile Include="LevelObjects\Other\NightmareBoss.cs" />
     <Compile Include="LevelObjects\Other\YorneNPC.cs" />
