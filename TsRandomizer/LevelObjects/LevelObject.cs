@@ -91,7 +91,7 @@ namespace TsRandomizer.LevelObjects
 
 		public static void AwardFirstFrameItem(Dictionary<int, Item> itemDictionary, Protagonist lunais)
         {
-            //sometimes lunais picks up an item because she's intersecting with it as the screen loads.
+            //sometimes lunais picks up an item because she's intersecting with it as the screen loads, or right as it drops.
             //that doesn't give the replacer enough time to replace the item. But she deserves it. You deserve it.
             foreach (var item in itemDictionary)
             {
@@ -132,7 +132,7 @@ namespace TsRandomizer.LevelObjects
 				GenerateShadowObjects(itemLocations, newItems, seedOptions);
 
 			var lunais = level.MainHero;
-			if (roomChanged) AwardFirstFrameItem(itemsDictionary, lunais);
+			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
