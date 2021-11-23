@@ -96,11 +96,12 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 5, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				// if (!itemLocation.IsPickedUp)
-				// 	SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
-				// TODO make this conditional or Cantoran will constantly respawn on all subsequent visits
-				level.GameSave.SetValue("IsCantoranActive", true);
-				// level.SetLevelSaveInt("GyreDungeonSeed", 0);
+				// Set Cantoran quest active when fighting Pink Bird
+				if (!level.GameSave.GetSaveBool("IsBossDead_Cantoran"))
+                {
+					level.GameSave.SetValue("IsCantoranActive", true);
+					return;
+				}
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation, seedOptions, screenManager) =>
 			{
