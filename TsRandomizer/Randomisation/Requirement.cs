@@ -44,7 +44,7 @@ namespace TsRandomizer.Randomisation
 		public static readonly Requirement GateCastleRamparts = 1UL << 46;
 		public static readonly Requirement GateCastleKeep = 1UL << 47;
 		public static readonly Requirement GateRoyalTowers = 1UL << 48;
-		public static readonly Requirement GateMilitaryGate = 1UL << 49;
+		public static readonly Requirement GateMilitairyGate = 1UL << 49;
 		public static readonly Requirement GateKittyBoss = 1UL << 50;
 		public static readonly Requirement GateLeftLibrary = 1UL << 51;
 		public static readonly Requirement GateSealedSirensCave = 1UL << 52;
