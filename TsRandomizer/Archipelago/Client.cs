@@ -37,6 +37,8 @@ namespace TsRandomizer.Archipelago
 
 		public static DeathLinkService GetDeathLinkService() => session.CreateDeathLinkServiceAndEnable();
 
+		public static string GetCurrentPlayerName() => session.Players.GetPlayerAliasAndName(slot);
+
 		public static LoginResult Connect(string server, string user, string pass, string connectionId)
 		{
 			if (IsConnected && session.Socket.Connected && cachedConnectionResult != null)
@@ -234,7 +236,7 @@ namespace TsRandomizer.Archipelago
 			Task.Factory.StartNew(() => { UpdateChecksTask(itemLocationMap); });
 		}
 
-		public static void UpdateChecksTask(ItemLocationMap itemLocationMap)
+		static void UpdateChecksTask(ItemLocationMap itemLocationMap)
 		{
 			var locations = itemLocationMap
 				.Where(l => l.IsPickedUp && !(l is ExteralItemLocation))
