@@ -1,5 +1,6 @@
 ﻿using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Extensions;
 
 namespace TsRandomizer.LevelObjects.Other
 {
@@ -13,9 +14,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(SeedOptions options)
 		{
-			if (options.GyreArchives)
-				TimeSpinnerGame.Localizer.OverrideKey("q_ram_4_lun_29alt",
-					"It says, 'Redacted Temporal Research: Lord of Ravens'. Maybe I should ask the crow about this...");
+			Level.ReplaceDialogue(options);
 		}
 	}
 }

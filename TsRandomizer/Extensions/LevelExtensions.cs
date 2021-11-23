@@ -2,6 +2,8 @@
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.LevelObjects;
+using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Extensions
 {
@@ -52,6 +54,14 @@ namespace TsRandomizer.Extensions
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
+		}
+
+		internal static void ReplaceDialogue(this Level level, SeedOptions options)
+        {
+			Roomkey roomToReplace = new Roomkey(level.ID, level.RoomID);
+			if(new DialogueReplacer(level, options).Overrides.TryGetValue(roomToReplace, out Action OverrideDialogue))
+				OverrideDialogue();
+
 		}
 	}
 }

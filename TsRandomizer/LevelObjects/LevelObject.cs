@@ -131,13 +131,17 @@ namespace TsRandomizer.LevelObjects
 			if (newItems.Any())
 				GenerateShadowObjects(itemLocations, newItems, seedOptions);
 
-			if (roomChanged) AwardFirstFrameItem(itemsDictionary, level.MainHero);
+			var lunais = level.MainHero;
+			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, level.MainHero);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
 
 			foreach (var obj in Objects)
 				obj.OnUpdate(gameplayScreen);
+
+			if (lunais.AsDynamic()._isHittingHeadOnCeiling && lunais.Velocity.Y == 0)
+				level.GameSave.AddConcussion();
 		}
 
 		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, SeedOptions seedOptions, ScreenManager screenManager)
