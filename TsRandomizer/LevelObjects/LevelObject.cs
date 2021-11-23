@@ -132,7 +132,7 @@ namespace TsRandomizer.LevelObjects
 				GenerateShadowObjects(itemLocations, newItems, seedOptions);
 
 			var lunais = level.MainHero;
-			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, level.MainHero);
+			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
