@@ -51,16 +51,24 @@ namespace TsRandomizer.Archipelago
 			userName = user;
 			password = pass;
 			ConnectionId = connectionId ?? Guid.NewGuid().ToString("N");
-			
-			session = ArchipelagoSessionFactory.CreateSession(new Uri(serverUrl));
-			session.Socket.PacketReceived += PackageReceived;
 
-			var result = session.TryConnectAndLogin("Timespinner", userName, new Version(0, 2, 0), new List<string>(0), ConnectionId, password);
+			try
+			{
+				session = ArchipelagoSessionFactory.CreateSession(new Uri(serverUrl));
+				session.Socket.PacketReceived += PackageReceived;
 
-			IsConnected = result.Successful;
-			cachedConnectionResult = result;
+				var result = session.TryConnectAndLogin("Timespinner", userName, new Version(0, 2, 0), new List<string>(0), ConnectionId, password);
 
-			return result;
+				IsConnected = result.Successful;
+				cachedConnectionResult = result;
+			}
+			catch (Exception e)
+			{
+				IsConnected = false;
+				cachedConnectionResult = new LoginFailure(e.Message);
+			}
+
+			return cachedConnectionResult;
 		}
 
 		public static void Disconnect()
