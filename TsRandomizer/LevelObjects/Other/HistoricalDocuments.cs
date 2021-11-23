@@ -14,7 +14,6 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(SeedOptions options)
 		{
-			Level.ReplaceDialogue(options);
 		}
 	}
 }

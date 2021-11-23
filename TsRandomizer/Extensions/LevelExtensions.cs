@@ -7,7 +7,7 @@ using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Extensions
 {
-	public static class LevelExtensions
+	public static partial class LevelExtensions
 	{
 		static readonly Type ToasterType = TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.InGame.EToastType");
 
@@ -56,12 +56,14 @@ namespace TsRandomizer.Extensions
 			}
 		}
 
-		internal static void ReplaceDialogue(this Level level, SeedOptions options)
+		internal static void ReplaceText(this Level level, SeedOptions options)
         {
-			Roomkey roomToReplace = new Roomkey(level.ID, level.RoomID);
-			if(new DialogueReplacer(level, options).Overrides.TryGetValue(roomToReplace, out Action OverrideDialogue))
-				OverrideDialogue();
-
+			TextReplacer(level, options)();
 		}
+
+		internal static string RoomKeyString(this Level level)
+        {
+			return string.Format("{0}.{1}", level.ID, level.RoomID);
+        }
 	}
 }

@@ -27,7 +27,7 @@ namespace TsRandomizer.LevelObjects
 		}
 	}
 
-	abstract class LevelObject
+	abstract partial class LevelObject
 	{
 		protected static readonly List<LevelObject> Objects = new List<LevelObject>();
 
@@ -132,7 +132,7 @@ namespace TsRandomizer.LevelObjects
 				GenerateShadowObjects(itemLocations, newItems, seedOptions);
 
 			var lunais = level.MainHero;
-			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
+			if (roomChanged) AwardFirstFrameItem(itemsDictionary, lunais);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
@@ -140,7 +140,7 @@ namespace TsRandomizer.LevelObjects
 			foreach (var obj in Objects)
 				obj.OnUpdate(gameplayScreen);
 
-			if (lunais.AsDynamic()._isHittingHeadOnCeiling && lunais.Velocity.Y == 0)
+			if (lunais.AsDynamic()._isHittingHeadOnCeiling && lunais.CurrentState.HasFlag(EAFSM.Skydashing) && lunais.Velocity.Y == 0)
 				level.GameSave.AddConcussion();
 		}
 
