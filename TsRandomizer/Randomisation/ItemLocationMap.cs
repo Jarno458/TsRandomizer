@@ -84,6 +84,9 @@ namespace TsRandomizer.Randomisation
 			if (options.DownloadableItems)
 				AddDownloadTerminals();
 
+			if (options.Cantoran)
+				AddCantoran();
+
 			if (options.StartWithTalaria)
 				Add(new ExteralItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
 		}
@@ -175,12 +178,14 @@ namespace TsRandomizer.Randomisation
 
 		static int CalculateCapacity(SeedOptions options)
 		{
-			var capacity = 169;
+			var capacity = 168;
 
 			if (options.DownloadableItems)
 				capacity += 14;
 			if (options.GyreArchives)
 				capacity += 6;
+			if (options.Cantoran)
+				capacity++;
 
 			return capacity;
 		}
@@ -288,6 +293,13 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(12, 11, 136, 205), "Dad's Chambers pedestal", ItemProvider.Get(EInventoryOrbType.Empire, EOrbSlot.Melee), EmperorsTower);
 		}
 
+		void AddCantoran()
+        {
+			// Move to AddPastItemLocations if this ever becomes a default flag
+			areaName = "Upper Lake Sirine";
+			Add(new RoomItemKey(7, 5), "Cantoran", ItemProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Melee), UpperLakeSirine);
+		}
+
 		void AddPastItemLocations()
 		{
 			areaName = "Refugee Camp";
@@ -311,7 +323,6 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(7, 19, 168, 240), "Double jump cave floor", ItemProvider.Get(EInventoryEquipmentType.TravelersCloak), UpperLakeSirine);
 			Add(new ItemKey(7, 27, 184, 144), "West lake serene cave secret", ItemProvider.Get(EInventoryFamiliarType.Griffin), UpperLakeSirine & OculusRift);
 			Add(new RoomItemKey(7, 28), "Before Big Bird", ItemProvider.Get(EInventoryUseItemType.AlchemistTools), UpperLakeSirine);
-			Add(new RoomItemKey(7, 5), "Cantoran", ItemProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Melee), UpperLakeSirine);
 			Add(new ItemKey(7, 13, 56, 176), "Chest behind vines", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperLakeSirine);
 			Add(new ItemKey(7, 30, 296, 176), "Pyramid keys room", ItemProvider.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine);
 			areaName = "Lower Lake Sirine";
