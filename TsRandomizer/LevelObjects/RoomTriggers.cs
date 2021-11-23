@@ -98,7 +98,15 @@ namespace TsRandomizer.LevelObjects
 			{
 				// Set Cantoran quest active when fighting Pink Bird
 				if (!level.GameSave.GetSaveBool("IsBossDead_Cantoran"))
+                {
 					level.GameSave.SetValue("IsCantoranActive", true);
+					return;
+				}
+					
+				// Spawn item if the room has been left without aquiring
+				if (!itemLocation.IsPickedUp
+					&& level.GameSave.GetSaveBool("IsBossDead_Cantoran"))
+					SpawnItemDropPickup(level, itemLocation.ItemInfo, 170, 194);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation, seedOptions, screenManager) =>
 			{
