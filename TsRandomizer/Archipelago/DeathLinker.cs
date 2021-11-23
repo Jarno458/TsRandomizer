@@ -55,7 +55,7 @@ namespace TsRandomizer.Archipelago
 			{
 				if (level.MainHero.CurrentState == EAFSM.Dying && lastState != EAFSM.Dying)
 				{
-					var deathLink = new DeathLink("Yo momma");
+					var deathLink = new DeathLink(Client.GetCurrentPlayerName());
 					lastDeathLink = deathLink;
 					service.SendDeathLink(deathLink);
 				}
