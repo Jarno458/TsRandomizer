@@ -105,7 +105,7 @@ namespace TsRandomizer.Randomisation
 				| R.GateLeftLibrary
 				| R.GateSealedCaves
 				| (R.GateSealedSirensCave & R.CardE)
-				| (R.GateMilitaryGate & (R.CardE | R.CardB));
+				| (R.GateMilitairyGate & (R.CardE | R.CardB));
 
 			LowerLakeDesolationBridge = AccessToLakeDesolation & (R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary);
 
@@ -117,7 +117,7 @@ namespace TsRandomizer.Randomisation
 					& (
 						(LowerLakeDesolationBridge & R.CardD) 
 						| (R.GateSealedSirensCave & R.CardE) 
-						| (R.GateMilitaryGate & (R.CardB | R.CardE))
+						| (R.GateMilitairyGate & (R.CardB | R.CardE))
 					)
 				) //libraryTimespinner
 				| R.GateLakeSereneLeft
@@ -149,12 +149,12 @@ namespace TsRandomizer.Randomisation
 
 			//future
 			UpperLakeDesolation = AccessToLakeDesolation & UpperLakeSirine & R.AntiWeed;
-			LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | R.GateLeftLibrary | R.GateKittyBoss | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitaryGate & (R.CardB | R.CardE));
-			MidLibrary = (LeftLibrary & R.CardD) | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitaryGate & (R.CardB | R.CardE));
+			LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | R.GateLeftLibrary | R.GateKittyBoss | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | R.CardE));
+			MidLibrary = (LeftLibrary & R.CardD) | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | R.CardE));
 			UpperLeftLibrary = LeftLibrary & (R.DoubleJump | R.ForwardDash);
-			UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | ((R.GateMilitaryGate | R.GateSealedSirensCave) & R.CardE);
-			RightSideLibraryElevator = R.CardE & ((MidLibrary & (R.CardC | R.CardB)) | R.GateMilitaryGate | R.GateSealedSirensCave);
-			LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSideLibraryElevator | R.GateMilitaryGate | (R.GateSealedSirensCave & R.CardE);
+			UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | ((R.GateMilitairyGate | R.GateSealedSirensCave) & R.CardE);
+			RightSideLibraryElevator = R.CardE & ((MidLibrary & (R.CardC | R.CardB)) | R.GateMilitairyGate | R.GateSealedSirensCave);
+			LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSideLibraryElevator | R.GateMilitairyGate | (R.GateSealedSirensCave & R.CardE);
 			SealedCavesLeft = (AccessToLakeDesolation & R.DoubleJump) | R.GateSealedCaves;
 			SealedCavesLower = SealedCavesLeft & R.CardA;
 			SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
@@ -175,12 +175,12 @@ namespace TsRandomizer.Randomisation
 
 		static int CalculateCapacity(SeedOptions options)
 		{
-			var capacity = 165;
+			var capacity = 168;
 
 			if (options.DownloadableItems)
 				capacity += 14;
 			if (options.GyreArchives)
-				capacity += 9;
+				capacity += 6;
 
 			return capacity;
 		}
@@ -310,7 +310,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(7, 19, 248, 96), "Double jump cave platform", ItemProvider.Get(EItemType.MaxAura), UpperLakeSirine & R.DoubleJump);
 			Add(new ItemKey(7, 19, 168, 240), "Double jump cave floor", ItemProvider.Get(EInventoryEquipmentType.TravelersCloak), UpperLakeSirine);
 			Add(new ItemKey(7, 27, 184, 144), "West lake serene cave secret", ItemProvider.Get(EInventoryFamiliarType.Griffin), UpperLakeSirine & OculusRift);
-			Add(new ItemKey(7, 28, 143, 206), "Before Big Bird", ItemProvider.Get(EInventoryUseItemType.AlchemistTools), UpperLakeSirine);
+			Add(new RoomItemKey(7, 28), "Before Big Bird", ItemProvider.Get(EInventoryUseItemType.AlchemistTools), UpperLakeSirine);
 			Add(new ItemKey(7, 13, 56, 176), "Chest behind vines", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperLakeSirine);
 			Add(new ItemKey(7, 30, 296, 176), "Pyramid keys room", ItemProvider.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine);
 			areaName = "Lower Lake Sirine";

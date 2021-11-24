@@ -17,7 +17,11 @@ namespace TsRandomizer.LevelObjects.Other
 
         protected override void Initialize(SeedOptions options)
         {
-            _merchandiseInventory.AddItem(EInventoryUseItemType.WarpCard);
+            PlayerInventory inventory = Dynamic._level.GameSave.Inventory;
+
+            // Only sell warp shards if Pyramid Key is aquired
+            if (inventory.RelicInventory.IsRelicActive(EInventoryRelicType.PyramidsKey))
+                _merchandiseInventory.AddItem(EInventoryUseItemType.WarpCard);
             if (Dynamic._isInPresent)
             {
                 _merchandiseInventory.AddItem(EInventoryUseItemType.FuturePotion);
@@ -29,7 +33,6 @@ namespace TsRandomizer.LevelObjects.Other
                 _merchandiseInventory.AddItem(EInventoryUseItemType.Ether);
             }
             _merchandiseInventory.AddItem(EInventoryUseItemType.Biscuit);
-            _merchandiseInventory.AddItem(EInventoryUseItemType.Ether);
             _merchandiseInventory.AddItem(EInventoryUseItemType.Antidote);
             _merchandiseInventory.AddItem(EInventoryUseItemType.SandBottle);
             _merchandiseInventory.AddItem(EInventoryUseItemType.ChaosHeal);
