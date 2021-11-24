@@ -2,10 +2,12 @@
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.LevelObjects;
+using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Extensions
 {
-	public static class LevelExtensions
+	public static partial class LevelExtensions
 	{
 		static readonly Type ToasterType = TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.InGame.EToastType");
 
@@ -53,5 +55,15 @@ namespace TsRandomizer.Extensions
 					throw new ArgumentOutOfRangeException();
 			}
 		}
+
+		internal static void ReplaceText(this Level level, SeedOptions options)
+        {
+			TextReplacer(level, options)();
+		}
+
+		internal static string RoomKeyString(this Level level)
+        {
+			return string.Format("{0}.{1}", level.ID, level.RoomID);
+        }
 	}
 }

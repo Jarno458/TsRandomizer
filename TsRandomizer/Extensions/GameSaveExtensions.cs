@@ -10,6 +10,7 @@ namespace TsRandomizer.Extensions
 {
 	static class GameSaveExtensions
 	{
+		const string ConcussionCountFileKey = "TsRandomizerBonks";
 		const string SeedSaveFileKey = "TsRandomizerSeed";
 		const string FillMethodSaveFileKey = "TsRandomizerFillMethod";
 		const string MeleeOrbPrefixKey = "TsRandomizerHasMeleeOrb";
@@ -28,6 +29,7 @@ namespace TsRandomizer.Extensions
 		internal static void SetSeed(this GameSave gameSave, Seed seed)
 		{
 			gameSave.DataKeyStrings[SeedSaveFileKey] = seed.ToString();
+			gameSave.DataKeyInts[ConcussionCountFileKey] = 0;
 		}
 
 		internal static FillingMethod GetFillingMethod(this GameSave gameSave)
@@ -221,5 +223,20 @@ namespace TsRandomizer.Extensions
 					throw new ArgumentOutOfRangeException($"LootType {itemInfo.LootType} isnt suppored yet");
 			}
 		}
+
+		internal static void AddConcussion(this GameSave gameSave)
+        {
+			if (gameSave.DataKeyInts.ContainsKey(ConcussionCountFileKey))
+				gameSave.DataKeyInts[ConcussionCountFileKey]++;
+			else
+				gameSave.DataKeyInts[ConcussionCountFileKey] = 1;
+        }
+
+		internal static int GetConcussionCount(this GameSave gameSave)
+        {
+			return gameSave.DataKeyInts.ContainsKey(ConcussionCountFileKey)
+				? gameSave.DataKeyInts[ConcussionCountFileKey]
+				: 0;
+        }
 	}
 }
