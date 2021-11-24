@@ -84,6 +84,9 @@ namespace TsRandomizer.Randomisation
 			if (options.DownloadableItems)
 				AddDownloadTerminals();
 
+			if (options.Cantoran)
+				AddCantoran();
+
 			if (options.StartWithTalaria)
 				Add(new ExteralItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
 		}
@@ -181,6 +184,8 @@ namespace TsRandomizer.Randomisation
 				capacity += 14;
 			if (options.GyreArchives)
 				capacity += 6;
+			if (options.Cantoran)
+				capacity++;
 
 			return capacity;
 		}
@@ -286,6 +291,13 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(12, 13, 120, 176), "Left tower balcony", ItemProvider.Get(EItemType.MaxHP), EmperorsTower);
 			Add(new ItemKey(12, 11, 264, 208), "Dad's Chambers chest", ItemProvider.Get(EInventoryRelicType.EmpireBrooch), EmperorsTower); 
 			Add(new ItemKey(12, 11, 136, 205), "Dad's Chambers pedestal", ItemProvider.Get(EInventoryOrbType.Empire, EOrbSlot.Melee), EmperorsTower);
+		}
+
+		void AddCantoran()
+        {
+			// Move to AddPastItemLocations if this ever becomes a default flag
+			areaName = "Upper Lake Sirine";
+			Add(new RoomItemKey(7, 5), "Cantoran", ItemProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Melee), UpperLakeSirine);
 		}
 
 		void AddPastItemLocations()
