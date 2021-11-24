@@ -7,8 +7,8 @@ using Timespinner.Core;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
-using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
+using Timespinner.GameObjects.Heroes;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
@@ -34,7 +34,7 @@ namespace TsRandomizer.LevelObjects
 		static readonly Dictionary<Type, Type> RegisteredTypes = new Dictionary<Type, Type>(); //ObjectType, EventHandler
 		static readonly Dictionary<EEventTileType, AlwaysSpawnAttribute> AlwaysSpawningEventTypes = new Dictionary<EEventTileType, AlwaysSpawnAttribute>(); //EEventTileType, SpawnerMethod
 		static readonly List<int> KnownItemIds = new List<int>();
-
+		
 		public readonly dynamic Dynamic;
 
 		public Level Level => (Level)Dynamic?._level;
@@ -89,6 +89,16 @@ namespace TsRandomizer.LevelObjects
 			Dynamic = typedObject.AsDynamic();
 		}
 
+		public static void AwardFirstFrameItem(Dictionary<int, Item> itemDictionary, Protagonist lunais)
+        {
+            //sometimes lunais picks up an item because she's intersecting with it as the screen loads, or right as it drops.
+            //that doesn't give the replacer enough time to replace the item. But she deserves it. You deserve it.
+            foreach (var item in itemDictionary)
+            {
+				if (item.Value.Bbox.Intersects(lunais.Bbox)) item.Value.GetItem(lunais);				
+            }
+        }
+
 		public static void Update(
 			Level level, GameplayScreen gameplayScreen, ItemLocationMap itemLocations,
 			bool roomChanged, SeedOptions seedOptions, ScreenManager screenManager)
@@ -111,6 +121,7 @@ namespace TsRandomizer.LevelObjects
 			}
 
 			var itemsDictionary = (Dictionary<int, Item>)levelReflected._items;
+				
 			var currentItemIds = itemsDictionary.Keys;
 			var newItems = currentItemIds
 				.Except(KnownItemIds)
@@ -119,6 +130,8 @@ namespace TsRandomizer.LevelObjects
 
 			if (newItems.Any())
 				GenerateShadowObjects(itemLocations, newItems, seedOptions);
+
+			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, level.MainHero);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
