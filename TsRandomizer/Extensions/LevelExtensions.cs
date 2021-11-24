@@ -56,9 +56,9 @@ namespace TsRandomizer.Extensions
 			}
 		}
 
-		internal static void ReplaceText(this Level level, SeedOptions options)
+		internal static void ReplaceText(this Level level, SeedOptions options, ItemLocationMap itemLocations)
         {
-			TextReplacer(level, options)();
+			TextReplacer(level, options, itemLocations)();
 		}
 
 		internal static string RoomKeyString(this Level level)

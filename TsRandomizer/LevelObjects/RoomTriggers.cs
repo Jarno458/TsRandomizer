@@ -147,9 +147,7 @@ namespace TsRandomizer.LevelObjects
 			// Spawn Gyre portals when applicable
 			RoomTriggers.Add(new RoomTrigger(11, 4, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				if (!seedOptions.GyreArchives) return;
-				level.ReplaceText(seedOptions);
-				if (!level.GameSave.HasFamiliar(EInventoryFamiliarType.MerchantCrow)) return;
+				if (!seedOptions.GyreArchives || !level.GameSave.HasFamiliar(EInventoryFamiliarType.MerchantCrow)) return;
 				SpawnGyreWarp(level, 14, 8); // Historical Documents room to Ravenlord
 			}));
 			RoomTriggers.Add(new RoomTrigger(14, 24, (level, itemLocation, seedOptions, screenManager) =>
@@ -170,7 +168,6 @@ namespace TsRandomizer.LevelObjects
 			RoomTriggers.Add(new RoomTrigger(2, 51, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GyreArchives) return;
-				level.ReplaceText(seedOptions);
 				if (level.GameSave.HasFamiliar(EInventoryFamiliarType.Kobo)) {
 					SpawnGyreWarp(level, 14, 6); // Portrait room to Ifrit
 					return;
@@ -239,7 +236,6 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(16, 27, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				level.ReplaceText(seedOptions);
 				if (!level.GameSave.DataKeyStrings.ContainsKey(ArchipelagoItemLocationRandomizer.GameSaveServerKey)) return;
 
 				var forfeitFlags = Client.ForfeitPermissions;
@@ -270,7 +266,7 @@ namespace TsRandomizer.LevelObjects
 			int levelId, int roomId)
 		{
 			var roomKey = new RoomItemKey(levelId, roomId);
-
+			level.ReplaceText(seedOptions, itemLocations);
 			if(RoomTriggers.TryGetValue(roomKey, out var trigger))
 				trigger.trigger(level, itemLocations[roomKey], seedOptions, screenManager);
 		}
