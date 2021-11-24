@@ -10,7 +10,6 @@ namespace TsRandomizer.IntermediateObjects
 	{
 		private List<string> AlwaysRequiredItems = new List<string>
 		{
-			"ScienceKeycardB",
 			"TimespinnerWheel",
 			"TimespinnerSpindle",
 			"TimespinnerGear1",

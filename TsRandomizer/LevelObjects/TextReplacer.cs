@@ -5,6 +5,7 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.Randomisation;
+using static TsRandomizer.Randomisation.Gate;
 
 namespace TsRandomizer.Extensions
 {
@@ -57,12 +58,12 @@ namespace TsRandomizer.Extensions
                             TimeSpinnerGame.Localizer.OverrideKey("q_ram_4_lun_29alt",
                                 "It says, 'Redacted Temporal Research: Lord of Ravens'. Maybe I should ask the crow about this...");
                     };
-                case "3.16":
-                    return () =>
-                    {
-                        TimeSpinnerGame.Localizer.OverrideKey("sign_forest_directions",
-                            GetProgressionHint(itemLocations, level.ID, level.RoomID));
-                    };
+                //case "3.16":
+                //    return () =>
+                //    {
+                //        TimeSpinnerGame.Localizer.OverrideKey("sign_forest_directions",
+                //            GetRequiredProgressionHint(itemLocations, level.ID, level.RoomID));
+                //    };
                 default: return () => { };
             }
         }
@@ -85,28 +86,46 @@ namespace TsRandomizer.Extensions
             return hint;
         }
 
+        internal static string GetRequiredItemHint(ItemLocationMap itemLocations, int levelId, int roomId)
+        {
+            List<ItemLocation> locations = (List<ItemLocation>)itemLocations.ToList(typeof(ItemLocation));
+            var explicitlyRequiredItemLocations = itemLocations.Where(l => l.ItemInfo.IsExplicitlyRequired);
+            var randomRequiredItemLocation = explicitlyRequiredItemLocations.ToList().PopRandom(new Random(levelId * 100 + roomId));
+            string hint = string.Format("The path to the Ancient Pyramid goes through {0} {1}", randomRequiredItemLocation.Name, randomRequiredItemLocation.AreaName);
+            return hint;
+        }
+
         internal static string GetRequiredProgressionHint(ItemLocationMap itemLocations, int levelId, int roomId)
         {
+            int randomSeed = levelId * 100 + roomId;
             var chain = itemLocations.GetProgressionChain();
-            var itemsThatLeadToNightmare = new List<ItemLocation>();
             var spheres = new List<ProgressionChain>();
             var explicitlyRequiredItemLocations = itemLocations.Where(l => l.ItemInfo.IsExplicitlyRequired);
+            var randomRequiredItemLocation = explicitlyRequiredItemLocations.ToList().PopRandom(new Random(randomSeed));
+            var finalGates = GetRequirementGates(randomRequiredItemLocation.Gate);
+
             while (chain != null)
             {
                 spheres.Add(chain);
                 chain = chain.Sub;
             }
             spheres.Reverse();
+            List<string> gatesFound = new List<string>();
             foreach (var sphere in spheres)
             {
-                sphere.Locations.Where(l =>
-                    l.ItemInfo.IsExplicitlyRequired ||
-                    l.ItemInfo.Unlocks.Split().Select(u => u.ToString())
-                        .Intersect(explicitlyRequiredItemLocations.Select(i =>
-                            i.Gate.ToString())).Any()
-                );
+                foreach (var location in sphere.Locations)
+                {
+                    foreach(var individualUnlock in location.ItemInfo.Unlocks.Split())
+                    {
+                        var requirementCheck = new RequirementGate(individualUnlock);
+                        if(finalGates.Contains(requirementCheck)) {
+                            gatesFound.Add(location.AreaName + " " + location.Name);
+                        }
+                    }
+                }
+                
             }
-            return "dude this doesn't work at all";
+            return string.Format("One path to the Ancient Pyramid goes through {0}", gatesFound.PopRandom(new Random(randomSeed)));
         }
     }
 }

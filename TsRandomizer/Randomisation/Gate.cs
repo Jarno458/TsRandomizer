@@ -1,13 +1,39 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using TsRandomizer.Extensions;
 
 namespace TsRandomizer.Randomisation
 {
-	abstract class Gate
+	abstract class Gate : IEquatable<Gate>
 	{
 		public abstract bool CanBeOpenedWith(Requirement obtainedRequirements);
 
 		public abstract bool Requires(Requirement requirementsToCheck);
+
+		private static List<Gate> requirementGates = new List<Gate>();
+		public static List<Gate> GetRequirementGates(Gate gate)
+        {
+			if(gate.GetType() == typeof(RequirementGate))
+            {
+				requirementGates.Add(gate);
+				return requirementGates;
+            }
+			else
+            {
+				var subgates = (Gate[])gate.AsDynamic().Gates;
+				foreach (var subgate in subgates)
+                {
+					if (subgate.GetType() != typeof(RequirementGate))
+						GetRequirementGates(subgate);
+					else
+					{
+						requirementGates.Add(subgate);
+					}
+				}
+				return requirementGates;				
+            }
+        }
 
 		public static Gate operator &(Gate a, Gate b) => new AndGate(a, b);
 
@@ -19,7 +45,17 @@ namespace TsRandomizer.Randomisation
 			return new OrGate(a, b);
 		}
 
-		public static Gate operator &(Gate a, Requirement b) => a & new RequirementGate(b);
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public bool Equals(Gate other)
+        {
+			return ToString() == other.ToString();
+        }
+
+        public static Gate operator &(Gate a, Requirement b) => a & new RequirementGate(b);
 
 		public static Gate operator &(Requirement b, Gate a) => a & new RequirementGate(b);
 
