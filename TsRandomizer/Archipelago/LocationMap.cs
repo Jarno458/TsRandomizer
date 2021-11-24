@@ -216,8 +216,9 @@ namespace TsRandomizer.Archipelago
 				{1337173, new RoomItemKey(8, 21)}, //new
 				{1337174, new ItemKey(7, 3, 120, 204)}, //new
 				{1337175, new RoomItemKey(7, 28)}, //new
+				{1337176, new RoomItemKey(7, 5)}, //new
 
-				// 1337176 - 1337236 Reserved
+				// 1337177 - 1337236 Reserved
 
 				// Pyramid
 				// Temporal Gyre

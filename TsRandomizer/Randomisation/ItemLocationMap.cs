@@ -136,7 +136,7 @@ namespace TsRandomizer.Randomisation
 			ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
 
 			//past
-			LeftSideForestCaves = (AccessToPast & (R.TimespinnerWheel | R.ForwardDash | R.DoubleJump)) | R.GateLakeSereneRight | R.GateLakeSereneLeft;
+			LeftSideForestCaves = (AccessToPast & (R.TimeStop | R.ForwardDash)) | R.GateLakeSereneRight | R.GateLakeSereneLeft;
 			UpperLakeSirine = (LeftSideForestCaves & (R.TimeStop | R.Swimming)) | R.GateLakeSereneLeft;
 			LowerlakeSirine = (LeftSideForestCaves | R.GateLakeSereneLeft) & R.Swimming;
 			LowerCavesOfBanishment = LowerlakeSirine | R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump);
@@ -295,9 +295,8 @@ namespace TsRandomizer.Randomisation
 
 		void AddCantoran()
         {
-			// Move to AddPastItemLocations if this ever becomes a default flag
 			areaName = "Upper Lake Sirine";
-			Add(new RoomItemKey(7, 5), "Cantoran", ItemProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Melee), UpperLakeSirine);
+			Add(new RoomItemKey(7, 5), "Cantoran", ItemProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Melee), LeftSideForestCaves);
 		}
 
 		void AddPastItemLocations()
