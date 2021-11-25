@@ -11,16 +11,19 @@ namespace TsRandomizer.Randomisation
 
 		public abstract bool Requires(Requirement requirementsToCheck);
 
-		public List<Gate> requirementGates = new List<Gate>();
-
 		public abstract Gate[] Gates { get; }
 
 		public List<Gate> GetRequirementGates()
+        {
+			return GetRequirementGates(new List<Gate>());
+        }
+
+		private List<Gate> GetRequirementGates(List<Gate> currentGates)
 		{
 			if (Gates.Length == 0)
 			{
-				requirementGates.Add(this);
-				return requirementGates;
+				currentGates.Add(this);
+				return currentGates;
 			}
 			else
 			{
@@ -28,13 +31,13 @@ namespace TsRandomizer.Randomisation
 				foreach (var subgate in subgates)
 				{
 					if (subgate.Gates != null)
-						subgate.GetRequirementGates();
+						subgate.GetRequirementGates(currentGates);
 					else
 					{
-						requirementGates.Add(subgate);
+						currentGates.Add(subgate);
 					}
 				}
-				return requirementGates;
+				return currentGates;
 			}
 		}
 

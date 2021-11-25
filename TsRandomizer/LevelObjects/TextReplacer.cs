@@ -58,12 +58,12 @@ namespace TsRandomizer.Extensions
                             TimeSpinnerGame.Localizer.OverrideKey("q_ram_4_lun_29alt",
                                 "It says, 'Redacted Temporal Research: Lord of Ravens'. Maybe I should ask the crow about this...");
                     };
-                case "3.16":
-                    return () =>
-                    {
-                        TimeSpinnerGame.Localizer.OverrideKey("sign_forest_directions",
-                            GetRequiredProgressionHint(itemLocations, level.ID, level.RoomID));
-                    };
+                //case "3.16":
+                //    return () =>
+                //    {
+                //        TimeSpinnerGame.Localizer.OverrideKey("sign_forest_directions",
+                //            GetRequiredProgressionHint(itemLocations, level.ID, level.RoomID));
+                //    };
                 default: return () => { };
             }
         }
@@ -100,8 +100,9 @@ namespace TsRandomizer.Extensions
             int randomSeed = levelId * 100 + roomId;
             var chain = itemLocations.GetProgressionChain();
             var spheres = new List<ProgressionChain>();
-            var explicitlyRequiredItemLocations = itemLocations.Where(l => l.ItemInfo.IsExplicitlyRequired);
-            var randomRequiredItemLocation = explicitlyRequiredItemLocations.ToList().PopRandom(new Random(randomSeed));
+            var buriedRequiredItemLocations = itemLocations.Where(l => l.ItemInfo.IsExplicitlyRequired && l.Gate.Gates != null);
+            if (buriedRequiredItemLocations.Count() == 0) return "The path to the Ancient Pyramid is straight and narrow.";
+            var randomRequiredItemLocation = buriedRequiredItemLocations.ToList().PopRandom(new Random(randomSeed));
             var finalGates = randomRequiredItemLocation.Gate.GetRequirementGates();
 
             while (chain != null)
@@ -119,13 +120,21 @@ namespace TsRandomizer.Extensions
                     {
                         var requirementCheck = new RequirementGate(individualUnlock);
                         if(finalGates.Contains(requirementCheck)) {
-                            gatesFound.Add(location.AreaName + " " + location.Name);
+                            gatesFound.Add(string.Format("{0} {1}", location.AreaName, location.Name));
                         }
                     }
                 }
                 
             }
-            return string.Format("One path to the Ancient Pyramid goes through {0}", gatesFound.PopRandom(new Random(randomSeed)));
+            if(gatesFound.Count > 0)
+            {
+                return string.Format("One path to the Ancient Pyramid goes through {0}", gatesFound.PopRandom(new Random(randomSeed)));
+            }
+            else
+            {
+                return "The path to the Ancient Pyramid is fraught with impossibility.";
+            }
+            
         }
     }
 }
