@@ -195,17 +195,17 @@ namespace TsRandomizer.Randomisation
 			areaName = "Tutorial";
 			Add(ItemKey.TutorialMeleeOrb, "Yo Momma", ItemProvider.Get(EInventoryOrbType.Blue, EOrbSlot.Melee));
 			Add(ItemKey.TutorialSpellOrb, "Yo Momma", ItemProvider.Get(EInventoryOrbType.Blue, EOrbSlot.Spell));
-			areaName = "Lake desolation";
+			areaName = "Lake Desolation";
 			Add(new ItemKey(1, 1, 1528, 144), "Starter chest 2", ItemProvider.Get(EInventoryUseItemType.FuturePotion), AccessToLakeDesolation);
 			Add(new ItemKey(1, 15, 264, 144), "Starter chest 3", ItemProvider.Get(EInventoryEquipmentType.OldCoat), AccessToLakeDesolation);
 			Add(new ItemKey(1, 25, 296, 176), "Starter chest 1", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), AccessToLakeDesolation);
 			Add(new ItemKey(1, 9, 600, 144 + TimespinnerWheel.YOffset), "Timespinner Wheel room", ItemProvider.Get(EInventoryRelicType.TimespinnerWheel), AccessToLakeDesolation);
 			Add(new ItemKey(1, 14, 40, 176), "Forget me not chest", ItemProvider.Get(EInventoryUseItemType.EssenceCrystal), UpperLakeDesolation);
-			areaName = "Lower lake desolation";
+			areaName = "Lower Lake Desolation";
 			Add(new ItemKey(1, 2, 1016, 384), "Chicken chest", ItemProvider.Get(EItemType.MaxSand), AccessToLakeDesolation & R.TimeStop);
 			Add(new ItemKey(1, 11, 72, 240), "Not so secret room", ItemProvider.Get(EItemType.MaxHP), LowerLakeDesolationBridge & OculusRift);
 			Add(new ItemKey(1, 3, 56, 176), "Tank chest", ItemProvider.Get(EItemType.MaxAura), AccessToLakeDesolation & R.TimeStop);
-			areaName = "Upper lake desolation";
+			areaName = "Upper Lake Desolation";
 			Add(new ItemKey(1, 17, 152, 96), "Oxygen recovery room", ItemProvider.Get(EInventoryUseItemType.GoldRing), UpperLakeDesolation);
 			Add(new ItemKey(1, 21, 200, 144), "Lake secret", ItemProvider.Get(EInventoryUseItemType.EssenceCrystal), UpperLakeDesolation & OculusRift);
 			Add(new ItemKey(1, 20, 232, 96), "Double jump cave floor", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), UpperLakeDesolation & R.DoubleJump);
@@ -215,7 +215,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(1, 18, 1272, 192), "Crash site chest 1", ItemProvider.Get(EInventoryEquipmentType.CaptainsCap), UpperLakeDesolation & R.GassMask & KillMaw);
 			Add(new ItemKey(1, 18, 1368, 192), "Crash site chest 2", ItemProvider.Get(EInventoryEquipmentType.CaptainsJacket), UpperLakeDesolation & R.GassMask & KillMaw);
 			Add(new RoomItemKey(1, 5), "Kitty Boss", ItemProvider.Get(EInventoryOrbType.Blade, EOrbSlot.Melee), UpperLakeDesolation | LowerLakeDesolationBridge);
-			areaName = "Libary";
+			areaName = "Library";
 			Add(new ItemKey(2, 60, 328, 160), "Basement", ItemProvider.Get(EItemType.MaxHP), LeftLibrary);
 			Add(new ItemKey(2, 54, 296, 176), "Consolation", ItemProvider.Get(EInventoryRelicType.ScienceKeycardD), LeftLibrary);
 			Add(new ItemKey(2, 41, 404, 246), "Librarian", ItemProvider.Get(EInventoryRelicType.Tablet), LeftLibrary);
@@ -223,19 +223,19 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(2, 47, 216, 208), "Storage room chest 1", ItemProvider.Get(EInventoryUseItemType.Ether), LeftLibrary & R.CardD);
 			Add(new ItemKey(2, 47, 152, 208), "Storage room chest 2", ItemProvider.Get(EInventoryOrbType.Blade, EOrbSlot.Passive), LeftLibrary & R.CardD);
 			Add(new ItemKey(2, 47, 88, 208), "Storage room chest 3", ItemProvider.Get(EInventoryOrbType.Blade, EOrbSlot.Spell), LeftLibrary & R.CardD);
-			areaName = "Libary top";
+			areaName = "Library top";
 			Add(new ItemKey(2, 56, 168, 192), "Backer room chest 5", ItemProvider.Get(EInventoryUseItemType.GoldNecklace), UpperLeftLibrary);
 			Add(new ItemKey(2, 56, 392, 192), "Backer room chest 4", ItemProvider.Get(EInventoryUseItemType.GoldRing), UpperLeftLibrary);
 			Add(new ItemKey(2, 56, 616, 192), "Backer room chest 3", ItemProvider.Get(EInventoryUseItemType.EssenceCrystal), UpperLeftLibrary);
 			Add(new ItemKey(2, 56, 840, 192), "Backer room chest 2", ItemProvider.Get(EInventoryUseItemType.EssenceCrystal), UpperLeftLibrary);
 			Add(new ItemKey(2, 56, 1064, 192), "Backer room chest 1", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), UpperLeftLibrary);
-			areaName = "Varndagroth tower left";
+			areaName = "Varndagroth Tower left";
 			Add(new ItemKey(2, 34, 232, 1200), "Elevator Key not required", ItemProvider.Get(EInventoryUseItemType.FiligreeTea), MidLibrary); //Default item is Jerky, got replaced by FiligreeTea
 			Add(new ItemKey(2, 40, 344, 176), "Ye olde Timespinner", ItemProvider.Get(EInventoryRelicType.ScienceKeycardC), MidLibrary);
 			Add(new ItemKey(2, 32, 328, 160), "C Keycard chest", ItemProvider.Get(EInventoryUseItemType.GoldRing), MidLibrary & R.CardC);
 			Add(new ItemKey(2, 7, 232, 144), "Left air vents secret", ItemProvider.Get(EItemType.MaxAura), MidLibrary & OculusRift);
 			Add(new ItemKey(2, 25, 328, 192), "Left elevator chest", ItemProvider.Get(EItemType.MaxSand), MidLibrary & R.CardE);
-			areaName = "Varndagroth tower right";
+			areaName = "Varndagroth Tower right";
 			Add(new ItemKey(2, 15, 760, 192), "Spider heck room", ItemProvider.Get(EInventoryUseItemType.FuturePotion), UpperRightSideLibrary);
 			Add(new ItemKey(2, 20, 72, 1200), "Right elevator chest", ItemProvider.Get(EInventoryUseItemType.Jerky), RightSideLibraryElevator);
 			Add(new ItemKey(2, 23, 72, 560), "Elevator card chest", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), UpperRightSideLibrary & (R.CardE | R.DoubleJump)); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
@@ -260,7 +260,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(9, 3, 744, 560), "Big siren Room left", ItemProvider.Get(EItemType.MaxAura), SealedCavesSirens & R.Swimming);
 			Add(new ItemKey(9, 2, 184, 176), "Room after sirens chest 2", ItemProvider.Get(EInventoryUseItemType.WarpCard), SealedCavesSirens);
 			Add(new ItemKey(9, 2, 104, 160), "Room after sirens chest 1", ItemProvider.Get(EInventoryRelicType.WaterMask), SealedCavesSirens);
-			areaName = "Militairy Fortress";
+			areaName = "Military Fortress";
 			Add(new ItemKey(10, 3, 264, 128), "Bomber chest", ItemProvider.Get(EItemType.MaxSand), MilitairyFortress & DoubleJumpOfNpc & R.TimespinnerWheel); //can be reached with just upward dash but not with lightwall unless you got timestop
 			Add(new ItemKey(10, 11, 296, 192), "Close combat room", ItemProvider.Get(EItemType.MaxAura), MilitairyFortress);
 			Add(new ItemKey(10, 4, 1064, 176), "Bridge full of soldiers", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), MilitairyFortressHangar);
@@ -269,7 +269,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(10, 7, 104, 192), "Military B door chest 2", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), RightSideMilitairyFortressHangar & R.CardB);
 			Add(new ItemKey(10, 7, 152, 192), "Military B door chest 1", ItemProvider.Get(EItemType.MaxSand), RightSideMilitairyFortressHangar & R.CardB);
 			Add(new ItemKey(10, 18, 280, 189), "Military pedestal", ItemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), RightSideMilitairyFortressHangar & (DoubleJumpOfNpc | ForwardDashDoubleJump));
-			areaName = "The lab";
+			areaName = "The Lab";
 			Add(new ItemKey(11, 36, 312, 192), "Coffee Break chest", ItemProvider.Get(EInventoryUseItemType.FoodSynth), TheLab);
 			Add(new ItemKey(11, 3, 1528, 192), "Lower trash right", ItemProvider.Get(EItemType.MaxHP), TheLab & R.DoubleJump);
 			Add(new ItemKey(11, 3, 72, 192), "Lower trash left", ItemProvider.Get(EInventoryUseItemType.FuturePotion), TheLab & R.UpwardDash); //when lab power is on, it only requires DoubleJumpOfNpc, but we cant code for the power state
@@ -281,7 +281,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(11, 6, 328, 192), "Download and chest room", ItemProvider.Get(EInventoryEquipmentType.LabCoat), UpperLab);
 			Add(new ItemKey(11, 27, 296, 160), "Lab secret", ItemProvider.Get(EItemType.MaxSand), UpperLab & OculusRift);
 			Add(new RoomItemKey(11, 26), "Spider hell", ItemProvider.Get(EInventoryRelicType.TimespinnerGear1), TheLabPoweredOff & R.CardA);
-			areaName = "Emperors tower";
+			areaName = "Emperor's Tower";
 			Add(new ItemKey(12, 5, 344, 192), "After Courtyard - Bottom", ItemProvider.Get(EItemType.MaxAura), EmperorsTower);
 			Add(new ItemKey(12, 3, 200, 160), "After Courtyard Floor Secret", ItemProvider.Get(EInventoryEquipmentType.LachiemCrown), EmperorsTower & R.UpwardDash & OculusRift);
 			Add(new ItemKey(12, 25, 360, 176), "After Courtyard - Top", ItemProvider.Get(EInventoryEquipmentType.EmpressCoat), EmperorsTower & R.UpwardDash);
@@ -295,7 +295,7 @@ namespace TsRandomizer.Randomisation
 
 		void AddCantoran()
         {
-			areaName = "Upper Lake Sirine";
+			areaName = "Upper Lake Serene";
 			Add(new RoomItemKey(7, 5), "Cantoran", ItemProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Melee), LeftSideForestCaves);
 		}
 
@@ -316,7 +316,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(3, 2, 584, 368), "Batcave", ItemProvider.Get(EInventoryUseItemType.Potion), AccessToPast);
 			Add(new ItemKey(4, 20, 264, 160), "Bridge Chest", ItemProvider.Get(EItemType.MaxAura), AccessToPast);
 			Add(new ItemKey(3, 29, 248, 192), "Solitary bat room", ItemProvider.Get(EItemType.MaxHP), LeftSideForestCaves);
-			areaName = "Upper Lake Sirine";
+			areaName = "Upper Lake Serene";
 			Add(new ItemKey(7, 16, 152, 96), "Rat nest", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), UpperLakeSirine);
 			Add(new ItemKey(7, 19, 248, 96), "Double jump cave platform", ItemProvider.Get(EItemType.MaxAura), UpperLakeSirine & R.DoubleJump);
 			Add(new ItemKey(7, 19, 168, 240), "Double jump cave floor", ItemProvider.Get(EInventoryEquipmentType.TravelersCloak), UpperLakeSirine);
@@ -325,7 +325,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(7, 13, 56, 176), "Chest behind vines", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperLakeSirine);
 			Add(new ItemKey(7, 30, 296, 176), "Pyramid keys room", ItemProvider.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine);
 			Add(new ItemKey(7, 3, 120, 204), "Chicken ledge", null, UpperLakeSirine);
-			areaName = "Lower Lake Sirine";
+			areaName = "Lower Lake Serene";
 			Add(new ItemKey(7, 3, 440, 1232), "Deep dive", ItemProvider.Get(EInventoryUseItemType.Potion), LowerlakeSirine);
 			Add(new ItemKey(7, 7, 1432, 576), "Under the eels", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerlakeSirine);
 			Add(new ItemKey(7, 6, 520, 496), "Water spikes room", ItemProvider.Get(EInventoryUseItemType.Potion), LowerlakeSirine);
@@ -353,13 +353,13 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(8, 3, 1848, 576), "Underwater sirens right", ItemProvider.Get(EItemType.MaxAura), UpperCavesOfBanishment & R.Swimming);
 			Add(new ItemKey(8, 3, 1256, 544), "Underwater sirens right ground", ItemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment & R.Swimming);
 			Add(new ItemKey(8, 5, 88, 496), "water hook", ItemProvider.Get(EItemType.MaxSand), UpperCavesOfBanishment & R.Swimming);
-			areaName = "Caste Ramparts";
+			areaName = "Castle Ramparts";
 			Add(new ItemKey(4, 1, 456, 160), "Bomber chest", ItemProvider.Get(EItemType.MaxSand), CastleRamparts & MultipleSmallJumpsOfNpc);
 			Add(new ItemKey(4, 3, 136, 144), "Freeze the engineer", ItemProvider.Get(EItemType.MaxHP), CastleRamparts & (R.TimeStop | R.ForwardDash));
 			Add(new ItemKey(4, 10, 56, 192), "Giantess guarded room", ItemProvider.Get(EInventoryUseItemType.HiPotion), CastleRamparts);
 			Add(new ItemKey(4, 11, 344, 192), "Knight and archer guarded room", ItemProvider.Get(EInventoryUseItemType.HiPotion), CastleRamparts);
 			Add(new ItemKey(4, 22, 104, 189), "Castle pedestal", ItemProvider.Get(EInventoryOrbType.Iron, EOrbSlot.Melee), CastleRamparts);
-			areaName = "Caste Keep";
+			areaName = "Castle Keep";
 			Add(new ItemKey(5, 9, 104, 189), "Basement secret pedestal", ItemProvider.Get(EInventoryOrbType.Blood, EOrbSlot.Melee), CastleKeep & OculusRift);
 			Add(new ItemKey(5, 10, 104, 192), "Break the wall", ItemProvider.Get(EInventoryFamiliarType.Sprite), CastleKeep);
 			Add(new ItemKey(5, 14, 88, 208), "Yas queen room", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), CastleKeep & R.PinkOrb & R.DoubleJump);
@@ -370,7 +370,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(5, 20, 504, 48), "Advisor jump", null, CastleKeep & R.TimeStop);
 			Add(new RoomItemKey(5, 5), "Twins", ItemProvider.Get(EInventoryRelicType.DoubleJump), CastleKeep & R.TimeStop);
 			Add(new ItemKey(5, 22, 312, 176), "Royal guard tiny room", ItemProvider.Get(EItemType.MaxSand), CastleKeep & ((R.TimeStop & R.ForwardDash) | R.DoubleJump));
-			areaName = "Royal towers";
+			areaName = "Royal Towers";
 			Add(new ItemKey(6, 19, 200, 176), "Royal towers floor secret", ItemProvider.Get(EItemType.MaxAura), RoyalTower & R.DoubleJump & OculusRift);
 			Add(new ItemKey(6, 27, 472, 384), "Above the gap", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), MidRoyalTower);
 			Add(new ItemKey(6, 1, 1512, 288), "Under the ice mage", ItemProvider.Get(EInventoryUseItemType.Potion), MidRoyalTower);
@@ -413,16 +413,16 @@ namespace TsRandomizer.Randomisation
 
 		void AddDownloadTerminals()
 		{
-			areaName = "Libary";
+			areaName = "Library";
 			Add(new ItemKey(2, 44, 792, 592), "Library terminal 1", null, LeftLibrary & R.Tablet);
 			Add(new ItemKey(2, 44, 120, 368), "Library terminal 2", null, LeftLibrary & R.Tablet);
 			Add(new ItemKey(2, 44, 456, 368), "Library terminal 3", null, LeftLibrary & R.Tablet);
 			Add(new ItemKey(2, 58, 152, 208), "V terminal 1", null, LeftLibrary & R.Tablet & R.CardV);
 			Add(new ItemKey(2, 58, 232, 208), "V terminal 2", null, LeftLibrary & R.Tablet & R.CardV);
 			Add(new ItemKey(2, 58, 312, 208), "V terminal 3", null, LeftLibrary & R.Tablet & R.CardV);
-			areaName = "Libary top";
+			areaName = "Library top";
 			Add(new ItemKey(2, 44, 568, 176), "Backer room terminal", null, UpperLeftLibrary & R.Tablet);
-			areaName = "Varndagroth tower right";
+			areaName = "Varndagroth Tower right";
 			Add(new ItemKey(2, 18, 200, 192), "Medbay", null, RightSideLibraryElevator & R.CardB & R.Tablet);
 			areaName = "The lab";
 			Add(new ItemKey(11, 6, 200, 192), "Chest and download terminal", null, UpperLab & R.Tablet);

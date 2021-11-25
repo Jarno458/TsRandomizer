@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameObjects.BaseClasses;
-using TsRandomizer.Extensions;
 using TsRandomizer.Randomisation;
-using static TsRandomizer.Randomisation.Gate;
 
 namespace TsRandomizer.Extensions
 {
@@ -62,79 +57,16 @@ namespace TsRandomizer.Extensions
                 //    return () =>
                 //    {
                 //        TimeSpinnerGame.Localizer.OverrideKey("sign_forest_directions",
-                //            GetRequiredProgressionHint(itemLocations, level.ID, level.RoomID));
+                //            GetRequiredProgressionHint(itemLocations, level));
+                //    };
+                //case "5.14":
+                //    return () =>
+                //    {
+                //        TimeSpinnerGame.Localizer.OverrideKey("inv_jou_Letter6_14",
+                //            string.Format("Aelana\n\nP.S. {0}", GetRequiredItemHint(itemLocations, level)));
                 //    };
                 default: return () => { };
             }
-        }
-
-        internal static string GetProgressionHint(ItemLocationMap itemLocations, int levelId, int roomId)
-        {
-            List<ItemLocation> locations = (List<ItemLocation>)itemLocations.ToList(typeof(ItemLocation));
-            List<ItemLocation> requiredLocations = locations.FindAll(l => l.ItemInfo.IsProgression);
-            ItemLocation requiredLocation = requiredLocations.PopRandom(new Random(levelId * 100 + roomId)); //same hint every time per location
-            string hint = string.Format("{0} {1} holds something useful.", requiredLocation.AreaName, requiredLocation.Name);
-            return hint;
-        }
-
-        internal static string GetRandomItemHint(ItemLocationMap itemLocations, int levelId, int roomId)
-        {
-            //needs fancying up to look good, but it works
-            List<ItemLocation> locations = (List<ItemLocation>)itemLocations.ToList(typeof(ItemLocation));
-            ItemLocation hintLocation = locations.PopRandom(new Random(levelId * 100 + roomId));
-            string hint = string.Format("{0} holds {1}.", hintLocation.Name, hintLocation.ItemInfo.Identifier.ToString());
-            return hint;
-        }
-
-        internal static string GetRequiredItemHint(ItemLocationMap itemLocations, int levelId, int roomId)
-        {
-            List<ItemLocation> locations = (List<ItemLocation>)itemLocations.ToList(typeof(ItemLocation));
-            var explicitlyRequiredItemLocations = itemLocations.Where(l => l.ItemInfo.IsExplicitlyRequired);
-            var randomRequiredItemLocation = explicitlyRequiredItemLocations.ToList().PopRandom(new Random(levelId * 100 + roomId));
-            string hint = string.Format("The path to the Ancient Pyramid goes through {0} {1}", randomRequiredItemLocation.Name, randomRequiredItemLocation.AreaName);
-            return hint;
-        }
-
-        internal static string GetRequiredProgressionHint(ItemLocationMap itemLocations, int levelId, int roomId)
-        {
-            int randomSeed = levelId * 100 + roomId;
-            var chain = itemLocations.GetProgressionChain();
-            var spheres = new List<ProgressionChain>();
-            var buriedRequiredItemLocations = itemLocations.Where(l => l.ItemInfo.IsExplicitlyRequired && l.Gate.Gates != null);
-            if (buriedRequiredItemLocations.Count() == 0) return "The path to the Ancient Pyramid is straight and narrow.";
-            var randomRequiredItemLocation = buriedRequiredItemLocations.ToList().PopRandom(new Random(randomSeed));
-            var finalGates = randomRequiredItemLocation.Gate.GetRequirementGates();
-
-            while (chain != null)
-            {
-                spheres.Add(chain);
-                chain = chain.Sub;
-            }
-            spheres.Reverse();
-            List<string> gatesFound = new List<string>();
-            foreach (var sphere in spheres)
-            {
-                foreach (var location in sphere.Locations)
-                {
-                    foreach(var individualUnlock in location.ItemInfo.Unlocks.Split())
-                    {
-                        var requirementCheck = new RequirementGate(individualUnlock);
-                        if(finalGates.Contains(requirementCheck)) {
-                            gatesFound.Add(string.Format("{0} {1}", location.AreaName, location.Name));
-                        }
-                    }
-                }
-                
-            }
-            if(gatesFound.Count > 0)
-            {
-                return string.Format("One path to the Ancient Pyramid goes through {0}", gatesFound.PopRandom(new Random(randomSeed)));
-            }
-            else
-            {
-                return "The path to the Ancient Pyramid is fraught with impossibility.";
-            }
-            
         }
     }
 }
