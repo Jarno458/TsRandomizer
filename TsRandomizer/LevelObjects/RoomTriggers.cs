@@ -94,6 +94,22 @@ namespace TsRandomizer.LevelObjects
 				if(!seedOptions.Inverted && level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
 					CreateSimpelOneWayWarp(level, 16, 12);
 			}));
+			RoomTriggers.Add(new RoomTrigger(7, 5, (level, itemLocation, seedOptions, screenManager) =>
+			{
+				if (!seedOptions.Cantoran)
+					return;
+				// Set Cantoran quest active when fighting Pink Bird
+				if (!level.GameSave.GetSaveBool("IsBossDead_Cantoran"))
+                {
+					level.GameSave.SetValue("IsCantoranActive", true);
+					return;
+				}
+					
+				// Spawn item if the room has been left without aquiring
+				if (!itemLocation.IsPickedUp
+					&& level.GameSave.GetSaveBool("IsBossDead_Cantoran"))
+					SpawnItemDropPickup(level, itemLocation.ItemInfo, 170, 194);
+			}));
 			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (itemLocation.IsPickedUp
