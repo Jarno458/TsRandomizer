@@ -2,8 +2,6 @@
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
-using TsRandomizer.LevelObjects;
-using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Extensions
 {
