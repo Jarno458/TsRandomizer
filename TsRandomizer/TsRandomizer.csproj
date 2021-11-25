@@ -105,7 +105,6 @@
     <Compile Include="Archipelago\SlotDataParser.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\TextReplacer.cs" />
-    <Compile Include="LevelObjects\TextReplacer.cs" />
     <Compile Include="LevelObjects\Other\HistoricalDocuments.cs" />
     <Compile Include="LevelObjects\Other\MerchantCrowNPC.cs" />
     <Compile Include="LevelObjects\Other\NightmareBoss.cs" />

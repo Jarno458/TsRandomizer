@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
-using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.LevelObjects
 {
@@ -13,7 +10,7 @@ namespace TsRandomizer.LevelObjects
         {
 			switch(level.RoomKeyString())
             {
-				case "16.27":
+				case "16.26": // initialize during the nightmare fight. cutscenes do not override before they're queued
 					return () =>
 					{
 						int concussions = level.GameSave.GetConcussionCount();
