@@ -11,29 +11,32 @@ namespace TsRandomizer.Randomisation
 
 		public abstract bool Requires(Requirement requirementsToCheck);
 
-		private static List<Gate> requirementGates = new List<Gate>();
-		public static List<Gate> GetRequirementGates(Gate gate)
-        {
-			if(gate.GetType() == typeof(RequirementGate))
-            {
-				requirementGates.Add(gate);
+		public List<Gate> requirementGates = new List<Gate>();
+
+		public abstract Gate[] Gates { get; }
+
+		public List<Gate> GetRequirementGates()
+		{
+			if (Gates.Length == 0)
+			{
+				requirementGates.Add(this);
 				return requirementGates;
-            }
+			}
 			else
-            {
-				var subgates = (Gate[])gate.AsDynamic().Gates;
+			{
+				var subgates = Gates;
 				foreach (var subgate in subgates)
-                {
-					if (subgate.GetType() != typeof(RequirementGate))
-						GetRequirementGates(subgate);
+				{
+					if (subgate.Gates != null)
+						subgate.GetRequirementGates();
 					else
 					{
 						requirementGates.Add(subgate);
 					}
 				}
-				return requirementGates;				
-            }
-        }
+				return requirementGates;
+			}
+		}
 
 		public static Gate operator &(Gate a, Gate b) => new AndGate(a, b);
 
@@ -69,6 +72,8 @@ namespace TsRandomizer.Randomisation
 		{
 			public readonly Requirement Requirements;
 
+			public override Gate[] Gates { get; }
+
 			public RequirementGate(Requirement requirements)
 			{
 				Requirements = requirements;
@@ -85,18 +90,19 @@ namespace TsRandomizer.Randomisation
 
 		internal class AndGate : Gate
 		{
-			public Gate[] Gates;
+			private Gate[] _gates;
+			public override Gate[] Gates { get { return _gates; } }
 
 			internal AndGate(Gate a, Gate b)
 			{
 				if (a is AndGate andGateA && b is AndGate andGateB)
-					Gates = andGateA.Gates.Union(andGateB.Gates).ToArray();
+					_gates = andGateA.Gates.Union(andGateB.Gates).ToArray();
 				else if (a is AndGate gateA)
-					Gates = gateA.Gates.Concat(b).ToArray();
+					_gates = gateA.Gates.Concat(b).ToArray();
 				else if (b is AndGate gateB)
-					Gates = gateB.Gates.Concat(a).ToArray();
+					_gates = gateB.Gates.Concat(a).ToArray();
 				else
-					Gates = new[] {a, b};
+					_gates = new[] {a, b};
 			}
 
 			public override bool CanBeOpenedWith(Requirement obtainedRequirements) =>
@@ -110,18 +116,19 @@ namespace TsRandomizer.Randomisation
 
 		internal class OrGate : Gate
 		{
-			public Gate[] Gates;
+			private Gate[] _gates;
+			public override Gate[] Gates { get { return _gates; } }
 
 			internal OrGate(Gate a, Gate b)
 			{
 				if (a is OrGate orGateA && b is OrGate orGateB)
-					Gates = orGateA.Gates.Union(orGateB.Gates).ToArray();
+					_gates = orGateA.Gates.Union(orGateB.Gates).ToArray();
 				else if (a is OrGate gateA)
-					Gates = gateA.Gates.Concat(b).ToArray();
+					_gates = gateA.Gates.Concat(b).ToArray();
 				else if (b is OrGate gateB)
-					Gates = gateB.Gates.Concat(a).ToArray();
+					_gates = gateB.Gates.Concat(a).ToArray();
 				else
-					Gates = new[] { a, b };
+					_gates = new[] { a, b };
 			}
 
 			public override bool CanBeOpenedWith(Requirement obtainedRequirements) =>

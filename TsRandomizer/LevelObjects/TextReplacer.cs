@@ -58,12 +58,12 @@ namespace TsRandomizer.Extensions
                             TimeSpinnerGame.Localizer.OverrideKey("q_ram_4_lun_29alt",
                                 "It says, 'Redacted Temporal Research: Lord of Ravens'. Maybe I should ask the crow about this...");
                     };
-                //case "3.16":
-                //    return () =>
-                //    {
-                //        TimeSpinnerGame.Localizer.OverrideKey("sign_forest_directions",
-                //            GetRequiredProgressionHint(itemLocations, level.ID, level.RoomID));
-                //    };
+                case "3.16":
+                    return () =>
+                    {
+                        TimeSpinnerGame.Localizer.OverrideKey("sign_forest_directions",
+                            GetRequiredProgressionHint(itemLocations, level.ID, level.RoomID));
+                    };
                 default: return () => { };
             }
         }
@@ -73,7 +73,7 @@ namespace TsRandomizer.Extensions
             List<ItemLocation> locations = (List<ItemLocation>)itemLocations.ToList(typeof(ItemLocation));
             List<ItemLocation> requiredLocations = locations.FindAll(l => l.ItemInfo.IsProgression);
             ItemLocation requiredLocation = requiredLocations.PopRandom(new Random(levelId * 100 + roomId)); //same hint every time per location
-            string hint = string.Format("{0} holds something useful.", requiredLocation.Name);
+            string hint = string.Format("{0} {1} holds something useful.", requiredLocation.AreaName, requiredLocation.Name);
             return hint;
         }
 
@@ -102,7 +102,7 @@ namespace TsRandomizer.Extensions
             var spheres = new List<ProgressionChain>();
             var explicitlyRequiredItemLocations = itemLocations.Where(l => l.ItemInfo.IsExplicitlyRequired);
             var randomRequiredItemLocation = explicitlyRequiredItemLocations.ToList().PopRandom(new Random(randomSeed));
-            var finalGates = GetRequirementGates(randomRequiredItemLocation.Gate);
+            var finalGates = randomRequiredItemLocation.Gate.GetRequirementGates();
 
             while (chain != null)
             {
