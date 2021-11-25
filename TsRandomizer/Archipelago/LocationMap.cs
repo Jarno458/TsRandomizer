@@ -216,8 +216,9 @@ namespace TsRandomizer.Archipelago
 				{1337173, new RoomItemKey(8, 21)}, //new
 				{1337174, new ItemKey(7, 3, 120, 204)}, //new
 				{1337175, new RoomItemKey(7, 28)}, //new
+				{1337176, new RoomItemKey(7, 5)}, //new
 
-				// 1337176 - 1337236 Reserved
+				// 1337177 - 1337236 Reserved
 
 				// Pyramid
 				// Temporal Gyre
@@ -235,7 +236,7 @@ namespace TsRandomizer.Archipelago
 				{1337247, new ItemKey(16, 3, 88, 192)},
 				{1337248, new ItemKey(16, 22, 200, 192)},
 				{1337249, new ItemKey(16, 16, 1512, 144)}
-		};
+			};
 
 			MapItemKeyToLocationId = new Dictionary<ItemKey, int>(MapLocationIdToItemKey.Count);
 
