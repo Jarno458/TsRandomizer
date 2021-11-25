@@ -55,7 +55,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug DRM Free|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\TestVersions\SteamVerison\</OutputPath>
+    <OutputPath>..\..\TestVersions\DRMFreeVersion\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -78,7 +78,7 @@
     <Reference Include="FNA">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
       <HintPath>~/.local/share/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
-      <HintPath>/opt/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
+      <HintPath>..\..\TestVersions\DRMFreeVersion\FNA.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -90,7 +90,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TestVersions\SteamVerison\Timespinner.exe</HintPath>
+      <HintPath>..\..\TestVersions\DRMFreeVersion\Timespinner.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="websocket-sharp">
@@ -104,6 +104,8 @@
     <Compile Include="Archipelago\DeathLinker.cs" />
     <Compile Include="Archipelago\SlotDataParser.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\TextReplacer.cs" />
+    <Compile Include="LevelObjects\TextReplacer.cs" />
     <Compile Include="LevelObjects\Other\HistoricalDocuments.cs" />
     <Compile Include="LevelObjects\Other\MerchantCrowNPC.cs" />
     <Compile Include="LevelObjects\Other\NightmareBoss.cs" />

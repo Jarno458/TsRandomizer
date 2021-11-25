@@ -67,11 +67,11 @@ The item tracker features a few options:
 
 # Known bugs
 ##### I am aware of these issues, but i found them small enough not to fix at this moment
-* When you already got the blade-orb and kill the kitty boss while standing at the items spawn point you will trigger the item pickup message but no item is rewarded
 * Orb pedestal in room before emperor always spawn even if you didn't kill him yet
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
 * Entering a door backwards with a higher level keycard will permanently open it even when specific keycards are on
 * Music wont play in lake desolation until you have done the "oh i lost my mother" cutscene
+* Killing Cantoran and leaving his room without picking up the reward, will sometimes yield duplicate items when you return to the room
 
 # Todo
 ##### Things i plan on doing in the future

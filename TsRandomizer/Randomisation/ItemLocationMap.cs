@@ -84,6 +84,9 @@ namespace TsRandomizer.Randomisation
 			if (options.DownloadableItems)
 				AddDownloadTerminals();
 
+			if (options.Cantoran)
+				AddCantoran();
+
 			if (options.StartWithTalaria)
 				Add(new ExteralItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
 		}
@@ -133,7 +136,7 @@ namespace TsRandomizer.Randomisation
 			ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
 
 			//past
-			LeftSideForestCaves = (AccessToPast & (R.TimespinnerWheel | R.ForwardDash | R.DoubleJump)) | R.GateLakeSereneRight | R.GateLakeSereneLeft;
+			LeftSideForestCaves = (AccessToPast & (R.TimeStop | R.ForwardDash)) | R.GateLakeSereneRight | R.GateLakeSereneLeft;
 			UpperLakeSirine = (LeftSideForestCaves & (R.TimeStop | R.Swimming)) | R.GateLakeSereneLeft;
 			LowerlakeSirine = (LeftSideForestCaves | R.GateLakeSereneLeft) & R.Swimming;
 			LowerCavesOfBanishment = LowerlakeSirine | R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump);
@@ -181,6 +184,8 @@ namespace TsRandomizer.Randomisation
 				capacity += 14;
 			if (options.GyreArchives)
 				capacity += 6;
+			if (options.Cantoran)
+				capacity++;
 
 			return capacity;
 		}
@@ -288,6 +293,12 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(12, 11, 136, 205), "Dad's Chambers pedestal", ItemProvider.Get(EInventoryOrbType.Empire, EOrbSlot.Melee), EmperorsTower);
 		}
 
+		void AddCantoran()
+        {
+			areaName = "Upper Lake Sirine";
+			Add(new RoomItemKey(7, 5), "Cantoran", ItemProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Melee), LeftSideForestCaves);
+		}
+
 		void AddPastItemLocations()
 		{
 			areaName = "Refugee Camp";
@@ -313,8 +324,8 @@ namespace TsRandomizer.Randomisation
 			Add(new RoomItemKey(7, 28), "Before Big Bird", ItemProvider.Get(EInventoryUseItemType.AlchemistTools), UpperLakeSirine);
 			Add(new ItemKey(7, 13, 56, 176), "Chest behind vines", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperLakeSirine);
 			Add(new ItemKey(7, 30, 296, 176), "Pyramid keys room", ItemProvider.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine);
+			Add(new ItemKey(7, 3, 120, 204), "Chicken ledge", null, UpperLakeSirine);
 			areaName = "Lower Lake Sirine";
-			Add(new ItemKey(7, 3, 120, 204), "Chicken ledge", null, LowerlakeSirine & (R.TimeStop | R.Swimming));
 			Add(new ItemKey(7, 3, 440, 1232), "Deep dive", ItemProvider.Get(EInventoryUseItemType.Potion), LowerlakeSirine);
 			Add(new ItemKey(7, 7, 1432, 576), "Under the eels", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerlakeSirine);
 			Add(new ItemKey(7, 6, 520, 496), "Water spikes room", ItemProvider.Get(EInventoryUseItemType.Potion), LowerlakeSirine);
@@ -333,7 +344,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(8, 41, 312, 192), "Jackpot room chest 4", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & ForwardDashDoubleJump);
 			Add(new ItemKey(8, 42, 216, 189), "Banishment pedestal", ItemProvider.Get(EInventoryOrbType.Wind, EOrbSlot.Melee), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 15, 248, 192), "Last chance before Maw", ItemProvider.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment & R.DoubleJump);
-			Add(new RoomItemKey(8, 21), "Plasma Crystal", ItemProvider.Get(EInventoryUseItemType.RadiationCrystal), LowerCavesOfBanishment);
+			Add(new RoomItemKey(8, 21), "Plasma Crystal", ItemProvider.Get(EInventoryUseItemType.RadiationCrystal), LowerCavesOfBanishment & (MawGassMask | R.ForwardDash));
 			Add(new ItemKey(8, 31, 88, 400), "Mineshaft", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & MawGassMask);
 			areaName = "Caves of Banishment (Sirens)";
 			Add(new ItemKey(8, 4, 664, 144), "Wyvern room", ItemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment);
@@ -443,7 +454,7 @@ namespace TsRandomizer.Randomisation
 			{
 				var previusObtainedRequirements = obtainedRequirements;
 
-				var reachableProgressionItemLocations = GetReachableProgressionItemLocatioins(obtainedRequirements);
+				var reachableProgressionItemLocations = GetReachableProgressionItemLocations(obtainedRequirements);
 				obtainedRequirements = GetObtainedRequirements(reachableProgressionItemLocations);
 
 				currentProgressionChain.Sub =
@@ -460,7 +471,7 @@ namespace TsRandomizer.Randomisation
 			return progressionChain.Sub;
 		}
 
-		ItemLocation[] GetReachableProgressionItemLocatioins(R obtainedRequirements)
+		ItemLocation[] GetReachableProgressionItemLocations(R obtainedRequirements)
 		{
 			return GetReachableLocations(obtainedRequirements)
 				.Where(l => l.ItemInfo != null && l.ItemInfo.Unlocks != R.None)
@@ -471,15 +482,6 @@ namespace TsRandomizer.Randomisation
 		{
 			var pickedUpProgressionItemLocations = this
 				.Where(l => l.IsPickedUp && l.ItemInfo.Unlocks != R.None)
-				.ToArray();
-
-			var ca = this.Where(l => l.ItemInfo.Identifier == new ItemIdentifier(EInventoryRelicType.ScienceKeycardA))
-				.ToArray();
-			var cb = this.Where(l => l.ItemInfo.Identifier == new ItemIdentifier(EInventoryRelicType.ScienceKeycardB))
-				.ToArray();
-			var cc = this.Where(l => l.ItemInfo.Identifier == new ItemIdentifier(EInventoryRelicType.ScienceKeycardC))
-				.ToArray();
-			var cd = this.Where(l => l.ItemInfo.Identifier == new ItemIdentifier(EInventoryRelicType.ScienceKeycardD))
 				.ToArray();
 
 			var pickedUpSingleItemLocationUnlocks = pickedUpProgressionItemLocations
