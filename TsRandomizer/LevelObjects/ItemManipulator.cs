@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -35,7 +37,6 @@ namespace TsRandomizer.LevelObjects
 		protected void AwardContainedItem()
 		{
 			Level.GameSave.AddItem(Level, ItemInfo.Identifier);
-
 			if (ItemInfo.Identifier.LootType == LootType.ConstRelic)
 				LevelReflected.UnlockRelic(ItemInfo.Identifier.Relic);
 
@@ -72,5 +73,8 @@ namespace TsRandomizer.LevelObjects
 
 		protected void ShowItemAwardPopup() =>
 			Level.ShowItemAwardPopup(ItemInfo.Identifier);
+
+		
+
 	}
 }

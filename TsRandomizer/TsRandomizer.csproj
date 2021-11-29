@@ -168,6 +168,7 @@
     <Compile Include="Randomisation\ItemPlacers\FullRandomItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemPlacers\ItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemUnlockingMap.cs" />
+    <Compile Include="Randomisation\OrbDamageManager.cs" />
     <Compile Include="Randomisation\RoomItemKey.cs" />
     <Compile Include="ReplacementObjects\TalariaAttachment.cs" />
     <Compile Include="ReplacementObjects\TimespinnerGearItem.cs" />

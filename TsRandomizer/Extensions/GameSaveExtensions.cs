@@ -203,6 +203,8 @@ namespace TsRandomizer.Extensions
 			{
 				case LootType.ConstOrb:
 					gameSave.AddOrb(itemInfo.OrbType, itemInfo.OrbSlot);
+					//if orbsanity
+					OrbDamageManager.RandomizeOrb(itemInfo.OrbType, gameSave);
 					break;
 				case LootType.ConstEquipment:
 					gameSave.AddEnquipment(itemInfo.Enquipment);

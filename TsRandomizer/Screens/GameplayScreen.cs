@@ -79,6 +79,7 @@ namespace TsRandomizer.Screens
 
 			ItemManipulator.Initialize(ItemLocations);
 
+			OrbDamageManager.PopulateOrbLookups(Level.GameSave);
 			if (seedOptions.Archipelago)
 			{
 				Client.SetStatus(ArchipelagoClientState.ClientPlaying);

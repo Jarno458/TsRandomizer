@@ -7,6 +7,7 @@ using Timespinner.Core;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
+using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Heroes;
 using TsRandomizer.Extensions;
@@ -133,7 +134,10 @@ namespace TsRandomizer.LevelObjects
 
 			var lunais = level.MainHero;
 			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
-
+			
+			//if(orbsanity)
+			UpdateOrbDamage(level.GameSave);
+			//endif
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
 
@@ -257,6 +261,24 @@ namespace TsRandomizer.LevelObjects
 			foreach (Alive monster in monsters)
 				monster.MaxHP = 1;
 #endif
+		}
+
+		protected static void UpdateOrbDamage(GameSave save)
+        {
+			var inventory = save.Inventory;
+			var currentOrbAType = inventory.EquippedMeleeOrbA;
+			var currentOrbBType = inventory.EquippedMeleeOrbB;
+			var currentSpellType = inventory.EquippedSpellOrb;
+			var currentRingType = inventory.EquippedPassiveOrb;
+			var orbA = inventory.OrbInventory.GetItem((int)currentOrbAType);
+			var orbB = inventory.OrbInventory.GetItem((int)currentOrbBType);
+			var spell = inventory.OrbInventory.GetItem((int)currentSpellType);
+			var ring = inventory.OrbInventory.GetItem((int)currentRingType);
+						
+			if (orbA != null) OrbDamageManager.ResetOrbBaseDamage(orbA, save);
+			if (orbB != null) OrbDamageManager.ResetOrbBaseDamage(orbB, save);
+			if (spell != null) OrbDamageManager.ResetOrbBaseDamage(spell, save);
+			if (ring != null) OrbDamageManager.ResetOrbBaseDamage(ring, save);
 		}
 
 		protected static ItemKey GetKey(Mobile obj)
