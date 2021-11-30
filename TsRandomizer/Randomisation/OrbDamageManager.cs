@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
-using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Extensions;
 
 namespace TsRandomizer.Randomisation
@@ -11,6 +9,7 @@ namespace TsRandomizer.Randomisation
 	struct OrbDamageRange
     {
 		public int MinValue;
+		public int MidValue;
 		public int MaxValue;
     }
 
@@ -22,64 +21,112 @@ namespace TsRandomizer.Randomisation
         {
 			switch(orbType)
             {
-				case EInventoryOrbType.Blue: return new OrbDamageRange { MinValue = 2, MaxValue = 6 };
-				case EInventoryOrbType.Blade: return new OrbDamageRange { MinValue = 4, MaxValue = 10 };
-				case EInventoryOrbType.Flame: return new OrbDamageRange { MinValue = 3, MaxValue = 9 };
-				case EInventoryOrbType.Pink: return new OrbDamageRange { MinValue = 5, MaxValue = 10 };
-				case EInventoryOrbType.Iron: return new OrbDamageRange { MinValue = 7, MaxValue = 15 };
-				case EInventoryOrbType.Ice: return new OrbDamageRange { MinValue = 2, MaxValue = 7 };
-				case EInventoryOrbType.Wind: return new OrbDamageRange { MinValue = 2, MaxValue = 6 };
-				case EInventoryOrbType.Gun: return new OrbDamageRange { MinValue = 7, MaxValue = 15 };
-				case EInventoryOrbType.Umbra: return new OrbDamageRange { MinValue = 3, MaxValue = 7 };
-				case EInventoryOrbType.Empire: return new OrbDamageRange { MinValue = 5, MaxValue = 17 };
-				case EInventoryOrbType.Eye: return new OrbDamageRange { MinValue = 2, MaxValue = 5 };
-				case EInventoryOrbType.Blood: return new OrbDamageRange { MinValue = 2, MaxValue = 6 };
+				case EInventoryOrbType.Blue: return new OrbDamageRange { MinValue = 2, MidValue = 4, MaxValue = 6 };
+				case EInventoryOrbType.Blade: return new OrbDamageRange { MinValue = 4, MidValue = 7, MaxValue = 10 };
+				case EInventoryOrbType.Flame: return new OrbDamageRange { MinValue = 3, MidValue = 6, MaxValue = 9 };
+				case EInventoryOrbType.Pink: return new OrbDamageRange { MinValue = 5, MidValue = 6, MaxValue = 10 };
+				case EInventoryOrbType.Iron: return new OrbDamageRange { MinValue = 7, MidValue = 10, MaxValue = 15 };
+				case EInventoryOrbType.Ice: return new OrbDamageRange { MinValue = 2, MidValue = 3, MaxValue = 7 };
+				case EInventoryOrbType.Wind: return new OrbDamageRange { MinValue = 2, MidValue = 3, MaxValue = 6 };
+				case EInventoryOrbType.Gun: return new OrbDamageRange { MinValue = 7, MidValue = 9, MaxValue = 15 };
+				case EInventoryOrbType.Umbra: return new OrbDamageRange { MinValue = 3, MidValue = 4, MaxValue = 7 };
+				case EInventoryOrbType.Empire: return new OrbDamageRange { MinValue = 5, MidValue = 10, MaxValue = 17 };
+				case EInventoryOrbType.Eye: return new OrbDamageRange { MinValue = 2, MidValue = 3, MaxValue = 5 };
+				case EInventoryOrbType.Blood: return new OrbDamageRange { MinValue = 2, MidValue =3, MaxValue = 6 };
 					//may need to revisit book if we can independently randomize spell damage
 					//djinn inferno is an interesting case innit
-				case EInventoryOrbType.Book: return new OrbDamageRange { MinValue = 4, MaxValue = 8 };
+				case EInventoryOrbType.Book: return new OrbDamageRange { MinValue = 4, MidValue = 6, MaxValue = 8 };
 					//same thing here with Moon/Bombardment
-				case EInventoryOrbType.Moon: return new OrbDamageRange { MinValue = 2, MaxValue = 5 };
-				case EInventoryOrbType.Nether: return new OrbDamageRange { MinValue = 4, MaxValue = 8 };
-				case EInventoryOrbType.Barrier: return new OrbDamageRange { MinValue = 5, MaxValue = 11 };
-				default: return new OrbDamageRange { MinValue = 6, MaxValue = 6 }; //MONSKE??? But I thought you were dead???
+				case EInventoryOrbType.Moon: return new OrbDamageRange { MinValue = 2, MidValue = 3, MaxValue = 5 };
+				case EInventoryOrbType.Nether: return new OrbDamageRange { MinValue = 4, MidValue = 6, MaxValue = 8 };
+				case EInventoryOrbType.Barrier: return new OrbDamageRange { MinValue = 5, MidValue = 8, MaxValue = 11 };
+				default: return new OrbDamageRange { MinValue = 6, MidValue = 6, MaxValue = 6 }; //MONSKE??? But I thought you were dead???
 			}
         }
 
-		private static int GetOrbKey(GameSave save, EInventoryOrbType orbType)
-        {
-			return save.GetSeed().GetHashCode() + (int)orbType;
-        }
-
-		public static void RandomizeOrb(EInventoryOrbType orbType, GameSave save)
+		private static OrbDamageRange GetOrbDamageOptions(EInventoryOrbType orbType)
 		{
-			int orbKey = GetOrbKey(save, orbType);
-			OrbDamageRange range = GetOrbDamageRange(orbType);
-			Random r = new Random(orbKey);
-			
-			var newDamage = r.Next(range.MinValue, range.MaxValue);
-			if (!OrbDamageLookup.ContainsKey(orbKey))
+			switch (orbType)
 			{
-				OrbDamageLookup.Add(orbKey, newDamage);
-				save.Inventory.OrbInventory.Inventory[(int)orbType].BaseDamage = newDamage;
+				case EInventoryOrbType.Blue: return new OrbDamageRange { MinValue = 1, MidValue = 4, MaxValue = 8 };
+				case EInventoryOrbType.Blade: return new OrbDamageRange { MinValue = 1, MidValue = 7, MaxValue = 12 };
+				case EInventoryOrbType.Flame: return new OrbDamageRange { MinValue = 2, MidValue = 6, MaxValue = 12 };
+				case EInventoryOrbType.Pink: return new OrbDamageRange { MinValue = 2, MidValue = 6, MaxValue = 30 };
+				case EInventoryOrbType.Iron: return new OrbDamageRange { MinValue = 2, MidValue = 10, MaxValue = 20 };
+				case EInventoryOrbType.Ice: return new OrbDamageRange { MinValue = 1, MidValue = 4, MaxValue = 12 };
+				case EInventoryOrbType.Wind: return new OrbDamageRange { MinValue = 1, MidValue = 3, MaxValue = 8 };
+				case EInventoryOrbType.Gun: return new OrbDamageRange { MinValue = 3, MidValue = 9, MaxValue = 30 };
+				case EInventoryOrbType.Umbra: return new OrbDamageRange { MinValue = 1, MidValue = 4, MaxValue = 10 };
+				case EInventoryOrbType.Empire: return new OrbDamageRange { MinValue = 1, MidValue = 10, MaxValue = 20 };
+				case EInventoryOrbType.Eye: return new OrbDamageRange { MinValue = 1, MidValue = 3, MaxValue = 8 };
+				case EInventoryOrbType.Blood: return new OrbDamageRange { MinValue = 1, MidValue = 3, MaxValue = 8 };
+				case EInventoryOrbType.Book: return new OrbDamageRange { MinValue = 1, MidValue = 6, MaxValue = 12 };
+				case EInventoryOrbType.Moon: return new OrbDamageRange { MinValue = 1, MidValue = 3, MaxValue = 8 };
+				case EInventoryOrbType.Nether: return new OrbDamageRange { MinValue = 1, MidValue = 6, MaxValue = 12 };
+				case EInventoryOrbType.Barrier: return new OrbDamageRange { MinValue = 2, MidValue = 8, MaxValue = 20 };
+				default: return new OrbDamageRange { MinValue = 6, MidValue = 6, MaxValue = 6 }; //MONSKE??? But I thought you were dead???
 			}
-				
+		}
 
+		public static void RandomizeOrb(EInventoryOrbType orbType, int damageSelection)
+		{
+			var options = GetOrbDamageOptions(orbType);
+			int newDamage;
+			switch (damageSelection)
+            {
+				case int o when (o <= 4): 
+					newDamage = options.MinValue;
+					OverrideOrbNames(orbType, "(-)");
+					break;
+				case int o when (o >= 5 && o <= 7): 
+					newDamage = options.MidValue;
+					break;
+				default: 
+					newDamage = options.MaxValue;
+					OverrideOrbNames(orbType, "(+)");
+					break;
+
+            }
+			if (!OrbDamageLookup.ContainsKey((int)orbType))
+			{
+				OrbDamageLookup.Add((int)orbType, newDamage);
+			}
+		}
+
+		public static void OverrideOrbNames(EInventoryOrbType orbType, string suffix)
+        {
+			var Localizer = TimeSpinnerGame.Localizer;
+			string locKey = $"inv_orb_{orbType}";
+			string spellLocKey = $"{locKey}_spell";
+			string ringLocKey = $"{locKey}_passive";
+			string actualOrbName = new InventoryOrb(orbType).Name;
+			string actualSpellName = new InventoryOrb(orbType).AsDynamic().SpellName;
+			string actualRingName = new InventoryOrb(orbType).AsDynamic().PassiveName;
+			if(!actualOrbName.EndsWith(suffix))
+				Localizer.OverrideKey(locKey, $"{actualOrbName} {suffix}");
+			if(!actualSpellName.EndsWith(suffix))
+				Localizer.OverrideKey(spellLocKey, $"{actualSpellName} {suffix}");
+			if(!actualRingName.EndsWith(suffix))
+				Localizer.OverrideKey(ringLocKey, $"{actualRingName} {suffix}");
 		}
 
 		public static void PopulateOrbLookups(GameSave save)
         {
 			OrbDamageLookup.Clear();
-            foreach (var orbItem in save.Inventory.OrbInventory.Inventory)
+			var random = new Random((int)save.GetSeed().Value.Id);
+			foreach(EInventoryOrbType orbType in Enum.GetValues(typeof(EInventoryOrbType)))
             {
-				var orb = orbItem.Value;
-				int orbKey = GetOrbKey(save, orb.OrbType);
-				OrbDamageLookup.Add(orbKey, orb.BaseDamage);
-            }
+				int damageSelection = random.Next(0, 9);
+				RandomizeOrb(orbType, damageSelection);
+				var orbInventory = save.Inventory.OrbInventory.Inventory;
+				if (orbInventory.ContainsKey((int)orbType))
+					SetOrbBaseDamage(orbInventory[(int)orbType], save);
+			}
         }
-		public static void ResetOrbBaseDamage(InventoryOrb orb, GameSave save)
+
+		public static void SetOrbBaseDamage(InventoryOrb orb, GameSave save)
 		{
-			int orbKey = GetOrbKey(save, orb.OrbType);
-			if(OrbDamageLookup.TryGetValue(orbKey, out int storedOrbDamage))
+			if(OrbDamageLookup.TryGetValue((int)orb.OrbType, out int storedOrbDamage))
             {
 				orb.BaseDamage = storedOrbDamage;
 			}	

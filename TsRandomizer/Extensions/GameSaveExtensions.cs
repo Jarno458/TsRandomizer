@@ -124,9 +124,11 @@ namespace TsRandomizer.Extensions
 		{
 			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;
 			var orbTypeKey = (int) orbType;
-
+			var newOrb = new InventoryOrb(orbType);
 			if (!orbCollection.ContainsKey(orbTypeKey))
-				orbCollection.Add(orbTypeKey, new InventoryOrb(orbType));
+				orbCollection.Add(orbTypeKey, newOrb);
+
+			if (gameSave.GetSeed().Value.Options.DamageRando) OrbDamageManager.SetOrbBaseDamage(newOrb, gameSave);
 
 			switch (orbSlot)
 			{
@@ -203,8 +205,6 @@ namespace TsRandomizer.Extensions
 			{
 				case LootType.ConstOrb:
 					gameSave.AddOrb(itemInfo.OrbType, itemInfo.OrbSlot);
-					//if orbsanity
-					OrbDamageManager.RandomizeOrb(itemInfo.OrbType, gameSave);
 					break;
 				case LootType.ConstEquipment:
 					gameSave.AddEnquipment(itemInfo.Enquipment);

@@ -135,9 +135,9 @@ namespace TsRandomizer.LevelObjects
 			var lunais = level.MainHero;
 			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
 			
-			//if(orbsanity)
-			UpdateOrbDamage(level.GameSave);
-			//endif
+			if(seedOptions.DamageRando)
+				UpdateOrbDamage(level.GameSave);
+
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
 
@@ -275,10 +275,10 @@ namespace TsRandomizer.LevelObjects
 			var spell = inventory.OrbInventory.GetItem((int)currentSpellType);
 			var ring = inventory.OrbInventory.GetItem((int)currentRingType);
 						
-			if (orbA != null) OrbDamageManager.ResetOrbBaseDamage(orbA, save);
-			if (orbB != null) OrbDamageManager.ResetOrbBaseDamage(orbB, save);
-			if (spell != null) OrbDamageManager.ResetOrbBaseDamage(spell, save);
-			if (ring != null) OrbDamageManager.ResetOrbBaseDamage(ring, save);
+			if (orbA != null) OrbDamageManager.SetOrbBaseDamage(orbA, save);
+			if (orbB != null) OrbDamageManager.SetOrbBaseDamage(orbB, save);
+			if (spell != null) OrbDamageManager.SetOrbBaseDamage(spell, save);
+			if (ring != null) OrbDamageManager.SetOrbBaseDamage(ring, save);
 		}
 
 		protected static ItemKey GetKey(Mobile obj)
