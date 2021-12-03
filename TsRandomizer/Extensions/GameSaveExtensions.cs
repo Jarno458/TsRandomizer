@@ -120,6 +120,13 @@ namespace TsRandomizer.Extensions
 			return gameSave.GetSaveBool($"Cutscene_{cutsceneEnumType.GetEnumValue(cutsceneEnunMember)}");
 		}
 
+		internal static void SetCutsceneTriggered(this GameSave gameSave, string cutsceneEnunMember, bool hasBeenTriggered)
+		{
+			var cutsceneEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Cutscene.CutsceneBase+ECutsceneType");
+
+			gameSave.SetValue($"Cutscene_{cutsceneEnumType.GetEnumValue(cutsceneEnunMember)}", hasBeenTriggered);
+		}
+
 		static void AddOrb(this GameSave gameSave, EInventoryOrbType orbType, EOrbSlot orbSlot)
 		{
 			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;
