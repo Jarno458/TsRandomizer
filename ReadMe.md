@@ -55,7 +55,8 @@ Extract the contents of the corresponding zip file to the same folder as Timespi
 * Amadeus Laboratory now requires keycard B to open
 * To prevent players from getting stuck in the past when items are still available in the present, the transition room next to the refugee camp can now be used to freely travel back and forth between past and present
 * When you obtain the pyramid keys, a random transition room is unlocked that could open new routing opportunities
-* The Temporal Gyre's boss rooms are disconnected from its main loop, which instead exits to its entrance. When using the "Gyre Archives" flag, Ifrit can be reached by aquiring Kobo and proceeding to the portrait room in the Library, while Ravenlord can be reached by aquiring Merchant Crow and proceeding to the room in Amadeus' Laboratory containing the Historical Archives
+* The Temporal Gyre's boss rooms are disconnected from its main loop, which instead exits to its entrance.
+* When using the "Additional Bosses" flag, Ifrit can be reached by aquiring Kobo and proceeding to the portrait room in the Library, while Ravenlord can be reached by aquiring Merchant Crow and proceeding to the room in Amadeus' Laboratory containing the Historical Archives. Cantoran can be reached by revisiting the Cheveur Hatchling event room.
 
 # Item Tracker
 The TsRandomizer.ItemTracker.exe can be used to automagicly track any progression item you obtain ingame. It can for example be used by streamers that want to display their current progression items to their viewers
@@ -71,7 +72,6 @@ The item tracker features a few options:
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
 * Entering a door backwards with a higher level keycard will permanently open it even when specific keycards are on
 * Music wont play in lake desolation until you have done the "oh i lost my mother" cutscene
-* Killing Cantoran and leaving his room without picking up the reward, will sometimes yield duplicate items when you return to the room
 
 # Todo
 ##### Things i plan on doing in the future

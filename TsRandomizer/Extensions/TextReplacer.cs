@@ -38,7 +38,7 @@ namespace TsRandomizer.Extensions
 				case "2.51":
 					return () =>
 					{
-						if (options.GyreArchives)
+						if (options.AdditionalBosses)
 						{
 							TimeSpinnerGame.Localizer.OverrideKey("cs_pro_lun_02",
 							"Yorne? Oh... not quite. Is this... his memory?");
@@ -55,7 +55,7 @@ namespace TsRandomizer.Extensions
 				case "11.4":
 					return () =>
 					{
-						if (options.GyreArchives)
+						if (options.AdditionalBosses)
 							TimeSpinnerGame.Localizer.OverrideKey("q_ram_4_lun_29alt",
 								"It says, 'Redacted Temporal Research: Lord of Ravens'. Maybe I should ask the crow about this...");
 					};

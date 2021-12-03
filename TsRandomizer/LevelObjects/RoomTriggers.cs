@@ -96,7 +96,7 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 5, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				if (!seedOptions.Cantoran)
+				if (!seedOptions.AdditionalBosses)
 					return;
 				// Set Cantoran quest active when fighting Pink Bird
 				if (!level.GameSave.GetSaveBool("IsBossDead_Cantoran"))
@@ -163,14 +163,14 @@ namespace TsRandomizer.LevelObjects
 			// Spawn Gyre portals when applicable
 			RoomTriggers.Add(new RoomTrigger(11, 4, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				if (!seedOptions.GyreArchives) return;
+				if (!seedOptions.AdditionalBosses) return;
 				level.ReplaceText(seedOptions);
 				if (!level.GameSave.HasFamiliar(EInventoryFamiliarType.MerchantCrow)) return;
 				SpawnGyreWarp(level, 14, 8); // Historical Documents room to Ravenlord
 			}));
 			RoomTriggers.Add(new RoomTrigger(14, 24, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				if (!seedOptions.GyreArchives) return;
+				if (!seedOptions.AdditionalBosses) return;
 
 				level.JukeBox.StopSong();
 				level.RequestChangeLevel(new LevelChangeRequest { 
@@ -185,7 +185,7 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 51, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				if (!seedOptions.GyreArchives) return;
+				if (!seedOptions.AdditionalBosses) return;
 				level.ReplaceText(seedOptions);
 				if (level.GameSave.HasFamiliar(EInventoryFamiliarType.Kobo)) {
 					SpawnGyreWarp(level, 14, 6); // Portrait room to Ifrit
@@ -197,7 +197,7 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(14, 25, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				if (!seedOptions.GyreArchives) return;
+				if (!seedOptions.AdditionalBosses) return;
 				level.JukeBox.StopSong();
 				level.RequestChangeLevel(new LevelChangeRequest {
 					LevelID = 2,

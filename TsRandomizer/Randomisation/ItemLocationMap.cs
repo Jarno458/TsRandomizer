@@ -78,14 +78,11 @@ namespace TsRandomizer.Randomisation
 			AddPastItemLocations();
 			AddPyramidItemLocations();
 
-			if (options.GyreArchives)
-				AddGyreItemLocations();
+			if (options.AdditionalBosses)
+				AddAdditionalBossItemLocations();
 
 			if (options.DownloadableItems)
 				AddDownloadTerminals();
-
-			if (options.Cantoran)
-				AddCantoran();
 
 			if (options.StartWithTalaria)
 				Add(new ExteralItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
@@ -182,10 +179,8 @@ namespace TsRandomizer.Randomisation
 
 			if (options.DownloadableItems)
 				capacity += 14;
-			if (options.GyreArchives)
-				capacity += 6;
-			if (options.Cantoran)
-				capacity++;
+			if (options.AdditionalBosses)
+				capacity += 7;
 
 			return capacity;
 		}
@@ -293,12 +288,6 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(12, 11, 136, 205), "Dad's Chambers pedestal", ItemProvider.Get(EInventoryOrbType.Empire, EOrbSlot.Melee), EmperorsTower);
 		}
 
-		void AddCantoran()
-        {
-			areaName = "Upper Lake Sirine";
-			Add(new RoomItemKey(7, 5), "Cantoran", ItemProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Melee), LeftSideForestCaves);
-		}
-
 		void AddPastItemLocations()
 		{
 			areaName = "Refugee Camp";
@@ -395,12 +384,12 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(16, 22, 200, 192), "Pit secret room", ItemProvider.Get(EItemType.MaxAura), Nightmare & OculusRift); //only requires LeftPyramid to reach but Nightmate to escape
 			Add(new ItemKey(16, 16, 1512, 144), "Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), Nightmare & OculusRift); //only requires LeftPyramid to reach but Nightmate to escape
 			areaName = "Temporal Gyre"; // Main path is in pyramid logic, boss rooms are behind GyreArchives flag
-			Add(new ItemKey(14, 14, 200, 832), "Gyre Chest 1", null, Nightmare);
-			Add(new ItemKey(14, 17, 200, 832), "Gyre Chest 2", null, Nightmare);
-			Add(new ItemKey(14, 20, 200, 832), "Gyre Chest 3", null, Nightmare);
+			Add(new ItemKey(14, 14, 200, 832), "Gyre Chest 1", ItemProvider.Get(EInventoryEquipmentType.DemonStole), Nightmare);
+			Add(new ItemKey(14, 17, 200, 832), "Gyre Chest 2", ItemProvider.Get(EInventoryEquipmentType.AzureStole), Nightmare);
+			Add(new ItemKey(14, 20, 200, 832), "Gyre Chest 3", ItemProvider.Get(EInventoryUseItemType.EmpressCake), Nightmare);
 		}
 
-		void AddGyreItemLocations()
+		void AddAdditionalBossItemLocations()
 		{
 			areaName = "Temporal Gyre";
 			Add(new ItemKey(14, 8, 120, 176), "Ravenlord Entry", null, UpperLab & R.MerchantCrow);
@@ -409,6 +398,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(14, 6, 40, 208), "Ifrit Entry", null, UpperLeftLibrary & R.Kobo);
 			Add(new ItemKey(14, 7, 200, 205), "Ifrit Pedestal", null, UpperLeftLibrary & R.Kobo);
 			Add(new ItemKey(14, 7, 280, 208), "Ifrit Exit", null, UpperLeftLibrary & R.Kobo);
+			areaName = "Upper Lake Sirine";
+			Add(new RoomItemKey(7, 5), "Cantoran", ItemProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Melee), LeftSideForestCaves);
 		}
 
 		void AddDownloadTerminals()
