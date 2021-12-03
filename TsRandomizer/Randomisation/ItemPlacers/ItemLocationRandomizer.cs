@@ -59,7 +59,10 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryEquipmentType.ShinyRock),
 				ItemInfoProvider.Get(EInventoryRelicType.EternalBrooch),
 				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltMeyef),
-				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow)
+				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow),
+				ItemInfoProvider.Get(EInventoryEquipmentType.DemonStole),
+				ItemInfoProvider.Get(EInventoryEquipmentType.AzureStole),
+				ItemInfoProvider.Get(EInventoryUseItemType.EmpressCake)
 			};
 
 			genericItems = new[]
@@ -76,6 +79,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.Antidote),
 				ItemInfoProvider.Get(EInventoryUseItemType.SandBottle),
 				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle),
+				ItemInfoProvider.Get(EInventoryUseItemType.WarpCard)
 			};
 		}
 

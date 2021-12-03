@@ -381,23 +381,23 @@ namespace TsRandomizer.Randomisation
 			areaName = "Ancient Pyramid";
 			Add(new ItemKey(16, 14, 312, 192), "Why not it's right there", ItemProvider.Get(EItemType.MaxSand), LeftPyramid);
 			Add(new ItemKey(16, 3, 88, 192), "Conviction guarded room", ItemProvider.Get(EItemType.MaxHP), LeftPyramid);
-			Add(new ItemKey(16, 22, 200, 192), "Pit secret room", ItemProvider.Get(EItemType.MaxAura), Nightmare & OculusRift); //only requires LeftPyramid to reach but Nightmate to escape
-			Add(new ItemKey(16, 16, 1512, 144), "Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), Nightmare & OculusRift); //only requires LeftPyramid to reach but Nightmate to escape
-			areaName = "Temporal Gyre"; // Main path is in pyramid logic, boss rooms are behind GyreArchives flag
-			Add(new ItemKey(14, 14, 200, 832), "Gyre Chest 1", ItemProvider.Get(EInventoryEquipmentType.DemonStole), Nightmare);
-			Add(new ItemKey(14, 17, 200, 832), "Gyre Chest 2", ItemProvider.Get(EInventoryEquipmentType.AzureStole), Nightmare);
-			Add(new ItemKey(14, 20, 200, 832), "Gyre Chest 3", ItemProvider.Get(EInventoryUseItemType.EmpressCake), Nightmare);
+			Add(new ItemKey(16, 22, 200, 192), "Pit secret room", ItemProvider.Get(EItemType.MaxAura), Nightmare & OculusRift); //only requires LeftPyramid to reach but Nightmare to escape
+			Add(new ItemKey(16, 16, 1512, 144), "Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), Nightmare & OculusRift); //only requires LeftPyramid to reach but Nightmare to escape
+			areaName = "Temporal Gyre"; // Main path is in pyramid logic, boss rooms are behind Additional Boss flag
+			Add(new ItemKey(14, 14, 200, 832), "Gyre Chest 1", null, Nightmare); // Random
+			Add(new ItemKey(14, 17, 200, 832), "Gyre Chest 2", null, Nightmare); // Random
+			Add(new ItemKey(14, 20, 200, 832), "Gyre Chest 3", null, Nightmare); // Random
 		}
 
 		void AddAdditionalBossItemLocations()
 		{
 			areaName = "Temporal Gyre";
-			Add(new ItemKey(14, 8, 120, 176), "Ravenlord Entry", null, UpperLab & R.MerchantCrow);
-			Add(new ItemKey(14, 9, 200, 125), "Ravenlord Pedestal", null, UpperLab & R.MerchantCrow);
-			Add(new ItemKey(14, 9, 280, 176), "Ravenlord Exit", null, UpperLab & R.MerchantCrow);
-			Add(new ItemKey(14, 6, 40, 208), "Ifrit Entry", null, UpperLeftLibrary & R.Kobo);
-			Add(new ItemKey(14, 7, 200, 205), "Ifrit Pedestal", null, UpperLeftLibrary & R.Kobo);
-			Add(new ItemKey(14, 7, 280, 208), "Ifrit Exit", null, UpperLeftLibrary & R.Kobo);
+			Add(new ItemKey(14, 8, 120, 176), "Ravenlord Entry", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperLab & R.MerchantCrow);
+			Add(new ItemKey(14, 9, 200, 125), "Ravenlord Pedestal", null, UpperLab & R.MerchantCrow); // Nether orb, accounted for outside of flag
+			Add(new ItemKey(14, 9, 280, 176), "Ravenlord Exit", null, UpperLab & R.MerchantCrow); // Random, chance of Merchant Crow/Kobo
+			Add(new ItemKey(14, 6, 40, 208), "Ifrit Entry", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperLeftLibrary & R.Kobo);
+			Add(new ItemKey(14, 7, 200, 205), "Ifrit Pedestal", null, UpperLeftLibrary & R.Kobo); // Forbidden Tome, accounted for outside of flag
+			Add(new ItemKey(14, 7, 280, 208), "Ifrit Exit", null, UpperLeftLibrary & R.Kobo); // Random, chance of Merchant Crow/Kobo
 			areaName = "Upper Lake Sirine";
 			Add(new RoomItemKey(7, 5), "Cantoran", ItemProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Melee), LeftSideForestCaves);
 		}
