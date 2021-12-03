@@ -57,6 +57,8 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.SetValue("TSRandomizerHasTeleportedPlayer", true);
 
 				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 3, RoomID = 6 }); //Refugee Camp
+
+				level.GameSave.SetCutsceneTriggered("LakeDesolation1_Entrance", true); // Fixes music when returning to Lake Desolation later
 			}));
 			RoomTriggers.Add(new RoomTrigger(1, 5, (level, itemLocation, seedOptions, screenManager) =>
 			{
