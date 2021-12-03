@@ -19,7 +19,6 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 8, new SeedOptionInfo { Name = "Inverted", Description = "Start in the past" } },
 			{ 1 << 9, new SeedOptionInfo { Name = "Stinky Maw", Description = "Require gasmask for Maw" } },
 			{ 1 << 10, new SeedOptionInfo { Name = "Additional Bosses", Description = "Ifrit, Ravenlord, and Cantoran are guarding checks. New warps are gated by Merchant Crow and Kobo." } },
-			{ 1 << 11, new SeedOptionInfo { Name = "Unsafe Warps", Description = "Twin Pyramid Keys' free warp can be directly to the bosses Azure Queen and Xarion." } },
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)

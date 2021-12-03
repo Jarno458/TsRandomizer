@@ -23,7 +23,6 @@ namespace TsRandomizer
 		public bool Inverted => (Flags & 1 << 8) > 0;
 		public bool GassMaw => (Flags & 1 << 9) > 0;
 		public bool AdditionalBosses => (Flags & 1 << 10) > 0;
-		public bool UnsafeWarps => (Flags & 1 << 11) > 0;
 
 		//Non visable flags
 		public bool Archipelago => (Flags & 1 << 16) > 0;
@@ -51,7 +50,6 @@ namespace TsRandomizer
 				{"Inverted", 1U << 8},
 				{"StinkyMaw", 1U << 9},
 				{"AdditionalBosses", 1U << 10},
-				{"UnsafeWarps", 1U << 11},
 				{"DeathLink", 1U << 17}
 			};
 

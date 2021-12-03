@@ -17,14 +17,14 @@ namespace TsRandomizer.Randomisation
 			new TeleporterGate{Gate = R.GateLeftLibrary, LevelId = 2, RoomId = 54},
 			new TeleporterGate{Gate = R.GateMilitairyGate, LevelId = 10, RoomId = 12},
 			new TeleporterGate{Gate = R.GateSealedCaves, LevelId = 9, RoomId = 50},
-			//new TeleporterGate{Gate = R.GateXarion, LevelId = 9, RoomId = 49}, //dont want to spawn infront of xarion
+			// new TeleporterGate{Gate = R.GateXarion, LevelId = 9, RoomId = 49}, // Xarion boss
 			new TeleporterGate{Gate = R.GateSealedSirensCave, LevelId = 9, RoomId = 51},
 			new TeleporterGate{Gate = R.GateLakeDesolation, LevelId = 1, RoomId = 25},
 		};
 
 		static readonly TeleporterGate[] PastTeleporterGates =
 		{
-			//new TeleporterGate{Gate = Requirement.GateLakeSirineLeft, LevelId = 7, RoomId = 30}, //you dont want to spawn with a boss in your face
+			// new TeleporterGate{Gate = R.GateLakeSereneLeft, LevelId = 7, RoomId = 30} // Azure Queen Boss
 			new TeleporterGate{Gate = R.GateLakeSereneRight, LevelId = 7, RoomId = 31},
 			new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51},
 			//new TeleporterGate{Gate = Requirement.GateAccessToPast, LevelId = 3, RoomId = 6}, //Refugee Camp, Somehow doesnt work ¯\_(ツ)_/¯
