@@ -33,7 +33,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Timespinner\</OutputPath>
+    <OutputPath>..\..\TestVersions\DRMFreeVersion\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -75,9 +75,11 @@
     <Reference Include="Archipelago.MultiClient.Net">
       <HintPath>..\lib\Archipelago.MultiClient.Net.dll</HintPath>
     </Reference>
-    <Reference Include="FNA, Version=21.8.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Timespinner\FNA.dll</HintPath>
+    <Reference Include="FNA">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
+      <HintPath>~/.local/share/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
+      <HintPath>..\..\TestVersions\DRMFreeVersion\FNA.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -88,7 +90,8 @@
     <Reference Include="System.Core" />
     <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Timespinner\Timespinner.exe</HintPath>
+      <HintPath>..\..\TestVersions\DRMFreeVersion\Timespinner.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="websocket-sharp">
       <HintPath>..\lib\websocket-sharp.dll</HintPath>
