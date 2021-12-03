@@ -1,12 +1,18 @@
 ﻿using System;
 using Timespinner.GameAbstractions.Gameplay;
-using TsRandomizer.Extensions;
 
-namespace TsRandomizer.LevelObjects
+namespace TsRandomizer.Extensions
 {
-    partial class LevelExtensions
+    static class TextReplacerLevelExtensions
     {
-        public Action TextReplacer(Level level, SeedOptions options)
+	    internal static void ReplaceText(this Level level, SeedOptions options)
+	    {
+		    TextReplacer(level, options)();
+	    }
+
+	    internal static string RoomKeyString(this Level level) => $"{level.ID}.{level.RoomID}";
+
+		static Action TextReplacer(Level level, SeedOptions options)
         {
 			switch(level.RoomKeyString())
             {
