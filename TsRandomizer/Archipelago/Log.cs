@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions;
+using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
 
 namespace TsRandomizer.Archipelago
@@ -22,14 +23,9 @@ namespace TsRandomizer.Archipelago
 		readonly ConcurrentQueue<Message> pendingImportantLines = new ConcurrentQueue<Message>();
 		readonly ConcurrentQueue<Message> pendingLines = new ConcurrentQueue<Message>();
 
-		readonly SpriteFont chineseFont;
-		readonly SpriteFont japaneseFont;
-
-		public Log(GCM gcm, SpriteFont chineseFont, SpriteFont japaneseFont)
+		public Log(GCM gcm)
 		{
 			this.gcm = gcm;
-			this.chineseFont = chineseFont;
-			this.japaneseFont = japaneseFont;
 
 			Add(this);
 		}
@@ -42,7 +38,7 @@ namespace TsRandomizer.Archipelago
 				pendingLines.Enqueue(new Message(parts));
 		}
 
-		public override void Update(GameTime gameTime)
+		public override void Update(GameTime gameTime, InputState input)
 		{
 			while (lines.TryPeek(out var message) && message.OnScreenTime > FadeEnd)
 				lines.TryDequeue(out _);

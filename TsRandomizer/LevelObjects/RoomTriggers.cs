@@ -264,7 +264,7 @@ namespace TsRandomizer.LevelObjects
 				    (forfeitFlags.HasFlag(Permissions.Enabled) || forfeitFlags.HasFlag(Permissions.Goal)))
 				{
 					var messageBox = MessageBox.Create(screenManager, "Press OK for forfeit remaining item checks", _ => {
-						Client.Forfeit();
+						Client.Say("!forfeit");
 					});
 
 					screenManager.AddScreen(messageBox.Screen, null);

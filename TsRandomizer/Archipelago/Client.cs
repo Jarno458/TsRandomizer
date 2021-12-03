@@ -39,7 +39,7 @@ namespace TsRandomizer.Archipelago
 
 		public static string GetCurrentPlayerName() => session.Players.GetPlayerAliasAndName(slot);
 
-		public static LoginResult Connect(string server, string user, string pass, string connectionId)
+		public static LoginResult Connect(string server, string user, string pass = null, string connectionId = null)
 		{
 			if (IsConnected && session.Socket.Connected && cachedConnectionResult != null)
 			{
@@ -63,6 +63,9 @@ namespace TsRandomizer.Archipelago
 
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;
+
+				if (result.Successful)
+					slot = ((LoginSuccessful)result).Slot;
 			}
 			catch (Exception e)
 			{
@@ -124,9 +127,9 @@ namespace TsRandomizer.Archipelago
 			session?.Socket?.SendPacket(packet);
 		}
 
-		public static void Forfeit()
+		public static void Say(string message)
 		{
-			SendPacket(new SayPacket { Text = "!forfeit" });
+			SendPacket(new SayPacket { Text = message });
 		}
 
 		static void OnRoomInfoPacketReceived(RoomInfoPacket packet)
@@ -155,6 +158,7 @@ namespace TsRandomizer.Archipelago
 			foreach (var messagePart in printJsonPacket.Data)
 				parts.Add(new Part(GetMessage(messagePart), GetColor(messagePart)));
 
+			ScreenManager.Console.Add(parts.ToArray());
 			ScreenManager.Log.Add(MessageIsAboutCurrentPlayer(printJsonPacket), parts.ToArray());
 		}
 

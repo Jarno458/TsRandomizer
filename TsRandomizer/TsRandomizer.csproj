@@ -101,6 +101,9 @@
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
     <Compile Include="Archipelago\ArchipelagoRemoteItem.cs" />
     <Compile Include="Archipelago\ConnectionFailedException.cs" />
+    <Compile Include="Screens\Commands\ConnectCommand.cs" />
+    <Compile Include="Screens\Commands\ConsoleCommand.cs" />
+    <Compile Include="Screens\GameConsole.cs" />
     <Compile Include="Archipelago\DeathLinker.cs" />
     <Compile Include="Archipelago\SlotDataParser.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />

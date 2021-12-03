@@ -79,7 +79,8 @@ The item tracker features a few options:
   * Implement Chat UI
   * Add bouncy to hopefully fix connection losses like due to ip changes
   * Change save game menu to make AP seeds more clear like adding player name & server (optionally)
-* Implement skin selection
+* Implement options Menu:
+	* Implement skin selection
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemented

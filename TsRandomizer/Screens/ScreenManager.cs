@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Timespinner;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
@@ -11,6 +10,7 @@ using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Screens.Commands;
 
 namespace TsRandomizer.Screens
 {
@@ -27,10 +27,10 @@ namespace TsRandomizer.Screens
 
 		public readonly dynamic Dynamic;
 
-		public SpriteFont ChineseFont;
-		public SpriteFont JapaneseFont;
-
 		public static Log Log;
+		public static GameConsole Console;
+
+		bool isConsoleOpen;
 
 		public ScreenManager(TimespinnerGame game, PlatformHelper platformHelper) : base(game, platformHelper)
 		{
@@ -41,19 +41,39 @@ namespace TsRandomizer.Screens
 		{
 			base.LoadContent();
 
-			Dynamic.GCM.LatinFont.DefaultCharacter = '_';
+			Dynamic.GCM.LatinFont.DefaultCharacter = '?';
 
-			Log = new Log(Dynamic.GCM, ChineseFont, JapaneseFont);
+			Log = new Log(Dynamic.GCM);
+			Console = new GameConsole(Dynamic.GCM);
+
+			Console.AddCommand(new ConnectCommand(this));
 		}
 
 		public override void Update(GameTime gameTime)
 		{
-			DetectNewScreens();
-			UpdateScreens(gameTime);
+			var input = (InputState)Dynamic._input;
 
-			Overlay.UpdateAll(gameTime);
+			DetectNewScreens();
+			UpdateScreens(gameTime, input);
+
+			Overlay.UpdateAll(gameTime, input);
+
+			ToggleConsole(input);
 
 			base.Update(gameTime);
+		}
+
+		void ToggleConsole(InputState input)
+		{
+			if (input.IsNewKeyPress(Keys.OemTilde))
+			{
+				isConsoleOpen = !isConsoleOpen;
+
+				if (isConsoleOpen)
+					AddScreen(Console, null);
+				else
+					RemoveScreen(Console);
+			}
 		}
 
 		public override void Draw(GameTime gameTime)
@@ -95,10 +115,8 @@ namespace TsRandomizer.Screens
 				hookedScreens.Filter(foundScreens, s => s.Unload());
 		}
 
-		void UpdateScreens(GameTime gameTime)
+		void UpdateScreens(GameTime gameTime, InputState input)
 		{
-			var input = (InputState)Dynamic._input;
-
 			foreach (var screen in hookedScreens)
 				screen.Update(gameTime, input);
 		}

@@ -58,7 +58,7 @@ namespace TsRandomizer.Screens
 			difficultyMenu = screenManager.FirstOrDefault<GameDifficultyMenuScreen>();
 
 #if DEBUG
-			values[ServerIndex] = "localhost:38281";
+			values[ServerIndex] = "localhost";
 #else
 			values[ServerIndex] = "archipelago.gg:";
 #endif
@@ -71,7 +71,7 @@ namespace TsRandomizer.Screens
 			if (!IsUsedAsArchipelagoSelectionMenu)
 				return;
 
-			Dynamic._menuTitle = "Enter Credentails";
+			Dynamic._menuTitle = "Enter Credentials";
 
 			serverMenuEntry = MenuEntry.Create(ServerPrefix, _ => { });
 			userMenuEntry = MenuEntry.Create(UserPrefix, _ => { });
@@ -163,7 +163,7 @@ namespace TsRandomizer.Screens
 
 			var password = string.IsNullOrEmpty(values[PasswordIndex]) ? null : values[PasswordIndex];
 
-			var result = Client.Connect(server, values[UserIndex], password, null);
+			var result = Client.Connect(server, values[UserIndex], password);
 			if (!result.Successful)
 			{
 				var failure = (LoginFailure)result;
