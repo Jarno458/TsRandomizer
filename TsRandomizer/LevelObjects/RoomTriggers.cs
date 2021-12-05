@@ -57,6 +57,8 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.SetValue("TSRandomizerHasTeleportedPlayer", true);
 
 				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 3, RoomID = 6 }); //Refugee Camp
+
+				level.GameSave.SetCutsceneTriggered("LakeDesolation1_Entrance", true); // Fixes music when returning to Lake Desolation later
 			}));
 			RoomTriggers.Add(new RoomTrigger(1, 5, (level, itemLocation, seedOptions, screenManager) =>
 			{
@@ -105,9 +107,10 @@ namespace TsRandomizer.LevelObjects
 					return;
 				}
 					
-				// Spawn item if the room has been left without aquiring
+				// Spawn item if the room has been left without aquiring (only needed if Radiant-element possessed)
 				if (!itemLocation.IsPickedUp
-					&& level.GameSave.GetSaveBool("IsBossDead_Cantoran"))
+					&& level.GameSave.GetSaveBool("IsBossDead_Cantoran")
+					&& level.GameSave.HasOrb(EInventoryOrbType.Barrier))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 170, 194);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation, seedOptions, screenManager) =>
