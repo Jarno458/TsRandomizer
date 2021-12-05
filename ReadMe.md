@@ -81,6 +81,7 @@ The item tracker features a few options:
   * Change save game menu to make AP seeds more clear like adding player name & server (optionally)
 * Implement options Menu:
 	* Implement skin selection
+* Update location names
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemented
