@@ -30,7 +30,7 @@ namespace TsRandomizer.Screens
 		public static Log Log;
 		public static GameConsole Console;
 
-		bool isConsoleOpen;
+		public static bool IsConsoleOpen;
 
 		public ScreenManager(TimespinnerGame game, PlatformHelper platformHelper) : base(game, platformHelper)
 		{
@@ -43,7 +43,7 @@ namespace TsRandomizer.Screens
 
 			Dynamic.GCM.LatinFont.DefaultCharacter = '?';
 
-			Log = new Log(Dynamic.GCM);
+			Log = new Log(this, Dynamic.GCM);
 			Console = new GameConsole(this, Dynamic.GCM);
 
 			Console.AddCommand(new ConnectCommand(this));
@@ -66,9 +66,9 @@ namespace TsRandomizer.Screens
 
 		public void ToggleConsole()
 		{
-			isConsoleOpen = !isConsoleOpen;
+			IsConsoleOpen = !IsConsoleOpen;
 
-			if (isConsoleOpen)
+			if (IsConsoleOpen)
 				AddScreen(Console, null);
 			else
 				RemoveScreen(Console);

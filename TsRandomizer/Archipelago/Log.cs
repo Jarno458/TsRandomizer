@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
+using ScreenManager = TsRandomizer.Screens.ScreenManager;
 
 namespace TsRandomizer.Archipelago
 {
@@ -17,14 +18,16 @@ namespace TsRandomizer.Archipelago
 		static readonly TimeSpan FadeEnd = TimeSpan.FromSeconds(FadeEndDelayInSeconds);
 		static readonly TimeSpan FadeTime = FadeEnd - FadeStart;
 
+		readonly ScreenManager screenManager;
 		readonly GCM gcm;
 
 		readonly ConcurrentQueue<Message> lines = new ConcurrentQueue<Message>();
 		readonly ConcurrentQueue<Message> pendingImportantLines = new ConcurrentQueue<Message>();
 		readonly ConcurrentQueue<Message> pendingLines = new ConcurrentQueue<Message>();
 
-		public Log(GCM gcm)
+		public Log(ScreenManager screenManager, GCM gcm)
 		{
+			this.screenManager = screenManager;
 			this.gcm = gcm;
 
 			Add(this);
@@ -45,12 +48,6 @@ namespace TsRandomizer.Archipelago
 
 			CopyMessagesBetweenQueues(lines, pendingImportantLines);
 			CopyMessagesBetweenQueues(lines, pendingLines);
-
-			if (gameTime.TotalGameTime.Seconds % 2 == 0)
-			{
-				//Add(true, new Part("Test"));
-				//Add(true, new Part("サイバー❚スーパーメトロイド: Test"));
-			}
 		}
 
 		static void CopyMessagesBetweenQueues(
@@ -69,6 +66,9 @@ namespace TsRandomizer.Archipelago
 
 		public override void Draw(SpriteBatch spriteBatch, Rectangle screenSize)
 		{
+			if(ScreenManager.IsConsoleOpen)
+				return;
+
 			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
 			{
 				var i = 1;

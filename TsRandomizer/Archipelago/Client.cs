@@ -139,7 +139,12 @@ namespace TsRandomizer.Archipelago
 			var lines = printPacket.Text.Split('\n');
 
 			foreach (var line in lines)
-				ScreenManager.Log.Add(true, new Part(line));
+			{
+				if (ScreenManager.IsConsoleOpen)
+					ScreenManager.Console.Add(new Part(line));
+				else
+					ScreenManager.Log.Add(true, new Part(line));
+			}
 		}
 
 		static void OnPrintJsonPacketReceived(PrintJsonPacket printJsonPacket)
@@ -153,13 +158,11 @@ namespace TsRandomizer.Archipelago
 			ScreenManager.Log.Add(MessageIsAboutCurrentPlayer(printJsonPacket), parts.ToArray());
 		}
 
-		static bool MessageIsAboutCurrentPlayer(PrintJsonPacket printJsonPacket)
-		{
-			return printJsonPacket.Data.Any(
+		static bool MessageIsAboutCurrentPlayer(PrintJsonPacket printJsonPacket) =>
+			printJsonPacket.Data.Any(
 				p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId
 				     && int.TryParse(p.Text, out var playerId)
 				     && playerId == slot);
-		}
 
 		static string GetMessage(JsonMessagePart messagePart)
 		{
@@ -167,15 +170,15 @@ namespace TsRandomizer.Archipelago
 			{
 				case JsonMessagePartType.PlayerId:
 					return int.TryParse(messagePart.Text, out var playerSlot) 
-						? session.Players.GetPlayerAliasAndName(playerSlot)
+						? session.Players.GetPlayerAliasAndName(playerSlot) ?? $"Slot: {playerSlot}"
 						: messagePart.Text;
 				case JsonMessagePartType.ItemId:
 					return int.TryParse(messagePart.Text, out var itemId)
-						? session.Items.GetItemName(itemId)
+						? session.Items.GetItemName(itemId) ?? $"Item: {itemId}"
 						: messagePart.Text;
 				case JsonMessagePartType.LocationId:
 					return int.TryParse(messagePart.Text, out var locationId)
-						? session.Locations.GetLocationNameFromId(locationId)
+						? session.Locations.GetLocationNameFromId(locationId) ?? $"Location: {locationId}"
 						: messagePart.Text;
 				default:
 					return messagePart.Text;
