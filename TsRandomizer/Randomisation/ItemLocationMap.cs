@@ -282,7 +282,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(11, 27, 296, 160), "Lab secret", ItemProvider.Get(EItemType.MaxSand), UpperLab & OculusRift);
 			Add(new RoomItemKey(11, 26), "Lab Spider hell", ItemProvider.Get(EInventoryRelicType.TimespinnerGear1), TheLabPoweredOff & R.CardA);
 			areaName = "Emperors tower";
-			Add(new ItemKey(12, 5, 344, 192), "Dad's toom", ItemProvider.Get(EItemType.MaxAura), EmperorsTower);
+			Add(new ItemKey(12, 5, 344, 192), "Dad's bottom", ItemProvider.Get(EItemType.MaxAura), EmperorsTower);
 			Add(new ItemKey(12, 3, 200, 160), "Dad's couryard floor secret", ItemProvider.Get(EInventoryEquipmentType.LachiemCrown), EmperorsTower & R.UpwardDash & OculusRift);
 			Add(new ItemKey(12, 25, 360, 176), "Dad's courtyard chest", ItemProvider.Get(EInventoryEquipmentType.EmpressCoat), EmperorsTower & R.UpwardDash);
 			Add(new ItemKey(12, 22, 56, 192), "Galactic Sage Room", ItemProvider.Get(EItemType.MaxSand), EmperorsTower);
