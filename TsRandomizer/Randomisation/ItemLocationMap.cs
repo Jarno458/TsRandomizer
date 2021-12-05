@@ -10,7 +10,7 @@ using R = TsRandomizer.Randomisation.Requirement;
 
 namespace TsRandomizer.Randomisation
 {
-	class ItemLocationMap : LookupDictionairy<ItemKey, ItemLocation>
+	class ItemLocationMap : LookupDictionary<ItemKey, ItemLocation>
 	{
 		internal R OculusRift;
 		internal R MawGassMask;
@@ -627,14 +627,10 @@ namespace TsRandomizer.Randomisation
 		}
 
 		public IEnumerable<ItemLocation> GetReachableLocations(R obtainedRequirements)
-		{
-			return this.Where(l => l.Gate.CanBeOpenedWith(obtainedRequirements));
-		}
+			=> this.Where(l => l.Gate.CanBeOpenedWith(obtainedRequirements));
 
 		bool CanCompleteGame(R obtainedRequirements)
-		{
-			return Nightmare.CanBeOpenedWith(obtainedRequirements);
-		}
+			=> Nightmare.CanBeOpenedWith(obtainedRequirements);
 
 		public virtual void Update(Level level)
 		{
@@ -653,15 +649,11 @@ namespace TsRandomizer.Randomisation
 				itemLocation.BsseOnGameSave(gameSave);
 		}
 
-		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem)
-		{
-			Add(new ItemLocation(itemKey, areaName, name, defaultItem));
-		}
+		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem) 
+			=> Add(new ItemLocation(itemKey, areaName, name, defaultItem));
 
-		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem, Gate gate)
-		{
-			Add(new ItemLocation(itemKey, areaName, name, defaultItem, gate));
-		}
+		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem, Gate gate) 
+			=> Add(new ItemLocation(itemKey, areaName, name, defaultItem, gate));
 	}
 
 	class ProgressionChain

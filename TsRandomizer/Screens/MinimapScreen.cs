@@ -65,7 +65,7 @@ namespace TsRandomizer.Screens
 		ItemLocationMap itemLocations;
 		bool isShowingAviableLocations;
 
-		LookupDictionairy<Roomkey, MinimapRoomState> preservedRoomStates;
+		LookupDictionary<Roomkey, MinimapRoomState> preservedRoomStates;
 
 		MinimapSpecification Minimap => ((object)Dynamic._minimapHud).AsDynamic()._minimap;
 
@@ -215,14 +215,11 @@ namespace TsRandomizer.Screens
 			}
 		}
 
-		public override void Unload()
-		{
-			ResetMinimap();
-		}
+		public override void Unload() => ResetMinimap();
 
 		void MarkAvailableItemLocations()
 		{
-			preservedRoomStates = new LookupDictionairy<Roomkey, MinimapRoomState>(r => r.RoomKey);
+			preservedRoomStates = new LookupDictionary<Roomkey, MinimapRoomState>(r => r.RoomKey);
 
 			var visableAreas = (List<EMinimapEraType>)Dynamic._availableEras;
 

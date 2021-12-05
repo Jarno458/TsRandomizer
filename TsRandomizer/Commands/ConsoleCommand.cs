@@ -1,6 +1,6 @@
-﻿using TsRandomizer.Archipelago;
+﻿using TsRandomizer.Screens;
 
-namespace TsRandomizer.Screens.Commands
+namespace TsRandomizer.Commands
 {
 	abstract class ConsoleCommand
 	{

@@ -9,11 +9,11 @@ using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Archipelago;
+using TsRandomizer.Commands;
 using TsRandomizer.Drawables;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
-using TsRandomizer.Screens.Commands;
 using TsRandomizer.Screens.Menu;
 using TsRandomizer.Screens.SeedSelection;
 

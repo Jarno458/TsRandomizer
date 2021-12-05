@@ -9,8 +9,8 @@ using SDL2;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Archipelago;
+using TsRandomizer.Commands;
 using TsRandomizer.Extensions;
-using TsRandomizer.Screens.Commands;
 
 namespace TsRandomizer.Screens
 {
@@ -19,6 +19,7 @@ namespace TsRandomizer.Screens
 		const int LinesToRender = 28;
 		const int PageSize = 12;
 
+		readonly ScreenManager screenManager;
 		readonly GCM gcm;
 
 		string commandText = "";
@@ -35,19 +36,17 @@ namespace TsRandomizer.Screens
 		readonly ConcurrentQueue<Message> websocketBuffer = new ConcurrentQueue<Message>();
 		readonly List<Message> lines = new List<Message>();
 
-		readonly LookupDictionairy<string, ConsoleCommand> commands = new LookupDictionairy<string, ConsoleCommand>(c => c.Command);
+		readonly LookupDictionary<string, ConsoleCommand> commands = new LookupDictionary<string, ConsoleCommand>(c => c.Command);
 
-		public GameConsole(GCM gcm)
+		public GameConsole(ScreenManager screenManager, GCM gcm)
 		{
+			this.screenManager = screenManager;
 			this.gcm = gcm;
 
 			AddCommand(new HelpCommand());
 		}
 
-		public void AddCommand(ConsoleCommand command)
-		{
-			commands.Add(command);
-		}
+		public void AddCommand(ConsoleCommand command) => commands.AddOrUpdate(command);
 
 		public override void Update(GameTime gameTime, bool doesOtherScreenHasFocus, bool isCoveredByOtherScreen)
 		{
@@ -160,43 +159,39 @@ namespace TsRandomizer.Screens
 
 		void PreviousCommand()
 		{
-			if (commandIndex > 0)
-			{
-				commandIndex--;
-				commandText = previousCommands[commandIndex];
-			}
+			if (commandIndex <= 0)
+				return;
+
+			commandIndex--;
+			commandText = previousCommands[commandIndex];
 		}
 
 		void NextCommand()
 		{
-			if (commandIndex < previousCommands.Count - 1)
-			{
-				commandIndex++;
-				commandText = previousCommands[commandIndex];
-			}
+			if (commandIndex >= previousCommands.Count - 1) 
+				return;
+
+			commandIndex++;
+			commandText = previousCommands[commandIndex];
 		}
 
-		public void AddLine(string message)
-		{
-			AddLine(message, Color.White);
-		}
+		public void AddLine(string message) 
+			=> AddLine(message, Color.White);
 
-		public void AddLine(string message, Color color)
-		{
-			lines.Add(new Message(new[] { new Part(message, color) }));
-		}
+		public void AddLine(string message, Color color) 
+			=> lines.Add(new Message(new[] { new Part(message, color) }));
 
-		public void Add(params Part[] parts)
-		{
-			websocketBuffer.Enqueue(new Message(parts));
-		}
+		public void Add(params Part[] parts) 
+			=> websocketBuffer.Enqueue(new Message(parts));
 
-		public static string GetInputFromKeyboard(InputState input)
+		public void Close() => screenManager.ToggleConsole();
+		
+		static string GetInputFromKeyboard(InputState input)
 		{
-			Keys[] keys = input.CurrentKeyboardStates[0].GetPressedKeys();
+			var keys = input.CurrentKeyboardStates[0].GetPressedKeys();
 
-			bool shift = input.CurrentKeyboardStates[0].IsKeyDown(Keys.LeftShift)
-						 || input.CurrentKeyboardStates[0].IsKeyDown(Keys.RightShift);
+			var shift = input.CurrentKeyboardStates[0].IsKeyDown(Keys.LeftShift)
+			            || input.CurrentKeyboardStates[0].IsKeyDown(Keys.RightShift);
 
 			var text = "";
 
@@ -272,6 +267,7 @@ namespace TsRandomizer.Screens
 					case Keys.OemMinus: text += shift ? '_' : '-'; break;
 					case Keys.OemComma: text += shift ? '<' : ','; break;
 					case Keys.Space: text += ' '; break;
+					case Keys.Tab: text += '\t'; break;
 				}
 			}
 

@@ -107,10 +107,7 @@ namespace TsRandomizer.Archipelago
 				: null;
 		}
 
-		public static void SetStatus(ArchipelagoClientState status)
-		{
-			SendPacket(new StatusUpdatePacket { Status = status });
-		}
+		public static void SetStatus(ArchipelagoClientState status) => SendPacket(new StatusUpdatePacket { Status = status });
 
 		static void PackageReceived(ArchipelagoPacketBase packet)
 		{
@@ -122,15 +119,9 @@ namespace TsRandomizer.Archipelago
 			}
 		}
 
-		static void SendPacket(ArchipelagoPacketBase packet)
-		{
-			session?.Socket?.SendPacket(packet);
-		}
+		static void SendPacket(ArchipelagoPacketBase packet) => session?.Socket?.SendPacket(packet);
 
-		public static void Say(string message)
-		{
-			SendPacket(new SayPacket { Text = message });
-		}
+		public static void Say(string message) => SendPacket(new SayPacket { Text = message });
 
 		static void OnRoomInfoPacketReceived(RoomInfoPacket packet)
 		{
@@ -193,29 +184,30 @@ namespace TsRandomizer.Archipelago
 
 		static Color GetColor(JsonMessagePart messagePart)
 		{
-			switch (messagePart.Color)
-			{
-				case JsonMessagePartColor.Red:
-					return Color.Red;
-				case JsonMessagePartColor.Green:
-					return Color.Green;
-				case JsonMessagePartColor.Yellow:
-					return Color.Yellow;
-				case JsonMessagePartColor.Blue:
-					return Color.Blue;
-				case JsonMessagePartColor.Magenta:
-					return Color.Magenta;
-				case JsonMessagePartColor.Cyan:
-					return Color.Cyan;
-				case JsonMessagePartColor.Black:
-					return Color.DarkGray;
-				case JsonMessagePartColor.White:
-					return Color.White;
-				case null:
-					return GetColorFromPartType(messagePart);
-				default:
-					return Color.White;
-			}
+			if (messagePart.Type != JsonMessagePartType.Color)
+				return GetColorFromPartType(messagePart);
+			else
+				switch (messagePart.Color)
+				{
+					case JsonMessagePartColor.Red:
+						return Color.Red;
+					case JsonMessagePartColor.Green:
+						return Color.Green;
+					case JsonMessagePartColor.Yellow:
+						return Color.Yellow;
+					case JsonMessagePartColor.Blue:
+						return Color.Blue;
+					case JsonMessagePartColor.Magenta:
+						return Color.Magenta;
+					case JsonMessagePartColor.Cyan:
+						return Color.Cyan;
+					case JsonMessagePartColor.Black:
+						return Color.DarkGray;
+					case JsonMessagePartColor.White:
+						return Color.White;
+					default:
+						return Color.White;
+				}
 		}
 
 		static Color GetColorFromPartType(JsonMessagePart messagePart)
@@ -226,19 +218,24 @@ namespace TsRandomizer.Archipelago
 					return (int.TryParse(messagePart.Text, out var playerId) && playerId == slot)
 						? Color.Yellow
 						: Color.Orange;
+				case JsonMessagePartType.PlayerName:
+					return session.Players.GetPlayerName(slot) == messagePart.Text
+						? Color.Yellow
+						: Color.Orange;
 				case JsonMessagePartType.ItemId:
+				case JsonMessagePartType.ItemName:
 					return Color.Crimson;
 				case JsonMessagePartType.LocationId:
+				case JsonMessagePartType.LocationName:
 					return Color.Aquamarine;
+				case JsonMessagePartType.EntranceName:
+					return Color.DarkOliveGreen;
 				default:
 					return Color.White;
 			}
 		}
 
-		public static void UpdateChecks(ItemLocationMap itemLocationMap)
-		{
-			Task.Factory.StartNew(() => { UpdateChecksTask(itemLocationMap); });
-		}
+		public static void UpdateChecks(ItemLocationMap itemLocationMap) => Task.Factory.StartNew(() => { UpdateChecksTask(itemLocationMap); });
 
 		static void UpdateChecksTask(ItemLocationMap itemLocationMap)
 		{

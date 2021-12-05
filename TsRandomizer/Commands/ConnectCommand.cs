@@ -8,8 +8,10 @@ using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation.ItemPlacers;
+using TsRandomizer.Screens;
+using ScreenManager = TsRandomizer.Screens.ScreenManager;
 
-namespace TsRandomizer.Screens.Commands
+namespace TsRandomizer.Commands
 {
 	class ConnectCommand : ConsoleCommand
 	{
@@ -18,7 +20,7 @@ namespace TsRandomizer.Screens.Commands
 		static readonly Type GamePlayScreenType = TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.InGame.GameplayScreen");
 
 		public override string Command => "connect";
-		public override string ParameterUsage => "<server>:<port> <username>";
+		public override string ParameterUsage => "<server>:<port> <username> <password?>";
 
 		readonly ScreenManager screenManager;
 
@@ -33,8 +35,23 @@ namespace TsRandomizer.Screens.Commands
 
 		public override bool Handle(GameConsole console, string[] parameters)
 		{
-			if (parameters.Length < 1 || parameters.Length > 2)
+			string user;
+			string password;
+
+			if (parameters.Length == 2)
+			{
+				user = parameters[1];
+				password = null;
+			}
+			else if (parameters.Length == 2)
+			{
+				user = parameters[1];
+				password = parameters[2];
+			}
+			else
+			{
 				return false;
+			}
 
 			var saveFileManager = ((object)screenManager.AsDynamic().SaveFileManager).AsDynamic();
 			if (saveFileManager.AreSaveFilesFull())
@@ -43,22 +60,28 @@ namespace TsRandomizer.Screens.Commands
 				return true;
 			}
 
-			string userName;
-			if (parameters.Length == 2)
-				userName = parameters[1];
-			else
-			{
-				//TODO FIX ME!!!
-				userName = "Jarno";
-			}
+			string server;
+			string port;
 
 			var serverUriParts = parameters[0].Split(':');
-			if (serverUriParts.Length != 2)
+			if (serverUriParts.Length == 1)
+			{
+				server = serverUriParts[0];
+				port = "38281";
+			}
+			else if (serverUriParts.Length == 2)
+			{
+				server = serverUriParts[0];
+				port = serverUriParts[1];
+			}
+			else
+			{
 				return false;
+			}
 
-			var serverUri = new Uri($"ws://{serverUriParts[0]}:{serverUriParts[1]}");
+			var serverUri = new Uri($"ws://{server}:{port}");
 
-			var connectionResult = Client.Connect(serverUri.ToString(), userName);
+			var connectionResult = Client.Connect(serverUri.ToString(), user, password);
 
 			if (!connectionResult.Successful)
 			{
@@ -75,7 +98,9 @@ namespace TsRandomizer.Screens.Commands
 			Seed = slotDataParser.GetSeed();
 			OnDifficultySelectedHook = saveGame => {
 				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = serverUri.ToString();
-				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = userName;
+				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = user;
+				if (string.IsNullOrEmpty(password))
+					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePasswordKey] = password;
 				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveConnectionId] = Client.ConnectionId;
 				saveGame.DataKeyInts[ArchipelagoItemLocationMap.GameItemIndex] = 0;
 				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePyramidsKeysUnlock] =
@@ -89,7 +114,9 @@ namespace TsRandomizer.Screens.Commands
 			var gameDifficultyMenu =
 				(GameScreen)GameDifficultyMenuType.CreateInstance(false, safeFileManager, (Action<GameSave.EGameDifficultyType>)OnDifficultySelected);
 
-			screenManager.AddScreen(gameDifficultyMenu, null);
+			screenManager.AddScreen(gameDifficultyMenu, PlayerIndex.One);
+
+			console.Close();
 
 			return true;
 		}
@@ -98,13 +125,14 @@ namespace TsRandomizer.Screens.Commands
 		{
 			var saveFileManager = ((object)screenManager.AsDynamic().SaveFileManager).AsDynamic();
 			int saveFileIndex = saveFileManager.GetNextSaveIndex();
-			GameSave save = GameSave.CreateNewSave(saveFileIndex, difficulty);
+			var save = GameSave.CreateNewSave(saveFileIndex, difficulty);
+
 			GameConfigSave configSave = saveFileManager.ConfigSave;
 
 			var gameplayScreen = (GameScreen)GamePlayScreenType.CreateInstance(false, save, configSave);
 
 			var loadMethod = LoadingScreenType.GetPublicStaticMethod("Load");
-			loadMethod.InvokeStatic(screenManager, true, null, new[] { gameplayScreen });
+			loadMethod.InvokeStatic(screenManager, true, PlayerIndex.One, new[] { gameplayScreen });
 		}
 	}
 }
