@@ -49,6 +49,8 @@ Extract the contents of the corresponding zip file to the same folder as Timespi
 * In Seed selection menu, holding down the next orb button (default: right trigger) will allow you to force select a seed even when its logically unbeatable
 * In Seed selection menu, Ctr+V can now be used to past text in the seed field in order to copy paste seeds into the game
 * In Seed selection menu, Ctr+C can now be used to copy seed id to the clipboard
+* Anywhere, ` (tilde) will open the console. the console can be used to activate some command see /help for a list of available commands,
+	if you are connected to an archipelago server any text typed in the console is send to the server, giving you access to server commands
 
 # Routing changes
 * The drawbridge is now open by default, and doesn't require you to visit the demon twins
@@ -79,7 +81,6 @@ The item tracker features a few options:
   * Change save game menu to make AP seeds more clear like adding player name & server (optionally)
 * Implement options Menu:
 	* Implement skin selection
-* Update location names
 
 # Ideas
 ##### Ideas that may never happen but i think will be fun when they are implemented
