@@ -166,15 +166,11 @@ namespace TsRandomizer.LevelObjects
 			// Spawn Gyre portals when applicable
 			RoomTriggers.Add(new RoomTrigger(11, 4, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				if (!seedOptions.GyreArchives) 
+				if (!seedOptions.GyreArchives || !level.GameSave.HasFamiliar(EInventoryFamiliarType.MerchantCrow)) 
 					return;
 
-				level.ReplaceText(seedOptions);
-
-				if (!level.GameSave.HasFamiliar(EInventoryFamiliarType.MerchantCrow)) 
-					return;
-
-				SpawnGyreWarp(level); // Historical Documents room to Ravenlord			}));
+				SpawnGyreWarp(level); // Historical Documents room to Ravenlord
+			}));
 			RoomTriggers.Add(new RoomTrigger(14, 24, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GyreArchives) 
@@ -294,7 +290,7 @@ namespace TsRandomizer.LevelObjects
 			int levelId, int roomId)
 		{
 			var roomKey = new RoomItemKey(levelId, roomId);
-			level.ReplaceText(seedOptions, itemLocations);
+
 			if(RoomTriggers.TryGetValue(roomKey, out var trigger))
 				trigger.trigger(level, itemLocations[roomKey], seedOptions, screenManager);
 		}

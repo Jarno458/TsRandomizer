@@ -170,6 +170,8 @@ namespace TsRandomizer.LevelObjects
 			RoomTrigger.OnChangeRoom(
 				level, seedOptions, itemLocations, screenManager,
 				levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
+			TextReplacer.OnChangeRoom(level, seedOptions, itemLocations, 
+				levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
 			Replaces.ReplaceObjects(level, objects);
  			GenerateShadowObjects(itemLocations, objects, seedOptions);
 			SpawnMissingObjects(level, levelReflected, itemLocations);
@@ -181,7 +183,7 @@ namespace TsRandomizer.LevelObjects
 
 			foreach (var objectsPerType in objectsPerTypes)
 			{
-				if (!RegisteredTypes.TryGetValue(objectsPerType.Key, out Type levelObjectType)) continue;
+				if (!RegisteredTypes.TryGetValue(objectsPerType.Key, out var levelObjectType)) continue;
 
 				foreach (var obj in objectsPerType)
 				{
@@ -254,7 +256,7 @@ namespace TsRandomizer.LevelObjects
 		static void SetMonsterHpTo1(IEnumerable<Alive> monsters)
 		{
 #if DEBUG
-			foreach (Alive monster in monsters)
+			foreach (var monster in monsters)
 				monster.MaxHP = 1;
 #endif
 		}
