@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
+using Timespinner.GameObjects.Heroes;
 using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
 
 namespace TsRandomizer.Randomisation
 {
@@ -14,7 +16,7 @@ namespace TsRandomizer.Randomisation
     }
 
     static class OrbDamageManager
-    {
+    {		
         public static Dictionary<int, int> OrbDamageLookup = new Dictionary<int, int>();
 		public static Dictionary<int, int> OrbLevelLookup = new Dictionary<int, int>();
 		private static OrbDamageRange GetOrbDamageRange(EInventoryOrbType orbType)
@@ -130,6 +132,27 @@ namespace TsRandomizer.Randomisation
             {
 				orb.BaseDamage = storedOrbDamage;
 			}	
+		}
+
+		public static void UpdateOrbDamage(GameSave save, Protagonist lunais)
+		{
+			var OrbManagerType = TimeSpinnerType.Get("Timespinner.GameObjects.Heroes.Orbs.LunaisOrbManager");
+			var RefreshDamage = OrbManagerType.GetMethod("RefreshDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+			var orbManager = lunais.AsDynamic()._orbManager;
+			var inventory = save.Inventory;
+			var currentOrbAType = inventory.EquippedMeleeOrbA;
+			var currentOrbBType = inventory.EquippedMeleeOrbB;
+			var currentSpellType = inventory.EquippedSpellOrb;
+			var currentRingType = inventory.EquippedPassiveOrb;
+			var orbA = inventory.OrbInventory.GetItem((int)currentOrbAType);
+			var orbB = inventory.OrbInventory.GetItem((int)currentOrbBType);
+			var spell = inventory.OrbInventory.GetItem((int)currentSpellType);
+			var ring = inventory.OrbInventory.GetItem((int)currentRingType);
+			if (orbA != null) SetOrbBaseDamage(orbA, save);
+			if (orbB != null) SetOrbBaseDamage(orbB, save);
+			if (spell != null) SetOrbBaseDamage(spell, save);
+			if (ring != null) SetOrbBaseDamage(ring, save);
+			RefreshDamage.Invoke(orbManager, null);
 		}
 	}
 }

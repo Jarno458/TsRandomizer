@@ -136,7 +136,7 @@ namespace TsRandomizer.LevelObjects
 			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
 			
 			if(seedOptions.DamageRando)
-				UpdateOrbDamage(level.GameSave);
+				OrbDamageManager.UpdateOrbDamage(level.GameSave, level.MainHero);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
@@ -263,23 +263,7 @@ namespace TsRandomizer.LevelObjects
 #endif
 		}
 
-		protected static void UpdateOrbDamage(GameSave save)
-        {
-			var inventory = save.Inventory;
-			var currentOrbAType = inventory.EquippedMeleeOrbA;
-			var currentOrbBType = inventory.EquippedMeleeOrbB;
-			var currentSpellType = inventory.EquippedSpellOrb;
-			var currentRingType = inventory.EquippedPassiveOrb;
-			var orbA = inventory.OrbInventory.GetItem((int)currentOrbAType);
-			var orbB = inventory.OrbInventory.GetItem((int)currentOrbBType);
-			var spell = inventory.OrbInventory.GetItem((int)currentSpellType);
-			var ring = inventory.OrbInventory.GetItem((int)currentRingType);
-						
-			if (orbA != null) OrbDamageManager.SetOrbBaseDamage(orbA, save);
-			if (orbB != null) OrbDamageManager.SetOrbBaseDamage(orbB, save);
-			if (spell != null) OrbDamageManager.SetOrbBaseDamage(spell, save);
-			if (ring != null) OrbDamageManager.SetOrbBaseDamage(ring, save);
-		}
+
 
 		protected static ItemKey GetKey(Mobile obj)
 		{
