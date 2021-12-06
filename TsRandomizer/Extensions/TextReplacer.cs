@@ -59,6 +59,18 @@ namespace TsRandomizer.Extensions
 							TimeSpinnerGame.Localizer.OverrideKey("q_ram_4_lun_29alt",
 								"It says, 'Redacted Temporal Research: Lord of Ravens'. Maybe I should ask the crow about this...");
 					};
+				//case "3.16":
+				//    return () =>
+				//    {
+				//        TimeSpinnerGame.Localizer.OverrideKey("sign_forest_directions",
+				//            GetRequiredProgressionHint(itemLocations, level));
+				//    };
+				//case "5.14":
+				//    return () =>
+				//    {
+				//        TimeSpinnerGame.Localizer.OverrideKey("inv_jou_Letter6_14",
+				//            string.Format("Aelana\n\nP.S. {0}", GetRequiredItemHint(itemLocations, level)));
+				//    };
 				default: return () => { };
 			}
 		}
