@@ -101,12 +101,14 @@
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
     <Compile Include="Archipelago\ArchipelagoRemoteItem.cs" />
     <Compile Include="Archipelago\ConnectionFailedException.cs" />
+    <Compile Include="Commands\ConnectCommand.cs" />
+    <Compile Include="Commands\ConsoleCommand.cs" />
+    <Compile Include="Commands\TeleportCommand.cs" />
+    <Compile Include="Screens\GameConsole.cs" />
     <Compile Include="Archipelago\DeathLinker.cs" />
     <Compile Include="Archipelago\SlotDataParser.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
-    <Compile Include="Extensions\HintGenerator.cs" />
     <Compile Include="Extensions\TextReplacer.cs" />
-    <Compile Include="LevelObjects\TextReplacer.cs" />
     <Compile Include="LevelObjects\Other\HistoricalDocuments.cs" />
     <Compile Include="LevelObjects\Other\MerchantCrowNPC.cs" />
     <Compile Include="LevelObjects\Other\NightmareBoss.cs" />
@@ -215,7 +217,7 @@
     <Compile Include="TimeSpinnerGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LookupDictionairy.cs" />
+    <Compile Include="LookupDictionary.cs" />
     <Compile Include="ReplacementObjects\TimeSpinnerWheel.cs" />
     <Compile Include="Screens\Menu\MenuEntry.cs" />
     <Compile Include="Screens\Screen.cs" />
@@ -232,6 +234,8 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include=".editorconfig" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,19 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameObjects.BaseClasses;
-using TsRandomizer.Extensions;
-using TsRandomizer.Randomisation;
 
-namespace TsRandomizer.LevelObjects
+namespace TsRandomizer.Extensions
 {
-    partial class LevelExtensions
+    static class TextReplacerLevelExtensions
     {
-        public Action TextReplacer(Level level, SeedOptions options)
+	    internal static void ReplaceText(this Level level, SeedOptions options)
+	    {
+		    TextReplacer(level, options)();
+	    }
+
+	    internal static string RoomKeyString(this Level level) => $"{level.ID}.{level.RoomID}";
+
+		static Action TextReplacer(Level level, SeedOptions options)
         {
 			switch(level.RoomKeyString())
             {
-				case "16.27":
+				case "16.26": // initialize during the nightmare fight. cutscenes do not override before they're queued
 					return () =>
 					{
 						int concussions = level.GameSave.GetConcussionCount();

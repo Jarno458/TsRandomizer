@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Input;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
+using TsRandomizer.Archipelago;
+using TsRandomizer.Commands;
 using TsRandomizer.Drawables;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -42,10 +44,13 @@ namespace TsRandomizer.Screens
 		{
 			UpdateHardModeDifficulties();
 
-			DisableDefaultDifficultOptions();
+			if (!ConnectCommand.IsWaitingForDifficulty)
+				DisableDefaultDifficultOptions();
+			else
+				isArchipelago = true;
 
 			seedMenuEntry = GetSelectSeedMenu();
-			AddMenuEntryAtIndex(0, seedMenuEntry); 
+			AddMenuEntryAtIndex(0, seedMenuEntry);
 
 			seedRepresentation = new SeedRepresentation(ScreenManager.Dynamic.GCM);
 
@@ -72,7 +77,15 @@ namespace TsRandomizer.Screens
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
-			SetSelectedMenuItemByIndex(0);
+			if (!ConnectCommand.IsWaitingForDifficulty)
+				SetSelectedMenuItemByIndex(0);
+			else
+			{
+				SetSeedAndFillingMethod(ConnectCommand.Seed, FillingMethod.Archipelago);
+				HookOnDifficultySelected(ConnectCommand.OnDifficultySelectedHook);
+
+				ConnectCommand.IsWaitingForDifficulty = false;
+			}
 		}
 
 		void AddMenuEntry(MenuEntry menuEntry)

@@ -19,7 +19,7 @@ namespace TsRandomizer.LevelObjects
 {
 	class RoomTrigger
 	{
-		static readonly LookupDictionairy<RoomItemKey, RoomTrigger> RoomTriggers = new LookupDictionairy<RoomItemKey, RoomTrigger>(rt => rt.key);
+		static readonly LookupDictionary<RoomItemKey, RoomTrigger> RoomTriggers = new LookupDictionary<RoomItemKey, RoomTrigger>(rt => rt.key);
 
 		static readonly Type TransitionWarpEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.TransitionWarpEvent");
 		static readonly Type GyreType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.GyrePortalEvent");
@@ -57,6 +57,8 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.SetValue("TSRandomizerHasTeleportedPlayer", true);
 
 				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 3, RoomID = 6 }); //Refugee Camp
+
+				level.GameSave.SetCutsceneTriggered("LakeDesolation1_Entrance", true); // Fixes music when returning to Lake Desolation later
 			}));
 			RoomTriggers.Add(new RoomTrigger(1, 5, (level, itemLocation, seedOptions, screenManager) =>
 			{
@@ -105,9 +107,10 @@ namespace TsRandomizer.LevelObjects
 					return;
 				}
 					
-				// Spawn item if the room has been left without aquiring
+				// Spawn item if the room has been left without aquiring (only needed if Radiant-element possessed)
 				if (!itemLocation.IsPickedUp
-					&& level.GameSave.GetSaveBool("IsBossDead_Cantoran"))
+					&& level.GameSave.GetSaveBool("IsBossDead_Cantoran")
+					&& level.GameSave.HasOrb(EInventoryOrbType.Barrier))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 170, 194);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation, seedOptions, screenManager) =>
@@ -163,14 +166,22 @@ namespace TsRandomizer.LevelObjects
 			// Spawn Gyre portals when applicable
 			RoomTriggers.Add(new RoomTrigger(11, 4, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				if (!seedOptions.GyreArchives || !level.GameSave.HasFamiliar(EInventoryFamiliarType.MerchantCrow)) return;
-				SpawnGyreWarp(level, 14, 8); // Historical Documents room to Ravenlord
-			}));
+				if (!seedOptions.GyreArchives) 
+					return;
+
+				level.ReplaceText(seedOptions);
+
+				if (!level.GameSave.HasFamiliar(EInventoryFamiliarType.MerchantCrow)) 
+					return;
+
+				SpawnGyreWarp(level); // Historical Documents room to Ravenlord			}));
 			RoomTriggers.Add(new RoomTrigger(14, 24, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				if (!seedOptions.GyreArchives) return;
+				if (!seedOptions.GyreArchives) 
+					return;
 
 				level.JukeBox.StopSong();
+
 				level.RequestChangeLevel(new LevelChangeRequest { 
 					LevelID = 11,
 					RoomID = 4,
@@ -179,13 +190,14 @@ namespace TsRandomizer.LevelObjects
 					FadeInTime = 0.5f,
 					FadeOutTime = 0.25f
 				}); // Ravenlord to Historical Documents room
+
 				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Level11);
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 51, (level, itemLocation, seedOptions, screenManager) =>
 			{
 				if (!seedOptions.GyreArchives) return;
 				if (level.GameSave.HasFamiliar(EInventoryFamiliarType.Kobo)) {
-					SpawnGyreWarp(level, 14, 6); // Portrait room to Ifrit
+					SpawnGyreWarp(level); // Portrait room to Ifrit
 					return;
 				};
 
@@ -260,7 +272,7 @@ namespace TsRandomizer.LevelObjects
 				    (forfeitFlags.HasFlag(Permissions.Enabled) || forfeitFlags.HasFlag(Permissions.Goal)))
 				{
 					var messageBox = MessageBox.Create(screenManager, "Press OK for forfeit remaining item checks", _ => {
-						Client.Forfeit();
+						Client.Say("!forfeit");
 					});
 
 					screenManager.AddScreen(messageBox.Screen, null);
@@ -393,7 +405,7 @@ namespace TsRandomizer.LevelObjects
 			level.AsDynamic().RequestAddObject(yorne);
 		}
 
-		static void SpawnGyreWarp(Level level, int LevelId, int RoomId)
+		static void SpawnGyreWarp(Level level)
 		{
 			var position = new Point(200, 200);
 			var gyrePortal = GyreType.CreateInstance(false, level, position, -1, new ObjectTileSpecification());

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Timespinner;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Archipelago;
+using TsRandomizer.Commands;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
@@ -19,18 +19,18 @@ namespace TsRandomizer.Screens
 		static readonly Type GamePlayScreenType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.InGame.GameplayScreen");
 
-		readonly LookupDictionairy<GameScreen, Screen> hookedScreens
-			= new LookupDictionairy<GameScreen, Screen>(s => s.GameScreen);
+		readonly LookupDictionary<GameScreen, Screen> hookedScreens
+			= new LookupDictionary<GameScreen, Screen>(s => s.GameScreen);
 		readonly List<GameScreen> foundScreens = new List<GameScreen>(20);
 
 		ItemLocationMap itemLocationMap;
 
 		public readonly dynamic Dynamic;
 
-		public SpriteFont ChineseFont;
-		public SpriteFont JapaneseFont;
-
 		public static Log Log;
+		public static GameConsole Console;
+
+		public static bool IsConsoleOpen;
 
 		public ScreenManager(TimespinnerGame game, PlatformHelper platformHelper) : base(game, platformHelper)
 		{
@@ -41,19 +41,37 @@ namespace TsRandomizer.Screens
 		{
 			base.LoadContent();
 
-			Dynamic.GCM.LatinFont.DefaultCharacter = '_';
+			Dynamic.GCM.LatinFont.DefaultCharacter = '?';
 
-			Log = new Log(Dynamic.GCM, ChineseFont, JapaneseFont);
+			Log = new Log(this, Dynamic.GCM);
+			Console = new GameConsole(this, Dynamic.GCM);
+
+			Console.AddCommand(new ConnectCommand(this));
 		}
 
 		public override void Update(GameTime gameTime)
 		{
-			DetectNewScreens();
-			UpdateScreens(gameTime);
+			var input = (InputState)Dynamic._input;
 
-			Overlay.UpdateAll(gameTime);
+			DetectNewScreens();
+			UpdateScreens(gameTime, input);
+
+			Overlay.UpdateAll(gameTime, input);
+
+			if (input.IsNewKeyPress(Keys.OemTilde))
+				ToggleConsole();
 
 			base.Update(gameTime);
+		}
+
+		public void ToggleConsole()
+		{
+			IsConsoleOpen = !IsConsoleOpen;
+
+			if (IsConsoleOpen)
+				AddScreen(Console, null);
+			else
+				RemoveScreen(Console);
 		}
 
 		public override void Draw(GameTime gameTime)
@@ -81,7 +99,7 @@ namespace TsRandomizer.Screens
 					continue;
 				}
 
-				if(!Screen.RegisteredTypes.TryGetValue(screen.GetType(), out Type handlerType))
+				if(!Screen.RegisteredTypes.TryGetValue(screen.GetType(), out var handlerType))
 					continue;
 
 				var screenHandler = (Screen)Activator.CreateInstance(handlerType, this, screen);
@@ -95,10 +113,8 @@ namespace TsRandomizer.Screens
 				hookedScreens.Filter(foundScreens, s => s.Unload());
 		}
 
-		void UpdateScreens(GameTime gameTime)
+		void UpdateScreens(GameTime gameTime, InputState input)
 		{
-			var input = (InputState)Dynamic._input;
-
 			foreach (var screen in hookedScreens)
 				screen.Update(gameTime, input);
 		}
@@ -115,9 +131,6 @@ namespace TsRandomizer.Screens
 				AddScreen(screen, null);
 		}
 
-		public T FirstOrDefault<T>() where T : Screen
-		{
-			return (T)hookedScreens.FirstOrDefault(s => s.GetType() == typeof(T));
-		}
+		public T FirstOrDefault<T>() where T : Screen => (T)hookedScreens.FirstOrDefault(s => s.GetType() == typeof(T));
 	}
 }

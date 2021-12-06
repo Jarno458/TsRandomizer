@@ -11,6 +11,7 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Archipelago;
+using TsRandomizer.Commands;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.ItemTracker;
@@ -86,6 +87,10 @@ namespace TsRandomizer.Screens
 				if (seedOptions.DeathLink)
 					deathLinkService = new DeathLinker(Client.GetDeathLinkService());
 			}
+
+#if DEBUG
+			ScreenManager.Console.AddCommand(new TeleportCommand(Level));
+#endif
 		}
 
 		void SendBackToMainMenu(string message)
@@ -133,10 +138,7 @@ namespace TsRandomizer.Screens
 #endif
 		}
 
-		public void HideItemPickupBar()
-		{
-			((object)Dynamic._itemGetBanner).AsDynamic()._displayTimer = 3;
-		}
+		public void HideItemPickupBar() => ((object)Dynamic._itemGetBanner).AsDynamic()._displayTimer = 3;
 
 		bool IsRoomChanged()
 		{
