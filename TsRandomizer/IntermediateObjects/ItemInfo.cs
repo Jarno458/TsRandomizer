@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using TsRandomizer.Randomisation;
@@ -7,7 +8,15 @@ namespace TsRandomizer.IntermediateObjects
 {
 	public abstract class ItemInfo : IEquatable<ItemInfo>
 	{
-		public abstract ItemIdentifier Identifier { get; }
+		private List<string> AlwaysRequiredItems = new List<string>
+		{
+			"TimespinnerWheel",
+			"TimespinnerSpindle",
+			"TimespinnerGear1",
+			"TimespinnerGear2",
+			"TimespinnerGear3"
+		};
+        public abstract ItemIdentifier Identifier { get; }
 		public abstract Enum TreasureLootType { get; }
 		public abstract int AnimationIndex { get; }
 		public abstract BestiaryItemDropSpecification BestiaryItemDropSpecification { get; }
@@ -15,6 +24,8 @@ namespace TsRandomizer.IntermediateObjects
 		public abstract void OnPickup(Level level);
 
 		public bool IsProgression => Unlocks != Requirement.None;
+
+		public bool IsExplicitlyRequired => AlwaysRequiredItems.Contains(Identifier.ToString());
 
 		public bool Equals(ItemInfo other)
 		{

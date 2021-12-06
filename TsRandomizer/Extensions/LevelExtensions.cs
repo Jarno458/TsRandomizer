@@ -53,5 +53,5 @@ namespace TsRandomizer.Extensions
 					throw new ArgumentOutOfRangeException();
 			}
 		}
-	}
+		}
 }

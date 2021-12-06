@@ -42,8 +42,9 @@ namespace TsRandomizer
 
 				stringInstances[key].Text = value;
 			}
-			catch
+			catch(Exception ex)
 			{
+				Console.WriteLine("Error replacing text: " + ex.Message);
 			}
 		}
 	}
