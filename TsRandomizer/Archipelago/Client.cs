@@ -100,12 +100,10 @@ namespace TsRandomizer.Archipelago
 			SeedString = "";
 		}
 
-		public static ItemIdentifier GetNextItem(int currentIndex)
-		{
-			return session.Items.AllItemsReceived.Count > currentIndex 
+		public static ItemIdentifier GetNextItem(int currentIndex) =>
+			session.Items.AllItemsReceived.Count > currentIndex 
 				? ItemMap.GetItemIdentifier(session.Items.AllItemsReceived[currentIndex].Item)
 				: null;
-		}
 
 		public static void SetStatus(ArchipelagoClientState status) => SendPacket(new StatusUpdatePacket { Status = status });
 
@@ -140,9 +138,9 @@ namespace TsRandomizer.Archipelago
 
 			foreach (var line in lines)
 			{
-				if (ScreenManager.IsConsoleOpen)
-					ScreenManager.Console.Add(new Part(line));
-				else
+				ScreenManager.Console.Add(new Part(line));
+				
+				if(!ScreenManager.IsConsoleOpen)
 					ScreenManager.Log.Add(true, new Part(line));
 			}
 		}
@@ -189,28 +187,28 @@ namespace TsRandomizer.Archipelago
 		{
 			if (messagePart.Type != JsonMessagePartType.Color)
 				return GetColorFromPartType(messagePart);
-			else
-				switch (messagePart.Color)
-				{
-					case JsonMessagePartColor.Red:
-						return Color.Red;
-					case JsonMessagePartColor.Green:
-						return Color.Green;
-					case JsonMessagePartColor.Yellow:
-						return Color.Yellow;
-					case JsonMessagePartColor.Blue:
-						return Color.Blue;
-					case JsonMessagePartColor.Magenta:
-						return Color.Magenta;
-					case JsonMessagePartColor.Cyan:
-						return Color.Cyan;
-					case JsonMessagePartColor.Black:
-						return Color.DarkGray;
-					case JsonMessagePartColor.White:
-						return Color.White;
-					default:
-						return Color.White;
-				}
+
+			switch (messagePart.Color)
+			{
+				case JsonMessagePartColor.Red:
+					return Color.Red;
+				case JsonMessagePartColor.Green:
+					return Color.Green;
+				case JsonMessagePartColor.Yellow:
+					return Color.Yellow;
+				case JsonMessagePartColor.Blue:
+					return Color.Blue;
+				case JsonMessagePartColor.Magenta:
+					return Color.Magenta;
+				case JsonMessagePartColor.Cyan:
+					return Color.Cyan;
+				case JsonMessagePartColor.Black:
+					return Color.DarkGray;
+				case JsonMessagePartColor.White:
+					return Color.White;
+				default:
+					return Color.White;
+			}
 		}
 
 		static Color GetColorFromPartType(JsonMessagePart messagePart)
@@ -238,7 +236,8 @@ namespace TsRandomizer.Archipelago
 			}
 		}
 
-		public static void UpdateChecks(ItemLocationMap itemLocationMap) => Task.Factory.StartNew(() => { UpdateChecksTask(itemLocationMap); });
+		public static void UpdateChecks(ItemLocationMap itemLocationMap) => 
+			Task.Factory.StartNew(() => { UpdateChecksTask(itemLocationMap); });
 
 		static void UpdateChecksTask(ItemLocationMap itemLocationMap)
 		{
