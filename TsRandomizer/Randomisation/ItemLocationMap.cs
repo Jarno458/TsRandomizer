@@ -46,9 +46,9 @@ namespace TsRandomizer.Randomisation
 		internal Gate SealedCavesLeft;
 		internal Gate SealedCavesLower;
 		internal Gate SealedCavesSirens;
-		internal Gate MilitairyFortress;
-		internal Gate MilitairyFortressHangar;
-		internal Gate RightSideMilitairyFortressHangar;
+		internal Gate MilitaryFortress;
+		internal Gate MilitaryFortressHangar;
+		internal Gate RightSideMilitaryFortressHangar;
 		internal Gate TheLab;
 		internal Gate TheLabPoweredOff;
 		internal Gate UpperLab;
@@ -110,7 +110,7 @@ namespace TsRandomizer.Randomisation
 				| R.GateLeftLibrary
 				| R.GateSealedCaves
 				| (R.GateSealedSirensCave & R.CardE)
-				| (R.GateMilitairyGate & (R.CardE | R.CardB));
+				| (R.GateMilitaryGate & (R.CardE | R.CardB));
 
 			LowerLakeDesolationBridge = AccessToLakeDesolation & (R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary);
 
@@ -122,7 +122,7 @@ namespace TsRandomizer.Randomisation
 					& (
 						(LowerLakeDesolationBridge & R.CardD)
 						| (R.GateSealedSirensCave & R.CardE)
-						| (R.GateMilitairyGate & (R.CardB | R.CardE))
+						| (R.GateMilitaryGate & (R.CardB | R.CardE))
 					)
 				) //libraryTimespinner
 				| R.GateLakeSereneLeft
@@ -154,19 +154,19 @@ namespace TsRandomizer.Randomisation
 
 			//future
 			UpperLakeDesolation = AccessToLakeDesolation & UpperLakeSirine & R.AntiWeed;
-			LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | R.GateLeftLibrary | R.GateKittyBoss | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | R.CardE));
-			MidLibrary = (LeftLibrary & R.CardD) | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitairyGate & (R.CardB | R.CardE));
+			LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | R.GateLeftLibrary | R.GateKittyBoss | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitaryGate & (R.CardB | R.CardE));
+			MidLibrary = (LeftLibrary & R.CardD) | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitaryGate & (R.CardB | R.CardE));
 			UpperLeftLibrary = LeftLibrary & (R.DoubleJump | R.ForwardDash);
-			UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | ((R.GateMilitairyGate | R.GateSealedSirensCave) & R.CardE);
-			RightSideLibraryElevator = R.CardE & ((MidLibrary & (R.CardC | R.CardB)) | R.GateMilitairyGate | R.GateSealedSirensCave);
-			LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSideLibraryElevator | R.GateMilitairyGate | (R.GateSealedSirensCave & R.CardE);
+			UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | ((R.GateMilitaryGate | R.GateSealedSirensCave) & R.CardE);
+			RightSideLibraryElevator = R.CardE & ((MidLibrary & (R.CardC | R.CardB)) | R.GateMilitaryGate | R.GateSealedSirensCave);
+			LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSideLibraryElevator | R.GateMilitaryGate | (R.GateSealedSirensCave & R.CardE);
 			SealedCavesLeft = (AccessToLakeDesolation & R.DoubleJump) | R.GateSealedCaves;
 			SealedCavesLower = SealedCavesLeft & R.CardA;
 			SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
-			MilitairyFortress = LowerRightSideLibrary & KillMaw & killTwins & killAelana;
-			MilitairyFortressHangar = MilitairyFortress;
-			RightSideMilitairyFortressHangar = MilitairyFortressHangar & R.DoubleJump;
-			TheLab = MilitairyFortressHangar & R.CardB;
+			MilitaryFortress = LowerRightSideLibrary & KillMaw & killTwins & killAelana;
+			MilitaryFortressHangar = MilitaryFortress;
+			RightSideMilitaryFortressHangar = MilitaryFortressHangar & R.DoubleJump;
+			TheLab = MilitaryFortressHangar & R.CardB;
 			TheLabPoweredOff = TheLab & DoubleJumpOfNpc;
 			UpperLab = TheLabPoweredOff & ForwardDashDoubleJump;
 			EmperorsTower = UpperLab;
@@ -225,19 +225,19 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(2, 47, 216, 208), "Storage room chest 1", ItemProvider.Get(EInventoryUseItemType.Ether), LeftLibrary & R.CardD);
 			Add(new ItemKey(2, 47, 152, 208), "Storage room chest 2", ItemProvider.Get(EInventoryOrbType.Blade, EOrbSlot.Passive), LeftLibrary & R.CardD);
 			Add(new ItemKey(2, 47, 88, 208), "Storage room chest 3", ItemProvider.Get(EInventoryOrbType.Blade, EOrbSlot.Spell), LeftLibrary & R.CardD);
-			areaName = "Library top";
+			areaName = "Library Top";
 			Add(new ItemKey(2, 56, 168, 192), "Backer room chest 5", ItemProvider.Get(EInventoryUseItemType.GoldNecklace), UpperLeftLibrary);
 			Add(new ItemKey(2, 56, 392, 192), "Backer room chest 4", ItemProvider.Get(EInventoryUseItemType.GoldRing), UpperLeftLibrary);
 			Add(new ItemKey(2, 56, 616, 192), "Backer room chest 3", ItemProvider.Get(EInventoryUseItemType.EssenceCrystal), UpperLeftLibrary);
 			Add(new ItemKey(2, 56, 840, 192), "Backer room chest 2", ItemProvider.Get(EInventoryUseItemType.EssenceCrystal), UpperLeftLibrary);
 			Add(new ItemKey(2, 56, 1064, 192), "Backer room chest 1", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), UpperLeftLibrary);
-			areaName = "Varndagroth Tower left";
+			areaName = "Varndagroth Tower Left";
 			Add(new ItemKey(2, 34, 232, 1200), "Elevator Key not required", ItemProvider.Get(EInventoryUseItemType.FiligreeTea), MidLibrary); //Default item is Jerky, got replaced by FiligreeTea
 			Add(new ItemKey(2, 40, 344, 176), "Ye olde Timespinner", ItemProvider.Get(EInventoryRelicType.ScienceKeycardC), MidLibrary);
 			Add(new ItemKey(2, 32, 328, 160), "Varndagroth left bottom floor", ItemProvider.Get(EInventoryUseItemType.GoldRing), MidLibrary & R.CardC);
 			Add(new ItemKey(2, 7, 232, 144), "Left air vents secret", ItemProvider.Get(EItemType.MaxAura), MidLibrary & OculusRift);
 			Add(new ItemKey(2, 25, 328, 192), "Left elevator chest", ItemProvider.Get(EItemType.MaxSand), MidLibrary & R.CardE);
-			areaName = "Varndagroth Tower right";
+			areaName = "Varndagroth Tower Right";
 			Add(new ItemKey(2, 15, 760, 192), "Varndagroth bridge", ItemProvider.Get(EInventoryUseItemType.FuturePotion), UpperRightSideLibrary);
 			Add(new ItemKey(2, 20, 72, 1200), "Right Varndagroth elevator chest", ItemProvider.Get(EInventoryUseItemType.Jerky), RightSideLibraryElevator);
 			Add(new ItemKey(2, 23, 72, 560), "Elevator card chest", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), UpperRightSideLibrary & (R.CardE | R.DoubleJump)); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
@@ -263,14 +263,14 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(9, 2, 184, 176), "Upper sealed cave after sirens chest 2", ItemProvider.Get(EInventoryUseItemType.WarpCard), SealedCavesSirens);
 			Add(new ItemKey(9, 2, 104, 160), "Upper sealed cave after sirens chest 1", ItemProvider.Get(EInventoryRelicType.WaterMask), SealedCavesSirens);
 			areaName = "Military Fortress";
-			Add(new ItemKey(10, 3, 264, 128), "Military bomber chest", ItemProvider.Get(EItemType.MaxSand), MilitairyFortress & DoubleJumpOfNpc & R.TimespinnerWheel); //can be reached with just upward dash but not with lightwall unless you got timestop
-			Add(new ItemKey(10, 11, 296, 192), "Close combat room", ItemProvider.Get(EItemType.MaxAura), MilitairyFortress);
-			Add(new ItemKey(10, 4, 1064, 176), "Military soldiers bridge", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), MilitairyFortressHangar);
-			Add(new ItemKey(10, 10, 104, 192), "Military giantess room", ItemProvider.Get(EInventoryRelicType.AirMask), MilitairyFortressHangar);
-			Add(new ItemKey(10, 8, 1080, 176), "Military giantess bridge", ItemProvider.Get(EInventoryEquipmentType.LabGlasses), MilitairyFortressHangar);
-			Add(new ItemKey(10, 7, 104, 192), "Military B door chest 2", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), RightSideMilitairyFortressHangar & R.CardB);
-			Add(new ItemKey(10, 7, 152, 192), "Military B door chest 1", ItemProvider.Get(EItemType.MaxSand), RightSideMilitairyFortressHangar & R.CardB);
-			Add(new ItemKey(10, 18, 280, 189), "Military pedestal", ItemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), RightSideMilitairyFortressHangar & (DoubleJumpOfNpc | ForwardDashDoubleJump));
+			Add(new ItemKey(10, 3, 264, 128), "Military bomber chest", ItemProvider.Get(EItemType.MaxSand), MilitaryFortress & DoubleJumpOfNpc & R.TimespinnerWheel); //can be reached with just upward dash but not with lightwall unless you got timestop
+			Add(new ItemKey(10, 11, 296, 192), "Close combat room", ItemProvider.Get(EItemType.MaxAura), MilitaryFortress);
+			Add(new ItemKey(10, 4, 1064, 176), "Military soldiers bridge", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), MilitaryFortressHangar);
+			Add(new ItemKey(10, 10, 104, 192), "Military giantess room", ItemProvider.Get(EInventoryRelicType.AirMask), MilitaryFortressHangar);
+			Add(new ItemKey(10, 8, 1080, 176), "Military giantess bridge", ItemProvider.Get(EInventoryEquipmentType.LabGlasses), MilitaryFortressHangar);
+			Add(new ItemKey(10, 7, 104, 192), "Military B door chest 2", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), RightSideMilitaryFortressHangar & R.CardB);
+			Add(new ItemKey(10, 7, 152, 192), "Military B door chest 1", ItemProvider.Get(EItemType.MaxSand), RightSideMilitaryFortressHangar & R.CardB);
+			Add(new ItemKey(10, 18, 280, 189), "Military pedestal", ItemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), RightSideMilitaryFortressHangar & (DoubleJumpOfNpc | ForwardDashDoubleJump));
 			areaName = "The Lab";
 			Add(new ItemKey(11, 36, 312, 192), "Coffee break", ItemProvider.Get(EInventoryUseItemType.FoodSynth), TheLab);
 			Add(new ItemKey(11, 3, 1528, 192), "Lower trash right", ItemProvider.Get(EItemType.MaxHP), TheLab & R.DoubleJump);
@@ -438,18 +438,41 @@ namespace TsRandomizer.Randomisation
 		void AddMemories()
 		{
 			areaName = "LakeDesolation";
-			Add(new ItemKey(1, 10, 312, 81), "Memory - Lachiemi Sun", null, AccessToLakeDesolation);
+			Add(new ItemKey(1, 10, 312, 81), "Memory - Time Messenger", null, LowerLakeDesolationBridge);
+			/*
+			areaName = "Library";
+			Add(new ItemKey(1, 10, 312, 81), "Memory - A Message", null, LeftLibrary);
+			Add(new ItemKey(1, 10, 312, 81), "Memory - Lachiemi Sun", null, UpperLeftLibrary);
+			Add(new ItemKey(1, 10, 312, 81), "Memory - Moonlit Night", null, UpperLeftLibrary);
+			areaName = "Varndagroth Tower Left";
+			Add(new ItemKey(1, 10, 312, 81), "Memory - Nomads", null, MidLibrary);
+			areaName = "Varndagroth Tower Right";
+			Add(new ItemKey(1, 10, 312, 81), "Memory - Childhood", null, MidLibrary & R.CardB);
+			Add(new ItemKey(1, 10, 312, 81), "Memory - Faron", null, RightSideLibraryElevator);
+			areaName = "Military Hangar";
+			Add(new ItemKey(1, 10, 312, 81), "Memory - A Solution", null, MilitaryFortress & DoubleJumpOfNpc & R.TimespinnerWheel);
+			areaName = "The Lab";
+			Add(new ItemKey(1, 10, 312, 81), "Memory - An Old Friend", null, TheLab & OculusRift);
+			Add(new ItemKey(1, 10, 312, 81), "Memory - Twilight Dinner", null, TheLab & OculusRift);
+			areaName = "Emperor's Tower";
+			Add(new ItemKey(1, 10, 312, 81), "Memory - Final Circle", null, EmperorsTower);
+			*/
 
-			Add(new ItemKey(3, 12, 472, 161), "Journal - Lachiem Expedition", null, AccessToLakeDesolation);
-			Add(new ItemKey(3, 15, 328, 97), "Journal - Peace Treaty", null, AccessToLakeDesolation);
-			Add(new ItemKey(4, 18, 456, 497), "Journal - Prime Edicts", null, AccessToLakeDesolation);
-			Add(new ItemKey(4, 11, 360, 161), "Journal - Declaration of Independence", null, AccessToLakeDesolation);
-			Add(new ItemKey(5, 41, 184, 177), "Journal - Letter of Reference", null, AccessToLakeDesolation);
-			Add(new ItemKey(5, 44, 265, 161), "Journal - Political Advice", null, AccessToLakeDesolation);
-			Add(new ItemKey(6, 14, 136, 177), "Journal - Stained Letter", null, AccessToLakeDesolation);
-			Add(new ItemKey(6, 17, 344, 433), "Journal - War of the Sisters", null, AccessToLakeDesolation);
-			Add(new ItemKey(6, 25, 152, 145), "Journal - Mission Findings", null, AccessToLakeDesolation);
-			Add(new ItemKey(8, 36, 152, 145), "Journal - Naïvety", null, AccessToLakeDesolation);
+			areaName = "Forest";
+			Add(new ItemKey(3, 12, 472, 161), "Journal - Lachiem Expedition", null, AccessToPast);
+			Add(new ItemKey(3, 15, 328, 97), "Journal - Peace Treaty", null, AccessToPast & (DoubleJumpOfNpc | ForwardDashDoubleJump | (R.TimeStop & R.ForwardDash)));
+			areaName = "Castle Ramparts";
+			Add(new ItemKey(4, 18, 456, 497), "Journal - Prime Edicts", null, CastleRamparts);
+			Add(new ItemKey(4, 11, 360, 161), "Journal - Declaration of Independence", null, CastleRamparts);
+			areaName = "Castle Keep";
+			Add(new ItemKey(5, 41, 184, 177), "Journal - Letter of Reference", null, CastleKeep);
+			Add(new ItemKey(5, 44, 265, 161), "Journal - Political Advice", null, CastleKeep);
+			areaName = "Royal Towers";
+			Add(new ItemKey(6, 17, 344, 433), "Journal - War of the Sisters", null, UpperRoyalTower);
+			Add(new ItemKey(6, 14, 136, 177), "Journal - Stained Letter", null, UpperRoyalTower);
+			Add(new ItemKey(6, 25, 152, 145), "Journal - Mission Findings", null, UpperRoyalTower & DoubleJumpOfNpc);
+			areaName = "Caves of Banishment (Maw)";
+			Add(new ItemKey(8, 36, 152, 145), "Journal - Naïvety", null, LowerCavesOfBanishment);
 		}
 
 		ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)
