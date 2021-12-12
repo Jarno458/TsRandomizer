@@ -189,7 +189,7 @@ namespace TsRandomizer.Randomisation
 				capacity += 6;
 			if (options.Cantoran)
 				capacity++;
-			if (options.LoreLocations)
+			if (options.LoreChecks)
 				capacity += 22;
 
 			return capacity;
