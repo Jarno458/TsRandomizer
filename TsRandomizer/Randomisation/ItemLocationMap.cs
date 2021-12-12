@@ -65,7 +65,7 @@ namespace TsRandomizer.Randomisation
 
 		string areaName;
 
-		public ItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, SeedOptions options) 
+		public ItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, SeedOptions options)
 			: base(CalculateCapacity(options), l => l.Key)
 		{
 			ItemProvider = itemInfoProvider;
@@ -86,6 +86,8 @@ namespace TsRandomizer.Randomisation
 
 			if (options.Cantoran)
 				AddCantoran();
+
+			AddMemories();
 
 			if (options.StartWithTalaria)
 				Add(new ExteralItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
@@ -116,10 +118,10 @@ namespace TsRandomizer.Randomisation
 			AccessToPast = (SeedOptions.Inverted)
 				? (Gate)R.None
 				: (
-					R.TimespinnerWheel & R.TimespinnerSpindle 
+					R.TimespinnerWheel & R.TimespinnerSpindle
 					& (
-						(LowerLakeDesolationBridge & R.CardD) 
-						| (R.GateSealedSirensCave & R.CardE) 
+						(LowerLakeDesolationBridge & R.CardD)
+						| (R.GateSealedSirensCave & R.CardE)
 						| (R.GateMilitairyGate & (R.CardB | R.CardE))
 					)
 				) //libraryTimespinner
@@ -171,8 +173,8 @@ namespace TsRandomizer.Randomisation
 
 			//pyramid
 			LeftPyramid = UpperLab & (
-	            R.TimespinnerWheel & R.TimespinnerSpindle &
-	            R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3);
+				R.TimespinnerWheel & R.TimespinnerSpindle &
+				R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3);
 			Nightmare = LeftPyramid & R.UpwardDash;
 		}
 
@@ -289,12 +291,12 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(12, 9, 344, 928), "Bottom of Dad's right tower", ItemProvider.Get(EInventoryUseItemType.FutureHiEther), EmperorsTower);
 			Add(new ItemKey(12, 19, 72, 192), "Wayyyy up there", ItemProvider.Get(EInventoryEquipmentType.FiligreeClasp), EmperorsTower & DoubleJumpOfNpc);
 			Add(new ItemKey(12, 13, 120, 176), "Dad's left tower balcony", ItemProvider.Get(EItemType.MaxHP), EmperorsTower);
-			Add(new ItemKey(12, 11, 264, 208), "Dad's Chambers chest", ItemProvider.Get(EInventoryRelicType.EmpireBrooch), EmperorsTower); 
+			Add(new ItemKey(12, 11, 264, 208), "Dad's Chambers chest", ItemProvider.Get(EInventoryRelicType.EmpireBrooch), EmperorsTower);
 			Add(new ItemKey(12, 11, 136, 205), "Dad's Chambers pedestal", ItemProvider.Get(EInventoryOrbType.Empire, EOrbSlot.Melee), EmperorsTower);
 		}
 
 		void AddCantoran()
-        {
+		{
 			areaName = "Upper Lake Serene";
 			Add(new RoomItemKey(7, 5), "Cantoran", ItemProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Melee), LeftSideForestCaves);
 		}
@@ -433,6 +435,23 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(11, 38, 120, 176), "Lab terminal right", null, TheLabPoweredOff & R.Tablet);
 		}
 
+		void AddMemories()
+		{
+			areaName = "LakeDesolation";
+			Add(new ItemKey(1, 10, 312, 81), "Memory - Lachiemi Sun", null, AccessToLakeDesolation);
+
+			Add(new ItemKey(3, 12, 472, 161), "Journal - Lachiem Expedition", null, AccessToLakeDesolation);
+			Add(new ItemKey(3, 15, 328, 97), "Journal - Peace Treaty", null, AccessToLakeDesolation);
+			Add(new ItemKey(4, 18, 456, 497), "Journal - Prime Edicts", null, AccessToLakeDesolation);
+			Add(new ItemKey(4, 11, 360, 161), "Journal - Declaration of Independence", null, AccessToLakeDesolation);
+			Add(new ItemKey(5, 41, 184, 177), "Journal - Letter of Reference", null, AccessToLakeDesolation);
+			Add(new ItemKey(5, 44, 265, 161), "Journal - Political Advice", null, AccessToLakeDesolation);
+			Add(new ItemKey(6, 14, 136, 177), "Journal - Stained Letter", null, AccessToLakeDesolation);
+			Add(new ItemKey(6, 17, 344, 433), "Journal - War of the Sisters", null, AccessToLakeDesolation);
+			Add(new ItemKey(6, 25, 152, 145), "Journal - Mission Findings", null, AccessToLakeDesolation);
+			Add(new ItemKey(8, 36, 152, 145), "Journal - Naïvety", null, AccessToLakeDesolation);
+		}
+
 		ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)
 		{
 			return TryGetValue(key, out var itemLocation)
@@ -502,7 +521,7 @@ namespace TsRandomizer.Randomisation
 		public virtual bool IsBeatable()
 		{
 			if ((!SeedOptions.GassMaw && !IsGassMaskReachableWithTheMawRequirements())
-				|| ProgressiveItemsOfTheSameTypeAreInTheSameRoom()) 
+				|| ProgressiveItemsOfTheSameTypeAreInTheSameRoom())
 				return false;
 
 			var obtainedRequirements = R.None;
@@ -557,7 +576,7 @@ namespace TsRandomizer.Randomisation
 				levelIdsToAvoid.Add(2); //library
 
 				//if(unlockingMap.PyramidKeysUnlock != R.GateSealedCaves)
-					levelIdsToAvoid.Add(9); //xarion skelleton
+				levelIdsToAvoid.Add(9); //xarion skelleton
 			}
 			else
 			{
@@ -649,10 +668,10 @@ namespace TsRandomizer.Randomisation
 				itemLocation.BsseOnGameSave(gameSave);
 		}
 
-		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem) 
+		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem)
 			=> Add(new ItemLocation(itemKey, areaName, name, defaultItem));
 
-		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem, Gate gate) 
+		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem, Gate gate)
 			=> Add(new ItemLocation(itemKey, areaName, name, defaultItem, gate));
 	}
 
