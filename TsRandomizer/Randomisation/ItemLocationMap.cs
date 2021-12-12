@@ -437,27 +437,27 @@ namespace TsRandomizer.Randomisation
 
 		void AddMemories()
 		{
+			// Memories
 			areaName = "LakeDesolation";
-			Add(new ItemKey(1, 10, 312, 81), "Memory - Time Messenger", null, LowerLakeDesolationBridge);
-			/*
+			Add(new ItemKey(1, 10, 312, 81), "Memory - Coyote Jump (Time Messenger)", null, LowerLakeDesolationBridge);
 			areaName = "Library";
-			Add(new ItemKey(1, 10, 312, 81), "Memory - A Message", null, LeftLibrary);
-			Add(new ItemKey(1, 10, 312, 81), "Memory - Lachiemi Sun", null, UpperLeftLibrary);
-			Add(new ItemKey(1, 10, 312, 81), "Memory - Moonlit Night", null, UpperLeftLibrary);
+			Add(new ItemKey(2, 5, 200, 145), "Memory - Waterway (A Message)", null, LeftLibrary);
+			Add(new ItemKey(2, 45, 344, 145), "Memory - Library Gap (Lachiemi Sun)", null, UpperLeftLibrary);
+			Add(new ItemKey(2, 51, 88, 177), "Memory - Mr. Hat Portrait (Moonlit Night)", null, UpperLeftLibrary);
+			// TODO: coords for other memories
 			areaName = "Varndagroth Tower Left";
-			Add(new ItemKey(1, 10, 312, 81), "Memory - Nomads", null, MidLibrary);
+			Add(new ItemKey(1, 10, 0, 0), "Memory - Nomads", null, MidLibrary);
 			areaName = "Varndagroth Tower Right";
-			Add(new ItemKey(1, 10, 312, 81), "Memory - Childhood", null, MidLibrary & R.CardB);
-			Add(new ItemKey(1, 10, 312, 81), "Memory - Faron", null, RightSideLibraryElevator);
+			Add(new ItemKey(1, 10, 0, 0), "Memory - Childhood", null, MidLibrary & R.CardB);
+			Add(new ItemKey(1, 10, 0, 0), "Memory - Faron", null, RightSideLibraryElevator);
 			areaName = "Military Hangar";
-			Add(new ItemKey(1, 10, 312, 81), "Memory - A Solution", null, MilitaryFortress & DoubleJumpOfNpc & R.TimespinnerWheel);
+			Add(new ItemKey(1, 10, 0, 0), "Memory - A Solution", null, MilitaryFortress & DoubleJumpOfNpc & R.TimespinnerWheel);
 			areaName = "The Lab";
-			Add(new ItemKey(1, 10, 312, 81), "Memory - An Old Friend", null, TheLab & OculusRift);
-			Add(new ItemKey(1, 10, 312, 81), "Memory - Twilight Dinner", null, TheLab & OculusRift);
+			Add(new ItemKey(1, 10, 0, 0), "Memory - An Old Friend", null, TheLab & OculusRift);
+			Add(new ItemKey(1, 10, 0, 0), "Memory - Twilight Dinner", null, TheLab & OculusRift);
 			areaName = "Emperor's Tower";
-			Add(new ItemKey(1, 10, 312, 81), "Memory - Final Circle", null, EmperorsTower);
-			*/
-
+			Add(new ItemKey(1, 10, 0, 0), "Memory - Final Circle", null, EmperorsTower);
+			// Journals
 			areaName = "Forest";
 			Add(new ItemKey(3, 12, 472, 161), "Journal - Lachiem Expedition", null, AccessToPast);
 			Add(new ItemKey(3, 15, 328, 97), "Journal - Peace Treaty", null, AccessToPast & (DoubleJumpOfNpc | ForwardDashDoubleJump | (R.TimeStop & R.ForwardDash)));
@@ -466,10 +466,11 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(4, 11, 360, 161), "Journal - Declaration of Independence", null, CastleRamparts);
 			areaName = "Castle Keep";
 			Add(new ItemKey(5, 41, 184, 177), "Journal - Letter of Reference", null, CastleKeep);
-			Add(new ItemKey(5, 44, 265, 161), "Journal - Political Advice", null, CastleKeep);
+			Add(new ItemKey(5, 44, 265, 161), "Journal - Political Advice", null, CastleKeep); // double check coords
+			Add(new ItemKey(5, 14, 0, 0), "Journal - Aleana's Room (Diplomatic Missive)", null, CastleKeep & R.PinkOrb & R.DoubleJump); // double check coords
 			areaName = "Royal Towers";
 			Add(new ItemKey(6, 17, 344, 433), "Journal - War of the Sisters", null, UpperRoyalTower);
-			Add(new ItemKey(6, 14, 136, 177), "Journal - Stained Letter", null, UpperRoyalTower);
+			Add(new ItemKey(6, 14, 136, 177), "Journal - Aleana Boss (Stained Letter)", null, UpperRoyalTower);
 			Add(new ItemKey(6, 25, 152, 145), "Journal - Mission Findings", null, UpperRoyalTower & DoubleJumpOfNpc);
 			areaName = "Caves of Banishment (Maw)";
 			Add(new ItemKey(8, 36, 152, 145), "Journal - Naïvety", null, LowerCavesOfBanishment);
