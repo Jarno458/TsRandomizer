@@ -87,7 +87,8 @@ namespace TsRandomizer.Randomisation
 			if (options.Cantoran)
 				AddCantoran();
 
-			AddMemories();
+			if (options.LoreChecks)
+				AddLoreLocations();
 
 			if (options.StartWithTalaria)
 				Add(new ExteralItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
@@ -188,6 +189,8 @@ namespace TsRandomizer.Randomisation
 				capacity += 6;
 			if (options.Cantoran)
 				capacity++;
+			if (options.LoreLocations)
+				capacity += 22;
 
 			return capacity;
 		}
@@ -435,7 +438,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(11, 38, 120, 176), "Lab terminal right", null, TheLabPoweredOff & R.Tablet);
 		}
 
-		void AddMemories()
+		void AddLoreLocations()
 		{
 			// Memories
 			areaName = "LakeDesolation";
