@@ -18,33 +18,6 @@ namespace TsRandomizer.Randomisation
     static class OrbDamageManager
     {		
         public static Dictionary<int, int> OrbDamageLookup = new Dictionary<int, int>();
-		public static Dictionary<int, int> OrbLevelLookup = new Dictionary<int, int>();
-		private static OrbDamageRange GetOrbDamageRange(EInventoryOrbType orbType)
-        {
-			switch(orbType)
-            {
-				case EInventoryOrbType.Blue: return new OrbDamageRange { MinValue = 2, MidValue = 4, MaxValue = 6 };
-				case EInventoryOrbType.Blade: return new OrbDamageRange { MinValue = 4, MidValue = 7, MaxValue = 10 };
-				case EInventoryOrbType.Flame: return new OrbDamageRange { MinValue = 3, MidValue = 6, MaxValue = 9 };
-				case EInventoryOrbType.Pink: return new OrbDamageRange { MinValue = 5, MidValue = 6, MaxValue = 10 };
-				case EInventoryOrbType.Iron: return new OrbDamageRange { MinValue = 7, MidValue = 10, MaxValue = 15 };
-				case EInventoryOrbType.Ice: return new OrbDamageRange { MinValue = 2, MidValue = 3, MaxValue = 7 };
-				case EInventoryOrbType.Wind: return new OrbDamageRange { MinValue = 2, MidValue = 3, MaxValue = 6 };
-				case EInventoryOrbType.Gun: return new OrbDamageRange { MinValue = 7, MidValue = 9, MaxValue = 15 };
-				case EInventoryOrbType.Umbra: return new OrbDamageRange { MinValue = 3, MidValue = 4, MaxValue = 7 };
-				case EInventoryOrbType.Empire: return new OrbDamageRange { MinValue = 5, MidValue = 10, MaxValue = 17 };
-				case EInventoryOrbType.Eye: return new OrbDamageRange { MinValue = 2, MidValue = 3, MaxValue = 5 };
-				case EInventoryOrbType.Blood: return new OrbDamageRange { MinValue = 2, MidValue =3, MaxValue = 6 };
-					//may need to revisit book if we can independently randomize spell damage
-					//djinn inferno is an interesting case innit
-				case EInventoryOrbType.Book: return new OrbDamageRange { MinValue = 4, MidValue = 6, MaxValue = 8 };
-					//same thing here with Moon/Bombardment
-				case EInventoryOrbType.Moon: return new OrbDamageRange { MinValue = 2, MidValue = 3, MaxValue = 5 };
-				case EInventoryOrbType.Nether: return new OrbDamageRange { MinValue = 4, MidValue = 6, MaxValue = 8 };
-				case EInventoryOrbType.Barrier: return new OrbDamageRange { MinValue = 5, MidValue = 8, MaxValue = 11 };
-				default: return new OrbDamageRange { MinValue = 6, MidValue = 6, MaxValue = 6 }; //MONSKE??? But I thought you were dead???
-			}
-        }
 
 		private static OrbDamageRange GetOrbDamageOptions(EInventoryOrbType orbType)
 		{
