@@ -18,9 +18,9 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
+			Dynamic._oscillationDelta = 0; // Fix the item's position so the replacement doesn't miss
 			if (ItemInfo == null || hasAwardedItem || !Dynamic._isFading)
 				return;
-
 			ShowItemAwardPopup();
 			AwardContainedItem();
 

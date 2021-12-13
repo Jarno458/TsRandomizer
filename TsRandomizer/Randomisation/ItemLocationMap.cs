@@ -447,36 +447,35 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(2, 5, 200, 145), "Memory - Waterway (A Message)", null, LeftLibrary);
 			Add(new ItemKey(2, 45, 344, 145), "Memory - Library Gap (Lachiemi Sun)", null, UpperLeftLibrary);
 			Add(new ItemKey(2, 51, 88, 177), "Memory - Mr. Hat Portrait (Moonlit Night)", null, UpperLeftLibrary);
-			// TODO: coords for other memories
 			areaName = "Varndagroth Tower Left";
-			Add(new ItemKey(1, 10, 0, 0), "Memory - Nomads", null, MidLibrary);
+			Add(new ItemKey(2, 25, 216, 145), "Memory - Left Elevator (Nomads)", null, MidLibrary & R.CardE);
 			areaName = "Varndagroth Tower Right";
-			Add(new ItemKey(1, 10, 0, 0), "Memory - Childhood", null, MidLibrary & R.CardB);
-			Add(new ItemKey(1, 10, 0, 0), "Memory - Faron", null, RightSideLibraryElevator);
+			Add(new ItemKey(2, 46, 200, 145), "Memory - Siren Elevator (Childhood)", null, MidLibrary & R.CardB);
+			Add(new ItemKey(2, 11, 200, 161), "Memory - Varndagroth Right Bottom (Faron)", null, LowerRightSideLibrary);
 			areaName = "Military Hangar";
-			Add(new ItemKey(1, 10, 0, 0), "Memory - A Solution", null, MilitaryFortress & DoubleJumpOfNpc & R.TimespinnerWheel);
+			Add(new ItemKey(10, 3, 536, 97), "Memory - Bomber Climb (A Solution)", null, MilitaryFortress & DoubleJumpOfNpc & R.TimespinnerWheel);
 			areaName = "The Lab";
-			Add(new ItemKey(1, 10, 0, 0), "Memory - An Old Friend", null, TheLab & OculusRift);
-			Add(new ItemKey(1, 10, 0, 0), "Memory - Twilight Dinner", null, TheLab & OculusRift);
+			Add(new ItemKey(11, 7, 248, 129), "Memory - Genza's Secret Stash (An Old Friend)", null, TheLab & OculusRift);
+			Add(new ItemKey(11, 7, 269, 129), "Memory - Genza's Secret Stash (Twilight Dinner)", null, TheLab & OculusRift);
 			areaName = "Emperor's Tower";
-			Add(new ItemKey(1, 10, 0, 0), "Memory - Final Circle", null, EmperorsTower);
+			Add(new ItemKey(12, 19, 56, 145), "Memory - Way Up There (Final Circle)", null, EmperorsTower & DoubleJumpOfNpc);
 			// Journals
 			areaName = "Forest";
-			Add(new ItemKey(3, 12, 472, 161), "Journal - Lachiem Expedition", null, AccessToPast);
-			Add(new ItemKey(3, 15, 328, 97), "Journal - Peace Treaty", null, AccessToPast & (DoubleJumpOfNpc | ForwardDashDoubleJump | (R.TimeStop & R.ForwardDash)));
+			Add(new ItemKey(3, 12, 472, 161), "Journal - Forest Rats (Lachiem Expedition)", null, AccessToPast);
+			Add(new ItemKey(3, 15, 328, 97), "Journal - Forest Bat Jump Ledge (Peace Treaty)", null, AccessToPast & (DoubleJumpOfNpc | ForwardDashDoubleJump | (R.TimeStop & R.ForwardDash)));
 			areaName = "Castle Ramparts";
-			Add(new ItemKey(4, 18, 456, 497), "Journal - Prime Edicts", null, CastleRamparts);
-			Add(new ItemKey(4, 11, 360, 161), "Journal - Declaration of Independence", null, CastleRamparts);
+			Add(new ItemKey(4, 18, 456, 497), "Journal - Drawbridge Water (Prime Edicts)", null, CastleRamparts);
+			Add(new ItemKey(4, 11, 360, 161), "Journal - Archer + Knight (Declaration of Independence)", null, CastleRamparts);
 			areaName = "Castle Keep";
-			Add(new ItemKey(5, 41, 184, 177), "Journal - Letter of Reference", null, CastleKeep);
-			Add(new ItemKey(5, 44, 265, 161), "Journal - Political Advice", null, CastleKeep); // double check coords
-			Add(new ItemKey(5, 14, 0, 0), "Journal - Aleana's Room (Diplomatic Missive)", null, CastleKeep & R.PinkOrb & R.DoubleJump); // double check coords
+			Add(new ItemKey(5, 41, 184, 177), "Journal - Under the Twins (Letter of Reference)", null, CastleKeep);
+			Add(new ItemKey(5, 44, 264, 161), "Journal - Castle Loop Giantess (Political Advice)", null, CastleKeep);
+			Add(new ItemKey(5, 14, 568, 177), "Journal - Aleana's Room (Diplomatic Missive)", null, CastleKeep & R.PinkOrb & R.DoubleJump);
 			areaName = "Royal Towers";
-			Add(new ItemKey(6, 17, 344, 433), "Journal - War of the Sisters", null, UpperRoyalTower);
+			Add(new ItemKey(6, 17, 344, 433), "Journal - Struggle Juggle Base (War of the Sisters)", null, UpperRoyalTower);
 			Add(new ItemKey(6, 14, 136, 177), "Journal - Aleana Boss (Stained Letter)", null, UpperRoyalTower);
-			Add(new ItemKey(6, 25, 152, 145), "Journal - Mission Findings", null, UpperRoyalTower & DoubleJumpOfNpc);
+			Add(new ItemKey(6, 25, 152, 145), "Journal - Near Lower Struggle Juggle (Mission Findings)", null, UpperRoyalTower & DoubleJumpOfNpc);
 			areaName = "Caves of Banishment (Maw)";
-			Add(new ItemKey(8, 36, 152, 145), "Journal - Naïvety", null, LowerCavesOfBanishment);
+			Add(new ItemKey(8, 36, 136, 145), "Journal - Lower Left Maw Caves (Naïvety)", null, LowerCavesOfBanishment);
 		}
 
 		ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)
