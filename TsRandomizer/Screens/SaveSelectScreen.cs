@@ -318,9 +318,57 @@ namespace TsRandomizer.Screens
 		static void WriteItemList(StreamWriter file, IEnumerable<ItemLocation> itemLocations, int depth)
 		{
 			var prefix = new string('\t', depth);
+			var itemName = "";
+			var itemType = "";
 
 			foreach (var itemLocation in itemLocations)
-				file.WriteLine(prefix + itemLocation);
+			{
+				ItemIdentifier item = itemLocation.ItemInfo.Identifier;
+
+				switch (item.LootType)
+				{
+					case LootType.ConstEquipment:
+						itemType = "eq";
+						itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item}");
+						break;
+					case LootType.ConstFamiliar:
+						itemType = "fam";
+						itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item}");
+						break;
+					case LootType.ConstRelic:
+						itemType = "rel";
+						itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item}");
+						break;
+					case LootType.ConstUseItem:
+						itemType = "use";
+						itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item}");
+						break;
+					case LootType.ConstOrb:
+						itemType = "orb";
+						switch (item.OrbSlot)
+						{
+							case Timespinner.GameAbstractions.Inventory.EOrbSlot.Melee:
+								itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item.OrbType}");
+								break;
+							case Timespinner.GameAbstractions.Inventory.EOrbSlot.Spell:
+								itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item.OrbType}_spell");
+								break;
+							case Timespinner.GameAbstractions.Inventory.EOrbSlot.Passive:
+								itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item.OrbType}_passive");
+								break;
+							default:
+								itemName = item.ToString();
+								break;
+						}
+						break;
+					default:
+						itemType = "none";
+						itemName = item.ToString();
+						break;
+				}
+
+				file.WriteLine(prefix + itemLocation.AreaName + " ~ " + itemLocation.Name + " ~ " + itemName);
+			}
 		}
 
 		static string GetFileName(Seed seed)
