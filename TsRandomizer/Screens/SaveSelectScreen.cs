@@ -319,7 +319,6 @@ namespace TsRandomizer.Screens
 		{
 			var prefix = new string('\t', depth);
 			var itemName = "";
-			var itemType = "";
 
 			foreach (var itemLocation in itemLocations)
 			{
@@ -328,33 +327,28 @@ namespace TsRandomizer.Screens
 				switch (item.LootType)
 				{
 					case LootType.ConstEquipment:
-						itemType = "eq";
-						itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item}");
+						itemName = TimeSpinnerGame.Localizer.Get($"inv_eq_{item}");
 						break;
 					case LootType.ConstFamiliar:
-						itemType = "fam";
-						itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item}");
+						itemName = TimeSpinnerGame.Localizer.Get($"inv_fam_{item}");
 						break;
 					case LootType.ConstRelic:
-						itemType = "rel";
-						itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item}");
+						itemName = TimeSpinnerGame.Localizer.Get($"inv_rel_{item}");
 						break;
 					case LootType.ConstUseItem:
-						itemType = "use";
-						itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item}");
+						itemName = TimeSpinnerGame.Localizer.Get($"inv_use_{item}");
 						break;
 					case LootType.ConstOrb:
-						itemType = "orb";
 						switch (item.OrbSlot)
 						{
 							case Timespinner.GameAbstractions.Inventory.EOrbSlot.Melee:
-								itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item.OrbType}");
+								itemName = TimeSpinnerGame.Localizer.Get($"inv_orb_{item.OrbType}");
 								break;
 							case Timespinner.GameAbstractions.Inventory.EOrbSlot.Spell:
-								itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item.OrbType}_spell");
+								itemName = TimeSpinnerGame.Localizer.Get($"inv_orb_{item.OrbType}_spell");
 								break;
 							case Timespinner.GameAbstractions.Inventory.EOrbSlot.Passive:
-								itemName = TimeSpinnerGame.Localizer.Get($"inv_{itemType}_{item.OrbType}_passive");
+								itemName = TimeSpinnerGame.Localizer.Get($"inv_orb_{item.OrbType}_passive");
 								break;
 							default:
 								itemName = item.ToString();
@@ -362,7 +356,6 @@ namespace TsRandomizer.Screens
 						}
 						break;
 					default:
-						itemType = "none";
 						itemName = item.ToString();
 						break;
 				}
