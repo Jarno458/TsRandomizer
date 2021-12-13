@@ -7,15 +7,14 @@ namespace TsRandomizer.Screens.Settings
 {
 	abstract class GameSetting
 	{
+		public GameSetting(string name, string description, dynamic defaultValue)
+		{
+			Name = name;
+			Description = description;
+			DefaultValue = defaultValue;
+		}
 		public string Name { get; set; }
 		public string Description { get; set; }
-		public dynamic CurrentValue { get; set; }
 		public dynamic DefaultValue { get; set; }
-
-		void Reset()
-		{
-			CurrentValue = DefaultValue;
-		}
-		
 	}
 }

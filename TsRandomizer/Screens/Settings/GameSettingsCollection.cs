@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using TsRandomizer.Screens.Settings.GameSettingObjects;
 
 namespace TsRandomizer.Screens.Settings
 {
@@ -10,14 +11,16 @@ namespace TsRandomizer.Screens.Settings
 		private const string path = "/settings/";
 		[JsonIgnore()]
 		public string PresetName { get; set; }
-		public bool StartWithMeyef { get; set; }
-		public bool DamageRando { get; set; }
-		public string PlayerName { get; set; }
+		public OnOffGameSetting StartWithMeyef = new OnOffGameSetting("Start with Meyef", "Start with Meyef, ideal for when you want to play multiplayer", false);
+		public OnOffGameSetting DamageRando = new OnOffGameSetting("Damage Randomizer", "Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false);
+		public StringGameSetting PlayerName = new StringGameSetting("Player Name", "Changes all references to Lunais into the given name", "Lunais", 15);
+		public OnOffGameSetting StartWithJewelryBox = new OnOffGameSetting("Start with Jewelry Box", "Start with Jewelry Box unlocked", false);
+		public NumberGameSetting OrbXpMultiplier = new NumberGameSetting("Orb XP Multiplier", "Multiplies orb XP gained by the given number", 1, 1, 100, false);
 
 		public GameSettingsCollection()
 		{
 			var settingsFiles = Directory.GetFiles(path).ToList().Where(f => f.EndsWith(".json"));
-			if(settingsFiles.Count() > 0)
+			if (settingsFiles.Count() > 0)
 			{
 				var defaultFile = settingsFiles.First();
 				GameSettingsCollection settings = LoadSettingsFromFile(defaultFile);
@@ -25,8 +28,9 @@ namespace TsRandomizer.Screens.Settings
 				StartWithMeyef = settings.StartWithMeyef;
 				DamageRando = settings.DamageRando;
 				PlayerName = settings.PlayerName;
+				StartWithJewelryBox = settings.StartWithJewelryBox;
+				OrbXpMultiplier = settings.OrbXpMultiplier;
 			}
-			
 		}
 
 		private GameSettingsCollection LoadSettingsFromFile(string fileName)
@@ -47,7 +51,6 @@ namespace TsRandomizer.Screens.Settings
 				Console.WriteLine("Error loading settings from " + fileName);
 				return new GameSettingsCollection();
 			}
-			
 		}
 
 		public GameSettingsCollection LoadSettings(string presetName)
@@ -63,8 +66,6 @@ namespace TsRandomizer.Screens.Settings
 				Console.WriteLine("Error loading settings for " + presetName);
 				return new GameSettingsCollection();
 			}
-			
-			
 		}
 
 		public bool WriteSettings(string presetName, GameSettingsCollection settings)
@@ -79,7 +80,6 @@ namespace TsRandomizer.Screens.Settings
 			{
 				return false;
 			}
-			
 		}
 	}
 }
