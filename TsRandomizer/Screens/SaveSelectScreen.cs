@@ -318,49 +318,44 @@ namespace TsRandomizer.Screens
 		static void WriteItemList(StreamWriter file, IEnumerable<ItemLocation> itemLocations, int depth)
 		{
 			var prefix = new string('\t', depth);
-			var itemName = "";
 
 			foreach (var itemLocation in itemLocations)
 			{
-				ItemIdentifier item = itemLocation.ItemInfo.Identifier;
-
-				switch (item.LootType)
-				{
-					case LootType.ConstEquipment:
-						itemName = TimeSpinnerGame.Localizer.Get($"inv_eq_{item}");
-						break;
-					case LootType.ConstFamiliar:
-						itemName = TimeSpinnerGame.Localizer.Get($"inv_fam_{item}");
-						break;
-					case LootType.ConstRelic:
-						itemName = TimeSpinnerGame.Localizer.Get($"inv_rel_{item}");
-						break;
-					case LootType.ConstUseItem:
-						itemName = TimeSpinnerGame.Localizer.Get($"inv_use_{item}");
-						break;
-					case LootType.ConstOrb:
-						switch (item.OrbSlot)
-						{
-							case Timespinner.GameAbstractions.Inventory.EOrbSlot.Melee:
-								itemName = TimeSpinnerGame.Localizer.Get($"inv_orb_{item.OrbType}");
-								break;
-							case Timespinner.GameAbstractions.Inventory.EOrbSlot.Spell:
-								itemName = TimeSpinnerGame.Localizer.Get($"inv_orb_{item.OrbType}_spell");
-								break;
-							case Timespinner.GameAbstractions.Inventory.EOrbSlot.Passive:
-								itemName = TimeSpinnerGame.Localizer.Get($"inv_orb_{item.OrbType}_passive");
-								break;
-							default:
-								itemName = item.ToString();
-								break;
-						}
-						break;
-					default:
-						itemName = item.ToString();
-						break;
-				}
+				string itemName = "";
+				if (itemLocation.ItemInfo is PogRessiveItemInfo)
+					itemName += "Progressive item: ";
+				itemName += GetItemName(itemLocation.ItemInfo.Identifier);
 
 				file.WriteLine(prefix + itemLocation.AreaName + " ~ " + itemLocation.Name + " ~ " + itemName);
+			}
+		}
+
+		static string GetItemName(ItemIdentifier item)
+		{
+			switch (item.LootType)
+			{
+				case LootType.ConstEquipment:
+					return TimeSpinnerGame.Localizer.Get($"inv_eq_{item}");
+				case LootType.ConstFamiliar:
+					return TimeSpinnerGame.Localizer.Get($"inv_fam_{item}");
+				case LootType.ConstRelic:
+					return TimeSpinnerGame.Localizer.Get($"inv_rel_{item}");
+				case LootType.ConstUseItem:
+					return TimeSpinnerGame.Localizer.Get($"inv_use_{item}");
+				case LootType.ConstOrb:
+					switch (item.OrbSlot)
+					{
+						case Timespinner.GameAbstractions.Inventory.EOrbSlot.Melee:
+							return TimeSpinnerGame.Localizer.Get($"inv_orb_{item.OrbType}");
+						case Timespinner.GameAbstractions.Inventory.EOrbSlot.Spell:
+							return TimeSpinnerGame.Localizer.Get($"inv_orb_{item.OrbType}_spell");
+						case Timespinner.GameAbstractions.Inventory.EOrbSlot.Passive:
+							return TimeSpinnerGame.Localizer.Get($"inv_orb_{item.OrbType}_passive");
+						default:
+							return item.ToString();
+					}
+				default:
+					return item.ToString();
 			}
 		}
 
