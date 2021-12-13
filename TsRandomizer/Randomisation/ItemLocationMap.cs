@@ -464,16 +464,16 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(3, 12, 472, 161), "Journal - Forest Rats (Lachiem Expedition)", null, AccessToPast);
 			Add(new ItemKey(3, 15, 328, 97), "Journal - Forest Bat Jump Ledge (Peace Treaty)", null, AccessToPast & (DoubleJumpOfNpc | ForwardDashDoubleJump | (R.TimeStop & R.ForwardDash)));
 			areaName = "Castle Ramparts";
-			Add(new ItemKey(4, 18, 456, 497), "Journal - Drawbridge Water (Prime Edicts)", null, CastleRamparts);
+			Add(new ItemKey(4, 18, 456, 497), "Journal - Floating in Moat (Prime Edicts)", null, CastleRamparts);
 			Add(new ItemKey(4, 11, 360, 161), "Journal - Archer + Knight (Declaration of Independence)", null, CastleRamparts);
 			areaName = "Castle Keep";
 			Add(new ItemKey(5, 41, 184, 177), "Journal - Under the Twins (Letter of Reference)", null, CastleKeep);
 			Add(new ItemKey(5, 44, 264, 161), "Journal - Castle Loop Giantess (Political Advice)", null, CastleKeep);
 			Add(new ItemKey(5, 14, 568, 177), "Journal - Aleana's Room (Diplomatic Missive)", null, CastleKeep & R.PinkOrb & R.DoubleJump);
 			areaName = "Royal Towers";
-			Add(new ItemKey(6, 17, 344, 433), "Journal - Struggle Juggle Base (War of the Sisters)", null, UpperRoyalTower);
+			Add(new ItemKey(6, 17, 344, 433), "Journal - Top Struggle Juggle Base (War of the Sisters)", null, UpperRoyalTower);
 			Add(new ItemKey(6, 14, 136, 177), "Journal - Aleana Boss (Stained Letter)", null, UpperRoyalTower);
-			Add(new ItemKey(6, 25, 152, 145), "Journal - Near Lower Struggle Juggle (Mission Findings)", null, UpperRoyalTower & DoubleJumpOfNpc);
+			Add(new ItemKey(6, 25, 152, 145), "Journal - Near Bottom Struggle Juggle (Mission Findings)", null, UpperRoyalTower & DoubleJumpOfNpc);
 			areaName = "Caves of Banishment (Maw)";
 			Add(new ItemKey(8, 36, 136, 145), "Journal - Lower Left Maw Caves (Naïvety)", null, LowerCavesOfBanishment);
 		}
