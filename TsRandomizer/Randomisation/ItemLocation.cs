@@ -49,7 +49,7 @@ namespace TsRandomizer.Randomisation
 
 			gameSave.DataKeyBools[LootedItemDataString] = true;
 
-			if (ItemInfo is PogRessiveItemInfo progressiveItemInfo)
+			if (ItemInfo is ProgressiveItemInfo progressiveItemInfo)
 				progressiveItemInfo.Next();
 
 			OnPickup?.Invoke(this);
@@ -64,7 +64,7 @@ namespace TsRandomizer.Randomisation
 
 			IsPickedUp = gameSave.DataKeyBools.ContainsKey(LootedItemDataString);
 
-			if(IsPickedUp && ItemInfo is PogRessiveItemInfo progressiveItemInfo)
+			if(IsPickedUp && ItemInfo is ProgressiveItemInfo progressiveItemInfo)
 				progressiveItemInfo.Next();
 		}
 	}

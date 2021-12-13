@@ -220,7 +220,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		{
 			var progressiveItemLocationsPerType = itemLocations
 					.Where(l => l.ItemInfo.Unlocks == R.None)
-					.Where(l => l.ItemInfo is PogRessiveItemInfo)
+					.Where(l => l.ItemInfo is ProgressiveItemInfo)
 					.GroupBy(l => l.ItemInfo);
 
 			foreach (IGrouping<ItemInfo, ItemLocation> progressiveItemLocations in progressiveItemLocationsPerType)

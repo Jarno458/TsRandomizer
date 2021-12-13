@@ -318,13 +318,19 @@ namespace TsRandomizer.Screens
 		static void WriteItemList(StreamWriter file, IEnumerable<ItemLocation> itemLocations, int depth)
 		{
 			var prefix = new string('\t', depth);
+			string itemName = "";
 
 			foreach (var itemLocation in itemLocations)
 			{
-				string itemName = "";
-				if (itemLocation.ItemInfo is PogRessiveItemInfo)
-					itemName += "Progressive item: ";
-				itemName += GetItemName(itemLocation.ItemInfo.Identifier);
+				if (itemLocation.ItemInfo is ProgressiveItemInfo)
+				{
+					itemName = "Progressive item:";
+					foreach (var item in itemLocation.ItemInfo.AsDynamic().Items)
+						itemName += " | " + GetItemName(item.Identifier);
+					itemName += " |";
+				}
+				else
+					itemName = GetItemName(itemLocation.ItemInfo.Identifier);
 
 				file.WriteLine(prefix + itemLocation.AreaName + " ~ " + itemLocation.Name + " ~ " + itemName);
 			}
