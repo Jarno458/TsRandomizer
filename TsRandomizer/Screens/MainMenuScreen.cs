@@ -22,6 +22,8 @@ namespace TsRandomizer.Screens
 			var randomizerVersion = Assembly.GetExecutingAssembly().GetName().Version;
 			var newVersionString = $"TsRandomizer: v{randomizerVersion}, Timespinner: {Dynamic._versionNumber}";
 
+			new Localizer().ResetStrings();
+			
 			Dynamic._versionNumber = newVersionString;
 			Dynamic.RefreshSizes();
 		}

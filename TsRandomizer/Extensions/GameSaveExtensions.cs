@@ -131,9 +131,11 @@ namespace TsRandomizer.Extensions
 		{
 			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;
 			var orbTypeKey = (int) orbType;
-
+			var newOrb = new InventoryOrb(orbType);
 			if (!orbCollection.ContainsKey(orbTypeKey))
-				orbCollection.Add(orbTypeKey, new InventoryOrb(orbType));
+				orbCollection.Add(orbTypeKey, newOrb);
+
+			if (gameSave.GetSeed().Value.Options.DamageRando) OrbDamageManager.SetOrbBaseDamage(newOrb);
 
 			switch (orbSlot)
 			{
