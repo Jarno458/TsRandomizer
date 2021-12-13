@@ -48,7 +48,7 @@ namespace TsRandomizer
 		}
 
 		public void ResetStrings()
-        {
+		{
 			Type ELanguageLocale = 
 				TimeSpinnerType.Get("Timespinner.Core.Localization.ELanguageLocale");
 			var currentLocale = 

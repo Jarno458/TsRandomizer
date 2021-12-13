@@ -263,8 +263,6 @@ namespace TsRandomizer.LevelObjects
 #endif
 		}
 
-
-
 		protected static ItemKey GetKey(Mobile obj)
 		{
 			var objectPrivate = obj.AsDynamic();

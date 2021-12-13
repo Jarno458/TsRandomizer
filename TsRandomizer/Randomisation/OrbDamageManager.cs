@@ -9,11 +9,11 @@ using TsRandomizer.IntermediateObjects;
 namespace TsRandomizer.Randomisation
 {
 	struct OrbDamageRange
-    {
+	{
 		public int MinValue;
 		public int MidValue;
 		public int MaxValue;
-    }
+	}
 
     static class OrbDamageManager
     {		
