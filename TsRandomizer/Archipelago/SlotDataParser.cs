@@ -25,8 +25,6 @@ namespace TsRandomizer.Archipelago
 		public static Requirement GetPyramidKeysGate(string pyramidKeysGate)
 		{
 			//TODO: remove when clients & server are update with correct value
-			if (pyramidKeysGate == "GateMilitaryGate")
-				return Requirement.GateMilitaryGate;
 			if (pyramidKeysGate == "GateLakeSirineLeft")
 				return Requirement.GateLakeSereneLeft;
 			if (pyramidKeysGate == "GateLakeSirineRight")
