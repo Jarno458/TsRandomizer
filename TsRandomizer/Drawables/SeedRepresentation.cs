@@ -58,7 +58,7 @@ namespace TsRandomizer.Drawables
 
 			if (!seed.HasValue)
 			{
-				DrawSeedString(spriteBatch, "Invallid", Color.Red);
+				DrawSeedString(spriteBatch, "Invalid", Color.Red);
 				return;
 			}
 

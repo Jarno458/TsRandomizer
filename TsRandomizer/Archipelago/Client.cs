@@ -39,7 +39,7 @@ namespace TsRandomizer.Archipelago
 
 		public static string GetCurrentPlayerName() => session.Players.GetPlayerAliasAndName(slot);
 
-		public static LoginResult Connect(string server, string user, string pass, string connectionId)
+		public static LoginResult Connect(string server, string user, string pass = null, string connectionId = null)
 		{
 			if (IsConnected && session.Socket.Connected && cachedConnectionResult != null)
 			{
@@ -63,6 +63,9 @@ namespace TsRandomizer.Archipelago
 
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;
+
+				if (result.Successful)
+					slot = ((LoginSuccessful)result).Slot;
 			}
 			catch (Exception e)
 			{
@@ -97,17 +100,12 @@ namespace TsRandomizer.Archipelago
 			SeedString = "";
 		}
 
-		public static ItemIdentifier GetNextItem(int currentIndex)
-		{
-			return session.Items.AllItemsReceived.Count > currentIndex 
+		public static ItemIdentifier GetNextItem(int currentIndex) =>
+			session.Items.AllItemsReceived.Count > currentIndex 
 				? ItemMap.GetItemIdentifier(session.Items.AllItemsReceived[currentIndex].Item)
 				: null;
-		}
 
-		public static void SetStatus(ArchipelagoClientState status)
-		{
-			SendPacket(new StatusUpdatePacket { Status = status });
-		}
+		public static void SetStatus(ArchipelagoClientState status) => SendPacket(new StatusUpdatePacket { Status = status });
 
 		static void PackageReceived(ArchipelagoPacketBase packet)
 		{
@@ -119,15 +117,9 @@ namespace TsRandomizer.Archipelago
 			}
 		}
 
-		static void SendPacket(ArchipelagoPacketBase packet)
-		{
-			session?.Socket?.SendPacket(packet);
-		}
+		static void SendPacket(ArchipelagoPacketBase packet) => session?.Socket?.SendPacket(packet);
 
-		public static void Forfeit()
-		{
-			SendPacket(new SayPacket { Text = "!forfeit" });
-		}
+		public static void Say(string message) => SendPacket(new SayPacket { Text = message });
 
 		static void OnRoomInfoPacketReceived(RoomInfoPacket packet)
 		{
@@ -145,7 +137,12 @@ namespace TsRandomizer.Archipelago
 			var lines = printPacket.Text.Split('\n');
 
 			foreach (var line in lines)
-				ScreenManager.Log.Add(true, new Part(line));
+			{
+				ScreenManager.Console.Add(new Part(line));
+				
+				if(!ScreenManager.IsConsoleOpen)
+					ScreenManager.Log.Add(true, new Part(line));
+			}
 		}
 
 		static void OnPrintJsonPacketReceived(PrintJsonPacket printJsonPacket)
@@ -155,16 +152,15 @@ namespace TsRandomizer.Archipelago
 			foreach (var messagePart in printJsonPacket.Data)
 				parts.Add(new Part(GetMessage(messagePart), GetColor(messagePart)));
 
+			ScreenManager.Console.Add(parts.ToArray());
 			ScreenManager.Log.Add(MessageIsAboutCurrentPlayer(printJsonPacket), parts.ToArray());
 		}
 
-		static bool MessageIsAboutCurrentPlayer(PrintJsonPacket printJsonPacket)
-		{
-			return printJsonPacket.Data.Any(
+		static bool MessageIsAboutCurrentPlayer(PrintJsonPacket printJsonPacket) =>
+			printJsonPacket.Data.Any(
 				p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId
 				     && int.TryParse(p.Text, out var playerId)
 				     && playerId == slot);
-		}
 
 		static string GetMessage(JsonMessagePart messagePart)
 		{
@@ -172,15 +168,15 @@ namespace TsRandomizer.Archipelago
 			{
 				case JsonMessagePartType.PlayerId:
 					return int.TryParse(messagePart.Text, out var playerSlot) 
-						? session.Players.GetPlayerAliasAndName(playerSlot)
+						? session.Players.GetPlayerAliasAndName(playerSlot) ?? $"Slot: {playerSlot}"
 						: messagePart.Text;
 				case JsonMessagePartType.ItemId:
 					return int.TryParse(messagePart.Text, out var itemId)
-						? session.Items.GetItemName(itemId)
+						? session.Items.GetItemName(itemId) ?? $"Item: {itemId}"
 						: messagePart.Text;
 				case JsonMessagePartType.LocationId:
 					return int.TryParse(messagePart.Text, out var locationId)
-						? session.Locations.GetLocationNameFromId(locationId)
+						? session.Locations.GetLocationNameFromId(locationId) ?? $"Location: {locationId}"
 						: messagePart.Text;
 				default:
 					return messagePart.Text;
@@ -189,6 +185,9 @@ namespace TsRandomizer.Archipelago
 
 		static Color GetColor(JsonMessagePart messagePart)
 		{
+			if (messagePart.Type != JsonMessagePartType.Color)
+				return GetColorFromPartType(messagePart);
+
 			switch (messagePart.Color)
 			{
 				case JsonMessagePartColor.Red:
@@ -207,8 +206,6 @@ namespace TsRandomizer.Archipelago
 					return Color.DarkGray;
 				case JsonMessagePartColor.White:
 					return Color.White;
-				case null:
-					return GetColorFromPartType(messagePart);
 				default:
 					return Color.White;
 			}
@@ -222,19 +219,25 @@ namespace TsRandomizer.Archipelago
 					return (int.TryParse(messagePart.Text, out var playerId) && playerId == slot)
 						? Color.Yellow
 						: Color.Orange;
+				case JsonMessagePartType.PlayerName:
+					return session.Players.GetPlayerName(slot) == messagePart.Text
+						? Color.Yellow
+						: Color.Orange;
 				case JsonMessagePartType.ItemId:
+				case JsonMessagePartType.ItemName:
 					return Color.Crimson;
 				case JsonMessagePartType.LocationId:
+				case JsonMessagePartType.LocationName:
 					return Color.Aquamarine;
+				case JsonMessagePartType.EntranceName:
+					return Color.DarkOliveGreen;
 				default:
 					return Color.White;
 			}
 		}
 
-		public static void UpdateChecks(ItemLocationMap itemLocationMap)
-		{
+		public static void UpdateChecks(ItemLocationMap itemLocationMap) => 
 			Task.Factory.StartNew(() => { UpdateChecksTask(itemLocationMap); });
-		}
 
 		static void UpdateChecksTask(ItemLocationMap itemLocationMap)
 		{

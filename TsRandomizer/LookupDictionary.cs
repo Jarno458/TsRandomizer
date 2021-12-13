@@ -5,16 +5,16 @@ using System.Linq;
 
 namespace TsRandomizer
 {
-	class LookupDictionairy<TLookup, TValue> : IEnumerable<TValue>
+	class LookupDictionary<TLookup, TValue> : IEnumerable<TValue>
 	{
 		readonly Func<TValue, TLookup> keySelector;
 		readonly Dictionary<TLookup, TValue> lookupTable;
 
-		public LookupDictionairy(Func<TValue, TLookup> keySelector) : this(0, keySelector)
+		public LookupDictionary(Func<TValue, TLookup> keySelector) : this(0, keySelector)
 		{
 		}
 
-		public LookupDictionairy(int capacity, Func<TValue, TLookup> keySelector)
+		public LookupDictionary(int capacity, Func<TValue, TLookup> keySelector)
 		{
 			lookupTable = new Dictionary<TLookup, TValue>(capacity);
 			this.keySelector = keySelector;
@@ -48,6 +48,9 @@ namespace TsRandomizer
 
 		public void Add(TValue value) =>
 			lookupTable.Add(keySelector(value), value);
+
+		public void AddOrUpdate(TValue value) =>
+			lookupTable[keySelector(value)] = value;
 
 		public bool Contains(TLookup key) =>
 			lookupTable.ContainsKey(key);

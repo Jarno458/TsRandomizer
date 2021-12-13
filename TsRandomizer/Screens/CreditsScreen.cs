@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
@@ -28,9 +27,11 @@ namespace TsRandomizer.Screens
 
 			if (creditList.Count != 26) return;
 
-			UpdateMyBackerName(creditList);
-			AddSection(20, creditList, "Randomizer", "Project Manager, Lead Developer", "Jarno Westhof");
-			AddSection(21, creditList, "Randomizer", "Linux & Max support, Quality of Life", "marcmagus");
+			AddSection(20, creditList, "Randomizer");
+			AddSection(21, creditList, "Project Manager, Lead Developer", "Jarno Westhof");
+			AddSection(22, creditList, "Linux & Max support, Quality of Life", "marcmagus");
+			AddSection(23, creditList, "Gyre Archives, Cantoran, Quality of Life", "TriumphantBass");
+			AddSection(24, creditList, "Bonk counter, Randomized pickups, Quality of Life", "weffjebster");
 
 			RecalcuteCreditSizes(creditList);
 
@@ -54,25 +55,19 @@ namespace TsRandomizer.Screens
 			Dynamic._farthestBottomY = previousCreditBottom;
 		}
 
-		static void UpdateMyBackerName(IList creditList)
+		void AddSection(int index, IList creditList, string header, string contributer)
 		{
-			var backersList = creditList[25];
-
-			var nameList = ((string[])backersList.AsDynamic()._extendedContributors).ToList();
-
-			nameList.Remove("Quandora");
-			nameList.Insert(2307, "Jarno Westhof");
-
-			backersList.AsDynamic()._extendedContributors = nameList.ToArray();
-		}
-
-		void AddSection(int index, IList creditList, string header, string subtitle, string contributer)
-		{
-			var section = creditsSectionType.CreateInstance(true, header, subtitle);
+			var section = creditsSectionType.CreateInstance(true, header);
 			var dynamicSection = section.AsDynamic();
 
 			dynamicSection.AddContributor(contributer);
 
+			creditList.Insert(index, section);
+		}
+
+		void AddSection(int index, IList creditList, string header)
+		{
+			var section = creditsSectionType.CreateInstance(true, header);
 			creditList.Insert(index, section);
 		}
 	}

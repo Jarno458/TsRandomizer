@@ -15,7 +15,7 @@ namespace TsRandomizer.Randomisation
 		{
 			new TeleporterGate{Gate = R.GateKittyBoss, LevelId = 2, RoomId = 55},
 			new TeleporterGate{Gate = R.GateLeftLibrary, LevelId = 2, RoomId = 54},
-			new TeleporterGate{Gate = R.GateMilitairyGate, LevelId = 10, RoomId = 12},
+			new TeleporterGate{Gate = R.GateMilitaryGate, LevelId = 10, RoomId = 12},
 			new TeleporterGate{Gate = R.GateSealedCaves, LevelId = 9, RoomId = 50},
 			//new TeleporterGate{Gate = R.GateXarion, LevelId = 9, RoomId = 49}, //dont want to spawn infront of xarion
 			new TeleporterGate{Gate = R.GateSealedSirensCave, LevelId = 9, RoomId = 51},
@@ -35,7 +35,7 @@ namespace TsRandomizer.Randomisation
 			new TeleporterGate{Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50},
 		};
 
-		readonly LookupDictionairy<ItemIdentifier, UnlockingSpecification> unlockingSpecifications;
+		readonly LookupDictionary<ItemIdentifier, UnlockingSpecification> unlockingSpecifications;
 
 		public R AllUnlockableRequirements => unlockingSpecifications.Aggregate(R.None, (a, b) => a | b.AllUnlocks);
 		public IEnumerable<ItemIdentifier> AllProgressionItems => unlockingSpecifications.Select(us => us.Item);
@@ -45,7 +45,7 @@ namespace TsRandomizer.Randomisation
 		{
 			var random = new Random((int)seed.Id);
 
-			unlockingSpecifications = new LookupDictionairy<ItemIdentifier, UnlockingSpecification>(26, s => s.Item)
+			unlockingSpecifications = new LookupDictionary<ItemIdentifier, UnlockingSpecification>(26, s => s.Item)
 			{
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.TimespinnerWheel), R.TimespinnerWheel, R.TimeStop),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.DoubleJump), R.DoubleJump, R.TimeStop),
