@@ -455,8 +455,8 @@ namespace TsRandomizer.Randomisation
 			areaName = "Military Hangar";
 			Add(new ItemKey(10, 3, 536, 97), "Memory - Bomber Climb (A Solution)", null, MilitaryFortress & DoubleJumpOfNpc & R.TimespinnerWheel);
 			areaName = "The Lab";
-			Add(new ItemKey(11, 7, 248, 129), "Memory - Genza's Secret Stash (An Old Friend)", null, TheLab & OculusRift);
-			Add(new ItemKey(11, 7, 269, 129), "Memory - Genza's Secret Stash (Twilight Dinner)", null, TheLab & OculusRift);
+			Add(new ItemKey(11, 7, 248, 129), "Memory - Genza's Secret Stash 1 (An Old Friend)", null, TheLab & OculusRift);
+			Add(new ItemKey(11, 7, 296, 129), "Memory - Genza's Secret Stash 2 (Twilight Dinner)", null, TheLab & OculusRift);
 			areaName = "Emperor's Tower";
 			Add(new ItemKey(12, 19, 56, 145), "Memory - Way Up There (Final Circle)", null, EmperorsTower & DoubleJumpOfNpc);
 			// Journals
