@@ -213,8 +213,11 @@
     <Compile Include="Screens\SeedSelection\SeedOptionInfo.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsCollection.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsMenuScreen.cs" />
+    <Compile Include="Screens\Settings\GameSettingsMenuScreen.cs" />
     <Compile Include="Seed.cs" />
     <Compile Include="SeedOptions.cs" />
+    <Compile Include="Screens\Settings\GameSettingsCollection.cs" />
+    <Compile Include="Screens\Settings\GameSetting.cs" />
     <Compile Include="TimeSpinnerGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -238,5 +241,6 @@
   <ItemGroup>
     <None Include=".editorconfig" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
