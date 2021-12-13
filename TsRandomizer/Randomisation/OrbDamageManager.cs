@@ -122,11 +122,11 @@ namespace TsRandomizer.Randomisation
 				RandomizeOrb(orbType, damageSelection);
 				var orbInventory = save.Inventory.OrbInventory.Inventory;
 				if (orbInventory.ContainsKey((int)orbType))
-					SetOrbBaseDamage(orbInventory[(int)orbType], save);
+					SetOrbBaseDamage(orbInventory[(int)orbType]);
 			}
         }
 
-		public static void SetOrbBaseDamage(InventoryOrb orb, GameSave save)
+		public static void SetOrbBaseDamage(InventoryOrb orb)
 		{
 			if(OrbDamageLookup.TryGetValue((int)orb.OrbType, out int storedOrbDamage))
             {
@@ -148,10 +148,10 @@ namespace TsRandomizer.Randomisation
 			var orbB = inventory.OrbInventory.GetItem((int)currentOrbBType);
 			var spell = inventory.OrbInventory.GetItem((int)currentSpellType);
 			var ring = inventory.OrbInventory.GetItem((int)currentRingType);
-			if (orbA != null) SetOrbBaseDamage(orbA, save);
-			if (orbB != null) SetOrbBaseDamage(orbB, save);
-			if (spell != null) SetOrbBaseDamage(spell, save);
-			if (ring != null) SetOrbBaseDamage(ring, save);
+			if (orbA != null) SetOrbBaseDamage(orbA);
+			if (orbB != null) SetOrbBaseDamage(orbB);
+			if (spell != null) SetOrbBaseDamage(spell);
+			if (ring != null) SetOrbBaseDamage(ring);
 			RefreshDamage.Invoke(orbManager, null);
 		}
 	}

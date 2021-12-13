@@ -128,7 +128,7 @@ namespace TsRandomizer.Extensions
 			if (!orbCollection.ContainsKey(orbTypeKey))
 				orbCollection.Add(orbTypeKey, newOrb);
 
-			if (gameSave.GetSeed().Value.Options.DamageRando) OrbDamageManager.SetOrbBaseDamage(newOrb, gameSave);
+			if (gameSave.GetSeed().Value.Options.DamageRando) OrbDamageManager.SetOrbBaseDamage(newOrb);
 
 			switch (orbSlot)
 			{
