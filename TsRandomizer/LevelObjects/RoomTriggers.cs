@@ -115,9 +115,6 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation, seedOptions, screenManager) =>
 			{
-				if (seedOptions.GyreArchives)
-					SpawnGyreWarp(level, 200, 200); // Lab spider hell to main gyre path
-
 				if (itemLocation.IsPickedUp
 				    || !level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear1)) return;
 
@@ -217,6 +214,12 @@ namespace TsRandomizer.LevelObjects
 				}); // Ifrit to Portrait room
 				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Library);
 			}));
+			RoomTriggers.Add(new RoomTrigger(10, 0, (level, itemLocation, seedOptions, screenManager) => {
+				// Spawn warp after ship crashes
+				if (!seedOptions.GyreArchives || !level.GameSave.GetSaveBool("IsPastCleared"))
+					return;
+				SpawnGyreWarp(level, 340, 180); // Military Hangar crash site to Gyre
+			}));
 			RoomTriggers.Add(new RoomTrigger(14, 11, (level, itemLocation, seedOptions, screenManager) => {
 				// Play Gyre music in gyre
 				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Level14);
@@ -226,16 +229,16 @@ namespace TsRandomizer.LevelObjects
 				level.JukeBox.StopSong();
 				level.RequestChangeLevel(new LevelChangeRequest
 				{
-					LevelID = 11,
-					RoomID = 26,
+					LevelID = 10,
+					RoomID = 0,
 					IsUsingWarp = true,
 					IsUsingWhiteFadeOut = true,
 					FadeInTime = 0.5f,
 					FadeOutTime = 0.25f
-				}); // Gyre back to spider-hell
-				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Level11);
+				}); // Military Hangar crash site
+				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Level10);
 			}));
-			RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions, screenManager) => //Remove Daddy's pedistal if you havent killed him yet
+			RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions, screenManager) => //Remove Daddy's pedestal if you havent killed him yet
 			{
 				if (level.GameSave.DataKeyBools.ContainsKey("IsEndingABCleared")) return;
 

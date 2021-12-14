@@ -405,15 +405,16 @@ namespace TsRandomizer.Randomisation
 		{
 			areaName = "Temporal Gyre";
 			// Wheel is not strictly required, but is in logic for anti-frustration against Nethershades
-			Add(new ItemKey(14, 14, 200, 832), "Gyre Chest 1", null, TheLabPoweredOff & R.CardA & R.TimespinnerWheel);
-			Add(new ItemKey(14, 17, 200, 832), "Gyre Chest 2", null, TheLabPoweredOff & R.CardA & R.TimespinnerWheel);
-			Add(new ItemKey(14, 20, 200, 832), "Gyre Chest 3", null, TheLabPoweredOff & R.CardA & R.TimespinnerWheel);
+			Add(new ItemKey(14, 14, 200, 832), "Gyre Chest 1", null, MilitaryFortress & R.TimespinnerWheel);
+			Add(new ItemKey(14, 17, 200, 832), "Gyre Chest 2", null, MilitaryFortress & R.TimespinnerWheel);
+			Add(new ItemKey(14, 20, 200, 832), "Gyre Chest 3", null, MilitaryFortress & R.TimespinnerWheel);
 			Add(new ItemKey(14, 8, 120, 176), "Ravenlord Entry", null, UpperLab & R.MerchantCrow);
 			Add(new ItemKey(14, 9, 200, 125), "Ravenlord Pedestal", null, UpperLab & R.MerchantCrow);
 			Add(new ItemKey(14, 9, 280, 176), "Ravenlord Exit", null, UpperLab & R.MerchantCrow);
-			Add(new ItemKey(14, 6, 40, 208), "Ifrit Entry", null, UpperLeftLibrary & R.Kobo);
-			Add(new ItemKey(14, 7, 200, 205), "Ifrit Pedestal", null, UpperLeftLibrary & R.Kobo);
-			Add(new ItemKey(14, 7, 280, 208), "Ifrit Exit", null, UpperLeftLibrary & R.Kobo);
+			// Ifrit is a strong early boss, access to the past is required as a safety check so that they do not block past access
+			Add(new ItemKey(14, 6, 40, 208), "Ifrit Entry", null, UpperLeftLibrary & R.Kobo & AccessToPast);
+			Add(new ItemKey(14, 7, 200, 205), "Ifrit Pedestal", null, UpperLeftLibrary & R.Kobo & AccessToPast);
+			Add(new ItemKey(14, 7, 280, 208), "Ifrit Exit", null, UpperLeftLibrary & R.Kobo & AccessToPast);
 		}
 
 		void AddDownloadTerminals()
