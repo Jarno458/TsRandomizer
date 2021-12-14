@@ -47,5 +47,23 @@ namespace TsRandomizer
 				Console.WriteLine("Error replacing text: " + ex.Message);
 			}
 		}
+
+		public void ResetStrings()
+		{
+			Type ELanguageLocale = 
+				TimeSpinnerType.Get("Timespinner.Core.Localization.ELanguageLocale");
+			var currentLocale = 
+				Type.GetField("_currentLocale", BindingFlags.Static | BindingFlags.NonPublic)
+					.GetValue(null);
+			var currentLibrary = Type.GetField("_currentLibrary", BindingFlags.Static | BindingFlags.NonPublic);
+			var constructor = 
+				typeof(StringLibrary).GetConstructor(
+					BindingFlags.NonPublic | BindingFlags.Instance, 
+					null, 
+					new Type[] { ELanguageLocale }, 
+					null);
+			var newLibrary = constructor.Invoke(new object[] { currentLocale });
+			currentLibrary.SetValue(null, newLibrary);
+		}
 	}
 }

@@ -104,6 +104,7 @@
     <Compile Include="Commands\ConnectCommand.cs" />
     <Compile Include="Commands\ConsoleCommand.cs" />
     <Compile Include="Commands\TeleportCommand.cs" />
+    <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="Randomisation\HintGenerator.cs" />
     <Compile Include="Screens\GameConsole.cs" />
     <Compile Include="Archipelago\DeathLinker.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Randomisation\ItemPlacers\FullRandomItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemPlacers\ItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemUnlockingMap.cs" />
+    <Compile Include="Randomisation\OrbDamageManager.cs" />
     <Compile Include="Randomisation\RoomItemKey.cs" />
     <Compile Include="ReplacementObjects\TalariaAttachment.cs" />
     <Compile Include="ReplacementObjects\TimespinnerGearItem.cs" />

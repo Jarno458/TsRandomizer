@@ -7,6 +7,7 @@ using Timespinner.Core;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
+using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Heroes;
 using TsRandomizer.Extensions;
@@ -133,6 +134,9 @@ namespace TsRandomizer.LevelObjects
 
 			var lunais = level.MainHero;
 			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
+			
+			if(seedOptions.DamageRando)
+				OrbDamageManager.UpdateOrbDamage(level.GameSave, level.MainHero);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
