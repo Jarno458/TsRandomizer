@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TsRandomizer.Screens.Settings
 {
-	abstract class GameSetting
+	public abstract class GameSetting
 	{
 		public GameSetting(string name, string description, dynamic defaultValue)
 		{

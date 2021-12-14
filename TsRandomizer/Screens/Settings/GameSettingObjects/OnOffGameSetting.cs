@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TsRandomizer.Screens.Settings.GameSettingObjects
 {
-	class OnOffGameSetting : GameSetting
+	public class OnOffGameSetting : GameSetting
 	{
 		public bool CurrentValue { get; set; }
 		public OnOffGameSetting(string name, string description, bool defaultValue) : base(name, description, defaultValue)

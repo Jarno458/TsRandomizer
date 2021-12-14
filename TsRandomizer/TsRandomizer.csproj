@@ -104,6 +104,7 @@
     <Compile Include="Commands\ConnectCommand.cs" />
     <Compile Include="Commands\ConsoleCommand.cs" />
     <Compile Include="Commands\TeleportCommand.cs" />
+    <Compile Include="Extensions\SettingsExtensions.cs" />
     <Compile Include="Randomisation\HintGenerator.cs" />
     <Compile Include="Screens\GameConsole.cs" />
     <Compile Include="Archipelago\DeathLinker.cs" />
@@ -216,7 +217,6 @@
     <Compile Include="Screens\Settings\GameSettingObjects\NumberGameSetting.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\OnOffGameSetting.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\StringGameSetting.cs" />
-    <Compile Include="Screens\Settings\GameSettingsMenuScreen.cs" />
     <Compile Include="Seed.cs" />
     <Compile Include="SeedOptions.cs" />
     <Compile Include="Screens\Settings\GameSettingsCollection.cs" />

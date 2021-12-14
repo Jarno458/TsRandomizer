@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TsRandomizer.Screens.Settings.GameSettingObjects
 {
-	class StringGameSetting : GameSetting
+	public class StringGameSetting : GameSetting
 	{
 		string _currentValue;
 		public int MaxLength { get; }

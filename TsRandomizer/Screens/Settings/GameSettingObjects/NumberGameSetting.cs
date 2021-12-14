@@ -5,16 +5,16 @@ using System.Text;
 
 namespace TsRandomizer.Screens.Settings.GameSettingObjects
 {
-	class NumberGameSetting : GameSetting
+	public class NumberGameSetting : GameSetting
 	{
 		double _currentValue;
 		public double MinimumValue { get; }
 		public double MaximumValue { get; }
 		public bool AllowDecimals { get; }
-		public double CurrentValue { 
+		public double CurrentValue {
 			get {
 				return AllowDecimals ? _currentValue : Math.Round(_currentValue);
-			} 
+			}
 			set {
 				_currentValue = AllowDecimals ? value : Math.Round(value);
 			}
