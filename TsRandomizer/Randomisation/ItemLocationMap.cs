@@ -181,12 +181,12 @@ namespace TsRandomizer.Randomisation
 
 		static int CalculateCapacity(SeedOptions options)
 		{
-			var capacity = 168;
+			var capacity = 165;
 
 			if (options.DownloadableItems)
 				capacity += 14;
 			if (options.GyreArchives)
-				capacity += 6;
+				capacity += 9;
 			if (options.Cantoran)
 				capacity++;
 			if (options.LoreChecks)
@@ -398,16 +398,16 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(16, 14, 312, 192), "Why not it's right there", ItemProvider.Get(EItemType.MaxSand), LeftPyramid);
 			Add(new ItemKey(16, 3, 88, 192), "Conviction guarded room", ItemProvider.Get(EItemType.MaxHP), LeftPyramid);
 			Add(new ItemKey(16, 22, 200, 192), "Pit secret room", ItemProvider.Get(EItemType.MaxAura), Nightmare & OculusRift); //only requires LeftPyramid to reach but Nightmate to escape
-			Add(new ItemKey(16, 16, 1512, 144), "Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), Nightmare & OculusRift); //only requires LeftPyramid to reach but Nightmate to escape
-			areaName = "Temporal Gyre"; // Main path is in pyramid logic, boss rooms are behind GyreArchives flag
-			Add(new ItemKey(14, 14, 200, 832), "Gyre Chest 1", null, Nightmare);
-			Add(new ItemKey(14, 17, 200, 832), "Gyre Chest 2", null, Nightmare);
-			Add(new ItemKey(14, 20, 200, 832), "Gyre Chest 3", null, Nightmare);
+			Add(new ItemKey(16, 16, 1512, 144), "Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), Nightmare & OculusRift); //only requires LeftPyramid to reach but Nightmate to escape	
 		}
 
 		void AddGyreItemLocations()
 		{
 			areaName = "Temporal Gyre";
+			// Wheel is not strictly required, but is in logic for anti-frustration against Nethershades
+			Add(new ItemKey(14, 14, 200, 832), "Gyre Chest 1", null, TheLabPoweredOff & R.CardA & R.TimespinnerWheel);
+			Add(new ItemKey(14, 17, 200, 832), "Gyre Chest 2", null, TheLabPoweredOff & R.CardA & R.TimespinnerWheel);
+			Add(new ItemKey(14, 20, 200, 832), "Gyre Chest 3", null, TheLabPoweredOff & R.CardA & R.TimespinnerWheel);
 			Add(new ItemKey(14, 8, 120, 176), "Ravenlord Entry", null, UpperLab & R.MerchantCrow);
 			Add(new ItemKey(14, 9, 200, 125), "Ravenlord Pedestal", null, UpperLab & R.MerchantCrow);
 			Add(new ItemKey(14, 9, 280, 176), "Ravenlord Exit", null, UpperLab & R.MerchantCrow);

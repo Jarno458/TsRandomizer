@@ -115,6 +115,9 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation, seedOptions, screenManager) =>
 			{
+				if (seedOptions.GyreArchives)
+					SpawnGyreWarp(level, 200, 200); // Lab spider hell to main gyre path
+
 				if (itemLocation.IsPickedUp
 				    || !level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear1)) return;
 
@@ -169,7 +172,7 @@ namespace TsRandomizer.LevelObjects
 				if (!seedOptions.GyreArchives || !level.GameSave.HasFamiliar(EInventoryFamiliarType.MerchantCrow)) 
 					return;
 
-				SpawnGyreWarp(level); // Historical Documents room to Ravenlord
+				SpawnGyreWarp(level, 200, 200); // Historical Documents room to Ravenlord
 			}));
 			RoomTriggers.Add(new RoomTrigger(14, 24, (level, itemLocation, seedOptions, screenManager) =>
 			{
@@ -193,7 +196,7 @@ namespace TsRandomizer.LevelObjects
 			{
 				if (!seedOptions.GyreArchives) return;
 				if (level.GameSave.HasFamiliar(EInventoryFamiliarType.Kobo)) {
-					SpawnGyreWarp(level); // Portrait room to Ifrit
+					SpawnGyreWarp(level, 200, 200); // Portrait room to Ifrit
 					return;
 				};
 
@@ -213,6 +216,24 @@ namespace TsRandomizer.LevelObjects
 					FadeOutTime = 0.25f
 				}); // Ifrit to Portrait room
 				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Library);
+			}));
+			RoomTriggers.Add(new RoomTrigger(14, 11, (level, itemLocation, seedOptions, screenManager) => {
+				// Play Gyre music in gyre
+				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Level14);
+				level.AsDynamic().SetLevelSaveInt("GyreDungeonSeed", seedOptions.Flags.GetHashCode()); // Warp to Ravenlord
+			}));
+			RoomTriggers.Add(new RoomTrigger(14, 23, (level, itemLocation, seedOptions, screenManager) => {
+				level.JukeBox.StopSong();
+				level.RequestChangeLevel(new LevelChangeRequest
+				{
+					LevelID = 11,
+					RoomID = 26,
+					IsUsingWarp = true,
+					IsUsingWhiteFadeOut = true,
+					FadeInTime = 0.5f,
+					FadeOutTime = 0.25f
+				}); // Gyre back to spider-hell
+				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Level11);
 			}));
 			RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions, screenManager) => //Remove Daddy's pedistal if you havent killed him yet
 			{
@@ -401,9 +422,9 @@ namespace TsRandomizer.LevelObjects
 			level.AsDynamic().RequestAddObject(yorne);
 		}
 
-		static void SpawnGyreWarp(Level level)
+		static void SpawnGyreWarp(Level level, int x, int y)
 		{
-			var position = new Point(200, 200);
+			var position = new Point(x, y);
 			var gyrePortal = GyreType.CreateInstance(false, level, position, -1, new ObjectTileSpecification());
 
 			level.AsDynamic().RequestAddObject(gyrePortal);
