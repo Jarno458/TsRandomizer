@@ -68,7 +68,7 @@ The item tracker features a few options:
 * You can click with your right mouse button to change the background to a few per-defined backgrounds
 
 # Known bugs
-##### I am aware of these issues, but i found them small enough not to fix at this moment
+##### I am aware of these issues, but I found them small enough not to fix at this moment
 * Orb pedestal in room before emperor always spawn even if you didn't kill him yet
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
 * Entering a door backwards with a higher level keycard will permanently open it even when specific keycards are on
@@ -88,4 +88,3 @@ The item tracker features a few options:
 * Randomize shop(s)
 * Timesanity (entrance randomizer)
 * Make warpshard optionally a progression item that unlocks all softlocks
-* Maybe make items drop from memories and journals
