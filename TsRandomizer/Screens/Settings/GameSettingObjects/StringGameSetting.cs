@@ -18,7 +18,7 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 			}
 		}
 
-		public StringGameSetting(string name, string description, string defaultValue, int maxLength) : base(name, description, defaultValue)
+		public StringGameSetting(string name, string description, string defaultValue, int maxLength, bool canBeChangedInGame) : base(name, description, defaultValue, canBeChangedInGame)
 		{
 			MaxLength = maxLength;
 			_currentValue = defaultValue;

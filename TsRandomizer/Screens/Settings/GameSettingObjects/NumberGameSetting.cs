@@ -20,7 +20,7 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 			}
 		}
 
-		public NumberGameSetting(string name, string description, double defaultValue, double minValue, double maxValue, bool allowDecimals) : base(name, description, defaultValue)
+		public NumberGameSetting(string name, string description, double defaultValue, double minValue, double maxValue, bool allowDecimals, bool canBeChangedInGame) : base(name, description, defaultValue, canBeChangedInGame)
 		{
 			MinimumValue = minValue;
 			MaximumValue = maxValue;

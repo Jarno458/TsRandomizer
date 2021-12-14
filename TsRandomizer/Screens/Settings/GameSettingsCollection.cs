@@ -10,11 +10,11 @@ namespace TsRandomizer.Screens.Settings
 	public class GameSettingsCollection
 	{
 		public string Path { get; private set; }
-		public OnOffGameSetting StartWithMeyef = new OnOffGameSetting("Start with Meyef", "Start with Meyef, ideal for when you want to play multiplayer", false);
-		public OnOffGameSetting DamageRando = new OnOffGameSetting("Damage Randomizer", "Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false);
-		public OnOffGameSetting StartWithJewelryBox = new OnOffGameSetting("Start with Jewelry Box", "Start with Jewelry Box unlocked", false);
-		public StringGameSetting PlayerName = new StringGameSetting("Player Name", "Changes all references to Lunais into the given name", "Lunais", 15);
-		public NumberGameSetting OrbXpMultiplier = new NumberGameSetting("Orb XP Multiplier", "Multiplies orb XP gained by the given number", 1, 1, 100, false);
+		public OnOffGameSetting StartWithMeyef = new OnOffGameSetting("Start with Meyef", "Start with Meyef, ideal for when you want to play multiplayer", false, false);
+		public OnOffGameSetting DamageRando = new OnOffGameSetting("Damage Randomizer", "Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false, true);
+		public OnOffGameSetting StartWithJewelryBox = new OnOffGameSetting("Start with Jewelry Box", "Start with Jewelry Box unlocked", false, false);
+		public StringGameSetting PlayerName = new StringGameSetting("Player Name", "Changes all references to Lunais into the given name", "Lunais", 15, false);
+		public NumberGameSetting OrbXpMultiplier = new NumberGameSetting("Orb XP Multiplier", "Multiplies orb XP gained by the given number", 1, 1, 100, true, true);
 
 		public GameSettingsCollection(string path)
 		{
@@ -60,20 +60,18 @@ namespace TsRandomizer.Screens.Settings
 			}
 		}
 
-		public GameSettingsCollection LoadSettings()
+		public bool WriteSettings()
 		{
 			try
 			{
-				var settingsFromFile = LoadSettingsFromFile($"{Path}settings.json");
-				return settingsFromFile;
+				string jsonSettings = JsonConvert.SerializeObject(this, Formatting.Indented);
+				File.WriteAllText($"{Path}settings.json", jsonSettings);
+				return true;
 			}
 			catch
 			{
-				Console.WriteLine("Error loading settings.");
-				return new GameSettingsCollection();
+				return false;
 			}
 		}
-
-
 	}
 }
