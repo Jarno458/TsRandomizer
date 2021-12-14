@@ -10,8 +10,8 @@ namespace TsRandomizer.LevelObjects.Other
 		public GyrePortalEvent(Mobile typedObject) : base(typedObject)
 		{
 			Dynamic._isUsable = true;
-			// Lab spider hell
-			if (typedObject.Level.ID == 11 && typedObject.Level.RoomID == 26)
+			// Crash Site
+			if (typedObject.Level.ID == 10 && typedObject.Level.RoomID == 0)
 				Dynamic._portalType = 0; // start
 			// Closed loop
 			else if (typedObject.Level.ID == 14 && typedObject.Level.RoomID == 23)
