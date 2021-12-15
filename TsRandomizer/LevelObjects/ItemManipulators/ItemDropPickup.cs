@@ -46,7 +46,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 					break;
 
 				case LootType.ConstEquipment:
-					Dynamic._equipmentType = ItemInfo.Identifier.Enquipment;
+					Dynamic._equipmentType = ItemInfo.Identifier.Equipment;
 					break;
 
 				case LootType.ConstStat:
@@ -75,7 +75,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				case LootType.ConstFamiliar:
 				case LootType.ConstStat:
 					AwardContainedItem();
-					UndoBaseGameAwardedEnquipment(gameplayScreen);
+					UndoBaseGameAwardedEquipment(gameplayScreen);
 					ShowItemAwardPopup();
 					break;
 
@@ -92,7 +92,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			hasDroppedLoot = true;
 		}
 
-		void UndoBaseGameAwardedEnquipment(GameplayScreen gameplayScreen)
+		void UndoBaseGameAwardedEquipment(GameplayScreen gameplayScreen)
 		{
 			Level.GameSave.Inventory.EquipmentInventory.RemoveItem(ItemInfo.BestiaryItemDropSpecification.Item, 1);
 			gameplayScreen.HideItemPickupBar();

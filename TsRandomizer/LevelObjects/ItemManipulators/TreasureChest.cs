@@ -35,7 +35,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 					Dynamic._lootRelicType = ItemInfo.Identifier.Relic;
 					break;
 				case LootType.ConstEquipment:
-					Dynamic._lootEquipmentType = ItemInfo.Identifier.Enquipment;
+					Dynamic._lootEquipmentType = ItemInfo.Identifier.Equipment;
 					break;
 				case LootType.ConstOrb:
 					Dynamic._lootOrbType = ItemInfo.Identifier.OrbType;
