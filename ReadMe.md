@@ -57,7 +57,21 @@ Extract the contents of the corresponding zip file to the same folder as Timespi
 * Amadeus Laboratory now requires keycard B to open
 * To prevent players from getting stuck in the past when items are still available in the present, the transition room next to the refugee camp can now be used to freely travel back and forth between past and present
 * When you obtain the pyramid keys, a random transition room is unlocked that could open new routing opportunities
-* The Temporal Gyre's boss rooms are disconnected from its main loop, which instead exits to its entrance. When using the "Gyre Archives" flag, Ifrit can be reached by aquiring Kobo and proceeding to the portrait room in the Library, while Ravenlord can be reached by aquiring Merchant Crow and proceeding to the room in Amadeus' Laboratory containing the Historical Archives
+* When using the "Gyre Archives" flag, locations from the Temporal Gyre are accessible from the present. The main loop can be reached in the Military Hangar after clearing the past, Ifrit can be reached by aquiring Kobo and proceeding to the portrait room in the Library, while Ravenlord can be reached by aquiring Merchant Crow and proceeding to the room in Amadeus' Laboratory containing the Historical Archives
+
+# Safety Checks
+Certain considerations were taken as anti-frustration changes in the seed routing. Sometimes this means certain items cannot appear in certain locations, other times it means while a difficult and/or tedious check may potentially be possible, the game will not consider it "in logic" until another requirement is reached.
+## General
+* Selen will not give you Plasma Orb as a starter melee orb, as it quickly drains a low-level Lunais' aura.
+* The warp rooms next to the bosses Azure Queen and Xarion are not in the selection pool for free warps from the Twin Pyramid Keys, as they could lead into immediate boss fights at the start of the seed.
+* The Military Hangar chest guarded by falling bombs requires the Timespinner Wheel, though can be reached without it by using the Celestial Sash.
+* The larger "Struggle Juggle" maneuver, which requires jumping off of and repositioning a frozen Royal Guard enemy multiple times is only in logic with double jumps available, even if technically possible with single jumps.
+* While Meyef is able to burn vines, they do not count as a fire source in logic. (Two vines can be burned in this fashion by aggroing enemies into the correct locations, while the third can be burned by a second player)
+* While possible to tank oxygen damage in poison areas (Lake Desolation post-Maw), doing so will not be considered in logic.
+* * Note that when the Stinky Maw flag is on, the plasma crystal is considered in logic with the Talaria attachment, as it is reachable without fully expending oxygen (i.e. before the damaging phase).
+## When using the Gyre Archives Flag
+* The Military Hangar portal will not be in logic until you possess the Timespinner Wheel. The items within can be obtained without it, but if you enter a room with a Nethershade you will have to wait for the room timer to expire, opening the doors.
+* Ifrit in the portrait room will not be required unless you have access to the past. This safeguard is to ensure that an early Ifrit fight does not block access to the past.
 
 # Item Tracker
 The TsRandomizer.ItemTracker.exe can be used to automagicly track any progression item you obtain ingame. It can for example be used by streamers that want to display their current progression items to their viewers
