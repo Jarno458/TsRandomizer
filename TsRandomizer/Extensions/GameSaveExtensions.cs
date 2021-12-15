@@ -14,7 +14,7 @@ namespace TsRandomizer.Extensions
 		const string SeedSaveFileKey = "TsRandomizerSeed";
 		const string FillMethodSaveFileKey = "TsRandomizerFillMethod";
 		const string MeleeOrbPrefixKey = "TsRandomizerHasMeleeOrb";
-		const string FamilierPrefixKey = "TsRandomizerHasFamiliar";
+		const string FamiliarPrefixKey = "TsRandomizerHasFamiliar";
 
 
 		internal static Seed? GetSeed(this GameSave gameSave)
@@ -55,7 +55,7 @@ namespace TsRandomizer.Extensions
 
 		internal static bool HasFamiliar(this GameSave gameSave, EInventoryFamiliarType familiar)
 		{
-			return gameSave.DataKeyBools.ContainsKey(FamilierPrefixKey + (int)familiar);
+			return gameSave.DataKeyBools.ContainsKey(FamiliarPrefixKey + (int)familiar);
 		}
 
 		internal static bool HasRelic(this GameSave gameSave, EInventoryRelicType relic)
@@ -87,7 +87,7 @@ namespace TsRandomizer.Extensions
 			switch (item.LootType)
 			{
 				case LootType.ConstEquipment:
-					return gameSave.Inventory.EquipmentInventory.Inventory.ContainsKey((int)item.Enquipment);
+					return gameSave.Inventory.EquipmentInventory.Inventory.ContainsKey((int)item.Equipment);
 				case LootType.ConstFamiliar:
 					return gameSave.Inventory.FamiliarInventory.Inventory.ContainsKey((int)item.Familiar);
 				case LootType.ConstRelic:
@@ -156,7 +156,7 @@ namespace TsRandomizer.Extensions
 			}
 		}
 
-		static void AddEnquipment(this GameSave gameSave, EInventoryEquipmentType enquipment)
+		static void AddEquipment(this GameSave gameSave, EInventoryEquipmentType enquipment)
 		{
 			gameSave.Inventory.EquipmentInventory.AddItem((int) enquipment);
 		}
@@ -175,7 +175,7 @@ namespace TsRandomizer.Extensions
 		{
 			gameSave.Inventory.FamiliarInventory.AddItem((int)familiar);
 
-			gameSave.DataKeyBools[FamilierPrefixKey + (int)familiar] = true;
+			gameSave.DataKeyBools[FamiliarPrefixKey + (int)familiar] = true;
 		}
 
 		static void AddStat(this GameSave gameSave, Level level, EItemType stat)
@@ -214,7 +214,7 @@ namespace TsRandomizer.Extensions
 					gameSave.AddOrb(itemInfo.OrbType, itemInfo.OrbSlot);
 					break;
 				case LootType.ConstEquipment:
-					gameSave.AddEnquipment(itemInfo.Enquipment);
+					gameSave.AddEquipment(itemInfo.Equipment);
 					break;
 				case LootType.ConstUseItem:
 					gameSave.AddUseItem(itemInfo.UseItem);

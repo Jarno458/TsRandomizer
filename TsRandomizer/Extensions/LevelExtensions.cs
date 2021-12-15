@@ -23,7 +23,7 @@ namespace TsRandomizer.Extensions
 					level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, itemIdentifier.Relic));
 					break;
 				case LootType.ConstEquipment:
-					level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, itemIdentifier.Enquipment));
+					level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, itemIdentifier.Equipment));
 					break;
 				case LootType.ConstUseItem:
 					level.AddScript((ScriptAction)typeof(ScriptAction).CreateInstance(true, itemIdentifier.UseItem, 1));

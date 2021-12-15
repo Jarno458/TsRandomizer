@@ -220,7 +220,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		{
 			var progressiveItemLocationsPerType = itemLocations
 					.Where(l => l.ItemInfo.Unlocks == R.None)
-					.Where(l => l.ItemInfo is PogRessiveItemInfo)
+					.Where(l => l.ItemInfo is ProgressiveItemInfo)
 					.GroupBy(l => l.ItemInfo);
 
 			foreach (IGrouping<ItemInfo, ItemLocation> progressiveItemLocations in progressiveItemLocationsPerType)
@@ -268,7 +268,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.ToList();
 
 			AddOrbs(itemlist);
-			AddFamiliers(itemlist);
+			AddFamiliars(itemlist);
 			AddExtraItems(itemlist);
 
 			itemlist = itemlist
@@ -283,12 +283,12 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			itemlist.AddRange(itemsToAddToGame);
 		}
 
-		void AddFamiliers(List<ItemInfo> itemlist)
+		void AddFamiliars(List<ItemInfo> itemlist)
 		{
-			var allFamiliers = ((EInventoryFamiliarType[])Enum.GetValues(typeof(EInventoryFamiliarType)))
+			var allFamiliars = ((EInventoryFamiliarType[])Enum.GetValues(typeof(EInventoryFamiliarType)))
 				.Where(f => f != EInventoryFamiliarType.None);
 
-			itemlist.AddRange(allFamiliers.Select(familiar => ItemInfoProvider.Get(familiar)));
+			itemlist.AddRange(allFamiliars.Select(familiar => ItemInfoProvider.Get(familiar)));
 		}
 
 		void AddOrbs(List<ItemInfo> itemlist)

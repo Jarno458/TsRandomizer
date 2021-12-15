@@ -530,12 +530,12 @@ namespace TsRandomizer.Randomisation
 				.ToArray();
 
 			var pickedUpSingleItemLocationUnlocks = pickedUpProgressionItemLocations
-				.Where(l => !(l.ItemInfo is PogRessiveItemInfo))
+				.Where(l => !(l.ItemInfo is ProgressiveItemInfo))
 				.Select(l => l.ItemInfo.Unlocks);
 
 			var pickedUpProgressiveItemLocationUnlocks = pickedUpProgressionItemLocations
-				.Where(l => l.ItemInfo is PogRessiveItemInfo)
-				.Select(l => ((PogRessiveItemInfo)l.ItemInfo)
+				.Where(l => l.ItemInfo is ProgressiveItemInfo)
+				.Select(l => ((ProgressiveItemInfo)l.ItemInfo)
 					.GetAllUnlockedItems()
 					.Select(i => i.Unlocks)
 					.Aggregate(R.None, (a, b) => a | b));
@@ -569,7 +569,7 @@ namespace TsRandomizer.Randomisation
 		bool ProgressiveItemsOfTheSameTypeAreInTheSameRoom()
 		{
 			var progressiveItemLocationsPerType = this
-				.Where(l => l.ItemInfo is PogRessiveItemInfo)
+				.Where(l => l.ItemInfo is ProgressiveItemInfo)
 				.GroupBy(l => l.ItemInfo);
 
 			return progressiveItemLocationsPerType.Any(
@@ -620,13 +620,13 @@ namespace TsRandomizer.Randomisation
 				.ToArray();
 
 			var unlockedRequirements = reachableLocations
-				.Where(l => !(l.ItemInfo is PogRessiveItemInfo))
+				.Where(l => !(l.ItemInfo is ProgressiveItemInfo))
 				.Select(l => l.ItemInfo.Unlocks)
 				.Aggregate(R.None, (current, unlock) => current | unlock);
 
 			var progressiveItemsPerType = reachableLocations
-				.Where(l => l.ItemInfo is PogRessiveItemInfo)
-				.GroupBy(l => l.ItemInfo as PogRessiveItemInfo);
+				.Where(l => l.ItemInfo is ProgressiveItemInfo)
+				.GroupBy(l => l.ItemInfo as ProgressiveItemInfo);
 
 			foreach (var progressiveItemsType in progressiveItemsPerType)
 			{
@@ -647,13 +647,13 @@ namespace TsRandomizer.Randomisation
 		static R GetObtainedRequirements(ItemLocation[] reachableLocations)
 		{
 			var unlockedRequirements = reachableLocations
-				.Where(l => !(l.ItemInfo is PogRessiveItemInfo))
+				.Where(l => !(l.ItemInfo is ProgressiveItemInfo))
 				.Select(l => l.ItemInfo.Unlocks)
 				.Aggregate(R.None, (current, unlock) => current | unlock);
 
 			var progressiveItemsPerType = reachableLocations
-				.Where(l => l.ItemInfo is PogRessiveItemInfo)
-				.GroupBy(l => l.ItemInfo as PogRessiveItemInfo);
+				.Where(l => l.ItemInfo is ProgressiveItemInfo)
+				.GroupBy(l => l.ItemInfo as ProgressiveItemInfo);
 
 			foreach (var progressiveItemsType in progressiveItemsPerType)
 			{
@@ -684,8 +684,8 @@ namespace TsRandomizer.Randomisation
 		public virtual void Initialize(GameSave gameSave)
 		{
 			var progressiveItemInfos = this
-				.Where(l => l.ItemInfo is PogRessiveItemInfo)
-				.Select(l => (PogRessiveItemInfo)l.ItemInfo);
+				.Where(l => l.ItemInfo is ProgressiveItemInfo)
+				.Select(l => (ProgressiveItemInfo)l.ItemInfo);
 
 			foreach (var progressiveItem in progressiveItemInfos)
 				progressiveItem.Reset();
