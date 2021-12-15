@@ -33,7 +33,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Timespinner\</OutputPath>
+    <OutputPath>..\..\TestVersions\DRMFreeVersion\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -101,12 +101,6 @@
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
     <Compile Include="Archipelago\ArchipelagoRemoteItem.cs" />
     <Compile Include="Archipelago\ConnectionFailedException.cs" />
-    <Compile Include="Commands\ConnectCommand.cs" />
-    <Compile Include="Commands\ConsoleCommand.cs" />
-    <Compile Include="Commands\TeleportCommand.cs" />
-    <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
-    <Compile Include="Randomisation\HintGenerator.cs" />
-    <Compile Include="Screens\GameConsole.cs" />
     <Compile Include="Archipelago\DeathLinker.cs" />
     <Compile Include="Archipelago\SlotDataParser.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
@@ -173,7 +167,6 @@
     <Compile Include="Randomisation\ItemPlacers\FullRandomItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemPlacers\ItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemUnlockingMap.cs" />
-    <Compile Include="Randomisation\OrbDamageManager.cs" />
     <Compile Include="Randomisation\RoomItemKey.cs" />
     <Compile Include="ReplacementObjects\TalariaAttachment.cs" />
     <Compile Include="ReplacementObjects\TimespinnerGearItem.cs" />
@@ -220,7 +213,7 @@
     <Compile Include="TimeSpinnerGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LookupDictionary.cs" />
+    <Compile Include="LookupDictionairy.cs" />
     <Compile Include="ReplacementObjects\TimeSpinnerWheel.cs" />
     <Compile Include="Screens\Menu\MenuEntry.cs" />
     <Compile Include="Screens\Screen.cs" />
@@ -237,8 +230,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <None Include=".editorconfig" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
