@@ -56,7 +56,9 @@ namespace TsRandomizer.Screens.SeedSelection
 				okButton,
 				MenuEntry.Create("", () => { }, false),
 				MenuEntry.Create("New", OnGenerateSelected),
-				MenuEntry.Create("Options", OnOptionsSelected)
+				MenuEntry.Create("Flags", OnOptionsSelected),
+				MenuEntry.Create("", () => { }, false),
+				MenuEntry.Create("Settings", OnSettingsSelected)
 			);
 		}
 
@@ -132,13 +134,13 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			if (!Seed.TryParse(hexString, out var seed))
 			{
-				ShowErrorDescription("Invallid seed id, its not a valid hexidecimal value");
+				ShowErrorDescription("Invalid seed id, it is not a valid hexidecimal value.");
 				return;
 			}
 
 			if (!forceSeed && !Randomizer.IsBeatable(seed, FillingMethod.Random))
 			{
-				ShowErrorDescription("Invallid seed id, it cannot be beated");
+				ShowErrorDescription("Invalid seed id, it cannot be beaten.");
 				return;
 			}
 
@@ -157,6 +159,13 @@ namespace TsRandomizer.Screens.SeedSelection
 			var seedOptionsMenu = SeedOptionsMenuScreen.Create(ScreenManager, GetCurrentOptions());
 
 			ScreenManager.AddScreen(seedOptionsMenu, playerIndex);
+		}
+
+		void OnSettingsSelected(PlayerIndex playerIndex)
+		{
+			var seedSettingsMenu = SeedOptionsMenuScreen.Create(ScreenManager, GetCurrentOptions()); // TODO put actual settings menu here
+
+			ScreenManager.AddScreen(seedSettingsMenu, playerIndex);
 		}
 
 		internal void OnSeedOptionsUpdated(SeedOptionsCollection options)
