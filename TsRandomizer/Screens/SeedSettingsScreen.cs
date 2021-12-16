@@ -37,10 +37,27 @@ namespace TsRandomizer.Screens
 			var menuEntryList = new object[0].ToList(MenuEntryType);
 			var menuCollectionList = new object[0].ToList(MenuEntryCollectionType);
 
-			menuEntryList.Add(MenuEntry.Create("Stats", () => { }).AsTimeSpinnerMenuEntry());
-			menuEntryList.Add(MenuEntry.Create("Enemies", () => { }).AsTimeSpinnerMenuEntry());
-			menuEntryList.Add(MenuEntry.Create("Sprites", () => { }).AsTimeSpinnerMenuEntry());
-			menuEntryList.Add(MenuEntry.Create("Other", () => { }).AsTimeSpinnerMenuEntry());
+			var scalingMenu = MenuEntry.Create("Stats", () => { }).AsTimeSpinnerMenuEntry();
+			var enemyMenu = MenuEntry.Create("Enemies", () => { }).AsTimeSpinnerMenuEntry();
+			var spriteMenu = MenuEntry.Create("Sprites", () => { }).AsTimeSpinnerMenuEntry();
+			var otherMenu = MenuEntry.Create("Other", () => { }).AsTimeSpinnerMenuEntry();
+
+			scalingMenu.AsDynamic().Description = "Settings related to stat scaling.";
+			scalingMenu.AsDynamic().IsCenterAligned = false;
+
+			enemyMenu.AsDynamic().Description = "Settings related to enemy placement and drops.";
+			enemyMenu.AsDynamic().IsCenterAligned = false;
+
+			spriteMenu.AsDynamic().Description = "Settings related to sprite replacement.";
+			spriteMenu.AsDynamic().IsCenterAligned = false;
+
+			otherMenu.AsDynamic().Description = "Various other settings.";
+			otherMenu.AsDynamic().IsCenterAligned = false;
+
+			menuEntryList.Add(scalingMenu);
+			menuEntryList.Add(enemyMenu);
+			menuEntryList.Add(spriteMenu);
+			menuEntryList.Add(otherMenu);
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = menuEntryList;
 			Dynamic._subMenuCollections = menuCollectionList;
@@ -55,7 +72,6 @@ namespace TsRandomizer.Screens
 		public static GameScreen Create(ScreenManager screenManager, SeedOptionsCollection options)
 		{
 			void Noop() { }
-
 			return (GameScreen)Activator.CreateInstance(JournalMenuType, GameSave.DemoSave, screenManager.Dynamic.GCM, (Action)Noop);
 		}
 	}
