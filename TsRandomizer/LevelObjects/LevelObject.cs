@@ -181,11 +181,7 @@ namespace TsRandomizer.LevelObjects
 			IEnumerable<Animate> npcs = levelReflected.NPCs.Values;
 			IEnumerable<Animate> enemies = levelReflected._enemies.Values;
 			IEnumerable<Animate> bosses = enemies.Where(e => BossManager.BossTypes.Contains(e.GetType()));
-			foreach (var boss in bosses)
-			{
-				var bestiaryEntry = BossManager.GetBestiaryEntry((Monster)boss);
-				BossManager.RandomizeWeaknesses(bestiaryEntry, (int)level.GameSave.GetSeed().Value.Id);
-			}
+
 			SetMonsterHpTo1(levelReflected._enemies.Values);
 
 			var objects = eventObjects
