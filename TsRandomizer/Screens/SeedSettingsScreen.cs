@@ -37,27 +37,26 @@ namespace TsRandomizer.Screens
 			var menuEntryList = new object[0].ToList(MenuEntryType);
 			var menuCollectionList = new object[0].ToList(MenuEntryCollectionType);
 
-			var scalingMenu = MenuEntry.Create("Stats", () => { }).AsTimeSpinnerMenuEntry();
-			var enemyMenu = MenuEntry.Create("Enemies", () => { }).AsTimeSpinnerMenuEntry();
-			var spriteMenu = MenuEntry.Create("Sprites", () => { }).AsTimeSpinnerMenuEntry();
-			var otherMenu = MenuEntry.Create("Other", () => { }).AsTimeSpinnerMenuEntry();
-
+			var scalingMenu = MenuEntry.Create("Stats", () => { });
 			scalingMenu.AsDynamic().Description = "Settings related to stat scaling.";
 			scalingMenu.AsDynamic().IsCenterAligned = false;
 
-			enemyMenu.AsDynamic().Description = "Settings related to enemy placement and drops.";
-			enemyMenu.AsDynamic().IsCenterAligned = false;
+			var enemyMenu = MenuEntry.Create("Enemies", () => { });
+			enemyMenu.Description = "Settings related to enemy placement and drops.";
+			enemyMenu.IsCenterAligned = false;
 
-			spriteMenu.AsDynamic().Description = "Settings related to sprite replacement.";
-			spriteMenu.AsDynamic().IsCenterAligned = false;
+			var spriteMenu = MenuEntry.Create("Sprites", () => { });
+			spriteMenu.Description = "Settings related to sprite replacement.";
+			spriteMenu.IsCenterAligned = false;
 
-			otherMenu.AsDynamic().Description = "Various other settings.";
-			otherMenu.AsDynamic().IsCenterAligned = false;
+			var otherMenu = MenuEntry.Create("Other", () => { });
+			otherMenu.Description = "Various other settings.";
+			otherMenu.IsCenterAligned = false;
 
-			menuEntryList.Add(scalingMenu);
-			menuEntryList.Add(enemyMenu);
-			menuEntryList.Add(spriteMenu);
-			menuEntryList.Add(otherMenu);
+			menuEntryList.Add(scalingMenu.AsTimeSpinnerMenuEntry());
+			menuEntryList.Add(enemyMenu.AsTimeSpinnerMenuEntry());
+			menuEntryList.Add(spriteMenu.AsTimeSpinnerMenuEntry());
+			menuEntryList.Add(otherMenu.AsTimeSpinnerMenuEntry());
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = menuEntryList;
 			Dynamic._subMenuCollections = menuCollectionList;
