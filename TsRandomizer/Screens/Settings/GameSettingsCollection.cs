@@ -15,7 +15,7 @@ namespace TsRandomizer.Screens.Settings
 		public OnOffGameSetting DamageRando { get; set; }
 		public OnOffGameSetting StartWithJewelryBox { get; set; }
 		public StringGameSetting PlayerName { get; set; }
-		public NumberGameSetting OrbLevelUpXP { get; set; }
+		public NumberGameSetting OrbXPMultiplier { get; set; }
 
 		public GameSettingsCollection()
 		{
@@ -34,7 +34,7 @@ namespace TsRandomizer.Screens.Settings
 				DamageRando = new OnOffGameSetting("Damage Randomizer", "Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false, false);
 				StartWithJewelryBox = new OnOffGameSetting("Start with Jewelry Box", "Start with Jewelry Box unlocked", false, false);
 				PlayerName = new StringGameSetting("Player Name", "Changes all references to Lunais into the given name", "Lunais", 15, false);
-				OrbLevelUpXP = new NumberGameSetting("Orb Level Up XP", "Sets the amount of XP needed for an orb to level up", 50, 1, 100, true, true);
+				OrbXPMultiplier = new NumberGameSetting("Orb XP Multiplier", "Sets the amount of experience orbs gain per kill. Pairs well with Nightmare Lvl 1.", 1, 1, 100, true, true);
 				WriteSettings(); //write settings file with default values
 			}
 		}
@@ -51,7 +51,7 @@ namespace TsRandomizer.Screens.Settings
 					DamageRando = settings.DamageRando;
 					PlayerName = settings.PlayerName;
 					StartWithJewelryBox = settings.StartWithJewelryBox;
-					OrbLevelUpXP = settings.OrbLevelUpXP;
+					OrbXPMultiplier = settings.OrbXPMultiplier;
 				}
 				Console.WriteLine("Settings file not found: " + Path);
 			}

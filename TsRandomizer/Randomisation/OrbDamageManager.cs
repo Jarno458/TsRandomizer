@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
+using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Heroes;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -131,6 +132,16 @@ namespace TsRandomizer.Randomisation
 		private static InventoryOrb GetOrbFromType(InventoryOrbCollection inventory, EInventoryOrbType orbType)
 		{
 			return inventory.GetItem((int)orbType);
+		}
+
+		public static void AddMoreOrbXP(GameSave save, EInventoryOrbType orbType, double amount)
+		{
+			var orb = GetOrbFromType(save.Inventory.OrbInventory, orbType);
+			var extraXP = amount - 1;
+			if (save.Inventory.EquippedTrinketA == EInventoryEquipmentType.NelisteEarring
+				|| save.Inventory.EquippedTrinketB == EInventoryEquipmentType.NelisteEarring)
+				extraXP = extraXP * 2;
+			orb.Experience += ((int)extraXP);
 		}
 	}
 }
