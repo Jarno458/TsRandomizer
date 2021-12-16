@@ -7,16 +7,15 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 {
 	public class NumberGameSetting : GameSetting
 	{
-		double _currentValue;
-		public double MinimumValue { get; }
-		public double MaximumValue { get; }
-		public bool AllowDecimals { get; }
-		public double CurrentValue {
-			get {
-				return AllowDecimals ? _currentValue : Math.Round(_currentValue);
-			}
-			set {
-				_currentValue = AllowDecimals ? value : Math.Round(value);
+		public double MinimumValue { get; set; }
+		public double MaximumValue { get; set; }
+		public bool AllowDecimals { get; set; }
+		public override void SetValue(dynamic input)
+		{
+			if (!double.IsNaN(input))
+			{
+				double value = input;
+				if (AllowDecimals) base.SetValue(value); else base.SetValue(Math.Round(value));
 			}
 		}
 
@@ -25,7 +24,9 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 			MinimumValue = minValue;
 			MaximumValue = maxValue;
 			AllowDecimals = allowDecimals;
-			CurrentValue = defaultValue;
+			SetValue(defaultValue);
 		}
+
+		public NumberGameSetting() { }
 	}
 }

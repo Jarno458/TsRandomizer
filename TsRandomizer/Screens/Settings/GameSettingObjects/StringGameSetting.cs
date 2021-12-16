@@ -7,21 +7,27 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 {
 	public class StringGameSetting : GameSetting
 	{
-		string _currentValue;
-		public int MaxLength { get; }
-		public string CurrentValue {
-			get {
-				return _currentValue == null || _currentValue.Length == 0 ? DefaultValue : _currentValue;
-			}
-			set {
-				_currentValue = value;
+		public int MaxLength { get; set; }
+		public override void SetValue(dynamic input)
+		{
+			if (input is string)
+			{
+				string value = input;
+				if (string.IsNullOrWhiteSpace(value)) base.SetValue((string)DefaultValue);
+				else
+				{
+					if (value.Length > MaxLength) value = value.Substring(0, MaxLength - 1);
+					base.SetValue(value);
+				}
 			}
 		}
 
 		public StringGameSetting(string name, string description, string defaultValue, int maxLength, bool canBeChangedInGame) : base(name, description, defaultValue, canBeChangedInGame)
 		{
 			MaxLength = maxLength;
-			_currentValue = defaultValue;
+			SetValue(defaultValue);
 		}
+
+		public StringGameSetting() { }
 	}
 }
