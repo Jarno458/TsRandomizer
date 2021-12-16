@@ -215,6 +215,7 @@
     <Compile Include="Screens\SeedSelection\SeedOptionInfo.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsCollection.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsMenuScreen.cs" />
+    <Compile Include="Screens\SeedSettingsScreen.cs" />
     <Compile Include="Seed.cs" />
     <Compile Include="SeedOptions.cs" />
     <Compile Include="TimeSpinnerGame.cs" />

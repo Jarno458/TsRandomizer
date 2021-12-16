@@ -125,7 +125,7 @@ namespace TsRandomizer.Screens.SeedSelection
 		{
 			var reflected = menuEntry.AsDynamic();
 
-			return reflected.Text == "DEL"; //not a verry clean check but password menu isnt localised ¯\_(ツ)_/¯
+			return reflected.Text == "DEL"; // not a very clean check but password menu isn't localised ¯\_(ツ)_/¯
 		}
 
 		void OnOkayEntrySelected(PlayerIndex playerIndex)
