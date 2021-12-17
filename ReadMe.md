@@ -91,7 +91,6 @@ The item tracker features a few options:
 # TODO
 ##### Things I plan on doing in the future
 * Archipelago TODO:
-  * Implement Chat UI
   * Change save game menu to make AP seeds more clear like adding player name & server (optionally)
 * Implement options Menu:
 	* Implement skin selection
