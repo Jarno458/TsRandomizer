@@ -1,14 +1,14 @@
 # General
-Timespinner Randomizer will randomize the location of items such as equipment, relics, familiars, stat boosts, use items. The logic makes sure that each game you play is beatable
+Timespinner Randomizer will randomize the location of items such as equipment, relics, familiars, stat boosts, use items. The logic makes sure that each game you play is beatable.
 
-Unlike traditional randomizers, this randomizer will not alter the rom or exe of the game, instead it loads the game normally and alters its state in memory
-Save files will be loaded & stored in folder different from the normal game so they are not at risk
+Unlike traditional randomizers, this randomizer will not alter the rom or exe of the game, instead it loads the game normally and alters its state in memory.
+Save files will be loaded & stored in folder different from the normal game so they are not at risk.
 
-The game considers nightmare as the final boss,	thus you require at least access to the past (to break lazer gate), and timespinner wheel, spindle, three gears, keycard A or B and essence of space or lightwall spell to beat the game
+The game considers Nightmare as the final boss,	as such, to complete a seed you will need to collect all five pieces of the Timespinner and progress through the Ancient Pyramid. Your path to do so will be affected by the progression items (keycards, vertical movement, etc.) you find, as well as the flags you choose for the seed.
 
-Quest are not considered part of the game, and they wont contain any progression item, however Neliste will still offer you an item when you talk to her
+Quests are not considered part of the randomizer, and they will not contain any progression items, however Neliste will still offer you an item when you talk to her, as will the Librarian.
 
-When you feel stuck, you can open the minimap and hold X (the key to remove map markers), it will highlight all locations that you can reach and still have items for you
+When you feel stuck, you can open the minimap and hold X (the key to remove map markers), it will highlight all locations that you can reach which have remaining checks.
 
 For questions / remarks and feedback, feel free to join the #randomizer channel on the official timespinner discord https://discord.gg/CH3cgD6
 
@@ -52,11 +52,11 @@ Extract the contents of the corresponding zip file to the same folder as Timespi
 * Anywhere, ` (tilde) will open the console. the console can be used to activate some command see /help for a list of available commands,
 	if you are connected to an archipelago server any text typed in the console is send to the server, giving you access to server commands
 
-# Routing changes
-* The drawbridge is now open by default, and doesn't require you to visit the demon twins
-* Amadeus Laboratory now requires keycard B to open
+# Routing Changes
+* The drawbridge is now open by default, and doesn't require you to visit the Demon Twins in Lake Serene.
+* Amadeus' Laboratory now requires keycard B to open
 * To prevent players from getting stuck in the past when items are still available in the present, the transition room next to the refugee camp can now be used to freely travel back and forth between past and present
-* When you obtain the pyramid keys, a random transition room is unlocked that could open new routing opportunities
+* When you obtain the pyramid keys, a random transition room is unlocked that could open new routing opportunities.
 * When using the "Gyre Archives" flag, locations from the Temporal Gyre are accessible from the present. The main loop can be reached in the Military Hangar after clearing the past, Ifrit can be reached by aquiring Kobo and proceeding to the portrait room in the Library, while Ravenlord can be reached by aquiring Merchant Crow and proceeding to the room in Amadeus' Laboratory containing the Historical Archives
 
 # Safety Checks
@@ -76,19 +76,20 @@ Certain considerations were taken as anti-frustration changes in the seed routin
 # Item Tracker
 The TsRandomizer.ItemTracker.exe can be used to automagicly track any progression item you obtain ingame. It can for example be used by streamers that want to display their current progression items to their viewers
 The item tracker features a few options:
-* You resize the window width to make it wider or smaller, the items will automatically align properly
+* You resize the window width to make it wider or smaller, the items will automatically align properly.
 * You can double click in the window to remove the borders
-* You can use you scroll wheel to make the window bigger of smaller
-* You can click with your right mouse button to change the background to a few per-defined backgrounds
+* You can use you scroll wheel to make the window bigger of smaller.
+* You can click with your right mouse button to change the background to a few per-defined backgrounds.
 
-# Known bugs
+# Known Bugs
 ##### I am aware of these issues, but I found them small enough not to fix at this moment
-* Orb pedestal in room before emperor always spawn even if you didn't kill him yet
+* Orb pedestal in the room before Emperor Nuvius always spawns even if you didn't kill him yet
+
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
 * Entering a door backwards with a higher level keycard will permanently open it even when specific keycards are on
 
-# Todo
-##### Things i plan on doing in the future
+# TODO
+##### Things I plan on doing in the future
 * Archipelago TODO:
   * Implement Chat UI
   * Change save game menu to make AP seeds more clear like adding player name & server (optionally)
@@ -96,7 +97,7 @@ The item tracker features a few options:
 	* Implement skin selection
 
 # Ideas
-##### Ideas that may never happen but i think will be fun when they are implemented
+##### Ideas that may never happen but I think will be fun when they are implemented:
 * Randomize quest items
 * Randomize enemies
 * Randomize shop(s)
