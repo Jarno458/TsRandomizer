@@ -59,12 +59,9 @@ namespace TsRandomizer.Screens.SeedSettings
 			menuEntryList.Add(otherMenu.AsTimeSpinnerMenuEntry());
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = menuEntryList;
+			// ((object)Dynamic._selectedMenuCollection).AsDynamic()._entries = menuEntryList;
+			
 			Dynamic._subMenuCollections = menuCollectionList;
-		}
-
-		public SeedSettingsScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
-		{
-			seedSelectionScreen = screenManager.FirstOrDefault<SeedSelectionMenuScreen>();
 		}
 
 		public static GameScreen Create(ScreenManager screenManager, SeedOptionsCollection options)
