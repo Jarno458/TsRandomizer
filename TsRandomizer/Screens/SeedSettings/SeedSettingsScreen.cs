@@ -37,56 +37,38 @@ namespace TsRandomizer.Screens.SeedSettings
 			Dynamic._menuTitle = "Seed Settings";
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
-			var menuCollectionList = new object[0].ToList(MenuEntryCollectionType);
-
-			/*var menus = ((IList)((object)Dynamic._primaryMenuCollection).AsDynamic()._entries)
-				.Cast<object>()
-				.ToList(MenuEntryType);*/
 
 			var scalingMenu = MenuEntry.Create("Stats", OnScalingSelected);
 			scalingMenu.AsDynamic().Description = "Settings related to player stat scaling.";
 			scalingMenu.AsDynamic().IsCenterAligned = false;
-			// scalingMenu.AsDynamic().Selected = menus[0].AsDynamic().Selected;
+			menuEntryList.Add(scalingMenu.AsTimeSpinnerMenuEntry());
 
 			var enemyMenu = MenuEntry.Create("Enemies", OnEnemiesSelected);
 			enemyMenu.Description = "Settings related to enemy placement and stats.";
 			enemyMenu.IsCenterAligned = false;
-			// scalingMenu.AsDynamic().Selected = menus[1].AsDynamic().Selected;
+			menuEntryList.Add(enemyMenu.AsTimeSpinnerMenuEntry());
 
 			var lootMenu = MenuEntry.Create("Loot", OnLootSelected);
 			lootMenu.Description = "Settings related to shop inventory and loot.";
 			lootMenu.IsCenterAligned = false;
-			// scalingMenu.AsDynamic().Selected = menus[2].AsDynamic().Selected;
+			menuEntryList.Add(lootMenu.AsTimeSpinnerMenuEntry());
 
 			var spriteMenu = MenuEntry.Create("Sprites", OnSpritesSelected, false);
 			spriteMenu.Description = "Settings related to sprite replacement.";
 			spriteMenu.IsCenterAligned = false;
-			//scalingMenu.AsDynamic().Selected = menus[3].AsDynamic().Selected;
+			menuEntryList.Add(spriteMenu.AsTimeSpinnerMenuEntry());
 
 			var otherMenu = MenuEntry.Create("Other", OnOtherSelected);
 			otherMenu.Description = "Various other settings.";
 			otherMenu.IsCenterAligned = false;
-			// scalingMenu.AsDynamic().Selected = menus[4].AsDynamic().Selected;
-
-			menuEntryList.Add(scalingMenu.AsTimeSpinnerMenuEntry());
-			menuEntryList.Add(enemyMenu.AsTimeSpinnerMenuEntry());
-			menuEntryList.Add(lootMenu.AsTimeSpinnerMenuEntry());
-			menuEntryList.Add(spriteMenu.AsTimeSpinnerMenuEntry());
 			menuEntryList.Add(otherMenu.AsTimeSpinnerMenuEntry());
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = menuEntryList;
 
-			var collections = ((IList)Dynamic._subMenuCollections)
-				.Cast<object>()
-				.ToList(MenuEntryCollectionType);
-			var bestiary = collections[4];
-
-			menuCollectionList.Add(bestiary);
-			menuCollectionList.Add(bestiary);
-			menuCollectionList.Add(bestiary);
-			menuCollectionList.Add(bestiary);
-			menuCollectionList.Add(bestiary);
+			/*
+			var menuCollectionList = new object[0].ToList(MenuEntryCollectionType);
 			Dynamic._subMenuCollections = menuCollectionList;
+			*/
 		}
 
 		public SeedSettingsScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
@@ -103,23 +85,23 @@ namespace TsRandomizer.Screens.SeedSettings
 
 		void OnScalingSelected()
 		{
-			// Dynamic._selectedMenucollection = Dynamic._subMenuCollections[0];
+			Dynamic.ChangeMenuCollection(Dynamic._memoriesInventoryCollection, true);
 		}
 		void OnEnemiesSelected()
 		{
-			// Dynamic._selectedMenucollection = Dynamic._subMenuCollections[1];
+			Dynamic.ChangeMenuCollection(Dynamic._lettersInventoryCollection, true);
 		}
 		void OnLootSelected()
 		{
-			// Dynamic._selectedMenucollection = Dynamic._subMenuCollections[2];
+			Dynamic.ChangeMenuCollection(Dynamic._filesInventoryCollection, true);
 		} 
 		void OnSpritesSelected()
 		{
-			// Dynamic._selectedMenucollection = Dynamic._subMenuCollections[3];
+			Dynamic.ChangeMenuCollection(Dynamic._bestiaryInventory, true);
 		}
 		void OnOtherSelected()
 		{
-			// Dynamic._selectedMenucollection = Dynamic._subMenuCollections[4];
+			Dynamic.ChangeMenuCollection(Dynamic._questInventory, true);
 		}
 	}
 }
