@@ -39,46 +39,38 @@ namespace TsRandomizer.Screens.SeedSettings
 			var menuEntryList = new object[0].ToList(MenuEntryType);
 			var menuCollectionList = new object[0].ToList(MenuEntryCollectionType);
 
-			/*
-			var menus = ((IList)((object)Dynamic._primaryMenuCollection).AsDynamic()._entries)
+			/*var menus = ((IList)((object)Dynamic._primaryMenuCollection).AsDynamic()._entries)
 				.Cast<object>()
-				.ToList(MenuEntryType);
-			var placeHolderMenu = menus[4];
+				.ToList(MenuEntryType);*/
 
-			placeHolderMenu.AsDynamic().Text = "Stats";
-			menuEntryList.Add(placeHolderMenu);
-			placeHolderMenu.AsDynamic().Text = "Enemies";
-			menuEntryList.Add(placeHolderMenu);
-			placeHolderMenu.AsDynamic().Text = "Shops";
-			menuEntryList.Add(placeHolderMenu);
-			placeHolderMenu.AsDynamic().Text = "Sprites";
-			menuEntryList.Add(placeHolderMenu);
-			placeHolderMenu.AsDynamic().Text = "Other";
-			menuEntryList.Add(placeHolderMenu);*/
-
-			var scalingMenu = MenuEntry.Create("Stats", () => { });
-			scalingMenu.AsDynamic().Description = "Settings related to stat scaling.";
+			var scalingMenu = MenuEntry.Create("Stats", OnScalingSelected);
+			scalingMenu.AsDynamic().Description = "Settings related to player stat scaling.";
 			scalingMenu.AsDynamic().IsCenterAligned = false;
+			// scalingMenu.AsDynamic().Selected = menus[0].AsDynamic().Selected;
 
-			var enemyMenu = MenuEntry.Create("Enemies", () => { });
-			enemyMenu.Description = "Settings related to enemy placement and drops.";
+			var enemyMenu = MenuEntry.Create("Enemies", OnEnemiesSelected);
+			enemyMenu.Description = "Settings related to enemy placement and stats.";
 			enemyMenu.IsCenterAligned = false;
+			// scalingMenu.AsDynamic().Selected = menus[1].AsDynamic().Selected;
 
-			var shopMenu = MenuEntry.Create("Shops", () => { });
-			shopMenu.Description = "Settings related to shop inventory.";
-			shopMenu.IsCenterAligned = false;
+			var lootMenu = MenuEntry.Create("Loot", OnLootSelected);
+			lootMenu.Description = "Settings related to shop inventory and loot.";
+			lootMenu.IsCenterAligned = false;
+			// scalingMenu.AsDynamic().Selected = menus[2].AsDynamic().Selected;
 
-			var spriteMenu = MenuEntry.Create("Sprites", () => { }, false);
+			var spriteMenu = MenuEntry.Create("Sprites", OnSpritesSelected, false);
 			spriteMenu.Description = "Settings related to sprite replacement.";
 			spriteMenu.IsCenterAligned = false;
+			//scalingMenu.AsDynamic().Selected = menus[3].AsDynamic().Selected;
 
-			var otherMenu = MenuEntry.Create("Other", () => { });
+			var otherMenu = MenuEntry.Create("Other", OnOtherSelected);
 			otherMenu.Description = "Various other settings.";
 			otherMenu.IsCenterAligned = false;
+			// scalingMenu.AsDynamic().Selected = menus[4].AsDynamic().Selected;
 
 			menuEntryList.Add(scalingMenu.AsTimeSpinnerMenuEntry());
 			menuEntryList.Add(enemyMenu.AsTimeSpinnerMenuEntry());
-			menuEntryList.Add(shopMenu.AsTimeSpinnerMenuEntry());
+			menuEntryList.Add(lootMenu.AsTimeSpinnerMenuEntry());
 			menuEntryList.Add(spriteMenu.AsTimeSpinnerMenuEntry());
 			menuEntryList.Add(otherMenu.AsTimeSpinnerMenuEntry());
 
@@ -105,7 +97,29 @@ namespace TsRandomizer.Screens.SeedSettings
 		public static GameScreen Create(ScreenManager screenManager, SeedOptionsCollection options)
 		{
 			void Noop() { }
-			return (GameScreen)Activator.CreateInstance(JournalMenuType, GameSave.DemoSave, screenManager.Dynamic.GCM, (Action)Noop);
+			GameSave save = GameSave.EditorSave;
+			return (GameScreen)Activator.CreateInstance(JournalMenuType, save, screenManager.Dynamic.GCM, (Action)Noop);
+		}
+
+		void OnScalingSelected()
+		{
+			// Dynamic._selectedMenucollection = Dynamic._subMenuCollections[0];
+		}
+		void OnEnemiesSelected()
+		{
+			// Dynamic._selectedMenucollection = Dynamic._subMenuCollections[1];
+		}
+		void OnLootSelected()
+		{
+			// Dynamic._selectedMenucollection = Dynamic._subMenuCollections[2];
+		} 
+		void OnSpritesSelected()
+		{
+			// Dynamic._selectedMenucollection = Dynamic._subMenuCollections[3];
+		}
+		void OnOtherSelected()
+		{
+			// Dynamic._selectedMenucollection = Dynamic._subMenuCollections[4];
 		}
 	}
 }
