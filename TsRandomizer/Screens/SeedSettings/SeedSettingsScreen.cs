@@ -10,7 +10,7 @@ using TsRandomizer.Screens.Menu;
 using TsRandomizer.Screens.SeedSelection;
 
 
-namespace TsRandomizer.Screens
+namespace TsRandomizer.Screens.SeedSettings
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.JournalMenuScreen")]
 	// ReSharper disable once UnusedMember.Global
@@ -60,7 +60,6 @@ namespace TsRandomizer.Screens
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = menuEntryList;
 			Dynamic._subMenuCollections = menuCollectionList;
-
 		}
 
 		public SeedSettingsScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
