@@ -32,9 +32,13 @@ namespace TsRandomizer.LevelObjects.Other
 			if (fillType == "Random")
 			{
 				Random random = new Random(options.GetHashCode());
-				for (int i = 0; i < 6; i++)
+				for (int i = 0; i < 8; i++)
 				{
 					var item = Helper.GetAllLoot().SelectRandom(random);
+					// Give half of the items to each era. Needs to be done after the random advances
+					// to keep the inventory consistent for the seed
+					if ((Dynamic._isInPresent && (i % 2 == 0) || !Dynamic._isInPresent && (i % 2 != 0)))
+						continue;
 					if (item.LootType == LootType.Equipment)
 						_merchandiseInventory.AddItem((EInventoryEquipmentType)item.ItemId);
 					else

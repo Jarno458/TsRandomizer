@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
@@ -9,8 +10,6 @@ using TsRandomizer.Randomisation;
 using TsRandomizer.Screens.Menu;
 using TsRandomizer.Screens.SeedSelection;
 using TsRandomizer.Screens.Settings;
-
-using System.Collections;
 
 
 namespace TsRandomizer.Screens.SeedSettings
@@ -119,7 +118,7 @@ namespace TsRandomizer.Screens.SeedSettings
 		{
 			var collection = FetchCollection("Loot");
 			var submenu = (IList)collection.AsDynamic()._entries;
-			GameSetting[] settings = new GameSetting[] { gameSettings.ShopFill };
+			GameSetting[] settings = new GameSetting[] { gameSettings.ShopMultiplier, gameSettings.ShopFill };
 			foreach (GameSetting setting in settings)
 			{
 				var menuEntry = MenuEntry.Create(setting.Name, () => { }).AsTimeSpinnerMenuEntry();
