@@ -41,30 +41,34 @@ namespace TsRandomizer.Screens.Settings
 			gameSettings.LoadSettingsFromFile();
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
+			GameSetting[] settings;
 
-			var scalingMenu = MenuEntry.Create("Stats", OnScalingSelected);
+			settings = new GameSetting[] { };
+			var scalingMenu = MenuEntry.Create("Stats", CreateMenuForCategory("Stats", settings));
 			scalingMenu.AsDynamic().Description = "Settings related to player stat scaling.";
 			scalingMenu.AsDynamic().IsCenterAligned = false;
 			menuEntryList.Add(scalingMenu.AsTimeSpinnerMenuEntry());
 
-			var scalingSubmenu = Dynamic._memoriesInventoryCollection;
-
-			var enemyMenu = MenuEntry.Create("Enemies", OnEnemiesSelected);
+			settings = new GameSetting[] { };
+			var enemyMenu = MenuEntry.Create("Enemies", CreateMenuForCategory("Enemies", settings));
 			enemyMenu.Description = "Settings related to enemy placement and stats.";
 			enemyMenu.IsCenterAligned = false;
 			menuEntryList.Add(enemyMenu.AsTimeSpinnerMenuEntry());
 
-			var lootMenu = MenuEntry.Create("Loot", OnLootSelected);
+			settings = new GameSetting[] { gameSettings.ShopMultiplier, gameSettings.ShopFill };
+			var lootMenu = MenuEntry.Create("Loot", CreateMenuForCategory("Loot", settings));
 			lootMenu.Description = "Settings related to shop inventory and loot.";
 			lootMenu.IsCenterAligned = false;
 			menuEntryList.Add(lootMenu.AsTimeSpinnerMenuEntry());
 
-			var spriteMenu = MenuEntry.Create("Sprites", OnSpritesSelected, false);
+			settings = new GameSetting[] { };
+			var spriteMenu = MenuEntry.Create("Sprites", CreateMenuForCategory("Sprites", settings), false);
 			spriteMenu.Description = "Settings related to sprite replacement.";
 			spriteMenu.IsCenterAligned = false;
 			menuEntryList.Add(spriteMenu.AsTimeSpinnerMenuEntry());
 
-			var otherMenu = MenuEntry.Create("Other", OnOtherSelected);
+			settings = new GameSetting[] { gameSettings.PlayerName, gameSettings.StartWithMeyef, gameSettings.StartWithJewelryBox };
+			var otherMenu = MenuEntry.Create("Other", CreateMenuForCategory("Other", settings));
 			otherMenu.Description = "Various other settings.";
 			otherMenu.IsCenterAligned = false;
 			menuEntryList.Add(otherMenu.AsTimeSpinnerMenuEntry());
@@ -84,62 +88,19 @@ namespace TsRandomizer.Screens.Settings
 			return (GameScreen)Activator.CreateInstance(JournalMenuType, save, screenManager.Dynamic.GCM, (Action)Noop);
 		}
 
-		void OnScalingSelected()
+		Action CreateMenuForCategory(string category, GameSetting[] settings)
 		{
-			var collection = FetchCollection("Stats");
-			var submenu = (IList)collection.AsDynamic()._entries;
-			GameSetting[] settings = new GameSetting[] { };
-			foreach (GameSetting setting in settings)
+			void CreateMenu()
 			{
-				submenu.Add(CreateMenuForSetting(setting));
+				var collection = FetchCollection(category);
+				var submenu = (IList)collection.AsDynamic()._entries;
+				foreach (GameSetting setting in settings)
+				{
+					submenu.Add(CreateMenuForSetting(setting));
+				}
+				Dynamic.ChangeMenuCollection(Dynamic._bestiaryInventory, true);
 			}
-			Dynamic.ChangeMenuCollection(Dynamic._bestiaryInventory, true);
-		}
-		void OnEnemiesSelected()
-		{
-			var collection = FetchCollection("Enemies");
-			var submenu = (IList)collection.AsDynamic()._entries;
-			GameSetting[] settings = new GameSetting[] { };
-			foreach (GameSetting setting in settings)
-			{
-				submenu.Add(CreateMenuForSetting(setting));
-			}
-			Dynamic.ChangeMenuCollection(collection, true);
-		}
-		void OnLootSelected()
-		{
-			var collection = FetchCollection("Loot");
-			var submenu = (IList)collection.AsDynamic()._entries;
-			GameSetting[] settings = new GameSetting[] { gameSettings.ShopMultiplier, gameSettings.ShopFill };
-			foreach (GameSetting setting in settings)
-			{
-				submenu.Add(CreateMenuForSetting(setting));
-			}
-			Dynamic.ChangeMenuCollection(collection, true);
-		}
-		void OnOtherSelected()
-		{
-			var collection = FetchCollection("Other");
-			var submenu = (IList)collection.AsDynamic()._entries;
-
-			GameSetting[] settings = new GameSetting[] { gameSettings.PlayerName, gameSettings.StartWithMeyef, gameSettings.StartWithJewelryBox };
-			foreach (GameSetting setting in settings)
-			{
-				submenu.Add(CreateMenuForSetting(setting));
-			}
-
-			Dynamic.ChangeMenuCollection(collection, true);
-		}
-		void OnSpritesSelected()
-		{
-			var collection = FetchCollection("Sprite");
-			var submenu = (IList)collection.AsDynamic()._entries;
-			GameSetting[] settings = new GameSetting[] { };
-			foreach (GameSetting setting in settings)
-			{
-				submenu.Add(CreateMenuForSetting(setting));
-			}
-			Dynamic.ChangeMenuCollection(collection, true);
+			return CreateMenu;
 		}
 
 		object CreateMenuForSetting(GameSetting setting)
