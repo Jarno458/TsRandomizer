@@ -113,7 +113,6 @@
     <Compile Include="Extensions\TextReplacer.cs" />
     <Compile Include="LevelObjects\Other\MerchantCrowNPC.cs" />
     <Compile Include="LevelObjects\Other\NightmareBoss.cs" />
-    <Compile Include="Randomisation\BossManager.cs" />
     <Compile Include="Randomisation\ExteralItemLocation.cs" />
     <Compile Include="Archipelago\Log.cs" />
     <Compile Include="Archipelago\Client.cs" />
