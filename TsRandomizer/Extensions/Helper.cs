@@ -44,7 +44,7 @@ namespace TsRandomizer.Extensions
 			List<ItemIdentifier> loot = new List<ItemIdentifier>();
 			foreach (EInventoryUseItemType item in useItems)
 				loot.Add(new ItemIdentifier(item));
-			foreach (EInventoryUseItemType item in equipment)
+			foreach (EInventoryEquipmentType item in equipment)
 				loot.Add(new ItemIdentifier(item));
 			return loot;
 		}
