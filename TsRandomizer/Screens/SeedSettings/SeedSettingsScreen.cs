@@ -10,6 +10,7 @@ using TsRandomizer.Randomisation;
 using TsRandomizer.Screens.Menu;
 using TsRandomizer.Screens.SeedSelection;
 using TsRandomizer.Screens.Settings;
+using TsRandomizer.Screens.Settings.GameSettingObjects;
 
 
 namespace TsRandomizer.Screens.SeedSettings
@@ -91,11 +92,7 @@ namespace TsRandomizer.Screens.SeedSettings
 			GameSetting[] settings = new GameSetting[] { };
 			foreach (GameSetting setting in settings)
 			{
-				var menuEntry = MenuEntry.Create(setting.Name, () => { }).AsTimeSpinnerMenuEntry();
-				menuEntry.AsDynamic().IsCenterAligned = false;
-				menuEntry.AsDynamic().Text = $"{setting.Name} - {setting.CurrentValue}";
-				menuEntry.AsDynamic().Description = setting.Description;
-				submenu.Add(menuEntry);
+				submenu.Add(CreateMenuForSetting(setting));
 			}
 			Dynamic.ChangeMenuCollection(Dynamic._bestiaryInventory, true);
 		}
@@ -106,11 +103,7 @@ namespace TsRandomizer.Screens.SeedSettings
 			GameSetting[] settings = new GameSetting[] { };
 			foreach (GameSetting setting in settings)
 			{
-				var menuEntry = MenuEntry.Create(setting.Name, () => { }).AsTimeSpinnerMenuEntry();
-				menuEntry.AsDynamic().IsCenterAligned = false;
-				menuEntry.AsDynamic().Text = $"{setting.Name} - {setting.CurrentValue}";
-				menuEntry.AsDynamic().Description = setting.Description;
-				submenu.Add(menuEntry);
+				submenu.Add(CreateMenuForSetting(setting));
 			}
 			Dynamic.ChangeMenuCollection(collection, true);
 		}
@@ -121,11 +114,7 @@ namespace TsRandomizer.Screens.SeedSettings
 			GameSetting[] settings = new GameSetting[] { gameSettings.ShopMultiplier, gameSettings.ShopFill };
 			foreach (GameSetting setting in settings)
 			{
-				var menuEntry = MenuEntry.Create(setting.Name, () => { }).AsTimeSpinnerMenuEntry();
-				menuEntry.AsDynamic().IsCenterAligned = false;
-				menuEntry.AsDynamic().Text = $"{setting.Name} - {setting.CurrentValue}";
-				menuEntry.AsDynamic().Description = setting.Description;
-				submenu.Add(menuEntry);
+				submenu.Add(CreateMenuForSetting(setting));
 			}
 			Dynamic.ChangeMenuCollection(collection, true);
 		}
@@ -137,11 +126,7 @@ namespace TsRandomizer.Screens.SeedSettings
 			GameSetting[] settings = new GameSetting[] { gameSettings.PlayerName, gameSettings.StartWithMeyef, gameSettings.StartWithJewelryBox };
 			foreach (GameSetting setting in settings)
 			{
-				var menuEntry = MenuEntry.Create(setting.Name, () => { }).AsTimeSpinnerMenuEntry();
-				menuEntry.AsDynamic().IsCenterAligned = false;
-				menuEntry.AsDynamic().Text = $"{setting.Name} - {setting.CurrentValue}";
-				menuEntry.AsDynamic().Description = setting.Description;
-				submenu.Add(menuEntry);
+				submenu.Add(CreateMenuForSetting(setting));
 			}
 
 			Dynamic.ChangeMenuCollection(collection, true);
@@ -153,13 +138,20 @@ namespace TsRandomizer.Screens.SeedSettings
 			GameSetting[] settings = new GameSetting[] { };
 			foreach (GameSetting setting in settings)
 			{
-				var menuEntry = MenuEntry.Create(setting.Name, () => { }).AsTimeSpinnerMenuEntry();
-				menuEntry.AsDynamic().IsCenterAligned = false;
-				menuEntry.AsDynamic().Text = $"{setting.Name} - {setting.CurrentValue}";
-				menuEntry.AsDynamic().Description = setting.Description;
-				submenu.Add(menuEntry);
+				submenu.Add(CreateMenuForSetting(setting));
 			}
 			Dynamic.ChangeMenuCollection(collection, true);
+		}
+
+		object CreateMenuForSetting(GameSetting setting)
+		{
+			var menuEntry = MenuEntry.Create(setting.Name, () => { }).AsTimeSpinnerMenuEntry();
+			menuEntry.AsDynamic().IsCenterAligned = false;
+			var currentValue = !(setting is OnOffGameSetting) ? setting.CurrentValue : setting.CurrentValue ? "On" : "Off";
+			menuEntry.AsDynamic().Text = $"{setting.Name} - {currentValue}";
+			menuEntry.AsDynamic().Description = setting.Description;
+
+			return menuEntry;
 		}
 
 		object FetchCollection(string submenu)
