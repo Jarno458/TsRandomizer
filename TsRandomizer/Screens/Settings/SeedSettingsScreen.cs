@@ -41,37 +41,15 @@ namespace TsRandomizer.Screens.Settings
 			gameSettings.LoadSettingsFromFile();
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
-			GameSetting[] settings;
-
-			settings = new GameSetting[] { };
-			var scalingMenu = MenuEntry.Create("Stats", CreateMenuForCategory("Stats", settings));
-			scalingMenu.AsDynamic().Description = "Settings related to player stat scaling.";
-			scalingMenu.AsDynamic().IsCenterAligned = false;
-			menuEntryList.Add(scalingMenu.AsTimeSpinnerMenuEntry());
-
-			settings = new GameSetting[] { };
-			var enemyMenu = MenuEntry.Create("Enemies", CreateMenuForCategory("Enemies", settings));
-			enemyMenu.Description = "Settings related to enemy placement and stats.";
-			enemyMenu.IsCenterAligned = false;
-			menuEntryList.Add(enemyMenu.AsTimeSpinnerMenuEntry());
-
-			settings = new GameSetting[] { gameSettings.ShopMultiplier, gameSettings.ShopFill };
-			var lootMenu = MenuEntry.Create("Loot", CreateMenuForCategory("Loot", settings));
-			lootMenu.Description = "Settings related to shop inventory and loot.";
-			lootMenu.IsCenterAligned = false;
-			menuEntryList.Add(lootMenu.AsTimeSpinnerMenuEntry());
-
-			settings = new GameSetting[] { };
-			var spriteMenu = MenuEntry.Create("Sprites", CreateMenuForCategory("Sprites", settings), false);
-			spriteMenu.Description = "Settings related to sprite replacement.";
-			spriteMenu.IsCenterAligned = false;
-			menuEntryList.Add(spriteMenu.AsTimeSpinnerMenuEntry());
-
-			settings = new GameSetting[] { gameSettings.PlayerName, gameSettings.StartWithMeyef, gameSettings.StartWithJewelryBox };
-			var otherMenu = MenuEntry.Create("Other", CreateMenuForCategory("Other", settings));
-			otherMenu.Description = "Various other settings.";
-			otherMenu.IsCenterAligned = false;
-			menuEntryList.Add(otherMenu.AsTimeSpinnerMenuEntry());
+	
+			SeedSettingsCategoryCollection categories = new SeedSettingsCategoryCollection();
+			foreach (SeedSettingCategoryInfo category in categories.SettingCategories)
+			{
+				var submenu = MenuEntry.Create(category.Name, CreateMenuForCategory(category));
+				submenu.AsDynamic().Description = category.Description;
+				submenu.AsDynamic().IsCenterAligned = false;
+				menuEntryList.Add(submenu.AsTimeSpinnerMenuEntry());
+			}
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = menuEntryList;
 		}
@@ -88,13 +66,13 @@ namespace TsRandomizer.Screens.Settings
 			return (GameScreen)Activator.CreateInstance(JournalMenuType, save, screenManager.Dynamic.GCM, (Action)Noop);
 		}
 
-		Action CreateMenuForCategory(string category, GameSetting[] settings)
+		Action CreateMenuForCategory(SeedSettingCategoryInfo category)
 		{
 			void CreateMenu()
 			{
-				var collection = FetchCollection(category);
+				var collection = FetchCollection(category.Name);
 				var submenu = (IList)collection.AsDynamic()._entries;
-				foreach (GameSetting setting in settings)
+				foreach (GameSetting setting in category.Settings)
 				{
 					submenu.Add(CreateMenuForSetting(setting));
 				}
