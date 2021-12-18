@@ -40,6 +40,7 @@ namespace TsRandomizer.LevelObjects.Other
 					else
 						_merchandiseInventory.AddItem((EInventoryUseItemType)item.ItemId);
 				}
+				Dynamic._merchandiseInventory = _merchandiseInventory;
 				return;
 			}
 
