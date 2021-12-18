@@ -32,7 +32,7 @@ namespace TsRandomizer.LevelObjects.Other
 			if (fillType == "Random")
 			{
 				Random random = new Random(options.GetHashCode());
-				for (int i = 0; i < 5; i++)
+				for (int i = 0; i < 6; i++)
 				{
 					var item = Helper.GetAllLoot().SelectRandom(random);
 					if (item.LootType == LootType.Equipment)
@@ -40,7 +40,7 @@ namespace TsRandomizer.LevelObjects.Other
 					else
 						_merchandiseInventory.AddItem((EInventoryUseItemType)item.ItemId);
 				}
-				
+				return;
 			}
 
 			// Default case, streamlined inventory for randomizer players
