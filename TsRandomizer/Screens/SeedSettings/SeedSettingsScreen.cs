@@ -8,6 +8,7 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens.Menu;
 using TsRandomizer.Screens.SeedSelection;
+using TsRandomizer.Screens.Settings;
 
 using System.Collections;
 
@@ -26,6 +27,7 @@ namespace TsRandomizer.Screens.SeedSettings
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.PauseMenu.JournalMenuScreen");
 
 		readonly SeedSelectionMenuScreen seedSelectionScreen;
+		GameSettingsCollection gameSettings = new GameSettingsCollection();
 
 		bool IsUsedAsSeedSettingsMenu => seedSelectionScreen != null;
 
@@ -37,6 +39,7 @@ namespace TsRandomizer.Screens.SeedSettings
 			// Default order is Memories, Letters, Files, Quests, Bestiary, Feats
 			Dynamic._menuTitle = "Seed Settings";
 			ClearAllSubmenus();
+			gameSettings.LoadSettingsFromFile();
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
 
@@ -116,10 +119,17 @@ namespace TsRandomizer.Screens.SeedSettings
 		{
 			var collection = FetchCollection("Other");
 			var submenu = (IList)collection.AsDynamic()._entries;
-			var menuEntry = MenuEntry.Create("Placeholder Entry", () => { }).AsTimeSpinnerMenuEntry();
-			menuEntry.AsDynamic().IsCenterAligned = false;
-			menuEntry.AsDynamic().Description = "A setting that does something";
-			submenu.Add(menuEntry);
+
+			GameSetting[] settings = new GameSetting[] { gameSettings.PlayerName, gameSettings.StartWithMeyef, gameSettings.StartWithJewelryBox };
+			foreach (GameSetting setting in settings)
+			{
+				var menuEntry = MenuEntry.Create(setting.Name, () => { }).AsTimeSpinnerMenuEntry();
+				menuEntry.AsDynamic().IsCenterAligned = false;
+				menuEntry.AsDynamic().Text = $"{setting.Name} - {setting.CurrentValue}";
+				menuEntry.AsDynamic().Description = setting.Description;
+				submenu.Add(menuEntry);
+			}
+
 			Dynamic.ChangeMenuCollection(collection, true);
 		}
 		void OnSpritesSelected()
