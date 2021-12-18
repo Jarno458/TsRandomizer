@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
+using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Heroes;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -15,9 +16,9 @@ namespace TsRandomizer.Randomisation
 		public int MaxValue;
 	}
 
-    static class OrbDamageManager
-    {		
-        public static Dictionary<int, int> OrbDamageLookup = new Dictionary<int, int>();
+	static class OrbDamageManager
+	{
+		public static Dictionary<int, int> OrbDamageLookup = new Dictionary<int, int>();
 
 		private static OrbDamageRange GetOrbDamageOptions(EInventoryOrbType orbType)
 		{
@@ -48,20 +49,20 @@ namespace TsRandomizer.Randomisation
 			var options = GetOrbDamageOptions(orbType);
 			int newDamage;
 			switch (damageSelection)
-            {
-				case int o when (o <= 4): 
+			{
+				case int o when (o <= 4):
 					newDamage = options.MinValue;
 					OverrideOrbNames(orbType, "(-)");
 					break;
-				case int o when (o >= 5 && o <= 7): 
+				case int o when (o >= 5 && o <= 7):
 					newDamage = options.MidValue;
 					break;
-				default: 
+				default:
 					newDamage = options.MaxValue;
 					OverrideOrbNames(orbType, "(+)");
 					break;
 
-            }
+			}
 			if (!OrbDamageLookup.ContainsKey((int)orbType))
 			{
 				OrbDamageLookup.Add((int)orbType, newDamage);
@@ -69,7 +70,7 @@ namespace TsRandomizer.Randomisation
 		}
 
 		public static void OverrideOrbNames(EInventoryOrbType orbType, string suffix)
-        {
+		{
 			var Localizer = TimeSpinnerGame.Localizer;
 			string locKey = $"inv_orb_{orbType}";
 			string spellLocKey = $"{locKey}_spell";
@@ -77,34 +78,34 @@ namespace TsRandomizer.Randomisation
 			string actualOrbName = new InventoryOrb(orbType).Name;
 			string actualSpellName = new InventoryOrb(orbType).AsDynamic().SpellName;
 			string actualRingName = new InventoryOrb(orbType).AsDynamic().PassiveName;
-			if(!actualOrbName.EndsWith(suffix))
+			if (!actualOrbName.EndsWith(suffix))
 				Localizer.OverrideKey(locKey, $"{actualOrbName} {suffix}");
-			if(!actualSpellName.EndsWith(suffix))
+			if (!actualSpellName.EndsWith(suffix))
 				Localizer.OverrideKey(spellLocKey, $"{actualSpellName} {suffix}");
-			if(!actualRingName.EndsWith(suffix))
+			if (!actualRingName.EndsWith(suffix))
 				Localizer.OverrideKey(ringLocKey, $"{actualRingName} {suffix}");
 		}
 
 		public static void PopulateOrbLookups(GameSave save)
-        {
+		{
 			OrbDamageLookup.Clear();
 			var random = new Random((int)save.GetSeed().Value.Id);
-			foreach(EInventoryOrbType orbType in Enum.GetValues(typeof(EInventoryOrbType)))
-            {
+			foreach (EInventoryOrbType orbType in Enum.GetValues(typeof(EInventoryOrbType)))
+			{
 				int damageSelection = random.Next(0, 9);
 				RandomizeOrb(orbType, damageSelection);
 				var orbInventory = save.Inventory.OrbInventory.Inventory;
 				if (orbInventory.ContainsKey((int)orbType))
 					SetOrbBaseDamage(orbInventory[(int)orbType]);
 			}
-        }
+		}
 
 		public static void SetOrbBaseDamage(InventoryOrb orb)
 		{
-			if(OrbDamageLookup.TryGetValue((int)orb.OrbType, out int storedOrbDamage))
-            {
+			if (OrbDamageLookup.TryGetValue((int)orb.OrbType, out int storedOrbDamage))
+			{
 				orb.BaseDamage = storedOrbDamage;
-			}	
+			}
 		}
 
 		public static void UpdateOrbDamage(GameSave save, Protagonist lunais)
@@ -117,15 +118,30 @@ namespace TsRandomizer.Randomisation
 			var currentOrbBType = inventory.EquippedMeleeOrbB;
 			var currentSpellType = inventory.EquippedSpellOrb;
 			var currentRingType = inventory.EquippedPassiveOrb;
-			var orbA = inventory.OrbInventory.GetItem((int)currentOrbAType);
-			var orbB = inventory.OrbInventory.GetItem((int)currentOrbBType);
-			var spell = inventory.OrbInventory.GetItem((int)currentSpellType);
-			var ring = inventory.OrbInventory.GetItem((int)currentRingType);
+			var orbA = GetOrbFromType(inventory.OrbInventory, currentOrbAType);
+			var orbB = GetOrbFromType(inventory.OrbInventory, currentOrbBType);
+			var spell = GetOrbFromType(inventory.OrbInventory, currentSpellType);
+			var ring = GetOrbFromType(inventory.OrbInventory, currentRingType);
 			if (orbA != null) SetOrbBaseDamage(orbA);
 			if (orbB != null) SetOrbBaseDamage(orbB);
 			if (spell != null) SetOrbBaseDamage(spell);
 			if (ring != null) SetOrbBaseDamage(ring);
 			RefreshDamage.Invoke(orbManager, null);
+		}
+
+		private static InventoryOrb GetOrbFromType(InventoryOrbCollection inventory, EInventoryOrbType orbType)
+		{
+			return inventory.GetItem((int)orbType);
+		}
+
+		public static void AddMoreOrbXP(GameSave save, EInventoryOrbType orbType, double amount)
+		{
+			var orb = GetOrbFromType(save.Inventory.OrbInventory, orbType);
+			var extraXP = amount - 1;
+			if (save.Inventory.EquippedTrinketA == EInventoryEquipmentType.NelisteEarring
+				|| save.Inventory.EquippedTrinketB == EInventoryEquipmentType.NelisteEarring)
+				extraXP = extraXP * 2;
+			orb.Experience += ((int)extraXP);
 		}
 	}
 }

@@ -15,6 +15,7 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.ReplacementObjects;
 using TsRandomizer.Screens;
+using TsRandomizer.Screens.Settings;
 
 namespace TsRandomizer.LevelObjects
 {
@@ -35,7 +36,12 @@ namespace TsRandomizer.LevelObjects
 		static readonly Dictionary<Type, Type> RegisteredTypes = new Dictionary<Type, Type>(); //ObjectType, EventHandler
 		static readonly Dictionary<EEventTileType, AlwaysSpawnAttribute> AlwaysSpawningEventTypes = new Dictionary<EEventTileType, AlwaysSpawnAttribute>(); //EEventTileType, SpawnerMethod
 		static readonly List<int> KnownItemIds = new List<int>();
-		
+		static readonly List<int> KnownEnemies = new List<int>();
+		static HashSet<int> MainOrbHits = new HashSet<int>();
+		static HashSet<int> SubOrbHits = new HashSet<int>();
+		static HashSet<int> SpellHits = new HashSet<int>();
+		static HashSet<int> RingHits = new HashSet<int>();
+
 		public readonly dynamic Dynamic;
 
 		public Level Level => (Level)Dynamic?._level;
@@ -91,21 +97,22 @@ namespace TsRandomizer.LevelObjects
 		}
 
 		public static void AwardFirstFrameItem(Dictionary<int, Item> itemDictionary, Protagonist lunais)
-        {
-            //sometimes lunais picks up an item because she's intersecting with it as the screen loads, or right as it drops.
-            //that doesn't give the replacer enough time to replace the item. But she deserves it. You deserve it.
-            foreach (var item in itemDictionary)
-            {
-				if (item.Value.Bbox.Intersects(lunais.Bbox)) item.Value.GetItem(lunais);				
-            }
-        }
+		{
+			//sometimes lunais picks up an item because she's intersecting with it as the screen loads, or right as it drops.
+			//that doesn't give the replacer enough time to replace the item. But she deserves it. You deserve it.
+			foreach (var item in itemDictionary)
+			{
+				if (item.Value.Bbox.Intersects(lunais.Bbox)) item.Value.GetItem(lunais);
+			}
+		}
 
 		public static void Update(
 			Level level, GameplayScreen gameplayScreen, ItemLocationMap itemLocations,
-			bool roomChanged, SeedOptions seedOptions, ScreenManager screenManager)
+			bool roomChanged, SeedOptions seedOptions, GameSettingsCollection gameSettings,
+			ScreenManager screenManager)
 		{
 			if (roomChanged)
-				OnChangeRoom(level, itemLocations, seedOptions, screenManager);
+				OnChangeRoom(level, itemLocations, seedOptions, gameSettings, screenManager);
 			else
 				itemLocations.Update(level);
 
@@ -122,7 +129,7 @@ namespace TsRandomizer.LevelObjects
 			}
 
 			var itemsDictionary = (Dictionary<int, Item>)levelReflected._items;
-				
+
 			var currentItemIds = itemsDictionary.Keys;
 			var newItems = currentItemIds
 				.Except(KnownItemIds)
@@ -134,9 +141,14 @@ namespace TsRandomizer.LevelObjects
 
 			var lunais = level.MainHero;
 			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
-			
-			if(seedOptions.DamageRando)
+
+			if (gameSettings.DamageRando.CurrentValue)
 				OrbDamageManager.UpdateOrbDamage(level.GameSave, level.MainHero);
+
+			if (gameSettings.OrbXPMultiplier.CurrentValue != gameSettings.OrbXPMultiplier.DefaultValue)
+			{
+				HandleOrbXP(level, lunais, (Dictionary<int, Monster>)levelReflected._enemies, gameSettings.OrbXPMultiplier.CurrentValue);
+			}
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
@@ -148,7 +160,7 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.AddConcussion();
 		}
 
-		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, SeedOptions seedOptions, ScreenManager screenManager)
+		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, SeedOptions seedOptions, GameSettingsCollection gameSettings, ScreenManager screenManager)
 		{
 #if DEBUG
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.Dash));
@@ -159,25 +171,31 @@ namespace TsRandomizer.LevelObjects
 
 			Objects.Clear();
 			KnownItemIds.Clear();
+			KnownEnemies.Clear();
+			MainOrbHits.Clear();
+			SubOrbHits.Clear();
+			SpellHits.Clear();
+			RingHits.Clear();
 
 			IEnumerable<Animate> eventObjects = levelReflected._levelEvents.Values;
 			IEnumerable<Animate> npcs = levelReflected.NPCs.Values;
 			IEnumerable<Animate> enemies = levelReflected._enemies.Values;
+			IEnumerable<Animate> bosses = enemies.Where(e => BossManager.BossTypes.Contains(e.GetType()));
 
 			SetMonsterHpTo1(levelReflected._enemies.Values);
-			
+
 			var objects = eventObjects
 				.Concat(npcs)
 				.Concat(enemies)
 				.ToList();
 
 			RoomTrigger.OnChangeRoom(
-				level, seedOptions, itemLocations, screenManager,
+				level, seedOptions, gameSettings, itemLocations, screenManager,
 				levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
-			TextReplacer.OnChangeRoom(level, seedOptions, itemLocations, 
+			TextReplacer.OnChangeRoom(level, seedOptions, itemLocations,
 				levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
 			Replaces.ReplaceObjects(level, objects);
- 			GenerateShadowObjects(itemLocations, objects, seedOptions);
+			GenerateShadowObjects(itemLocations, objects, seedOptions);
 			SpawnMissingObjects(level, levelReflected, itemLocations);
 		}
 
@@ -246,7 +264,7 @@ namespace TsRandomizer.LevelObjects
 						mobile = (GameEvent)Activator.CreateInstance(timeSpinnerType, level, point, -1, specification);
 					}
 
-					if(mobile is GameEvent gameEvent)
+					if (mobile is GameEvent gameEvent)
 						gameEvent.Initialize();
 
 					newObjects.Add(mobile);
@@ -255,6 +273,71 @@ namespace TsRandomizer.LevelObjects
 
 			foreach (var gameEvent in newObjects)
 				levelPrivate.RequestAddObject(gameEvent);
+		}
+
+		static void HandleOrbXP(Level level, Protagonist lunais, Dictionary<int, Monster> enemies, double multiplier)
+		{
+			var orbManager = lunais.AsDynamic()._orbManager;
+			var spellManager = lunais.AsDynamic()._spellManager;
+			var passiveManager = lunais.AsDynamic()._passiveManager;
+			var orbA = ((object)orbManager).AsDynamic().MainOrb;
+			var orbB = ((object)orbManager).AsDynamic().SubOrb;
+			var spell = ((object)spellManager).AsDynamic().EquippedSpell;
+			var ring = ((object)passiveManager).AsDynamic()._equippedPassive;
+
+			HashSet<int> hits;
+			if (orbA != null)
+			{
+				hits = (HashSet<int>)((object)orbA).AsDynamic()._hitEnemyRegistry;
+				MainOrbHits.UnionWith(hits);
+			}
+			if (orbB != null)
+			{
+				hits = (HashSet<int>)((object)orbB).AsDynamic()._hitEnemyRegistry;
+				SubOrbHits.UnionWith(hits);
+			}
+			if (spell != null)
+			{
+				hits = (HashSet<int>)((object)spell).AsDynamic()._hitEnemyRegistry;
+				SpellHits.UnionWith(hits);
+			}
+			if (ring != null)
+			{
+				hits = (HashSet<int>)((object)ring).AsDynamic()._hitEnemyRegistry;
+				RingHits.UnionWith(hits);
+			}
+
+			var currentEnemyIds = enemies.Keys;
+			var newlyDeads = KnownEnemies
+				.Except(currentEnemyIds)
+				.ToArray();
+
+			foreach (var deadMonster in newlyDeads)
+			{
+				if (MainOrbHits.Contains(deadMonster))
+				{
+					OrbDamageManager.AddMoreOrbXP(level.GameSave, ((object)orbA).AsDynamic().OrbColor, multiplier);
+					MainOrbHits.Remove(deadMonster);
+				}
+				if (SubOrbHits.Contains(deadMonster))
+				{
+					OrbDamageManager.AddMoreOrbXP(level.GameSave, ((object)orbB).AsDynamic().OrbColor, multiplier);
+					SubOrbHits.Remove(deadMonster);
+				}
+				if (SpellHits.Contains(deadMonster))
+				{
+					OrbDamageManager.AddMoreOrbXP(level.GameSave, ((object)spell).AsDynamic().SpellType, multiplier);
+					SpellHits.Remove(deadMonster);
+				}
+				if (RingHits.Contains(deadMonster))
+				{
+					OrbDamageManager.AddMoreOrbXP(level.GameSave, ((object)ring).AsDynamic().PassiveType, multiplier);
+					RingHits.Remove(deadMonster);
+				}
+
+			}
+			KnownEnemies.Clear();
+			KnownEnemies.AddRange(currentEnemyIds);
 		}
 
 		static void SetMonsterHpTo1(IEnumerable<Alive> monsters)

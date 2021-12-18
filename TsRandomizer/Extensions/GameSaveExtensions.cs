@@ -21,7 +21,7 @@ namespace TsRandomizer.Extensions
 		{
 			if (gameSave.DataKeyStrings.TryGetValue(SeedSaveFileKey, out var seedString)
 				&& Seed.TryParse(seedString, out var seed))
-					return seed;
+				return seed;
 
 			return null;
 		}
@@ -34,10 +34,10 @@ namespace TsRandomizer.Extensions
 
 		internal static FillingMethod GetFillingMethod(this GameSave gameSave)
 		{
-			if(!gameSave.DataKeyStrings.ContainsKey(FillMethodSaveFileKey))
+			if (!gameSave.DataKeyStrings.ContainsKey(FillMethodSaveFileKey))
 				return FillingMethod.Forward;
 
-			if(!Enum.TryParse(gameSave.DataKeyStrings[FillMethodSaveFileKey], out FillingMethod fillingMethod))
+			if (!Enum.TryParse(gameSave.DataKeyStrings[FillMethodSaveFileKey], out FillingMethod fillingMethod))
 				throw new Exception("Cannot parse filling method");
 
 			return fillingMethod;
@@ -50,7 +50,7 @@ namespace TsRandomizer.Extensions
 
 		internal static bool HasMeleeOrb(this GameSave gameSave, EInventoryOrbType orbType)
 		{
-			return gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int) orbType);
+			return gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int)orbType);
 		}
 
 		internal static bool HasFamiliar(this GameSave gameSave, EInventoryFamiliarType familiar)
@@ -65,7 +65,7 @@ namespace TsRandomizer.Extensions
 
 		internal static bool HasOrb(this GameSave gameSave, EInventoryOrbType orbType)
 		{
-			return gameSave.Inventory.OrbInventory.Inventory.ContainsKey((int) orbType);
+			return gameSave.Inventory.OrbInventory.Inventory.ContainsKey((int)orbType);
 		}
 
 		internal static bool HasRing(this GameSave gameSave, EInventoryOrbType orbType)
@@ -130,12 +130,10 @@ namespace TsRandomizer.Extensions
 		static void AddOrb(this GameSave gameSave, EInventoryOrbType orbType, EOrbSlot orbSlot)
 		{
 			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;
-			var orbTypeKey = (int) orbType;
+			var orbTypeKey = (int)orbType;
 			var newOrb = new InventoryOrb(orbType);
 			if (!orbCollection.ContainsKey(orbTypeKey))
 				orbCollection.Add(orbTypeKey, newOrb);
-
-			if (gameSave.GetSeed().Value.Options.DamageRando) OrbDamageManager.SetOrbBaseDamage(newOrb);
 
 			switch (orbSlot)
 			{
@@ -158,7 +156,7 @@ namespace TsRandomizer.Extensions
 
 		static void AddEquipment(this GameSave gameSave, EInventoryEquipmentType enquipment)
 		{
-			gameSave.Inventory.EquipmentInventory.AddItem((int) enquipment);
+			gameSave.Inventory.EquipmentInventory.AddItem((int)enquipment);
 		}
 
 		static void AddUseItem(this GameSave gameSave, EInventoryUseItemType useItem)
@@ -234,18 +232,18 @@ namespace TsRandomizer.Extensions
 		}
 
 		internal static void AddConcussion(this GameSave gameSave)
-        {
+		{
 			if (gameSave.DataKeyInts.ContainsKey(ConcussionCountFileKey))
 				gameSave.DataKeyInts[ConcussionCountFileKey]++;
 			else
 				gameSave.DataKeyInts[ConcussionCountFileKey] = 1;
-        }
+		}
 
 		internal static int GetConcussionCount(this GameSave gameSave)
-        {
+		{
 			return gameSave.DataKeyInts.ContainsKey(ConcussionCountFileKey)
 				? gameSave.DataKeyInts[ConcussionCountFileKey]
 				: 0;
-        }
+		}
 	}
 }
