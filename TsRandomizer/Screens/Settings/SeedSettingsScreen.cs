@@ -29,11 +29,13 @@ namespace TsRandomizer.Screens.Settings
 		GameSettingsCollection gameSettings = new GameSettingsCollection();
 
 		bool IsUsedAsSeedSettingsMenu => seedSelectionScreen != null;
+		GCM gcm;
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
 			if (!IsUsedAsSeedSettingsMenu)
 				return;
+			gcm = gameContentManager;
 
 			// Default order is Memories, Letters, Files, Quests, Bestiary, Feats
 			Dynamic._menuTitle = "Seed Settings";
@@ -59,11 +61,12 @@ namespace TsRandomizer.Screens.Settings
 			seedSelectionScreen = screenManager.FirstOrDefault<SeedSelectionMenuScreen>();
 		}
 
-		public static GameScreen Create(ScreenManager screenManager, SeedOptionsCollection options)
+		public static GameScreen Create(ScreenManager screenManager)
 		{
 			void Noop() { }
-			GameSave save = GameSave.EditorSave;
-			return (GameScreen)Activator.CreateInstance(JournalMenuType, save, screenManager.Dynamic.GCM, (Action)Noop);
+			GCM gcm = screenManager.AsDynamic().GCM;
+			gcm.LoadAllResources(screenManager.AsDynamic().GeneralContentManager, screenManager.GraphicsDevice);
+			return (GameScreen)Activator.CreateInstance(JournalMenuType, GameSave.EditorSave, gcm, (Action)Noop);
 		}
 
 		Action CreateMenuForCategory(SeedSettingCategoryInfo category)
