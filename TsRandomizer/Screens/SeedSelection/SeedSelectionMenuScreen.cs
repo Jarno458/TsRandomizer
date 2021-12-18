@@ -9,7 +9,7 @@ using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens.Menu;
-using TsRandomizer.Screens.SeedSettings;
+using TsRandomizer.Screens.Settings;
 using SDL2;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 

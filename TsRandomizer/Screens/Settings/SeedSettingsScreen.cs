@@ -9,11 +9,10 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens.Menu;
 using TsRandomizer.Screens.SeedSelection;
-using TsRandomizer.Screens.Settings;
 using TsRandomizer.Screens.Settings.GameSettingObjects;
 
 
-namespace TsRandomizer.Screens.SeedSettings
+namespace TsRandomizer.Screens.Settings
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.JournalMenuScreen")]
 	// ReSharper disable once UnusedMember.Global

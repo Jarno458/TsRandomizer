@@ -212,7 +212,7 @@
     <Compile Include="Screens\SeedSelection\SeedOptionInfo.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsCollection.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsMenuScreen.cs" />
-    <Compile Include="Screens\SeedSettings\SeedSettingsScreen.cs" />
+    <Compile Include="Screens\Settings\SeedSettingsScreen.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\NumberGameSetting.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\OnOffGameSetting.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\StringGameSetting.cs" />
