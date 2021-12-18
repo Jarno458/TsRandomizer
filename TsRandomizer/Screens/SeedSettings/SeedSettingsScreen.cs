@@ -89,30 +89,45 @@ namespace TsRandomizer.Screens.SeedSettings
 		{
 			var collection = FetchCollection("Stats");
 			var submenu = (IList)collection.AsDynamic()._entries;
-			var menuEntry = MenuEntry.Create("Placeholder Entry", () => { }).AsTimeSpinnerMenuEntry();
-			menuEntry.AsDynamic().IsCenterAligned = false;
-			menuEntry.AsDynamic().Description = "A setting that does something";
-			submenu.Add(menuEntry);
+			GameSetting[] settings = new GameSetting[] { };
+			foreach (GameSetting setting in settings)
+			{
+				var menuEntry = MenuEntry.Create(setting.Name, () => { }).AsTimeSpinnerMenuEntry();
+				menuEntry.AsDynamic().IsCenterAligned = false;
+				menuEntry.AsDynamic().Text = $"{setting.Name} - {setting.CurrentValue}";
+				menuEntry.AsDynamic().Description = setting.Description;
+				submenu.Add(menuEntry);
+			}
 			Dynamic.ChangeMenuCollection(Dynamic._bestiaryInventory, true);
 		}
 		void OnEnemiesSelected()
 		{
 			var collection = FetchCollection("Enemies");
 			var submenu = (IList)collection.AsDynamic()._entries;
-			var menuEntry = MenuEntry.Create("Placeholder Entry", () => { }).AsTimeSpinnerMenuEntry();
-			menuEntry.AsDynamic().IsCenterAligned = false;
-			menuEntry.AsDynamic().Description = "A setting that does something";
-			submenu.Add(menuEntry);
+			GameSetting[] settings = new GameSetting[] { };
+			foreach (GameSetting setting in settings)
+			{
+				var menuEntry = MenuEntry.Create(setting.Name, () => { }).AsTimeSpinnerMenuEntry();
+				menuEntry.AsDynamic().IsCenterAligned = false;
+				menuEntry.AsDynamic().Text = $"{setting.Name} - {setting.CurrentValue}";
+				menuEntry.AsDynamic().Description = setting.Description;
+				submenu.Add(menuEntry);
+			}
 			Dynamic.ChangeMenuCollection(collection, true);
 		}
 		void OnLootSelected()
 		{
 			var collection = FetchCollection("Loot");
 			var submenu = (IList)collection.AsDynamic()._entries;
-			var menuEntry = MenuEntry.Create("Placeholder Entry", () => { }).AsTimeSpinnerMenuEntry();
-			menuEntry.AsDynamic().IsCenterAligned = false;
-			menuEntry.AsDynamic().Description = "A setting that does something";
-			submenu.Add(menuEntry);
+			GameSetting[] settings = new GameSetting[] { gameSettings.ShopFill };
+			foreach (GameSetting setting in settings)
+			{
+				var menuEntry = MenuEntry.Create(setting.Name, () => { }).AsTimeSpinnerMenuEntry();
+				menuEntry.AsDynamic().IsCenterAligned = false;
+				menuEntry.AsDynamic().Text = $"{setting.Name} - {setting.CurrentValue}";
+				menuEntry.AsDynamic().Description = setting.Description;
+				submenu.Add(menuEntry);
+			}
 			Dynamic.ChangeMenuCollection(collection, true);
 		}
 		void OnOtherSelected()
@@ -136,10 +151,15 @@ namespace TsRandomizer.Screens.SeedSettings
 		{
 			var collection = FetchCollection("Sprite");
 			var submenu = (IList)collection.AsDynamic()._entries;
-			var menuEntry = MenuEntry.Create("Placeholder Entry", () => { }).AsTimeSpinnerMenuEntry();
-			menuEntry.AsDynamic().IsCenterAligned = false;
-			menuEntry.AsDynamic().Description = "A setting that does something";
-			submenu.Add(menuEntry);
+			GameSetting[] settings = new GameSetting[] { };
+			foreach (GameSetting setting in settings)
+			{
+				var menuEntry = MenuEntry.Create(setting.Name, () => { }).AsTimeSpinnerMenuEntry();
+				menuEntry.AsDynamic().IsCenterAligned = false;
+				menuEntry.AsDynamic().Text = $"{setting.Name} - {setting.CurrentValue}";
+				menuEntry.AsDynamic().Description = setting.Description;
+				submenu.Add(menuEntry);
+			}
 			Dynamic.ChangeMenuCollection(collection, true);
 		}
 

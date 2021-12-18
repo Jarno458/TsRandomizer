@@ -16,6 +16,7 @@ namespace TsRandomizer.Screens.Settings
 		public OnOffGameSetting StartWithJewelryBox { get; set; }
 		public StringGameSetting PlayerName { get; set; }
 		public NumberGameSetting OrbXPMultiplier { get; set; }
+		public StringGameSetting ShopFill { get; set; }
 
 		public GameSettingsCollection()
 		{
@@ -35,6 +36,7 @@ namespace TsRandomizer.Screens.Settings
 				StartWithJewelryBox = new OnOffGameSetting("Start with Jewelry Box", "Start with Jewelry Box unlocked", false, false);
 				PlayerName = new StringGameSetting("Player Name", "Changes all references to Lunais into the given name", "Lunais", 15, false);
 				OrbXPMultiplier = new NumberGameSetting("Orb XP Multiplier", "Sets the amount of experience orbs gain per kill. Pairs well with Nightmare Lvl 1.", 1, 1, 100, true, true);
+				ShopFill = new StringGameSetting("Shop Inventory", "Sets the items for sale in Merchant Crow's shops. Options: [Default,Random,Vanilla,Empty]", "Default", 9, true);
 				WriteSettings(); //write settings file with default values
 			}
 		}
@@ -52,6 +54,7 @@ namespace TsRandomizer.Screens.Settings
 					PlayerName = settings.PlayerName;
 					StartWithJewelryBox = settings.StartWithJewelryBox;
 					OrbXPMultiplier = settings.OrbXPMultiplier;
+					ShopFill = settings.ShopFill;
 				}
 				Console.WriteLine("Settings file not found: " + Path);
 			}

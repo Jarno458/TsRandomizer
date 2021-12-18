@@ -1,6 +1,7 @@
 ﻿using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Screens.Settings;
 
 
 namespace TsRandomizer.LevelObjects.Other
@@ -17,7 +18,17 @@ namespace TsRandomizer.LevelObjects.Other
 
         protected override void Initialize(SeedOptions options)
         {
-            PlayerInventory inventory = Dynamic._level.GameSave.Inventory;
+			GameSettingsCollection gameSettings = new GameSettingsCollection();
+			gameSettings.LoadSettingsFromFile();
+			string fillType = gameSettings.ShopFill.CurrentValue;
+			if (fillType == "Vanilla")
+				return;
+			if (fillType == "Empty")
+			{
+				Dynamic._merchandiseInventory = _merchandiseInventory;
+				return;
+			}
+			PlayerInventory inventory = Dynamic._level.GameSave.Inventory;
 
             // Only sell warp shards if Pyramid Key is aquired
             if (inventory.RelicInventory.IsRelicActive(EInventoryRelicType.PyramidsKey))
