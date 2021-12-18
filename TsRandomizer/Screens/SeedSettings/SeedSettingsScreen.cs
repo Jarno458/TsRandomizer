@@ -34,7 +34,9 @@ namespace TsRandomizer.Screens.SeedSettings
 			if (!IsUsedAsSeedSettingsMenu)
 				return;
 
+			// Default order is Memories, Letters, Files, Quests, Bestiary, Feats
 			Dynamic._menuTitle = "Seed Settings";
+			ClearAllSubmenus();
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
 
@@ -42,6 +44,8 @@ namespace TsRandomizer.Screens.SeedSettings
 			scalingMenu.AsDynamic().Description = "Settings related to player stat scaling.";
 			scalingMenu.AsDynamic().IsCenterAligned = false;
 			menuEntryList.Add(scalingMenu.AsTimeSpinnerMenuEntry());
+
+			var scalingSubmenu = Dynamic._memoriesInventoryCollection;
 
 			var enemyMenu = MenuEntry.Create("Enemies", OnEnemiesSelected);
 			enemyMenu.Description = "Settings related to enemy placement and stats.";
@@ -64,11 +68,6 @@ namespace TsRandomizer.Screens.SeedSettings
 			menuEntryList.Add(otherMenu.AsTimeSpinnerMenuEntry());
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = menuEntryList;
-
-			/*
-			var menuCollectionList = new object[0].ToList(MenuEntryCollectionType);
-			Dynamic._subMenuCollections = menuCollectionList;
-			*/
 		}
 
 		public SeedSettingsScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
@@ -85,23 +84,110 @@ namespace TsRandomizer.Screens.SeedSettings
 
 		void OnScalingSelected()
 		{
-			Dynamic.ChangeMenuCollection(Dynamic._memoriesInventoryCollection, true);
+			var collection = FetchCollection("Stats");
+			var submenu = (IList)collection.AsDynamic()._entries;
+			var menuEntry = MenuEntry.Create("Placeholder Entry", () => { }).AsTimeSpinnerMenuEntry();
+			menuEntry.AsDynamic().IsCenterAligned = false;
+			menuEntry.AsDynamic().Description = "A setting that does something";
+			submenu.Add(menuEntry);
+			Dynamic.ChangeMenuCollection(Dynamic._bestiaryInventory, true);
 		}
 		void OnEnemiesSelected()
 		{
-			Dynamic.ChangeMenuCollection(Dynamic._lettersInventoryCollection, true);
+			var collection = FetchCollection("Enemies");
+			var submenu = (IList)collection.AsDynamic()._entries;
+			var menuEntry = MenuEntry.Create("Placeholder Entry", () => { }).AsTimeSpinnerMenuEntry();
+			menuEntry.AsDynamic().IsCenterAligned = false;
+			menuEntry.AsDynamic().Description = "A setting that does something";
+			submenu.Add(menuEntry);
+			Dynamic.ChangeMenuCollection(collection, true);
 		}
 		void OnLootSelected()
 		{
-			Dynamic.ChangeMenuCollection(Dynamic._filesInventoryCollection, true);
-		} 
-		void OnSpritesSelected()
-		{
-			Dynamic.ChangeMenuCollection(Dynamic._bestiaryInventory, true);
+			var collection = FetchCollection("Loot");
+			var submenu = (IList)collection.AsDynamic()._entries;
+			var menuEntry = MenuEntry.Create("Placeholder Entry", () => { }).AsTimeSpinnerMenuEntry();
+			menuEntry.AsDynamic().IsCenterAligned = false;
+			menuEntry.AsDynamic().Description = "A setting that does something";
+			submenu.Add(menuEntry);
+			Dynamic.ChangeMenuCollection(collection, true);
 		}
 		void OnOtherSelected()
 		{
-			Dynamic.ChangeMenuCollection(Dynamic._questInventory, true);
+			var collection = FetchCollection("Other");
+			var submenu = (IList)collection.AsDynamic()._entries;
+			var menuEntry = MenuEntry.Create("Placeholder Entry", () => { }).AsTimeSpinnerMenuEntry();
+			menuEntry.AsDynamic().IsCenterAligned = false;
+			menuEntry.AsDynamic().Description = "A setting that does something";
+			submenu.Add(menuEntry);
+			Dynamic.ChangeMenuCollection(collection, true);
+		}
+		void OnSpritesSelected()
+		{
+			var collection = FetchCollection("Sprite");
+			var submenu = (IList)collection.AsDynamic()._entries;
+			var menuEntry = MenuEntry.Create("Placeholder Entry", () => { }).AsTimeSpinnerMenuEntry();
+			menuEntry.AsDynamic().IsCenterAligned = false;
+			menuEntry.AsDynamic().Description = "A setting that does something";
+			submenu.Add(menuEntry);
+			Dynamic.ChangeMenuCollection(collection, true);
+		}
+
+		object FetchCollection(string submenu)
+		{
+			var collection = Dynamic._filesInventoryCollection;
+			HideAll();
+			// Multiple submenus can share the same inventory collection
+			// as the in-use collection is cleared before use.
+			switch (submenu)
+			{
+				// Currently using bestiary layout for most, other layouts may be useful for other menus
+				/*
+				collection = Dynamic._memoriesInventoryCollection;
+				collection = Dynamic._lettersInventoryCollection;
+				collection = Dynamic._filesInventoryCollection;
+				*/
+				case "Stats":
+				case "Enemies":
+				case "Loot":
+				case "Other":
+					collection = Dynamic._bestiaryInventory;
+					break;
+				case "Sprite":
+					collection = Dynamic._featsInventory;
+					break;
+				default:
+					ClearAllSubmenus();
+					break;
+			}
+
+			var menuEntryList = new object[0].ToList(MenuEntryType);
+			((object)collection).AsDynamic()._entries = menuEntryList;
+			return (object)collection;
+		}
+
+		void ClearAllSubmenus()
+		{
+			var menuEntryList = new object[0].ToList(MenuEntryType);
+			((object)Dynamic._memoriesInventoryCollection).AsDynamic()._entries = menuEntryList;
+			((object)Dynamic._lettersInventoryCollection).AsDynamic()._entries = menuEntryList;
+			((object)Dynamic._filesInventoryCollection).AsDynamic()._entries = menuEntryList;
+			((object)Dynamic._questInventory).AsDynamic()._entries = menuEntryList;
+			((object)Dynamic._bestiaryInventory).AsDynamic()._entries = menuEntryList;
+			((object)Dynamic._featsInventory).AsDynamic()._entries = menuEntryList;
+			((object)Dynamic._primaryMenuCollection).AsDynamic().SetSelectedIndex(0);
+		}
+
+		void HideAll()
+		{
+			var menuEntryList = new object[0].ToList(MenuEntryType);
+			((object)Dynamic._memoriesInventoryCollection).AsDynamic().IsVisible = true;
+			((object)Dynamic._lettersInventoryCollection).AsDynamic().IsVisible = true;
+			((object)Dynamic._filesInventoryCollection).AsDynamic().IsVisible = true;
+			((object)Dynamic._questInventory).AsDynamic().IsVisible = true;
+			((object)Dynamic._bestiaryInventory).AsDynamic().IsVisible = true;
+			((object)Dynamic._featsInventory).AsDynamic().IsVisible = true;
+			((object)Dynamic._primaryMenuCollection).AsDynamic().IsVisible = true;
 		}
 	}
 }
