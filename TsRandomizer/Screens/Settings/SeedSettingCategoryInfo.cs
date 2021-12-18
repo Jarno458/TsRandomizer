@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TsRandomizer.Screens.SeedSelection;
-using TsRandomizer.Screens.Settings.GameSettingObjects;
-
-namespace TsRandomizer.Screens.Settings
+﻿namespace TsRandomizer.Screens.Settings
 {
 	class SeedSettingCategoryInfo
 	{

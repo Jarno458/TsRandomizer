@@ -83,7 +83,7 @@ namespace TsRandomizer.Screens.Settings
 
 		object CreateMenuForSetting(GameSetting setting)
 		{
-			var menuEntry = MenuEntry.Create(setting.Name, () => { }).AsTimeSpinnerMenuEntry();
+			var menuEntry = MenuEntry.Create(setting.Name, CreateToggleForSetting(setting)).AsTimeSpinnerMenuEntry();
 			menuEntry.AsDynamic().IsCenterAligned = false;
 			var currentValue = !(setting is OnOffGameSetting) ? setting.CurrentValue : setting.CurrentValue ? "On" : "Off";
 			menuEntry.AsDynamic().Text = $"{setting.Name} - {currentValue}";
@@ -92,10 +92,18 @@ namespace TsRandomizer.Screens.Settings
 			return menuEntry;
 		}
 
+		Action CreateToggleForSetting(GameSetting setting)
+		{
+			void ToggleSetting()
+			{
+				// TODO do something here
+			}
+			return ToggleSetting;
+		}
+
 		object FetchCollection(string submenu)
 		{
 			var collection = Dynamic._filesInventoryCollection;
-			HideAll();
 			// Multiple submenus can share the same inventory collection
 			// as the in-use collection is cleared before use.
 			switch (submenu)
@@ -125,18 +133,6 @@ namespace TsRandomizer.Screens.Settings
 			((object)Dynamic._bestiaryInventory).AsDynamic()._entries = menuEntryList;
 			((object)Dynamic._featsInventory).AsDynamic()._entries = menuEntryList;
 			((object)Dynamic._primaryMenuCollection).AsDynamic().SetSelectedIndex(0);
-		}
-
-		void HideAll()
-		{
-			var menuEntryList = new object[0].ToList(MenuEntryType);
-			((object)Dynamic._memoriesInventoryCollection).AsDynamic().IsVisible = true;
-			((object)Dynamic._lettersInventoryCollection).AsDynamic().IsVisible = true;
-			((object)Dynamic._filesInventoryCollection).AsDynamic().IsVisible = true;
-			((object)Dynamic._questInventory).AsDynamic().IsVisible = true;
-			((object)Dynamic._bestiaryInventory).AsDynamic().IsVisible = true;
-			((object)Dynamic._featsInventory).AsDynamic().IsVisible = true;
-			((object)Dynamic._primaryMenuCollection).AsDynamic().IsVisible = true;
 		}
 	}
 }
