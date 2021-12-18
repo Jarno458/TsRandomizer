@@ -31,7 +31,7 @@ namespace TsRandomizer.LevelObjects.Other
 			}
 			if (fillType == "Random")
 			{
-				Random random = new Random(options.GetHashCode());
+				Random random = new Random((int)options.Flags);
 				for (int i = 0; i < 8; i++)
 				{
 					var item = Helper.GetAllLoot().SelectRandom(random);
