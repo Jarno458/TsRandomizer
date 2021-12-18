@@ -180,7 +180,6 @@ namespace TsRandomizer.LevelObjects
 			IEnumerable<Animate> eventObjects = levelReflected._levelEvents.Values;
 			IEnumerable<Animate> npcs = levelReflected.NPCs.Values;
 			IEnumerable<Animate> enemies = levelReflected._enemies.Values;
-			IEnumerable<Animate> bosses = enemies.Where(e => BossManager.BossTypes.Contains(e.GetType()));
 
 			SetMonsterHpTo1(levelReflected._enemies.Values);
 
