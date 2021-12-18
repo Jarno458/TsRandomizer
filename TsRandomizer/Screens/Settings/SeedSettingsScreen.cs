@@ -76,7 +76,7 @@ namespace TsRandomizer.Screens.Settings
 				{
 					submenu.Add(CreateMenuForSetting(setting));
 				}
-				Dynamic.ChangeMenuCollection(Dynamic._bestiaryInventory, true);
+				Dynamic.ChangeMenuCollection(collection, true);
 			}
 			return CreateMenu;
 		}
@@ -101,22 +101,12 @@ namespace TsRandomizer.Screens.Settings
 			switch (submenu)
 			{
 				// Currently using bestiary layout for most, other layouts may be useful for other menus
-				/*
-				collection = Dynamic._memoriesInventoryCollection;
-				collection = Dynamic._lettersInventoryCollection;
-				collection = Dynamic._filesInventoryCollection;
-				*/
-				case "Stats":
-				case "Enemies":
-				case "Loot":
-				case "Other":
-					collection = Dynamic._bestiaryInventory;
-					break;
+				// Leaving as switch to easily add new menus as Memories, Letters, Files, Quests, Bestiary, Feats
 				case "Sprite":
 					collection = Dynamic._featsInventory;
 					break;
 				default:
-					ClearAllSubmenus();
+					collection = Dynamic._bestiaryInventory;
 					break;
 			}
 
