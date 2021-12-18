@@ -1,8 +1,9 @@
-﻿using Timespinner.GameAbstractions.Inventory;
+﻿using System;
+using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens.Settings;
-
 
 namespace TsRandomizer.LevelObjects.Other
 {
@@ -28,11 +29,27 @@ namespace TsRandomizer.LevelObjects.Other
 				Dynamic._merchandiseInventory = _merchandiseInventory;
 				return;
 			}
+			if (fillType == "Random")
+			{
+				Random random = new Random(options.GetHashCode());
+				for (int i = 0; i < 5; i++)
+				{
+					var item = Helper.GetAllLoot().SelectRandom(random);
+					if (item.LootType == LootType.Equipment)
+						_merchandiseInventory.AddItem((EInventoryEquipmentType)item.ItemId);
+					else
+						_merchandiseInventory.AddItem((EInventoryUseItemType)item.ItemId);
+				}
+				
+			}
+
+			// Default case, streamlined inventory for randomizer players
 			PlayerInventory inventory = Dynamic._level.GameSave.Inventory;
 
             // Only sell warp shards if Pyramid Key is aquired
             if (inventory.RelicInventory.IsRelicActive(EInventoryRelicType.PyramidsKey))
                 _merchandiseInventory.AddItem(EInventoryUseItemType.WarpCard);
+			
             if (Dynamic._isInPresent)
             {
                 _merchandiseInventory.AddItem(EInventoryUseItemType.FuturePotion);
