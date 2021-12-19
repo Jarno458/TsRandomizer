@@ -62,6 +62,7 @@ namespace TsRandomizer.Screens.Settings
 			menuEntryList.Add(CreateDefaultsMenu(allSettings));
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = menuEntryList;
+			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
 		}
 
 		public SeedSettingsScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
@@ -87,8 +88,10 @@ namespace TsRandomizer.Screens.Settings
 				{
 					submenu.Add(CreateMenuForSetting(setting));
 				}
-				submenu.Add(CreateDefaultsMenu(category.Settings));
+				// Exclude submenu defaults for now, enable when they don't wipe the current view
+				// submenu.Add(CreateDefaultsMenu(category.Settings));
 				Dynamic.ChangeMenuCollection(collection, true);
+				((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
 			}
 			return CreateMenu;
 		}
@@ -104,10 +107,7 @@ namespace TsRandomizer.Screens.Settings
 		object CreateMenuForSetting(GameSetting setting)
 		{
 			var menuEntry = MenuEntry.Create(setting.Name, CreateToggleForSetting(setting)).AsTimeSpinnerMenuEntry();
-			menuEntry.AsDynamic().IsCenterAligned = false;
-			var currentValue = !(setting is OnOffGameSetting) ? setting.CurrentValue : setting.CurrentValue ? "On" : "Off";
-			menuEntry.AsDynamic().Text = $"{setting.Name} - {currentValue}";
-			menuEntry.AsDynamic().Description = setting.Description;
+			SetCurrentSettingText(menuEntry, setting);
 
 			return menuEntry;
 		}
@@ -116,9 +116,24 @@ namespace TsRandomizer.Screens.Settings
 		{
 			void ToggleSetting()
 			{
-				Console.Out.WriteLine($"Can't toggle {setting.Name} to {setting.CurrentValue}");
+				if (setting is OnOffGameSetting)
+				{
+					setting.SetValue(!setting.CurrentValue);
+					gameSettings.WriteSettings();
+				}
+				var selectedMenu = ((object)Dynamic._selectedMenuCollection).AsDynamic();
+				object menuEntry = ((IList)selectedMenu.Entries)[selectedMenu.SelectedIndex];
+				SetCurrentSettingText(menuEntry, setting);
 			}
 			return ToggleSetting;
+		}
+
+		void SetCurrentSettingText(object menuEntry, GameSetting setting)
+		{
+			menuEntry.AsDynamic().IsCenterAligned = false;
+			var currentValue = !(setting is OnOffGameSetting) ? setting.CurrentValue : setting.CurrentValue ? "On" : "Off";
+			menuEntry.AsDynamic().Text = $"{setting.Name} - {currentValue}";
+			menuEntry.AsDynamic().Description = setting.Description;
 		}
 
 		Action OnDefaultsSelected(GameSetting[] settings)
@@ -167,6 +182,7 @@ namespace TsRandomizer.Screens.Settings
 			((object)Dynamic._bestiaryInventory).AsDynamic()._entries = menuEntryList;
 			((object)Dynamic._featsInventory).AsDynamic()._entries = menuEntryList;
 			((object)Dynamic._primaryMenuCollection).AsDynamic().SetSelectedIndex(0);
+			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
 		}
 	}
 }
