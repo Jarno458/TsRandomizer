@@ -59,7 +59,7 @@ namespace TsRandomizer.Screens.Settings
 			}
 			GameSetting[] allSettings = new GameSetting[] { gameSettings.StartWithMeyef, gameSettings.DamageRando,
 				gameSettings.StartWithJewelryBox, gameSettings.PlayerName, gameSettings. OrbXPMultiplier,
-				gameSettings.ShopFill, gameSettings.ShopMultiplier };
+				gameSettings.ShopFill, gameSettings.ShopMultiplier, gameSettings.ShopWarpShards };
 			menuEntryList.Add(CreateDefaultsMenu(allSettings));
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = menuEntryList;
@@ -132,11 +132,8 @@ namespace TsRandomizer.Screens.Settings
 				}
 				else if (setting is StringGameSetting)
 				{
-					// TODO: Handle input
-					/*
-					SDL.SDL_SetClipboardText(setting.CurrentValue);
-					setting.SetValue(SDL.SDL_GetClipboardText());
-					*/
+					// Future phase this should allow SDL input
+					setting.SetValue(setting.CurrentValue);
 				}
 				else if (setting is NumberGameSetting)
 				{

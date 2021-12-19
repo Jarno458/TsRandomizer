@@ -24,6 +24,13 @@ namespace TsRandomizer.LevelObjects.Other
 			string fillType = gameSettings.ShopFill.CurrentValue;
 			if (fillType == "Vanilla")
 				return;
+
+			PlayerInventory inventory = Dynamic._level.GameSave.Inventory;
+
+			// Only sell warp shards if Pyramid Key is aquired (and allowed in settings)
+			if (gameSettings.ShopWarpShards.CurrentValue && inventory.RelicInventory.IsRelicActive(EInventoryRelicType.PyramidsKey))
+				_merchandiseInventory.AddItem(EInventoryUseItemType.WarpCard);
+
 			if (fillType == "Empty")
 			{
 				Dynamic._merchandiseInventory = _merchandiseInventory;
@@ -49,13 +56,7 @@ namespace TsRandomizer.LevelObjects.Other
 			}
 
 			// Default case, streamlined inventory for randomizer players
-			PlayerInventory inventory = Dynamic._level.GameSave.Inventory;
-
-            // Only sell warp shards if Pyramid Key is aquired
-            if (inventory.RelicInventory.IsRelicActive(EInventoryRelicType.PyramidsKey))
-                _merchandiseInventory.AddItem(EInventoryUseItemType.WarpCard);
-			
-            if (Dynamic._isInPresent)
+			if (Dynamic._isInPresent)
             {
                 _merchandiseInventory.AddItem(EInventoryUseItemType.FuturePotion);
                 _merchandiseInventory.AddItem(EInventoryUseItemType.FutureEther);

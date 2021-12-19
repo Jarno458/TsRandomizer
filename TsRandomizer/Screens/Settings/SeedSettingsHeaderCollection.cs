@@ -17,7 +17,7 @@
 					Settings = new GameSetting[] { } }, */ 
 				new SeedSettingCategoryInfo {Name = "Loot",
 					Description = "Settings related to shop inventory and loot.",
-					Settings = new GameSetting[] { gameSettings.ShopMultiplier, gameSettings.ShopFill } },
+					Settings = new GameSetting[] { gameSettings.ShopMultiplier, gameSettings.ShopFill, gameSettings.ShopWarpShards } },
 				/* new SeedSettingCategoryInfo {Name = "Sprite",
 					Description =  "Settings related to sprite replacement.",
 					Settings = new GameSetting[] { } }, */

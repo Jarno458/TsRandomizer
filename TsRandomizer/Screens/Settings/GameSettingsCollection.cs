@@ -18,6 +18,7 @@ namespace TsRandomizer.Screens.Settings
 		public NumberGameSetting OrbXPMultiplier { get; set; }
 		public StringGameSetting ShopFill { get; set; }
 		public NumberGameSetting ShopMultiplier { get; set; }
+		public OnOffGameSetting ShopWarpShards { get; set; }
 
 		public GameSettingsCollection()
 		{
@@ -39,6 +40,7 @@ namespace TsRandomizer.Screens.Settings
 				OrbXPMultiplier = new NumberGameSetting("Orb XP Multiplier", "Sets the amount of experience orbs gain per kill. Pairs well with Nightmare Lvl 1.", 1, 1, 100, 10, true, true);
 				ShopFill = new StringGameSetting("Shop Inventory", "Sets the items for sale in Merchant Crow's shops. Options: [Default,Random,Vanilla,Empty]", "Default", 9, true);
 				ShopMultiplier = new NumberGameSetting("Shop Price Multiplier", "Multiplier for the cost of items in the shop. Set to 0 for free shops", 1, 0, 5, 1, true, true);
+				ShopWarpShards = new OnOffGameSetting("Always Sell Warp Shards", "Shops always sell warp shards (when keys possessed, ignoring fill setting.", true, true);
 				WriteSettings(); //write settings file with default values
 			}
 		}
@@ -58,6 +60,7 @@ namespace TsRandomizer.Screens.Settings
 					OrbXPMultiplier = settings.OrbXPMultiplier;
 					ShopFill = settings.ShopFill;
 					ShopMultiplier = settings.ShopMultiplier;
+					ShopWarpShards = settings.ShopWarpShards;
 				}
 				Console.WriteLine("Settings file not found: " + Path);
 			}
