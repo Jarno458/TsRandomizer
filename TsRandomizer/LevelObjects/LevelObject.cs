@@ -36,7 +36,7 @@ namespace TsRandomizer.LevelObjects
 		static readonly Dictionary<Type, Type> RegisteredTypes = new Dictionary<Type, Type>(); //ObjectType, EventHandler
 		static readonly Dictionary<EEventTileType, AlwaysSpawnAttribute> AlwaysSpawningEventTypes = new Dictionary<EEventTileType, AlwaysSpawnAttribute>(); //EEventTileType, SpawnerMethod
 		static readonly List<int> KnownItemIds = new List<int>();
-		static readonly List<int> KnownEnemies = new List<int>();
+		static readonly List<int> KnownDeadEnemyIds = new List<int>();
 		static HashSet<int> MainOrbHits = new HashSet<int>();
 		static HashSet<int> SubOrbHits = new HashSet<int>();
 		static HashSet<int> SpellHits = new HashSet<int>();
@@ -171,7 +171,7 @@ namespace TsRandomizer.LevelObjects
 
 			Objects.Clear();
 			KnownItemIds.Clear();
-			KnownEnemies.Clear();
+			KnownDeadEnemyIds.Clear();
 			MainOrbHits.Clear();
 			SubOrbHits.Clear();
 			SpellHits.Clear();
@@ -307,37 +307,36 @@ namespace TsRandomizer.LevelObjects
 				RingHits.UnionWith(hits);
 			}
 
-			var currentEnemyIds = enemies.Keys;
-			var newlyDeads = KnownEnemies
-				.Except(currentEnemyIds)
-				.ToArray();
+			var currentDeadEnemyIds = enemies
+				.Where(e => (e.Value.IsDead || e.Value.HP == 0) && !e.Value.AsDynamic().IsABoss)
+				.Select(e => e.Key)
+				.Except(KnownDeadEnemyIds)
+				.ToList();
 
-			foreach (var deadMonster in newlyDeads)
+			foreach (var deadEnemyId in currentDeadEnemyIds)
 			{
-				if (MainOrbHits.Contains(deadMonster))
+				if (MainOrbHits.Contains(deadEnemyId))
 				{
 					OrbDamageManager.AddMoreOrbXP(level.GameSave, ((object)orbA).AsDynamic().OrbColor, multiplier);
-					MainOrbHits.Remove(deadMonster);
+					MainOrbHits.Remove(deadEnemyId);
 				}
-				if (SubOrbHits.Contains(deadMonster))
+				if (SubOrbHits.Contains(deadEnemyId))
 				{
 					OrbDamageManager.AddMoreOrbXP(level.GameSave, ((object)orbB).AsDynamic().OrbColor, multiplier);
-					SubOrbHits.Remove(deadMonster);
+					SubOrbHits.Remove(deadEnemyId);
 				}
-				if (SpellHits.Contains(deadMonster))
+				if (SpellHits.Contains(deadEnemyId))
 				{
 					OrbDamageManager.AddMoreOrbXP(level.GameSave, ((object)spell).AsDynamic().SpellType, multiplier);
-					SpellHits.Remove(deadMonster);
+					SpellHits.Remove(deadEnemyId);
 				}
-				if (RingHits.Contains(deadMonster))
+				if (RingHits.Contains(deadEnemyId))
 				{
 					OrbDamageManager.AddMoreOrbXP(level.GameSave, ((object)ring).AsDynamic().PassiveType, multiplier);
-					RingHits.Remove(deadMonster);
+					RingHits.Remove(deadEnemyId);
 				}
-
 			}
-			KnownEnemies.Clear();
-			KnownEnemies.AddRange(currentEnemyIds);
+			KnownDeadEnemyIds.AddRange(currentDeadEnemyIds);
 		}
 
 		static void SetMonsterHpTo1(IEnumerable<Alive> monsters)
