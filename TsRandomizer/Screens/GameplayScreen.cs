@@ -79,6 +79,8 @@ namespace TsRandomizer.Screens
 			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed.Value);
 
 			ItemManipulator.Initialize(ItemLocations);
+			if(seed.Value.Options.DamageRando)
+				OrbDamageManager.PopulateOrbLookups(Level.GameSave);
 
 			if (seedOptions.Archipelago)
 			{

@@ -82,7 +82,7 @@ namespace TsRandomizer.Archipelago
 				{1337055, new ItemKey(9, 3, 744, 560)},
 				{1337056, new ItemKey(9, 2, 184, 176)},
 				{1337057, new ItemKey(9, 2, 104, 160)},
-				// Militairy Fortress
+				// Military Fortress
 				{1337058, new ItemKey(10, 3, 264, 128)},
 				{1337059, new ItemKey(10, 11, 296, 192)},
 				{1337060, new ItemKey(10, 4, 1064, 176)},

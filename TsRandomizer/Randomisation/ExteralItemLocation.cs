@@ -17,7 +17,7 @@ namespace TsRandomizer.Randomisation
 		public override void SetPickedUp()
 		{
 			//we are going to need proper progression handling at some point
-			//if (ItemInfo is PogRessiveItemInfo progressiveItemInfo) 
+			//if (ItemInfo is ProgressiveItemInfo progressiveItemInfo) 
 			//	progressiveItemInfo.Next();
 		}
 

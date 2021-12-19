@@ -52,10 +52,10 @@ namespace TsRandomizer.ItemTracker
 				.ToArray();
 
 			var obtainedProgressiveItems = unlockedProgressionItems
-				.OfType<PogRessiveItemInfo>();
+				.OfType<ProgressiveItemInfo>();
 
 			var obtainedSingleItems = unlockedProgressionItems
-				.Where(i => !(i is PogRessiveItemInfo));
+				.Where(i => !(i is ProgressiveItemInfo));
 
 			var obtainedItemIdentifiers = obtainedSingleItems
 				.Select(i => i.Identifier)
