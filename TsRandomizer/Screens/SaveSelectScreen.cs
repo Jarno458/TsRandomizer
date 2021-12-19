@@ -191,7 +191,7 @@ namespace TsRandomizer.Screens
 				if (!seed.HasValue)
 					return;
 
-				SDL.SDL_SetClipboardText(seed.Value.ToDisplayString());
+				SDL.SDL_SetClipboardText(seed.Value.ToString());
 			}
 		}
 
@@ -238,10 +238,7 @@ namespace TsRandomizer.Screens
 			ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
 		}
 
-		void OnDeleteAllSavesAccepted()
-		{
-			fileToDeleteIndex = 0;
-		}
+		void OnDeleteAllSavesAccepted() => fileToDeleteIndex = 0;
 
 		void ShowSpoilerGenerationDialog(GameSave save)
 		{
@@ -275,7 +272,7 @@ namespace TsRandomizer.Screens
 
 			using (var file = new StreamWriter(GetFileName(seed.Value)))
 			{
-				file.WriteLine($"Seed: {seed.Value.ToDisplayString()}");
+				file.WriteLine($"Seed: {seed.Value}");
 				file.WriteLine($"Timespinner version: v{TimeSpinnerGame.Constants.GameVersion}");
 				file.WriteLine($"TsRandomizer version: v{Assembly.GetExecutingAssembly().GetName().Version}");
 
@@ -295,7 +292,7 @@ namespace TsRandomizer.Screens
 			file.WriteLine();
 			file.WriteLine("Progression Chain:");
 			
-			int depth = 0;
+			var depth = 0;
 			var progressionChain = itemLocations.GetProgressionChain();
 
 			do

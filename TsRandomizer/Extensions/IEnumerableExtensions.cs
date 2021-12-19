@@ -25,15 +25,9 @@ namespace TsRandomizer.Extensions
 			return (IList)listMethod?.Invoke(null, new object[] { enumerable });
 		}
 
-		internal static IEnumerable<T> Concat<T>(this IEnumerable<T> items, T item)
-		{
-			return items.Concat(new[] {item});
-		}
+		internal static IEnumerable<T> Concat<T>(this IEnumerable<T> items, T item) => items.Concat(new[] {item});
 
-		public static IEnumerable<T> NotOfType<T,T2>(this IEnumerable<T> items)
-		{
-			return items.Where(i => i.GetType() != typeof(T2));
-		}
+		public static IEnumerable<T> NotOfType<T,T2>(this IEnumerable<T> items) => items.Where(i => i.GetType() != typeof(T2));
 
 		internal static T SelectRandom<T>(this IEnumerable<T> items, Random r)
 		{
@@ -41,14 +35,8 @@ namespace TsRandomizer.Extensions
 			return array.SelectRandom(r);
 		}
 
-		internal static IOrderedEnumerable<T> InRandomOrder<T>(this IEnumerable<T> items, Random r)
-		{
-			return items.OrderBy(i => r.Next());
-		}
+		internal static IOrderedEnumerable<T> InRandomOrder<T>(this IEnumerable<T> items, Random r) => items.OrderBy(i => r.Next());
 
-		internal static HashSet<T> ToHashSet<T>(this IEnumerable<T> items)
-		{
-			return new HashSet<T>(items);
-		}
+		internal static HashSet<T> ToHashSet<T>(this IEnumerable<T> items) => new HashSet<T>(items);
 	}
 }

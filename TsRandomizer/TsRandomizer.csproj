@@ -101,6 +101,7 @@
     <Compile Include="Archipelago\ConnectionFailedException.cs" />
     <Compile Include="Commands\ConnectCommand.cs" />
     <Compile Include="Commands\ConsoleCommand.cs" />
+    <Compile Include="Commands\GiveRelicCommand.cs" />
     <Compile Include="Commands\TeleportCommand.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="Randomisation\HintGenerator.cs" />

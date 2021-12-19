@@ -46,10 +46,7 @@ namespace TsRandomizer.Drawables
 				origin = newOrigin;
 		}
 
-		public void SetSeed(Seed selectedSeed)
-		{
-			seed = selectedSeed;
-		}
+		public void SetSeed(Seed selectedSeed) => seed = selectedSeed;
 
 		public void Draw(SpriteBatch spriteBatch)
 		{
@@ -67,7 +64,10 @@ namespace TsRandomizer.Drawables
 				if (seed.Value.Options.Archipelago)
 					DrawSeedString(spriteBatch, "Archipelago", Color.Yellow);
 				else
-					DrawSeedString(spriteBatch, seed.Value.ToDisplayString());
+				{
+					DrawBackdrop(spriteBatch, seed.Value.ToString());
+					DrawSeedString(spriteBatch, seed.Value.ToString());
+				}
 			}
 			else
 			{
@@ -81,10 +81,8 @@ namespace TsRandomizer.Drawables
 			}
 		}
 
-		void DrawSeedString(SpriteBatch spriteBatch, string seedId)
-		{
+		void DrawSeedString(SpriteBatch spriteBatch, string seedId) => 
 			DrawSeedString(spriteBatch, seedId, Color.WhiteSmoke);
-		}
 
 		void DrawSeedString(SpriteBatch spriteBatch, string seedId, Color color)
 		{
@@ -110,6 +108,16 @@ namespace TsRandomizer.Drawables
 			backdropColor.A = 200;
 
 			var backdropArea = new Rectangle(drawPoint.X, drawPoint.Y, numberOfItemsToDraw * IconSize, IconSize);
+
+			spriteBatch.Draw(gcm.TxBlankSquare, backdropArea, null, backdropColor, 0, origin, SpriteEffects.None, 1);
+		}
+
+		void DrawBackdrop(SpriteBatch spriteBatch, string message)
+		{
+			var backdropColor = Color.Black;
+			backdropColor.A = 200;
+
+			var backdropArea = new Rectangle(drawPoint.X, drawPoint.Y, (int)(gcm.LatinFont.MeasureString(message).X * (int)TimeSpinnerGame.Constants.InGameZoom), IconSize);
 
 			spriteBatch.Draw(gcm.TxBlankSquare, backdropArea, null, backdropColor, 0, origin, SpriteEffects.None, 1);
 		}

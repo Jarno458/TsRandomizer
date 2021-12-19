@@ -16,7 +16,6 @@ namespace TsRandomizer.Extensions
 		const string MeleeOrbPrefixKey = "TsRandomizerHasMeleeOrb";
 		const string FamiliarPrefixKey = "TsRandomizerHasFamiliar";
 
-
 		internal static Seed? GetSeed(this GameSave gameSave)
 		{
 			if (gameSave.DataKeyStrings.TryGetValue(SeedSaveFileKey, out var seedString)
@@ -43,30 +42,20 @@ namespace TsRandomizer.Extensions
 			return fillingMethod;
 		}
 
-		internal static void SetFillingMethod(this GameSave gameSave, FillingMethod fillingMethod)
-		{
+		internal static void SetFillingMethod(this GameSave gameSave, FillingMethod fillingMethod) => 
 			gameSave.DataKeyStrings[FillMethodSaveFileKey] = fillingMethod.ToString();
-		}
 
-		internal static bool HasMeleeOrb(this GameSave gameSave, EInventoryOrbType orbType)
-		{
-			return gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int)orbType);
-		}
+		internal static bool HasMeleeOrb(this GameSave gameSave, EInventoryOrbType orbType) => 
+			gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int) orbType);
 
-		internal static bool HasFamiliar(this GameSave gameSave, EInventoryFamiliarType familiar)
-		{
-			return gameSave.DataKeyBools.ContainsKey(FamiliarPrefixKey + (int)familiar);
-		}
+		internal static bool HasFamiliar(this GameSave gameSave, EInventoryFamiliarType familiar) => 
+			gameSave.DataKeyBools.ContainsKey(FamiliarPrefixKey + (int)familiar);
 
-		internal static bool HasRelic(this GameSave gameSave, EInventoryRelicType relic)
-		{
-			return gameSave.Inventory.RelicInventory.Inventory.ContainsKey((int)relic);
-		}
+		internal static bool HasRelic(this GameSave gameSave, EInventoryRelicType relic) => 
+			gameSave.Inventory.RelicInventory.Inventory.ContainsKey((int)relic);
 
-		internal static bool HasOrb(this GameSave gameSave, EInventoryOrbType orbType)
-		{
-			return gameSave.Inventory.OrbInventory.Inventory.ContainsKey((int)orbType);
-		}
+		internal static bool HasOrb(this GameSave gameSave, EInventoryOrbType orbType) => 
+			gameSave.Inventory.OrbInventory.Inventory.ContainsKey((int) orbType);
 
 		internal static bool HasRing(this GameSave gameSave, EInventoryOrbType orbType)
 		{
@@ -154,20 +143,14 @@ namespace TsRandomizer.Extensions
 			}
 		}
 
-		static void AddEquipment(this GameSave gameSave, EInventoryEquipmentType enquipment)
-		{
-			gameSave.Inventory.EquipmentInventory.AddItem((int)enquipment);
-		}
+		static void AddEquipment(this GameSave gameSave, EInventoryEquipmentType enquipment) =>
+			gameSave.Inventory.EquipmentInventory.AddItem((int) enquipment);
 
-		static void AddUseItem(this GameSave gameSave, EInventoryUseItemType useItem)
-		{
+		static void AddUseItem(this GameSave gameSave, EInventoryUseItemType useItem) => 
 			gameSave.Inventory.UseItemInventory.AddItem((int)useItem);
-		}
 
-		static void AddRelic(this GameSave gameSave, EInventoryRelicType relic)
-		{
+		internal static void AddRelic(this GameSave gameSave, EInventoryRelicType relic) => 
 			gameSave.Inventory.RelicInventory.AddItem((int)relic);
-		}
 
 		static void AddFamiliar(this GameSave gameSave, EInventoryFamiliarType familiar)
 		{
@@ -239,11 +222,9 @@ namespace TsRandomizer.Extensions
 				gameSave.DataKeyInts[ConcussionCountFileKey] = 1;
 		}
 
-		internal static int GetConcussionCount(this GameSave gameSave)
-		{
-			return gameSave.DataKeyInts.ContainsKey(ConcussionCountFileKey)
+		internal static int GetConcussionCount(this GameSave gameSave) =>
+			gameSave.DataKeyInts.ContainsKey(ConcussionCountFileKey)
 				? gameSave.DataKeyInts[ConcussionCountFileKey]
 				: 0;
-		}
 	}
 }
