@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
@@ -10,6 +12,8 @@ using TsRandomizer.Randomisation;
 using TsRandomizer.Screens.Menu;
 using TsRandomizer.Screens.SeedSelection;
 using TsRandomizer.Screens.Settings.GameSettingObjects;
+using SDL2;
+
 
 namespace TsRandomizer.Screens.Settings
 {
@@ -39,6 +43,13 @@ namespace TsRandomizer.Screens.Settings
 			// Default order is Memories, Letters, Files, Quests, Bestiary, Feats
 			Dynamic._menuTitle = "Seed Settings";
 			ResetMenu();
+		}
+
+		public override void Update(GameTime gameTime, InputState input)
+		{
+			if (!IsUsedAsSeedSettingsMenu)
+				return;
+			// TODO: handle SDL input
 		}
 
 		void ResetMenu()
@@ -119,8 +130,23 @@ namespace TsRandomizer.Screens.Settings
 				if (setting is OnOffGameSetting)
 				{
 					setting.SetValue(!setting.CurrentValue);
-					gameSettings.WriteSettings();
 				}
+				else if (setting is StringGameSetting)
+				{
+					// TODO: Handle input
+					SDL.SDL_SetClipboardText(setting.CurrentValue);
+					setting.SetValue(SDL.SDL_GetClipboardText());
+				}
+				else if (setting is NumberGameSetting)
+				{
+					NumberGameSetting numberSetting = (NumberGameSetting)setting;
+					double stepValue = numberSetting.StepValue;
+					var value = setting.CurrentValue + stepValue < numberSetting.MaximumValue ? setting.CurrentValue + stepValue : numberSetting.MinimumValue;
+					setting.SetValue(value);
+				}	
+				else
+					return;
+				gameSettings.WriteSettings();
 				var selectedMenu = ((object)Dynamic._selectedMenuCollection).AsDynamic();
 				object menuEntry = ((IList)selectedMenu.Entries)[selectedMenu.SelectedIndex];
 				SetCurrentSettingText(menuEntry, setting);

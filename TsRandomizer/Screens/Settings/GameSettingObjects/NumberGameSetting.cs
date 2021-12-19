@@ -9,6 +9,7 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 	{
 		public double MinimumValue { get; set; }
 		public double MaximumValue { get; set; }
+		public double StepValue { get; set; }
 		public bool AllowDecimals { get; set; }
 		public override void SetValue(dynamic input)
 		{
@@ -19,10 +20,11 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 			}
 		}
 
-		public NumberGameSetting(string name, string description, double defaultValue, double minValue, double maxValue, bool allowDecimals, bool canBeChangedInGame) : base(name, description, defaultValue, canBeChangedInGame)
+		public NumberGameSetting(string name, string description, double defaultValue, double minValue, double maxValue, double stepValue, bool allowDecimals, bool canBeChangedInGame) : base(name, description, defaultValue, canBeChangedInGame)
 		{
 			MinimumValue = minValue;
 			MaximumValue = maxValue;
+			StepValue = stepValue;
 			AllowDecimals = allowDecimals;
 			SetValue(defaultValue);
 		}

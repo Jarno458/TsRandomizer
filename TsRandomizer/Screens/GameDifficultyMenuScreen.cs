@@ -236,7 +236,7 @@ namespace TsRandomizer.Screens
 			}
 			else
 			{
-				seedMenuEntry.Text = "Seed: ";
+				seedMenuEntry.Text = $"Seed: ";
 				seedMenuEntry.Description = "Select the seed used to generate the randomness";
 			}
 		}
