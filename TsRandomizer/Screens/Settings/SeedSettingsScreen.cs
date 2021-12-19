@@ -38,11 +38,16 @@ namespace TsRandomizer.Screens.Settings
 
 			// Default order is Memories, Letters, Files, Quests, Bestiary, Feats
 			Dynamic._menuTitle = "Seed Settings";
+			ResetMenu();
+		}
+
+		void ResetMenu()
+		{
 			ClearAllSubmenus();
 			gameSettings.LoadSettingsFromFile();
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
-	
+
 			SeedSettingsCategoryCollection categories = new SeedSettingsCategoryCollection();
 			foreach (SeedSettingCategoryInfo category in categories.SettingCategories)
 			{
@@ -125,7 +130,7 @@ namespace TsRandomizer.Screens.Settings
 					setting.SetValue(setting.DefaultValue);
 				}
 				gameSettings.WriteSettings();
-				ClearAllSubmenus();
+				ResetMenu();
 			}
 			return ResetDefaults;
 		}
@@ -137,13 +142,13 @@ namespace TsRandomizer.Screens.Settings
 			// as the in-use collection is cleared before use.
 			switch (submenu)
 			{
-				// Currently using bestiary layout for most, other layouts may be useful for other menus
+				// Currently using quest layout for most, other layouts may be useful for other menus
 				// Leaving as switch to easily add new menus as Memories, Letters, Files, Quests, Bestiary, Feats
 				case "Sprite":
 					collection = Dynamic._featsInventory;
 					break;
 				default:
-					collection = Dynamic._bestiaryInventory;
+					collection = Dynamic._questInventory;
 					break;
 			}
 
