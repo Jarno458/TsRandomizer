@@ -11,7 +11,6 @@ using TsRandomizer.Screens.Menu;
 using TsRandomizer.Screens.SeedSelection;
 using TsRandomizer.Screens.Settings.GameSettingObjects;
 
-
 namespace TsRandomizer.Screens.Settings
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.JournalMenuScreen")]
@@ -79,6 +78,10 @@ namespace TsRandomizer.Screens.Settings
 				{
 					submenu.Add(CreateMenuForSetting(setting));
 				}
+				var defaultsMenu = MenuEntry.Create("Restore Defaults", OnDefaultsSelected(category.Settings)).AsTimeSpinnerMenuEntry();
+				defaultsMenu.AsDynamic().Description = "Restore all values to their defaults";
+				defaultsMenu.AsDynamic().IsCenterAligned = false;
+				submenu.Add(defaultsMenu);
 				Dynamic.ChangeMenuCollection(collection, true);
 			}
 			return CreateMenu;
@@ -99,9 +102,22 @@ namespace TsRandomizer.Screens.Settings
 		{
 			void ToggleSetting()
 			{
-				// TODO do something here
+				Console.Out.WriteLine($"Can't toggle {setting.Name} to {setting.CurrentValue}");
 			}
 			return ToggleSetting;
+		}
+
+		Action OnDefaultsSelected(GameSetting[] settings)
+		{
+			void ResetDefaults()
+			{
+				foreach (GameSetting setting in settings)
+				{
+					setting.SetValue(setting.DefaultValue);
+				}
+				gameSettings.WriteSettings();
+			}
+			return ResetDefaults;
 		}
 
 		object FetchCollection(string submenu)
