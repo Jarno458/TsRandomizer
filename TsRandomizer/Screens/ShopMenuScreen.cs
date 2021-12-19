@@ -16,6 +16,9 @@ namespace TsRandomizer.Screens
 		{
 			GameSettingsCollection gameSettings = new GameSettingsCollection();
 			gameSettings.LoadSettingsFromFile();
+			// Do not adjust prices for empty shops
+			if (gameSettings.ShopFill.CurrentValue == "Empty")
+				return;
 			float shopMultiplier = (float)gameSettings.ShopMultiplier.CurrentValue;
 			var shopMenu = ((IList)Dynamic._subMenuCollections)[0].AsDynamic();
 			foreach (object shopMenuEntry in shopMenu._items)
