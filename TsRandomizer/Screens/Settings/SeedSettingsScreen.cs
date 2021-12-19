@@ -71,12 +71,21 @@ namespace TsRandomizer.Screens.Settings
 			seedSelectionScreen = screenManager.FirstOrDefault<SeedSelectionMenuScreen>();
 		}
 
-		public static GameScreen Create(ScreenManager screenManager)
+		public static GameScreen Create(ScreenManager screenManager, SeedOptionsCollection options)
 		{
 			void Noop() { }
 			GCM gcm = screenManager.AsDynamic().GCM;
 			gcm.LoadAllResources(screenManager.AsDynamic().GeneralContentManager, screenManager.GraphicsDevice);
-			return (GameScreen)Activator.CreateInstance(JournalMenuType, GameSave.EditorSave, gcm, (Action)Noop);
+			return (GameScreen)Activator.CreateInstance(JournalMenuType, GetSave(options), gcm, (Action)Noop);
+		}
+
+		static GameSave GetSave(SeedOptionsCollection options)
+		{
+			var save = GameSave.DemoSave;
+
+			save.Inventory.AsDynamic()._relicInventory = options;
+
+			return save;
 		}
 
 		Action CreateMenuForCategory(SeedSettingCategoryInfo category)
