@@ -45,14 +45,6 @@ namespace TsRandomizer.Extensions
 				TimeSpinnerGame.Localizer.OverrideKey("cs_pro_lun_06",
 					"'Kobo'... There's no one in our village by that name... I don't think this 'memory' is real.");
 			}));
-			TextReplacers.Add(new TextReplacer(3, 16, (level, itemLocations, options) => {
-				TimeSpinnerGame.Localizer.OverrideKey("sign_forest_directions",
-					new HintGenerator(itemLocations, level).GetRequiredProgressionHint());
-			}));
-			TextReplacers.Add(new TextReplacer(5, 14, (level, itemLocations, options) => {
-				TimeSpinnerGame.Localizer.OverrideKey("inv_jou_Letter6_14",
-					$"Aelana\n\nP.S. {new HintGenerator(itemLocations, level).GetRequiredItemHint()}");
-			}));
 		}
 
 		public static void OnChangeRoom(
