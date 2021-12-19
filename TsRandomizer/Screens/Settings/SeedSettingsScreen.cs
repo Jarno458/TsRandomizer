@@ -51,6 +51,10 @@ namespace TsRandomizer.Screens.Settings
 				submenu.AsDynamic().IsCenterAligned = false;
 				menuEntryList.Add(submenu.AsTimeSpinnerMenuEntry());
 			}
+			GameSetting[] allSettings = new GameSetting[] { gameSettings.StartWithMeyef, gameSettings.DamageRando,
+				gameSettings.StartWithJewelryBox, gameSettings.PlayerName, gameSettings. OrbXPMultiplier,
+				gameSettings.ShopFill, gameSettings.ShopMultiplier };
+			menuEntryList.Add(CreateDefaultsMenu(allSettings));
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = menuEntryList;
 		}
@@ -78,13 +82,18 @@ namespace TsRandomizer.Screens.Settings
 				{
 					submenu.Add(CreateMenuForSetting(setting));
 				}
-				var defaultsMenu = MenuEntry.Create("Restore Defaults", OnDefaultsSelected(category.Settings)).AsTimeSpinnerMenuEntry();
-				defaultsMenu.AsDynamic().Description = "Restore all values to their defaults";
-				defaultsMenu.AsDynamic().IsCenterAligned = false;
-				submenu.Add(defaultsMenu);
+				submenu.Add(CreateDefaultsMenu(category.Settings));
 				Dynamic.ChangeMenuCollection(collection, true);
 			}
 			return CreateMenu;
+		}
+
+		object CreateDefaultsMenu(GameSetting[] settings)
+		{
+			var defaultsMenu = MenuEntry.Create("Defaults", OnDefaultsSelected(settings)).AsTimeSpinnerMenuEntry();
+			defaultsMenu.AsDynamic().Description = "Restore all values to their defaults";
+			defaultsMenu.AsDynamic().IsCenterAligned = false;
+			return defaultsMenu;
 		}
 
 		object CreateMenuForSetting(GameSetting setting)
@@ -116,6 +125,7 @@ namespace TsRandomizer.Screens.Settings
 					setting.SetValue(setting.DefaultValue);
 				}
 				gameSettings.WriteSettings();
+				ClearAllSubmenus();
 			}
 			return ResetDefaults;
 		}
