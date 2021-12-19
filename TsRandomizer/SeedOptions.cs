@@ -90,9 +90,5 @@ namespace TsRandomizer
 
 		public override string ToString() =>
 			Flags.ToString($"X{Length}");
-
-		[Pure]
-		public string ToDisplayString() =>
-			(Flags & 0xFFFF).ToString("X4");
 	}
 }

@@ -16,7 +16,6 @@ namespace TsRandomizer.Extensions
 		const string MeleeOrbPrefixKey = "TsRandomizerHasMeleeOrb";
 		const string FamilierPrefixKey = "TsRandomizerHasFamiliar";
 
-
 		internal static Seed? GetSeed(this GameSave gameSave)
 		{
 			if (gameSave.DataKeyStrings.TryGetValue(SeedSaveFileKey, out var seedString)
@@ -154,20 +153,14 @@ namespace TsRandomizer.Extensions
 			}
 		}
 
-		static void AddEnquipment(this GameSave gameSave, EInventoryEquipmentType enquipment)
-		{
+		static void AddEnquipment(this GameSave gameSave, EInventoryEquipmentType enquipment) => 
 			gameSave.Inventory.EquipmentInventory.AddItem((int) enquipment);
-		}
 
-		static void AddUseItem(this GameSave gameSave, EInventoryUseItemType useItem)
-		{
+		static void AddUseItem(this GameSave gameSave, EInventoryUseItemType useItem) => 
 			gameSave.Inventory.UseItemInventory.AddItem((int)useItem);
-		}
 
-		static void AddRelic(this GameSave gameSave, EInventoryRelicType relic)
-		{
+		internal static void AddRelic(this GameSave gameSave, EInventoryRelicType relic) => 
 			gameSave.Inventory.RelicInventory.AddItem((int)relic);
-		}
 
 		static void AddFamiliar(this GameSave gameSave, EInventoryFamiliarType familiar)
 		{
