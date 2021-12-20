@@ -7,7 +7,7 @@ using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.IntermediateObjects
 {
-	class PogRessiveItemInfo : ItemInfo
+	class ProgressiveItemInfo : ItemInfo
 	{
 		ItemInfo[] Items { get; }
 
@@ -21,19 +21,19 @@ namespace TsRandomizer.IntermediateObjects
 		internal override Requirement Unlocks => CurrentItem.Unlocks;
 		public override void OnPickup(Level level) => CurrentItem.OnPickup(level);
 
-		public PogRessiveItemInfo(params ItemInfo[] items) : this(items, 0)
+		public ProgressiveItemInfo(params ItemInfo[] items) : this(items, 0)
 		{
 		}
 
-		PogRessiveItemInfo(ItemInfo[] items, int i)
+		ProgressiveItemInfo(ItemInfo[] items, int i)
 		{
 			Items = items;
 			index = i;
 		}
 
-		public PogRessiveItemInfo Clone()
+		public ProgressiveItemInfo Clone()
 		{
-			return new PogRessiveItemInfo(Items, index);
+			return new ProgressiveItemInfo(Items, index);
 		}
 
 		public void Reset() => index = 0;

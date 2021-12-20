@@ -17,7 +17,7 @@ namespace TsRandomizer.IntermediateObjects
 		readonly Dictionary<int, ItemInfo> orbItems;
 		readonly Dictionary<EItemType, ItemInfo> statItems;
 
-		readonly Dictionary<ItemInfo, PogRessiveItemInfo> progressiveItems;
+		readonly Dictionary<ItemInfo, ProgressiveItemInfo> progressiveItems;
 
 		public ItemInfoProvider(SeedOptions options, ItemUnlockingMap unlockingMap)
 		{
@@ -30,7 +30,7 @@ namespace TsRandomizer.IntermediateObjects
 			orbItems = new Dictionary<int, ItemInfo>();
 			statItems = new Dictionary<EItemType, ItemInfo>();
 
-			progressiveItems = new Dictionary<ItemInfo, PogRessiveItemInfo>();
+			progressiveItems = new Dictionary<ItemInfo, ProgressiveItemInfo>();
 
 			MakeGearsProgressive();
 			MakeBroochProgressive();
@@ -48,7 +48,7 @@ namespace TsRandomizer.IntermediateObjects
 			var gear2 = Get(EInventoryRelicType.TimespinnerGear2);
 			var gear3 = Get(EInventoryRelicType.TimespinnerGear3);
 
-			var progressiveItem = new PogRessiveItemInfo(gear1, gear2, gear3);
+			var progressiveItem = new ProgressiveItemInfo(gear1, gear2, gear3);
 
 			progressiveItems.Add(gear1, progressiveItem);
 			progressiveItems.Add(gear2, progressiveItem);
@@ -60,7 +60,7 @@ namespace TsRandomizer.IntermediateObjects
 			var empireBrooch = Get(EInventoryRelicType.EmpireBrooch);
 			var godestBrooch = Get(EInventoryRelicType.EternalBrooch);
 
-			var progressiveItem = new PogRessiveItemInfo(empireBrooch, godestBrooch);
+			var progressiveItem = new ProgressiveItemInfo(empireBrooch, godestBrooch);
 
 			progressiveItems.Add(empireBrooch, progressiveItem);
 			progressiveItems.Add(godestBrooch, progressiveItem);
@@ -73,7 +73,7 @@ namespace TsRandomizer.IntermediateObjects
 			var cardC = Get(EInventoryRelicType.ScienceKeycardC);
 			var cardD = Get(EInventoryRelicType.ScienceKeycardD);
 
-			var progressiveItem = new PogRessiveItemInfo(cardD, cardC, cardB, cardA);
+			var progressiveItem = new ProgressiveItemInfo(cardD, cardC, cardB, cardA);
 
 			progressiveItems.Add(cardA, progressiveItem);
 			progressiveItems.Add(cardB, progressiveItem);
@@ -87,7 +87,7 @@ namespace TsRandomizer.IntermediateObjects
 			var lightwall = Get(EInventoryOrbType.Barrier, EOrbSlot.Spell);
 			var celestialSash = Get(EInventoryRelicType.EssenceOfSpace);
 
-			var progressiveItem = new PogRessiveItemInfo(doubleJump, lightwall, celestialSash);
+			var progressiveItem = new ProgressiveItemInfo(doubleJump, lightwall, celestialSash);
 
 			progressiveItems.Add(doubleJump, progressiveItem);
 			progressiveItems.Add(lightwall, progressiveItem);

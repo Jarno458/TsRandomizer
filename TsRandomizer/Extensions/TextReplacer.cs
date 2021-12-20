@@ -31,13 +31,19 @@ namespace TsRandomizer.Extensions
 					TimeSpinnerGame.Localizer.OverrideKey("q_ram_4_lun_29alt",
 						"It says, 'Redacted Temporal Research: Lord of Ravens'. Maybe I should ask the crow about this...");
 			}));
-			TextReplacers.Add(new TextReplacer(3, 16, (level, itemLocations, options) => {
-				TimeSpinnerGame.Localizer.OverrideKey("sign_forest_directions",
-					new HintGenerator(itemLocations, level).GetRequiredProgressionHint());
-			}));
-			TextReplacers.Add(new TextReplacer(5, 14, (level, itemLocations, options) => {
-				TimeSpinnerGame.Localizer.OverrideKey("inv_jou_Letter6_14",
-					$"Aelana\n\nP.S. {new HintGenerator(itemLocations, level).GetRequiredItemHint()}");
+			TextReplacers.Add(new TextReplacer(2, 51, (level, itemLocations, options) => {
+				if (!options.GyreArchives)
+					return;
+				TimeSpinnerGame.Localizer.OverrideKey("cs_pro_lun_02",
+					"Yorne? Oh... not quite. Is this... his memory?");
+				TimeSpinnerGame.Localizer.OverrideKey("cs_pro_lun_03",
+					"I still can't believe they picked *her*, I deserved this.");
+				TimeSpinnerGame.Localizer.OverrideKey("cs_pro_lun_04",
+					"*sigh* Even as just a reflection... Yorne is still as Yorne as ever.");
+				TimeSpinnerGame.Localizer.OverrideKey("cs_pro_lun_05",
+					"I have to find where that Kobo has run off to.");
+				TimeSpinnerGame.Localizer.OverrideKey("cs_pro_lun_06",
+					"'Kobo'... There's no one in our village by that name... I don't think this 'memory' is real.");
 			}));
 		}
 

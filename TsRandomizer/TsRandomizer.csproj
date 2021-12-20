@@ -88,10 +88,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TestVersions\DRMFreeVersion\Timespinner.exe</HintPath>
-      <Private>False</Private>
+    <Reference Include="Timespinner">
+      <HintPath>..\..\Timespinner\Timespinner.exe</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
       <HintPath>..\lib\websocket-sharp.dll</HintPath>
@@ -103,6 +101,7 @@
     <Compile Include="Archipelago\ConnectionFailedException.cs" />
     <Compile Include="Commands\ConnectCommand.cs" />
     <Compile Include="Commands\ConsoleCommand.cs" />
+    <Compile Include="Commands\GiveRelicCommand.cs" />
     <Compile Include="Commands\TeleportCommand.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="Randomisation\HintGenerator.cs" />
@@ -111,11 +110,8 @@
     <Compile Include="Archipelago\SlotDataParser.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\TextReplacer.cs" />
-    <Compile Include="LevelObjects\Other\HistoricalDocuments.cs" />
     <Compile Include="LevelObjects\Other\MerchantCrowNPC.cs" />
     <Compile Include="LevelObjects\Other\NightmareBoss.cs" />
-    <Compile Include="LevelObjects\Other\YorneNPC.cs" />
-    <Compile Include="Randomisation\BossManager.cs" />
     <Compile Include="Randomisation\ExteralItemLocation.cs" />
     <Compile Include="Archipelago\Log.cs" />
     <Compile Include="Archipelago\Client.cs" />
@@ -140,7 +136,7 @@
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="IntermediateObjects\ItemIdentifier.cs" />
     <Compile Include="IntermediateObjects\ItemInfoProvider.cs" />
-    <Compile Include="IntermediateObjects\PogRessiveItemInfo.cs" />
+    <Compile Include="IntermediateObjects\ProgressiveItemInfo.cs" />
     <Compile Include="IntermediateObjects\RequestButtonPressTrigger.cs" />
     <Compile Include="IntermediateObjects\SingleItemInfo.cs" />
     <Compile Include="IntermediateObjects\TriggerBase.cs" />
@@ -190,6 +186,9 @@
     <Compile Include="Screens\MinimapScreen.cs" />
     <Compile Include="Screens\CreditsScreen.cs" />
     <Compile Include="Screens\FamiliarMenuScreen.cs" />
+    <Compile Include="Screens\Settings\SeedSettingCategoryInfo.cs" />
+    <Compile Include="Screens\Settings\SeedSettingsHeaderCollection.cs" />
+    <Compile Include="Screens\ShopMenuScreen.cs" />
     <Compile Include="Screens\OrbShopMenuScreen.cs" />
     <Compile Include="Screens\OrbMenuScreen.cs" />
     <Compile Include="Randomisation\Randomizer.cs" />
@@ -216,6 +215,7 @@
     <Compile Include="Screens\SeedSelection\SeedOptionInfo.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsCollection.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsMenuScreen.cs" />
+    <Compile Include="Screens\Settings\SeedSettingsScreen.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\NumberGameSetting.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\OnOffGameSetting.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\StringGameSetting.cs" />
