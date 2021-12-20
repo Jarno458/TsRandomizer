@@ -133,15 +133,5 @@ namespace TsRandomizer.Randomisation
 		{
 			return inventory.GetItem((int)orbType);
 		}
-
-		public static void AddMoreOrbXP(GameSave save, EInventoryOrbType orbType, double amount)
-		{
-			var orb = GetOrbFromType(save.Inventory.OrbInventory, orbType);
-			var extraXP = amount - 1;
-			if (save.Inventory.EquippedTrinketA == EInventoryEquipmentType.NelisteEarring
-				|| save.Inventory.EquippedTrinketB == EInventoryEquipmentType.NelisteEarring)
-				extraXP = extraXP * 2;
-			orb.Experience += ((int)extraXP);
-		}
 	}
 }

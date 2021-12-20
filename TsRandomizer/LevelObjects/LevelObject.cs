@@ -144,11 +144,6 @@ namespace TsRandomizer.LevelObjects
 			if (gameSettings.DamageRando.CurrentValue)
 				OrbDamageManager.UpdateOrbDamage(level.GameSave, level.MainHero);
 
-			if (gameSettings.OrbXPMultiplier.CurrentValue != gameSettings.OrbXPMultiplier.DefaultValue)
-			{
-				HandleOrbXP(level, lunais, (Dictionary<int, Monster>)levelReflected._enemies, gameSettings.OrbXPMultiplier.CurrentValue);
-			}
-
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
 
@@ -270,59 +265,6 @@ namespace TsRandomizer.LevelObjects
 
 			foreach (var gameEvent in newObjects)
 				levelPrivate.RequestAddObject(gameEvent);
-		}
-
-		static void HandleOrbXP(Level level, Protagonist lunais, Dictionary<int, Monster> enemies, double multiplier)
-		{
-			var orbManager = lunais.AsDynamic()._orbManager;
-			var spellManager = lunais.AsDynamic()._spellManager;
-			var passiveManager = lunais.AsDynamic()._passiveManager;
-			var orbA = ((object)orbManager).AsDynamic().MainOrb;
-			var orbB = ((object)orbManager).AsDynamic().SubOrb;
-			var spell = ((object)spellManager).AsDynamic().EquippedSpell;
-
-			HashSet<int> hits;
-			if (orbA != null)
-			{
-				hits = (HashSet<int>)((object)orbA).AsDynamic()._hitEnemyRegistry;
-				MainOrbHits.UnionWith(hits);
-			}
-			if (orbB != null)
-			{
-				hits = (HashSet<int>)((object)orbB).AsDynamic()._hitEnemyRegistry;
-				SubOrbHits.UnionWith(hits);
-			}
-			if (spell != null)
-			{
-				hits = (HashSet<int>)((object)spell).AsDynamic()._hitEnemyRegistry;
-				SpellHits.UnionWith(hits);
-			}
-
-			var currentDeadEnemyIds = enemies
-				.Where(e => (e.Value.IsDead || e.Value.HP == 0) && !e.Value.AsDynamic().IsABoss)
-				.Select(e => e.Key)
-				.Except(KnownDeadEnemyIds)
-				.ToList();
-
-			foreach (var deadEnemyId in currentDeadEnemyIds)
-			{
-				if (MainOrbHits.Contains(deadEnemyId))
-				{
-					OrbDamageManager.AddMoreOrbXP(level.GameSave, ((object)orbA).AsDynamic().OrbColor, multiplier);
-					MainOrbHits.Remove(deadEnemyId);
-				}
-				if (SubOrbHits.Contains(deadEnemyId))
-				{
-					OrbDamageManager.AddMoreOrbXP(level.GameSave, ((object)orbB).AsDynamic().OrbColor, multiplier);
-					SubOrbHits.Remove(deadEnemyId);
-				}
-				if (SpellHits.Contains(deadEnemyId))
-				{
-					OrbDamageManager.AddMoreOrbXP(level.GameSave, ((object)spell).AsDynamic().SpellType, multiplier);
-					SpellHits.Remove(deadEnemyId);
-				}
-			}
-			KnownDeadEnemyIds.AddRange(currentDeadEnemyIds);
 		}
 
 		static void SetMonsterHpTo1(IEnumerable<Alive> monsters)

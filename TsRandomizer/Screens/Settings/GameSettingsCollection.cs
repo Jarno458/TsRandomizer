@@ -14,8 +14,6 @@ namespace TsRandomizer.Screens.Settings
 		public OnOffGameSetting StartWithMeyef { get; set; }
 		public OnOffGameSetting DamageRando { get; set; }
 		public OnOffGameSetting StartWithJewelryBox { get; set; }
-		public StringGameSetting PlayerName { get; set; }
-		public NumberGameSetting OrbXPMultiplier { get; set; }
 		public SpecificValuesGameSetting ShopFill { get; set; }
 		public NumberGameSetting ShopMultiplier { get; set; }
 		public OnOffGameSetting ShopWarpShards { get; set; }
@@ -36,8 +34,6 @@ namespace TsRandomizer.Screens.Settings
 				StartWithMeyef = new OnOffGameSetting("Start with Meyef", "Start with Meyef, ideal for when you want to play multiplayer", false, false);
 				DamageRando = new OnOffGameSetting("Damage Randomizer", "Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false, false);
 				StartWithJewelryBox = new OnOffGameSetting("Start with Jewelry Box", "Start with Jewelry Box unlocked", false, false);
-				PlayerName = new StringGameSetting("Player Name", "Changes all references to Lunais into the given name", "Lunais", 15, false);
-				OrbXPMultiplier = new NumberGameSetting("Orb XP Multiplier", "Sets the amount of experience orbs gain per kill. Pairs well with Nightmare Lvl 1.", 1, 1, 100, 11, true, true);
 				string[] shopSettings = { "Default", "Random", "Vanilla", "Empty" };
 				ShopFill = new SpecificValuesGameSetting("Shop Inventory", "Sets the items for sale in Merchant Crow's shops. Options: [Default,Random,Vanilla,Empty]", "Default", shopSettings, false);
 				ShopMultiplier = new NumberGameSetting("Shop Price Multiplier", "Multiplier for the cost of items in the shop. Set to 0 for free shops", 1, 0, 10, 1, true, true);
@@ -56,9 +52,7 @@ namespace TsRandomizer.Screens.Settings
 					var settings = JsonConvert.DeserializeObject<GameSettingsCollection>(settingsString);
 					StartWithMeyef = settings.StartWithMeyef;
 					DamageRando = settings.DamageRando;
-					PlayerName = settings.PlayerName;
 					StartWithJewelryBox = settings.StartWithJewelryBox;
-					OrbXPMultiplier = settings.OrbXPMultiplier;
 					ShopFill = settings.ShopFill;
 					ShopMultiplier = settings.ShopMultiplier;
 					ShopWarpShards = settings.ShopWarpShards;

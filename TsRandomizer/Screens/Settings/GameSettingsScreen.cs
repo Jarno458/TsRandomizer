@@ -58,7 +58,7 @@ namespace TsRandomizer.Screens.Settings
 				menuEntryList.Add(submenu.AsTimeSpinnerMenuEntry());
 			}
 			GameSetting[] allSettings = new GameSetting[] { gameSettings.StartWithMeyef, gameSettings.DamageRando,
-				gameSettings.StartWithJewelryBox, gameSettings.PlayerName, gameSettings. OrbXPMultiplier,
+				gameSettings.StartWithJewelryBox,
 				gameSettings.ShopFill, gameSettings.ShopMultiplier, gameSettings.ShopWarpShards };
 			menuEntryList.Add(CreateDefaultsMenu(allSettings));
 
