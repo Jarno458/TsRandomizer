@@ -139,7 +139,7 @@ namespace TsRandomizer.Screens.Settings
 				{
 					NumberGameSetting numberSetting = (NumberGameSetting)setting;
 					double stepValue = numberSetting.StepValue;
-					var value = setting.CurrentValue + stepValue < numberSetting.MaximumValue ? setting.CurrentValue + stepValue : numberSetting.MinimumValue;
+					var value = setting.CurrentValue + stepValue <= numberSetting.MaximumValue ? setting.CurrentValue + stepValue : numberSetting.MinimumValue;
 					setting.SetValue(value);
 				}	
 				else
