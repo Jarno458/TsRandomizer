@@ -1,8 +1,9 @@
 ﻿using System;
 using Timespinner.GameAbstractions.Gameplay;
+using TsRandomizer.Extensions;
 using TsRandomizer.Randomisation;
 
-namespace TsRandomizer.Extensions
+namespace TsRandomizer.LevelObjects
 {
     class TextReplacer
     {
