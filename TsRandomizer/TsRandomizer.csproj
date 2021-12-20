@@ -220,6 +220,7 @@
     <Compile Include="Screens\Settings\GameSettingsScreen.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\NumberGameSetting.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\OnOffGameSetting.cs" />
+    <Compile Include="Screens\Settings\GameSettingObjects\SpecificValuesGameSetting.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\StringGameSetting.cs" />
     <Compile Include="Seed.cs" />
     <Compile Include="SeedOptions.cs" />

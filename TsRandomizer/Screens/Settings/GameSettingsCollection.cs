@@ -38,7 +38,8 @@ namespace TsRandomizer.Screens.Settings
 				StartWithJewelryBox = new OnOffGameSetting("Start with Jewelry Box", "Start with Jewelry Box unlocked", false, false);
 				PlayerName = new StringGameSetting("Player Name", "Changes all references to Lunais into the given name", "Lunais", 15, false);
 				OrbXPMultiplier = new NumberGameSetting("Orb XP Multiplier", "Sets the amount of experience orbs gain per kill. Pairs well with Nightmare Lvl 1.", 1, 1, 100, 11, true, true);
-				ShopFill = new SpecificValuesGameSetting("Shop Inventory", "Sets the items for sale in Merchant Crow's shops. Options: [Default,Random,Vanilla,Empty]", "Default", { "Default", "Random", "Vanilla", "Empty" }, false);
+				string[] shopSettings = { "Default", "Random", "Vanilla", "Empty" };
+				ShopFill = new SpecificValuesGameSetting("Shop Inventory", "Sets the items for sale in Merchant Crow's shops. Options: [Default,Random,Vanilla,Empty]", "Default", shopSettings, false);
 				ShopMultiplier = new NumberGameSetting("Shop Price Multiplier", "Multiplier for the cost of items in the shop. Set to 0 for free shops", 1, 0, 10, 1, true, true);
 				ShopWarpShards = new OnOffGameSetting("Always Sell Warp Shards", "Shops always sell warp shards (when keys possessed), ignoring fill setting.", true, true);
 				WriteSettings(); //write settings file with default values
