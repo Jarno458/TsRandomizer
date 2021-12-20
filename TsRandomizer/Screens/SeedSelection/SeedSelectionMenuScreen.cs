@@ -184,9 +184,9 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		void OnSettingsSelected(PlayerIndex playerIndex)
 		{
-			var seedSettingsMenu = SeedSettingsScreen.Create(ScreenManager, GetCurrentOptions());
+			var gameSettingsMenu = GameSettingsScreen.Create(ScreenManager, GetCurrentOptions());
 
-			ScreenManager.AddScreen(seedSettingsMenu, playerIndex);
+			ScreenManager.AddScreen(gameSettingsMenu, playerIndex);
 		}
 
 		internal void OnSeedOptionsUpdated(SeedOptionsCollection options)

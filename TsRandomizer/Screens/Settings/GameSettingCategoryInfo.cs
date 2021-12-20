@@ -1,6 +1,6 @@
 ﻿namespace TsRandomizer.Screens.Settings
 {
-	class SeedSettingCategoryInfo
+	class GameSettingCategoryInfo
 	{
 		public string Name { get; set; }
 		public string Description { get; set; }

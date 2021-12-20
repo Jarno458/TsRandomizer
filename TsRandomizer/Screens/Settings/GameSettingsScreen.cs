@@ -16,7 +16,7 @@ namespace TsRandomizer.Screens.Settings
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.JournalMenuScreen")]
 	// ReSharper disable once UnusedMember.Global
-	class SeedSettingsScreen : Screen
+	class GameSettingsScreen : Screen
 	{
 		static readonly Type MenuEntryType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.MenuEntry");
@@ -28,17 +28,17 @@ namespace TsRandomizer.Screens.Settings
 		readonly SeedSelectionMenuScreen seedSelectionScreen;
 		GameSettingsCollection gameSettings = new GameSettingsCollection();
 
-		bool IsUsedAsSeedSettingsMenu => seedSelectionScreen != null;
+		bool IsUsedAsGameSettingsMenu => seedSelectionScreen != null;
 		GCM gcm;
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
-			if (!IsUsedAsSeedSettingsMenu)
+			if (!IsUsedAsGameSettingsMenu)
 				return;
 			gcm = gameContentManager;
 
 			// Default order is Memories, Letters, Files, Quests, Bestiary, Feats
-			Dynamic._menuTitle = "Seed Settings";
+			Dynamic._menuTitle = "Game Settings";
 			ResetMenu();
 		}
 
@@ -49,8 +49,8 @@ namespace TsRandomizer.Screens.Settings
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
 
-			SeedSettingsCategoryCollection categories = new SeedSettingsCategoryCollection();
-			foreach (SeedSettingCategoryInfo category in categories.SettingCategories)
+			GameSettingsCategoryCollection categories = new GameSettingsCategoryCollection();
+			foreach (GameSettingCategoryInfo category in categories.SettingCategories)
 			{
 				var submenu = MenuEntry.Create(category.Name, CreateMenuForCategory(category));
 				submenu.AsDynamic().Description = category.Description;
@@ -66,7 +66,7 @@ namespace TsRandomizer.Screens.Settings
 			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
 		}
 
-		public SeedSettingsScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
+		public GameSettingsScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
 		{
 			seedSelectionScreen = screenManager.FirstOrDefault<SeedSelectionMenuScreen>();
 		}
@@ -88,7 +88,7 @@ namespace TsRandomizer.Screens.Settings
 			return save;
 		}
 
-		Action CreateMenuForCategory(SeedSettingCategoryInfo category)
+		Action CreateMenuForCategory(GameSettingCategoryInfo category)
 		{
 			void CreateMenu()
 			{

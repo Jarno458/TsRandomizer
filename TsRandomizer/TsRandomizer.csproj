@@ -186,8 +186,8 @@
     <Compile Include="Screens\MinimapScreen.cs" />
     <Compile Include="Screens\CreditsScreen.cs" />
     <Compile Include="Screens\FamiliarMenuScreen.cs" />
-    <Compile Include="Screens\Settings\SeedSettingCategoryInfo.cs" />
-    <Compile Include="Screens\Settings\SeedSettingsHeaderCollection.cs" />
+    <Compile Include="Screens\Settings\GameSettingCategoryInfo.cs" />
+    <Compile Include="Screens\Settings\GameSettingsHeaderCollection.cs" />
     <Compile Include="Screens\ShopMenuScreen.cs" />
     <Compile Include="Screens\OrbShopMenuScreen.cs" />
     <Compile Include="Screens\OrbMenuScreen.cs" />
@@ -215,7 +215,7 @@
     <Compile Include="Screens\SeedSelection\SeedOptionInfo.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsCollection.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsMenuScreen.cs" />
-    <Compile Include="Screens\Settings\SeedSettingsScreen.cs" />
+    <Compile Include="Screens\Settings\GameSettingsScreen.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\NumberGameSetting.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\OnOffGameSetting.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\StringGameSetting.cs" />
