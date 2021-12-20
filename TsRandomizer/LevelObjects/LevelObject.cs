@@ -40,7 +40,6 @@ namespace TsRandomizer.LevelObjects
 		static HashSet<int> MainOrbHits = new HashSet<int>();
 		static HashSet<int> SubOrbHits = new HashSet<int>();
 		static HashSet<int> SpellHits = new HashSet<int>();
-		static HashSet<int> RingHits = new HashSet<int>();
 
 		public readonly dynamic Dynamic;
 
@@ -175,7 +174,6 @@ namespace TsRandomizer.LevelObjects
 			MainOrbHits.Clear();
 			SubOrbHits.Clear();
 			SpellHits.Clear();
-			RingHits.Clear();
 
 			IEnumerable<Animate> eventObjects = levelReflected._levelEvents.Values;
 			IEnumerable<Animate> npcs = levelReflected.NPCs.Values;
@@ -282,7 +280,6 @@ namespace TsRandomizer.LevelObjects
 			var orbA = ((object)orbManager).AsDynamic().MainOrb;
 			var orbB = ((object)orbManager).AsDynamic().SubOrb;
 			var spell = ((object)spellManager).AsDynamic().EquippedSpell;
-			var ring = ((object)passiveManager).AsDynamic()._equippedPassive;
 
 			HashSet<int> hits;
 			if (orbA != null)
@@ -299,11 +296,6 @@ namespace TsRandomizer.LevelObjects
 			{
 				hits = (HashSet<int>)((object)spell).AsDynamic()._hitEnemyRegistry;
 				SpellHits.UnionWith(hits);
-			}
-			if (ring != null)
-			{
-				hits = (HashSet<int>)((object)ring).AsDynamic()._hitEnemyRegistry;
-				RingHits.UnionWith(hits);
 			}
 
 			var currentDeadEnemyIds = enemies
@@ -328,11 +320,6 @@ namespace TsRandomizer.LevelObjects
 				{
 					OrbDamageManager.AddMoreOrbXP(level.GameSave, ((object)spell).AsDynamic().SpellType, multiplier);
 					SpellHits.Remove(deadEnemyId);
-				}
-				if (RingHits.Contains(deadEnemyId))
-				{
-					OrbDamageManager.AddMoreOrbXP(level.GameSave, ((object)ring).AsDynamic().PassiveType, multiplier);
-					RingHits.Remove(deadEnemyId);
 				}
 			}
 			KnownDeadEnemyIds.AddRange(currentDeadEnemyIds);

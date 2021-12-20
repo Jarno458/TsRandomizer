@@ -141,7 +141,14 @@ namespace TsRandomizer.Screens.Settings
 					double stepValue = numberSetting.StepValue;
 					var value = setting.CurrentValue + stepValue < numberSetting.MaximumValue ? setting.CurrentValue + stepValue : numberSetting.MinimumValue;
 					setting.SetValue(value);
-				}	
+				}
+				else if (setting is SpecificValuesGameSetting)
+				{
+					SpecificValuesGameSetting enumSetting = (SpecificValuesGameSetting)setting;
+					var currentValue = Array.IndexOf(enumSetting.AllowedValues, enumSetting.CurrentValue);
+					var value = currentValue + 1 >= enumSetting.AllowedValues.Length ? 0 : currentValue + 1;
+					setting.SetValue(enumSetting.AllowedValues[value]);
+				}
 				else
 					return;
 				gameSettings.WriteSettings();

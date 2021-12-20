@@ -88,6 +88,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="Timespinner">
       <HintPath>..\..\Timespinner\Timespinner.exe</HintPath>
     </Reference>
@@ -186,6 +187,8 @@
     <Compile Include="Screens\MinimapScreen.cs" />
     <Compile Include="Screens\CreditsScreen.cs" />
     <Compile Include="Screens\FamiliarMenuScreen.cs" />
+    <Compile Include="Screens\Settings\GameSettingObjects\EShopInventorySettings.cs" />
+    <Compile Include="Screens\Settings\GameSettingObjects\SpecificValuesGameSetting.cs" />
     <Compile Include="Screens\Settings\SeedSettingCategoryInfo.cs" />
     <Compile Include="Screens\Settings\SeedSettingsHeaderCollection.cs" />
     <Compile Include="Screens\ShopMenuScreen.cs" />
