@@ -39,17 +39,17 @@ namespace TsRandomizer
 
 			var stringToFlagMapping = new Dictionary<string, uint>(11)
 			{
-				{"ProgressiveVerticalMovement", 1U << 1},
-				{"ProgressiveKeycards", 1U << 2},
-				{"DownloadableItems", 1U << 3},
-				{"FacebookMode", 1U << 4},
-				{"QuickSeed", 1U << 6},
-				{"SpecificKeycards", 1U << 7},
-				{"Inverted", 1U << 8},
-				{"StinkyMaw", 1U << 9},
-				{"GyreArchives", 1U << 10},
-				{"Cantoran", 1U << 11},
-				{"LoreChecks", 1U << 12},
+				{"ProgressiveVerticalMovement", 1U << 0},
+				{"ProgressiveKeycards", 1U << 1},
+				{"DownloadableItems", 1U << 2},
+				{"FacebookMode", 1U << 3},
+				{"QuickSeed", 1U << 4},
+				{"SpecificKeycards", 1U << 5},
+				{"Inverted", 1U << 6},
+				{"StinkyMaw", 1U << 7},
+				{"GyreArchives", 1U << 8},
+				{"Cantoran", 1U << 9},
+				{"LoreChecks", 1U << 10},
 				{"DeathLink", 1U << 17}
 			};
 
