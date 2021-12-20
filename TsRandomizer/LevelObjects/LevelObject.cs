@@ -7,7 +7,6 @@ using Timespinner.Core;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
-using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Heroes;
 using TsRandomizer.Extensions;
@@ -36,10 +35,6 @@ namespace TsRandomizer.LevelObjects
 		static readonly Dictionary<Type, Type> RegisteredTypes = new Dictionary<Type, Type>(); //ObjectType, EventHandler
 		static readonly Dictionary<EEventTileType, AlwaysSpawnAttribute> AlwaysSpawningEventTypes = new Dictionary<EEventTileType, AlwaysSpawnAttribute>(); //EEventTileType, SpawnerMethod
 		static readonly List<int> KnownItemIds = new List<int>();
-		static readonly List<int> KnownDeadEnemyIds = new List<int>();
-		static HashSet<int> MainOrbHits = new HashSet<int>();
-		static HashSet<int> SubOrbHits = new HashSet<int>();
-		static HashSet<int> SpellHits = new HashSet<int>();
 
 		public readonly dynamic Dynamic;
 
@@ -165,10 +160,6 @@ namespace TsRandomizer.LevelObjects
 
 			Objects.Clear();
 			KnownItemIds.Clear();
-			KnownDeadEnemyIds.Clear();
-			MainOrbHits.Clear();
-			SubOrbHits.Clear();
-			SpellHits.Clear();
 
 			IEnumerable<Animate> eventObjects = levelReflected._levelEvents.Values;
 			IEnumerable<Animate> npcs = levelReflected.NPCs.Values;
