@@ -187,6 +187,8 @@
     <Compile Include="Screens\MinimapScreen.cs" />
     <Compile Include="Screens\CreditsScreen.cs" />
     <Compile Include="Screens\FamiliarMenuScreen.cs" />
+    <Compile Include="Screens\Settings\GameSettingCategoryInfo.cs" />
+    <Compile Include="Screens\Settings\GameSettingsHeaderCollection.cs" />
     <Compile Include="Screens\Settings\GameSettingObjects\SpecificValuesGameSetting.cs" />
     <Compile Include="Screens\ShopMenuScreen.cs" />
     <Compile Include="Screens\OrbShopMenuScreen.cs" />
