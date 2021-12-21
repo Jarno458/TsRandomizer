@@ -26,8 +26,8 @@ namespace TsRandomizer.Screens.Settings
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.PauseMenu.JournalMenuScreen");
 
 		readonly SeedSelectionMenuScreen seedSelectionScreen;
-		GameSettingsCategoryCollection categories = new GameSettingsCategoryCollection();
 		GameSettingsCollection gameSettings;
+		GameSettingCategoryInfo[] settingCategories;
 
 		bool IsUsedAsGameSettingsMenu => seedSelectionScreen != null;
 		GCM gcm;
@@ -37,7 +37,6 @@ namespace TsRandomizer.Screens.Settings
 			if (!IsUsedAsGameSettingsMenu)
 				return;
 			gcm = gameContentManager;
-			gameSettings = categories.gameSettings;
 
 			// Default order is Memories, Letters, Files, Quests, Bestiary, Feats
 			Dynamic._menuTitle = "Game Settings";
@@ -90,12 +89,22 @@ namespace TsRandomizer.Screens.Settings
 
 		void ResetMenu()
 		{
-			ClearAllSubmenus();
+			gameSettings = new GameSettingsCollection();
 			gameSettings.LoadSettingsFromFile();
+			settingCategories = new GameSettingCategoryInfo[]
+			{
+				new GameSettingCategoryInfo {Name = "Stats",
+					Description = "Settings related to player stat scaling.",
+					Settings = new GameSetting[] { gameSettings.DamageRando } },
+				new GameSettingCategoryInfo {Name = "Loot",
+					Description = "Settings related to shop inventory and loot.",
+					Settings = new GameSetting[] { gameSettings.ShopMultiplier, gameSettings.ShopFill, gameSettings.ShopWarpShards } },
+			};
+			ClearAllSubmenus();
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
 
-			foreach (GameSettingCategoryInfo category in categories.SettingCategories)
+			foreach (GameSettingCategoryInfo category in settingCategories)
 			{
 				var submenu = MenuEntry.Create(category.Name, CreateMenuForCategory(category));
 				submenu.AsDynamic().Description = category.Description;
