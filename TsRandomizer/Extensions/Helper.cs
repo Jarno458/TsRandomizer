@@ -22,6 +22,8 @@ namespace TsRandomizer.Extensions
 					&& o != EInventoryUseItemType.PlaceHolderItem1
 					&& o != EInventoryUseItemType.AlchemistTools
 					&& o != EInventoryUseItemType.MagicMarbles
+					&& o != EInventoryUseItemType.EssenceCrystal
+					&& o != EInventoryUseItemType.GoldNecklace
 					&& o != EInventoryUseItemType.MapReveal0
 					&& o != EInventoryUseItemType.MapReveal1
 					&& o != EInventoryUseItemType.MapReveal2
