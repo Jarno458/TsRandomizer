@@ -15,9 +15,6 @@
 				new GameSettingCategoryInfo {Name = "Loot",
 					Description = "Settings related to shop inventory and loot.",
 					Settings = new GameSetting[] { gameSettings.ShopMultiplier, gameSettings.ShopFill, gameSettings.ShopWarpShards } },
-				new GameSettingCategoryInfo {Name = "Other",
-					Description = "Various other settings.",
-					Settings = new GameSetting[] { gameSettings.StartWithMeyef, gameSettings.StartWithJewelryBox } }
 			};
 		}
 	}

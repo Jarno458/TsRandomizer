@@ -41,9 +41,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.EssenceCrystal),
 			};
 
-			if (GameSettings.StartWithJewelryBox.CurrentValue)
+			if (SeedOptions.StartWithJewelryBox)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.JewelryBox));
-			if (GameSettings.StartWithMeyef.CurrentValue)
+			if (SeedOptions.StartWithMeyef)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryFamiliarType.Meyef));
 			if (SeedOptions.StartWithTalaria)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));

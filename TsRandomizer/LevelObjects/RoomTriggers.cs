@@ -32,10 +32,10 @@ namespace TsRandomizer.LevelObjects
 		static RoomTrigger()
 		{
 			RoomTriggers.Add(new RoomTrigger(0, 3, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (gameSettings.StartWithJewelryBox.CurrentValue)
+				if (seedOptions.StartWithJewelryBox)
 					level.AsDynamic().UnlockRelic(EInventoryRelicType.JewelryBox);
 
-				if (gameSettings.StartWithMeyef.CurrentValue)
+				if (seedOptions.StartWithMeyef)
 				{
 					level.GameSave.AddItem(level, new ItemIdentifier(EInventoryFamiliarType.Meyef));
 					level.GameSave.Inventory.EquippedFamiliar = EInventoryFamiliarType.Meyef;

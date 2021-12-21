@@ -57,8 +57,7 @@ namespace TsRandomizer.Screens.Settings
 				submenu.AsDynamic().IsCenterAligned = false;
 				menuEntryList.Add(submenu.AsTimeSpinnerMenuEntry());
 			}
-			GameSetting[] allSettings = new GameSetting[] { gameSettings.StartWithMeyef, gameSettings.DamageRando,
-				gameSettings.StartWithJewelryBox,
+			GameSetting[] allSettings = new GameSetting[] { gameSettings.DamageRando,
 				gameSettings.ShopFill, gameSettings.ShopMultiplier, gameSettings.ShopWarpShards };
 			menuEntryList.Add(CreateDefaultsMenu(allSettings));
 
