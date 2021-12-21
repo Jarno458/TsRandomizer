@@ -51,7 +51,8 @@ namespace TsRandomizer.Screens.Settings
 					ShopMultiplier = settings.ShopMultiplier;
 					ShopWarpShards = settings.ShopWarpShards;
 				}
-				Console.WriteLine("Settings file not found: " + Path);
+				else
+					Console.WriteLine("Settings file not found: " + Path);
 			}
 			catch
 			{
@@ -67,8 +68,9 @@ namespace TsRandomizer.Screens.Settings
 				File.WriteAllText(Path, jsonSettings);
 				return true;
 			}
-			catch
+			catch (Exception exc)
 			{
+				Console.WriteLine($"Error writing settings: {exc}");
 				return false;
 			}
 		}
