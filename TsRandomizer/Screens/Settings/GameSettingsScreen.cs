@@ -42,6 +42,50 @@ namespace TsRandomizer.Screens.Settings
 			ResetMenu();
 		}
 
+		public GameSettingsScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
+		{
+			seedSelectionScreen = screenManager.FirstOrDefault<SeedSelectionMenuScreen>();
+		}
+
+		public static GameScreen Create(ScreenManager screenManager, SeedOptionsCollection options)
+		{
+			void Noop() { }
+			GCM gcm = screenManager.AsDynamic().GCM;
+			gcm.LoadAllResources(screenManager.AsDynamic().GeneralContentManager, screenManager.GraphicsDevice);
+			return (GameScreen)Activator.CreateInstance(JournalMenuType, GetSave(options), gcm, (Action)Noop);
+		}
+
+		static GameSave GetSave(SeedOptionsCollection options)
+		{
+			var save = GameSave.DemoSave;
+
+			save.Inventory.AsDynamic()._relicInventory = options;
+
+			return save;
+		}
+
+		object CreateDefaultsMenu(GameSetting[] settings)
+		{
+			var defaultsMenu = MenuEntry.Create("Defaults", OnDefaultsSelected(settings)).AsTimeSpinnerMenuEntry();
+			defaultsMenu.AsDynamic().Description = "Restore all values to their defaults";
+			defaultsMenu.AsDynamic().IsCenterAligned = false;
+			return defaultsMenu;
+		}
+
+		Action OnDefaultsSelected(GameSetting[] settings)
+		{
+			void ResetDefaults()
+			{
+				foreach (GameSetting setting in settings)
+				{
+					setting.SetValue(setting.DefaultValue);
+				}
+				gameSettings.WriteSettings();
+				ResetMenu();
+			}
+			return ResetDefaults;
+		}
+
 		void ResetMenu()
 		{
 			ClearAllSubmenus();
@@ -65,26 +109,17 @@ namespace TsRandomizer.Screens.Settings
 			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
 		}
 
-		public GameSettingsScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
+		void ClearAllSubmenus()
 		{
-			seedSelectionScreen = screenManager.FirstOrDefault<SeedSelectionMenuScreen>();
-		}
-
-		public static GameScreen Create(ScreenManager screenManager, SeedOptionsCollection options)
-		{
-			void Noop() { }
-			GCM gcm = screenManager.AsDynamic().GCM;
-			gcm.LoadAllResources(screenManager.AsDynamic().GeneralContentManager, screenManager.GraphicsDevice);
-			return (GameScreen)Activator.CreateInstance(JournalMenuType, GetSave(options), gcm, (Action)Noop);
-		}
-
-		static GameSave GetSave(SeedOptionsCollection options)
-		{
-			var save = GameSave.DemoSave;
-
-			save.Inventory.AsDynamic()._relicInventory = options;
-
-			return save;
+			var menuEntryList = new object[0].ToList(MenuEntryType);
+			((object)Dynamic._memoriesInventoryCollection).AsDynamic()._entries = menuEntryList;
+			((object)Dynamic._lettersInventoryCollection).AsDynamic()._entries = menuEntryList;
+			((object)Dynamic._filesInventoryCollection).AsDynamic()._entries = menuEntryList;
+			((object)Dynamic._questInventory).AsDynamic()._entries = menuEntryList;
+			((object)Dynamic._bestiaryInventory).AsDynamic()._entries = menuEntryList;
+			((object)Dynamic._featsInventory).AsDynamic()._entries = menuEntryList;
+			((object)Dynamic._primaryMenuCollection).AsDynamic().SetSelectedIndex(0);
+			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
 		}
 
 		Action CreateMenuForCategory(GameSettingCategoryInfo category)
@@ -105,12 +140,26 @@ namespace TsRandomizer.Screens.Settings
 			return CreateMenu;
 		}
 
-		object CreateDefaultsMenu(GameSetting[] settings)
+		object FetchCollection(string submenu)
 		{
-			var defaultsMenu = MenuEntry.Create("Defaults", OnDefaultsSelected(settings)).AsTimeSpinnerMenuEntry();
-			defaultsMenu.AsDynamic().Description = "Restore all values to their defaults";
-			defaultsMenu.AsDynamic().IsCenterAligned = false;
-			return defaultsMenu;
+			var collection = Dynamic._filesInventoryCollection;
+			// Multiple submenus can share the same inventory collection
+			// as the in-use collection is cleared before use.
+			switch (submenu)
+			{
+				// Currently using quest layout for most, other layouts may be useful for other menus
+				// Leaving as switch to easily add new menus as Memories, Letters, Files, Quests, Bestiary, Feats
+				case "Sprite":
+					collection = Dynamic._featsInventory;
+					break;
+				default:
+					collection = Dynamic._questInventory;
+					break;
+			}
+
+			var menuEntryList = new object[0].ToList(MenuEntryType);
+			((object)collection).AsDynamic()._entries = menuEntryList;
+			return (object)collection;
 		}
 
 		object CreateMenuForSetting(GameSetting setting)
@@ -162,55 +211,6 @@ namespace TsRandomizer.Screens.Settings
 			var currentValue = !(setting is OnOffGameSetting) ? setting.CurrentValue : setting.CurrentValue ? "On" : "Off";
 			menuEntry.AsDynamic().Text = $"{setting.Name} - {currentValue}";
 			menuEntry.AsDynamic().Description = setting.Description;
-		}
-
-		Action OnDefaultsSelected(GameSetting[] settings)
-		{
-			void ResetDefaults()
-			{
-				foreach (GameSetting setting in settings)
-				{
-					setting.SetValue(setting.DefaultValue);
-				}
-				gameSettings.WriteSettings();
-				ResetMenu();
-			}
-			return ResetDefaults;
-		}
-
-		object FetchCollection(string submenu)
-		{
-			var collection = Dynamic._filesInventoryCollection;
-			// Multiple submenus can share the same inventory collection
-			// as the in-use collection is cleared before use.
-			switch (submenu)
-			{
-				// Currently using quest layout for most, other layouts may be useful for other menus
-				// Leaving as switch to easily add new menus as Memories, Letters, Files, Quests, Bestiary, Feats
-				case "Sprite":
-					collection = Dynamic._featsInventory;
-					break;
-				default:
-					collection = Dynamic._questInventory;
-					break;
-			}
-
-			var menuEntryList = new object[0].ToList(MenuEntryType);
-			((object)collection).AsDynamic()._entries = menuEntryList;
-			return (object)collection;
-		}
-
-		void ClearAllSubmenus()
-		{
-			var menuEntryList = new object[0].ToList(MenuEntryType);
-			((object)Dynamic._memoriesInventoryCollection).AsDynamic()._entries = menuEntryList;
-			((object)Dynamic._lettersInventoryCollection).AsDynamic()._entries = menuEntryList;
-			((object)Dynamic._filesInventoryCollection).AsDynamic()._entries = menuEntryList;
-			((object)Dynamic._questInventory).AsDynamic()._entries = menuEntryList;
-			((object)Dynamic._bestiaryInventory).AsDynamic()._entries = menuEntryList;
-			((object)Dynamic._featsInventory).AsDynamic()._entries = menuEntryList;
-			((object)Dynamic._primaryMenuCollection).AsDynamic().SetSelectedIndex(0);
-			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
 		}
 	}
 }
