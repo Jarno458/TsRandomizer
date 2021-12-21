@@ -66,6 +66,8 @@ namespace TsRandomizer.Screens.Settings
 			{
 				string jsonSettings = JsonConvert.SerializeObject(this, Formatting.Indented);
 				File.WriteAllText(Path, jsonSettings);
+				Console.WriteLine($"Writing settings for: {this}");
+				Console.WriteLine($"Writing settings as: {jsonSettings}");
 				return true;
 			}
 			catch (Exception exc)
