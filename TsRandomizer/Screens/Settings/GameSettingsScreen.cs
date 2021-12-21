@@ -26,7 +26,8 @@ namespace TsRandomizer.Screens.Settings
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.PauseMenu.JournalMenuScreen");
 
 		readonly SeedSelectionMenuScreen seedSelectionScreen;
-		GameSettingsCollection gameSettings = new GameSettingsCollection();
+		GameSettingsCategoryCollection categories = new GameSettingsCategoryCollection();
+		GameSettingsCollection gameSettings;
 
 		bool IsUsedAsGameSettingsMenu => seedSelectionScreen != null;
 		GCM gcm;
@@ -36,6 +37,7 @@ namespace TsRandomizer.Screens.Settings
 			if (!IsUsedAsGameSettingsMenu)
 				return;
 			gcm = gameContentManager;
+			gameSettings = categories.gameSettings;
 
 			// Default order is Memories, Letters, Files, Quests, Bestiary, Feats
 			Dynamic._menuTitle = "Game Settings";
@@ -93,7 +95,6 @@ namespace TsRandomizer.Screens.Settings
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
 
-			GameSettingsCategoryCollection categories = new GameSettingsCategoryCollection();
 			foreach (GameSettingCategoryInfo category in categories.SettingCategories)
 			{
 				var submenu = MenuEntry.Create(category.Name, CreateMenuForCategory(category));

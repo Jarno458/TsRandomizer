@@ -3,9 +3,10 @@
 	class GameSettingsCategoryCollection
 	{
 		public GameSettingCategoryInfo[] SettingCategories;
+		public GameSettingsCollection gameSettings;
 		public GameSettingsCategoryCollection()
 		{
-			GameSettingsCollection gameSettings = new GameSettingsCollection();
+			gameSettings = new GameSettingsCollection();
 			gameSettings.LoadSettingsFromFile();
 			SettingCategories = new GameSettingCategoryInfo[]
 			{
