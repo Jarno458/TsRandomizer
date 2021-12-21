@@ -148,8 +148,6 @@ namespace TsRandomizer.Screens.Settings
 					var value = currentValue + 1 >= enumSetting.AllowedValues.Length ? 0 : currentValue + 1;
 					setting.SetValue(enumSetting.AllowedValues[value]);
 				}
-				else
-					return;
 				gameSettings.WriteSettings();
 				var selectedMenu = ((object)Dynamic._selectedMenuCollection).AsDynamic();
 				object menuEntry = ((IList)selectedMenu.Entries)[selectedMenu.SelectedIndex];
