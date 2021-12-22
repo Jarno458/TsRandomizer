@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
-using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens.Settings;
@@ -82,8 +81,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.ChaosHeal),
 				ItemInfoProvider.Get(EInventoryUseItemType.Antidote),
 				ItemInfoProvider.Get(EInventoryUseItemType.SandBottle),
-				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle),
-				ItemInfoProvider.Get(EItemType.MaxSand)
+				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle)
 			};
 		}
 
