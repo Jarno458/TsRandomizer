@@ -65,6 +65,5 @@ namespace TsRandomizer.LevelObjects
 			key = new RoomItemKey(level, room);
 			this.replacer = replacer;
 		}
-
 	}
 }
