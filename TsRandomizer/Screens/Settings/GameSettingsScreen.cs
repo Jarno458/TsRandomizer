@@ -186,7 +186,7 @@ namespace TsRandomizer.Screens.Settings
 			{
 				if (setting is OnOffGameSetting)
 				{
-					setting.SetValue(!setting.CurrentValue);
+					setting.SetValue(!(bool)setting.CurrentValue);
 				}
 				else if (setting is StringGameSetting)
 				{
@@ -195,16 +195,17 @@ namespace TsRandomizer.Screens.Settings
 				}
 				else if (setting is NumberGameSetting)
 				{
+					var value = (double)setting.CurrentValue;
 					NumberGameSetting numberSetting = (NumberGameSetting)setting;
 					double stepValue = numberSetting.StepValue;
-					var value = setting.CurrentValue + stepValue <= numberSetting.MaximumValue ? setting.CurrentValue + stepValue : numberSetting.MinimumValue;
+					value = value + stepValue <= numberSetting.MaximumValue ? value + stepValue : numberSetting.MinimumValue;
 					setting.SetValue(value);
 				}
 				else if (setting is SpecificValuesGameSetting)
 				{
 					SpecificValuesGameSetting enumSetting = (SpecificValuesGameSetting)setting;
-					var currentValue = Array.IndexOf(enumSetting.AllowedValues, enumSetting.CurrentValue);
-					var value = currentValue + 1 >= enumSetting.AllowedValues.Length ? 0 : currentValue + 1;
+					var currentValue = enumSetting.AllowedValues.IndexOf((string)enumSetting.CurrentValue);
+					var value = currentValue + 1 >= enumSetting.AllowedValues.Count ? 0 : currentValue + 1;
 					setting.SetValue(enumSetting.AllowedValues[value]);
 				}
 				else
@@ -220,7 +221,7 @@ namespace TsRandomizer.Screens.Settings
 		void SetCurrentSettingText(object menuEntry, GameSetting setting)
 		{
 			menuEntry.AsDynamic().IsCenterAligned = false;
-			var currentValue = !(setting is OnOffGameSetting) ? setting.CurrentValue : setting.CurrentValue ? "On" : "Off";
+			var currentValue = !(setting is OnOffGameSetting) ? setting.CurrentValue : (bool)setting.CurrentValue ? "On" : "Off";
 			menuEntry.AsDynamic().Text = $"{setting.Name} - {currentValue}";
 			menuEntry.AsDynamic().Description = setting.Description;
 		}

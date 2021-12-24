@@ -136,7 +136,7 @@ namespace TsRandomizer.LevelObjects
 			var lunais = level.MainHero;
 			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
 
-			if (gameSettings.DamageRando.CurrentValue)
+			if ((bool)gameSettings.DamageRando.CurrentValue)
 				OrbDamageManager.UpdateOrbDamage(level.GameSave, level.MainHero);
 
 			KnownItemIds.Clear();

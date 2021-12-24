@@ -7,7 +7,7 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 {
 	public class StringGameSetting : GameSetting
 	{
-		public int MaxLength { get; set; }
+		public int MaxLength { get; }
 		public override void SetValue(dynamic input)
 		{
 			if (input is string)

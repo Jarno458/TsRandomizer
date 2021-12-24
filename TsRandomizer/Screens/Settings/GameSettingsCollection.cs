@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -19,22 +20,34 @@ namespace TsRandomizer.Screens.Settings
 		public GameSettingsCollection()
 		{
 			string dir = "settings/";
-			if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-			var settingsFiles = Directory.GetFiles(dir).ToList().Where(f => f.EndsWith(".json"));
-			if (settingsFiles.Count() > 0)
+			if (CreateSettingsDirectory(dir))
 			{
-				var defaultFile = settingsFiles.First();
-				Path = defaultFile;
+				var settingsFiles = GetSettingsFiles(dir);
+				if (settingsFiles == null)
+				{
+					Console.WriteLine("Error reading from settings directory.");
+					return;
+				}
+				if (settingsFiles.Count() > 0)
+				{
+					var defaultFile = settingsFiles.First();
+					Path = defaultFile;
+				}
+				else
+				{
+					Console.WriteLine("No settings file found. Creating...");
+					Path = dir + "settings.json";
+					DamageRando = new OnOffGameSetting("Damage Randomizer", "Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false, false);
+					List<string> shopSettings = new List<string> { "Default", "Random", "Vanilla", "Empty" };
+					ShopFill = new SpecificValuesGameSetting("Shop Inventory", "Sets the items for sale in Merchant Crow's shops. Options: [Default,Random,Vanilla,Empty]", "Default", shopSettings, false);
+					ShopMultiplier = new NumberGameSetting("Shop Price Multiplier", "Multiplier for the cost of items in the shop. Set to 0 for free shops", 1, 0, 10, 1, true, true);
+					ShopWarpShards = new OnOffGameSetting("Always Sell Warp Shards", "Shops always sell warp shards (when keys possessed), ignoring fill setting.", true, true);
+					WriteSettings(); //write settings file with default values
+				}
 			}
 			else
 			{
-				Path = dir + "settings.json";
-				DamageRando = new OnOffGameSetting("Damage Randomizer", "Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false, false);
-				string[] shopSettings = { "Default", "Random", "Vanilla", "Empty" };
-				ShopFill = new SpecificValuesGameSetting("Shop Inventory", "Sets the items for sale in Merchant Crow's shops. Options: [Default,Random,Vanilla,Empty]", "Default", shopSettings, false);
-				ShopMultiplier = new NumberGameSetting("Shop Price Multiplier", "Multiplier for the cost of items in the shop. Set to 0 for free shops", 1, 0, 10, 1, true, true);
-				ShopWarpShards = new OnOffGameSetting("Always Sell Warp Shards", "Shops always sell warp shards (when keys possessed), ignoring fill setting.", true, true);
-				WriteSettings(); //write settings file with default values
+				Console.WriteLine("Error finding or creating settings directory.");
 			}
 		}
 
@@ -74,6 +87,31 @@ namespace TsRandomizer.Screens.Settings
 			{
 				Console.WriteLine($"Error writing settings: {exc}");
 				return false;
+			}
+		}
+
+		public bool CreateSettingsDirectory(string dir)
+		{
+			try
+			{
+				if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public IEnumerable<string> GetSettingsFiles(string dir)
+		{
+			try
+			{
+				return Directory.GetFiles(dir).ToList().Where(f => f.EndsWith(".json"));
+			}
+			catch
+			{
+				return null;
 			}
 		}
 	}
