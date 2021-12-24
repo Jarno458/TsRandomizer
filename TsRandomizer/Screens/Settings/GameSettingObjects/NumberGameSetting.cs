@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace TsRandomizer.Screens.Settings.GameSettingObjects
 {
 	public class NumberGameSetting : GameSetting
 	{
-		public double MinimumValue { get; set; }
-		public double MaximumValue { get; set; }
+		public double MinimumValue { get; }
+		public double MaximumValue { get; }
+		[JsonIgnore()]
 		public double StepValue { get; set; }
+		[JsonIgnore()]
 		public bool AllowDecimals { get; set; }
 		public override void SetValue(dynamic input)
 		{

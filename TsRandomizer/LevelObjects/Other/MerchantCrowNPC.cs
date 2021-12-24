@@ -7,28 +7,28 @@ using TsRandomizer.Screens.Settings;
 
 namespace TsRandomizer.LevelObjects.Other
 {
-    [TimeSpinnerType("Timespinner.GameObjects.NPCs.MerchantCrowNPC")]
-    class MerchantCrowNpc : LevelObject
-    {
+	[TimeSpinnerType("Timespinner.GameObjects.NPCs.MerchantCrowNPC")]
+	class MerchantCrowNpc : LevelObject
+	{
 
-        MerchantInventory _merchandiseInventory = new MerchantInventory();
-        public MerchantCrowNpc(Mobile typedObject) : base(typedObject)
-        {
+		MerchantInventory _merchandiseInventory = new MerchantInventory();
+		public MerchantCrowNpc(Mobile typedObject) : base(typedObject)
+		{
 
-        }
+		}
 
-        protected override void Initialize(SeedOptions options)
-        {
+		protected override void Initialize(SeedOptions options)
+		{
 			GameSettingsCollection gameSettings = new GameSettingsCollection();
 			gameSettings.LoadSettingsFromFile();
-			string fillType = gameSettings.ShopFill.CurrentValue;
+			string fillType = (string)gameSettings.ShopFill.CurrentValue;
 			if (fillType == "Vanilla")
 				return;
 
 			PlayerInventory inventory = Dynamic._level.GameSave.Inventory;
 
 			// Only sell warp shards if Pyramid Key is aquired (and allowed in settings)
-			if (gameSettings.ShopWarpShards.CurrentValue && inventory.RelicInventory.IsRelicActive(EInventoryRelicType.PyramidsKey))
+			if ((bool)gameSettings.ShopWarpShards.CurrentValue && inventory.RelicInventory.IsRelicActive(EInventoryRelicType.PyramidsKey))
 				_merchandiseInventory.AddItem(EInventoryUseItemType.WarpCard);
 
 			if (fillType == "Empty")
@@ -57,21 +57,21 @@ namespace TsRandomizer.LevelObjects.Other
 
 			// Default case, streamlined inventory for randomizer players
 			if (Dynamic._isInPresent)
-            {
-                _merchandiseInventory.AddItem(EInventoryUseItemType.FuturePotion);
-                _merchandiseInventory.AddItem(EInventoryUseItemType.FutureEther);
-            }
-            else
-            {
-                _merchandiseInventory.AddItem(EInventoryUseItemType.Potion);
-                _merchandiseInventory.AddItem(EInventoryUseItemType.Ether);
-            }
-            _merchandiseInventory.AddItem(EInventoryUseItemType.Biscuit);
-            _merchandiseInventory.AddItem(EInventoryUseItemType.Antidote);
-            _merchandiseInventory.AddItem(EInventoryUseItemType.SandBottle);
-            _merchandiseInventory.AddItem(EInventoryUseItemType.ChaosHeal);
+			{
+				_merchandiseInventory.AddItem(EInventoryUseItemType.FuturePotion);
+				_merchandiseInventory.AddItem(EInventoryUseItemType.FutureEther);
+			}
+			else
+			{
+				_merchandiseInventory.AddItem(EInventoryUseItemType.Potion);
+				_merchandiseInventory.AddItem(EInventoryUseItemType.Ether);
+			}
+			_merchandiseInventory.AddItem(EInventoryUseItemType.Biscuit);
+			_merchandiseInventory.AddItem(EInventoryUseItemType.Antidote);
+			_merchandiseInventory.AddItem(EInventoryUseItemType.SandBottle);
+			_merchandiseInventory.AddItem(EInventoryUseItemType.ChaosHeal);
 
-            Dynamic._merchandiseInventory = _merchandiseInventory;
-        }
-    }
+			Dynamic._merchandiseInventory = _merchandiseInventory;
+		}
+	}
 }

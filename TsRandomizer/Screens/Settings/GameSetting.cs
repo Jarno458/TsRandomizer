@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace TsRandomizer.Screens.Settings
 {
@@ -10,14 +6,16 @@ namespace TsRandomizer.Screens.Settings
 	{
 
 		[JsonProperty]
-		public dynamic CurrentValue { get; protected set; }
-		public string Name { get; set; }
-		public string Description { get; set; }
-		public dynamic DefaultValue { get; set; }
+		public object CurrentValue { get; protected set; }
+		[JsonIgnore()]
+		public string Name { get; }
+		[JsonIgnore()]
+		public string Description { get; }
+		public object DefaultValue { get; }
 		[JsonIgnore()]
 		public bool CanBeChangedInGame { get; set; }
 
-		public GameSetting(string name, string description, dynamic defaultValue, bool canBeChangedInGame)
+		public GameSetting(string name, string description, object defaultValue, bool canBeChangedInGame)
 		{
 			Name = name;
 			Description = description;
@@ -28,7 +26,7 @@ namespace TsRandomizer.Screens.Settings
 
 		public GameSetting() { }
 
-		public virtual void SetValue(dynamic input)
+		public virtual void SetValue(object input)
 		{
 			CurrentValue = input;
 		}
