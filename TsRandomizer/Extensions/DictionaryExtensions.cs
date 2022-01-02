@@ -30,8 +30,6 @@ namespace TsRandomizer.Extensions
 			{
 				dataKeyStrings.TryGetValue(key, out var personalItemsJson);
 
-				var concerted = JsonConvert.DeserializeObject<Dictionary<int, int>>(personalItemsJson);
-
 				personalItems = JsonConvert
 					.DeserializeObject<Dictionary<int, int>>(personalItemsJson)
 					.ToDictionary(kvp => LocationMap.GetItemkey(kvp.Key), kvp => ItemMap.GetItemIdentifier(kvp.Value));
