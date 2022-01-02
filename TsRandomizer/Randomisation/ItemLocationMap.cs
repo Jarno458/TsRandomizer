@@ -480,7 +480,7 @@ namespace TsRandomizer.Randomisation
 			areaName = "Royal Towers";
 			Add(new ItemKey(6, 17, 344, 433), "Journal - Top Struggle Juggle Base (War of the Sisters)", null, UpperRoyalTower);
 			Add(new ItemKey(6, 14, 136, 177), "Journal - Aleana Boss (Stained Letter)", null, UpperRoyalTower);
-			Add(new ItemKey(6, 25, 152, 145), "Journal - Near Bottom Struggle Juggle (Mission Findings)", null, UpperRoyalTower);
+			Add(new ItemKey(6, 25, 152, 145), "Journal - Near Bottom Struggle Juggle (Mission Findings)", null, UpperRoyalTower & DoubleJumpOfNpc);
 			areaName = "Caves of Banishment (Maw)";
 			Add(new ItemKey(8, 36, 136, 145), "Journal - Lower Left Maw Caves (Naïvety)", null, LowerCavesOfBanishment);
 		}
