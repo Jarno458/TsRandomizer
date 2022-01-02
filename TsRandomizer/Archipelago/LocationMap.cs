@@ -231,7 +231,7 @@ namespace TsRandomizer.Archipelago
 				{1337185, new ItemKey(11, 7, 248, 129)},
 				{1337186, new ItemKey(11, 7, 296, 129)},
 				{1337187, new ItemKey(12, 19, 56, 145)},
-				// Journals (Past)
+				// Letters (Past)
 				{1337188, new ItemKey(3, 12, 472, 161)},
 				{1337189, new ItemKey(3, 15, 328, 97)},
 				{1337190, new ItemKey(4, 18, 456, 497)},

@@ -54,7 +54,7 @@ namespace TsRandomizer
 				{"StinkyMaw", 1U << 9},
 				{"GyreArchives", 1U << 10},
 				{"Cantoran", 1U << 11},
-        {"LoreChecks", 1U << 12},
+				{"LoreChecks", 1U << 12},
 				{"DamageRando", 1U << 13 },
 				{"DeathLink", 1U << 17}
 			};
