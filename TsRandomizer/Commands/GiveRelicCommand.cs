@@ -8,12 +8,12 @@ namespace TsRandomizer.Commands
 {
 	class GiveRelicCommand : ConsoleCommand
 	{
-		readonly Level level;
+		readonly Func<Level> level;
 		public override string Command => "giverelic";
 
 		public override string ParameterUsage => "<relicName>";
 
-		public GiveRelicCommand(Level level)
+		public GiveRelicCommand(Func<Level> level)
 		{
 			this.level = level;
 		}
@@ -24,7 +24,7 @@ namespace TsRandomizer.Commands
 				return false;
 
 			if (Enum.TryParse(parameters[0], true, out EInventoryRelicType relic))
-				level.GameSave.AddRelic(relic);
+				level().GameSave.AddRelic(relic);
 			else
 				console.AddLine($"Invalid relic name, valid relics are: {string.Join(", ", Enum.GetNames(typeof(EInventoryRelicType)))}");
 

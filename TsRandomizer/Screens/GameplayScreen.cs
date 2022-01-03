@@ -91,8 +91,10 @@ namespace TsRandomizer.Screens
 			}
 
 #if DEBUG
-			ScreenManager.Console.AddCommand(new TeleportCommand(Level));
-			ScreenManager.Console.AddCommand(new GiveRelicCommand(Level));
+			ScreenManager.Console.AddCommand(new TeleportCommand(() => Level));
+			ScreenManager.Console.AddCommand(new GiveRelicCommand(() => Level));
+			ScreenManager.Console.AddCommand(new GiveOrbCommand(() => Level));
+			ScreenManager.Console.AddCommand(new GiveFamiliarCommand(() => Level));
 #endif
 		}
 
