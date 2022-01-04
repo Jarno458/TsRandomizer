@@ -25,7 +25,8 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type GyreType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.GyrePortalEvent");
 		static readonly Type NelisteNpcType = TimeSpinnerType.Get("Timespinner.GameObjects.NPCs.AstrologerNPC");
 		static readonly Type YorneNpcType = TimeSpinnerType.Get("Timespinner.GameObjects.NPCs.YorneNPC");
-		static readonly Type PedistalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
+		static readonly Type PanoNpcType = TimeSpinnerType.Get("Timespinner.GameObjects.NPCs.MessengerNPC");
+		static readonly Type PedestalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
 
 		static RoomTrigger()
@@ -94,7 +95,7 @@ namespace TsRandomizer.LevelObjects
 						SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 
 				if(!seedOptions.Inverted && level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
-					CreateSimpelOneWayWarp(level, 16, 12);
+					CreateSimpleOneWayWarp(level, 16, 12);
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 5, (level, itemLocation, seedOptions, screenManager) =>
 			{
@@ -138,7 +139,7 @@ namespace TsRandomizer.LevelObjects
 			{
 				if (seedOptions.Inverted || level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)) return;
 
-				CreateSimpelOneWayWarp(level, 2, 54);
+				CreateSimpleOneWayWarp(level, 2, 54);
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 54, (level, itemLocation, seedOptions, screenManager) =>
 			{
@@ -146,7 +147,7 @@ namespace TsRandomizer.LevelObjects
 				    || level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)
 					|| !level.GameSave.DataKeyBools.ContainsKey("HasUsedCityTS")) return;
 
-				CreateSimpelOneWayWarp(level, 3, 6);
+				CreateSimpleOneWayWarp(level, 3, 6);
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 30, (level, itemLocation, seedOptions, screenManager) =>
 			{
@@ -243,7 +244,7 @@ namespace TsRandomizer.LevelObjects
 				if (level.GameSave.DataKeyBools.ContainsKey("IsEndingABCleared")) return;
 
 				((Dictionary<int, GameEvent>)level.AsDynamic()._levelEvents).Values
-					.FirstOrDefault(obj => obj.GetType() == PedistalType)
+					.FirstOrDefault(obj => obj.GetType() == PedestalType)
 					?.SilentKill();
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 6, (level, itemLocation, seedOptions, screenManager) =>
@@ -281,6 +282,16 @@ namespace TsRandomizer.LevelObjects
 				if (!seedOptions.GassMaw) return;
 
 				FillRoomWithGass(level);
+			}));
+			RoomTriggers.Add(new RoomTrigger(16, 1, (level, itemLocation, seedOptions, screenManager) => {
+				// Allow the post-Nightmare chest to spawn
+				level.GameSave.SetValue("IsGameCleared", true);
+				level.GameSave.SetValue("IsEndingCDCleared", true);
+			}));
+			RoomTriggers.Add(new RoomTrigger(16, 21, (level, itemLocation, seedOptions, screenManager) => {
+				// Spawn Pano to give a soft-lock exit warp
+				if (((Dictionary<int, NPCBase>)level.AsDynamic()._npcs).Values.Any(npc => npc.GetType() == PanoNpcType)) return;
+				SpawnPano(level);
 			}));
 			RoomTriggers.Add(new RoomTrigger(16, 27, (level, itemLocation, seedOptions, screenManager) =>
 			{
@@ -365,7 +376,7 @@ namespace TsRandomizer.LevelObjects
 			levelReflected.RequestAddObject((GameEvent)orbPedestalEvent);
 		}
 
-		static void CreateSimpelOneWayWarp(Level level, int destinationLevelId, int destinationRoomId)
+		static void CreateSimpleOneWayWarp(Level level, int destinationLevelId, int destinationRoomId)
 		{
 			var dynamicLevel = level.AsDynamic();
 
@@ -415,6 +426,14 @@ namespace TsRandomizer.LevelObjects
 			var neliste = (NPCBase)NelisteNpcType.CreateInstance(false, level, position, -1, new ObjectTileSpecification());
 
 			level.AsDynamic().RequestAddObject(neliste);
+		}
+
+		static void SpawnPano(Level level)
+		{
+			var position = new Point(100, 195);
+			var pano = (NPCBase)PanoNpcType.CreateInstance(false, level, position, -1, new ObjectTileSpecification() { IsFlippedHorizontally = true });
+
+			level.AsDynamic().RequestAddObject(pano);
 		}
 
 		static void SpawnYorne(Level level)

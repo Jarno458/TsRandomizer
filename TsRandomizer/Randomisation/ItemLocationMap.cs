@@ -187,7 +187,7 @@ namespace TsRandomizer.Randomisation
 
 		static int CalculateCapacity(SeedOptions options)
 		{
-			var capacity = 165;
+			var capacity = 166;
 
 			if (options.DownloadableItems)
 				capacity += 14;
@@ -403,8 +403,9 @@ namespace TsRandomizer.Randomisation
 			areaName = "Ancient Pyramid";
 			Add(new ItemKey(16, 14, 312, 192), "Why not it's right there", ItemProvider.Get(EItemType.MaxSand), LeftPyramid);
 			Add(new ItemKey(16, 3, 88, 192), "Conviction guarded room", ItemProvider.Get(EItemType.MaxHP), LeftPyramid);
-			Add(new ItemKey(16, 22, 200, 192), "Pit secret room", ItemProvider.Get(EItemType.MaxAura), Nightmare & OculusRift); //only requires LeftPyramid to reach but Nightmate to escape
-			Add(new ItemKey(16, 16, 1512, 144), "Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), Nightmare & OculusRift); //only requires LeftPyramid to reach but Nightmate to escape	
+			Add(new ItemKey(16, 22, 200, 192), "Pit secret room", ItemProvider.Get(EItemType.MaxAura), LeftPyramid & OculusRift);
+			Add(new ItemKey(16, 16, 1512, 144), "Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), LeftPyramid & OculusRift);
+			Add(new ItemKey(16, 5, 136, 192), "Nightmare Door chest", ItemProvider.Get(EInventoryEquipmentType.SelenBangle), Nightmare);
 		}
 
 		void AddGyreItemLocations()
