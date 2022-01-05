@@ -26,7 +26,7 @@ namespace TsRandomizer.Randomisation
 		//past
 		internal Gate LeftSideForestCaves;
 		internal Gate UpperLakeSirine;
-		internal Gate LowerlakeSirine;
+		internal Gate LowerLakeSirine;
 		internal Gate LowerCavesOfBanishment;
 		internal Gate UpperCavesOfBanishment;
 		internal Gate CastleRamparts;
@@ -39,6 +39,7 @@ namespace TsRandomizer.Randomisation
 		internal Gate UpperLakeDesolation;
 		internal Gate LeftLibrary;
 		internal Gate UpperLeftLibrary;
+		internal Gate IfritsLair;
 		internal Gate MidLibrary;
 		internal Gate UpperRightSideLibrary;
 		internal Gate RightSideLibraryElevator;
@@ -47,6 +48,7 @@ namespace TsRandomizer.Randomisation
 		internal Gate SealedCavesLower;
 		internal Gate SealedCavesSirens;
 		internal Gate MilitaryFortress;
+		internal Gate RavenlordsLair;
 		internal Gate MilitaryFortressHangar;
 		internal Gate RightSideMilitaryFortressHangar;
 		internal Gate TheLab;
@@ -54,6 +56,7 @@ namespace TsRandomizer.Randomisation
 		internal Gate UpperLab;
 		internal Gate EmperorsTower;
 		//pyramid
+		internal Gate TemporalGyre;
 		internal Gate LeftPyramid;
 		internal Gate Nightmare;
 
@@ -141,15 +144,15 @@ namespace TsRandomizer.Randomisation
 			//past
 			LeftSideForestCaves = (AccessToPast & (R.TimeStop | R.ForwardDash)) | R.GateLakeSereneRight | R.GateLakeSereneLeft;
 			UpperLakeSirine = (LeftSideForestCaves & (R.TimeStop | R.Swimming)) | R.GateLakeSereneLeft;
-			LowerlakeSirine = (LeftSideForestCaves | R.GateLakeSereneLeft) & R.Swimming;
-			LowerCavesOfBanishment = LowerlakeSirine | R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump);
+			LowerLakeSirine = (LeftSideForestCaves | R.GateLakeSereneLeft) & R.Swimming;
+			LowerCavesOfBanishment = LowerLakeSirine | R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump);
 			UpperCavesOfBanishment = AccessToPast;
 			CastleRamparts = AccessToPast;
 			CastleKeep = CastleRamparts;
 			RoyalTower = (CastleKeep & R.DoubleJump) | R.GateRoyalTowers;
 			MidRoyalTower = RoyalTower & (MultipleSmallJumpsOfNpc | ForwardDashDoubleJump);
 			UpperRoyalTower = MidRoyalTower & R.DoubleJump;
-			KillMaw = (LowerlakeSirine | R.GateCavesOfBanishment | R.GateMaw) & MawGassMask;
+			KillMaw = (LowerLakeSirine | R.GateCavesOfBanishment | R.GateMaw) & MawGassMask;
 			var killTwins = CastleKeep & R.TimeStop;
 			var killAelana = UpperRoyalTower;
 
@@ -158,6 +161,7 @@ namespace TsRandomizer.Randomisation
 			LeftLibrary = UpperLakeDesolation | LowerLakeDesolationBridge | R.GateLeftLibrary | R.GateKittyBoss | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitaryGate & (R.CardB | R.CardE));
 			MidLibrary = (LeftLibrary & R.CardD) | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitaryGate & (R.CardB | R.CardE));
 			UpperLeftLibrary = LeftLibrary & (R.DoubleJump | R.ForwardDash);
+			IfritsLair = UpperLeftLibrary & R.Kobo & AccessToPast;
 			UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | ((R.GateMilitaryGate | R.GateSealedSirensCave) & R.CardE);
 			RightSideLibraryElevator = R.CardE & ((MidLibrary & (R.CardC | R.CardB)) | R.GateMilitaryGate | R.GateSealedSirensCave);
 			LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSideLibraryElevator | R.GateMilitaryGate | (R.GateSealedSirensCave & R.CardE);
@@ -170,9 +174,11 @@ namespace TsRandomizer.Randomisation
 			TheLab = MilitaryFortressHangar & R.CardB;
 			TheLabPoweredOff = TheLab & DoubleJumpOfNpc;
 			UpperLab = TheLabPoweredOff & ForwardDashDoubleJump;
+			RavenlordsLair = UpperLab & R.MerchantCrow;
 			EmperorsTower = UpperLab;
 
 			//pyramid
+			TemporalGyre = MilitaryFortress & R.TimespinnerWheel;
 			LeftPyramid = UpperLab & (
 				R.TimespinnerWheel & R.TimespinnerSpindle &
 				R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3);
@@ -331,13 +337,13 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(7, 30, 296, 176), "Pyramid keys room", ItemProvider.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine);
 			Add(new ItemKey(7, 3, 120, 204), "Chicken ledge", null, UpperLakeSirine);
 			areaName = "Lower Lake Serene";
-			Add(new ItemKey(7, 3, 440, 1232), "Deep dive", ItemProvider.Get(EInventoryUseItemType.Potion), LowerlakeSirine);
-			Add(new ItemKey(7, 7, 1432, 576), "Under the eels", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerlakeSirine);
-			Add(new ItemKey(7, 6, 520, 496), "Water spikes room", ItemProvider.Get(EInventoryUseItemType.Potion), LowerlakeSirine);
-			Add(new ItemKey(7, 11, 88, 240), "Underwater secret", ItemProvider.Get(EItemType.MaxHP), LowerlakeSirine & OculusRift);
-			Add(new ItemKey(7, 2, 1016, 384), "T chest", ItemProvider.Get(EInventoryUseItemType.Ether), LowerlakeSirine);
-			Add(new ItemKey(7, 20, 248, 96), "Past the eels", ItemProvider.Get(EItemType.MaxSand), LowerlakeSirine);
-			Add(new ItemKey(7, 9, 584, 189), "Underwater pedestal", ItemProvider.Get(EInventoryOrbType.Ice, EOrbSlot.Melee), LowerlakeSirine);
+			Add(new ItemKey(7, 3, 440, 1232), "Deep dive", ItemProvider.Get(EInventoryUseItemType.Potion), LowerLakeSirine);
+			Add(new ItemKey(7, 7, 1432, 576), "Under the eels", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerLakeSirine);
+			Add(new ItemKey(7, 6, 520, 496), "Water spikes room", ItemProvider.Get(EInventoryUseItemType.Potion), LowerLakeSirine);
+			Add(new ItemKey(7, 11, 88, 240), "Underwater secret", ItemProvider.Get(EItemType.MaxHP), LowerLakeSirine & OculusRift);
+			Add(new ItemKey(7, 2, 1016, 384), "T chest", ItemProvider.Get(EInventoryUseItemType.Ether), LowerLakeSirine);
+			Add(new ItemKey(7, 20, 248, 96), "Past the eels", ItemProvider.Get(EItemType.MaxSand), LowerLakeSirine);
+			Add(new ItemKey(7, 9, 584, 189), "Underwater pedestal", ItemProvider.Get(EInventoryOrbType.Ice, EOrbSlot.Melee), LowerLakeSirine);
 			areaName = "Caves of Banishment (Maw)";
 			Add(new ItemKey(8, 19, 664, 704), "Banishment shroom jump room", ItemProvider.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment & R.DoubleJump);
 			Add(new ItemKey(8, 12, 280, 160), "Banishment secret room", ItemProvider.Get(EItemType.MaxHP), LowerCavesOfBanishment & OculusRift);
@@ -405,16 +411,16 @@ namespace TsRandomizer.Randomisation
 		{
 			areaName = "Temporal Gyre";
 			// Wheel is not strictly required, but is in logic for anti-frustration against Nethershades
-			Add(new ItemKey(14, 14, 200, 832), "Gyre Chest 1", null, MilitaryFortress & R.TimespinnerWheel);
-			Add(new ItemKey(14, 17, 200, 832), "Gyre Chest 2", null, MilitaryFortress & R.TimespinnerWheel);
-			Add(new ItemKey(14, 20, 200, 832), "Gyre Chest 3", null, MilitaryFortress & R.TimespinnerWheel);
-			Add(new ItemKey(14, 8, 120, 176), "Ravenlord Entry", null, UpperLab & R.MerchantCrow);
-			Add(new ItemKey(14, 9, 200, 125), "Ravenlord Pedestal", null, UpperLab & R.MerchantCrow);
-			Add(new ItemKey(14, 9, 280, 176), "Ravenlord Exit", null, UpperLab & R.MerchantCrow);
+			Add(new ItemKey(14, 14, 200, 832), "Gyre Chest 1", null, TemporalGyre);
+			Add(new ItemKey(14, 17, 200, 832), "Gyre Chest 2", null, TemporalGyre);
+			Add(new ItemKey(14, 20, 200, 832), "Gyre Chest 3", null, TemporalGyre);
+			Add(new ItemKey(14, 8, 120, 176), "Ravenlord Entry", null, RavenlordsLair);
+			Add(new ItemKey(14, 9, 200, 125), "Ravenlord Pedestal", null, RavenlordsLair);
+			Add(new ItemKey(14, 9, 280, 176), "Ravenlord Exit", null, RavenlordsLair);
 			// Ifrit is a strong early boss, access to the past is required as a safety check so that they do not block past access
-			Add(new ItemKey(14, 6, 40, 208), "Ifrit Entry", null, UpperLeftLibrary & R.Kobo & AccessToPast);
-			Add(new ItemKey(14, 7, 200, 205), "Ifrit Pedestal", null, UpperLeftLibrary & R.Kobo & AccessToPast);
-			Add(new ItemKey(14, 7, 280, 208), "Ifrit Exit", null, UpperLeftLibrary & R.Kobo & AccessToPast);
+			Add(new ItemKey(14, 6, 40, 208), "Ifrit Entry", null, IfritsLair);
+			Add(new ItemKey(14, 7, 200, 205), "Ifrit Pedestal", null, IfritsLair);
+			Add(new ItemKey(14, 7, 280, 208), "Ifrit Exit", null, IfritsLair);
 		}
 
 		void AddDownloadTerminals()

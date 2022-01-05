@@ -261,7 +261,8 @@ namespace TsRandomizer.LevelObjects
 
 				FillRoomWithGass(level);
 			}));
-			RoomTriggers.Add(new RoomTrigger(16, 26, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+			RoomTriggers.Add(new RoomTrigger(16, 26, (level, itemLocation, seedOptions, screenManager) =>
+			{
 				if (!level.GameSave.DataKeyStrings.ContainsKey(ArchipelagoItemLocationRandomizer.GameSaveServerKey)) return;
 
 				var forfeitFlags = Client.ForfeitPermissions;

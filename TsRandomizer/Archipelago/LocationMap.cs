@@ -218,7 +218,33 @@ namespace TsRandomizer.Archipelago
 				{1337175, new RoomItemKey(7, 28)}, //new
 				{1337176, new RoomItemKey(7, 5)}, //new
 
-				// 1337177 - 1337236 Reserved
+				// Lore Checks
+				// Memories (Present)
+				{1337177, new ItemKey(1, 10, 312, 81)},
+				{1337178, new ItemKey(2, 5, 200, 145)},
+				{1337179, new ItemKey(2, 45, 344, 145)},
+				{1337180, new ItemKey(2, 51, 88, 177)},
+				{1337181, new ItemKey(2, 25, 216, 145)},
+				{1337182, new ItemKey(2, 46, 200, 145)},
+				{1337183, new ItemKey(2, 11, 200, 161)},
+				{1337184, new ItemKey(10, 3, 536, 97)},
+				{1337185, new ItemKey(11, 7, 248, 129)},
+				{1337186, new ItemKey(11, 7, 296, 129)},
+				{1337187, new ItemKey(12, 19, 56, 145)},
+				// Journals (Past)
+				{1337188, new ItemKey(3, 12, 472, 161)},
+				{1337189, new ItemKey(3, 15, 328, 97)},
+				{1337190, new ItemKey(4, 18, 456, 497)},
+				{1337191, new ItemKey(4, 11, 360, 161)},
+				{1337192, new ItemKey(5, 41, 184, 177)},
+				{1337193, new ItemKey(5, 44, 264, 161)},
+				{1337194, new ItemKey(5, 14, 568, 177)},
+				{1337195, new ItemKey(6, 17, 344, 433)},
+				{1337196, new ItemKey(6, 14, 136, 177)},
+				{1337197, new ItemKey(6, 25, 152, 145)},
+				{1337198, new ItemKey(8, 36, 136, 145)},
+
+				// 1337199 - 1337236 Reserved
 
 				// Pyramid
 				// Temporal Gyre
