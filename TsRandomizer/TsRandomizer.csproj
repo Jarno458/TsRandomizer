@@ -106,6 +106,7 @@
     <Compile Include="Commands\GiveRelicCommand.cs" />
     <Compile Include="Commands\TeleportCommand.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
+    <Compile Include="LevelObjects\Other\PanoNPC.cs" />
     <Compile Include="Randomisation\HintGenerator.cs" />
     <Compile Include="Screens\GameConsole.cs" />
     <Compile Include="Archipelago\DeathLinker.cs" />

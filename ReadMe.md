@@ -36,7 +36,7 @@ Extract the contents of the corresponding zip file to the same folder as Timespi
 * Umbra orb is randomized in even if you don't own the password
 * Achievements cannot be unlocked
 * SaveStatue inside right elevator room is disabled to prevent a softlock
-* SaveStatue down in the pit of the ancient pyramid is disabled to prevent a softlock
+* A return warp to the Pyramid entrance has been added in the Pyramid pit to prevent a softlock
 * SaveStatues in front of Temportal Gyre bosses Ifrit and Ravenlord are disabled to prevent softlocks
 * Aelana and The Maw no longer require twins to be killed before their door unlocks
 
