@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using Microsoft.Xna.Framework;
@@ -38,6 +39,8 @@ namespace TsRandomizer.Archipelago
 		public static DeathLinkService GetDeathLinkService() => session.CreateDeathLinkServiceAndEnable();
 
 		public static string GetCurrentPlayerName() => session.Players.GetPlayerAliasAndName(slot);
+
+		public static LocationCheckHelper LocationCheckHelper => session.Locations;
 
 		public static LoginResult Connect(string server, string user, string pass = null, string connectionId = null)
 		{

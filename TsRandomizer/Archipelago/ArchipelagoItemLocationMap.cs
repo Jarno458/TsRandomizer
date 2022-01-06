@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
@@ -26,6 +27,9 @@ namespace TsRandomizer.Archipelago
 		{
 			foreach (var itemLocation in this)
 				itemLocation.BsseOnGameSave(gameSave);
+
+			Client.LocationCheckHelper.CheckedLocationsUpdated += MarkCheckedLocations;
+			MarkCheckedLocations(Client.LocationCheckHelper.AllLocationsChecked);
 
 			firstPass = true;
 		}
@@ -106,6 +110,14 @@ namespace TsRandomizer.Archipelago
 				Add(new ExteralItemLocation(item));
 				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(this));
 			}
+		}
+
+		void MarkCheckedLocations(ICollection<int> locationsChecked)
+		{
+			foreach (var locationId in locationsChecked)
+				if (TryGetValue(LocationMap.GetItemkey(locationId), out var location))
+					if (location.ItemInfo is ArchipelagoRemoteItem)
+						location.IsPickedUp = true;
 		}
 	}
 }
