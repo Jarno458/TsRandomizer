@@ -103,10 +103,10 @@ namespace TsRandomizer.Archipelago
 			SeedString = "";
 		}
 
-		public static ItemIdentifier GetNextItem(int currentIndex) =>
+		public static NetworkItem? GetNextItem(int currentIndex) =>
 			session.Items.AllItemsReceived.Count > currentIndex 
-				? ItemMap.GetItemIdentifier(session.Items.AllItemsReceived[currentIndex].Item)
-				: null;
+				? session.Items.AllItemsReceived[currentIndex]
+				: default(NetworkItem?);
 
 		public static void SetStatus(ArchipelagoClientState status) => SendPacket(new StatusUpdatePacket { Status = status });
 

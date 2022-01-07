@@ -48,7 +48,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			if (!result.Successful)
 				throw new ConnectionFailedException((LoginFailure)result, server, user, password);
 
-			itemLocations = new ArchipelagoItemLocationMap(ItemInfoProvider, UnlockingMap, Seed.Options);
+			itemLocations = new ArchipelagoItemLocationMap(ItemInfoProvider, UnlockingMap, Seed.Options, ((LoginSuccessful)result).Slot);
 
 			if (isProgressionOnly)
 				return itemLocations;

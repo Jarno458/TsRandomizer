@@ -275,11 +275,11 @@ namespace TsRandomizer.Archipelago
 				? locationId
 				: MapItemKeyToLocationId.TryGetValue(key.ToRoomItemKey(), out var roomLocationId)
 					? roomLocationId
-					: throw new Exception("Key does not map to Archipelago itemlocation");
+					: throw new Exception($"Key {key} does not map to an Archipelago itemlocation");
 
 		public static ItemKey GetItemkey(int locationId) =>
 			MapLocationIdToItemKey.TryGetValue(locationId, out var key)
 				? key
-				: throw new Exception("Archipelago itemlocation does not map to itemKey");
+				: throw new Exception($"Archipelago itemlocation {locationId} does not map to itemKey");
 	}
 }

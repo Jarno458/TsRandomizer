@@ -698,7 +698,7 @@ namespace TsRandomizer.Randomisation
 				progressiveItem.Reset();
 
 			foreach (var itemLocation in this)
-				itemLocation.BsseOnGameSave(gameSave);
+				itemLocation.BaseOnGameSave(gameSave);
 		}
 
 		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem)
