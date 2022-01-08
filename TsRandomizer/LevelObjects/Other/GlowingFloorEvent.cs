@@ -3,27 +3,34 @@ using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens;
 
-namespace TsRandomizer.LevelObjects.ItemManipulators
+namespace TsRandomizer.LevelObjects.Other
 {
-	[TimeSpinnerType("Timespinner.GameObjects.NPCs.MessengerNPC")]
+	[TimeSpinnerType("Timespinner.GameObjects.Events.EnvironmentPrefabs.L11_Lab.EnvPrefabLabVilete")]
 	// ReSharper disable once UnusedMember.Global
-	class PanoNpc : LevelObject
+	class GlowingFloorEvent : LevelObject
 	{
 		bool teleportEnabled = false;
 		bool teleportTriggered = false;
-		public PanoNpc(Mobile typedObject) : base(typedObject)
+		public GlowingFloorEvent(Mobile typedObject) : base(typedObject)
 		{
+			if (Dynamic.Level.ID != 16)
+				return;
+			Dynamic._textPromptOffsetX = -20;
+			Dynamic._textPromptText = "Exit the pyramid";
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
+			if (Dynamic.Level.ID != 16)
+				return;
 			if (teleportTriggered)
 				return;
-			if (Dynamic.IsTalking)
+			if (Scripts.Count != 0)
 			{
 				teleportEnabled = true;
+				Scripts.Clear();
 			}
-			if (teleportEnabled && Scripts.Count == 0) // Conversation triggered and finished
+			if (teleportEnabled && Scripts.Count == 0)
 			{
 				LevelReflected.JukeBox.StopSong();
 				LevelReflected.RequestChangeLevel(new LevelChangeRequest
