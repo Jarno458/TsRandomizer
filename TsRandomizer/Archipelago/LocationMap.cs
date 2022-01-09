@@ -211,12 +211,12 @@ namespace TsRandomizer.Archipelago
 				{1337168, new ItemKey(11, 34, 200, 192)},
 				{1337169, new ItemKey(11, 37, 200, 192)},
 				{1337170, new ItemKey(11, 38, 120, 176)},
-				{1337171, new ItemKey(5, 20, 504, 48)}, //new
-				{1337172, new ItemKey(8, 3, 1256, 544)}, //new
-				{1337173, new RoomItemKey(8, 21)}, //new
-				{1337174, new ItemKey(7, 3, 120, 204)}, //new
-				{1337175, new RoomItemKey(7, 28)}, //new
-				{1337176, new RoomItemKey(7, 5)}, //new
+				{1337171, new ItemKey(5, 20, 504, 48)},
+				{1337172, new ItemKey(8, 3, 1256, 544)},
+				{1337173, new RoomItemKey(8, 21)},
+				{1337174, new ItemKey(7, 3, 120, 204)},
+				{1337175, new RoomItemKey(7, 28)},
+				{1337176, new RoomItemKey(7, 5)},
 
 				// Lore Checks
 				// Memories (Present)
@@ -244,12 +244,14 @@ namespace TsRandomizer.Archipelago
 				{1337197, new ItemKey(6, 25, 152, 145)},
 				{1337198, new ItemKey(8, 36, 136, 145)},
 
-				// 1337199 - 1337236 Reserved
+				// 1337199 - 1337235 Reserved
 
 				// Pyramid
+				// Ancient Pyramid
+				{1337236, new ItemKey(16, 5, 136, 192)}, //nightmare door
 				// Temporal Gyre
-				{1337237, new ItemKey(14, 9, 200, 125)}, //new
-				{1337238, new ItemKey(14, 7, 200, 205)}, //new
+				{1337237, new ItemKey(14, 9, 200, 125)},
+				{1337238, new ItemKey(14, 7, 200, 205)},
 				{1337239, new ItemKey(14, 14, 200, 832)},
 				{1337240, new ItemKey(14, 17, 200, 832)},
 				{1337241, new ItemKey(14, 20, 200, 832)},
