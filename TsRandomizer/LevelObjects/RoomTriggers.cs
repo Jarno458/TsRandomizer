@@ -263,17 +263,17 @@ namespace TsRandomizer.LevelObjects
 
 				FillRoomWithGass(level);
 			}));
-			RoomTriggers.Add(new RoomTrigger(16, 1, (level, itemLocation, seedOptions, screenManager) => {
+			RoomTriggers.Add(new RoomTrigger(16, 1, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Allow the post-Nightmare chest to spawn
 				level.GameSave.SetValue("IsGameCleared", true);
 				level.GameSave.SetValue("IsEndingCDCleared", true);
 			}));
-			RoomTriggers.Add(new RoomTrigger(16, 21, (level, itemLocation, seedOptions, screenManager) => {
+			RoomTriggers.Add(new RoomTrigger(16, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Spawn glowing floor event to give a soft-lock exit warp
 				if (((Dictionary<int, NPCBase>)level.AsDynamic()._npcs).Values.Any(npc => npc.GetType() == GlowingFloorEventType)) return;
 				SpawnGlowingFloor(level);
 			}));
-			RoomTriggers.Add(new RoomTrigger(16, 27, (level, itemLocation, seedOptions, screenManager) =>
+			RoomTriggers.Add(new RoomTrigger(16, 27, (level, itemLocation, seedOptions,  gameSettings, screenManager) =>
 			{
 				if (!level.GameSave.DataKeyStrings.ContainsKey(ArchipelagoItemLocationRandomizer.GameSaveServerKey)) return;
 
