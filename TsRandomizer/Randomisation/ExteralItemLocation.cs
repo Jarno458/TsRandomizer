@@ -7,7 +7,11 @@ namespace TsRandomizer.Randomisation
 	{
 		static int externalCounter;
 
-		public ExteralItemLocation(ItemInfo item) : base(new ItemKey(0, 0, 0, externalCounter++), "External", "", null)
+		public ExteralItemLocation() : base(new ItemKey(0, 0, 0, externalCounter++), "External", "", null)
+		{
+		}
+
+		public ExteralItemLocation(ItemInfo item) : this()
 		{
 			SetItem(item);
 
@@ -21,7 +25,7 @@ namespace TsRandomizer.Randomisation
 			//	progressiveItemInfo.Next();
 		}
 
-		public override void BsseOnGameSave(GameSave save)
+		public override void BaseOnGameSave(GameSave save)
 		{
 		}
 	}

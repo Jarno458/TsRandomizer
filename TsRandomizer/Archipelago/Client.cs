@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using Microsoft.Xna.Framework;
@@ -39,6 +40,8 @@ namespace TsRandomizer.Archipelago
 
 		public static string GetCurrentPlayerName() => session.Players.GetPlayerAliasAndName(slot);
 
+		public static LocationCheckHelper LocationCheckHelper => session.Locations;
+
 		public static LoginResult Connect(string server, string user, string pass = null, string connectionId = null)
 		{
 			if (IsConnected && session.Socket.Connected && cachedConnectionResult != null)
@@ -59,7 +62,7 @@ namespace TsRandomizer.Archipelago
 				session = ArchipelagoSessionFactory.CreateSession(new Uri(serverUrl));
 				session.Socket.PacketReceived += PackageReceived;
 
-				var result = session.TryConnectAndLogin("Timespinner", userName, new Version(0, 2, 0), new List<string>(0), ConnectionId, password);
+				var result = session.TryConnectAndLogin("Timespinner", userName, new Version(0, 2, 2), new List<string>(0), ConnectionId, password);
 
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;
@@ -100,10 +103,10 @@ namespace TsRandomizer.Archipelago
 			SeedString = "";
 		}
 
-		public static ItemIdentifier GetNextItem(int currentIndex) =>
+		public static NetworkItem? GetNextItem(int currentIndex) =>
 			session.Items.AllItemsReceived.Count > currentIndex 
-				? ItemMap.GetItemIdentifier(session.Items.AllItemsReceived[currentIndex].Item)
-				: null;
+				? session.Items.AllItemsReceived[currentIndex]
+				: default(NetworkItem?);
 
 		public static void SetStatus(ArchipelagoClientState status) => SendPacket(new StatusUpdatePacket { Status = status });
 

@@ -187,7 +187,7 @@ namespace TsRandomizer.Randomisation
 
 		static int CalculateCapacity(SeedOptions options)
 		{
-			var capacity = 165;
+			var capacity = 166;
 
 			if (options.DownloadableItems)
 				capacity += 14;
@@ -403,8 +403,9 @@ namespace TsRandomizer.Randomisation
 			areaName = "Ancient Pyramid";
 			Add(new ItemKey(16, 14, 312, 192), "Why not it's right there", ItemProvider.Get(EItemType.MaxSand), LeftPyramid);
 			Add(new ItemKey(16, 3, 88, 192), "Conviction guarded room", ItemProvider.Get(EItemType.MaxHP), LeftPyramid);
-			Add(new ItemKey(16, 22, 200, 192), "Pit secret room", ItemProvider.Get(EItemType.MaxAura), Nightmare & OculusRift); //only requires LeftPyramid to reach but Nightmate to escape
-			Add(new ItemKey(16, 16, 1512, 144), "Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), Nightmare & OculusRift); //only requires LeftPyramid to reach but Nightmate to escape	
+			Add(new ItemKey(16, 22, 200, 192), "Pit secret room", ItemProvider.Get(EItemType.MaxAura), LeftPyramid & OculusRift);
+			Add(new ItemKey(16, 16, 1512, 144), "Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), LeftPyramid & OculusRift);
+			Add(new ItemKey(16, 5, 136, 192), "Nightmare Door chest", ItemProvider.Get(EInventoryEquipmentType.SelenBangle), Nightmare);
 		}
 
 		void AddGyreItemLocations()
@@ -466,23 +467,23 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(11, 7, 296, 129), "Memory - Genza's Secret Stash 2 (Twilight Dinner)", null, TheLab & OculusRift);
 			areaName = "Emperor's Tower";
 			Add(new ItemKey(12, 19, 56, 145), "Memory - Way Up There (Final Circle)", null, EmperorsTower & DoubleJumpOfNpc);
-			// Journals
+			// Letters
 			areaName = "Forest";
-			Add(new ItemKey(3, 12, 472, 161), "Journal - Forest Rats (Lachiem Expedition)", null, AccessToPast);
-			Add(new ItemKey(3, 15, 328, 97), "Journal - Forest Bat Jump Ledge (Peace Treaty)", null, AccessToPast & (DoubleJumpOfNpc | ForwardDashDoubleJump | (R.TimeStop & R.ForwardDash)));
+			Add(new ItemKey(3, 12, 472, 161), "Letter - Forest Rats (Lachiem Expedition)", null, AccessToPast);
+			Add(new ItemKey(3, 15, 328, 97), "Letter - Forest Bat Jump Ledge (Peace Treaty)", null, AccessToPast & (DoubleJumpOfNpc | ForwardDashDoubleJump | (R.TimeStop & R.ForwardDash)));
 			areaName = "Castle Ramparts";
-			Add(new ItemKey(4, 18, 456, 497), "Journal - Floating in Moat (Prime Edicts)", null, CastleRamparts);
-			Add(new ItemKey(4, 11, 360, 161), "Journal - Archer + Knight (Declaration of Independence)", null, CastleRamparts);
+			Add(new ItemKey(4, 18, 456, 497), "Letter - Floating in Moat (Prime Edicts)", null, CastleRamparts);
+			Add(new ItemKey(4, 11, 360, 161), "Letter - Archer + Knight (Declaration of Independence)", null, CastleRamparts);
 			areaName = "Castle Keep";
-			Add(new ItemKey(5, 41, 184, 177), "Journal - Under the Twins (Letter of Reference)", null, CastleKeep);
-			Add(new ItemKey(5, 44, 264, 161), "Journal - Castle Loop Giantess (Political Advice)", null, CastleKeep);
-			Add(new ItemKey(5, 14, 568, 177), "Journal - Aleana's Room (Diplomatic Missive)", null, CastleKeep & R.PinkOrb & R.DoubleJump);
+			Add(new ItemKey(5, 41, 184, 177), "Letter - Under the Twins (Letter of Reference)", null, CastleKeep);
+			Add(new ItemKey(5, 44, 264, 161), "Letter - Castle Loop Giantess (Political Advice)", null, CastleKeep);
+			Add(new ItemKey(5, 14, 568, 177), "Letter - Aleana's Room (Diplomatic Missive)", null, CastleKeep & R.PinkOrb & R.DoubleJump);
 			areaName = "Royal Towers";
-			Add(new ItemKey(6, 17, 344, 433), "Journal - Top Struggle Juggle Base (War of the Sisters)", null, UpperRoyalTower);
-			Add(new ItemKey(6, 14, 136, 177), "Journal - Aleana Boss (Stained Letter)", null, UpperRoyalTower);
-			Add(new ItemKey(6, 25, 152, 145), "Journal - Near Bottom Struggle Juggle (Mission Findings)", null, UpperRoyalTower & DoubleJumpOfNpc);
+			Add(new ItemKey(6, 17, 344, 433), "Letter - Top Struggle Juggle Base (War of the Sisters)", null, UpperRoyalTower);
+			Add(new ItemKey(6, 14, 136, 177), "Letter - Aleana Boss (Stained Letter)", null, UpperRoyalTower);
+			Add(new ItemKey(6, 25, 152, 145), "Letter - Near Bottom Struggle Juggle (Mission Findings)", null, UpperRoyalTower & DoubleJumpOfNpc);
 			areaName = "Caves of Banishment (Maw)";
-			Add(new ItemKey(8, 36, 136, 145), "Journal - Lower Left Maw Caves (Naïvety)", null, LowerCavesOfBanishment);
+			Add(new ItemKey(8, 36, 136, 145), "Letter - Lower Left Maw Caves (Naïvety)", null, LowerCavesOfBanishment);
 		}
 
 		ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)
@@ -698,7 +699,7 @@ namespace TsRandomizer.Randomisation
 				progressiveItem.Reset();
 
 			foreach (var itemLocation in this)
-				itemLocation.BsseOnGameSave(gameSave);
+				itemLocation.BaseOnGameSave(gameSave);
 		}
 
 		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem)

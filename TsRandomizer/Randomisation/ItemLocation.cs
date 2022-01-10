@@ -47,7 +47,8 @@ namespace TsRandomizer.Randomisation
 		{
 			IsPickedUp = true;
 
-			gameSave.DataKeyBools[LootedItemDataString] = true;
+			if(gameSave != null)
+				gameSave.DataKeyBools[LootedItemDataString] = true;
 
 			if (ItemInfo is ProgressiveItemInfo progressiveItemInfo)
 				progressiveItemInfo.Next();
@@ -58,7 +59,7 @@ namespace TsRandomizer.Randomisation
 		public override string ToString() =>
 			$"{AreaName} {Name ?? Key.ToString()} [{ItemInfo}]";
 
-		public virtual void BsseOnGameSave(GameSave save)
+		public virtual void BaseOnGameSave(GameSave save)
 		{
 			gameSave = save;
 

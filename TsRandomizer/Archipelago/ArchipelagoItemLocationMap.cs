@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Archipelago.MultiClient.Net.Models;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.Extensions;
@@ -13,11 +15,14 @@ namespace TsRandomizer.Archipelago
 	{
 		public const string GameItemIndex = "ArchipelagoGameItemIndex";
 
+		readonly int slot;
+
 		bool firstPass;
 
-		public ArchipelagoItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, SeedOptions options)
+		public ArchipelagoItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, SeedOptions options, int slot)
 			: base(itemInfoProvider, itemUnlockingMap, options)
 		{
+			this.slot = slot;
 		}
 
 		public override bool IsBeatable() => true;
@@ -25,20 +30,23 @@ namespace TsRandomizer.Archipelago
 		public override void Initialize(GameSave gameSave)
 		{
 			foreach (var itemLocation in this)
-				itemLocation.BsseOnGameSave(gameSave);
+				itemLocation.BaseOnGameSave(gameSave);
+
+			Client.LocationCheckHelper.CheckedLocationsUpdated += MarkCheckedLocations;
+			MarkCheckedLocations(Client.LocationCheckHelper.AllLocationsChecked);
 
 			firstPass = true;
 		}
 
 		public override void Update(Level level)
 		{
-			ItemIdentifier receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
+			var receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
 
 			if (firstPass)
 			{
-				while (receivedItem != null)
+				while (receivedItem.HasValue)
 				{
-					RecieveItem(receivedItem, level);
+					ReceiveItem(receivedItem.Value, level);
 					level.GameSave.DataKeyInts[GameItemIndex] = level.GameSave.GetSaveInt(GameItemIndex) + 1;
 
 					receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
@@ -49,10 +57,10 @@ namespace TsRandomizer.Archipelago
 				firstPass = false;
 			}
 
-			if(receivedItem == null)
+			if(!receivedItem.HasValue)
 				return;
 			
-			RecieveItem(receivedItem, level);
+			ReceiveItem(receivedItem.Value, level);
 			level.GameSave.DataKeyInts[GameItemIndex] = level.GameSave.GetSaveInt(GameItemIndex) + 1;
 		}
 
@@ -81,16 +89,36 @@ namespace TsRandomizer.Archipelago
 				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(this));
 		}
 
-		public override ProgressionChain GetProgressionChain()
-		{
+		public override ProgressionChain GetProgressionChain() => 
 			throw new InvalidOperationException("Progression chains arent supported for Archipelago seeds");
-		}
 
-		void RecieveItem(ItemIdentifier itemIdentifier, Level level)
+		void ReceiveItem(NetworkItem networkItem, Level level)
 		{
+			var isLocal = networkItem.Player == slot;
+			ItemLocation location;
+
+			if (isLocal)
+			{
+				//ignore message if its from my slot and a location i already picked up
+				if (!TryGetLocation(networkItem, out location) || location.IsPickedUp)
+					return;
+			}
+			else
+			{
+				location = new ExteralItemLocation();
+
+				Add(location);
+			}
+
+			if (!TryGetItemIdentifier(networkItem, out var itemIdentifier))
+				return;
+
 			// itemInfoProvider's cache is out of date here when it comes to pyramid unlocks
 			var item = new SingleItemInfo(UnlockingMap, itemIdentifier);
 
+			location.SetItem(item);
+
+			location.IsPickedUp = true;
 			item.OnPickup(level);
 
 			level.GameSave.AddItem(level, itemIdentifier);
@@ -98,14 +126,47 @@ namespace TsRandomizer.Archipelago
 			if (itemIdentifier.LootType == LootType.ConstRelic)
 				level.AsDynamic().UnlockRelic(itemIdentifier.Relic);
 
-			if(!firstPass || item.IsProgression)
+			if (!firstPass || item.IsProgression)
 				level.ShowItemAwardPopup(itemIdentifier);
 
 			if (item.IsProgression)
-			{
-				Add(new ExteralItemLocation(item));
 				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(this));
+		}
+
+		bool TryGetLocation(NetworkItem networkItem, out ItemLocation location)
+		{
+			try
+			{
+				location = this[LocationMap.GetItemkey(networkItem.Location)];
+				return true;
 			}
+			catch
+			{
+				location = null;
+				return false;
+			}
+		}
+
+		bool TryGetItemIdentifier(NetworkItem networkItem, out ItemIdentifier itemIdentifier)
+		{
+			try
+			{
+				itemIdentifier = ItemMap.GetItemIdentifier(networkItem.Item);
+				return true;
+			}
+			catch
+			{
+				itemIdentifier = null;
+				return false;
+			}
+		}
+
+		void MarkCheckedLocations(ICollection<int> locationsChecked)
+		{
+			foreach (var locationId in locationsChecked)
+				if (TryGetValue(LocationMap.GetItemkey(locationId), out var location))
+					if (location.ItemInfo is ArchipelagoRemoteItem)
+						location.IsPickedUp = true;
 		}
 	}
 }

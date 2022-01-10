@@ -50,7 +50,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			itemsToAddToGame = new[]
 			{
-				ItemInfoProvider.Get(EInventoryEquipmentType.SelenBangle),
 				ItemInfoProvider.Get(EInventoryEquipmentType.GlassPumpkin),
 				ItemInfoProvider.Get(EInventoryEquipmentType.EternalCoat),
 				ItemInfoProvider.Get(EInventoryEquipmentType.EternalTiara),

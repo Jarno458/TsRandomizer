@@ -20,7 +20,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 9, new SeedOptionInfo { Name = "Stinky Maw", Description = "Require gassmask for Maw" } },
 			{ 1 << 10, new SeedOptionInfo { Name = "Gyre Archives", Description = "Gyre locations are in logic. New warps are gated by Merchant Crow and Kobo." } },
 			{ 1 << 11, new SeedOptionInfo { Name = "Cantoran", Description = "Cantoran's fight and check are available upon revisiting his room." } },
-			{ 1 << 12, new SeedOptionInfo { Name = "Lore Checks", Description = "Memories and journal entries contain items." } },
+			{ 1 << 12, new SeedOptionInfo { Name = "Lore Checks", Description = "Memories in the present and letters in the past contain items." } }
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)

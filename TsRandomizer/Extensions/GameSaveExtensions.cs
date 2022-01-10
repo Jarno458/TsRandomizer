@@ -116,7 +116,7 @@ namespace TsRandomizer.Extensions
 			gameSave.SetValue($"Cutscene_{cutsceneEnumType.GetEnumValue(cutsceneEnumMember)}", hasBeenTriggered);
 		}
 
-		static void AddOrb(this GameSave gameSave, EInventoryOrbType orbType, EOrbSlot orbSlot)
+		internal static void AddOrb(this GameSave gameSave, EInventoryOrbType orbType, EOrbSlot orbSlot)
 		{
 			var orbCollection = gameSave.Inventory.OrbInventory.Inventory;
 			var orbTypeKey = (int)orbType;
@@ -152,7 +152,7 @@ namespace TsRandomizer.Extensions
 		internal static void AddRelic(this GameSave gameSave, EInventoryRelicType relic) => 
 			gameSave.Inventory.RelicInventory.AddItem((int)relic);
 
-		static void AddFamiliar(this GameSave gameSave, EInventoryFamiliarType familiar)
+		internal static void AddFamiliar(this GameSave gameSave, EInventoryFamiliarType familiar)
 		{
 			gameSave.Inventory.FamiliarInventory.AddItem((int)familiar);
 

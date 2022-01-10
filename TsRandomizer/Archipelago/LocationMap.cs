@@ -211,12 +211,12 @@ namespace TsRandomizer.Archipelago
 				{1337168, new ItemKey(11, 34, 200, 192)},
 				{1337169, new ItemKey(11, 37, 200, 192)},
 				{1337170, new ItemKey(11, 38, 120, 176)},
-				{1337171, new ItemKey(5, 20, 504, 48)}, //new
-				{1337172, new ItemKey(8, 3, 1256, 544)}, //new
-				{1337173, new RoomItemKey(8, 21)}, //new
-				{1337174, new ItemKey(7, 3, 120, 204)}, //new
-				{1337175, new RoomItemKey(7, 28)}, //new
-				{1337176, new RoomItemKey(7, 5)}, //new
+				{1337171, new ItemKey(5, 20, 504, 48)},
+				{1337172, new ItemKey(8, 3, 1256, 544)},
+				{1337173, new RoomItemKey(8, 21)},
+				{1337174, new ItemKey(7, 3, 120, 204)},
+				{1337175, new RoomItemKey(7, 28)},
+				{1337176, new RoomItemKey(7, 5)},
 
 				// Lore Checks
 				// Memories (Present)
@@ -231,7 +231,7 @@ namespace TsRandomizer.Archipelago
 				{1337185, new ItemKey(11, 7, 248, 129)},
 				{1337186, new ItemKey(11, 7, 296, 129)},
 				{1337187, new ItemKey(12, 19, 56, 145)},
-				// Journals (Past)
+				// Letters (Past)
 				{1337188, new ItemKey(3, 12, 472, 161)},
 				{1337189, new ItemKey(3, 15, 328, 97)},
 				{1337190, new ItemKey(4, 18, 456, 497)},
@@ -244,12 +244,14 @@ namespace TsRandomizer.Archipelago
 				{1337197, new ItemKey(6, 25, 152, 145)},
 				{1337198, new ItemKey(8, 36, 136, 145)},
 
-				// 1337199 - 1337236 Reserved
+				// 1337199 - 1337235 Reserved
 
 				// Pyramid
+				// Ancient Pyramid
+				{1337236, new ItemKey(16, 5, 136, 192)}, //nightmare door
 				// Temporal Gyre
-				{1337237, new ItemKey(14, 9, 200, 125)}, //new
-				{1337238, new ItemKey(14, 7, 200, 205)}, //new
+				{1337237, new ItemKey(14, 9, 200, 125)},
+				{1337238, new ItemKey(14, 7, 200, 205)},
 				{1337239, new ItemKey(14, 14, 200, 832)},
 				{1337240, new ItemKey(14, 17, 200, 832)},
 				{1337241, new ItemKey(14, 20, 200, 832)},
@@ -275,11 +277,11 @@ namespace TsRandomizer.Archipelago
 				? locationId
 				: MapItemKeyToLocationId.TryGetValue(key.ToRoomItemKey(), out var roomLocationId)
 					? roomLocationId
-					: throw new Exception("Key does not map to Archipelago itemlocation");
+					: throw new Exception($"Key {key} does not map to an Archipelago itemlocation");
 
 		public static ItemKey GetItemkey(int locationId) =>
 			MapLocationIdToItemKey.TryGetValue(locationId, out var key)
 				? key
-				: throw new Exception("Archipelago itemlocation does not map to itemKey");
+				: throw new Exception($"Archipelago itemlocation {locationId} does not map to itemKey");
 	}
 }
