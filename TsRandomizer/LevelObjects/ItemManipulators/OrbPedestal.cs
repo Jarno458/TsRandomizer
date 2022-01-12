@@ -42,7 +42,9 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (ItemInfo == null)
 				return;
 
-			if (IsPickedUp)
+			if (IsPickedUp 
+			    && ItemLocation.Key != new RoomItemKey(1, 5) //Kitty boss
+			    && ItemLocation.Key != new RoomItemKey(11, 39)) //Dynamo Works
 			{
 				Level.RequestRemoveObject(TypedObject);
 				return;

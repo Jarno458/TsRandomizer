@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -23,14 +21,14 @@ namespace TsRandomizer.LevelObjects
 	{
 		static ItemLocationMap itemLocationMap;
 
-		public bool IsPickedUp => itemLocation.IsPickedUp;
+		public bool IsPickedUp => ItemLocation.IsPickedUp;
 
 		public readonly ItemInfo ItemInfo;
-		readonly ItemLocation itemLocation;
+		public readonly ItemLocation ItemLocation;
 
 		protected ItemManipulator(Mobile typedObject, ItemLocation itemLocation) : base(typedObject)
 		{
-			this.itemLocation = itemLocation;
+			ItemLocation = itemLocation;
 			ItemInfo = itemLocation?.ItemInfo;
 		}
 
@@ -47,16 +45,13 @@ namespace TsRandomizer.LevelObjects
 		protected void OnItemPickup()
 		{
 			ItemInfo.OnPickup(Level);
-			itemLocation.SetPickedUp();
+			ItemLocation.SetPickedUp();
 
 			if (ItemInfo.IsProgression)
 				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(itemLocationMap));
 		}
 
-		public static void Initialize(ItemLocationMap itemLocations)
-		{
-			itemLocationMap = itemLocations;
-		}
+		public static void Initialize(ItemLocationMap itemLocations) => itemLocationMap = itemLocations;
 
 		public static ItemManipulator GenerateShadowObject(Type levelObjectType, Mobile obj, ItemLocationMap itemLocations)
 		{
