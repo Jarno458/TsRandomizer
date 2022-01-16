@@ -219,8 +219,8 @@ namespace TsRandomizer.Randomisation
 			areaName = "Upper Lake Desolation";
 			Add(new ItemKey(1, 17, 152, 96), "Upper desolation Oxygen recovery room", ItemProvider.Get(EInventoryUseItemType.GoldRing), UpperLakeDesolation);
 			Add(new ItemKey(1, 21, 200, 144), "Upper desolation secret", ItemProvider.Get(EInventoryUseItemType.EssenceCrystal), UpperLakeDesolation & OculusRift);
-			Add(new ItemKey(1, 20, 232, 96), "Upper desolation double jump cave floor", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), UpperLakeDesolation & R.DoubleJump);
-			Add(new ItemKey(1, 20, 168, 240), "Upper desolation double jump cave platform", ItemProvider.Get(EInventoryUseItemType.FuturePotion), UpperLakeDesolation);
+			Add(new ItemKey(1, 20, 232, 96), "Upper desolation double jump cave platform", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), UpperLakeDesolation & R.DoubleJump);
+			Add(new ItemKey(1, 20, 168, 240), "Upper desolation double jump cave floor", ItemProvider.Get(EInventoryUseItemType.FuturePotion), UpperLakeDesolation);
 			Add(new ItemKey(1, 22, 344, 160), "Fire-Locked sparrow chest", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), UpperLakeDesolation);
 			Add(new ItemKey(1, 18, 1320, 189), "Crash site pedestal", ItemProvider.Get(EInventoryOrbType.Moon, EOrbSlot.Melee), UpperLakeDesolation);
 			Add(new ItemKey(1, 18, 1272, 192), "Crash site chest 1", ItemProvider.Get(EInventoryEquipmentType.CaptainsCap), UpperLakeDesolation & R.GassMask & KillMaw);
@@ -269,8 +269,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(9, 5, 88, 496), "Upper sealed cave water hook", ItemProvider.Get(EItemType.MaxSand), SealedCavesSirens & R.Swimming);
 			Add(new ItemKey(9, 3, 1848, 576), "Upper sealed cave siren room right", ItemProvider.Get(EInventoryEquipmentType.BirdStatue), SealedCavesSirens & R.Swimming);
 			Add(new ItemKey(9, 3, 744, 560), "Upper sealed cave siren room left", ItemProvider.Get(EItemType.MaxAura), SealedCavesSirens & R.Swimming);
-			Add(new ItemKey(9, 2, 184, 176), "Upper sealed cave after sirens chest 2", ItemProvider.Get(EInventoryUseItemType.WarpCard), SealedCavesSirens);
-			Add(new ItemKey(9, 2, 104, 160), "Upper sealed cave after sirens chest 1", ItemProvider.Get(EInventoryRelicType.WaterMask), SealedCavesSirens);
+			Add(new ItemKey(9, 2, 184, 176), "Upper sealed cave after sirens chest 1", ItemProvider.Get(EInventoryUseItemType.WarpCard), SealedCavesSirens);
+			Add(new ItemKey(9, 2, 104, 160), "Upper sealed cave after sirens chest 2", ItemProvider.Get(EInventoryRelicType.WaterMask), SealedCavesSirens);
 			areaName = "Military Fortress";
 			Add(new ItemKey(10, 3, 264, 128), "Military bomber chest", ItemProvider.Get(EItemType.MaxSand), MilitaryFortress & DoubleJumpOfNpc & R.TimespinnerWheel); //can be reached with just upward dash but not with lightwall unless you got timestop
 			Add(new ItemKey(10, 11, 296, 192), "Close combat room", ItemProvider.Get(EItemType.MaxAura), MilitaryFortress);

@@ -9,7 +9,6 @@ using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using Microsoft.Xna.Framework;
-using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 
@@ -160,7 +159,7 @@ namespace TsRandomizer.Archipelago
 		}
 
 		static bool MessageIsAboutCurrentPlayer(PrintJsonPacket printJsonPacket) =>
-			printJsonPacket.Data.Any(
+			printJsonPacket.ReceivingPlayer == slot || printJsonPacket.Data.Any(
 				p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId
 				     && int.TryParse(p.Text, out var playerId)
 				     && playerId == slot);
