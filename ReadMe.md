@@ -87,6 +87,7 @@ The item tracker features a few options:
 
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
 * Entering a door backwards with a higher level keycard will permanently open it even when specific keycards are on
+* When Progressive Vertical Movement is enabled, collecting Hairpin/Lightwall/Sash may show a popup with the wrong item
 
 # TODO
 ##### Things I plan on doing in the future
