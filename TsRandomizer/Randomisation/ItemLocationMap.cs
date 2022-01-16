@@ -394,8 +394,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(6, 22, 88, 208), "Royal tower left royal guard", ItemProvider.Get(EInventoryUseItemType.Ether), UpperRoyalTower);
 			Add(new ItemKey(6, 11, 360, 544), "Before Aelana", ItemProvider.Get(EInventoryUseItemType.HiPotion), UpperRoyalTower);
 			Add(new ItemKey(6, 23, 856, 208), "Aelana's attic", ItemProvider.Get(EInventoryEquipmentType.VileteDress), UpperRoyalTower & R.UpwardDash);
-			Add(new ItemKey(6, 14, 136, 208), "Aelana's pedestal", ItemProvider.Get(EInventoryOrbType.Pink, EOrbSlot.Melee), UpperRoyalTower);
-			Add(new ItemKey(6, 14, 184, 205), "Aelana's chest", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperRoyalTower);
+			Add(new ItemKey(6, 14, 136, 208), "Aelana's chest", ItemProvider.Get(EInventoryOrbType.Pink, EOrbSlot.Melee), UpperRoyalTower);
+			Add(new ItemKey(6, 14, 184, 205), "Aelana's pedestal", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperRoyalTower);
 		}
 
 		void AddPyramidItemLocations()
