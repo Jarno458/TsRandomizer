@@ -8,8 +8,8 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 {
 	public class NumberGameSetting : GameSetting
 	{
-		public double MinimumValue { get; }
-		public double MaximumValue { get; }
+		public double MinimumValue { get; private set; }
+		public double MaximumValue { get; private set; }
 		[JsonIgnore()]
 		public double StepValue { get; set; }
 		[JsonIgnore()]
@@ -21,6 +21,10 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 				double value = input;
 				if (AllowDecimals) base.SetValue(value); else base.SetValue(Math.Round(value));
 			}
+			else
+			{
+				base.SetValue(DefaultValue);
+			}
 		}
 
 		public NumberGameSetting(string name, string description, double defaultValue, double minValue, double maxValue, double stepValue, bool allowDecimals, bool canBeChangedInGame) : base(name, description, defaultValue, canBeChangedInGame)
@@ -31,7 +35,18 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 			AllowDecimals = allowDecimals;
 			SetValue(defaultValue);
 		}
-
+		[JsonConstructor]
 		public NumberGameSetting() { }
+
+		public NumberGameSetting(NumberSettingsConstants constants, NumberGameSetting settings) : base(constants, settings)
+		{
+			StepValue = constants.StepValue;
+			MinimumValue = constants.MinimumValue;
+			MaximumValue = constants.MaximumValue;
+			AllowDecimals = constants.AllowDecimals;
+
+			SetValue(settings.CurrentValue);
+
+		}
 	}
 }

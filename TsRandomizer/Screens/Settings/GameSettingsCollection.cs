@@ -8,8 +8,64 @@ using TsRandomizer.Screens.Settings.GameSettingObjects;
 
 namespace TsRandomizer.Screens.Settings
 {
+	public class SettingsConstants
+	{
+		public string Name;
+		public string Description;
+		public object DefaultValue;
+	}
+
+	public class NumberSettingsConstants : SettingsConstants
+	{
+		public double MinimumValue;
+		public double MaximumValue;
+		public double StepValue;
+		public bool AllowDecimals;
+	}
+
+	public class SpecificValueSettingsConstants : SettingsConstants
+	{
+		public List<string> AllowedValues;
+	}
+
 	public class GameSettingsCollection
 	{
+		private SettingsConstants DamageRandoConstants = new SettingsConstants
+		{
+			Name = "Damage Randomizer",
+			Description = "Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high",
+			DefaultValue = false
+		};
+
+		private SpecificValueSettingsConstants ShopFillConstants = new SpecificValueSettingsConstants
+		{
+			Name = "Shop Inventory",
+			Description = "Sets the items for sale in Merchant Crow's shops. Options: [Default,Random,Vanilla,Empty]",
+			DefaultValue = "Default",
+			AllowedValues = new List<string>
+			{
+				"Default", "Random", "Vanilla", "Empty"
+			}
+		};
+
+		private NumberSettingsConstants ShopMultiplierConstants = new NumberSettingsConstants
+		{
+			Name = "Shop Price Multiplier",
+			Description = "Multiplier for the cost of items in the shop. Set to 0 for free shops",
+			DefaultValue = 1,
+			StepValue = 0.5,
+			MinimumValue = 0,
+			MaximumValue = 10,
+			AllowDecimals = true
+		};
+
+		private SettingsConstants ShopWarpShardsConstants = new SettingsConstants
+		{
+			Name = "Always Sell Warp Shards",
+			Description = "Shops always sell warp shards (when keys possessed), ignoring inventory setting.",
+			DefaultValue = true
+		};
+
 		[JsonIgnore()]
 		public string Path { get; private set; }
 		public OnOffGameSetting DamageRando { get; set; }
@@ -37,11 +93,11 @@ namespace TsRandomizer.Screens.Settings
 				{
 					Console.WriteLine("No settings file found. Creating...");
 					Path = dir + "settings.json";
-					DamageRando = new OnOffGameSetting("Damage Randomizer", "Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false, false);
+					DamageRando = new OnOffGameSetting(DamageRandoConstants.Name, DamageRandoConstants.Description, false, false);
 					List<string> shopSettings = new List<string> { "Default", "Random", "Vanilla", "Empty" };
-					ShopFill = new SpecificValuesGameSetting("Shop Inventory", "Sets the items for sale in Merchant Crow's shops. Options: [Default,Random,Vanilla,Empty]", "Default", shopSettings, false);
-					ShopMultiplier = new NumberGameSetting("Shop Price Multiplier", "Multiplier for the cost of items in the shop. Set to 0 for free shops", 1, 0, 10, 1, true, true);
-					ShopWarpShards = new OnOffGameSetting("Always Sell Warp Shards", "Shops always sell warp shards (when keys possessed), ignoring fill setting.", true, true);
+					ShopFill = new SpecificValuesGameSetting(ShopFillConstants.Name, ShopFillConstants.Description, "Default", shopSettings, false);
+					ShopMultiplier = new NumberGameSetting(ShopMultiplierConstants.Name, ShopMultiplierConstants.Description, 1, 0, 10, 1, true, true);
+					ShopWarpShards = new OnOffGameSetting(ShopWarpShardsConstants.Name, ShopWarpShardsConstants.Description, true, true);
 					WriteSettings(); //write settings file with default values
 				}
 			}
@@ -59,10 +115,11 @@ namespace TsRandomizer.Screens.Settings
 				{
 					string settingsString = File.ReadAllText(Path);
 					var settings = JsonConvert.DeserializeObject<GameSettingsCollection>(settingsString);
-					DamageRando = settings.DamageRando;
-					ShopFill = settings.ShopFill;
-					ShopMultiplier = settings.ShopMultiplier;
-					ShopWarpShards = settings.ShopWarpShards;
+					DamageRando = new OnOffGameSetting(DamageRandoConstants, settings.DamageRando);
+					ShopFill = new SpecificValuesGameSetting(ShopFillConstants, settings.ShopFill);
+					ShopMultiplier = new NumberGameSetting(ShopMultiplierConstants, settings.ShopMultiplier);
+					ShopWarpShards = new OnOffGameSetting(ShopWarpShardsConstants, settings.ShopWarpShards);
+					WriteSettings(); // write to file to ensure any missing settings are added with defaults
 				}
 				else
 					Console.WriteLine("Settings file not found: " + Path);

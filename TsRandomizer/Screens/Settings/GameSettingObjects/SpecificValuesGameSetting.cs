@@ -6,7 +6,7 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 {
 	public class SpecificValuesGameSetting : GameSetting
 	{
-		public List<string> AllowedValues { get; }
+		public List<string> AllowedValues { get; private set; }
 
 		public override void SetValue(object input)
 		{
@@ -16,6 +16,10 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 				if (AllowedValues.Contains(value))
 				{
 					base.SetValue(input);
+				}
+				else
+				{
+					base.SetValue(DefaultValue);
 				}
 			}
 			catch
@@ -31,6 +35,13 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 			SetValue(defaultValue);
 		}
 
+		[JsonConstructor]
 		public SpecificValuesGameSetting() { }
+
+		public SpecificValuesGameSetting(SpecificValueSettingsConstants constants, SpecificValuesGameSetting settings) : base(constants, settings)
+		{
+			AllowedValues = constants.AllowedValues;
+			SetValue(settings.CurrentValue);
+		}
 	}
 }
