@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
@@ -16,21 +17,21 @@ namespace TsRandomizer.Screens
 		{
 			GameSettingsCollection gameSettings = new GameSettingsCollection();
 			gameSettings.LoadSettingsFromFile();
-			// Do not adjust prices for empty shops
-			if ((string)gameSettings.ShopFill.CurrentValue == "Empty")
-				return;
 			double shopMultiplier = (double)gameSettings.ShopMultiplier.CurrentValue;
-			var shopMenu = ((IList)Dynamic._subMenuCollections)[0].AsDynamic();
-			foreach (object shopMenuEntry in shopMenu._items)
+			foreach (int i in Enumerable.Range(0, ((IList)Dynamic._subMenuCollections).Count - 1))
 			{
-				int currentPrice = shopMenuEntry.AsDynamic().ShopPrice;
-				if (currentPrice == 0)
+				var shopMenu = ((IList)Dynamic._subMenuCollections)[i].AsDynamic();
+				foreach (object shopMenuEntry in shopMenu._items)
 				{
-					// Set a price for "priceless" items
-					shopMenuEntry.AsDynamic().ShopPrice = 2000;
-					currentPrice = shopMenuEntry.AsDynamic().ShopPrice;
+					int currentPrice = shopMenuEntry.AsDynamic().ShopPrice;
+					if (currentPrice == 0)
+					{
+						// Set a price for "priceless" items
+						shopMenuEntry.AsDynamic().ShopPrice = 2000;
+						currentPrice = shopMenuEntry.AsDynamic().ShopPrice;
+					}
+					shopMenuEntry.AsDynamic().ShopPrice = (int)(currentPrice * shopMultiplier);
 				}
-				shopMenuEntry.AsDynamic().ShopPrice = (int)(currentPrice * shopMultiplier);
 			}
 		}
 	}
