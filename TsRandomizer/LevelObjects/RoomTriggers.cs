@@ -178,7 +178,8 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 51, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (!seedOptions.GyreArchives) return;
-				if (level.GameSave.HasFamiliar(EInventoryFamiliarType.Kobo)) {
+				if (level.GameSave.HasFamiliar(EInventoryFamiliarType.Kobo))
+				{
 					SpawnGyreWarp(level, 200, 200); // Portrait room to Ifrit
 					return;
 				};
@@ -211,7 +212,7 @@ namespace TsRandomizer.LevelObjects
 				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Level14);
 				level.AsDynamic().SetLevelSaveInt("GyreDungeonSeed", seedOptions.Flags.GetHashCode()); // Warp to Ravenlord
 			}));
-			RoomTriggers.Add(new RoomTrigger(14, 23, (level, itemLocation, seedOptions, gameSettings,  screenManager) => {
+			RoomTriggers.Add(new RoomTrigger(14, 23, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				level.JukeBox.StopSong();
 				level.RequestChangeLevel(new LevelChangeRequest
 				{

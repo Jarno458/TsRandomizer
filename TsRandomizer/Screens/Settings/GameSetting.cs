@@ -8,9 +8,10 @@ namespace TsRandomizer.Screens.Settings
 		[JsonProperty]
 		public object CurrentValue { get; protected set; }
 		[JsonIgnore()]
-		public string Name { get; }
+		public string Name { get; set; }
 		[JsonIgnore()]
-		public string Description { get; }
+		public string Description { get; set; }
+		[JsonIgnore()]
 		public object DefaultValue { get; }
 		[JsonIgnore()]
 		public bool CanBeChangedInGame { get; set; }
@@ -22,6 +23,13 @@ namespace TsRandomizer.Screens.Settings
 			DefaultValue = defaultValue;
 			CanBeChangedInGame = canBeChangedInGame;
 			CurrentValue = DefaultValue;
+		}
+
+		public GameSetting(SettingsConstants constants, GameSetting setting)
+		{
+			DefaultValue = constants.DefaultValue;
+			Description = constants.Description;
+			Name = constants.Name;
 		}
 
 		public GameSetting() { }
