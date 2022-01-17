@@ -18,6 +18,9 @@ namespace TsRandomizer.Screens
 			GameSettingsCollection gameSettings = new GameSettingsCollection();
 			gameSettings.LoadSettingsFromFile();
 			double shopMultiplier = (double)gameSettings.ShopMultiplier.CurrentValue;
+			// Menu count varies on relics/items/equipment etc. being in inventory
+			// Last menu is always helper functions that don't have an _items
+			// but aren't otherwise distinguishable
 			foreach (int i in Enumerable.Range(0, ((IList)Dynamic._subMenuCollections).Count - 1))
 			{
 				var shopMenu = ((IList)Dynamic._subMenuCollections)[i].AsDynamic();
