@@ -28,7 +28,7 @@ namespace TsRandomizer.LevelObjects
 		}
 	}
 
-	abstract partial class LevelObject
+	abstract class LevelObject
 	{
 		protected static readonly List<LevelObject> Objects = new List<LevelObject>();
 
@@ -37,6 +37,7 @@ namespace TsRandomizer.LevelObjects
 		static readonly List<int> KnownItemIds = new List<int>();
 		
 		public readonly dynamic Dynamic;
+		public readonly Mobile TypedObject;
 
 		public Level Level => (Level)Dynamic?._level;
 		public dynamic LevelReflected => Level.AsDynamic();
@@ -87,6 +88,7 @@ namespace TsRandomizer.LevelObjects
 			if (typedObject == null)
 				return;
 
+			TypedObject = typedObject;
 			Dynamic = typedObject.AsDynamic();
 		}
 

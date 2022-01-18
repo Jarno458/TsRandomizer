@@ -1,7 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Timespinner.GameAbstractions;
+using Timespinner.GameAbstractions.Base;
 using Timespinner.GameAbstractions.GameObjects;
+using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
@@ -13,14 +19,18 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	// ReSharper disable once UnusedMember.Global
 	class DownloadEvent : ItemManipulator
 	{
+		static Type GlowTextureType = TimeSpinnerType.Get("Timespinner.GameObjects.Animations.GlowTexture");
+	
 		bool hasAwardedItem;
 
 		public DownloadEvent(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
 		{
-			if (ItemInfo == null || hasAwardedItem || ((List<Appendage>)Dynamic.Appendages).Any())
+			if (ItemInfo == null || IsPickedUp || hasAwardedItem || ((List<Appendage>)Dynamic.Appendages).Any())
 				return;
 
 			RebuildScreen();
+
+			Dynamic._doesPlayerHaveTablet = Level.GameSave.HasRelic(EInventoryRelicType.Tablet);
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
@@ -36,22 +46,39 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 		void RebuildScreen()
 		{
-			/*
-			this.ChangeAnimation(23);
-			this._sparkleParticles = new PassiveBuffSparkleParticleSystem(this._level.GCM.TxParticleEnergy, 10);
-			this._particleSystems.Add((ParticleSystem)this._sparkleParticles);
-			Appendage appendage = new Appendage((Animate)this, new Point(10, 17), Point.Zero, this._level, this._sprite);
-			appendage.FollowType = EAppendageFollowType.AnchorLocked;
-			appendage.AnchorOffset = new Point(0, -25);
-			appendage.DrawPriority = 1;
-			appendage.IsGlowing = true;
-			appendage.GlowBase = 3.5f;
-			appendage.GlowColor = new Color(0.8f, 0.85f, 0.9f, 0.6f);
-			this._screenAppendage = appendage;
-			this._screenAppendage.ChangeAnimation(24);
-			this.Appendages.Add(this._screenAppendage);
-			this._glowTexture = new GlowTexture(this._level)
-			*/
+			Dynamic.ChangeAnimation(23);
+
+			var particles = new PassiveBuffSparkleParticleSystem(Level.GCM.TxParticleEnergy, 10);
+
+			Dynamic._sparkleParticles = particles;
+			((List<ParticleSystem>)Dynamic._particleSystems).Add(particles);
+
+			var appendage = new Appendage((Animate)TypedObject, new Point(10, 17), Point.Zero, Level, Dynamic._sprite)
+			{
+				FollowType = EAppendageFollowType.AnchorLocked,
+				AnchorOffset = new Point(0, -25),
+				DrawPriority = 1,
+				IsGlowing = true,
+				GlowBase = 3.5f,
+			};
+			appendage.AsDynamic().GlowColor = new Color(0.8f, 0.85f, 0.9f, 0.6f);
+			appendage.ChangeAnimation(24);
+
+			Dynamic._screenAppendage = appendage;
+			((List<Appendage>)Dynamic._appendages).Add(appendage);
+
+			var glowTexture = GlowTextureType.CreateInstance(true, Level);
+			var dynamicGlowTexture = glowTexture.AsDynamic();
+			dynamicGlowTexture.GlowSpriteSheet = Dynamic._sprite;
+			dynamicGlowTexture.FrameIndex = 24;
+			dynamicGlowTexture.GlowCircleCount = 6;
+			dynamicGlowTexture.Center = new Point(TypedObject.Position.X, TypedObject.Position.Y - 36);
+			dynamicGlowTexture.GlowCircleWidth = 32;
+			dynamicGlowTexture.GlowCircleHeight = 32;
+
+			Dynamic._glowTexture = glowTexture;
+
+			Dynamic._isUsable = true;
 		}
 	}
 }
