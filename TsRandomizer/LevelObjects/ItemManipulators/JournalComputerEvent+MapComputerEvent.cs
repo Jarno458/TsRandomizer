@@ -19,7 +19,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	// ReSharper disable once UnusedMember.Global
 	class DownloadEvent : ItemManipulator
 	{
-		static Type GlowTextureType = TimeSpinnerType.Get("Timespinner.GameObjects.Animations.GlowTexture");
+		static readonly Type GlowTextureType = TimeSpinnerType.Get("Timespinner.GameObjects.Animations.GlowTexture");
 	
 		bool hasAwardedItem;
 
