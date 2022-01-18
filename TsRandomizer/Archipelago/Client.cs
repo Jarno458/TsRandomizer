@@ -115,6 +115,7 @@ namespace TsRandomizer.Archipelago
 			{
 				case RoomInfoPacket roomInfoPacket: OnRoomInfoPacketReceived(roomInfoPacket); break;
 				case PrintPacket printPacket: OnPrintPacketReceived(printPacket); break;
+				case ItemPrintJsonPacket printJsonPacket: OnItemPrintJsonPacketReceived(printJsonPacket); break;
 				case PrintJsonPacket printJsonPacket: OnPrintJsonPacketReceived(printJsonPacket); break;
 			}
 		}
@@ -147,7 +148,10 @@ namespace TsRandomizer.Archipelago
 			}
 		}
 
-		static void OnPrintJsonPacketReceived(PrintJsonPacket printJsonPacket)
+		static void OnItemPrintJsonPacketReceived(ItemPrintJsonPacket printJsonPacket) => 
+			OnPrintJsonPacketReceived(printJsonPacket, MessageIsAboutCurrentPlayer(printJsonPacket));
+
+		static void OnPrintJsonPacketReceived(PrintJsonPacket printJsonPacket, bool isAboutCurrentPlayer = false)
 		{
 			var parts = new List<Part>();
 
@@ -155,10 +159,10 @@ namespace TsRandomizer.Archipelago
 				parts.Add(new Part(GetMessage(messagePart), GetColor(messagePart)));
 
 			ScreenManager.Console.Add(parts.ToArray());
-			ScreenManager.Log.Add(MessageIsAboutCurrentPlayer(printJsonPacket), parts.ToArray());
+			ScreenManager.Log.Add(isAboutCurrentPlayer, parts.ToArray());
 		}
 
-		static bool MessageIsAboutCurrentPlayer(PrintJsonPacket printJsonPacket) =>
+		static bool MessageIsAboutCurrentPlayer(ItemPrintJsonPacket printJsonPacket) =>
 			printJsonPacket.ReceivingPlayer == slot || printJsonPacket.Data.Any(
 				p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId
 				     && int.TryParse(p.Text, out var playerId)
@@ -227,7 +231,17 @@ namespace TsRandomizer.Archipelago
 						: Color.Orange;
 				case JsonMessagePartType.ItemId:
 				case JsonMessagePartType.ItemName:
-					return Color.Crimson;
+					switch (messagePart.Flags)
+					{
+						case ItemFlags.Advancement:
+							return Color.Crimson * 6;
+						case ItemFlags.NeverExclude:
+							return Color.Crimson * 2.5f;
+						case ItemFlags.Trap:
+							return Color.Red;
+						default:
+							return Color.Crimson;
+					}
 				case JsonMessagePartType.LocationId:
 				case JsonMessagePartType.LocationName:
 					return Color.Aquamarine;
