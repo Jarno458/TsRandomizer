@@ -189,12 +189,14 @@ namespace TsRandomizer.Randomisation
 		{
 			var capacity = 166;
 
+			if (options.StartWithTalaria)
+				capacity += 1;
 			if (options.DownloadableItems)
 				capacity += 14;
 			if (options.GyreArchives)
 				capacity += 9;
 			if (options.Cantoran)
-				capacity++;
+				capacity += 1;
 			if (options.LoreChecks)
 				capacity += 22;
 
