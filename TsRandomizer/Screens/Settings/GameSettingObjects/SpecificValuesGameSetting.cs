@@ -14,13 +14,9 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 			{
 				string value = (string)input;
 				if (AllowedValues.Contains(value))
-				{
 					base.SetValue(input);
-				}
 				else
-				{
 					base.SetValue(DefaultValue);
-				}
 			}
 			catch
 			{
@@ -29,9 +25,11 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 
 		}
 
-		public SpecificValuesGameSetting(string name, string description, string defaultValue, List<string> allowedValues, bool canBeChangedInGame) : base(name, description, defaultValue, canBeChangedInGame)
+		public SpecificValuesGameSetting(string name, string description, string defaultValue, List<string> allowedValues, bool canBeChangedInGame) 
+			: base(name, description, defaultValue, canBeChangedInGame)
 		{
 			AllowedValues = allowedValues;
+
 			SetValue(defaultValue);
 		}
 
@@ -41,6 +39,7 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 		public SpecificValuesGameSetting(SpecificValueSettingsConstants constants, SpecificValuesGameSetting settings) : base(constants, settings)
 		{
 			AllowedValues = constants.AllowedValues;
+
 			SetValue(settings.CurrentValue);
 		}
 	}

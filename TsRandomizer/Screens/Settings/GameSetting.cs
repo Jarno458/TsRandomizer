@@ -4,16 +4,15 @@ namespace TsRandomizer.Screens.Settings
 {
 	public abstract class GameSetting
 	{
-
 		[JsonProperty]
 		public object CurrentValue { get; protected set; }
-		[JsonIgnore()]
+		[JsonIgnore]
 		public string Name { get; set; }
-		[JsonIgnore()]
+		[JsonIgnore]
 		public string Description { get; set; }
-		[JsonIgnore()]
+		[JsonIgnore]
 		public object DefaultValue { get; }
-		[JsonIgnore()]
+		[JsonIgnore]
 		public bool CanBeChangedInGame { get; set; }
 
 		public GameSetting(string name, string description, object defaultValue, bool canBeChangedInGame)
@@ -34,14 +33,8 @@ namespace TsRandomizer.Screens.Settings
 
 		public GameSetting() { }
 
-		public virtual void SetValue(object input)
-		{
-			CurrentValue = input;
-		}
+		public virtual void SetValue(object input) => CurrentValue = input;
 
-		public bool IsDefault()
-		{
-			return CurrentValue == DefaultValue;
-		}
+		public bool IsDefault() => CurrentValue == DefaultValue;
 	}
 }

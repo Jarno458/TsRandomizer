@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
@@ -36,10 +35,11 @@ namespace TsRandomizer.Screens.Settings
 		{
 			if (!IsUsedAsGameSettingsMenu)
 				return;
+
 			gcm = gameContentManager;
 
-			// Default order is Memories, Letters, Files, Quests, Bestiary, Feats
 			Dynamic._menuTitle = "Game Settings";
+
 			ResetMenu();
 		}
 
@@ -51,8 +51,11 @@ namespace TsRandomizer.Screens.Settings
 		public static GameScreen Create(ScreenManager screenManager, SeedOptionsCollection options)
 		{
 			void Noop() { }
+
 			GCM gcm = screenManager.AsDynamic().GCM;
+
 			gcm.LoadAllResources(screenManager.AsDynamic().GeneralContentManager, screenManager.GraphicsDevice);
+
 			return (GameScreen)Activator.CreateInstance(JournalMenuType, GetSave(options), gcm, (Action)Noop);
 		}
 
@@ -68,8 +71,10 @@ namespace TsRandomizer.Screens.Settings
 		object CreateDefaultsMenu(GameSetting[] settings)
 		{
 			var defaultsMenu = MenuEntry.Create("Defaults", OnDefaultsSelected(settings)).AsTimeSpinnerMenuEntry();
+
 			defaultsMenu.AsDynamic().Description = "Restore all values to their defaults";
 			defaultsMenu.AsDynamic().IsCenterAligned = false;
+
 			return defaultsMenu;
 		}
 
@@ -77,11 +82,11 @@ namespace TsRandomizer.Screens.Settings
 		{
 			void ResetDefaults()
 			{
-				foreach (GameSetting setting in settings)
-				{
+				foreach (var setting in settings) 
 					setting.SetValue(setting.DefaultValue);
-				}
+
 				gameSettings.WriteSettings();
+
 				ResetMenu();
 			}
 			return ResetDefaults;
@@ -91,28 +96,42 @@ namespace TsRandomizer.Screens.Settings
 		{
 			gameSettings = new GameSettingsCollection();
 			gameSettings.LoadSettingsFromFile();
-			settingCategories = new GameSettingCategoryInfo[]
+
+			settingCategories = new []
 			{
-				new GameSettingCategoryInfo {Name = "Stats",
+				new GameSettingCategoryInfo {
+					Name = "Stats",
 					Description = "Settings related to player stat scaling.",
-					Settings = new GameSetting[] { gameSettings.DamageRando } },
-				new GameSettingCategoryInfo {Name = "Loot",
+					Settings = new GameSetting[] { gameSettings.DamageRando }
+				},
+				new GameSettingCategoryInfo {
+					Name = "Loot",
 					Description = "Settings related to shop inventory and loot.",
-					Settings = new GameSetting[] { gameSettings.ShopMultiplier, gameSettings.ShopFill, gameSettings.ShopWarpShards } },
+					Settings = new GameSetting[] { gameSettings.ShopMultiplier, gameSettings.ShopFill, gameSettings.ShopWarpShards }
+				}
 			};
+
 			ClearAllSubmenus();
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
 
-			foreach (GameSettingCategoryInfo category in settingCategories)
+			foreach (var category in settingCategories)
 			{
 				var submenu = MenuEntry.Create(category.Name, CreateMenuForCategory(category));
+
 				submenu.AsDynamic().Description = category.Description;
 				submenu.AsDynamic().IsCenterAligned = false;
+
 				menuEntryList.Add(submenu.AsTimeSpinnerMenuEntry());
 			}
-			GameSetting[] allSettings = new GameSetting[] { gameSettings.DamageRando,
-				gameSettings.ShopFill, gameSettings.ShopMultiplier, gameSettings.ShopWarpShards };
+
+			var allSettings = new GameSetting[] { 
+				gameSettings.DamageRando,
+				gameSettings.ShopFill, 
+				gameSettings.ShopMultiplier, 
+				gameSettings.ShopWarpShards
+			};
+
 			menuEntryList.Add(CreateDefaultsMenu(allSettings));
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = menuEntryList;
@@ -122,12 +141,14 @@ namespace TsRandomizer.Screens.Settings
 		void ClearAllSubmenus()
 		{
 			var menuEntryList = new object[0].ToList(MenuEntryType);
+
 			((object)Dynamic._memoriesInventoryCollection).AsDynamic()._entries = menuEntryList;
 			((object)Dynamic._lettersInventoryCollection).AsDynamic()._entries = menuEntryList;
 			((object)Dynamic._filesInventoryCollection).AsDynamic()._entries = menuEntryList;
 			((object)Dynamic._questInventory).AsDynamic()._entries = menuEntryList;
 			((object)Dynamic._bestiaryInventory).AsDynamic()._entries = menuEntryList;
 			((object)Dynamic._featsInventory).AsDynamic()._entries = menuEntryList;
+
 			((object)Dynamic._primaryMenuCollection).AsDynamic().SetSelectedIndex(0);
 			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
 		}
@@ -138,13 +159,14 @@ namespace TsRandomizer.Screens.Settings
 			{
 				var collection = FetchCollection(category.Name);
 				var submenu = (IList)collection.AsDynamic()._entries;
-				foreach (GameSetting setting in category.Settings)
-				{
+
+				foreach (var setting in category.Settings) 
 					submenu.Add(CreateMenuForSetting(setting));
-				}
+
 				// Exclude submenu defaults for now, enable when they don't wipe the current view
 				// submenu.Add(CreateDefaultsMenu(category.Settings));
 				Dynamic.ChangeMenuCollection(collection, true);
+
 				((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
 			}
 			return CreateMenu;
@@ -168,13 +190,16 @@ namespace TsRandomizer.Screens.Settings
 			}
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
+
 			((object)collection).AsDynamic()._entries = menuEntryList;
+
 			return (object)collection;
 		}
 
 		object CreateMenuForSetting(GameSetting setting)
 		{
 			var menuEntry = MenuEntry.Create(setting.Name, CreateToggleForSetting(setting)).AsTimeSpinnerMenuEntry();
+
 			SetCurrentSettingText(menuEntry, setting);
 
 			return menuEntry;
@@ -184,35 +209,46 @@ namespace TsRandomizer.Screens.Settings
 		{
 			void ToggleSetting()
 			{
-				if (setting is OnOffGameSetting)
+				switch (setting)
 				{
-					setting.SetValue(!(bool)setting.CurrentValue);
+					case OnOffGameSetting _:
+						setting.SetValue(!(bool)setting.CurrentValue);
+						break;
+					case StringGameSetting _:
+						// Future phase this should allow SDL input
+						setting.SetValue(setting.CurrentValue);
+						break;
+					case NumberGameSetting gameSetting:
+					{
+						var value = (double)gameSetting.CurrentValue;
+						var numberSetting = gameSetting;
+						var stepValue = numberSetting.StepValue;
+
+						value = value + stepValue <= numberSetting.MaximumValue ? value + stepValue : numberSetting.MinimumValue;
+
+						setting.SetValue(value);
+
+						break;
+					}
+					case SpecificValuesGameSetting gameSetting:
+					{
+						var enumSetting = gameSetting;
+						var currentValue = enumSetting.AllowedValues.IndexOf((string)enumSetting.CurrentValue);
+						var value = currentValue + 1 >= enumSetting.AllowedValues.Count ? 0 : currentValue + 1;
+
+						gameSetting.SetValue(enumSetting.AllowedValues[value]);
+						break;
+					}
+					default:
+						return;
 				}
-				else if (setting is StringGameSetting)
-				{
-					// Future phase this should allow SDL input
-					setting.SetValue(setting.CurrentValue);
-				}
-				else if (setting is NumberGameSetting)
-				{
-					var value = (double)setting.CurrentValue;
-					NumberGameSetting numberSetting = (NumberGameSetting)setting;
-					double stepValue = numberSetting.StepValue;
-					value = value + stepValue <= numberSetting.MaximumValue ? value + stepValue : numberSetting.MinimumValue;
-					setting.SetValue(value);
-				}
-				else if (setting is SpecificValuesGameSetting)
-				{
-					SpecificValuesGameSetting enumSetting = (SpecificValuesGameSetting)setting;
-					var currentValue = enumSetting.AllowedValues.IndexOf((string)enumSetting.CurrentValue);
-					var value = currentValue + 1 >= enumSetting.AllowedValues.Count ? 0 : currentValue + 1;
-					setting.SetValue(enumSetting.AllowedValues[value]);
-				}
-				else
-					return;
+
 				gameSettings.WriteSettings();
+
 				var selectedMenu = ((object)Dynamic._selectedMenuCollection).AsDynamic();
+
 				object menuEntry = ((IList)selectedMenu.Entries)[selectedMenu.SelectedIndex];
+
 				SetCurrentSettingText(menuEntry, setting);
 			}
 			return ToggleSetting;
@@ -221,7 +257,13 @@ namespace TsRandomizer.Screens.Settings
 		void SetCurrentSettingText(object menuEntry, GameSetting setting)
 		{
 			menuEntry.AsDynamic().IsCenterAligned = false;
-			var currentValue = !(setting is OnOffGameSetting) ? setting.CurrentValue : (bool)setting.CurrentValue ? "On" : "Off";
+
+			var currentValue = !(setting is OnOffGameSetting) 
+				? setting.CurrentValue 
+				: (bool)setting.CurrentValue 
+					? "On" 
+					: "Off";
+
 			menuEntry.AsDynamic().Text = $"{setting.Name} - {currentValue}";
 			menuEntry.AsDynamic().Description = setting.Description;
 		}
