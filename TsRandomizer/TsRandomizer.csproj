@@ -88,10 +88,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TestVersions\DRMFreeVersion\Timespinner.exe</HintPath>
-      <Private>False</Private>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Timespinner">
+      <HintPath>..\..\Timespinner\Timespinner.exe</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
       <HintPath>..\lib\websocket-sharp.dll</HintPath>
@@ -191,6 +190,7 @@
     <Compile Include="Screens\MinimapScreen.cs" />
     <Compile Include="Screens\CreditsScreen.cs" />
     <Compile Include="Screens\FamiliarMenuScreen.cs" />
+    <Compile Include="Screens\ShopMenuScreen.cs" />
     <Compile Include="Screens\OrbShopMenuScreen.cs" />
     <Compile Include="Screens\OrbMenuScreen.cs" />
     <Compile Include="Randomisation\Randomizer.cs" />
@@ -217,8 +217,16 @@
     <Compile Include="Screens\SeedSelection\SeedOptionInfo.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsCollection.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsMenuScreen.cs" />
+    <Compile Include="Screens\Settings\GameSettingsScreen.cs" />
+    <Compile Include="Screens\Settings\GameSettingObjects\NumberGameSetting.cs" />
+    <Compile Include="Screens\Settings\GameSettingObjects\OnOffGameSetting.cs" />
+    <Compile Include="Screens\Settings\GameSettingObjects\SpecificValuesGameSetting.cs" />
+    <Compile Include="Screens\Settings\GameSettingObjects\StringGameSetting.cs" />
+    <Compile Include="Screens\Settings\GameSettingCategoryInfo.cs" />
     <Compile Include="Seed.cs" />
     <Compile Include="SeedOptions.cs" />
+    <Compile Include="Screens\Settings\GameSettingsCollection.cs" />
+    <Compile Include="Screens\Settings\GameSetting.cs" />
     <Compile Include="TimeSpinnerGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -242,5 +250,6 @@
   <ItemGroup>
     <None Include=".editorconfig" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

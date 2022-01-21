@@ -11,6 +11,7 @@ using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens.Menu;
+using TsRandomizer.Screens.Settings;
 using SDL2;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
@@ -66,7 +67,9 @@ namespace TsRandomizer.Screens.SeedSelection
 				okButton,
 				MenuEntry.Create("", () => { }, false),
 				MenuEntry.Create("New", OnGenerateSelected),
-				MenuEntry.Create("Options", OnOptionsSelected)
+				MenuEntry.Create("Flags", OnOptionsSelected),
+				MenuEntry.Create("", () => { }, false),
+				MenuEntry.Create("Settings", OnSettingsSelected)
 			);
 		}
 
@@ -154,13 +157,13 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			if (!Seed.TryParse(hexString, out var seed))
 			{
-				ShowErrorDescription("Invalid seed id, its not a valid hexidecimal value");
+				ShowErrorDescription("Invalid seed id, it is not a valid hexidecimal value.");
 				return;
 			}
 
 			if (!forceSeed && !Randomizer.IsBeatable(seed, FillingMethod.Random))
 			{
-				ShowErrorDescription("Invalid seed id, it cannot be beated");
+				ShowErrorDescription("Invalid seed id, it cannot be beaten.");
 				return;
 			}
 
@@ -177,6 +180,13 @@ namespace TsRandomizer.Screens.SeedSelection
 			var seedOptionsMenu = SeedOptionsMenuScreen.Create(ScreenManager, GetCurrentOptions());
 
 			ScreenManager.AddScreen(seedOptionsMenu, playerIndex);
+		}
+
+		void OnSettingsSelected(PlayerIndex playerIndex)
+		{
+			var gameSettingsMenu = GameSettingsScreen.Create(ScreenManager, GetCurrentOptions());
+
+			ScreenManager.AddScreen(gameSettingsMenu, playerIndex);
 		}
 
 		internal void OnSeedOptionsUpdated(SeedOptionsCollection options)

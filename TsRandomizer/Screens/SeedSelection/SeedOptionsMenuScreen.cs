@@ -77,7 +77,6 @@ namespace TsRandomizer.Screens.SeedSelection
 		{
 			return (SeedOptionsCollection)((object)Dynamic._relicInventory).AsDynamic()._collection;
 		}
-
 		static void UpdateMenuItems(object menuRelicInventory)
 		{
 			var relicInventory = menuRelicInventory.AsDynamic();

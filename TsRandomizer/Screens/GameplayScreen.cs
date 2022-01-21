@@ -17,6 +17,7 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.ItemTracker;
 using TsRandomizer.LevelObjects;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Screens.Settings;
 
 namespace TsRandomizer.Screens
 {
@@ -33,6 +34,7 @@ namespace TsRandomizer.Screens
 
 		RoomSpecification currentRoom;
 		SeedOptions seedOptions;
+		GameSettingsCollection gameSettings;
 
 		Level Level => (Level)Dynamic._level;
 		dynamic LevelReflected => Level.AsDynamic();
@@ -55,12 +57,14 @@ namespace TsRandomizer.Screens
 			var seed = saveFile.GetSeed();
 			var fillingMethod = saveFile.GetFillingMethod();
 
-			if(!seed.HasValue)
+			if (!seed.HasValue)
 				seed = Seed.Zero;
 
 			Console.Out.WriteLine($"Seed: {seed}");
 
 			seedOptions = seed.Value.Options;
+			gameSettings = new GameSettingsCollection();
+			gameSettings.LoadSettingsFromFile();
 
 			try
 			{
@@ -79,7 +83,7 @@ namespace TsRandomizer.Screens
 			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed.Value);
 
 			ItemManipulator.Initialize(ItemLocations);
-			if(seed.Value.Options.DamageRando)
+			if ((bool)gameSettings.DamageRando.CurrentValue)
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave);
 
 			if (seedOptions.Archipelago)
@@ -104,7 +108,7 @@ namespace TsRandomizer.Screens
 
 			var titleBackgroundScreen = (GameScreen)TitleBackgroundScreenType.CreateInstance(false, true);
 
-			LoadingScreenLoadMethod.InvokeStatic(ScreenManager, false, new PlayerIndex?(), new [] { titleBackgroundScreen });
+			LoadingScreenLoadMethod.InvokeStatic(ScreenManager, false, new PlayerIndex?(), new[] { titleBackgroundScreen });
 
 			var messageBox = MessageBox.Create(ScreenManager, message);
 
@@ -116,7 +120,7 @@ namespace TsRandomizer.Screens
 			if (ItemLocations == null)
 				return;
 
-			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions, ScreenManager);
+			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions, gameSettings, ScreenManager);
 
 			FamiliarManager.Update(Level);
 

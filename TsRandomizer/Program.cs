@@ -3,6 +3,9 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using SDL2;
+using TsRandomizer.Extensions;
+using TsRandomizer.Screens.Settings;
+using TsRandomizer.Screens.Settings.GameSettingObjects;
 
 namespace TsRandomizer
 {
@@ -80,8 +83,7 @@ namespace TsRandomizer
 
 		static void StartTimeSpinner()
 		{
-			WithExceptionLogging(() =>
-			{
+			WithExceptionLogging(() => {
 				var platformHelper = IsSteam
 					? DummyPlatformHelper.CreateStreamInstance()
 					: DummyPlatformHelper.CreateDrmFreeInstance();

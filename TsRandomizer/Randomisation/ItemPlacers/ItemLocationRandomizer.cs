@@ -4,6 +4,7 @@ using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Screens.Settings;
 using R = TsRandomizer.Randomisation.Requirement;
 
 namespace TsRandomizer.Randomisation.ItemPlacers
@@ -12,6 +13,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 	{
 		protected readonly Seed Seed;
 		protected readonly SeedOptions SeedOptions;
+		protected readonly GameSettingsCollection GameSettings;
 		protected readonly ItemInfoProvider ItemInfoProvider;
 		protected readonly ItemUnlockingMap UnlockingMap;
 
@@ -25,6 +27,10 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			SeedOptions = seed.Options;
 			ItemInfoProvider = itemInfoProvider;
 			UnlockingMap = unlockingMap;
+			GameSettings = new GameSettingsCollection();
+			GameSettings.LoadSettingsFromFile();
+
+
 
 			itemsToRemoveFromGame = new List<ItemInfo>
 			{
@@ -35,11 +41,11 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.EssenceCrystal),
 			};
 
-			if(SeedOptions.StartWithJewelryBox)
+			if (SeedOptions.StartWithJewelryBox)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.JewelryBox));
-			if(SeedOptions.StartWithMeyef)
+			if (SeedOptions.StartWithMeyef)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryFamiliarType.Meyef));
-			if(SeedOptions.StartWithTalaria)
+			if (SeedOptions.StartWithTalaria)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));
 
 			itemsToAddToGame = new[]
@@ -74,7 +80,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.ChaosHeal),
 				ItemInfoProvider.Get(EInventoryUseItemType.Antidote),
 				ItemInfoProvider.Get(EInventoryUseItemType.SandBottle),
-				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle),
+				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle)
 			};
 		}
 
@@ -84,7 +90,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		{
 			if (SeedOptions.StartWithTalaria || SeedOptions.Inverted)
 				GiveOrbsToMom(random, itemLocations, false);
-			else 
+			else
 				PlaceStarterProgressionItem(random, itemLocations);
 		}
 
@@ -138,7 +144,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		static bool ShouldGiveLightwall(Random random, ItemInfo starterProgressionItem)
 		{
 			return (starterProgressionItem.Identifier == new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Spell))
-			       && random.Next(1, 5) == 1;
+				   && random.Next(1, 5) == 1;
 		}
 
 		protected void GiveOrbsToMom(Random random, ItemLocationMap itemLocations, bool useLightwallAsSpell)
@@ -159,7 +165,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceGassMaskInALegalSpot(Random random, ItemLocationMap itemLocations)
 		{
-			var levelIdsToAvoid = new List<int>(3){ 1 };
+			var levelIdsToAvoid = new List<int>(3) { 1 };
 			R minimalMawRequirements = R.None;
 
 			if (!SeedOptions.Inverted)
@@ -175,7 +181,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 				levelIdsToAvoid.Add(2); //library
 
-				if(UnlockingMap.PyramidKeysUnlock != R.GateSealedCaves)
+				if (UnlockingMap.PyramidKeysUnlock != R.GateSealedCaves)
 					levelIdsToAvoid.Add(9); //xarion skelleton
 			}
 			else
@@ -185,9 +191,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			}
 
 			var gassMaskLocation = itemLocations
-				.Where(l => !l.IsUsed 
-				            && !levelIdsToAvoid.Contains(l.Key.LevelId) 
-				            && l.Gate.CanBeOpenedWith(minimalMawRequirements))
+				.Where(l => !l.IsUsed
+							&& !levelIdsToAvoid.Contains(l.Key.LevelId)
+							&& l.Gate.CanBeOpenedWith(minimalMawRequirements))
 				.SelectRandom(random);
 
 			PutItemAtLocation(ItemInfoProvider.Get(EInventoryRelicType.AirMask), gassMaskLocation);
@@ -228,7 +234,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 				foreach (var itemLocation in progressiveItemLocations)
 				{
-					if(roomkey == null)
+					if (roomkey == null)
 						roomkey = itemLocation.Key.ToRoomItemKey();
 					else if (roomkey == itemLocation.Key.ToRoomItemKey())
 						SwapItemWithOtherNonProgressionItemsNotInRoom(random, itemLocation, itemLocations);
@@ -262,8 +268,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.Where(l => l.DefaultItem != null)
 				.Select(l => l.DefaultItem)
 				.Where(i => i.Identifier.LootType != LootType.ConstOrb
-				            && i.Identifier.LootType != LootType.ConstFamiliar
-				            && !genericItems.Contains(i))
+							&& i.Identifier.LootType != LootType.ConstFamiliar
+							&& !genericItems.Contains(i))
 				.ToList();
 
 			AddOrbs(itemlist);
@@ -272,7 +278,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			itemlist = itemlist
 				.Where(i => !alreadyAssingedItems.Contains(i)
-				            && !itemsToRemoveFromGame.Contains(i))
+							&& !itemsToRemoveFromGame.Contains(i))
 				.ToList();
 			return itemlist;
 		}
