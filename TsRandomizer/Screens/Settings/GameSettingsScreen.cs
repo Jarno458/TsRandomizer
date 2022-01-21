@@ -70,7 +70,7 @@ namespace TsRandomizer.Screens.Settings
 
 		object CreateDefaultsMenu(GameSetting[] settings)
 		{
-			var defaultsMenu = MenuEntry.Create("Defaults", OnDefaultsSelected(settings)).AsTimeSpinnerMenuEntry();
+			var defaultsMenu = MenuEntry.Create("Defaults", () => OnDefaultsSelected(settings)).AsTimeSpinnerMenuEntry();
 
 			defaultsMenu.AsDynamic().Description = "Restore all values to their defaults";
 			defaultsMenu.AsDynamic().IsCenterAligned = false;
@@ -78,18 +78,14 @@ namespace TsRandomizer.Screens.Settings
 			return defaultsMenu;
 		}
 
-		Action OnDefaultsSelected(GameSetting[] settings)
+		void OnDefaultsSelected(GameSetting[] settings)
 		{
-			void ResetDefaults()
-			{
-				foreach (var setting in settings) 
-					setting.SetValue(setting.DefaultValue);
+			foreach (var setting in settings) 
+				setting.SetValue(setting.DefaultValue);
 
-				gameSettings.WriteSettings();
+			gameSettings.WriteSettings();
 
-				ResetMenu();
-			}
-			return ResetDefaults;
+			ResetMenu();
 		}
 
 		void ResetMenu()
@@ -117,7 +113,7 @@ namespace TsRandomizer.Screens.Settings
 
 			foreach (var category in settingCategories)
 			{
-				var submenu = MenuEntry.Create(category.Name, CreateMenuForCategory(category));
+				var submenu = MenuEntry.Create(category.Name, () => CreateMenuForCategory(category));
 
 				submenu.AsDynamic().Description = category.Description;
 				submenu.AsDynamic().IsCenterAligned = false;
@@ -153,28 +149,24 @@ namespace TsRandomizer.Screens.Settings
 			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
 		}
 
-		Action CreateMenuForCategory(GameSettingCategoryInfo category)
+		void CreateMenuForCategory(GameSettingCategoryInfo category)
 		{
-			void CreateMenu()
-			{
-				var collection = FetchCollection(category.Name);
-				var submenu = (IList)collection.AsDynamic()._entries;
+			var collection = FetchCollection(category.Name);
+			var submenu = (IList)collection.AsDynamic()._entries;
 
-				foreach (var setting in category.Settings) 
-					submenu.Add(CreateMenuForSetting(setting));
+			foreach (var setting in category.Settings) 
+				submenu.Add(CreateMenuForSetting(setting));
 
-				// Exclude submenu defaults for now, enable when they don't wipe the current view
-				// submenu.Add(CreateDefaultsMenu(category.Settings));
-				Dynamic.ChangeMenuCollection(collection, true);
+			// Exclude submenu defaults for now, enable when they don't wipe the current view
+			// submenu.Add(CreateDefaultsMenu(category.Settings));
+			Dynamic.ChangeMenuCollection(collection, true);
 
-				((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
-			}
-			return CreateMenu;
+			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
 		}
 
 		object FetchCollection(string submenu)
 		{
-			var collection = Dynamic._filesInventoryCollection;
+			dynamic collection;
 			// Multiple submenus can share the same inventory collection
 			// as the in-use collection is cleared before use.
 			switch (submenu)
@@ -198,60 +190,56 @@ namespace TsRandomizer.Screens.Settings
 
 		object CreateMenuForSetting(GameSetting setting)
 		{
-			var menuEntry = MenuEntry.Create(setting.Name, CreateToggleForSetting(setting)).AsTimeSpinnerMenuEntry();
+			var menuEntry = MenuEntry.Create(setting.Name, () => CreateToggleForSetting(setting)).AsTimeSpinnerMenuEntry();
 
 			SetCurrentSettingText(menuEntry, setting);
 
 			return menuEntry;
 		}
 
-		Action CreateToggleForSetting(GameSetting setting)
+		void CreateToggleForSetting(GameSetting setting)
 		{
-			void ToggleSetting()
+			switch (setting)
 			{
-				switch (setting)
+				case OnOffGameSetting _:
+					setting.SetValue(!(bool)setting.CurrentValue);
+					break;
+				case StringGameSetting _:
+					// Future phase this should allow SDL input
+					setting.SetValue(setting.CurrentValue);
+					break;
+				case NumberGameSetting gameSetting:
 				{
-					case OnOffGameSetting _:
-						setting.SetValue(!(bool)setting.CurrentValue);
-						break;
-					case StringGameSetting _:
-						// Future phase this should allow SDL input
-						setting.SetValue(setting.CurrentValue);
-						break;
-					case NumberGameSetting gameSetting:
-					{
-						var value = (double)gameSetting.CurrentValue;
-						var numberSetting = gameSetting;
-						var stepValue = numberSetting.StepValue;
+					var value = (double)gameSetting.CurrentValue;
+					var numberSetting = gameSetting;
+					var stepValue = numberSetting.StepValue;
 
-						value = value + stepValue <= numberSetting.MaximumValue ? value + stepValue : numberSetting.MinimumValue;
+					value = value + stepValue <= numberSetting.MaximumValue ? value + stepValue : numberSetting.MinimumValue;
 
-						setting.SetValue(value);
+					setting.SetValue(value);
 
-						break;
-					}
-					case SpecificValuesGameSetting gameSetting:
-					{
-						var enumSetting = gameSetting;
-						var currentValue = enumSetting.AllowedValues.IndexOf((string)enumSetting.CurrentValue);
-						var value = currentValue + 1 >= enumSetting.AllowedValues.Count ? 0 : currentValue + 1;
-
-						gameSetting.SetValue(enumSetting.AllowedValues[value]);
-						break;
-					}
-					default:
-						return;
+					break;
 				}
+				case SpecificValuesGameSetting gameSetting:
+				{
+					var enumSetting = gameSetting;
+					var currentValue = enumSetting.AllowedValues.IndexOf((string)enumSetting.CurrentValue);
+					var value = currentValue + 1 >= enumSetting.AllowedValues.Count ? 0 : currentValue + 1;
 
-				gameSettings.WriteSettings();
-
-				var selectedMenu = ((object)Dynamic._selectedMenuCollection).AsDynamic();
-
-				object menuEntry = ((IList)selectedMenu.Entries)[selectedMenu.SelectedIndex];
-
-				SetCurrentSettingText(menuEntry, setting);
+					gameSetting.SetValue(enumSetting.AllowedValues[value]);
+					break;
+				}
+				default:
+					return;
 			}
-			return ToggleSetting;
+
+			gameSettings.WriteSettings();
+
+			var selectedMenu = ((object)Dynamic._selectedMenuCollection).AsDynamic();
+
+			object menuEntry = ((IList)selectedMenu.Entries)[selectedMenu.SelectedIndex];
+
+			SetCurrentSettingText(menuEntry, setting);
 		}
 
 		void SetCurrentSettingText(object menuEntry, GameSetting setting)
