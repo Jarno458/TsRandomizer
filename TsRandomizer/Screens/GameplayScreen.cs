@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,7 +16,7 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.ItemTracker;
 using TsRandomizer.LevelObjects;
 using TsRandomizer.Randomisation;
-using TsRandomizer.Screens.Settings;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.Screens
 {
@@ -34,7 +33,7 @@ namespace TsRandomizer.Screens
 
 		RoomSpecification currentRoom;
 		SeedOptions seedOptions;
-		GameSettingsCollection gameSettings;
+		SettingCollection gameSettings;
 
 		Level Level => (Level)Dynamic._level;
 		dynamic LevelReflected => Level.AsDynamic();
@@ -63,8 +62,7 @@ namespace TsRandomizer.Screens
 			Console.Out.WriteLine($"Seed: {seed}");
 
 			seedOptions = seed.Value.Options;
-			gameSettings = new GameSettingsCollection();
-			gameSettings.LoadSettingsFromFile();
+			gameSettings = GameSettingsLoader.LoadSettingsFromFile();
 
 			try
 			{
@@ -83,7 +81,7 @@ namespace TsRandomizer.Screens
 			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed.Value);
 
 			ItemManipulator.Initialize(ItemLocations);
-			if ((bool)gameSettings.DamageRando.CurrentValue)
+			if (gameSettings.DamageRando.Value)
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave);
 
 			if (seedOptions.Archipelago)

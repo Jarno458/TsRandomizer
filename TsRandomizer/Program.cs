@@ -4,8 +4,6 @@ using System.Security.Cryptography;
 using System.Text;
 using SDL2;
 using TsRandomizer.Extensions;
-using TsRandomizer.Screens.Settings;
-using TsRandomizer.Screens.Settings.GameSettingObjects;
 
 namespace TsRandomizer
 {

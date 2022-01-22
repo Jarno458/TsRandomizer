@@ -14,13 +14,13 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.ReplacementObjects;
 using TsRandomizer.Screens;
-using TsRandomizer.Screens.Settings;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.LevelObjects
 {
 	abstract class LevelObject<T> : LevelObject where T : Mobile
 	{
-		public readonly T TypedObject;
+		public readonly new T TypedObject;
 
 		protected LevelObject(T typedObject) : base(typedObject)
 		{
@@ -104,7 +104,7 @@ namespace TsRandomizer.LevelObjects
 
 		public static void Update(
 			Level level, GameplayScreen gameplayScreen, ItemLocationMap itemLocations,
-			bool roomChanged, SeedOptions seedOptions, GameSettingsCollection gameSettings,
+			bool roomChanged, SeedOptions seedOptions, SettingCollection gameSettings,
 			ScreenManager screenManager)
 		{
 			if (roomChanged)
@@ -138,7 +138,7 @@ namespace TsRandomizer.LevelObjects
 			var lunais = level.MainHero;
 			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
 
-			if ((bool)gameSettings.DamageRando.CurrentValue)
+			if (gameSettings.DamageRando.Value)
 				OrbDamageManager.UpdateOrbDamage(level.GameSave, level.MainHero);
 
 			KnownItemIds.Clear();
@@ -151,7 +151,8 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.AddConcussion();
 		}
 
-		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, SeedOptions seedOptions, GameSettingsCollection gameSettings, ScreenManager screenManager)
+		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, SeedOptions seedOptions, 
+			SettingCollection gameSettings, ScreenManager screenManager)
 		{
 #if DEBUG
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.Dash));

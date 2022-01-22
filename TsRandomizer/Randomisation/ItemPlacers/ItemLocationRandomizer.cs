@@ -4,7 +4,7 @@ using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
-using TsRandomizer.Screens.Settings;
+using TsRandomizer.Settings;
 using R = TsRandomizer.Randomisation.Requirement;
 
 namespace TsRandomizer.Randomisation.ItemPlacers
@@ -13,7 +13,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 	{
 		protected readonly Seed Seed;
 		protected readonly SeedOptions SeedOptions;
-		protected readonly GameSettingsCollection GameSettings;
+		protected readonly SettingCollection settings;
 		protected readonly ItemInfoProvider ItemInfoProvider;
 		protected readonly ItemUnlockingMap UnlockingMap;
 
@@ -27,10 +27,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			SeedOptions = seed.Options;
 			ItemInfoProvider = itemInfoProvider;
 			UnlockingMap = unlockingMap;
-			GameSettings = new GameSettingsCollection();
-			GameSettings.LoadSettingsFromFile();
-
-
+			settings = GameSettingsLoader.LoadSettingsFromFile();
 
 			itemsToRemoveFromGame = new List<ItemInfo>
 			{
@@ -141,11 +138,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			PutItemAtLocation(starterProgressionItem, location);
 		}
 
-		static bool ShouldGiveLightwall(Random random, ItemInfo starterProgressionItem)
-		{
-			return (starterProgressionItem.Identifier == new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Spell))
-				   && random.Next(1, 5) == 1;
-		}
+		static bool ShouldGiveLightwall(Random random, ItemInfo starterProgressionItem) =>
+			(starterProgressionItem.Identifier == new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Spell))
+				&& random.Next(1, 5) == 1;
 
 		protected void GiveOrbsToMom(Random random, ItemLocationMap itemLocations, bool useLightwallAsSpell)
 		{
@@ -166,7 +161,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		protected void PlaceGassMaskInALegalSpot(Random random, ItemLocationMap itemLocations)
 		{
 			var levelIdsToAvoid = new List<int>(3) { 1 };
-			R minimalMawRequirements = R.None;
+			var minimalMawRequirements = R.None;
 
 			if (!SeedOptions.Inverted)
 			{
@@ -228,7 +223,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 					.Where(l => l.ItemInfo is ProgressiveItemInfo)
 					.GroupBy(l => l.ItemInfo);
 
-			foreach (IGrouping<ItemInfo, ItemLocation> progressiveItemLocations in progressiveItemLocationsPerType)
+			foreach (var progressiveItemLocations in progressiveItemLocationsPerType)
 			{
 				RoomItemKey roomkey = null;
 
@@ -283,10 +278,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			return itemlist;
 		}
 
-		void AddExtraItems(List<ItemInfo> itemlist)
-		{
-			itemlist.AddRange(itemsToAddToGame);
-		}
+		void AddExtraItems(List<ItemInfo> itemlist) => itemlist.AddRange(itemsToAddToGame);
 
 		void AddFamiliars(List<ItemInfo> itemlist)
 		{

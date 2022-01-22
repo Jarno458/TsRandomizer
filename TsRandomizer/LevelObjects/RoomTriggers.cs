@@ -15,7 +15,7 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Randomisation.ItemPlacers;
 using TsRandomizer.Screens;
-using TsRandomizer.Screens.Settings;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.LevelObjects
 {
@@ -293,16 +293,16 @@ namespace TsRandomizer.LevelObjects
 		}
 
 		readonly RoomItemKey key;
-		readonly Action<Level, ItemLocation, SeedOptions, GameSettingsCollection, ScreenManager> trigger;
+		readonly Action<Level, ItemLocation, SeedOptions, SettingCollection, ScreenManager> trigger;
 
-		public RoomTrigger(int levelId, int roomId, Action<Level, ItemLocation, SeedOptions, GameSettingsCollection, ScreenManager> triggerMethod)
+		public RoomTrigger(int levelId, int roomId, Action<Level, ItemLocation, SeedOptions, SettingCollection, ScreenManager> triggerMethod)
 		{
 			key = new RoomItemKey(levelId, roomId);
 			trigger = triggerMethod;
 		}
 
 		public static void OnChangeRoom(
-			Level level, SeedOptions seedOptions, GameSettingsCollection gameSettings, ItemLocationMap itemLocations, ScreenManager screenManager,
+			Level level, SeedOptions seedOptions, SettingCollection gameSettings, ItemLocationMap itemLocations, ScreenManager screenManager,
 			int levelId, int roomId)
 		{
 			var roomKey = new RoomItemKey(levelId, roomId);

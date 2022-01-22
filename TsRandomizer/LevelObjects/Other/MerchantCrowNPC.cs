@@ -3,15 +3,15 @@ using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
-using TsRandomizer.Screens.Settings;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.LevelObjects.Other
 {
 	[TimeSpinnerType("Timespinner.GameObjects.NPCs.MerchantCrowNPC")]
 	class MerchantCrowNpc : LevelObject
 	{
+		readonly MerchantInventory merchandiseInventory = new MerchantInventory();
 
-		MerchantInventory _merchandiseInventory = new MerchantInventory();
 		public MerchantCrowNpc(Mobile typedObject) : base(typedObject)
 		{
 
@@ -19,27 +19,26 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(SeedOptions options)
 		{
-			GameSettingsCollection gameSettings = new GameSettingsCollection();
-			gameSettings.LoadSettingsFromFile();
-			string fillType = (string)gameSettings.ShopFill.CurrentValue;
+			var gameSettings = GameSettingsLoader.LoadSettingsFromFile();
+			var fillType = gameSettings.ShopFill.Value;
 			if (fillType == "Vanilla")
 				return;
 
 			PlayerInventory inventory = Dynamic._level.GameSave.Inventory;
 
 			// Only sell warp shards if Pyramid Key is aquired (and allowed in settings)
-			if ((bool)gameSettings.ShopWarpShards.CurrentValue && inventory.RelicInventory.IsRelicActive(EInventoryRelicType.PyramidsKey))
-				_merchandiseInventory.AddItem(EInventoryUseItemType.WarpCard);
+			if (gameSettings.ShopWarpShards.Value && inventory.RelicInventory.IsRelicActive(EInventoryRelicType.PyramidsKey))
+				merchandiseInventory.AddItem(EInventoryUseItemType.WarpCard);
 
 			if (fillType == "Empty")
 			{
-				Dynamic._merchandiseInventory = _merchandiseInventory;
+				Dynamic._merchandiseInventory = merchandiseInventory;
 				return;
 			}
 			if (fillType == "Random")
 			{
-				Random random = new Random((int)options.Flags);
-				for (int i = 0; i < 8; i++)
+				var random = new Random((int)options.Flags);
+				for (var i = 0; i < 8; i++)
 				{
 					var item = Helper.GetAllLoot().SelectRandom(random);
 					// Give half of the items to each era. Needs to be done after the random advances
@@ -47,31 +46,31 @@ namespace TsRandomizer.LevelObjects.Other
 					if ((Dynamic._isInPresent && (i % 2 == 0) || !Dynamic._isInPresent && (i % 2 != 0)))
 						continue;
 					if (item.LootType == LootType.Equipment)
-						_merchandiseInventory.AddItem((EInventoryEquipmentType)item.ItemId);
+						merchandiseInventory.AddItem((EInventoryEquipmentType)item.ItemId);
 					else
-						_merchandiseInventory.AddItem((EInventoryUseItemType)item.ItemId);
+						merchandiseInventory.AddItem((EInventoryUseItemType)item.ItemId);
 				}
-				Dynamic._merchandiseInventory = _merchandiseInventory;
+				Dynamic._merchandiseInventory = merchandiseInventory;
 				return;
 			}
 
 			// Default case, streamlined inventory for randomizer players
 			if (Dynamic._isInPresent)
 			{
-				_merchandiseInventory.AddItem(EInventoryUseItemType.FuturePotion);
-				_merchandiseInventory.AddItem(EInventoryUseItemType.FutureEther);
+				merchandiseInventory.AddItem(EInventoryUseItemType.FuturePotion);
+				merchandiseInventory.AddItem(EInventoryUseItemType.FutureEther);
 			}
 			else
 			{
-				_merchandiseInventory.AddItem(EInventoryUseItemType.Potion);
-				_merchandiseInventory.AddItem(EInventoryUseItemType.Ether);
+				merchandiseInventory.AddItem(EInventoryUseItemType.Potion);
+				merchandiseInventory.AddItem(EInventoryUseItemType.Ether);
 			}
-			_merchandiseInventory.AddItem(EInventoryUseItemType.Biscuit);
-			_merchandiseInventory.AddItem(EInventoryUseItemType.Antidote);
-			_merchandiseInventory.AddItem(EInventoryUseItemType.SandBottle);
-			_merchandiseInventory.AddItem(EInventoryUseItemType.ChaosHeal);
+			merchandiseInventory.AddItem(EInventoryUseItemType.Biscuit);
+			merchandiseInventory.AddItem(EInventoryUseItemType.Antidote);
+			merchandiseInventory.AddItem(EInventoryUseItemType.SandBottle);
+			merchandiseInventory.AddItem(EInventoryUseItemType.ChaosHeal);
 
-			Dynamic._merchandiseInventory = _merchandiseInventory;
+			Dynamic._merchandiseInventory = merchandiseInventory;
 		}
 	}
 }

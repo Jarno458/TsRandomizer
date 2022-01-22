@@ -105,7 +105,7 @@ namespace TsRandomizer.ItemTracker
 
 		static void SetMemberForItem(ItemTrackerState trackerState, ItemIdentifier itemInfo)
 		{
-			if (!ItemToMemberMap.TryGetValue(itemInfo, out Expression<Func<ItemTrackerState, bool>> expression))
+			if (!ItemToMemberMap.TryGetValue(itemInfo, out var expression))
 				return;
 
 			var memberExpression = (MemberExpression)expression.Body;

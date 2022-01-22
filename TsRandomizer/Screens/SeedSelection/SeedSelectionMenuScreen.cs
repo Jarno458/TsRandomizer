@@ -11,8 +11,8 @@ using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens.Menu;
-using TsRandomizer.Screens.Settings;
 using SDL2;
+using TsRandomizer.Settings;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace TsRandomizer.Screens.SeedSelection

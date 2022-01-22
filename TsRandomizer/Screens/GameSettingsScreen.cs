@@ -8,10 +8,10 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens.Menu;
 using TsRandomizer.Screens.SeedSelection;
-using TsRandomizer.Screens.Settings.GameSettingObjects;
+using TsRandomizer.Settings;
+using TsRandomizer.Settings.GameSettingObjects;
 
-
-namespace TsRandomizer.Screens.Settings
+namespace TsRandomizer.Screens
 {
 	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.JournalMenuScreen")]
 	// ReSharper disable once UnusedMember.Global
@@ -25,8 +25,8 @@ namespace TsRandomizer.Screens.Settings
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.PauseMenu.JournalMenuScreen");
 
 		readonly SeedSelectionMenuScreen seedSelectionScreen;
-		GameSettingsCollection gameSettings;
-		GameSettingCategoryInfo[] settingCategories;
+
+		SettingCollection settings;
 
 		bool IsUsedAsGameSettingsMenu => seedSelectionScreen != null;
 		GCM gcm;
@@ -39,6 +39,8 @@ namespace TsRandomizer.Screens.Settings
 			gcm = gameContentManager;
 
 			Dynamic._menuTitle = "Game Settings";
+
+			settings = GameSettingsLoader.LoadSettingsFromFile();
 
 			ResetMenu();
 		}
@@ -68,9 +70,9 @@ namespace TsRandomizer.Screens.Settings
 			return save;
 		}
 
-		object CreateDefaultsMenu(GameSetting[] settings)
+		object CreateDefaultsMenu()
 		{
-			var defaultsMenu = MenuEntry.Create("Defaults", () => OnDefaultsSelected(settings)).AsTimeSpinnerMenuEntry();
+			var defaultsMenu = MenuEntry.Create("Defaults", OnDefaultsSelected).AsTimeSpinnerMenuEntry();
 
 			defaultsMenu.AsDynamic().Description = "Restore all values to their defaults";
 			defaultsMenu.AsDynamic().IsCenterAligned = false;
@@ -78,40 +80,22 @@ namespace TsRandomizer.Screens.Settings
 			return defaultsMenu;
 		}
 
-		void OnDefaultsSelected(GameSetting[] settings)
+		void OnDefaultsSelected()
 		{
-			foreach (var setting in settings) 
-				setting.SetValue(setting.DefaultValue);
+			settings = new SettingCollection();
 
-			gameSettings.WriteSettings();
+			GameSettingsLoader.WriteSettings(settings);
 
 			ResetMenu();
 		}
 
 		void ResetMenu()
 		{
-			gameSettings = new GameSettingsCollection();
-			gameSettings.LoadSettingsFromFile();
-
-			settingCategories = new []
-			{
-				new GameSettingCategoryInfo {
-					Name = "Stats",
-					Description = "Settings related to player stat scaling.",
-					Settings = new GameSetting[] { gameSettings.DamageRando }
-				},
-				new GameSettingCategoryInfo {
-					Name = "Loot",
-					Description = "Settings related to shop inventory and loot.",
-					Settings = new GameSetting[] { gameSettings.ShopMultiplier, gameSettings.ShopFill, gameSettings.ShopWarpShards }
-				}
-			};
-
 			ClearAllSubmenus();
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
 
-			foreach (var category in settingCategories)
+			foreach (var category in SettingCollection.Categories)
 			{
 				var submenu = MenuEntry.Create(category.Name, () => CreateMenuForCategory(category));
 
@@ -121,14 +105,7 @@ namespace TsRandomizer.Screens.Settings
 				menuEntryList.Add(submenu.AsTimeSpinnerMenuEntry());
 			}
 
-			var allSettings = new GameSetting[] { 
-				gameSettings.DamageRando,
-				gameSettings.ShopFill, 
-				gameSettings.ShopMultiplier, 
-				gameSettings.ShopWarpShards
-			};
-
-			menuEntryList.Add(CreateDefaultsMenu(allSettings));
+			menuEntryList.Add(CreateDefaultsMenu());
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = menuEntryList;
 			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
@@ -154,8 +131,8 @@ namespace TsRandomizer.Screens.Settings
 			var collection = FetchCollection(category.Name);
 			var submenu = (IList)collection.AsDynamic()._entries;
 
-			foreach (var setting in category.Settings) 
-				submenu.Add(CreateMenuForSetting(setting));
+			foreach (var settingFunc in category.SettingsPerCategory)
+				submenu.Add(CreateMenuForSetting(settingFunc(settings)));
 
 			// Exclude submenu defaults for now, enable when they don't wipe the current view
 			// submenu.Add(CreateDefaultsMenu(category.Settings));
@@ -190,14 +167,14 @@ namespace TsRandomizer.Screens.Settings
 
 		object CreateMenuForSetting(GameSetting setting)
 		{
-			var menuEntry = MenuEntry.Create(setting.Name, () => CreateToggleForSetting(setting)).AsTimeSpinnerMenuEntry();
+			var menuEntry = MenuEntry.Create(setting.Name, () => ToggleSetting(setting)).AsTimeSpinnerMenuEntry();
 
 			SetCurrentSettingText(menuEntry, setting);
 
 			return menuEntry;
 		}
 
-		void CreateToggleForSetting(GameSetting setting)
+		void ToggleSetting(GameSetting setting)
 		{
 			switch (setting)
 			{
@@ -233,7 +210,7 @@ namespace TsRandomizer.Screens.Settings
 					return;
 			}
 
-			gameSettings.WriteSettings();
+			GameSettingsLoader.WriteSettings(settings);
 
 			var selectedMenu = ((object)Dynamic._selectedMenuCollection).AsDynamic();
 

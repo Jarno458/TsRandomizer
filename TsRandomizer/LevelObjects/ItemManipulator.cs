@@ -9,7 +9,7 @@ namespace TsRandomizer.LevelObjects
 {
 	abstract class ItemManipulator<T> : ItemManipulator where T : Mobile
 	{
-		public readonly T TypedObject;
+		public readonly new T TypedObject;
 
 		protected ItemManipulator(T typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
 		{

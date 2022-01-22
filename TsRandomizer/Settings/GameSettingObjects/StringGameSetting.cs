@@ -1,9 +1,10 @@
 ﻿
-namespace TsRandomizer.Screens.Settings.GameSettingObjects
+namespace TsRandomizer.Settings.GameSettingObjects
 {
-	public class StringGameSetting : GameSetting
+	public class StringGameSetting : GameSetting<string>
 	{
 		public int MaxLength { get; }
+
 		public override void SetValue(dynamic input)
 		{
 			if (input is string)
@@ -16,12 +17,14 @@ namespace TsRandomizer.Screens.Settings.GameSettingObjects
 				else
 				{
 					if (value.Length > MaxLength) value = value.Substring(0, MaxLength - 1);
+
 					base.SetValue(value);
 				}
 			}
 		}
 
-		public StringGameSetting(string name, string description, string defaultValue, int maxLength, bool canBeChangedInGame) : base(name, description, defaultValue, canBeChangedInGame)
+		public StringGameSetting(string category, string name, string description, string defaultValue, int maxLength, bool canBeChangedInGame) 
+			: base(category, name, description, defaultValue, canBeChangedInGame)
 		{
 			MaxLength = maxLength;
 
