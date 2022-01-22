@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using Timespinner.GameAbstractions.Saving;
 
 namespace TsRandomizer.Settings
 {
@@ -100,10 +99,13 @@ namespace TsRandomizer.Settings
 		{
 			try
 			{
-				return JsonConvert.DeserializeObject<SettingCollection>(json, new JsonSerializerSettings
+				var settings = new SettingCollection();
+				JsonConvert.PopulateObject(json, settings, new JsonSerializerSettings
 				{
 					ContractResolver = new JsonSettingsContractResolver()
 				});
+
+				return settings;
 			}
 			catch
 			{

@@ -4,7 +4,7 @@ namespace TsRandomizer.Settings.GameSettingObjects
 {
 	public abstract class GameSetting
 	{
-		public dynamic CurrentValue { get; protected set; }
+		public object CurrentValue { get; set; }
 
 		[JsonIgnore]
 		public string Category { get; }

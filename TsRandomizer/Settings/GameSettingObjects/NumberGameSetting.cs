@@ -2,7 +2,7 @@
 
 namespace TsRandomizer.Settings.GameSettingObjects
 {
-	public class NumberGameSetting : GameSetting<float>
+	public class NumberGameSetting : GameSetting<double>
 	{
 		[JsonIgnoreDeserialize]
 		public double MinimumValue { get; }
@@ -27,8 +27,8 @@ namespace TsRandomizer.Settings.GameSettingObjects
 			}
 		}
 
-		public NumberGameSetting(string category, string name, string description, float minValue, float maxValue, float stepValue,
-			float? defaultValue = null, bool canBeChangedInGame = false) 
+		public NumberGameSetting(string category, string name, string description, double minValue, double maxValue, double stepValue,
+			double? defaultValue = null, bool canBeChangedInGame = false) 
 			: base(category, name, description, defaultValue ?? minValue, canBeChangedInGame)
 		{
 			MinimumValue = minValue;
