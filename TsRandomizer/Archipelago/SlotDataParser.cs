@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.Archipelago
 {
@@ -17,10 +18,8 @@ namespace TsRandomizer.Archipelago
 			this.seedString = seedString;
 		}
 
-		public Requirement GetPyramidKeysGate()
-		{
-			return GetPyramidKeysGate((string)slotData["PyramidKeysGate"]);
-		}
+		public Requirement GetPyramidKeysGate() =>
+			 GetPyramidKeysGate((string)slotData["PyramidKeysGate"]);
 
 		public static Requirement GetPyramidKeysGate(string pyramidKeysGate)
 		{
@@ -47,9 +46,10 @@ namespace TsRandomizer.Archipelago
 			return new Seed(seedId, new SeedOptions(slotData));
 		}
 
-		public Dictionary<int, int> GetPersonalItems()
-		{
-			return ((JObject)slotData["PersonalItems"]).ToObject<Dictionary<int, int>>();
-		}
+		public SettingCollection GetSettings() =>
+			GameSettingsLoader.LoadSettingsFromSlotData(slotData);
+
+		public Dictionary<int, int> GetPersonalItems() => 
+			((JObject)slotData["PersonalItems"]).ToObject<Dictionary<int, int>>();
 	}
 }

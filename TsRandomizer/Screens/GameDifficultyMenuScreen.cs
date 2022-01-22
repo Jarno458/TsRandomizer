@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Input;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
-using TsRandomizer.Archipelago;
 using TsRandomizer.Commands;
 using TsRandomizer.Drawables;
 using TsRandomizer.Extensions;
@@ -16,6 +15,7 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens.Menu;
 using TsRandomizer.Screens.SeedSelection;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.Screens
 {
@@ -32,7 +32,8 @@ namespace TsRandomizer.Screens
 		readonly SeedRepresentation seedRepresentation;
 
 		Seed? seed;
-		FillingMethod fillingmethod;
+		FillingMethod fillingMethod;
+		SettingCollection settings;
 
 		Action<GameSave> onDifficultSelected;
 
@@ -81,7 +82,7 @@ namespace TsRandomizer.Screens
 				SetSelectedMenuItemByIndex(0);
 			else
 			{
-				SetSeedAndFillingMethod(ConnectCommand.Seed, FillingMethod.Archipelago);
+				SetSeedAndFillingMethod(ConnectCommand.Seed, FillingMethod.Archipelago, ConnectCommand.Settings);
 				HookOnDifficultySelected(ConnectCommand.OnDifficultySelectedHook);
 
 				ConnectCommand.IsWaitingForDifficulty = false;
@@ -168,15 +169,17 @@ namespace TsRandomizer.Screens
 		void AddSeedAndFillingMethodToSelectedSave(GameSave saveGame)
 		{
 			saveGame.SetSeed(seed.Value);
-			saveGame.SetFillingMethod(fillingmethod);
+			saveGame.SetFillingMethod(fillingMethod);
+			saveGame.SetSettings(settings);
 
 			saveGame.DataKeyStrings["TsRandomizerVersion"] = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		}
 
-		public void SetSeedAndFillingMethod(Seed selectedSeed, FillingMethod choosenFillingMethod)
+		public void SetSeedAndFillingMethod(Seed selectedSeed, FillingMethod choosenFillingMethod, SettingCollection selectedSettings)
 		{
 			seed = selectedSeed;
-			fillingmethod = choosenFillingMethod;
+			fillingMethod = choosenFillingMethod;
+			settings = selectedSettings;
 
 			seedRepresentation.SetSeed(selectedSeed);
 
@@ -185,10 +188,8 @@ namespace TsRandomizer.Screens
 			EnableAllMenuItems();
 		}
 
-		public void HookOnDifficultySelected(Action<GameSave> onDifficultSelectedHook)
-		{
+		public void HookOnDifficultySelected(Action<GameSave> onDifficultSelectedHook) => 
 			onDifficultSelected = onDifficultSelectedHook;
-		}
 
 		void EnableAllMenuItems()
 		{

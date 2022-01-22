@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
+using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -13,7 +14,7 @@ namespace TsRandomizer.Screens
 	{
 		public ShopMenuScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
-			var gameSettings = GameSettingsLoader.LoadSettingsFromFile();
+			var gameSettings = GameSettingsLoader.LoadSettingsSave((GameSave)Dynamic._saveFile);
 
 			// Menu count varies on relics/items/equipment etc. being in inventory
 			// Last menu is always helper functions that don't have an _items
@@ -21,7 +22,7 @@ namespace TsRandomizer.Screens
 			foreach (var i in Enumerable.Range(0, ((IList)Dynamic._subMenuCollections).Count - 1))
 			{
 				var shopMenu = ((IList)Dynamic._subMenuCollections)[i].AsDynamic();
-				foreach (object shopMenuEntry in shopMenu._items)
+				foreach (var shopMenuEntry in shopMenu._items)
 				{
 					int currentPrice = shopMenuEntry.AsDynamic().ShopPrice;
 					if (currentPrice == 0)

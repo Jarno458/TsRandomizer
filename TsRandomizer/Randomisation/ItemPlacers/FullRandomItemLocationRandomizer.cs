@@ -61,9 +61,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				FillRemainingChests(random, itemLocations);
 		}
 
-		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation)
-		{
-			itemLocation.SetItem(itemInfo);
-		}
+		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation) => itemLocation.SetItem(itemInfo);
 	}
 }

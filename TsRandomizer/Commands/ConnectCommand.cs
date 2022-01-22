@@ -9,6 +9,7 @@ using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation.ItemPlacers;
 using TsRandomizer.Screens;
+using TsRandomizer.Settings;
 using ScreenManager = TsRandomizer.Screens.ScreenManager;
 
 namespace TsRandomizer.Commands
@@ -26,6 +27,7 @@ namespace TsRandomizer.Commands
 
 		public static bool IsWaitingForDifficulty;
 		public static Seed Seed;
+		public static SettingCollection Settings;
 		public static Action<GameSave> OnDifficultySelectedHook;
 
 		public ConnectCommand(ScreenManager screenManager)
@@ -96,6 +98,7 @@ namespace TsRandomizer.Commands
 
 			IsWaitingForDifficulty = true;
 			Seed = slotDataParser.GetSeed();
+			Settings = slotDataParser.GetSettings();
 			OnDifficultySelectedHook = saveGame => {
 				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = serverUri.ToString();
 				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = user;

@@ -5,6 +5,7 @@ using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.Extensions
 {
@@ -15,6 +16,7 @@ namespace TsRandomizer.Extensions
 		const string FillMethodSaveFileKey = "TsRandomizerFillMethod";
 		const string MeleeOrbPrefixKey = "TsRandomizerHasMeleeOrb";
 		const string FamiliarPrefixKey = "TsRandomizerHasFamiliar";
+		const string SaveFileSettingKey = "TSRandomizerGameSettings";
 
 		internal static Seed? GetSeed(this GameSave gameSave)
 		{
@@ -44,6 +46,19 @@ namespace TsRandomizer.Extensions
 
 		internal static void SetFillingMethod(this GameSave gameSave, FillingMethod fillingMethod) => 
 			gameSave.DataKeyStrings[FillMethodSaveFileKey] = fillingMethod.ToString();
+
+
+		internal static SettingCollection GetSettings(this GameSave gameSave)
+		{
+			var json = gameSave.GetSaveString(SaveFileSettingKey);
+
+			return string.IsNullOrEmpty(json)
+				? new SettingCollection()
+				: GameSettingsLoader.FromJson(json);
+		}
+
+		internal static void SetSettings(this GameSave gameSave, SettingCollection settings) =>
+			gameSave.SetValue(SaveFileSettingKey, GameSettingsLoader.ToJson(settings, false));
 
 		internal static bool HasMeleeOrb(this GameSave gameSave, EInventoryOrbType orbType) => 
 			gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int) orbType);

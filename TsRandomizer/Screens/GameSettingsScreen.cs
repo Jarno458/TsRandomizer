@@ -84,7 +84,7 @@ namespace TsRandomizer.Screens
 		{
 			settings = new SettingCollection();
 
-			GameSettingsLoader.WriteSettings(settings);
+			GameSettingsLoader.WriteSettingsToFile(settings);
 
 			ResetMenu();
 		}
@@ -210,7 +210,7 @@ namespace TsRandomizer.Screens
 					return;
 			}
 
-			GameSettingsLoader.WriteSettings(settings);
+			GameSettingsLoader.WriteSettingsToFile(settings);
 
 			var selectedMenu = ((object)Dynamic._selectedMenuCollection).AsDynamic();
 

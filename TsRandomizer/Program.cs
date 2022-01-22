@@ -3,7 +3,6 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using SDL2;
-using TsRandomizer.Extensions;
 
 namespace TsRandomizer
 {
@@ -18,7 +17,7 @@ namespace TsRandomizer
 		public static bool IsSteam;
 
 		[STAThread]
-		public static int Main(string[] args)
+		public static int Main()
 		{
 			var md5 = GetTimespinnerMd5Hash();
 

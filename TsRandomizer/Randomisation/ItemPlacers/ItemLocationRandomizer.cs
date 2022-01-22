@@ -4,7 +4,6 @@ using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
-using TsRandomizer.Settings;
 using R = TsRandomizer.Randomisation.Requirement;
 
 namespace TsRandomizer.Randomisation.ItemPlacers
@@ -13,7 +12,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 	{
 		protected readonly Seed Seed;
 		protected readonly SeedOptions SeedOptions;
-		protected readonly SettingCollection settings;
 		protected readonly ItemInfoProvider ItemInfoProvider;
 		protected readonly ItemUnlockingMap UnlockingMap;
 
@@ -27,7 +25,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			SeedOptions = seed.Options;
 			ItemInfoProvider = itemInfoProvider;
 			UnlockingMap = unlockingMap;
-			settings = GameSettingsLoader.LoadSettingsFromFile();
 
 			itemsToRemoveFromGame = new List<ItemInfo>
 			{

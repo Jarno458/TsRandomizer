@@ -167,7 +167,7 @@ namespace TsRandomizer.Screens.SeedSelection
 				return;
 			}
 
-			difficultyMenu.SetSeedAndFillingMethod(seed, FillingMethod.Random);
+			difficultyMenu.SetSeedAndFillingMethod(seed, FillingMethod.Random, GameSettingsLoader.LoadSettingsFromFile());
 
 			Dynamic.OnCancel(playerIndex);
 		}

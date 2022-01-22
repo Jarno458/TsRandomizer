@@ -49,5 +49,7 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		public GameSetting()
 		{
 		}
+
+		public virtual void SetValue(T input) => base.SetValue(input);
 	}
 }

@@ -62,7 +62,7 @@ namespace TsRandomizer.Screens
 			Console.Out.WriteLine($"Seed: {seed}");
 
 			seedOptions = seed.Value.Options;
-			gameSettings = GameSettingsLoader.LoadSettingsFromFile();
+			gameSettings = GameSettingsLoader.LoadSettingsSave(saveFile);
 
 			try
 			{
@@ -81,6 +81,7 @@ namespace TsRandomizer.Screens
 			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed.Value);
 
 			ItemManipulator.Initialize(ItemLocations);
+
 			if (gameSettings.DamageRando.Value)
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave);
 
