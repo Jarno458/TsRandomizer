@@ -28,13 +28,16 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		}
 
 		// ReSharper disable once PublicConstructorInAbstractClass
-		public GameSetting() { }
+		public GameSetting()
+		{
+		}
 
 		public virtual void SetValue(object input) => CurrentValue = input;
 	}
 
 	public abstract class GameSetting<T> : GameSetting
 	{
+		[JsonIgnore]
 		public T Value => (T)CurrentValue;
 
 		protected GameSetting(string category, string name, string description, T defaultValue, bool canBeChangedInGame)
@@ -43,6 +46,8 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		}
 
 		// ReSharper disable once PublicConstructorInAbstractClass
-		public GameSetting() { }
+		public GameSetting()
+		{
+		}
 	}
 }

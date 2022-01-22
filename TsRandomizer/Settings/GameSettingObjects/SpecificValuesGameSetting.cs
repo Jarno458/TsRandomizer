@@ -6,6 +6,7 @@ namespace TsRandomizer.Settings.GameSettingObjects
 {
 	public class SpecificValuesGameSetting : GameSetting<string>
 	{
+		[JsonIgnoreDeserialize]
 		public List<string> AllowedValues { get; }
 
 		public override void SetValue(object input)
@@ -35,6 +36,8 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		}
 
 		[JsonConstructor]
-		public SpecificValuesGameSetting() { }
+		public SpecificValuesGameSetting()
+		{
+		}
 	}
 }

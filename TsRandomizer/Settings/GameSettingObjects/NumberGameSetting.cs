@@ -4,7 +4,10 @@ namespace TsRandomizer.Settings.GameSettingObjects
 {
 	public class NumberGameSetting : GameSetting<float>
 	{
+		[JsonIgnoreDeserialize]
 		public double MinimumValue { get; }
+
+		[JsonIgnoreDeserialize]
 		public double MaximumValue { get; }
 
 		[JsonIgnore]

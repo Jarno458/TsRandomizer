@@ -227,6 +227,7 @@
     <Compile Include="SeedOptions.cs" />
     <Compile Include="Settings\GameSettingsLoader.cs" />
     <Compile Include="Settings\GameSettingObjects\GameSetting.cs" />
+    <Compile Include="Settings\JsonWriteOnly.cs" />
     <Compile Include="TimeSpinnerGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -53,7 +53,10 @@ namespace TsRandomizer.Settings
 				else 
 				{
 					var settingsString = File.ReadAllText(file);
-					settings = JsonConvert.DeserializeObject<SettingCollection>(settingsString);
+
+					settings = JsonConvert.DeserializeObject<SettingCollection>(settingsString, new JsonSerializerSettings {
+						ContractResolver = new JsonSettingsContractResolver()
+					});
 				}
 				
 				Console.WriteLine("Settings file not found: " + file);
