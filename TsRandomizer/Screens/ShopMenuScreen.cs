@@ -14,7 +14,7 @@ namespace TsRandomizer.Screens
 	{
 		public ShopMenuScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
-			var gameSettings = GameSettingsLoader.LoadSettingsSave((GameSave)Dynamic._saveFile);
+			var gameSettings = ((GameSave)Dynamic._saveFile).GetSettings();
 
 			// Menu count varies on relics/items/equipment etc. being in inventory
 			// Last menu is always helper functions that don't have an _items

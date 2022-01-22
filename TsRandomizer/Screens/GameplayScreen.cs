@@ -55,6 +55,7 @@ namespace TsRandomizer.Screens
 			var saveFile = (GameSave)Dynamic.SaveFile;
 			var seed = saveFile.GetSeed();
 			var fillingMethod = saveFile.GetFillingMethod();
+			var settings = saveFile.GetSettings();
 
 			if (!seed.HasValue)
 				seed = Seed.Zero;
@@ -62,7 +63,7 @@ namespace TsRandomizer.Screens
 			Console.Out.WriteLine($"Seed: {seed}");
 
 			seedOptions = seed.Value.Options;
-			gameSettings = GameSettingsLoader.LoadSettingsSave(saveFile);
+			gameSettings = settings;
 
 			try
 			{
