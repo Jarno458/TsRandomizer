@@ -37,18 +37,16 @@ namespace TsRandomizer.Screens
 
 		Action<GameSave> onDifficultSelected;
 
-		bool isArchipelago;
-
 		Action<GameSave.EGameDifficultyType> originalOnDifficultyChosenMethod;
 
 		public GameDifficultyMenuScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
 			UpdateHardModeDifficulties();
 
-			if (!ConnectCommand.IsWaitingForDifficulty)
-				DisableDefaultDifficultOptions();
+			if (ConnectCommand.IsWaitingForDifficulty)
+				fillingMethod = FillingMethod.Archipelago;
 			else
-				isArchipelago = true;
+				DisableDefaultDifficultOptions();
 
 			seedMenuEntry = GetSelectSeedMenu();
 			AddMenuEntryAtIndex(0, seedMenuEntry);
@@ -131,7 +129,7 @@ namespace TsRandomizer.Screens
 		void OpenSelectSeedMenu(PlayerIndex pi)
 		{
 			GameScreen screen;
-			if (isArchipelago)
+			if (fillingMethod == FillingMethod.Archipelago)
 				screen = ArchipelagoSelectionScreen.Create(ScreenManager);
 			else
 				screen = SeedSelectionMenuScreen.Create(ScreenManager);
@@ -221,11 +219,14 @@ namespace TsRandomizer.Screens
 				    || input.IsNewKeyPress(Keys.Left)
 				    || input.IsNewKeyPress(Keys.Right))
 				{
-					isArchipelago = !isArchipelago;
+					if (fillingMethod == FillingMethod.Archipelago)
+						fillingMethod = FillingMethod.Random;
+					else
+						fillingMethod = FillingMethod.Archipelago;
 				}
 			}
 
-			if (isArchipelago)
+			if (fillingMethod == FillingMethod.Archipelago)
 			{
 				seedMenuEntry.Text = "<< Archipelago >>";
 				seedMenuEntry.Description = "Connect to an Archipelago Multiworld server";
