@@ -57,7 +57,7 @@ namespace TsRandomizer.Screens.Menu
 			set => reflected.BaseDrawColor = value;
 		}
 
-		MenuEntry(object entry)
+		internal MenuEntry(object entry)
 		{
 			this.entry = entry;
 			reflected = entry.AsDynamic();
@@ -66,16 +66,12 @@ namespace TsRandomizer.Screens.Menu
 			IsCenterAligned = true;
 		}
 
-		public static MenuEntry Create(string text, Action handler, bool enabled = true)
-		{
-			return Create(text, (o, args) => handler(), enabled);
-		}
+		public static MenuEntry Create(string text, Action handler, bool enabled = true) 
+			=> Create(text, (o, args) => handler(), enabled);
 
-		public static MenuEntry Create(string text, Action<PlayerIndex> handler, bool enabled = true)
-		{
-			return Create(text, (o, args) => handler(args.AsDynamic().PlayerIndex), enabled);
-		}
-		
+		public static MenuEntry Create(string text, Action<PlayerIndex> handler, bool enabled = true) 
+			=> Create(text, (o, args) => handler(args.AsDynamic().PlayerIndex), enabled);
+
 		static MenuEntry Create(string text, Action<object, EventArgs> handler, bool enabled)
 		{
 			var handlerDelegate = 
@@ -91,9 +87,6 @@ namespace TsRandomizer.Screens.Menu
 			return new MenuEntry(entry);
 		}
 
-		public object AsTimeSpinnerMenuEntry()
-		{
-			return entry;
-		}
+		public object AsTimeSpinnerMenuEntry() => entry;
 	}
 }

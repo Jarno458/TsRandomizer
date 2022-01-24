@@ -33,8 +33,9 @@ namespace TsRandomizer.Screens
 
 		RoomSpecification currentRoom;
 		SeedOptions seedOptions;
-		SettingCollection gameSettings;
+		SettingCollection settings;
 
+		public GameSave Save => (GameSave)Dynamic.SaveFile;
 		Level Level => (Level)Dynamic._level;
 		dynamic LevelReflected => Level.AsDynamic();
 
@@ -52,7 +53,7 @@ namespace TsRandomizer.Screens
 		{
 			GameContentManager = gameContentManager;
 
-			var saveFile = (GameSave)Dynamic.SaveFile;
+			var saveFile = Save;
 			var seed = saveFile.GetSeed();
 			var fillingMethod = saveFile.GetFillingMethod();
 			var settings = saveFile.GetSettings();
@@ -63,7 +64,7 @@ namespace TsRandomizer.Screens
 			Console.Out.WriteLine($"Seed: {seed}");
 
 			seedOptions = seed.Value.Options;
-			gameSettings = settings;
+			this.settings = settings;
 
 			try
 			{
@@ -83,7 +84,7 @@ namespace TsRandomizer.Screens
 
 			ItemManipulator.Initialize(ItemLocations);
 
-			if (gameSettings.DamageRando.Value)
+			if (settings.DamageRando.Value)
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave);
 
 			if (seedOptions.Archipelago)
@@ -120,7 +121,7 @@ namespace TsRandomizer.Screens
 			if (ItemLocations == null)
 				return;
 
-			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions, gameSettings, ScreenManager);
+			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions, settings, ScreenManager);
 
 			FamiliarManager.Update(Level);
 
