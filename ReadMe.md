@@ -103,6 +103,5 @@ The item tracker features a few options:
 ##### Ideas that may never happen but I think will be fun when they are implemented:
 * Randomize quest items
 * Randomize enemies
-* Randomize shop(s)
 * Timesanity (entrance randomizer)
 * Make warpshard optionally a progression item that unlocks all softlocks
