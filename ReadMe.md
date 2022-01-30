@@ -93,13 +93,15 @@ The item tracker features a few options:
 ##### Things I plan on doing in the future
 * Archipelago TODO:
   * Change save game menu to make AP seeds more clear like adding player name & server (optionally)
-* Implement options Menu:
-	* Implement skin selection
+  * Add options to change on screen log
+  * Log Deathlinks
+  * Go full remote
+* Allow editing of opions ingame
+* Implement skin selection
 
 # Ideas
 ##### Ideas that may never happen but I think will be fun when they are implemented:
 * Randomize quest items
 * Randomize enemies
-* Randomize shop(s)
 * Timesanity (entrance randomizer)
 * Make warpshard optionally a progression item that unlocks all softlocks
