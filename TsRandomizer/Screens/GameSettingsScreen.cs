@@ -19,17 +19,17 @@ namespace TsRandomizer.Screens
 	{
 		static readonly Type MenuEntryType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.MenuEntry");
-		static readonly Type MenuEntryCollectionType =
-			TimeSpinnerType.Get("Timespinner.GameStateManagement.MenuEntryCollection");
 		static readonly Type JournalMenuType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.PauseMenu.JournalMenuScreen");
 
 		readonly SeedSelectionMenuScreen seedSelectionScreen;
+		readonly OptionsMenuScreen optionsMenuScreen;
 
 		GameSave save;
 		SettingCollection settings;
 
-		bool IsUsedAsGameSettingsMenu => seedSelectionScreen != null;
+		bool IsUsedAsGameSettingsMenu => seedSelectionScreen != null || optionsMenuScreen != null;
+		bool IsInGame => save != null;
 		GCM gcm;
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
@@ -43,7 +43,7 @@ namespace TsRandomizer.Screens
 
 			save = ScreenManager.FirstOrDefault<GameplayScreen>()?.Save;
 
-			settings = (save != null)
+			settings = IsInGame
 				? save.GetSettings()
 				: GameSettingsLoader.LoadSettingsFromFile();
 
@@ -53,9 +53,10 @@ namespace TsRandomizer.Screens
 		public GameSettingsScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
 		{
 			seedSelectionScreen = screenManager.FirstOrDefault<SeedSelectionMenuScreen>();
+			optionsMenuScreen = screenManager.FirstOrDefault<OptionsMenuScreen>();
 		}
 
-		public static GameScreen Create(ScreenManager screenManager, SeedOptionsCollection options)
+		public static GameScreen Create(ScreenManager screenManager)
 		{
 			void Noop() { }
 
@@ -63,16 +64,7 @@ namespace TsRandomizer.Screens
 
 			gcm.LoadAllResources(screenManager.AsDynamic().GeneralContentManager, screenManager.GraphicsDevice);
 
-			return (GameScreen)Activator.CreateInstance(JournalMenuType, GetSave(options), gcm, (Action)Noop);
-		}
-
-		static GameSave GetSave(SeedOptionsCollection options)
-		{
-			var save = GameSave.DemoSave;
-
-			save.Inventory.AsDynamic()._relicInventory = options;
-
-			return save;
+			return (GameScreen)Activator.CreateInstance(JournalMenuType, GameSave.DemoSave, gcm, (Action)Noop);
 		}
 
 		object CreateDefaultsMenu()
@@ -87,9 +79,29 @@ namespace TsRandomizer.Screens
 
 		void OnDefaultsSelected()
 		{
-			settings = new SettingCollection();
+			var defaultSettings = new SettingCollection();
 
-			GameSettingsLoader.WriteSettingsToFile(settings);
+			if (!IsInGame)
+			{
+				GameSettingsLoader.WriteSettingsToFile(defaultSettings);
+			}
+			else
+			{
+				foreach (var category in SettingCollection.Categories)
+				{
+					foreach (var settingsFunc in category.SettingsPerCategory)
+					{
+						var setting = settingsFunc(settings);
+
+						if(!setting.CanBeChangedInGame)
+							continue;
+
+						setting.SetValue(settingsFunc(defaultSettings).CurrentValue);
+					}
+				}
+
+				save.SetSettings(settings);
+			}
 
 			ResetMenu();
 		}
@@ -181,7 +193,7 @@ namespace TsRandomizer.Screens
 
 		void ToggleSetting(GameSetting setting)
 		{
-			if (!setting.CanBeChangedInGame && save != null)
+			if (!setting.CanBeChangedInGame && IsInGame)
 			{
 				Dynamic.PlayErrorSound();
 				return;
@@ -221,7 +233,7 @@ namespace TsRandomizer.Screens
 					return;
 			}
 
-			if (save != null) 
+			if (IsInGame)
 				save.SetSettings(settings);
 			else
 				GameSettingsLoader.WriteSettingsToFile(settings);
@@ -245,7 +257,7 @@ namespace TsRandomizer.Screens
 			menuEntry.Text = $"{setting.Name} - {currentValue}";
 			menuEntry.Description = setting.Description;
 
-			if (!setting.CanBeChangedInGame && save != null)
+			if (!setting.CanBeChangedInGame && IsInGame)
 				menuEntry.BaseDrawColor = MenuEntry.UnAvailableColor;
 		}
 	}

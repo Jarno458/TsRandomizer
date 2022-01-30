@@ -10,9 +10,9 @@ using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Screens
 {
-	//[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.OptionsMenuScreen")]
+	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.OptionsMenuScreen")]
 	// ReSharper disable once UnusedMember.Global
-	/*class OptionsMenuScreen : Screen
+	class OptionsMenuScreen : Screen
 	{
 		static readonly Type MainMenuEntryType = TimeSpinnerType.Get("Timespinner.GameStateManagement.MenuEntry");
 
@@ -38,7 +38,9 @@ namespace TsRandomizer.Screens
 
 		void OpenSettingsMenu(PlayerIndex playerIndex)
 		{
+			var gameSettingsMenu = GameSettingsScreen.Create(ScreenManager);
 
+			ScreenManager.AddScreen(gameSettingsMenu, playerIndex);
 		}
-	}*/
+	}
 }

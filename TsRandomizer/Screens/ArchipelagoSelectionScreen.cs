@@ -17,7 +17,7 @@ using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Screens
 {
-	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.OptionsMenuScreen")]
+	[TimeSpinnerType("Timespinner.GameStateManagement.Screens.PauseMenu.VideoMenuScreen")]
 	class ArchipelagoSelectionScreen : Screen
 	{
 		const string ServerPrefix = "Server: ";
@@ -29,7 +29,7 @@ namespace TsRandomizer.Screens
 		const int PasswordIndex = 2;
 
 		static readonly Type VideoMenuScreen = TimeSpinnerType
-			.Get("Timespinner.GameStateManagement.Screens.PauseMenu.OptionsMenuScreen");
+			.Get("Timespinner.GameStateManagement.Screens.PauseMenu.VideoMenuScreen");
 		static readonly Type MainMenuEntryType = TimeSpinnerType
 			.Get("Timespinner.GameStateManagement.MenuEntry");
 
