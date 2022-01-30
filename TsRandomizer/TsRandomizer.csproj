@@ -105,6 +105,7 @@
     <Compile Include="Commands\GiveOrbCommand.cs" />
     <Compile Include="Commands\GiveFamiliarCommand.cs" />
     <Compile Include="Commands\GiveRelicCommand.cs" />
+    <Compile Include="Commands\ScoutCommand.cs" />
     <Compile Include="Commands\TeleportCommand.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="DeRandomizer.cs" />
     <Compile Include="FamiliarManager.cs" />
     <Compile Include="Screens\ArchipelagoSelectionScreen.cs" />
+    <Compile Include="Screens\OptionsMenuScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\MessageBox.cs" />
