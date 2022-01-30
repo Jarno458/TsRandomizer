@@ -26,9 +26,9 @@ namespace TsRandomizer.Settings.GameSettingObjects
 
 		}
 
-		public SpecificValuesGameSetting(string category, string name, string description, List<string> allowedValues,
+		public SpecificValuesGameSetting(string name, string description, List<string> allowedValues,
 			string defaultValue = "Default", bool canBeChangedInGame = false) 
-				: base(category, name, description, defaultValue, canBeChangedInGame)
+				: base(name, description, defaultValue, canBeChangedInGame)
 		{
 			AllowedValues = allowedValues;
 

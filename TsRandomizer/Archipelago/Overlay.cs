@@ -9,10 +9,7 @@ namespace TsRandomizer.Archipelago
 	{
 		static readonly List<Overlay> Overlays = new List<Overlay>();	
 
-		protected static void Add(Overlay overlay)
-		{
-			Overlays.Add(overlay);
-		}
+		protected static void Add(Overlay overlay) => Overlays.Add(overlay);
 
 		public static void UpdateAll(GameTime gameTime, InputState input)
 		{

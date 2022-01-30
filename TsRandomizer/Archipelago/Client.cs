@@ -144,29 +144,43 @@ namespace TsRandomizer.Archipelago
 				ScreenManager.Console.Add(new Part(line));
 				
 				if(!ScreenManager.IsConsoleOpen)
-					ScreenManager.Log.Add(true, new Part(line));
+					ScreenManager.Log.AddSystemMessage(new Part(line));
 			}
 		}
 
 		static void OnItemPrintJsonPacketReceived(ItemPrintJsonPacket printJsonPacket) => 
-			OnPrintJsonPacketReceived(printJsonPacket, MessageIsAboutCurrentPlayer(printJsonPacket));
+			OnPrintJsonPacketReceived(printJsonPacket, ItemIsSendByMe(printJsonPacket), ItemIsReceivedByMe(printJsonPacket), printJsonPacket.Item.Flags);
 
-		static void OnPrintJsonPacketReceived(PrintJsonPacket printJsonPacket, bool isAboutCurrentPlayer = false)
+		static void OnPrintJsonPacketReceived(PrintJsonPacket printJsonPacket, 
+			bool isSendByMe = false, bool isReceivedByMe = false, ItemFlags itemFlags = ItemFlags.None)
 		{
-			var parts = new List<Part>();
+			var parts = printJsonPacket.Data
+				.Select(messagePart => new Part(GetMessage(messagePart), GetColor(messagePart)))
+				.ToArray();
 
-			foreach (var messagePart in printJsonPacket.Data)
-				parts.Add(new Part(GetMessage(messagePart), GetColor(messagePart)));
-
-			ScreenManager.Console.Add(parts.ToArray());
-			ScreenManager.Log.Add(isAboutCurrentPlayer, parts.ToArray());
+			ScreenManager.Console.Add(parts);
+			ScreenManager.Log.Add(isSendByMe, isReceivedByMe, itemFlags, parts);
 		}
 
-		static bool MessageIsAboutCurrentPlayer(ItemPrintJsonPacket printJsonPacket) =>
-			printJsonPacket.ReceivingPlayer == slot || printJsonPacket.Data.Any(
-				p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId
-				     && int.TryParse(p.Text, out var playerId)
-				     && playerId == slot);
+		static bool ItemIsSendByMe(ItemPrintJsonPacket printJsonPacket)
+		{
+			if (printJsonPacket.ReceivingPlayer == slot)
+				return true;
+
+			var sender = printJsonPacket.Data.First(p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId);
+
+			return int.TryParse(sender.Text, out var playerId) && playerId == slot;
+		}
+
+		static bool ItemIsReceivedByMe(ItemPrintJsonPacket printJsonPacket)
+		{
+			if (printJsonPacket.ReceivingPlayer == slot)
+				return true;
+
+			var receiver = printJsonPacket.Data.Last(p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId);
+
+			return int.TryParse(receiver.Text, out var playerId) && playerId == slot;
+		}
 
 		static string GetMessage(JsonMessagePart messagePart)
 		{

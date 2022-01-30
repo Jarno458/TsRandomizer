@@ -23,8 +23,8 @@ namespace TsRandomizer.Settings.GameSettingObjects
 			}
 		}
 
-		public StringGameSetting(string category, string name, string description, string defaultValue, int maxLength, bool canBeChangedInGame) 
-			: base(category, name, description, defaultValue, canBeChangedInGame)
+		public StringGameSetting(string name, string description, string defaultValue, int maxLength, bool canBeChangedInGame) 
+			: base(name, description, defaultValue, canBeChangedInGame)
 		{
 			MaxLength = maxLength;
 

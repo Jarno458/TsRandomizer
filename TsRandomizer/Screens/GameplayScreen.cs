@@ -58,6 +58,8 @@ namespace TsRandomizer.Screens
 			var fillingMethod = saveFile.GetFillingMethod();
 			var settings = saveFile.GetSettings();
 
+			ScreenManager.Log.SetSettings(settings);
+
 			if (!seed.HasValue)
 				seed = Seed.Zero;
 

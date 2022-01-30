@@ -84,6 +84,8 @@ namespace TsRandomizer.Screens
 			if (!IsInGame)
 			{
 				GameSettingsLoader.WriteSettingsToFile(defaultSettings);
+
+				settings = defaultSettings;
 			}
 			else
 			{

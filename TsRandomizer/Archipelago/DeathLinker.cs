@@ -21,11 +21,11 @@ namespace TsRandomizer.Archipelago
 			service.OnDeathLinkReceived += OnDeathLinkReceived;
 		}
 
-		void OnDeathLinkReceived(DeathLink deathlink)
+		void OnDeathLinkReceived(DeathLink deathLink)
 		{
-			if (lastDeathLink == null || deathlink.Timestamp - lastDeathLink.Timestamp > TimeSpan.FromSeconds(5))
+			if (lastDeathLink == null || deathLink.Timestamp - lastDeathLink.Timestamp > TimeSpan.FromSeconds(5))
 			{
-				lastDeathLink = deathlink;
+				lastDeathLink = deathLink;
 				rip = true;
 				lastState = EAFSM.Dying;
 			}
@@ -39,6 +39,11 @@ namespace TsRandomizer.Archipelago
 			if (rip)
 			{
 				rip = false;
+
+				ScreenManager.Console.AddLine( 
+					!string.IsNullOrEmpty(lastDeathLink.Cause)
+						? $"DeathLink received from {lastDeathLink.Source}, Reason: {lastDeathLink.Cause}"
+						: $"DeathLink received from {lastDeathLink.Source}");
 
 				var message = $"Your soul was linked across time to {lastDeathLink.Source} who has perished, and so have you!";
 

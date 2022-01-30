@@ -7,8 +7,6 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		public object CurrentValue { get; set; }
 
 		[JsonIgnore]
-		public string Category { get; }
-		[JsonIgnore]
 		public string Name { get; }
 		[JsonIgnore]
 		public string Description { get; }
@@ -17,9 +15,8 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		[JsonIgnore]
 		public bool CanBeChangedInGame { get; }
 
-		protected GameSetting(string category, string name, string description, object defaultValue, bool canBeChangedInGame)
+		protected GameSetting(string name, string description, object defaultValue, bool canBeChangedInGame)
 		{
-			Category = category;
 			Name = name;
 			Description = description;
 			DefaultValue = defaultValue;
@@ -40,8 +37,8 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		[JsonIgnore]
 		public T Value => (T)CurrentValue;
 
-		protected GameSetting(string category, string name, string description, T defaultValue, bool canBeChangedInGame)
-			: base(category, name, description, defaultValue, canBeChangedInGame)
+		protected GameSetting(string name, string description, T defaultValue, bool canBeChangedInGame)
+			: base(name, description, defaultValue, canBeChangedInGame)
 		{
 		}
 

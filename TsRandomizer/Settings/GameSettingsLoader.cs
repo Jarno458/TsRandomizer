@@ -67,7 +67,7 @@ namespace TsRandomizer.Settings
 		{
 			var settings = LoadSettingsFromFile();
 
-			if (slotData.TryGetValue("", out var value) && IsTrue(value))
+			if (slotData.TryGetValue("DamageRando", out var value) && IsTrue(value))
 				settings.DamageRando.SetValue(true);
 
 			return settings;

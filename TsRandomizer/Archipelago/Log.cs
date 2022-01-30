@@ -1,57 +1,107 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
+using TsRandomizer.Settings;
 using ScreenManager = TsRandomizer.Screens.ScreenManager;
 
 namespace TsRandomizer.Archipelago
 {
 	class Log : Overlay
 	{
-		const double FadeStartDelayInSeconds = 4;
-		const double FadeEndDelayInSeconds = 5;
+		static SettingCollection settings;
 
-		static readonly TimeSpan FadeStart = TimeSpan.FromSeconds(FadeStartDelayInSeconds);
-		static readonly TimeSpan FadeEnd = TimeSpan.FromSeconds(FadeEndDelayInSeconds);
-		static readonly TimeSpan FadeTime = FadeEnd - FadeStart;
+		TimeSpan fadeStart;
+		TimeSpan fadeEnd;
+		TimeSpan fadeTime;
 
-		readonly ScreenManager screenManager;
 		readonly GCM gcm;
 
 		readonly ConcurrentQueue<Message> lines = new ConcurrentQueue<Message>();
 		readonly ConcurrentQueue<Message> pendingImportantLines = new ConcurrentQueue<Message>();
 		readonly ConcurrentQueue<Message> pendingLines = new ConcurrentQueue<Message>();
 
-		public Log(ScreenManager screenManager, GCM gcm)
+		public Log(GCM gcm)
 		{
-			this.screenManager = screenManager;
 			this.gcm = gcm;
+
+			SetSettings(GameSettingsLoader.LoadSettingsFromFile());
 
 			Add(this);
 		}
 
-		public void Add(bool important, params Part[] parts)
+		public void SetSettings(SettingCollection settingsCollection)
 		{
-			if (important)
+			settings = settingsCollection;
+
+			fadeEnd = TimeSpan.FromSeconds(settingsCollection.OnScreenLogLineScreenTime.Value);
+			fadeStart = TimeSpan.FromSeconds(settingsCollection.OnScreenLogLineScreenTime.Value * 0.8);
+			fadeTime = fadeEnd - fadeStart;
+		}
+
+		public void AddSystemMessage(params Part[] parts)
+		{
+			if (!settings.ShowSystemMessages.Value)
+				return;
+
+			pendingImportantLines.Enqueue(new Message(parts));
+		}
+		
+		public void Add(bool isSendByMe, bool isReceivedByMe, ItemFlags itemFlags, params Part[] parts)
+		{
+			if (settings.NumberOfOnScreenLogLines.Value == 0)
+				return;
+
+			if (isSendByMe || isReceivedByMe)
+			{
+				if (isReceivedByMe && !settings.ShowReceivedItemsFromMe.Value)
+					return;
+				if (isSendByMe && !settings.ShowSendItemsFromMe.Value)
+					return;
+
 				pendingImportantLines.Enqueue(new Message(parts));
+			}
 			else
+			{
+				if (itemFlags.HasFlag(ItemFlags.Advancement) && !settings.ShowSendProgressionItems.Value)
+					return;
+				if (itemFlags.HasFlag(ItemFlags.NeverExclude) && !settings.ShowSendImportantItems.Value)
+					return;
+				if (itemFlags.HasFlag(ItemFlags.Trap) && !settings.ShowSendTrapItems.Value)
+					return;
+				if (!settings.ShowSendGenericItems.Value)
+					return;
+
 				pendingLines.Enqueue(new Message(parts));
+			}
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
-			while (lines.TryPeek(out var message) && message.OnScreenTime > FadeEnd)
+			while (lines.TryPeek(out var message) && message.OnScreenTime > fadeEnd)
 				lines.TryDequeue(out _);
 
-			CopyMessagesBetweenQueues(lines, pendingImportantLines);
-			CopyMessagesBetweenQueues(lines, pendingLines);
+			var maxLines = (int)settings.NumberOfOnScreenLogLines.Value;
+			if (maxLines == 0)
+			{
+				while (!pendingImportantLines.IsEmpty)
+					pendingImportantLines.TryDequeue(out _);
+				while (!pendingLines.IsEmpty)
+					pendingLines.TryDequeue(out _);
+			}
+			else
+			{
+				CopyMessagesBetweenQueues(pendingImportantLines, lines, maxLines);
+				CopyMessagesBetweenQueues(pendingLines, lines, maxLines);
+			}
 		}
 
 		static void CopyMessagesBetweenQueues(
-			ConcurrentQueue<Message> destination, ConcurrentQueue<Message> source, int maxDestinationCount = 6)
+			ConcurrentQueue<Message> source, ConcurrentQueue<Message> destination, int maxDestinationCount)
 		{
 			while (destination.Count < maxDestinationCount && source.Count >= 1)
 			{
@@ -78,8 +128,8 @@ namespace TsRandomizer.Archipelago
 
 					var point = new Point(screenSize.X, (int)(screenSize.Height - lineHeight/2 - lineHeight*i));
 
-					double fade = (message.OnScreenTime > FadeStart)
-						? 1 - ((message.OnScreenTime - FadeStart).Ticks / (double)FadeTime.Ticks)
+					var fade = (message.OnScreenTime > fadeStart)
+						? 1 - ((message.OnScreenTime - fadeStart).Ticks / (double)fadeTime.Ticks)
 						: 1;
 					
 					DrawBackdrop(spriteBatch, point, screenSize, (int)lineHeight, fade);

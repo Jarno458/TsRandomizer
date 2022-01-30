@@ -43,7 +43,7 @@ namespace TsRandomizer.Screens
 
 			Dynamic.GCM.LatinFont.DefaultCharacter = '?';
 
-			Log = new Log(this, Dynamic.GCM);
+			Log = new Log(Dynamic.GCM);
 			Console = new GameConsole(this, Dynamic.GCM);
 
 			Console.AddCommand(new ConnectCommand(this));

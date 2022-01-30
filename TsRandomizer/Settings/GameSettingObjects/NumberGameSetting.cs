@@ -27,15 +27,15 @@ namespace TsRandomizer.Settings.GameSettingObjects
 			}
 		}
 
-		public NumberGameSetting(string category, string name, string description, double minValue, double maxValue, double stepValue,
-			double? defaultValue = null, bool canBeChangedInGame = false) 
-			: base(category, name, description, defaultValue ?? minValue, canBeChangedInGame)
+		public NumberGameSetting(string name, string description, double minValue, double maxValue, double stepValue,
+			double defaultValue, bool canBeChangedInGame = false) 
+			: base(name, description, defaultValue, canBeChangedInGame)
 		{
 			MinimumValue = minValue;
 			MaximumValue = maxValue;
 			StepValue = stepValue;
 
-			SetValue(defaultValue ?? minValue);
+			SetValue(defaultValue);
 		}
 
 		[JsonConstructor]
