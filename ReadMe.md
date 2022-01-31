@@ -93,8 +93,7 @@ The item tracker features a few options:
 ##### Things I plan on doing in the future
 * Archipelago TODO:
   * Change save game menu to make AP seeds more clear like adding player name & server (optionally)
-  * Add options to change on screen log
-  * Log Deathlinks
+  * Get game locked settings from AP
   * Go full remote
 * Allow editing of opions ingame
 * Implement skin selection

@@ -42,23 +42,23 @@ namespace TsRandomizer.Settings
 		public NumberGameSetting OnScreenLogLineScreenTime = new NumberGameSetting("Log Line ScreenTime",
 			"How long does a single line shown at the bottom left of the screen stay visible", 1, 10, 0.5, 5);
 
-		public OnOffGameSetting ShowSendItemsFromMe = new OnOffGameSetting("Log Items send by you",
-			"Logs Generic items send between other players", false);
+		public OnOffGameSetting ShowSendItemsFromMe = new OnOffGameSetting("Log Items sent by you",
+			"Logs Generic items sent between other players", false);
 
 		public OnOffGameSetting ShowReceivedItemsFromMe = new OnOffGameSetting("Log Items received by you",
-			"Logs Generic items send between other players", false);
+			"Logs Generic items sent between other players", false);
 
 		public OnOffGameSetting ShowSendGenericItems = new OnOffGameSetting("Log Generic Items",
-			"Logs Generic items send between other players", false);
+			"Logs Generic items sent between other players", false);
 
 		public OnOffGameSetting ShowSendTrapItems = new OnOffGameSetting("Log Trap Items",
-			"Logs Traps send between other players", true);
+			"Logs Traps sent between other players", true);
 
-		public OnOffGameSetting ShowSendImportantItems = new OnOffGameSetting("Log Importent Items",
-			"Logs Importent items send between other players", false);
+		public OnOffGameSetting ShowSendImportantItems = new OnOffGameSetting("Log Important Items",
+			"Logs Important items sent between other players", false);
 
 		public OnOffGameSetting ShowSendProgressionItems = new OnOffGameSetting("Log Progression Items",
-			"Logs Progression items send between other players", true);
+			"Logs Progression items sent between other players", true);
 
 		public OnOffGameSetting ShowSystemMessages = new OnOffGameSetting("Log System Message",
 			"Logs System messages, like who connected/left and who changed tags", true);
