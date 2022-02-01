@@ -62,7 +62,7 @@ namespace TsRandomizer.Archipelago
 				session.Socket.PacketReceived += PackageReceived;
 
 				var result = session.TryConnectAndLogin("Timespinner", userName, new Version(0, 2, 4),
-					ItemsHandlingFlags.AllItems, new List<string>(0), ConnectionId, password);
+					ItemsHandlingFlags.IncludeStartingInventory, new List<string>(0), ConnectionId, password);
 
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;
