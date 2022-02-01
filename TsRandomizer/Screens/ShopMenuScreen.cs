@@ -24,14 +24,16 @@ namespace TsRandomizer.Screens
 				var shopMenu = ((IList)Dynamic._subMenuCollections)[i].AsDynamic();
 				foreach (var shopMenuEntry in shopMenu._items)
 				{
-					int currentPrice = shopMenuEntry.AsDynamic().ShopPrice;
+					var dynamicShopMenuEntry = ((object)shopMenuEntry).AsDynamic();
+
+					int currentPrice = dynamicShopMenuEntry.ShopPrice;
 					if (currentPrice == 0)
 					{
 						// Set a price for "priceless" items
-						shopMenuEntry.AsDynamic().ShopPrice = 2000;
-						currentPrice = shopMenuEntry.AsDynamic().ShopPrice;
+						dynamicShopMenuEntry.ShopPrice = 2000;
+						currentPrice = dynamicShopMenuEntry.ShopPrice;
 					}
-					shopMenuEntry.AsDynamic().ShopPrice = (int)(currentPrice * gameSettings.ShopMultiplier.Value);
+					dynamicShopMenuEntry.ShopPrice = (int)(currentPrice * gameSettings.ShopMultiplier.Value);
 				}
 			}
 		}
