@@ -18,7 +18,7 @@ namespace TsRandomizer.Settings
 			new GameSettingCategoryInfo { Name = "Archipelago", Description = "Settings related to games with the Archipelago multiworld.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.NumberOfOnScreenLogLines, s => s.OnScreenLogLineScreenTime, s => s.ShowSendItemsFromMe, s => s.ShowReceivedItemsFromMe,
-					s => s.ShowSendGenericItems, s => s.ShowSendTrapItems, s => s.ShowSendImportantItems, s => s.ShowSendProgressionItems,
+					s => s.ShowSendGenericItems, s => s.ShowSendImportantItems, s => s.ShowSendProgressionItems, s => s.ShowSendTrapItems,
 					s => s.ShowSystemMessages
 				}}
 		};
