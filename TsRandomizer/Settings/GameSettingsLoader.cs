@@ -67,8 +67,38 @@ namespace TsRandomizer.Settings
 		{
 			var settings = LoadSettingsFromFile();
 
-			if (slotData.TryGetValue("DamageRando", out var value) && IsTrue(value))
-				settings.DamageRando.SetValue(true);
+			if (slotData.TryGetValue("DamageRando", out var damageRando))
+				settings.DamageRando.SetValue(IsTrue(damageRando));
+			if (slotData.TryGetValue("ShopWarpShards", out var shopWarpShards))
+				settings.ShopWarpShards.SetValue(IsTrue(shopWarpShards));
+			if (slotData.TryGetValue("ShopMultiplier", out var shopMultiplier))
+				settings.ShopMultiplier.SetValue(ToInt(shopMultiplier, 1));
+			if (slotData.TryGetValue("ShopFill", out var shopFill))
+			{
+				var value = ToInt(shopFill);
+				string enumValue;
+
+				switch (value)
+				{
+					case 1:
+						enumValue = "Random";
+						break;
+
+					case 2:
+						enumValue = "Vanilla";
+						break;
+
+					case 3:
+						enumValue = "Empty";
+						break;
+
+					default:
+						enumValue = "Default";
+						break;
+				}
+
+				settings.ShopFill.SetValue(enumValue);
+			}
 
 			return settings;
 		}
@@ -126,6 +156,14 @@ namespace TsRandomizer.Settings
 			if (o is long l) return l > 0;
 
 			return false;
+		}
+
+		static int ToInt(object o, int fallback = 0)
+		{
+			if (o is int i) return i;
+			if (o is long l) return (int)l;
+
+			return fallback;
 		}
 	}
 }
