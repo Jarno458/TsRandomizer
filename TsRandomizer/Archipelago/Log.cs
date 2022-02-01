@@ -73,7 +73,7 @@ namespace TsRandomizer.Archipelago
 					return;
 				if (itemFlags.HasFlag(ItemFlags.Trap) && !settings.ShowSendTrapItems.Value)
 					return;
-				if (!settings.ShowSendGenericItems.Value)
+				if (itemFlags == ItemFlags.None && !settings.ShowSendGenericItems.Value)
 					return;
 
 				pendingLines.Enqueue(new Message(parts));

@@ -37,30 +37,30 @@ namespace TsRandomizer.Settings
 			"Shops always sell warp shards (when keys possessed), ignoring inventory setting.", false);
 
 		public NumberGameSetting NumberOfOnScreenLogLines = new NumberGameSetting("Log Number of Lines",
-			"Max number of messages to show at the bottom left of the screen, 0 to turn onscreen log off", 0, 10, 1, 3);
+			"Max number of messages to show at the bottom left of the screen, 0 to turn onscreen log off", 0, 25, 1, 3, true);
 
 		public NumberGameSetting OnScreenLogLineScreenTime = new NumberGameSetting("Log Line ScreenTime",
-			"How long does a single line shown at the bottom left of the screen stay visible", 1, 10, 0.5, 5);
+			"How long does a single line shown at the bottom left of the screen stay visible", 1, 10, 0.5, 8, true);
 
 		public OnOffGameSetting ShowSendItemsFromMe = new OnOffGameSetting("Log Items sent by you",
-			"Logs Generic items sent between other players", false);
+			"Logs Generic items sent between other players", true, true);
 
 		public OnOffGameSetting ShowReceivedItemsFromMe = new OnOffGameSetting("Log Items received by you",
-			"Logs Generic items sent between other players", false);
+			"Logs Generic items sent between other players", false, true);
 
 		public OnOffGameSetting ShowSendGenericItems = new OnOffGameSetting("Log Generic Items",
-			"Logs Generic items sent between other players", false);
-
-		public OnOffGameSetting ShowSendTrapItems = new OnOffGameSetting("Log Trap Items",
-			"Logs Traps sent between other players", true);
+			"Logs Generic items sent between other players", false, true);
 
 		public OnOffGameSetting ShowSendImportantItems = new OnOffGameSetting("Log Important Items",
-			"Logs Important items sent between other players", false);
+			"Logs Important items sent between other players", false, true);
 
 		public OnOffGameSetting ShowSendProgressionItems = new OnOffGameSetting("Log Progression Items",
-			"Logs Progression items sent between other players", true);
+			"Logs Progression items sent between other players", true, true);
+
+		public OnOffGameSetting ShowSendTrapItems = new OnOffGameSetting("Log Trap Items",
+			"Logs Traps sent between other players", true, true);
 
 		public OnOffGameSetting ShowSystemMessages = new OnOffGameSetting("Log System Message",
-			"Logs System messages, like who connected/left and who changed tags", true);
+			"Logs System messages, like who connected/left and who changed tags", true, true);
 	}
 }

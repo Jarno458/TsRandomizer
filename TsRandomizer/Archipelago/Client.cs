@@ -164,22 +164,24 @@ namespace TsRandomizer.Archipelago
 
 		static bool ItemIsSendByMe(ItemPrintJsonPacket printJsonPacket)
 		{
-			if (printJsonPacket.ReceivingPlayer == slot)
-				return true;
+			return printJsonPacket.Item.Player == slot;
+			//if (printJsonPacket.Item.Player == slot)
+			//	return true;
 
-			var sender = printJsonPacket.Data.First(p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId);
+			//var sender = printJsonPacket.Data.First(p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId);
 
-			return int.TryParse(sender.Text, out var playerId) && playerId == slot;
+			//return int.TryParse(sender.Text, out var playerId) && playerId == slot;
 		}
 
 		static bool ItemIsReceivedByMe(ItemPrintJsonPacket printJsonPacket)
 		{
-			if (printJsonPacket.ReceivingPlayer == slot)
-				return true;
+			return printJsonPacket.ReceivingPlayer == slot;
+			//if (printJsonPacket.ReceivingPlayer == slot)
+			//	return true;
 
-			var receiver = printJsonPacket.Data.Last(p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId);
+			//var receiver = printJsonPacket.Data.Last(p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId);
 
-			return int.TryParse(receiver.Text, out var playerId) && playerId == slot;
+			//return int.TryParse(receiver.Text, out var playerId) && playerId == slot;
 		}
 
 		static string GetMessage(JsonMessagePart messagePart)

@@ -33,7 +33,8 @@ namespace TsRandomizer.Screens
 
 		RoomSpecification currentRoom;
 		SeedOptions seedOptions;
-		SettingCollection settings;
+
+		public SettingCollection Settings;
 
 		public GameSave Save => (GameSave)Dynamic.SaveFile;
 		Level Level => (Level)Dynamic._level;
@@ -66,7 +67,7 @@ namespace TsRandomizer.Screens
 			Console.Out.WriteLine($"Seed: {seed}");
 
 			seedOptions = seed.Value.Options;
-			this.settings = settings;
+			Settings = settings;
 
 			try
 			{
@@ -123,7 +124,7 @@ namespace TsRandomizer.Screens
 			if (ItemLocations == null)
 				return;
 
-			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions, settings, ScreenManager);
+			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions, Settings, ScreenManager);
 
 			FamiliarManager.Update(Level);
 
@@ -135,11 +136,13 @@ namespace TsRandomizer.Screens
 #endif
 		}
 
+#if DEBUG
 		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
+
 			if (ItemLocations == null || currentRoom == null)
 				return;
-#if DEBUG
+
 			var levelId = LevelReflected._id;
 			var text = $"Level: {levelId}, Room ID: {currentRoom.ID}";
 
@@ -147,8 +150,8 @@ namespace TsRandomizer.Screens
 
 			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
 				spriteBatch.DrawString(menuFont, text, new Vector2(30, 130), Color.Red, inGameZoom);
-#endif
 		}
+#endif
 
 		public void HideItemPickupBar() => ((object)Dynamic._itemGetBanner).AsDynamic()._displayTimer = 3;
 

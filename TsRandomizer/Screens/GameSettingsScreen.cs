@@ -41,10 +41,11 @@ namespace TsRandomizer.Screens
 
 			Dynamic._menuTitle = "Game Settings";
 
-			save = ScreenManager.FirstOrDefault<GameplayScreen>()?.Save;
+			var gameplayScreen = ScreenManager.FirstOrDefault<GameplayScreen>();
+			save = gameplayScreen?.Save;
 
 			settings = IsInGame
-				? save.GetSettings()
+				? gameplayScreen.Settings
 				: GameSettingsLoader.LoadSettingsFromFile();
 
 			ResetMenu();
