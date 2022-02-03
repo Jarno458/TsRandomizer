@@ -27,7 +27,7 @@ namespace TsRandomizer.LevelObjects.Other
 			PlayerInventory inventory = Dynamic._level.GameSave.Inventory;
 
 			// Only sell warp shards if Pyramid Key is aquired (and allowed in settings)
-			if (gameSettings.ShopWarpShards.Value && inventory.RelicInventory.IsRelicActive(EInventoryRelicType.PyramidsKey))
+			if ((gameSettings.ShopWarpShards.Value || fillType == "Default") && inventory.RelicInventory.IsRelicActive(EInventoryRelicType.PyramidsKey))
 				merchandiseInventory.AddItem(EInventoryUseItemType.WarpCard);
 
 			if (fillType == "Empty")
