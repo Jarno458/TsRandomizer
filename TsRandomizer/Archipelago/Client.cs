@@ -41,7 +41,7 @@ namespace TsRandomizer.Archipelago
 
 		public static LocationCheckHelper LocationCheckHelper => session.Locations;
 
-		public static LoginResult Connect(string server, string user, string pass = null, string connectionId = null)
+		public static LoginResult Connect(string server, string user, string pass = null, string connectionId = null, List<string> tags = null)
 		{
 			if (IsConnected && session.Socket.Connected && cachedConnectionResult != null)
 			{
@@ -56,13 +56,15 @@ namespace TsRandomizer.Archipelago
 			password = pass;
 			ConnectionId = connectionId ?? Guid.NewGuid().ToString("N");
 
+			tags = tags ?? new List<string>(0);
+
 			try
 			{
 				session = ArchipelagoSessionFactory.CreateSession(new Uri(serverUrl));
 				session.Socket.PacketReceived += PackageReceived;
 
 				var result = session.TryConnectAndLogin("Timespinner", userName, new Version(0, 2, 4),
-					ItemsHandlingFlags.IncludeStartingInventory, new List<string>(0), ConnectionId, password);
+					ItemsHandlingFlags.IncludeStartingInventory, tags, ConnectionId, password);
 
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;
@@ -289,7 +291,7 @@ namespace TsRandomizer.Archipelago
 			if (IsConnected && session.Socket.Connected)
 				return;
 
-			Connect(serverUrl, userName, password, uuid);
+			Connect(serverUrl, userName, password, uuid, session.Tags);
 		}
 	}
 }
