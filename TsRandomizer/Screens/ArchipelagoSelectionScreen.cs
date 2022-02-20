@@ -160,6 +160,8 @@ namespace TsRandomizer.Screens
 			var server = "ws://" + values[ServerIndex];
 			if (!values[ServerIndex].Contains(":"))
 				server += ":38281";
+			else if (values[ServerIndex].EndsWith(":"))
+				server += "38281";
 
 			var password = string.IsNullOrEmpty(values[PasswordIndex]) ? null : values[PasswordIndex];
 

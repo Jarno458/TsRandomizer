@@ -240,7 +240,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
-			if (!GameScreen.IsActive)
+			if (!IsUsedAsSeedSelectionMenu || !GameScreen.IsActive)
 				return;
 
 			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
