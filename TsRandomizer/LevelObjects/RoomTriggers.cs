@@ -414,28 +414,37 @@ namespace TsRandomizer.LevelObjects
 
 		static void UpdateBestiary(Level level, SeedOptions seedOptions, SettingCollection gameSettings)
 		{
+			// TODO move text replace elsewhere
+			TimeSpinnerGame.Localizer.OverrideKey("inv_use_PlaceHolderItem1", "Nothing");
+			TimeSpinnerGame.Localizer.OverrideKey("inv_use_PlaceHolderItem1_desc", "You thought you picked something up, but it turned out to be nothing.");
+
 			var bestiary = level.GCM.Bestiary;
+			Random random = new Random(seedOptions.GetHashCode());
 			foreach (var bestiaryEntry in bestiary.BestiaryEntries)
 			{
-				if (gameSettings.LootPool.Value == "Empty")
+				if (gameSettings.ShowBestiary.Value)
 				{
-					Console.WriteLine("TODO: actually empty this");
-					continue;
+					level.GameSave.SetValue(string.Format(bestiaryEntry.Key.Replace("Enemy_", "KILL_")), 1);
 				}
 
-				Random random = new Random(seedOptions.GetHashCode() + bestiaryEntry.Index);
-				var item = Helper.GetAllLoot().SelectRandom(random);
 				foreach (var loot in bestiaryEntry.LootTable)
 				{
-					loot.DropRate = (int)(loot.DropRate * gameSettings.LootDropRateMultipier.Value);
+					// loot.DropRate = 100;
 					if (gameSettings.LootPool.Value == "Random")
 					{
+						var item = Helper.GetAllLoot().SelectRandom(random);
 						loot.Item = item.ItemId;
 						if (item.LootType == LootType.Equipment)
 							loot.Category = (int)EInventoryCategoryType.Equipment;
 						else
 							loot.Category = (int)EInventoryCategoryType.UseItem;
-					}				
+					}
+					else if (gameSettings.LootPool.Value == "Empty")
+					{
+						loot.DropRate = 0;
+						loot.Item = (int)EInventoryUseItemType.PlaceHolderItem1;
+						loot.Category = (int)EInventoryCategoryType.UseItem;
+					}
 				}
 			}
 		}

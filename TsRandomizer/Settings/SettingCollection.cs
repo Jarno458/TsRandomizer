@@ -7,7 +7,7 @@ namespace TsRandomizer.Settings
 	public class SettingCollection
 	{
 		public static readonly GameSettingCategoryInfo[] Categories = {
-			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player stat scaling.", 
+			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.", 
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.DamageRando
 				}},
@@ -20,14 +20,21 @@ namespace TsRandomizer.Settings
 					s => s.NumberOfOnScreenLogLines, s => s.OnScreenLogLineScreenTime, s => s.ShowSendItemsFromMe, s => s.ShowReceivedItemsFromMe,
 					s => s.ShowSendGenericItems, s => s.ShowSendImportantItems, s => s.ShowSendProgressionItems, s => s.ShowSendTrapItems,
 					s => s.ShowSystemMessages
+				}},
+			new GameSettingCategoryInfo { Name = "Other", Description = "Miscellaneous settings",
+				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
+					s => s.ShowBestiary
 				}}
 		};
 
 		public OnOffGameSetting DamageRando = new OnOffGameSetting("Damage Randomizer",
 			"Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false);
 
+		public OnOffGameSetting ShowBestiary = new OnOffGameSetting("Show Bestiary",
+			"All bestiary entries in the journal are visible by default.", false, true);
+
 		public NumberGameSetting LootDropRateMultipier = new NumberGameSetting("Loot Drop Rate Multiplier",
-			"Multiplier for the cost of items in the shop. Set to 0 for free shops", 0, 5, 0.5, 1);
+			"Multiplier for drop rate of items", 0, 5, 0.5, 1);
 
 		public SpecificValuesGameSetting LootPool = new SpecificValuesGameSetting("Loot Pool",
 			"Sets which items enemies will drop: [Vanilla, Random, Empty]",
