@@ -307,6 +307,9 @@ namespace TsRandomizer.LevelObjects
 		{
 			var roomKey = new RoomItemKey(levelId, roomId);
 
+			// TODO: call this somewhere that isn't every room change
+			UpdateBestiary(level, seedOptions, gameSettings);
+
 			if (RoomTriggers.TryGetValue(roomKey, out var trigger))
 				trigger.trigger(level, itemLocations[roomKey], seedOptions, gameSettings, screenManager);
 		}
@@ -407,6 +410,34 @@ namespace TsRandomizer.LevelObjects
 			var neliste = (NPCBase)NelisteNpcType.CreateInstance(false, level, position, -1, new ObjectTileSpecification());
 
 			level.AsDynamic().RequestAddObject(neliste);
+		}
+
+		static void UpdateBestiary(Level level, SeedOptions seedOptions, SettingCollection gameSettings)
+		{
+			var bestiary = level.GCM.Bestiary;
+			foreach (var bestiaryEntry in bestiary.BestiaryEntries)
+			{
+				if (gameSettings.LootPool.Value == "Empty")
+				{
+					Console.WriteLine("TODO: actually empty this");
+					continue;
+				}
+
+				Random random = new Random(seedOptions.GetHashCode() + bestiaryEntry.Index);
+				var item = Helper.GetAllLoot().SelectRandom(random);
+				foreach (var loot in bestiaryEntry.LootTable)
+				{
+					loot.DropRate = (int)(loot.DropRate * gameSettings.LootDropRateMultipier.Value);
+					if (gameSettings.LootPool.Value == "Random")
+					{
+						loot.Item = item.ItemId;
+						if (item.LootType == LootType.Equipment)
+							loot.Category = (int)EInventoryCategoryType.Equipment;
+						else
+							loot.Category = (int)EInventoryCategoryType.UseItem;
+					}				
+				}
+			}
 		}
 
 		static void SpawnGlowingFloor(Level level)
