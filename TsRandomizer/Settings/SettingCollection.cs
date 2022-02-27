@@ -43,10 +43,10 @@ namespace TsRandomizer.Settings
 			"How long does a single line shown at the bottom left of the screen stay visible", 1, 10, 0.5, 8, true);
 
 		public OnOffGameSetting ShowSendItemsFromMe = new OnOffGameSetting("Log Items sent by you",
-			"Logs Generic items sent between other players", true, true);
+			"Logs items sent from the you to other players", true, true);
 
 		public OnOffGameSetting ShowReceivedItemsFromMe = new OnOffGameSetting("Log Items received by you",
-			"Logs Generic items sent between other players", false, true);
+			"Logs items you receive from other players", false, true);
 
 		public OnOffGameSetting ShowSendGenericItems = new OnOffGameSetting("Log Generic Items",
 			"Logs Generic items sent between other players", false, true);
