@@ -97,6 +97,7 @@ namespace TsRandomizer.Screens
 			var state = Mouse.GetState();
 
 			var scrolledAmount = previousMouseState.ScrollWheelValue - state.ScrollWheelValue;
+			scrolledAmount =- scrolledAmount;
 
 			if (scrolledAmount > 0 && lines.Count > PageSize + scrollOffset)
 				scrollOffset += PageSize;
