@@ -83,6 +83,7 @@ The item tracker features a few options:
 
 # Known Bugs
 ##### I am aware of these issues, but I found them small enough not to fix at this moment
+* Having the Varndagrath collected away will cause the door to close and softlock the player
 * Orb pedestal in the room before Emperor Nuvius always spawns even if you didn't kill him yet
 
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
@@ -94,6 +95,7 @@ The item tracker features a few options:
 * Archipelago TODO:
   * Change save game menu to make AP seeds more clear like adding player name & server (optionally)
 * Implement skin selection
+* Implement minimap color selection
 
 # Ideas
 ##### Ideas that may never happen but I think will be fun when they are implemented:
