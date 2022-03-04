@@ -84,6 +84,7 @@ The item tracker features a few options:
 # Known Bugs
 ##### I am aware of these issues, but I found them small enough not to fix at this moment
 * Having the Varndagrath collected away will cause the door to close and softlock the player
+* Itemlinks do not work for the player who picks up the item
 * Orb pedestal in the room before Emperor Nuvius always spawns even if you didn't kill him yet
 
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
