@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
@@ -9,6 +8,7 @@ using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using Microsoft.Xna.Framework;
+using TsRandomizer.Commands;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 
@@ -17,8 +17,6 @@ namespace TsRandomizer.Archipelago
 	static class Client
 	{
 		static ArchipelagoSession session;
-
-		static volatile int slot = -1;
 
 		static string serverUrl;
 		static string userName;
@@ -29,19 +27,21 @@ namespace TsRandomizer.Archipelago
 
 		public static bool IsConnected;
 
-		public static Permissions ForfeitPermissions = 0;
+		public static Permissions ForfeitPermissions => session.RoomState.ForfeitPermissions;
 
 		public static string ConnectionId = "";
 
-		public static string SeedString = "";
+		public static string SeedString => session.RoomState.Seed;
 
 		public static DeathLinkService GetDeathLinkService() => session.CreateDeathLinkServiceAndEnable();
 
-		public static string GetCurrentPlayerName() => session.Players.GetPlayerAliasAndName(slot);
+		public static string GetCurrentPlayerName() => session.Players.GetPlayerAliasAndName(session.ConnectionInfo.Slot);
 
 		public static LocationCheckHelper LocationCheckHelper => session.Locations;
 
-		public static LoginResult Connect(string server, string user, string pass = null, string connectionId = null, List<string> tags = null)
+		public static DataStorageHelper DataStorage => session.DataStorage;
+
+		public static LoginResult Connect(string server, string user, string pass = null, string connectionId = null, string[] tags = null)
 		{
 			if (IsConnected && session.Socket.Connected && cachedConnectionResult != null)
 			{
@@ -56,8 +56,6 @@ namespace TsRandomizer.Archipelago
 			password = pass;
 			ConnectionId = connectionId ?? Guid.NewGuid().ToString("N");
 
-			tags = tags ?? new List<string>(0);
-
 			try
 			{
 				session = ArchipelagoSessionFactory.CreateSession(new Uri(serverUrl));
@@ -70,7 +68,13 @@ namespace TsRandomizer.Archipelago
 				cachedConnectionResult = result;
 
 				if (result.Successful)
-					slot = ((LoginSuccessful)result).Slot;
+				{
+#if DEBUG
+					ScreenManager.Console.AddCommand(new ScoutCommand());
+					ScreenManager.Console.AddCommand(new GetKeyCommand());
+#endif
+				}
+
 			}
 			catch (Exception e)
 			{
@@ -90,19 +94,13 @@ namespace TsRandomizer.Archipelago
 			password = null;
 			uuid = null;
 
-			slot = -1;
-
 			IsConnected = false;
 
 			session = null;
 
-			ForfeitPermissions = 0;
-
 			cachedConnectionResult = null;
 
 			ConnectionId = "";
-
-			SeedString = "";
 		}
 
 		public static NetworkItem? GetNextItem(int currentIndex) =>
@@ -116,7 +114,6 @@ namespace TsRandomizer.Archipelago
 		{
 			switch (packet)
 			{
-				case RoomInfoPacket roomInfoPacket: OnRoomInfoPacketReceived(roomInfoPacket); break;
 				case PrintPacket printPacket: OnPrintPacketReceived(printPacket); break;
 				case ItemPrintJsonPacket printJsonPacket: OnItemPrintJsonPacketReceived(printJsonPacket); break;
 				case PrintJsonPacket printJsonPacket: OnPrintJsonPacketReceived(printJsonPacket); break;
@@ -126,14 +123,6 @@ namespace TsRandomizer.Archipelago
 		static void SendPacket(ArchipelagoPacketBase packet) => session?.Socket?.SendPacket(packet);
 
 		public static void Say(string message) => SendPacket(new SayPacket { Text = message });
-
-		static void OnRoomInfoPacketReceived(RoomInfoPacket packet)
-		{
-			if (packet.Permissions != null && packet.Permissions.TryGetValue("forfeit", out var permissions))
-				ForfeitPermissions = permissions;
-
-			SeedString = packet.SeedName ?? "0";
-		}
 
 		static void OnPrintPacketReceived(PrintPacket printPacket)
 		{
@@ -165,27 +154,9 @@ namespace TsRandomizer.Archipelago
 			ScreenManager.Log.Add(isSendByMe, isReceivedByMe, itemFlags, parts);
 		}
 
-		static bool ItemIsSendByMe(ItemPrintJsonPacket printJsonPacket)
-		{
-			return printJsonPacket.Item.Player == slot;
-			//if (printJsonPacket.Item.Player == slot)
-			//	return true;
+		static bool ItemIsSendByMe(ItemPrintJsonPacket printJsonPacket) => printJsonPacket.Item.Player == session.ConnectionInfo.Slot;
 
-			//var sender = printJsonPacket.Data.First(p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId);
-
-			//return int.TryParse(sender.Text, out var playerId) && playerId == slot;
-		}
-
-		static bool ItemIsReceivedByMe(ItemPrintJsonPacket printJsonPacket)
-		{
-			return printJsonPacket.ReceivingPlayer == slot;
-			//if (printJsonPacket.ReceivingPlayer == slot)
-			//	return true;
-
-			//var receiver = printJsonPacket.Data.Last(p => p.Type.HasValue && p.Type == JsonMessagePartType.PlayerId);
-
-			//return int.TryParse(receiver.Text, out var playerId) && playerId == slot;
-		}
+		static bool ItemIsReceivedByMe(ItemPrintJsonPacket printJsonPacket) => printJsonPacket.ReceivingPlayer == session.ConnectionInfo.Slot;
 
 		static string GetMessage(JsonMessagePart messagePart)
 		{
@@ -241,11 +212,11 @@ namespace TsRandomizer.Archipelago
 			switch (messagePart.Type)
 			{
 				case JsonMessagePartType.PlayerId:
-					return (int.TryParse(messagePart.Text, out var playerId) && playerId == slot)
+					return (int.TryParse(messagePart.Text, out var playerId) && playerId == session.ConnectionInfo.Slot)
 						? Color.Yellow
 						: Color.Orange;
 				case JsonMessagePartType.PlayerName:
-					return session.Players.GetPlayerName(slot) == messagePart.Text
+					return session.Players.GetPlayerName(session.ConnectionInfo.Slot) == messagePart.Text
 						? Color.Yellow
 						: Color.Orange;
 				case JsonMessagePartType.ItemId:
@@ -291,7 +262,7 @@ namespace TsRandomizer.Archipelago
 			if (IsConnected && session.Socket.Connected)
 				return;
 
-			Connect(serverUrl, userName, password, uuid, session.Tags);
+			Connect(serverUrl, userName, password, uuid, session.ConnectionInfo.Tags);
 		}
 	}
 }

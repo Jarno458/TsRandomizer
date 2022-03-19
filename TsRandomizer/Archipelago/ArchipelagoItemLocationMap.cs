@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Archipelago.MultiClient.Net.Models;
 using Timespinner.GameAbstractions.Gameplay;
@@ -69,7 +69,7 @@ namespace TsRandomizer.Archipelago
 			var itemsInMap = this.Select(l => l.ItemInfo.Identifier)
 				.Distinct().ToHashSet();
 
-			bool updateTracker = false;
+			var updateTracker = false;
 			
 			foreach (var progressionItem in UnlockingMap.AllProgressionItems)
 			{
@@ -161,7 +161,7 @@ namespace TsRandomizer.Archipelago
 			}
 		}
 
-		void MarkCheckedLocations(ICollection<int> locationsChecked)
+		void MarkCheckedLocations(ReadOnlyCollection<long> locationsChecked)
 		{
 			foreach (var locationId in locationsChecked)
 				if (TryGetValue(LocationMap.GetItemkey(locationId), out var location))
