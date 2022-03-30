@@ -13,20 +13,6 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		[JsonIgnore]
 		public double StepValue { get; set; }
 
-		public override void SetValue(dynamic input)
-		{
-			if (!double.IsNaN(input))
-			{
-				double value = input;
-
-				base.SetValue(value); 
-			}
-			else
-			{
-				base.SetValue(DefaultValue);
-			}
-		}
-
 		public NumberGameSetting(string name, string description, double minValue, double maxValue, double stepValue,
 			double defaultValue, bool canBeChangedInGame = false) 
 			: base(name, description, defaultValue, canBeChangedInGame)
@@ -34,11 +20,12 @@ namespace TsRandomizer.Settings.GameSettingObjects
 			MinimumValue = minValue;
 			MaximumValue = maxValue;
 			StepValue = stepValue;
-
-			SetValue(defaultValue);
 		}
 
 		[JsonConstructor]
 		public NumberGameSetting() { }
+
+		public override void ToggleValue() => 
+			Value = (Value + StepValue <= MaximumValue) ? Value + StepValue : MinimumValue;
 	}
 }

@@ -95,8 +95,8 @@ The item tracker features a few options:
 ##### Things I plan on doing in the future
 * Archipelago TODO:
   * Change save game menu to make AP seeds more clear like adding player name & server (optionally)
+  * Add option to change credentails of the save
 * Implement skin selection
-* Implement minimap color selection
 
 # Ideas
 ##### Ideas that may never happen but I think will be fun when they are implemented:

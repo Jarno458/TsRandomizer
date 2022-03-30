@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,7 +25,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -108,6 +108,7 @@
     <Compile Include="Commands\ScoutCommand.cs" />
     <Compile Include="Commands\GetKeyCommand.cs" />
     <Compile Include="Commands\TeleportCommand.cs" />
+    <Compile Include="Extensions\GameContentManagerExtension.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
     <Compile Include="Randomisation\HintGenerator.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="Screens\GameSettingsScreen.cs" />
     <Compile Include="Settings\GameSettingObjects\NumberGameSetting.cs" />
     <Compile Include="Settings\GameSettingObjects\OnOffGameSetting.cs" />
+    <Compile Include="Settings\GameSettingObjects\ColorGameSetting.cs" />
     <Compile Include="Settings\GameSettingObjects\SpecificValuesGameSetting.cs" />
     <Compile Include="Settings\GameSettingObjects\StringGameSetting.cs" />
     <Compile Include="Settings\GameSettingCategoryInfo.cs" />

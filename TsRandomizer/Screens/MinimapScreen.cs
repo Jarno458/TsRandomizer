@@ -8,6 +8,7 @@ using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.Screens
 {
@@ -65,12 +66,15 @@ namespace TsRandomizer.Screens
 		ItemLocationMap itemLocations;
 		bool isShowingAviableLocations;
 
+		readonly SettingCollection settings;
+
 		LookupDictionary<Roomkey, MinimapRoomState> preservedRoomStates;
 
 		MinimapSpecification Minimap => ((object)Dynamic._minimapHud).AsDynamic()._minimap;
 
 		public MinimapScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
+			settings = screenManager.FirstOrDefault<GameplayScreen>().Settings;
 		}
 
 		static MinimapSpecification DeepClone(MinimapSpecification spec)
@@ -172,10 +176,10 @@ namespace TsRandomizer.Screens
 		{
 			var hud = ((object) Dynamic._minimapHud).AsDynamic();
 
+			hud._minimap = DeepClone(Dynamic._minimap);
+
 			foreach (var roomkey in GyreRooms)
 				GetRoom(roomkey).IsDebug = false;
-
-			hud._minimap = DeepClone(Dynamic._minimap);
 
 			itemLocations = itemLocationMap;
 
