@@ -485,10 +485,10 @@ namespace TsRandomizer.Randomisation
 			areaName = "Castle Keep";
 			Add(new ItemKey(5, 41, 184, 177), "Letter - Under the Twins (Letter of Reference)", null, CastleKeep);
 			Add(new ItemKey(5, 44, 264, 161), "Letter - Castle Loop Giantess (Political Advice)", null, CastleKeep);
-			Add(new ItemKey(5, 14, 568, 177), "Letter - Aleana's Room (Diplomatic Missive)", null, CastleKeep & R.PinkOrb & R.DoubleJump);
+			Add(new ItemKey(5, 14, 568, 177), "Letter - Aelana's Room (Diplomatic Missive)", null, CastleKeep & R.PinkOrb & R.DoubleJump);
 			areaName = "Royal Towers";
 			Add(new ItemKey(6, 17, 344, 433), "Letter - Top Struggle Juggle Base (War of the Sisters)", null, UpperRoyalTower);
-			Add(new ItemKey(6, 14, 136, 177), "Letter - Aleana Boss (Stained Letter)", null, UpperRoyalTower);
+			Add(new ItemKey(6, 14, 136, 177), "Letter - Aelana Boss (Stained Letter)", null, UpperRoyalTower);
 			Add(new ItemKey(6, 25, 152, 145), "Letter - Near Bottom Struggle Juggle (Mission Findings)", null, UpperRoyalTower & DoubleJumpOfNpc);
 			areaName = "Caves of Banishment (Maw)";
 			Add(new ItemKey(8, 36, 136, 145), "Letter - Lower Left Maw Caves (Naïvety)", null, LowerCavesOfBanishment);
