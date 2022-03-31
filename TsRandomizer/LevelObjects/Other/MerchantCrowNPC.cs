@@ -1,9 +1,9 @@
 ﻿using System;
 using Timespinner.GameAbstractions.Inventory;
+using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
-using TsRandomizer.Settings;
 
 namespace TsRandomizer.LevelObjects.Other
 {
@@ -19,7 +19,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(SeedOptions options)
 		{
-			var gameSettings = GameSettingsLoader.LoadSettingsFromFile();
+			var gameSettings = ((GameSave)Dynamic._level.GameSave).GetSettings();
 			var fillType = gameSettings.ShopFill.Value;
 			if (fillType == "Vanilla")
 				return;
