@@ -88,8 +88,10 @@ namespace TsRandomizer.Screens
 
 			ItemManipulator.Initialize(ItemLocations);
 
-			if (settings.DamageRando.Value)
-				OrbDamageManager.PopulateOrbLookups(Level.GameSave);
+			if (settings.DamageRando.Value != "Off")
+				OrbDamageManager.PopulateOrbLookups(Level.GameSave, settings.DamageRando.Value, settings.DamageRandoOverrides.Value);
+
+
 
 			if (seedOptions.Archipelago)
 			{

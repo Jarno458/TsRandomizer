@@ -222,6 +222,7 @@
     <Compile Include="Screens\SeedSelection\SeedOptionsCollection.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsMenuScreen.cs" />
     <Compile Include="Screens\GameSettingsScreen.cs" />
+    <Compile Include="Settings\GameSettingObjects\DamageRandoOverridesSetting.cs" />
     <Compile Include="Settings\GameSettingObjects\NumberGameSetting.cs" />
     <Compile Include="Settings\GameSettingObjects\OnOffGameSetting.cs" />
     <Compile Include="Settings\GameSettingObjects\ColorGameSetting.cs" />

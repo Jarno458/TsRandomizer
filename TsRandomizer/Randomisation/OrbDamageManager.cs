@@ -6,6 +6,7 @@ using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Heroes;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Settings.GameSettingObjects;
 
 namespace TsRandomizer.Randomisation
 {
@@ -26,7 +27,7 @@ namespace TsRandomizer.Randomisation
 			{
 				case EInventoryOrbType.Blue: return new OrbDamageRange { MinValue = 1, MidValue = 4, MaxValue = 8 };
 				case EInventoryOrbType.Blade: return new OrbDamageRange { MinValue = 1, MidValue = 7, MaxValue = 12 };
-				case EInventoryOrbType.Flame: return new OrbDamageRange { MinValue = 2, MidValue = 6, MaxValue = 12 };
+				case EInventoryOrbType.Flame: return new OrbDamageRange { MinValue = 2, MidValue = 6, MaxValue = 16 };
 				case EInventoryOrbType.Pink: return new OrbDamageRange { MinValue = 2, MidValue = 6, MaxValue = 30 };
 				case EInventoryOrbType.Iron: return new OrbDamageRange { MinValue = 2, MidValue = 10, MaxValue = 20 };
 				case EInventoryOrbType.Ice: return new OrbDamageRange { MinValue = 1, MidValue = 4, MaxValue = 12 };
@@ -44,28 +45,33 @@ namespace TsRandomizer.Randomisation
 			}
 		}
 
-		public static void RandomizeOrb(EInventoryOrbType orbType, int damageSelection)
+		private static List<OrbDamageOdds> GetOrbOdds(string setting, List<OrbDamageOdds> overrides)
 		{
-			var options = GetOrbDamageOptions(orbType);
+			return new List<OrbDamageOdds>();
+		}
+
+		public static void RandomizeOrb(OrbDamageOdds orbOdds, Random random)
+		{
+			var options = GetOrbDamageOptions(orbOdds.orbType);
 			int newDamage;
-			switch (damageSelection)
+			switch (orbOdds.GetModifier(random))
 			{
-				case int o when (o <= 4):
+				case OrbDamageOdds.OrbDamageModifier.Minus:
 					newDamage = options.MinValue;
-					OverrideOrbNames(orbType, "(-)");
+					OverrideOrbNames(orbOdds.orbType, "(-)");
 					break;
-				case int o when (o >= 5 && o <= 7):
-					newDamage = options.MidValue;
+				case OrbDamageOdds.OrbDamageModifier.Plus:
+					newDamage = options.MaxValue;
+					OverrideOrbNames(orbOdds.orbType, "(+)");
 					break;
 				default:
-					newDamage = options.MaxValue;
-					OverrideOrbNames(orbType, "(+)");
+					newDamage = options.MidValue;
 					break;
 
 			}
-			if (!OrbDamageLookup.ContainsKey((int)orbType))
+			if (!OrbDamageLookup.ContainsKey((int)orbOdds.orbType))
 			{
-				OrbDamageLookup.Add((int)orbType, newDamage);
+				OrbDamageLookup.Add((int)orbOdds.orbType, newDamage);
 			}
 		}
 
@@ -86,17 +92,18 @@ namespace TsRandomizer.Randomisation
 				Localizer.OverrideKey(ringLocKey, $"{actualRingName} {suffix}");
 		}
 
-		public static void PopulateOrbLookups(GameSave save)
+		public static void PopulateOrbLookups(GameSave save, string setting, List<OrbDamageOdds> overrides)
 		{
 			OrbDamageLookup.Clear();
+			List<OrbDamageOdds> orbOdds = GetOrbOdds(setting, overrides);
 			var random = new Random((int)save.GetSeed().Value.Id);
-			foreach (EInventoryOrbType orbType in Enum.GetValues(typeof(EInventoryOrbType)))
+			//foreach (EInventoryOrbType orbType in Enum.GetValues(typeof(EInventoryOrbType)))
+			foreach (OrbDamageOdds odds in orbOdds)
 			{
-				int damageSelection = random.Next(0, 9);
-				RandomizeOrb(orbType, damageSelection);
+				RandomizeOrb(odds, random);
 				var orbInventory = save.Inventory.OrbInventory.Inventory;
-				if (orbInventory.ContainsKey((int)orbType))
-					SetOrbBaseDamage(orbInventory[(int)orbType]);
+				if (orbInventory.ContainsKey((int)odds.orbType))
+					SetOrbBaseDamage(orbInventory[(int)odds.orbType]);
 			}
 		}
 

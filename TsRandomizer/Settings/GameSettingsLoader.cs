@@ -23,14 +23,14 @@ namespace TsRandomizer.Settings
 				if (!File.Exists(file))
 				{
 					settings = new SettingCollection();
-				} 
-				else 
+				}
+				else
 				{
 					var settingsString = File.ReadAllText(file);
 
 					settings = FromJson(settingsString);
 				}
-				
+
 				Console.WriteLine("Settings file not found: " + file);
 			}
 			catch
@@ -67,8 +67,6 @@ namespace TsRandomizer.Settings
 		{
 			var settings = LoadSettingsFromFile();
 
-			if (slotData.TryGetValue("DamageRando", out var damageRando))
-				settings.DamageRando.Value = IsTrue(damageRando);
 			if (slotData.TryGetValue("ShopWarpShards", out var shopWarpShards))
 				settings.ShopWarpShards.Value = IsTrue(shopWarpShards);
 			if (slotData.TryGetValue("ShopMultiplier", out var shopMultiplier))
@@ -99,6 +97,40 @@ namespace TsRandomizer.Settings
 
 				settings.ShopFill.Value = enumValue;
 			}
+			if (slotData.TryGetValue("DamageRando", out var damageRando))
+			{
+				var value = ToInt(damageRando);
+				string enumValue;
+
+				switch (value)
+				{
+					case 1:
+						enumValue = "All Nerfs";
+						break;
+
+					case 2:
+						enumValue = "Mostly Nerfs";
+						break;
+
+					case 3:
+						enumValue = "Balanced";
+						break;
+
+					case 4:
+						enumValue = "Mostly Buffs";
+						break;
+
+					case 5:
+						enumValue = "All Buffs";
+						break;
+
+					default:
+						enumValue = "Off";
+						break;
+				}
+				settings.DamageRando.Value = enumValue;
+			}
+
 
 			return settings;
 		}
@@ -107,7 +139,7 @@ namespace TsRandomizer.Settings
 		{
 			try
 			{
-				if (!Directory.Exists(SettingSubFolderName)) 
+				if (!Directory.Exists(SettingSubFolderName))
 					Directory.CreateDirectory(SettingSubFolderName);
 			}
 			catch
