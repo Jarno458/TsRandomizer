@@ -21,7 +21,6 @@ namespace TsRandomizer.Archipelago
 		static string serverUrl;
 		static string userName;
 		static string password;
-		static string uuid;
 
 		static LoginResult cachedConnectionResult;
 
@@ -29,7 +28,7 @@ namespace TsRandomizer.Archipelago
 
 		public static Permissions ForfeitPermissions => session.RoomState.ForfeitPermissions;
 
-		public static string ConnectionId = "";
+		public static string ConnectionId = session.ConnectionInfo.Uuid;
 
 		public static string SeedString => session.RoomState.Seed;
 
@@ -54,7 +53,6 @@ namespace TsRandomizer.Archipelago
 			serverUrl = server;
 			userName = user;
 			password = pass;
-			ConnectionId = connectionId ?? Guid.NewGuid().ToString("N");
 
 			try
 			{
@@ -62,7 +60,7 @@ namespace TsRandomizer.Archipelago
 				session.Socket.PacketReceived += PackageReceived;
 
 				var result = session.TryConnectAndLogin("Timespinner", userName, new Version(0, 2, 4),
-					ItemsHandlingFlags.IncludeStartingInventory, tags, ConnectionId, password);
+					ItemsHandlingFlags.IncludeStartingInventory, tags, password: password);
 
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;
@@ -92,7 +90,6 @@ namespace TsRandomizer.Archipelago
 			serverUrl = null;
 			userName = null;
 			password = null;
-			uuid = null;
 
 			IsConnected = false;
 
@@ -262,7 +259,7 @@ namespace TsRandomizer.Archipelago
 			if (IsConnected && session.Socket.Connected)
 				return;
 
-			Connect(serverUrl, userName, password, uuid, session.ConnectionInfo.Tags);
+			Connect(serverUrl, userName, password, session.ConnectionInfo.Uuid, session.ConnectionInfo.Tags);
 		}
 	}
 }
