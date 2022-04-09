@@ -31,7 +31,7 @@ namespace TsRandomizer.Settings
 			"Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false);
 
 		public OnOffGameSetting ShowBestiary = new OnOffGameSetting("Show Bestiary",
-			"All bestiary entries in the journal are visible by default.", false, true);
+			"All bestiary entries in the journal are visible by default.", false, false);
 
 		public SpecificValuesGameSetting LootPool = new SpecificValuesGameSetting("Loot Pool",
 			"Sets which items enemies will drop: [Vanilla, Random, Empty]",
