@@ -449,7 +449,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(11, 6, 200, 192), "Chest and download terminal (Experiment #13)", null, UpperLab & R.Tablet);
 			Add(new ItemKey(11, 15, 152, 176), "Lab terminal middle (Amadeus Laboratory Map)", null, TheLabPoweredOff & R.Tablet);
 			Add(new ItemKey(11, 16, 600, 192), "Sentry platform terminal (Origins)", null, TheLabPoweredOff & R.Tablet);
-			Add(new ItemKey(11, 34, 200, 192), "Experiment 13 terminal (W.R.E.C Farewll)", null, TheLab & R.Tablet);
+			Add(new ItemKey(11, 34, 200, 192), "Experiment 13 terminal (W.R.E.C Farewell)", null, TheLab & R.Tablet);
 			Add(new ItemKey(11, 37, 200, 192), "Lab terminal left (Biotechnology)", null, TheLab & R.Tablet);
 			Add(new ItemKey(11, 38, 120, 176), "Lab terminal right (Experiment #11)", null, TheLabPoweredOff & R.Tablet);
 		}
