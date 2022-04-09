@@ -7,12 +7,12 @@ namespace TsRandomizer.Archipelago
 {
 	static class LocationMap
 	{
-		static readonly Dictionary<int, ItemKey> MapLocationIdToItemKey;
-		static readonly Dictionary<ItemKey, int> MapItemKeyToLocationId;
+		static readonly Dictionary<long, ItemKey> MapLocationIdToItemKey;
+		static readonly Dictionary<ItemKey, long> MapItemKeyToLocationId;
 
 		static LocationMap()
 		{
-			MapLocationIdToItemKey = new Dictionary<int, ItemKey>(181) {
+			MapLocationIdToItemKey = new Dictionary<long, ItemKey>(181) {
 				// Present
 				// Tutorial
 				{1337000, ItemKey.TutorialMeleeOrb},
@@ -266,20 +266,20 @@ namespace TsRandomizer.Archipelago
 				{1337249, new ItemKey(16, 16, 1512, 144)}
 			};
 
-			MapItemKeyToLocationId = new Dictionary<ItemKey, int>(MapLocationIdToItemKey.Count);
+			MapItemKeyToLocationId = new Dictionary<ItemKey, long>(MapLocationIdToItemKey.Count);
 
 			foreach (var kvp in MapLocationIdToItemKey)
 				MapItemKeyToLocationId.Add(kvp.Value, kvp.Key);
 		}
 
-		public static int GetLocationId(ItemKey key) =>
+		public static long GetLocationId(ItemKey key) =>
 			MapItemKeyToLocationId.TryGetValue(key, out var locationId)
 				? locationId
 				: MapItemKeyToLocationId.TryGetValue(key.ToRoomItemKey(), out var roomLocationId)
 					? roomLocationId
 					: throw new Exception($"Key {key} does not map to an Archipelago itemlocation");
 
-		public static ItemKey GetItemkey(int locationId) =>
+		public static ItemKey GetItemkey(long locationId) =>
 			MapLocationIdToItemKey.TryGetValue(locationId, out var key)
 				? key
 				: throw new Exception($"Archipelago itemlocation {locationId} does not map to itemKey");

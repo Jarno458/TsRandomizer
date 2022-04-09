@@ -27,17 +27,17 @@ namespace TsRandomizer.Screens
 
 		GameSave save;
 		SettingCollection settings;
+		GCM gcm;
 
 		bool IsUsedAsGameSettingsMenu => seedSelectionScreen != null || optionsMenuScreen != null;
 		bool IsInGame => save != null;
-		GCM gcm;
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
+			gcm = gameContentManager;
+
 			if (!IsUsedAsGameSettingsMenu)
 				return;
-
-			gcm = gameContentManager;
 
 			Dynamic._menuTitle = "Game Settings";
 
@@ -51,6 +51,18 @@ namespace TsRandomizer.Screens
 			ResetMenu();
 		}
 
+		public override void Unload()
+		{
+			try
+			{
+				gcm.UpdateMinimapColors(settings);
+			}
+			catch
+			{
+				// ignored
+			}
+		}
+
 		public GameSettingsScreen(ScreenManager screenManager, GameScreen passwordMenuScreen) : base(screenManager, passwordMenuScreen)
 		{
 			seedSelectionScreen = screenManager.FirstOrDefault<SeedSelectionMenuScreen>();
@@ -59,9 +71,15 @@ namespace TsRandomizer.Screens
 
 		public static GameScreen Create(ScreenManager screenManager)
 		{
-			void Noop() { }
-
 			GCM gcm = screenManager.AsDynamic().GCM;
+
+			void Noop()
+			{
+				var gameplayScreen = screenManager.FirstOrDefault<GameplayScreen>();
+
+				if(gameplayScreen != null)
+					gcm.UpdateMinimapColors(gameplayScreen.Settings);
+			}
 
 			gcm.LoadAllResources(screenManager.AsDynamic().GeneralContentManager, screenManager.GraphicsDevice);
 
@@ -80,10 +98,10 @@ namespace TsRandomizer.Screens
 
 		void OnDefaultsSelected()
 		{
-			var defaultSettings = new SettingCollection();
-
 			if (!IsInGame)
 			{
+				var defaultSettings = new SettingCollection();
+
 				GameSettingsLoader.WriteSettingsToFile(defaultSettings);
 
 				settings = defaultSettings;
@@ -99,7 +117,7 @@ namespace TsRandomizer.Screens
 						if(!setting.CanBeChangedInGame)
 							continue;
 
-						setting.SetValue(settingsFunc(defaultSettings).CurrentValue);
+						setting.SetDefault();
 					}
 				}
 
@@ -189,7 +207,7 @@ namespace TsRandomizer.Screens
 		{
 			var menuEntry = MenuEntry.Create(setting.Name, () => ToggleSetting(setting));
 
-			SetCurrentSettingText(menuEntry, setting);
+			setting.UpdateMenuEntry(menuEntry);
 
 			return menuEntry;
 		}
@@ -202,39 +220,7 @@ namespace TsRandomizer.Screens
 				return;
 			}
 
-			switch (setting)
-			{
-				case OnOffGameSetting _:
-					setting.SetValue(!(bool)setting.CurrentValue);
-					break;
-				case StringGameSetting _:
-					// Future phase this should allow SDL input
-					setting.SetValue(setting.CurrentValue);
-					break;
-				case NumberGameSetting gameSetting:
-				{
-					var value = (double)gameSetting.CurrentValue;
-					var numberSetting = gameSetting;
-					var stepValue = numberSetting.StepValue;
-
-					value = value + stepValue <= numberSetting.MaximumValue ? value + stepValue : numberSetting.MinimumValue;
-
-					setting.SetValue(value);
-
-					break;
-				}
-				case SpecificValuesGameSetting gameSetting:
-				{
-					var enumSetting = gameSetting;
-					var currentValue = enumSetting.AllowedValues.IndexOf((string)enumSetting.CurrentValue);
-					var value = currentValue + 1 >= enumSetting.AllowedValues.Count ? 0 : currentValue + 1;
-
-					gameSetting.SetValue(enumSetting.AllowedValues[value]);
-					break;
-				}
-				default:
-					return;
-			}
+			setting.ToggleValue();
 
 			if (IsInGame)
 				save.SetSettings(settings);
@@ -244,24 +230,10 @@ namespace TsRandomizer.Screens
 			var selectedMenu = ((object)Dynamic._selectedMenuCollection).AsDynamic();
 			var menuEntry = new MenuEntry(((IList)selectedMenu.Entries)[selectedMenu.SelectedIndex]);
 
-			SetCurrentSettingText(menuEntry, setting);
-		}
-
-		void SetCurrentSettingText(MenuEntry menuEntry, GameSetting setting)
-		{
-			menuEntry.IsCenterAligned = false;
-
-			var currentValue = !(setting is OnOffGameSetting) 
-				? setting.CurrentValue 
-				: (bool)setting.CurrentValue 
-					? "On" 
-					: "Off";
-
-			menuEntry.Text = $"{setting.Name} - {currentValue}";
-			menuEntry.Description = setting.Description;
-
 			if (!setting.CanBeChangedInGame && IsInGame)
 				menuEntry.BaseDrawColor = MenuEntry.UnAvailableColor;
+
+			setting.UpdateMenuEntry(menuEntry);
 		}
 	}
 }

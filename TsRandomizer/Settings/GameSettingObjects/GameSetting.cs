@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Settings.GameSettingObjects
 {
@@ -29,24 +30,35 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		{
 		}
 
-		public virtual void SetValue(object input) => CurrentValue = input;
+		public abstract void ToggleValue();
+
+		public void SetDefault() => CurrentValue = DefaultValue;
+
+		internal virtual void UpdateMenuEntry(MenuEntry menuEntry)
+		{
+			menuEntry.IsCenterAligned = false;
+
+			menuEntry.Text = $"{Name} - {CurrentValue}";
+			menuEntry.Description = Description;
+		}
 	}
 
 	public abstract class GameSetting<T> : GameSetting
 	{
 		[JsonIgnore]
-		public T Value => (T)CurrentValue;
+		public T Value {
+			get { return (T)CurrentValue; }
+			set { CurrentValue = value; }
+		}
 
 		protected GameSetting(string name, string description, T defaultValue, bool canBeChangedInGame)
 			: base(name, description, defaultValue, canBeChangedInGame)
 		{
 		}
 
-		// ReSharper disable once PublicConstructorInAbstractClass
+		[JsonConstructor]
 		public GameSetting()
 		{
 		}
-
-		public virtual void SetValue(T input) => base.SetValue(input);
 	}
 }

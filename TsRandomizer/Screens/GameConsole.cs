@@ -97,6 +97,7 @@ namespace TsRandomizer.Screens
 			var state = Mouse.GetState();
 
 			var scrolledAmount = previousMouseState.ScrollWheelValue - state.ScrollWheelValue;
+			scrolledAmount =- scrolledAmount;
 
 			if (scrolledAmount > 0 && lines.Count > PageSize + scrollOffset)
 				scrollOffset += PageSize;
@@ -155,6 +156,10 @@ namespace TsRandomizer.Screens
 				if(!handled)
 					AddLine(command.Usage, Color.Orange);
 			}
+			else
+			{
+				AddLine("Unknown command: parts[0]");
+			}
 		}
 
 		void PreviousCommand()
@@ -178,8 +183,11 @@ namespace TsRandomizer.Screens
 		public void AddLine(string message) 
 			=> AddLine(message, Color.White);
 
-		public void AddLine(string message, Color color) 
-			=> lines.Add(new Message(new[] { new Part(message, color) }));
+		public void AddLine(string message, Color color)
+		{
+			foreach (var m in message.Split('\n'))
+				lines.Add(new Message(new[] { new Part(m, color) }));
+		}
 
 		public void Add(params Part[] parts) 
 			=> websocketBuffer.Enqueue(new Message(parts));
