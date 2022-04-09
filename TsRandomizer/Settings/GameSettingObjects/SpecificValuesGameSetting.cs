@@ -9,35 +9,24 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		[JsonIgnoreDeserialize]
 		public List<string> AllowedValues { get; }
 
-		public override void SetValue(object input)
-		{
-			try
-			{
-				var value = input.ToString();
-				if (AllowedValues.Contains(value))
-					base.SetValue(input);
-				else
-					base.SetValue(DefaultValue);
-			}
-			catch
-			{
-				Console.WriteLine("SpecificValuesGameSetting: Can't set value. Input was not a string.");
-			}
-
-		}
-
 		public SpecificValuesGameSetting(string name, string description, List<string> allowedValues,
 			string defaultValue = "Default", bool canBeChangedInGame = false) 
 				: base(name, description, defaultValue, canBeChangedInGame)
 		{
 			AllowedValues = allowedValues;
-
-			SetValue(defaultValue);
 		}
 
 		[JsonConstructor]
 		public SpecificValuesGameSetting()
 		{
+		}
+
+		public override void ToggleValue()
+		{
+			var currentIndex = AllowedValues.IndexOf(Value);
+			var newIndex = currentIndex + 1 >= AllowedValues.Count ? 0 : currentIndex + 1;
+
+			Value = AllowedValues[newIndex];
 		}
 	}
 }

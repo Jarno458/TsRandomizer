@@ -15,6 +15,12 @@ namespace TsRandomizer.Settings
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.ShopFill, s => s.ShopMultiplier, s => s.ShopWarpShards, s => s.LootPool
 				}},
+			new GameSettingCategoryInfo { Name = "Minimap", Description = "Settings related to minimap colors.",
+				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
+					s => s.PastMinimapColor, s => s.PresentMinimapColor, s => s.PyramidMinimapColor,
+					s => s.LootMinimapColor, s => s.SpecailLootMinimapColor,
+					s => s.SaveStatueMinimapColor, s => s.PresentTransitionMinimapColor, s => s.PastTransitionMinimapColor
+				}},
 			new GameSettingCategoryInfo { Name = "Archipelago", Description = "Settings related to games with the Archipelago multiworld.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.NumberOfOnScreenLogLines, s => s.OnScreenLogLineScreenTime, s => s.ShowSendItemsFromMe, s => s.ShowReceivedItemsFromMe,
@@ -55,10 +61,10 @@ namespace TsRandomizer.Settings
 			"How long does a single line shown at the bottom left of the screen stay visible", 1, 10, 0.5, 8, true);
 
 		public OnOffGameSetting ShowSendItemsFromMe = new OnOffGameSetting("Log Items sent by you",
-			"Logs Generic items sent between other players", true, true);
+			"Logs items sent from the you to other players", true, true);
 
 		public OnOffGameSetting ShowReceivedItemsFromMe = new OnOffGameSetting("Log Items received by you",
-			"Logs Generic items sent between other players", false, true);
+			"Logs items you receive from other players", false, true);
 
 		public OnOffGameSetting ShowSendGenericItems = new OnOffGameSetting("Log Generic Items",
 			"Logs Generic items sent between other players", false, true);
@@ -74,5 +80,29 @@ namespace TsRandomizer.Settings
 
 		public OnOffGameSetting ShowSystemMessages = new OnOffGameSetting("Log System Message",
 			"Logs System messages, like who connected/left and who changed tags", true, true);
+
+		public ColorGameSetting PastMinimapColor = new ColorGameSetting("Past color",
+			"Sets the default color for past minimap rooms", "#486090", true);
+
+		public ColorGameSetting PresentMinimapColor = new ColorGameSetting("Present color",
+			"Sets the default color for present minimap rooms", "#802880", true);
+
+		public ColorGameSetting PyramidMinimapColor = new ColorGameSetting("Pyramid color",
+			"Sets the default color for ancient pyramid minimap rooms", "#609030", true);
+
+		public ColorGameSetting LootMinimapColor = new ColorGameSetting("Loot color",
+			"Sets the color for rooms that have items in them for you", "#C5782A", true);
+
+		public ColorGameSetting SpecailLootMinimapColor = new ColorGameSetting("Special Loot color",
+			"Sets the color for rooms that have items in them for you and that are also special rooms like a boss room or transition room", "#F0D840", true);
+
+		public ColorGameSetting SaveStatueMinimapColor = new ColorGameSetting("Save statue color",
+			"Sets the color for rooms that have items in them for you", "#D04040", true);
+
+		public ColorGameSetting PresentTransitionMinimapColor = new ColorGameSetting("Present transition color",
+			"Sets the color for rooms that have items in them for you", "#1A52FB", true);
+
+		public ColorGameSetting PastTransitionMinimapColor = new ColorGameSetting("Past transition color",
+			"Sets the color for rooms that have items in them for you", "#9712C2", true);
 	}
 }

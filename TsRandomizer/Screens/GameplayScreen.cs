@@ -60,6 +60,7 @@ namespace TsRandomizer.Screens
 			var settings = saveFile.GetSettings();
 
 			ScreenManager.Log.SetSettings(settings);
+			gameContentManager.UpdateMinimapColors(settings);
 
 			if (!seed.HasValue)
 				seed = Seed.Zero;

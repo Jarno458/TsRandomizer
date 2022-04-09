@@ -118,7 +118,6 @@ namespace TsRandomizer.Randomisation
 
 			LowerLakeDesolationBridge = AccessToLakeDesolation & (R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary);
 
-
 			AccessToPast = (SeedOptions.Inverted)
 				? (Gate)R.None
 				: (
@@ -135,14 +134,21 @@ namespace TsRandomizer.Randomisation
 				| R.GateRoyalTowers
 				| R.GateCastleRamparts
 				| R.GateCastleKeep
-				| (MawGassMask & (R.GateCavesOfBanishment | R.GateMaw));
+				| (MawGassMask & (R.GateCavesOfBanishment | R.GateMaw)
+				| R.GateCavesOfBanishment & R.Swimming
+				| R.GateMaw & R.DoubleJump & R.Swimming);
 
 			MultipleSmallJumpsOfNpc = (Gate)(R.TimespinnerWheel | R.UpwardDash);
 			DoubleJumpOfNpc = (R.DoubleJump & R.TimespinnerWheel) | R.UpwardDash;
 			ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
 
 			//past
-			LeftSideForestCaves = (AccessToPast & (R.TimeStop | R.ForwardDash)) | R.GateLakeSereneRight | R.GateLakeSereneLeft;
+			LeftSideForestCaves = 
+				(AccessToPast & (R.TimeStop | R.ForwardDash)) 
+				| R.GateLakeSereneRight 
+				| R.GateLakeSereneLeft
+				| R.GateCavesOfBanishment & R.Swimming
+				| R.GateMaw & R.DoubleJump & R.Swimming;
 			UpperLakeSirine = (LeftSideForestCaves & (R.TimeStop | R.Swimming)) | R.GateLakeSereneLeft;
 			LowerLakeSirine = (LeftSideForestCaves | R.GateLakeSereneLeft) & R.Swimming;
 			LowerCavesOfBanishment = LowerLakeSirine | R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump);

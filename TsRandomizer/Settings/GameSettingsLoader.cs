@@ -68,11 +68,11 @@ namespace TsRandomizer.Settings
 			var settings = LoadSettingsFromFile();
 
 			if (slotData.TryGetValue("DamageRando", out var damageRando))
-				settings.DamageRando.SetValue(IsTrue(damageRando));
+				settings.DamageRando.Value = IsTrue(damageRando);
 			if (slotData.TryGetValue("ShopWarpShards", out var shopWarpShards))
-				settings.ShopWarpShards.SetValue(IsTrue(shopWarpShards));
+				settings.ShopWarpShards.Value = IsTrue(shopWarpShards);
 			if (slotData.TryGetValue("ShopMultiplier", out var shopMultiplier))
-				settings.ShopMultiplier.SetValue(ToInt(shopMultiplier, 1));
+				settings.ShopMultiplier.Value = ToInt(shopMultiplier, 1);
 			if (slotData.TryGetValue("ShopFill", out var shopFill))
 			{
 				var value = ToInt(shopFill);
@@ -97,7 +97,7 @@ namespace TsRandomizer.Settings
 						break;
 				}
 
-				settings.ShopFill.SetValue(enumValue);
+				settings.ShopFill.Value = enumValue;
 			}
 
 			return settings;

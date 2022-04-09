@@ -47,10 +47,6 @@ namespace TsRandomizer.Screens
 			Console = new GameConsole(this, Dynamic.GCM);
 
 			Console.AddCommand(new ConnectCommand(this));
-
-#if DEBUG
-			Console.AddCommand(new ScoutCommand());
-#endif
 		}
 
 		public override void Update(GameTime gameTime)
