@@ -109,6 +109,7 @@
     <Compile Include="Commands\TeleportCommand.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
+    <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="Randomisation\HintGenerator.cs" />
     <Compile Include="Screens\GameConsole.cs" />
     <Compile Include="Archipelago\DeathLinker.cs" />
