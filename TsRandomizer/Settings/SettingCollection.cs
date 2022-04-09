@@ -13,7 +13,7 @@ namespace TsRandomizer.Settings
 				}},
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.", 
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.ShopFill, s => s.ShopMultiplier, s => s.ShopWarpShards, s => s.LootDropRateMultipier, s => s.LootPool
+					s => s.ShopFill, s => s.ShopMultiplier, s => s.ShopWarpShards, s => s.LootPool
 				}},
 			new GameSettingCategoryInfo { Name = "Archipelago", Description = "Settings related to games with the Archipelago multiworld.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -33,17 +33,14 @@ namespace TsRandomizer.Settings
 		public OnOffGameSetting ShowBestiary = new OnOffGameSetting("Show Bestiary",
 			"All bestiary entries in the journal are visible by default.", false, true);
 
-		public NumberGameSetting LootDropRateMultipier = new NumberGameSetting("Loot Drop Rate Multiplier",
-			"Multiplier for drop rate of items", 0, 5, 0.5, 1);
-
 		public SpecificValuesGameSetting LootPool = new SpecificValuesGameSetting("Loot Pool",
 			"Sets which items enemies will drop: [Vanilla, Random, Empty]",
-			new List<string> { "Vanilla", "Random", "Empty" });
+			new List<string> { "Vanilla", "Random", "Empty" }, "Vanilla", true);
 
 
 		public SpecificValuesGameSetting ShopFill = new SpecificValuesGameSetting("Shop Inventory",
 			"Sets the items for sale in Merchant Crow's shops. Options: [Default,Random,Vanilla,Empty]",
-			new List<string> { "Default", "Random", "Vanilla", "Empty" });
+			new List<string> { "Default", "Random", "Vanilla", "Empty" }, "Default", true);
 
 		public NumberGameSetting ShopMultiplier = new NumberGameSetting("Shop Price Multiplier",
 			"Multiplier for the cost of items in the shop. Set to 0 for free shops", 0, 10, 1, 1);
