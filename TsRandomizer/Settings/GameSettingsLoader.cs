@@ -23,6 +23,7 @@ namespace TsRandomizer.Settings
 				if (!File.Exists(file))
 				{
 					settings = new SettingCollection();
+					Console.WriteLine("Settings file not found: " + file);
 				}
 				else
 				{
@@ -31,12 +32,11 @@ namespace TsRandomizer.Settings
 					settings = FromJson(settingsString);
 				}
 
-				Console.WriteLine("Settings file not found: " + file);
 			}
 			catch
 			{
 				Console.WriteLine("Error loading settings from " + SettingSubFolderName);
-
+				BackupMalformedSettingsFile();
 				settings = new SettingCollection();
 			}
 
@@ -61,6 +61,19 @@ namespace TsRandomizer.Settings
 			{
 				Console.WriteLine($"Error writing settings: {e}");
 			}
+		}
+
+		public static void BackupMalformedSettingsFile()
+		{
+			try
+			{
+				File.Copy(GetSettingsFilePath(), $"{SettingSubFolderName}/settings_ERROR.json");
+			}
+			catch
+			{
+				// tough luck man idk
+			}
+
 		}
 
 		public static SettingCollection LoadSettingsFromSlotData(Dictionary<string, object> slotData)
@@ -156,7 +169,6 @@ namespace TsRandomizer.Settings
 				.FirstOrDefault() ?? "settings.json";
 		}
 
-
 		internal static SettingCollection FromJson(string json)
 		{
 			try
@@ -172,7 +184,7 @@ namespace TsRandomizer.Settings
 			catch
 			{
 				Console.WriteLine("Error loading settings from " + json);
-
+				BackupMalformedSettingsFile();
 				return new SettingCollection();
 			}
 		}

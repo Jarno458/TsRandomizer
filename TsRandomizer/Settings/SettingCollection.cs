@@ -30,11 +30,11 @@ namespace TsRandomizer.Settings
 		};
 
 		public SpecificValuesGameSetting DamageRando = new SpecificValuesGameSetting("Damage Randomizer",
-			"Randomly nerfs and buffs orbs, spells, and some rings.",
-			new List<string> { "Off", "All Nerfs", "Mostly Nerfs", "Balanced", "Mostly Buffs", "All Buffs" });
+			"Randomly nerfs and buffs orbs, spells, and some rings. \"Manual\" requires editing the randomizer settings file.",
+			new List<string> { "Off", "All Nerfs", "Mostly Nerfs", "Balanced", "Mostly Buffs", "All Buffs", "Manual" });
 
 		public DamageRandoOverridesSetting DamageRandoOverrides = new DamageRandoOverridesSetting("Damage Randomizer Overrides",
-			"Overrides the odds for each orb to be nerfed or buffed. Only editable from the file.");
+			"Overrides the odds for each orb to be nerfed or buffed. Only editable from the file, so you shouldn't even be seeing this text.");
 
 		public SpecificValuesGameSetting ShopFill = new SpecificValuesGameSetting("Shop Inventory",
 			"Sets the items for sale in Merchant Crow's shops. Options: [Default,Random,Vanilla,Empty]",
