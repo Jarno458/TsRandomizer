@@ -144,19 +144,20 @@ namespace TsRandomizer.Screens
 		{
 			foreach (var saveFileEntry in saveFileEntries)
 			{
+				if (!seedRepresentations.ContainsKey(saveFileEntry) && !archipelagoRepresentations.ContainsKey(saveFileEntry)) continue;
+				
+				var entry = saveFileEntry.AsDynamic();
+
+				if (entry.IsEmptySaveSlot || entry.IsCorrupt)
+					continue;
+
+				var drawPosition = (Vector2)entry.DrawPosition;
+				var textXOffset = (int)entry._textOffsetX;
+				var font = (SpriteFont)entry._font;
+				var origin = new Vector2(0.0f, font.LineSpacing / 2f);
+
 				if (seedRepresentations.ContainsKey(saveFileEntry))
 				{
-
-					var entry = saveFileEntry.AsDynamic();
-
-					if (entry.IsEmptySaveSlot || entry.IsCorrupt)
-						continue;
-
-					var drawPosition = (Vector2)entry.DrawPosition;
-					var textXOffset = (int)entry._textOffsetX;
-					var font = (SpriteFont)entry._font;
-					var origin = new Vector2(0.0f, font.LineSpacing / 2f);
-
 					var drawPoint = new Point(
 						(int)(drawPosition.X + textXOffset + entry._saveColumnOffsetX - seedRepresentations[saveFileEntry].Width),
 						(int)drawPosition.Y);
@@ -165,16 +166,6 @@ namespace TsRandomizer.Screens
 				}
 				if (archipelagoRepresentations.ContainsKey(saveFileEntry))
 				{
-					var entry = saveFileEntry.AsDynamic();
-
-					if (entry.IsEmptySaveSlot || entry.IsCorrupt)
-						continue;
-
-					var drawPosition = (Vector2)entry.DrawPosition;
-					var textXOffset = (int)entry._textOffsetX;
-					var font = (SpriteFont)entry._font;
-					var origin = new Vector2(0.0f, font.LineSpacing / 2f);
-
 					var drawPoint = new Point(
 						(int)(drawPosition.X + textXOffset),
 						(int)drawPosition.Y);
