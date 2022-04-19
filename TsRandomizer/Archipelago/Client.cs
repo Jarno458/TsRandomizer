@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
@@ -28,7 +28,7 @@ namespace TsRandomizer.Archipelago
 
 		public static Permissions ForfeitPermissions => session.RoomState.ForfeitPermissions;
 
-		public static string ConnectionId = session.ConnectionInfo.Uuid;
+		public static string ConnectionId => session.ConnectionInfo.Uuid;
 
 		public static string SeedString => session.RoomState.Seed;
 
@@ -96,8 +96,6 @@ namespace TsRandomizer.Archipelago
 			session = null;
 
 			cachedConnectionResult = null;
-
-			ConnectionId = "";
 		}
 
 		public static NetworkItem? GetNextItem(int currentIndex) =>
