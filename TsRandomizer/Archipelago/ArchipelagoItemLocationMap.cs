@@ -94,7 +94,7 @@ namespace TsRandomizer.Archipelago
 
 		void ReceiveItem(NetworkItem networkItem, Level level)
 		{
-			var isLocal = networkItem.Player == slot;
+			var isLocal = networkItem.Player == slot && networkItem.Location >= 0;
 			ItemLocation location;
 
 			if (isLocal)
