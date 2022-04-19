@@ -137,6 +137,10 @@ namespace TsRandomizer.Settings
 						enumValue = "All Buffs";
 						break;
 
+					case 6:
+						enumValue = "Manual";
+						break;
+
 					default:
 						enumValue = "Off";
 						break;
