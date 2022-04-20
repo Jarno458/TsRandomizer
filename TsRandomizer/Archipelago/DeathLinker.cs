@@ -14,6 +14,8 @@ namespace TsRandomizer.Archipelago
 		volatile bool rip;
 		volatile EAFSM lastState;
 
+		public bool deathLinkEnabled = true;
+
 		public DeathLinker(DeathLinkService service)
 		{
 			this.service = service;
@@ -23,6 +25,8 @@ namespace TsRandomizer.Archipelago
 
 		void OnDeathLinkReceived(DeathLink deathLink)
 		{
+			if (!deathLinkEnabled)
+				return;
 			if (lastDeathLink == null || deathLink.Timestamp - lastDeathLink.Timestamp > TimeSpan.FromSeconds(5))
 			{
 				lastDeathLink = deathLink;
@@ -33,7 +37,7 @@ namespace TsRandomizer.Archipelago
 
 		public void Update(Level level, ScreenManager screenManager)
 		{
-			if (level.MainHero == null)
+			if (level.MainHero == null || !deathLinkEnabled)
 				return;
 
 			if (rip)

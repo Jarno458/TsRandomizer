@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
@@ -67,6 +68,7 @@ namespace TsRandomizer.Archipelago
 
 				if (result.Successful)
 				{
+                    ScreenManager.Console.AddCommand(new ToggleDeathlinkCommand());
 #if DEBUG
 					ScreenManager.Console.AddCommand(new ScoutCommand());
 					ScreenManager.Console.AddCommand(new GetKeyCommand());
@@ -96,6 +98,8 @@ namespace TsRandomizer.Archipelago
 			session = null;
 
 			cachedConnectionResult = null;
+
+			GameplayScreen.deathLinkService = null;
 		}
 
 		public static NetworkItem? GetNextItem(int currentIndex) =>
@@ -258,6 +262,25 @@ namespace TsRandomizer.Archipelago
 				return;
 
 			Connect(serverUrl, userName, password, session.ConnectionInfo.Uuid, session.ConnectionInfo.Tags);
+		}
+
+		public static void AddTag(string tag)
+		{
+			if (Array.IndexOf<string>(session.ConnectionInfo.Tags, tag) != -1)
+				return;
+			var stringList = new List<string>(session.ConnectionInfo.Tags.Length + 1);
+			stringList.AddRange((IEnumerable<string>)session.ConnectionInfo.Tags);
+			stringList.Add(tag);
+			session.UpdateConnectionOptions(stringList.ToArray(), session.ConnectionInfo.ItemsHandlingFlags);
+		}
+
+		public static void RemoveTag(string tag)
+		{
+			if (Array.IndexOf<string>(session.ConnectionInfo.Tags, tag) == -1)
+				return;
+			var stringList = new List<string>(session.ConnectionInfo.Tags.Length - 1);
+            stringList.AddRange(session.ConnectionInfo.Tags.Where(x => x != tag));
+            session.UpdateConnectionOptions(stringList.ToArray(), session.ConnectionInfo.ItemsHandlingFlags);
 		}
 	}
 }

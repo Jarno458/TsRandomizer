@@ -44,7 +44,7 @@ namespace TsRandomizer.Screens
 
 		public GCM GameContentManager { get; private set; }
 
-		DeathLinker deathLinkService;
+		public static DeathLinker deathLinkService;
 
 		public GameplayScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
@@ -129,8 +129,7 @@ namespace TsRandomizer.Screens
 
 			FamiliarManager.Update(Level);
 
-			if (seedOptions.DeathLink && deathLinkService != null)
-				deathLinkService.Update(Level, ScreenManager);
+			deathLinkService?.Update(Level, ScreenManager);
 
 #if DEBUG
 			TimespinnerAfterDark(input);
