@@ -67,11 +67,11 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.XML" />
     <Reference Include="Timespinner">
-      <HintPath>..\..\TestVersions\SteamVerison\Timespinner.exe</HintPath>
+      <HintPath>..\..\TestVersions\SteamVersion\Timespinner.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="TsRandomizer">
-      <HintPath>..\..\TestVersions\SteamVerison\TsRandomizer.exe</HintPath>
+      <HintPath>..\..\TestVersions\SteamVersion\TsRandomizer.exe</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
