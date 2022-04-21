@@ -49,6 +49,7 @@ namespace TsRandomizer.Commands
 
 			save.SetValue("DeathLinkTurnedOn", deathLinkEnabled);
 			save.SetValue("DeathLinkTurnedOff", !deathLinkEnabled);
+			console.AddLine($"DeathLink turned {(deathLinkEnabled ? "on" : "off")}.");
 
 			if (GameplayScreen.deathLinkService == null)
 			{
