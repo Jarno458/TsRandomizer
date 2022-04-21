@@ -1,7 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.Archipelago;
 using TsRandomizer.Screens;
 
@@ -9,13 +11,19 @@ namespace TsRandomizer.Commands
 {
 	class ToggleDeathlinkCommand : ConsoleCommand
 	{
-		public override string Command => "ToggleDeathlink";
+		readonly Func<Level> level;
+		GameSave save => level().GameSave;
+
+		public override string Command => "toggledeathlink";
 		public override string ParameterUsage => "<state?>";
+
+		public ToggleDeathlinkCommand(Func<Level> level)
+		{
+			this.level = level;
+		}
 
 		public override bool Handle(GameConsole console, string[] parameters)
 		{
-			
-
 			if (!Client.IsConnected)
 			{
 				console.AddLine("Not connected to Archipelago.");
@@ -38,6 +46,9 @@ namespace TsRandomizer.Commands
 			{
 				deathLinkEnabled = !deathLinkEnabled;
 			}
+
+			save.SetValue("DeathLinkTurnedOn", deathLinkEnabled);
+			save.SetValue("DeathLinkTurnedOff", !deathLinkEnabled);
 
 			if (GameplayScreen.deathLinkService == null)
 			{

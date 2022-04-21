@@ -68,7 +68,6 @@ namespace TsRandomizer.Archipelago
 
 				if (result.Successful)
 				{
-                    ScreenManager.Console.AddCommand(new ToggleDeathlinkCommand());
 #if DEBUG
 					ScreenManager.Console.AddCommand(new ScoutCommand());
 					ScreenManager.Console.AddCommand(new GetKeyCommand());

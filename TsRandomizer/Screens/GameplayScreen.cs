@@ -95,8 +95,9 @@ namespace TsRandomizer.Screens
 			{
 				Client.SetStatus(ArchipelagoClientState.ClientPlaying);
 
-				if (seedOptions.DeathLink)
+				if (Save.GetSaveBool("DeathLinkTurnedOn") || (seedOptions.DeathLink && !Save.GetSaveBool("DeathLinkTurnedOff")))
 					deathLinkService = new DeathLinker(Client.GetDeathLinkService());
+				ScreenManager.Console.AddCommand(new ToggleDeathlinkCommand(() => Level));
 			}
 
 #if DEBUG
