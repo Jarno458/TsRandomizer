@@ -27,9 +27,9 @@ namespace TsRandomizerSeedGeneratah
 			}
 		}
 
-		static LookupDictionairy<Seed, GenerationResult> ReadKnownSeeds()
+		static LookupDictionary<Seed, GenerationResult> ReadKnownSeeds()
 		{
-			var seeds = new LookupDictionairy<Seed, GenerationResult>(r => r.Seed);
+			var seeds = new LookupDictionary<Seed, GenerationResult>(r => r.Seed);
 
 			if (!File.Exists(GeneratedSeedsFileName))
 				return seeds;

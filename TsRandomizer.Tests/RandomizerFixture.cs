@@ -17,7 +17,7 @@ namespace TsRandomizer.Tests
 		[Test]
 		public void Should_generate_a_hundert_beatable_seeds()
 		{
-			var seeds = new LookupDictionairy<Seed, GenerationResult>(r => r.Seed);
+			var seeds = new LookupDictionary<Seed, GenerationResult>(r => r.Seed);
 
 			while (seeds.Count != 100)
 			{
