@@ -25,7 +25,7 @@ namespace TsRandomizer.Settings
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.NumberOfOnScreenLogLines, s => s.OnScreenLogLineScreenTime, s => s.ShowSendItemsFromMe, s => s.ShowReceivedItemsFromMe,
 					s => s.ShowSendGenericItems, s => s.ShowSendImportantItems, s => s.ShowSendProgressionItems, s => s.ShowSendTrapItems,
-					s => s.ShowSystemMessages
+					s => s.ShowSystemMessages, s => s.DeathLinkSetting
 				}}
 		};
 
@@ -92,5 +92,8 @@ namespace TsRandomizer.Settings
 
 		public ColorGameSetting PastTransitionMinimapColor = new ColorGameSetting("Past transition color",
 			"Sets the color for rooms that have items in them for you", "#9712C2", true);
+
+		public OnOffGameSetting DeathLinkSetting = new OnOffGameSetting("DeathLink",
+			"Sets whether DeathLink is on or off", false, true);
 	}
 }

@@ -96,8 +96,10 @@ namespace TsRandomizer.Screens
 				Client.SetStatus(ArchipelagoClientState.ClientPlaying);
 
 				if (Save.GetSaveBool("DeathLinkTurnedOn") || (seedOptions.DeathLink && !Save.GetSaveBool("DeathLinkTurnedOff")))
+				{
 					deathLinkService = new DeathLinker(Client.GetDeathLinkService());
-				ScreenManager.Console.AddCommand(new ToggleDeathlinkCommand(() => Level));
+					settings.DeathLinkSetting.Value = true;
+				}
 			}
 
 #if DEBUG
@@ -130,6 +132,24 @@ namespace TsRandomizer.Screens
 
 			FamiliarManager.Update(Level);
 
+			if (Settings.DeathLinkSetting.Value != (deathLinkService?.deathLinkEnabled ?? false))
+			{
+				if (deathLinkService == null)
+					deathLinkService = new DeathLinker(Client.GetDeathLinkService());
+				deathLinkService.deathLinkEnabled = Settings.DeathLinkSetting.Value;
+
+				Save.SetValue("DeathLinkTurnedOn", deathLinkService.deathLinkEnabled);
+				Save.SetValue("DeathLinkTurnedOff", !deathLinkService.deathLinkEnabled);
+
+				if (Settings.DeathLinkSetting.Value)
+				{
+					Client.AddTag("DeathLink");
+				}
+				else
+				{
+					Client.RemoveTag("DeathLink");
+				}
+			}
 			deathLinkService?.Update(Level, ScreenManager);
 
 #if DEBUG

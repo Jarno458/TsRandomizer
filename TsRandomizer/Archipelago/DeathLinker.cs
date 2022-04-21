@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
