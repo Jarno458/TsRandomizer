@@ -263,6 +263,14 @@ namespace TsRandomizer.Archipelago
 			Connect(serverUrl, userName, password, session.ConnectionInfo.Uuid, session.ConnectionInfo.Tags);
 		}
 
+		static void UpdateTags(string[] tags)
+		{
+			if (IsConnected && session.Socket.Connected)
+				session.UpdateConnectionOptions(tags, session.ConnectionInfo.ItemsHandlingFlags);
+			else
+				Connect(serverUrl, userName, password, session.ConnectionInfo.Uuid, tags);
+		}
+
 		public static void AddTag(string tag)
 		{
 			if (Array.IndexOf<string>(session.ConnectionInfo.Tags, tag) != -1)
@@ -270,7 +278,7 @@ namespace TsRandomizer.Archipelago
 			var stringList = new List<string>(session.ConnectionInfo.Tags.Length + 1);
 			stringList.AddRange((IEnumerable<string>)session.ConnectionInfo.Tags);
 			stringList.Add(tag);
-			session.UpdateConnectionOptions(stringList.ToArray(), session.ConnectionInfo.ItemsHandlingFlags);
+			UpdateTags(stringList.ToArray());
 		}
 
 		public static void RemoveTag(string tag)
@@ -279,7 +287,7 @@ namespace TsRandomizer.Archipelago
 				return;
 			var stringList = new List<string>(session.ConnectionInfo.Tags.Length - 1);
             stringList.AddRange(session.ConnectionInfo.Tags.Where(x => x != tag));
-            session.UpdateConnectionOptions(stringList.ToArray(), session.ConnectionInfo.ItemsHandlingFlags);
+            UpdateTags(stringList.ToArray());
 		}
 	}
 }
