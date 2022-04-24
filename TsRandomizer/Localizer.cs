@@ -39,6 +39,10 @@ namespace TsRandomizer
 					.GetValue(null);
 
 				var stringInstances = (Dictionary<string, StringInstance>) stringLibrary.AsDynamic()._stringInstances;
+				if (!stringInstances.ContainsKey(key))
+				{
+					stringInstances.Add(key, new StringInstance() { Key = key, Text = value });
+				}
 
 				stringInstances[key].Text = value;
 			}

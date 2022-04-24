@@ -91,6 +91,8 @@ namespace TsRandomizer.Screens
 			if (settings.DamageRando.Value)
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave);
 
+			BestiaryManager.UpdateBestiary(Level, seedOptions, settings);
+
 			if (seedOptions.Archipelago)
 			{
 				Client.SetStatus(ArchipelagoClientState.ClientPlaying);
