@@ -24,6 +24,7 @@ namespace TsRandomizer.Screens
 		const int NumberOfSaveFileSlots = 8;
 
 		readonly Dictionary<object, SeedRepresentation> seedRepresentations = new Dictionary<object, SeedRepresentation>(10);
+		readonly Dictionary<object, ArchipelagoRepresentation> archipelagoRepresentations = new Dictionary<object, ArchipelagoRepresentation>(10);
 
 		int fileToDeleteIndex = -1;
 		int zoom;
@@ -43,6 +44,7 @@ namespace TsRandomizer.Screens
 				var seed = saveFile.GetSeed();
 
 				seedRepresentations.Add(entry, new SeedRepresentation(seed, screenManager.Dynamic.GCM, false));
+				archipelagoRepresentations.Add(entry, new ArchipelagoRepresentation(saveFile, screenManager.Dynamic.GCM));
 			}
 		}
 
@@ -66,18 +68,32 @@ namespace TsRandomizer.Screens
 
 			UpdateDrawPositions(saveFileEntries);
 
-			var missingEntries = new List<object>();
+			var missingSeedEntries = new List<object>();
 
 			foreach (var seedRepresentation in seedRepresentations)
 			{
 				seedRepresentation.Value.ShowSeedId = false;
 
 				if (!saveFileEntries.Contains(seedRepresentation.Key))
-					missingEntries.Add(seedRepresentation.Key);
+					missingSeedEntries.Add(seedRepresentation.Key);
 			}
 
-			foreach (var missingEntry in missingEntries)
+			foreach (var missingEntry in missingSeedEntries)
 				seedRepresentations.Remove(missingEntry);
+
+			var missingArchipelagoEntries = new List<object>();
+			
+			foreach (var archipelagoRepresentation in archipelagoRepresentations)
+			{
+				archipelagoRepresentation.Value.ShowArchipelagoInfo = false;
+
+				if (!saveFileEntries.Contains(archipelagoRepresentation.Key))
+					missingArchipelagoEntries.Add(archipelagoRepresentation.Key);
+			}
+
+			foreach (var missingEntry in missingArchipelagoEntries)
+				archipelagoRepresentations.Remove(missingEntry);
+
 
 			UpdateInput(input);
 		}
@@ -128,23 +144,34 @@ namespace TsRandomizer.Screens
 		{
 			foreach (var saveFileEntry in saveFileEntries)
 			{
-				if (!seedRepresentations.ContainsKey(saveFileEntry)) continue;
-
+				if (!seedRepresentations.ContainsKey(saveFileEntry) && !archipelagoRepresentations.ContainsKey(saveFileEntry)) continue;
+				
 				var entry = saveFileEntry.AsDynamic();
 
 				if (entry.IsEmptySaveSlot || entry.IsCorrupt)
 					continue;
 
-				var drawPosition = (Vector2) entry.DrawPosition;
-				var textXOffset = (int) entry._textOffsetX;
-				var font = (SpriteFont) entry._font;
+				var drawPosition = (Vector2)entry.DrawPosition;
+				var textXOffset = (int)entry._textOffsetX;
+				var font = (SpriteFont)entry._font;
 				var origin = new Vector2(0.0f, font.LineSpacing / 2f);
 
-				var drawPoint = new Point(
-					(int) (drawPosition.X + textXOffset + entry._saveColumnOffsetX - seedRepresentations[saveFileEntry].Width),
-					(int) drawPosition.Y);
+				if (seedRepresentations.ContainsKey(saveFileEntry))
+				{
+					var drawPoint = new Point(
+						(int)(drawPosition.X + textXOffset + entry._saveColumnOffsetX - seedRepresentations[saveFileEntry].Width),
+						(int)drawPosition.Y);
 
-				seedRepresentations[saveFileEntry].SetDrawPoint(drawPoint, origin);
+					seedRepresentations[saveFileEntry].SetDrawPoint(drawPoint, origin);
+				}
+				if (archipelagoRepresentations.ContainsKey(saveFileEntry))
+				{
+					var drawPoint = new Point(
+						(int)(drawPosition.X + textXOffset),
+						(int)drawPosition.Y);
+
+					archipelagoRepresentations[saveFileEntry].SetDrawPoint(drawPoint, origin);
+				}
 			}
 		}
 
@@ -193,6 +220,10 @@ namespace TsRandomizer.Screens
 
 				SDL.SDL_SetClipboardText(seed.Value.ToString());
 			}
+			if (input.IsButtonHold(Buttons.LeftShoulder))
+			{
+				DisplayArchipelagoInfo();
+			}
 		}
 
 		void UpdateDescription(bool displayDeleteAll)
@@ -229,6 +260,15 @@ namespace TsRandomizer.Screens
 			   && seedRepresentations.TryGetValue(currentEntry, out var seedRepresentation) 
 			   && seedRepresentation != null)
 					seedRepresentation.ShowSeedId = true;
+		}
+
+		void DisplayArchipelagoInfo()
+		{
+			var currentEntry = CurrentSelectedMenuEntry;
+			if (currentEntry != null
+			   && archipelagoRepresentations.TryGetValue(currentEntry, out var archipelagoRepresentation)
+			   && archipelagoRepresentation != null)
+				archipelagoRepresentation.ShowArchipelagoInfo = true;
 		}
 
 		void ShowDeleteAllDialog()
@@ -375,9 +415,15 @@ namespace TsRandomizer.Screens
 				return;
 
 			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
+			{
 				foreach (var seedRepresentation in seedRepresentations)
 					if (!seedRepresentation.Key.AsDynamic().IsScrolledOff)
 						seedRepresentation.Value.Draw(spriteBatch);
+
+				foreach (var archipelagoRepresentation in archipelagoRepresentations)
+					if (!archipelagoRepresentation.Key.AsDynamic().IsScrolledOff)
+						archipelagoRepresentation.Value.Draw(spriteBatch);
+			}
 		}
 	}
 }
