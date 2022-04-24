@@ -107,6 +107,7 @@
     <Compile Include="Commands\ScoutCommand.cs" />
     <Compile Include="Commands\GetKeyCommand.cs" />
     <Compile Include="Commands\TeleportCommand.cs" />
+    <Compile Include="Drawables\ArchipelagoRepresentation.cs" />
     <Compile Include="Extensions\GameContentManagerExtension.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />

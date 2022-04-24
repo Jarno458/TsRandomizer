@@ -55,7 +55,7 @@ namespace TsRandomizer.Drawables
 				var hasUserInfo = save.DataKeyStrings.TryGetValue(ArchipelagoItemLocationRandomizer.GameSaveUserKey, out var user);
 				if (!hasServerInfo && !hasUserInfo)
 				{
-					DrawArchipelagoInfo(spriteBatch, "Non-Archipelago Seed", "", Color.Yellow);
+					//Non-Archipelago Seed
 				}
 				else
 				{

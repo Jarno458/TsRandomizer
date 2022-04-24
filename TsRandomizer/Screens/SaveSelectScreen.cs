@@ -190,6 +190,8 @@ namespace TsRandomizer.Screens
 
 				DisplaySeedId();
 
+				DisplayArchipelagoInfo();
+
 				if (input.IsNewButtonPress(Buttons.X))
 				{
 					Dynamic._isDeleting = false;
@@ -220,11 +222,7 @@ namespace TsRandomizer.Screens
 
 				SDL.SDL_SetClipboardText(seed.Value.ToString());
 			}
-			if (input.IsButtonHold(Buttons.LeftShoulder))
-			{
-				DisplayArchipelagoInfo();
-			}
-		}
+ 		}
 
 		void UpdateDescription(bool displayDeleteAll)
 		{
