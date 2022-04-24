@@ -7,13 +7,13 @@ namespace TsRandomizer.Settings
 	public class SettingCollection
 	{
 		public static readonly GameSettingCategoryInfo[] Categories = {
-			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player stat scaling.", 
+			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.", 
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.DamageRando
 				}},
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.", 
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.ShopFill, s => s.ShopMultiplier, s => s.ShopWarpShards
+					s => s.ShopFill, s => s.ShopMultiplier, s => s.ShopWarpShards, s => s.LootPool
 				}},
 			new GameSettingCategoryInfo { Name = "Minimap", Description = "Settings related to minimap colors.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -26,15 +26,27 @@ namespace TsRandomizer.Settings
 					s => s.NumberOfOnScreenLogLines, s => s.OnScreenLogLineScreenTime, s => s.ShowSendItemsFromMe, s => s.ShowReceivedItemsFromMe,
 					s => s.ShowSendGenericItems, s => s.ShowSendImportantItems, s => s.ShowSendProgressionItems, s => s.ShowSendTrapItems,
 					s => s.ShowSystemMessages
+				}},
+			new GameSettingCategoryInfo { Name = "Other", Description = "Miscellaneous settings",
+				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
+					s => s.ShowBestiary
 				}}
 		};
 
 		public OnOffGameSetting DamageRando = new OnOffGameSetting("Damage Randomizer",
 			"Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false);
 
+		public OnOffGameSetting ShowBestiary = new OnOffGameSetting("Show Bestiary",
+			"All bestiary entries in the journal are visible by default.", false, false);
+
+		public SpecificValuesGameSetting LootPool = new SpecificValuesGameSetting("Loot Pool",
+			"Sets which items enemies will drop: [Vanilla, Random, Empty]",
+			new List<string> { "Vanilla", "Random", "Empty" }, "Vanilla", true);
+
+
 		public SpecificValuesGameSetting ShopFill = new SpecificValuesGameSetting("Shop Inventory",
 			"Sets the items for sale in Merchant Crow's shops. Options: [Default,Random,Vanilla,Empty]",
-			new List<string> { "Default", "Random", "Vanilla", "Empty" });
+			new List<string> { "Default", "Random", "Vanilla", "Empty" }, "Default", true);
 
 		public NumberGameSetting ShopMultiplier = new NumberGameSetting("Shop Price Multiplier",
 			"Multiplier for the cost of items in the shop. Set to 0 for free shops", 0, 10, 1, 1);

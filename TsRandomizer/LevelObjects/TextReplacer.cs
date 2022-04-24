@@ -11,10 +11,6 @@ namespace TsRandomizer.LevelObjects
 
 		static TextReplacer()
 	    {
-			TextReplacers.Add(new TextReplacer(16, 21, (level, itemLocations, options) => {
-				TimeSpinnerGame.Localizer.OverrideKey("cs_pro_car_07",
-					"I can use some of my power to help warp you back out of here.");
-			}));
 			TextReplacers.Add(new TextReplacer(16,26, (level, itemLocations, options) =>
 			{
 				var concussions = level.GameSave.GetConcussionCount();
