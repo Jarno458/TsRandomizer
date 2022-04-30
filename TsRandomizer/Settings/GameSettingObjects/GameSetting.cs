@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Settings.GameSettingObjects
@@ -45,10 +46,12 @@ namespace TsRandomizer.Settings.GameSettingObjects
 
 	public abstract class GameSetting<T> : GameSetting
 	{
+		public event Action<T> OnValueChangedAction;
+
 		[JsonIgnore]
 		public T Value {
 			get { return (T)CurrentValue; }
-			set { CurrentValue = value; }
+			set { CurrentValue = value; OnValueChangedAction?.Invoke(value); }
 		}
 
 		protected GameSetting(string name, string description, T defaultValue, bool canBeChangedInGame)

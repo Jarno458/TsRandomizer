@@ -44,7 +44,7 @@ namespace TsRandomizer.Screens
 
 		public GCM GameContentManager { get; private set; }
 
-		public static DeathLinker deathLinkService;
+		public DeathLinker deathLinkService;
 
 		public GameplayScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
@@ -97,11 +97,15 @@ namespace TsRandomizer.Screens
 			{
 				Client.SetStatus(ArchipelagoClientState.ClientPlaying);
 
-				if (Save.GetSaveBool("DeathLinkTurnedOn") || (seedOptions.DeathLink && !Save.GetSaveBool("DeathLinkTurnedOff")))
-				{
-					deathLinkService = new DeathLinker(Client.GetDeathLinkService());
-					settings.DeathLinkSetting.Value = true;
-				}
+				var deathlinkenabled = Save.GetSaveBool("DeathLinkEnabled");
+				var deathlinkdisabled = Save.GetSaveBool("DeathLinkDisabled");
+
+				deathLinkService = new DeathLinker(Save, settings);
+				if (deathlinkenabled || deathlinkdisabled)
+					settings.DeathLinkSetting.Value = deathlinkenabled;
+				else
+					settings.DeathLinkSetting.Value = seedOptions.DeathLink;
+				
 			}
 
 #if DEBUG
@@ -134,25 +138,7 @@ namespace TsRandomizer.Screens
 
 			FamiliarManager.Update(Level);
 
-			if (Settings.DeathLinkSetting.Value != (deathLinkService?.deathLinkEnabled ?? false))
-			{
-				if (deathLinkService == null)
-					deathLinkService = new DeathLinker(Client.GetDeathLinkService());
-				deathLinkService.deathLinkEnabled = Settings.DeathLinkSetting.Value;
-
-				Save.SetValue("DeathLinkTurnedOn", deathLinkService.deathLinkEnabled);
-				Save.SetValue("DeathLinkTurnedOff", !deathLinkService.deathLinkEnabled);
-
-				if (Settings.DeathLinkSetting.Value)
-				{
-					Client.AddTag("DeathLink");
-				}
-				else
-				{
-					Client.RemoveTag("DeathLink");
-				}
-			}
-			deathLinkService?.Update(Level, ScreenManager);
+			deathLinkService.Update(Level, ScreenManager);
 
 #if DEBUG
 			TimespinnerAfterDark(input);
