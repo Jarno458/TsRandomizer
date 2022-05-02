@@ -62,6 +62,11 @@ namespace TsRandomizer.Archipelago
 			if (rip)
 			{
 				rip = false;
+				if (level.ID == 17 || (level.ID == 16 && level.RoomID == 27))
+				{
+					lastState = level.MainHero.CurrentState;
+					return; //Do not kill the player during the ending.
+				}
 
 				ScreenManager.Console.AddLine( 
 					!string.IsNullOrEmpty(lastDeathLink.Cause)
