@@ -123,6 +123,8 @@ namespace TsRandomizer.Settings
 			}
 			if (slotData.TryGetValue("ShowBestiary", out var showBestiary))
 				settings.ShowBestiary.Value = IsTrue(showBestiary);
+			if (slotData.TryGetValue("DeathLink", out var deathLink))
+				settings.DeathLink.Value = IsTrue(deathLink);
 
 			return settings;
 		}

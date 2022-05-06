@@ -26,7 +26,7 @@ namespace TsRandomizer.Archipelago
 
 		void OnDeathLinkReceived(DeathLink deathLink)
 		{
-			if (!settings.DeathLinkSetting.Value)
+			if (!settings.DeathLink.Value)
 				return;
 
 			if (lastDeathLink == null || deathLink.Timestamp - lastDeathLink.Timestamp > TimeSpan.FromSeconds(5))
@@ -39,7 +39,7 @@ namespace TsRandomizer.Archipelago
 
 		public void Update(Level level, ScreenManager screenManager)
 		{
-			if (!settings.DeathLinkSetting.Value || level.MainHero == null)
+			if (!settings.DeathLink.Value || level.MainHero == null)
 				return;
 
 			if (rip)
