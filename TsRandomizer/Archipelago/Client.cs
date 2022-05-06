@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
@@ -17,12 +18,16 @@ namespace TsRandomizer.Archipelago
 	static class Client
 	{
 		static ArchipelagoSession session;
+		static object reconnectionLock = new object();
 
 		static string serverUrl;
 		static string userName;
 		static string password;
 
 		static LoginResult cachedConnectionResult;
+
+		static DeathLinkService deathLinkService;
+		public static Action<DeathLink> OnDeathLinkAction;
 
 		public static bool IsConnected;
 
@@ -32,7 +37,18 @@ namespace TsRandomizer.Archipelago
 
 		public static string SeedString => session.RoomState.Seed;
 
-		public static DeathLinkService GetDeathLinkService() => session.CreateDeathLinkServiceAndEnable();
+		public static DeathLinkService GetDeathLinkService()
+		{
+			if (!IsConnected || !session.Socket.Connected)
+				return null;
+
+			if (deathLinkService != null)
+				return deathLinkService;
+
+			deathLinkService = session.CreateDeathLinkServiceAndEnable();
+			deathLinkService.OnDeathLinkReceived += OnDeathLink;
+			return deathLinkService;
+		}
 
 		public static string GetCurrentPlayerName() => session.Players.GetPlayerAliasAndName(session.ConnectionInfo.Slot);
 
@@ -49,6 +65,8 @@ namespace TsRandomizer.Archipelago
 				
 				Disconnect();
 			}
+
+			deathLinkService = null;	//The previous DeathLink service cannot be reused as it stores the previous connection session.
 
 			serverUrl = server;
 			userName = user;
@@ -71,6 +89,7 @@ namespace TsRandomizer.Archipelago
 					ScreenManager.Console.AddCommand(new ScoutCommand());
 					ScreenManager.Console.AddCommand(new GetKeyCommand());
 #endif
+					AddDeathLinkerTask();
 				}
 
 			}
@@ -252,12 +271,68 @@ namespace TsRandomizer.Archipelago
 			session.Locations.CompleteLocationChecks(locations);
 		}
 
-		static void ReconnectIfNeeded()
+		static void OnDeathLink(DeathLink deathLink) => OnDeathLinkAction?.Invoke(deathLink);
+
+		public static void AddDeathLinker() =>
+			Task.Factory.StartNew(AddDeathLinkerTask);
+
+		static void AddDeathLinkerTask()
 		{
-			if (IsConnected && session.Socket.Connected)
+			if (!session.ConnectionInfo.Tags.Contains("DeathLink"))
 				return;
 
-			Connect(serverUrl, userName, password, session.ConnectionInfo.Uuid, session.ConnectionInfo.Tags);
+			GetDeathLinkService();
+		}
+
+		public static void SendDeathLink(DeathLink deathLink) =>
+			Task.Factory.StartNew(() => { SendDeathLinkTask(deathLink); });
+
+		static void SendDeathLinkTask(DeathLink deathLink)
+		{
+			ReconnectIfNeeded();
+			GetDeathLinkService().SendDeathLink(deathLink);
+		}
+
+		static void ReconnectIfNeeded()
+		{
+			//Since there are potentially multiple tasks trying to do this task at once, ensure each one waits its turn
+			lock (reconnectionLock)
+			{
+				if (IsConnected && session.Socket.Connected)
+					return;
+
+				Connect(serverUrl, userName, password, session.ConnectionInfo.Uuid, session.ConnectionInfo.Tags);
+			}
+		}
+
+		static void UpdateTags(string[] tags)
+		{
+			lock (reconnectionLock)
+			{
+				if (IsConnected && session.Socket.Connected)
+					session.UpdateConnectionOptions(tags, session.ConnectionInfo.ItemsHandlingFlags);
+				else
+					Connect(serverUrl, userName, password, session.ConnectionInfo.Uuid, tags);
+			}
+		}
+
+		public static void AddTag(string tag)
+		{
+			if (Array.IndexOf<string>(session.ConnectionInfo.Tags, tag) != -1)
+				return;
+			var stringList = new List<string>(session.ConnectionInfo.Tags.Length + 1);
+			stringList.AddRange((IEnumerable<string>)session.ConnectionInfo.Tags);
+			stringList.Add(tag);
+			UpdateTags(stringList.ToArray());
+		}
+
+		public static void RemoveTag(string tag)
+		{
+			if (Array.IndexOf<string>(session.ConnectionInfo.Tags, tag) == -1)
+				return;
+			var stringList = new List<string>(session.ConnectionInfo.Tags.Length - 1);
+            stringList.AddRange(session.ConnectionInfo.Tags.Where(x => x != tag));
+            UpdateTags(stringList.ToArray());
 		}
 	}
 }

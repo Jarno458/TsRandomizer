@@ -44,7 +44,7 @@ namespace TsRandomizer.Screens
 
 		public GCM GameContentManager { get; private set; }
 
-		DeathLinker deathLinkService;
+		public DeathLinker deathLinkService;
 
 		public GameplayScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
@@ -97,8 +97,15 @@ namespace TsRandomizer.Screens
 			{
 				Client.SetStatus(ArchipelagoClientState.ClientPlaying);
 
-				if (seedOptions.DeathLink)
-					deathLinkService = new DeathLinker(Client.GetDeathLinkService());
+				var deathlinkenabled = Save.GetSaveBool("DeathLinkEnabled");
+				var deathlinkdisabled = Save.GetSaveBool("DeathLinkDisabled");
+
+				deathLinkService = new DeathLinker(Save, settings);
+				if (deathlinkenabled || deathlinkdisabled)
+					settings.DeathLinkSetting.Value = deathlinkenabled;
+				else
+					settings.DeathLinkSetting.Value = seedOptions.DeathLink;
+				
 			}
 
 #if DEBUG
@@ -131,8 +138,7 @@ namespace TsRandomizer.Screens
 
 			FamiliarManager.Update(Level);
 
-			if (seedOptions.DeathLink && deathLinkService != null)
-				deathLinkService.Update(Level, ScreenManager);
+			deathLinkService.Update(Level, ScreenManager);
 
 #if DEBUG
 			TimespinnerAfterDark(input);
