@@ -21,7 +21,7 @@ namespace TsRandomizer.Archipelago
 
 		bool firstPass;
 
-		Dictionary<ItemKey, ItemIdentifier> personalLocations;
+		HashSet<ItemKey> personalLocationItemKeys;
 
 		public ArchipelagoItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, SeedOptions options, int slot)
 			: base(itemInfoProvider, itemUnlockingMap, options)
@@ -36,7 +36,8 @@ namespace TsRandomizer.Archipelago
 			foreach (var itemLocation in this)
 				itemLocation.BaseOnGameSave(gameSave);
 
-			gameSave.DataKeyStrings.TryParsePersonalItems(ArchipelagoItemLocationRandomizer.GameSavePersonalItemIds, out personalLocations);
+			gameSave.DataKeyStrings.TryParsePersonalItems(ArchipelagoItemLocationRandomizer.GameSavePersonalItemIds, out var personalLocations);
+			personalLocationItemKeys = personalLocations.Keys.ToHashSet();
 
 			Client.LocationCheckHelper.CheckedLocationsUpdated += MarkCheckedLocations;
 			MarkCheckedLocations(Client.LocationCheckHelper.AllLocationsChecked);
@@ -103,10 +104,8 @@ namespace TsRandomizer.Archipelago
 			if (TryGetLocation(networkItem, out var location) && networkItem.Player == slot)
 			{
 				//ignore message if its from my slot and a location i already picked up
-				if (location.IsPickedUp && personalLocations.ContainsKey(location.Key))
-				{
+				if (location.IsPickedUp && personalLocationItemKeys.Contains(location.Key))
 					return;
-				}
 			}
 			else
 			{
