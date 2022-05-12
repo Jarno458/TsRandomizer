@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Archipelago.MultiClient.Net.Models;
@@ -8,6 +9,7 @@ using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.ItemTracker;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Randomisation.ItemPlacers;
 
 namespace TsRandomizer.Archipelago
 {
@@ -18,6 +20,8 @@ namespace TsRandomizer.Archipelago
 		readonly int slot;
 
 		bool firstPass;
+
+		HashSet<ItemKey> personalLocationItemKeys;
 
 		public ArchipelagoItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, SeedOptions options, int slot)
 			: base(itemInfoProvider, itemUnlockingMap, options)
@@ -31,6 +35,9 @@ namespace TsRandomizer.Archipelago
 		{
 			foreach (var itemLocation in this)
 				itemLocation.BaseOnGameSave(gameSave);
+
+			gameSave.DataKeyStrings.TryParsePersonalItems(ArchipelagoItemLocationRandomizer.GameSavePersonalItemIds, out var personalLocations);
+			personalLocationItemKeys = personalLocations.Keys.ToHashSet();
 
 			Client.LocationCheckHelper.CheckedLocationsUpdated += MarkCheckedLocations;
 			MarkCheckedLocations(Client.LocationCheckHelper.AllLocationsChecked);
@@ -94,13 +101,10 @@ namespace TsRandomizer.Archipelago
 
 		void ReceiveItem(NetworkItem networkItem, Level level)
 		{
-			var isLocal = networkItem.Player == slot;
-			ItemLocation location;
-
-			if (isLocal)
+			if (TryGetLocation(networkItem, out var location) && networkItem.Player == slot)
 			{
 				//ignore message if its from my slot and a location i already picked up
-				if (!TryGetLocation(networkItem, out location) || location.IsPickedUp)
+				if (location.IsPickedUp && personalLocationItemKeys.Contains(location.Key))
 					return;
 			}
 			else

@@ -103,7 +103,7 @@ namespace TsRandomizer.Settings
 					case 3:
 						enumValue = "Empty";
 						break;
-
+					case 0:
 					default:
 						enumValue = "Default";
 						break;
@@ -111,15 +111,16 @@ namespace TsRandomizer.Settings
 
 				settings.ShopFill.Value = enumValue;
 			}
-			if (slotData.TryGetValue("DamageRando", out var damageRando))
+
+      if (slotData.TryGetValue("DamageRando", out var damageRando))
 			{
 				var value = ToInt(damageRando);
-				string enumValue;
+        string enumValue;
 
 				switch (value)
 				{
 					case 1:
-						enumValue = "All Nerfs";
+ 						enumValue = "All Nerfs";
 						break;
 
 					case 2:
@@ -129,8 +130,8 @@ namespace TsRandomizer.Settings
 					case 3:
 						enumValue = "Balanced";
 						break;
-
-					case 4:
+            
+ 					case 4:
 						enumValue = "Mostly Buffs";
 						break;
 
@@ -148,14 +149,43 @@ namespace TsRandomizer.Settings
 				}
 				settings.DamageRando.Value = enumValue;
 			}
-
-			if (settings.DamageRando.Value != "Off"
+      
+      if (settings.DamageRando.Value != "Off"
 				&& slotData.TryGetValue("DamageRandoOverrides", out var damageRandoOverrides))
 			{
 				Dictionary<string, OrbDamageOdds> overrides = new Dictionary<string, OrbDamageOdds>();
 				JsonConvert.PopulateObject(damageRandoOverrides.ToString(), overrides);
 				settings.DamageRandoOverrides.Value = FixOrbNames(overrides);
 			}
+
+			if (slotData.TryGetValue("LootPool", out var lootPool))
+			{
+				var value = ToInt(lootPool);
+				string enumValue;
+
+				switch (value)
+				{
+					case 1:
+						enumValue = "Random";
+						break;
+
+					case 2:
+						enumValue = "Empty";
+						break;
+					case 0:
+					default:
+						enumValue = "Vanilla";
+						break;
+				}
+
+				settings.LootPool.Value = enumValue;
+			}
+      
+			if (slotData.TryGetValue("ShowBestiary", out var showBestiary))
+				settings.ShowBestiary.Value = IsTrue(showBestiary);
+			if (slotData.TryGetValue("DeathLink", out var deathLink))
+				settings.DeathLink.Value = IsTrue(deathLink);
+      
 			return settings;
 		}
 

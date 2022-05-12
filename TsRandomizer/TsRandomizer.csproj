@@ -72,8 +72,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Archipelago.MultiClient.Net">
-      <HintPath>..\lib\Archipelago.MultiClient.Net.dll</HintPath>
+    <Reference Include="Archipelago.MultiClient.Net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Archipelago.MultiClient.Net.3.0.1\lib\net35\Archipelago.MultiClient.Net.dll</HintPath>
     </Reference>
     <Reference Include="FNA">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
@@ -82,9 +82,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Archipelago.MultiClient.Net.3.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -92,8 +91,8 @@
     <Reference Include="Timespinner">
       <HintPath>..\..\Timespinner\Timespinner.exe</HintPath>
     </Reference>
-    <Reference Include="websocket-sharp">
-      <HintPath>..\lib\websocket-sharp.dll</HintPath>
+    <Reference Include="websocket-sharp, Version=1.0.2.34775, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Archipelago.MultiClient.Net.3.0.1\lib\net35\websocket-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -108,9 +107,11 @@
     <Compile Include="Commands\ScoutCommand.cs" />
     <Compile Include="Commands\GetKeyCommand.cs" />
     <Compile Include="Commands\TeleportCommand.cs" />
+    <Compile Include="Drawables\ArchipelagoRepresentation.cs" />
     <Compile Include="Extensions\GameContentManagerExtension.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
+    <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="Randomisation\HintGenerator.cs" />
     <Compile Include="Screens\GameConsole.cs" />
     <Compile Include="Archipelago\DeathLinker.cs" />
@@ -257,6 +258,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
