@@ -34,6 +34,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TestVersions\SteamVersion\Timespinner.exe</HintPath>
+    </Reference>
     <Reference Include="TsRandomizer, Version=0.0.9.13, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\TestVersions\SteamVerison\TsRandomizer.exe</HintPath>

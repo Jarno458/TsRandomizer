@@ -137,7 +137,7 @@ namespace TsRandomizer.Screens
 		void HandleSay()
 		{
 			if(!Client.IsConnected)
-				AddLine("Not connected to a Archipelago server");
+				AddLine("Not connected to an Archipelago server");
 			else
 				Client.Say(commandText);
 		}
