@@ -229,7 +229,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(1, 21, 200, 144), "Upper desolation secret", ItemProvider.Get(EInventoryUseItemType.EssenceCrystal), UpperLakeDesolation & OculusRift);
 			Add(new ItemKey(1, 20, 232, 96), "Upper desolation double jump cave platform", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), UpperLakeDesolation & R.DoubleJump);
 			Add(new ItemKey(1, 20, 168, 240), "Upper desolation double jump cave floor", ItemProvider.Get(EInventoryUseItemType.FuturePotion), UpperLakeDesolation);
-			Add(new ItemKey(1, 22, 344, 160), "Fire-Locked sparrow chest", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), UpperLakeDesolation);
+			Add(new ItemKey(1, 22, 344, 160), "Upper desolation sparrow chest", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), UpperLakeDesolation);
 			Add(new ItemKey(1, 18, 1320, 189), "Crash site pedestal", ItemProvider.Get(EInventoryOrbType.Moon, EOrbSlot.Melee), UpperLakeDesolation);
 			Add(new ItemKey(1, 18, 1272, 192), "Crash site chest 1", ItemProvider.Get(EInventoryEquipmentType.CaptainsCap), UpperLakeDesolation & R.GassMask & KillMaw);
 			Add(new ItemKey(1, 18, 1368, 192), "Crash site chest 2", ItemProvider.Get(EInventoryEquipmentType.CaptainsJacket), UpperLakeDesolation & R.GassMask & KillMaw);
@@ -435,23 +435,23 @@ namespace TsRandomizer.Randomisation
 		void AddDownloadTerminals()
 		{
 			areaName = "Library";
-			Add(new ItemKey(2, 44, 792, 592), "Library terminal 1", null, LeftLibrary & R.Tablet);
-			Add(new ItemKey(2, 44, 120, 368), "Library terminal 2", null, LeftLibrary & R.Tablet);
-			Add(new ItemKey(2, 44, 456, 368), "Library terminal 3", null, LeftLibrary & R.Tablet);
-			Add(new ItemKey(2, 58, 152, 208), "V terminal 1", null, LeftLibrary & R.Tablet & R.CardV);
-			Add(new ItemKey(2, 58, 232, 208), "V terminal 2", null, LeftLibrary & R.Tablet & R.CardV);
-			Add(new ItemKey(2, 58, 312, 208), "V terminal 3", null, LeftLibrary & R.Tablet & R.CardV);
+			Add(new ItemKey(2, 44, 792, 592), "Library terminal 1 (Windaria)", null, LeftLibrary & R.Tablet);
+			Add(new ItemKey(2, 44, 120, 368), "Library terminal 2 (Lachiem)", null, LeftLibrary & R.Tablet);
+			Add(new ItemKey(2, 44, 456, 368), "Library terminal 3 (Emperor Nuvius)", null, LeftLibrary & R.Tablet);
+			Add(new ItemKey(2, 58, 152, 208), "V terminal 1 (War of the Sisters)", null, LeftLibrary & R.Tablet & R.CardV);
+			Add(new ItemKey(2, 58, 232, 208), "V terminal 2 (Lake Desolation Map)", null, LeftLibrary & R.Tablet & R.CardV);
+			Add(new ItemKey(2, 58, 312, 208), "V terminal 3 (Vilete)", null, LeftLibrary & R.Tablet & R.CardV);
 			areaName = "Library top";
-			Add(new ItemKey(2, 44, 568, 176), "Backer room terminal", null, UpperLeftLibrary & R.Tablet);
+			Add(new ItemKey(2, 44, 568, 176), "Backer room terminal (Vandagray Metropolis Map)", null, UpperLeftLibrary & R.Tablet);
 			areaName = "Varndagroth Tower right";
-			Add(new ItemKey(2, 18, 200, 192), "Medbay", null, RightSideLibraryElevator & R.CardB & R.Tablet);
+			Add(new ItemKey(2, 18, 200, 192), "Medbay terminal (Bleakness Research)", null, RightSideLibraryElevator & R.CardB & R.Tablet);
 			areaName = "The lab";
-			Add(new ItemKey(11, 6, 200, 192), "Chest and download terminal", null, UpperLab & R.Tablet);
-			Add(new ItemKey(11, 15, 152, 176), "Lab terminal middle", null, TheLabPoweredOff & R.Tablet);
-			Add(new ItemKey(11, 16, 600, 192), "Sentry platform terminal", null, TheLabPoweredOff & R.Tablet);
-			Add(new ItemKey(11, 34, 200, 192), "Experiment 13 terminal", null, TheLab & R.Tablet);
-			Add(new ItemKey(11, 37, 200, 192), "Lab terminal left", null, TheLab & R.Tablet);
-			Add(new ItemKey(11, 38, 120, 176), "Lab terminal right", null, TheLabPoweredOff & R.Tablet);
+			Add(new ItemKey(11, 6, 200, 192), "Chest and download terminal (Experiment #13)", null, UpperLab & R.Tablet);
+			Add(new ItemKey(11, 15, 152, 176), "Lab terminal middle (Amadeus Laboratory Map)", null, TheLabPoweredOff & R.Tablet);
+			Add(new ItemKey(11, 16, 600, 192), "Sentry platform terminal (Origins)", null, TheLabPoweredOff & R.Tablet);
+			Add(new ItemKey(11, 34, 200, 192), "Experiment 13 terminal (W.R.E.C Farewell)", null, TheLab & R.Tablet);
+			Add(new ItemKey(11, 37, 200, 192), "Lab terminal left (Biotechnology)", null, TheLab & R.Tablet);
+			Add(new ItemKey(11, 38, 120, 176), "Lab terminal right (Experiment #11)", null, TheLabPoweredOff & R.Tablet);
 		}
 
 		void AddLoreLocations()
@@ -485,10 +485,10 @@ namespace TsRandomizer.Randomisation
 			areaName = "Castle Keep";
 			Add(new ItemKey(5, 41, 184, 177), "Letter - Under the Twins (Letter of Reference)", null, CastleKeep);
 			Add(new ItemKey(5, 44, 264, 161), "Letter - Castle Loop Giantess (Political Advice)", null, CastleKeep);
-			Add(new ItemKey(5, 14, 568, 177), "Letter - Aleana's Room (Diplomatic Missive)", null, CastleKeep & R.PinkOrb & R.DoubleJump);
+			Add(new ItemKey(5, 14, 568, 177), "Letter - Aelana's Room (Diplomatic Missive)", null, CastleKeep & R.PinkOrb & R.DoubleJump);
 			areaName = "Royal Towers";
 			Add(new ItemKey(6, 17, 344, 433), "Letter - Top Struggle Juggle Base (War of the Sisters)", null, UpperRoyalTower);
-			Add(new ItemKey(6, 14, 136, 177), "Letter - Aleana Boss (Stained Letter)", null, UpperRoyalTower);
+			Add(new ItemKey(6, 14, 136, 177), "Letter - Aelana Boss (Stained Letter)", null, UpperRoyalTower);
 			Add(new ItemKey(6, 25, 152, 145), "Letter - Near Bottom Struggle Juggle (Mission Findings)", null, UpperRoyalTower & DoubleJumpOfNpc);
 			areaName = "Caves of Banishment (Maw)";
 			Add(new ItemKey(8, 36, 136, 145), "Letter - Lower Left Maw Caves (Naïvety)", null, LowerCavesOfBanishment);

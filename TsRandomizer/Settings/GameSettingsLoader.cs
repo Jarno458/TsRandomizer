@@ -91,7 +91,7 @@ namespace TsRandomizer.Settings
 					case 3:
 						enumValue = "Empty";
 						break;
-
+					case 0:
 					default:
 						enumValue = "Default";
 						break;
@@ -99,6 +99,32 @@ namespace TsRandomizer.Settings
 
 				settings.ShopFill.Value = enumValue;
 			}
+			if (slotData.TryGetValue("LootPool", out var lootPool))
+			{
+				var value = ToInt(lootPool);
+				string enumValue;
+
+				switch (value)
+				{
+					case 1:
+						enumValue = "Random";
+						break;
+
+					case 2:
+						enumValue = "Empty";
+						break;
+					case 0:
+					default:
+						enumValue = "Vanilla";
+						break;
+				}
+
+				settings.LootPool.Value = enumValue;
+			}
+			if (slotData.TryGetValue("ShowBestiary", out var showBestiary))
+				settings.ShowBestiary.Value = IsTrue(showBestiary);
+			if (slotData.TryGetValue("DeathLink", out var deathLink))
+				settings.DeathLink.Value = IsTrue(deathLink);
 
 			return settings;
 		}
