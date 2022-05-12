@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Settings
 {
@@ -148,7 +149,13 @@ namespace TsRandomizer.Settings
 				settings.DamageRando.Value = enumValue;
 			}
 
-
+			if (settings.DamageRando.Value != "Off"
+				&& slotData.TryGetValue("DamageRandoOverrides", out var damageRandoOverrides))
+			{
+				Dictionary<string, OrbDamageOdds> overrides = new Dictionary<string, OrbDamageOdds>();
+				JsonConvert.PopulateObject(damageRandoOverrides.ToString(), overrides);
+				settings.DamageRandoOverrides.Value = FixOrbNames(overrides);
+			}
 			return settings;
 		}
 
@@ -212,6 +219,48 @@ namespace TsRandomizer.Settings
 			if (o is long l) return (int)l;
 
 			return fallback;
+		}
+
+		static Dictionary<string, OrbDamageOdds> FixOrbNames(Dictionary<string, OrbDamageOdds> orbs)
+		{
+			Dictionary<string, OrbDamageOdds> namingFixes = new Dictionary<string, OrbDamageOdds>();
+			foreach (var orb in orbs)
+			{
+				switch (orb.Key)
+				{
+					case "Plasma":
+						namingFixes.Add("Pink", orb.Value);
+						break;
+					case "Fire":
+						namingFixes.Add("Flame", orb.Value);
+						break;
+					case "ForbiddenTome":
+					case "Forbidden Tome":
+					case "Forbidden":
+						namingFixes.Add("Book", orb.Value);
+						break;
+					case "Shattered":
+						namingFixes.Add("Moon", orb.Value);
+						break;
+					case "Radiant":
+						namingFixes.Add("Barrier", orb.Value);
+						break;
+				}
+			}
+			orbs.Remove("Plasma");
+			orbs.Remove("Fire");
+			orbs.Remove("ForbiddenTome");
+			orbs.Remove("Forbidden Tome");
+			orbs.Remove("Forbidden");
+			orbs.Remove("Shattered");
+			orbs.Remove("Radiant");
+			orbs = orbs.Keys
+				.Union(namingFixes.Keys)
+				.ToDictionary(
+					orb => orb,
+					orb => namingFixes.ContainsKey(orb) ? namingFixes[orb] : orbs[orb]
+				);
+			return orbs;
 		}
 	}
 }
