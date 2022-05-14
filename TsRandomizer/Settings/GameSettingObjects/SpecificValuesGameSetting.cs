@@ -10,7 +10,7 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		public List<string> AllowedValues { get; }
 
 		public SpecificValuesGameSetting(string name, string description, List<string> allowedValues,
-			string defaultValue = "Default", bool canBeChangedInGame = false) 
+			string defaultValue = "Default", bool canBeChangedInGame = false)
 				: base(name, description, defaultValue, canBeChangedInGame)
 		{
 			AllowedValues = allowedValues;
@@ -23,10 +23,18 @@ namespace TsRandomizer.Settings.GameSettingObjects
 
 		public override void ToggleValue()
 		{
-			var currentIndex = AllowedValues.IndexOf(Value);
-			var newIndex = currentIndex + 1 >= AllowedValues.Count ? 0 : currentIndex + 1;
+			try
+			{
+				var currentIndex = AllowedValues.IndexOf(Value);
+				var newIndex = currentIndex + 1 >= AllowedValues.Count ? 0 : currentIndex + 1;
 
-			Value = AllowedValues[newIndex];
+				Value = AllowedValues[newIndex];
+			}
+			catch
+			{
+				Value = (string)DefaultValue;
+			}
+
 		}
 	}
 }
