@@ -137,7 +137,8 @@ namespace TsRandomizer.LevelObjects
 
 			var lunais = level.MainHero;
 			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
-
+			if (gameSettings.MaxHP)
+				lunais.MaxHP = gameSettings.MaxHP;
 			if (gameSettings.DamageRando.Value)
 				OrbDamageManager.UpdateOrbDamage(level.GameSave, level.MainHero);
 
@@ -151,7 +152,7 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.AddConcussion();
 		}
 
-		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, SeedOptions seedOptions, 
+		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, SeedOptions seedOptions,
 			SettingCollection gameSettings, ScreenManager screenManager)
 		{
 #if DEBUG

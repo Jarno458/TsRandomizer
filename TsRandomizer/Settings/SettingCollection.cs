@@ -7,11 +7,11 @@ namespace TsRandomizer.Settings
 	public class SettingCollection
 	{
 		public static readonly GameSettingCategoryInfo[] Categories = {
-			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.", 
+			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.DamageRando
+					s => s.DamageRando, s => s.MaxHP
 				}},
-			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.", 
+			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.ShopFill, s => s.ShopMultiplier, s => s.ShopWarpShards, s => s.LootPool
 				}},
@@ -35,6 +35,9 @@ namespace TsRandomizer.Settings
 
 		public OnOffGameSetting DamageRando = new OnOffGameSetting("Damage Randomizer",
 			"Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false);
+
+		public SpecificValuesGameSetting MaxHP = new SpecificValuesGameSetting("Max HP", "Sets the maximum HP Lunais is allowed to have",
+			new List<string> { "1", "64", "128", "192", "256", "999" }, "999", false);
 
 		public OnOffGameSetting ShowBestiary = new OnOffGameSetting("Show Bestiary",
 			"All bestiary entries in the journal are visible by default.", false, false);
