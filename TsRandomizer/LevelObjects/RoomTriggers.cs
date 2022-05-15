@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
-using Timespinner.Core;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
@@ -41,7 +40,7 @@ namespace TsRandomizer.LevelObjects
 			ObjectTileSpecification bossTile = new ObjectTileSpecification();
 			bossTile.Category = EObjectTileCategory.Enemy;
 			bossTile.Layer = ETileLayerType.Objects;
-			bossTile.ObjectID = bossId;
+			bossTile.ObjectID = bossInfo.TileId;
 
 			var boss = bossInfo.BossType.CreateInstance(false, position, level, bossInfo.Sprite, -1, bossTile);
 
@@ -67,6 +66,21 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(5, 46, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				SpawnBoss(level, 65, new Point(100, 200));
+				SpawnBoss(level, 66, new Point(100, 200));
+				SpawnBoss(level, 67, new Point(100, 0));
+				SpawnBoss(level, 68, new Point(200, 0));
+				SpawnBoss(level, 69, new Point(100, 200));
+				SpawnBoss(level, 70, new Point(-200, 0));
+				SpawnBoss(level, 71, new Point(100, 200));
+				SpawnBoss(level, 72, new Point(100, 200));
+				SpawnBoss(level, 73, new Point(100, 200));
+				SpawnBoss(level, 74, new Point(100, 200));
+				SpawnBoss(level, 75, new Point(100, 200));
+				SpawnBoss(level, 76, new Point(400, 200));
+				SpawnBoss(level, 77, new Point(100, 200));
+				SpawnBoss(level, 78, new Point(100, 200));
+				SpawnBoss(level, 79, new Point(100, 200));
+				SpawnBoss(level, 80, new Point(400, 200));
 			}));
 
 			RoomTriggers.Add(new RoomTrigger(0, 3, (level, itemLocation, seedOptions, gameSettings, screenManager) => {

@@ -1,5 +1,6 @@
 ﻿using System;
 using Timespinner.Core;
+using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
@@ -20,6 +21,8 @@ namespace TsRandomizer.Randomisation
 		public Timespinner.GameAbstractions.EBGM Song;
 		public SpriteSheet Sprite;
 		public Type BossType;
+		public int TileId;
+
 	}
 
 	static class BestiaryManager
@@ -39,7 +42,106 @@ namespace TsRandomizer.Randomisation
 						TouchDamage = 17,
 						Song = Timespinner.GameAbstractions.EBGM.Boss01,
 						Sprite = level.GCM.SpRoboKitty,
-						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.RoboKitty.RoboKittyBoss")
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.RoboKitty.RoboKittyBoss"),
+						TileId = (int)EEnemyTileType.RoboKittyBoss
+					};
+				case 66:
+					return new BossAttributes
+					{
+						Index = bossId,
+						VisibleName = "Varndagroth",
+						RoomKey = new RoomItemKey(2, 29),
+						HP = 800,
+						XP = 100,
+						TouchDamage = 25,
+						Song = Timespinner.GameAbstractions.EBGM.Boss02,
+						Sprite = level.GCM.SpVarndagroth,
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Varndagroth.VarndagrothBoss"),
+						TileId = (int)EEnemyTileType.VarndagrothBoss
+					};
+				case 67:
+					return new BossAttributes
+					{
+						Index = bossId,
+						VisibleName = "Azure Queen",
+						RoomKey = new RoomItemKey(7, 0),
+						HP = 1600,
+						XP = 200,
+						TouchDamage = 40,
+						Song = Timespinner.GameAbstractions.EBGM.Boss07,
+						Sprite = level.GCM.SpBirdBoss,
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Bird.GodBirdBoss"),
+						TileId = (int)EEnemyTileType.BirdBoss
+					};
+				case 68:
+					return new BossAttributes
+					{
+						Index = bossId,
+						VisibleName = "Golden Idol",
+						RoomKey = new RoomItemKey(5, 5),
+						HP = 2000,
+						XP = 250,
+						TouchDamage = 46,
+						Song = Timespinner.GameAbstractions.EBGM.Boss05A,
+						Sprite = level.GCM.SpDemonBoss,
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.DemonBoss"),
+						TileId = (int)EEnemyTileType.IncubusBoss
+					};
+				case 69:
+					return new BossAttributes
+					{
+						Index = bossId,
+						VisibleName = "Aelana",
+						RoomKey = new RoomItemKey(6, 15),
+						HP = 2250,
+						XP = 300,
+						TouchDamage = 48,
+						Song = Timespinner.GameAbstractions.EBGM.Boss06,
+						Sprite = level.GCM.SpAelana,
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.AelanaBoss"),
+						TileId = (int)EEnemyTileType.AelanaBoss
+					};
+				case 70:
+					return new BossAttributes
+					{
+						Index = bossId,
+						VisibleName = "The Maw",
+						RoomKey = new RoomItemKey(8, 7),
+						HP = 2250,
+						XP = 366,
+						TouchDamage = 52,
+						Song = Timespinner.GameAbstractions.EBGM.Boss08,
+						Sprite = level.GCM.SpMawBoss,
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.MawBoss"),
+						TileId = (int)EEnemyTileType.MawBoss
+					};
+				case 71:
+					return new BossAttributes
+					{
+						Index = bossId,
+						VisibleName = "Cantoran",
+						RoomKey = new RoomItemKey(7, 5),
+						HP = 2250,
+						XP = 300,
+						TouchDamage = 54,
+						Song = Timespinner.GameAbstractions.EBGM.Boss07,
+						Sprite = level.GCM.SpCantoranBoss,
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.CantoranBoss"),
+						TileId = (int)EEnemyTileType.CantoranBoss
+					};
+				case 72:
+					return new BossAttributes
+					{
+						Index = bossId,
+						VisibleName = "Genza",
+						RoomKey = new RoomItemKey(11, 21),
+						HP = 3000,
+						XP = 500,
+						TouchDamage = 60,
+						Song = Timespinner.GameAbstractions.EBGM.Boss11,
+						Sprite = level.GCM.SpShapeshifter,
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.ShapeshifterBoss"),
+						TileId = (int)EEnemyTileType.ShapeshiftBoss
 					};
 				case 73:
 					return new BossAttributes
@@ -50,9 +152,10 @@ namespace TsRandomizer.Randomisation
 						HP = 3500,
 						XP = 666,
 						TouchDamage = 80,
-						Song = Timespinner.GameAbstractions.EBGM.Boss01,
+						Song = Timespinner.GameAbstractions.EBGM.Boss12,
 						Sprite = level.GCM.SpEmperor,
-						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss")
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
+						TileId = (int)EEnemyTileType.EmperorBoss
 					};
 				case 74:
 					return new BossAttributes
@@ -63,9 +166,10 @@ namespace TsRandomizer.Randomisation
 						HP = 4000,
 						XP = 777,
 						TouchDamage = 85,
-						Song = Timespinner.GameAbstractions.EBGM.Boss05A,
+						Song = Timespinner.GameAbstractions.EBGM.Boss12,
 						Sprite = level.GCM.SpEmperor,
-						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss")
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
+						TileId = (int)EEnemyTileType.EmperorBoss
 					};
 				case 75:
 					return new BossAttributes
@@ -76,10 +180,10 @@ namespace TsRandomizer.Randomisation
 						HP = 2500,
 						XP = 350,
 						TouchDamage = 70,
-						Song = Timespinner.GameAbstractions.EBGM.Boss05B,
-						Sprite = level.GCM.SpEmperor
-						,
-						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss")
+						Song = Timespinner.GameAbstractions.EBGM.Boss12,
+						Sprite = level.GCM.SpEmperor,
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
+						TileId = (int)EEnemyTileType.EmperorBoss
 					};
 				case 76:
 					return new BossAttributes
@@ -90,9 +194,10 @@ namespace TsRandomizer.Randomisation
 						HP = 3500,
 						XP = 550,
 						TouchDamage = 75,
-						Song = Timespinner.GameAbstractions.EBGM.Boss11,
-						Sprite = level.GCM.SpEmperor,
-						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Z_Xarion")
+						Song = Timespinner.GameAbstractions.EBGM.Boss13,
+						Sprite = level.GCM.SpXarionBoss,
+						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.XarionBoss"),
+						TileId = (int)EEnemyTileType.XarionBoss
 					};
 				case 77:
 					return new BossAttributes
@@ -104,8 +209,9 @@ namespace TsRandomizer.Randomisation
 						XP = 680,
 						TouchDamage = 95,
 						Song = Timespinner.GameAbstractions.EBGM.Boss13,
-						Sprite = level.GCM.SpEmperor,
-						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Z_Raven")
+						Sprite = level.GCM.SpRavenBoss,
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Z_Raven.RavenBoss"),
+						TileId = (int)EEnemyTileType.RavenBoss
 					};
 				case 78:
 					return new BossAttributes
@@ -118,7 +224,8 @@ namespace TsRandomizer.Randomisation
 						TouchDamage = 95,
 						Song = Timespinner.GameAbstractions.EBGM.Boss12,
 						Sprite = level.GCM.SpZelBoss,
-						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Z_Zel")
+						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.ZelBoss"),
+						TileId = (int)EEnemyTileType.ZelBoss
 					};
 				case 79: 
 					return new BossAttributes
@@ -131,7 +238,8 @@ namespace TsRandomizer.Randomisation
 						TouchDamage = 90,
 						Song = Timespinner.GameAbstractions.EBGM.Boss15,
 						Sprite = level.GCM.SpSandmanBoss,
-						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss")
+						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.SandmanBoss"),
+						TileId = (int)EEnemyTileType.SandmanBoss
 					};
 				case 80:
 					return new BossAttributes
@@ -144,7 +252,8 @@ namespace TsRandomizer.Randomisation
 						TouchDamage = 111,
 						Song = Timespinner.GameAbstractions.EBGM.Boss16,
 						Sprite = level.GCM.SpNightmareBoss,
-						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.OtherBosses.NightmareBoss")
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.OtherBosses.NightmareBoss"),
+						TileId = (int)EEnemyTileType.NightmareBoss
 					};
 				default: 
 					return new BossAttributes
@@ -156,8 +265,9 @@ namespace TsRandomizer.Randomisation
 						XP = 9,
 						TouchDamage = 25,
 						Song = Timespinner.GameAbstractions.EBGM.Boss01,
-						Sprite = level.GCM.SpBirdBoss,
-						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss")
+						Sprite = level.GCM.SpLakeBirdEgg,
+						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.LakeBirdEgg"),
+						TileId = (int)EEnemyTileType.LakeBirdEgg
 					};
 			}
 		}
