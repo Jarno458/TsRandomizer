@@ -32,8 +32,6 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type PedestalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
 
-		static readonly Type EmperorBossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss");
-
 		static void SpawnBoss(Level level, int bossId, Point position)
 		{
 			level.JukeBox.StopSong();
@@ -47,18 +45,6 @@ namespace TsRandomizer.LevelObjects
 
 			var boss = bossInfo.BossType.CreateInstance(false, position, level, bossInfo.Sprite, -1, bossTile);
 
-			level.AsDynamic().RequestAddObject(boss);
-		}
-		static void SpawnEmperors(Level level)
-		{
-			SpriteSheet bossSprite = level.GCM.SpEmperor;
-			var position = new Point(100, 200);
-			ObjectTileSpecification bossTile = new ObjectTileSpecification();
-			bossTile.Category = EObjectTileCategory.Enemy;
-			bossTile.Layer = ETileLayerType.Objects;
-			bossTile.ObjectID = (int)EEnemyTileType.EmperorBoss;
-			bossTile.Argument = 0;
-			var boss = EmperorBossType.CreateInstance(false, position, level, bossSprite, -1, bossTile);
 			level.AsDynamic().RequestAddObject(boss);
 		}
 
