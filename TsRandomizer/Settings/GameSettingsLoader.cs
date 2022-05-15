@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Settings
 {
@@ -23,20 +24,20 @@ namespace TsRandomizer.Settings
 				if (!File.Exists(file))
 				{
 					settings = new SettingCollection();
-				} 
-				else 
+					Console.WriteLine("Settings file not found: " + file);
+				}
+				else
 				{
 					var settingsString = File.ReadAllText(file);
 
 					settings = FromJson(settingsString);
 				}
-				
-				Console.WriteLine("Settings file not found: " + file);
+
 			}
 			catch
 			{
 				Console.WriteLine("Error loading settings from " + SettingSubFolderName);
-
+				BackupMalformedSettingsFile();
 				settings = new SettingCollection();
 			}
 
@@ -63,12 +64,23 @@ namespace TsRandomizer.Settings
 			}
 		}
 
+		public static void BackupMalformedSettingsFile()
+		{
+			try
+			{
+				File.Copy(GetSettingsFilePath(), $"{SettingSubFolderName}/settings_ERROR.json");
+			}
+			catch
+			{
+				// tough luck man idk
+			}
+
+		}
+
 		public static SettingCollection LoadSettingsFromSlotData(Dictionary<string, object> slotData)
 		{
 			var settings = LoadSettingsFromFile();
 
-			if (slotData.TryGetValue("DamageRando", out var damageRando))
-				settings.DamageRando.Value = IsTrue(damageRando);
 			if (slotData.TryGetValue("ShopWarpShards", out var shopWarpShards))
 				settings.ShopWarpShards.Value = IsTrue(shopWarpShards);
 			if (slotData.TryGetValue("ShopMultiplier", out var shopMultiplier))
@@ -99,6 +111,53 @@ namespace TsRandomizer.Settings
 
 				settings.ShopFill.Value = enumValue;
 			}
+
+			if (slotData.TryGetValue("DamageRando", out var damageRando))
+			{
+				var value = ToInt(damageRando);
+				string enumValue;
+
+				switch (value)
+				{
+					case 1:
+						enumValue = "All Nerfs";
+						break;
+
+					case 2:
+						enumValue = "Mostly Nerfs";
+						break;
+
+					case 3:
+						enumValue = "Balanced";
+						break;
+
+					case 4:
+						enumValue = "Mostly Buffs";
+						break;
+
+					case 5:
+						enumValue = "All Buffs";
+						break;
+
+					case 6:
+						enumValue = "Manual";
+						break;
+
+					default:
+						enumValue = "Off";
+						break;
+				}
+				settings.DamageRando.Value = enumValue;
+			}
+
+			if (settings.DamageRando.Value == "Manual"
+					  && slotData.TryGetValue("DamageRandoOverrides", out var damageRandoOverrides))
+			{
+				Dictionary<string, OrbDamageOdds> overrides = new Dictionary<string, OrbDamageOdds>();
+				JsonConvert.PopulateObject(damageRandoOverrides.ToString(), overrides);
+				settings.DamageRandoOverrides.Value = FixOrbNames(overrides);
+			}
+
 			if (slotData.TryGetValue("LootPool", out var lootPool))
 			{
 				var value = ToInt(lootPool);
@@ -121,6 +180,7 @@ namespace TsRandomizer.Settings
 
 				settings.LootPool.Value = enumValue;
 			}
+
 			if (slotData.TryGetValue("ShowBestiary", out var showBestiary))
 				settings.ShowBestiary.Value = IsTrue(showBestiary);
 			if (slotData.TryGetValue("DeathLink", out var deathLink))
@@ -133,7 +193,7 @@ namespace TsRandomizer.Settings
 		{
 			try
 			{
-				if (!Directory.Exists(SettingSubFolderName)) 
+				if (!Directory.Exists(SettingSubFolderName))
 					Directory.CreateDirectory(SettingSubFolderName);
 			}
 			catch
@@ -150,7 +210,6 @@ namespace TsRandomizer.Settings
 				.FirstOrDefault() ?? "settings.json";
 		}
 
-
 		internal static SettingCollection FromJson(string json)
 		{
 			try
@@ -166,7 +225,7 @@ namespace TsRandomizer.Settings
 			catch
 			{
 				Console.WriteLine("Error loading settings from " + json);
-
+				BackupMalformedSettingsFile();
 				return new SettingCollection();
 			}
 		}
@@ -190,6 +249,48 @@ namespace TsRandomizer.Settings
 			if (o is long l) return (int)l;
 
 			return fallback;
+		}
+
+		static Dictionary<string, OrbDamageOdds> FixOrbNames(Dictionary<string, OrbDamageOdds> orbs)
+		{
+			Dictionary<string, OrbDamageOdds> namingFixes = new Dictionary<string, OrbDamageOdds>();
+			foreach (var orb in orbs)
+			{
+				switch (orb.Key)
+				{
+					case "Plasma":
+						namingFixes.Add("Pink", orb.Value);
+						break;
+					case "Fire":
+						namingFixes.Add("Flame", orb.Value);
+						break;
+					case "ForbiddenTome":
+					case "Forbidden Tome":
+					case "Forbidden":
+						namingFixes.Add("Book", orb.Value);
+						break;
+					case "Shattered":
+						namingFixes.Add("Moon", orb.Value);
+						break;
+					case "Radiant":
+						namingFixes.Add("Barrier", orb.Value);
+						break;
+				}
+			}
+			orbs.Remove("Plasma");
+			orbs.Remove("Fire");
+			orbs.Remove("ForbiddenTome");
+			orbs.Remove("Forbidden Tome");
+			orbs.Remove("Forbidden");
+			orbs.Remove("Shattered");
+			orbs.Remove("Radiant");
+			orbs = orbs.Keys
+				.Union(namingFixes.Keys)
+				.ToDictionary(
+					orb => orb,
+					orb => namingFixes.ContainsKey(orb) ? namingFixes[orb] : orbs[orb]
+				);
+			return orbs;
 		}
 	}
 }
