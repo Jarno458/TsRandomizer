@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
+using Timespinner.Core;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
@@ -31,8 +32,57 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type PedestalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
 
+		static readonly Type EmperorBossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss");
+
+		static void SpawnBoss(Level level, int bossId, Point position)
+		{
+			level.JukeBox.StopSong();
+			BossAttributes bossInfo = BestiaryManager.GetBossAttributes(level, bossId);
+			level.JukeBox.PlaySong(bossInfo.Song);
+
+			ObjectTileSpecification bossTile = new ObjectTileSpecification();
+			bossTile.Category = EObjectTileCategory.Enemy;
+			bossTile.Layer = ETileLayerType.Objects;
+			bossTile.ObjectID = bossId;
+
+			var boss = bossInfo.BossType.CreateInstance(false, position, level, bossInfo.Sprite, -1, bossTile);
+
+			level.AsDynamic().RequestAddObject(boss);
+		}
+		static void SpawnEmperors(Level level)
+		{
+			SpriteSheet bossSprite = level.GCM.SpEmperor;
+			var position = new Point(100, 200);
+			ObjectTileSpecification bossTile = new ObjectTileSpecification();
+			bossTile.Category = EObjectTileCategory.Enemy;
+			bossTile.Layer = ETileLayerType.Objects;
+			bossTile.ObjectID = (int)EEnemyTileType.EmperorBoss;
+			bossTile.Argument = 0;
+			var boss = EmperorBossType.CreateInstance(false, position, level, bossSprite, -1, bossTile);
+			level.AsDynamic().RequestAddObject(boss);
+		}
+
 		static RoomTrigger()
 		{
+			RoomTriggers.Add(new RoomTrigger(1, 1, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				level.JukeBox.StopSong();
+
+				level.RequestChangeLevel(new LevelChangeRequest
+				{
+					LevelID = 5,
+					RoomID = 46,
+					IsUsingWarp = true,
+					IsUsingWhiteFadeOut = true,
+					FadeInTime = 0.5f,
+					FadeOutTime = 0.25f
+				}); // To false boss room
+
+				
+			}));
+			RoomTriggers.Add(new RoomTrigger(5, 46, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				SpawnBoss(level, 65, new Point(100, 200));
+			}));
+
 			RoomTriggers.Add(new RoomTrigger(0, 3, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (seedOptions.StartWithJewelryBox)
 					level.AsDynamic().UnlockRelic(EInventoryRelicType.JewelryBox);
