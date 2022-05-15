@@ -132,7 +132,7 @@ namespace TsRandomizer.Screens
 
 			FamiliarManager.Update(Level);
 
-			deathLinkService.Update(Level, ScreenManager);
+			deathLinkService?.Update(Level, ScreenManager);
 
 #if DEBUG
 			TimespinnerAfterDark(input);

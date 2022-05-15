@@ -40,7 +40,7 @@ namespace TsRandomizer.Archipelago
 
 		public static DataStorageHelper DataStorage => session.DataStorage;
 
-		public static LoginResult Connect(string server, string user, string pass = null, string connectionId = null, string[] tags = null)
+		public static LoginResult Connect(string server, string user, string pass = null, string connectionId = null)
 		{
 			if (IsConnected && session.Socket.Connected && cachedConnectionResult != null)
 			{
@@ -59,8 +59,8 @@ namespace TsRandomizer.Archipelago
 				session = ArchipelagoSessionFactory.CreateSession(new Uri(serverUrl));
 				session.Socket.PacketReceived += PackageReceived;
 
-				var result = session.TryConnectAndLogin("Timespinner", userName, new Version(0, 2, 4),
-					ItemsHandlingFlags.IncludeStartingInventory, tags, password: password);
+				var result = session.TryConnectAndLogin("Timespinner", userName, new Version(0, 3, 0),
+					ItemsHandlingFlags.IncludeStartingInventory, new [] { "DeathLink" } , password: password);
 
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;
@@ -256,7 +256,7 @@ namespace TsRandomizer.Archipelago
 			if (IsConnected && session.Socket.Connected)
 				return;
 
-			Connect(serverUrl, userName, password, session.ConnectionInfo.Uuid, session.ConnectionInfo.Tags);
+			Connect(serverUrl, userName, password, session.ConnectionInfo.Uuid);
 		}
 	}
 }
