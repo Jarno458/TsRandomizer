@@ -31,56 +31,46 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type PedestalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
 
-		static void SpawnBoss(Level level, int bossId, Point position)
+		static int CurrentBossId = 1;
+		static void SpawnBoss(Level level, SeedOptions seedOptions, SettingCollection gameSettings, int bossId, Point position)
 		{
 			level.JukeBox.StopSong();
 			BossAttributes bossInfo = BestiaryManager.GetBossAttributes(level, bossId);
+			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, seedOptions, gameSettings, bossId);
 			level.JukeBox.PlaySong(bossInfo.Song);
 
 			ObjectTileSpecification bossTile = new ObjectTileSpecification();
 			bossTile.Category = EObjectTileCategory.Enemy;
 			bossTile.Layer = ETileLayerType.Objects;
-			bossTile.ObjectID = bossInfo.TileId;
+			bossTile.ObjectID = replacedBossInfo.TileId;
 
-			var boss = bossInfo.BossType.CreateInstance(false, position, level, bossInfo.Sprite, -1, bossTile);
+			var boss = replacedBossInfo.BossType.CreateInstance(false, position, level, replacedBossInfo.Sprite, -1, bossTile);
 
 			level.AsDynamic().RequestAddObject(boss);
 		}
 
+		static void CreateBossWarp(Level level, int bossId)
+		{
+			level.JukeBox.StopSong();
+
+			CurrentBossId = bossId;
+
+			level.RequestChangeLevel(new LevelChangeRequest
+			{
+				LevelID = 5,
+				RoomID = 46,
+				IsUsingWarp = true,
+				IsUsingWhiteFadeOut = true,
+				FadeInTime = 0.5f,
+				FadeOutTime = 0.25f
+			}); // To false boss room
+		}
+
 		static RoomTrigger()
 		{
-			RoomTriggers.Add(new RoomTrigger(1, 1, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				level.JukeBox.StopSong();
-
-				level.RequestChangeLevel(new LevelChangeRequest
-				{
-					LevelID = 5,
-					RoomID = 46,
-					IsUsingWarp = true,
-					IsUsingWhiteFadeOut = true,
-					FadeInTime = 0.5f,
-					FadeOutTime = 0.25f
-				}); // To false boss room
-
-				
-			}));
 			RoomTriggers.Add(new RoomTrigger(5, 46, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				SpawnBoss(level, 65, new Point(100, 200));
-				SpawnBoss(level, 66, new Point(100, 200));
-				SpawnBoss(level, 67, new Point(100, 0));
-				SpawnBoss(level, 68, new Point(200, 0));
-				SpawnBoss(level, 69, new Point(100, 200));
-				SpawnBoss(level, 70, new Point(-200, 0));
-				SpawnBoss(level, 71, new Point(100, 200));
-				SpawnBoss(level, 72, new Point(100, 200));
-				SpawnBoss(level, 73, new Point(100, 200));
-				SpawnBoss(level, 74, new Point(100, 200));
-				SpawnBoss(level, 75, new Point(100, 200));
-				SpawnBoss(level, 76, new Point(400, 200));
-				SpawnBoss(level, 77, new Point(100, 200));
-				SpawnBoss(level, 78, new Point(100, 200));
-				SpawnBoss(level, 79, new Point(100, 200));
-				SpawnBoss(level, 80, new Point(400, 200));
+				// False boss room for boss randomization
+				SpawnBoss(level, seedOptions, gameSettings, CurrentBossId, new Point(100, 200));
 			}));
 
 			RoomTriggers.Add(new RoomTrigger(0, 3, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
@@ -112,9 +102,13 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.SetCutsceneTriggered("LakeDesolation1_Entrance", true); // Fixes music when returning to Lake Desolation later
 			}));
 			RoomTriggers.Add(new RoomTrigger(1, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (itemLocation.IsPickedUp || !level.GameSave.GetSaveBool("IsBossDead_RoboKitty")) return;
-
-				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
+				if (itemLocation.IsPickedUp || !level.GameSave.GetSaveBool("IsBossDead_RoboKitty"))
+				{
+					CreateBossWarp(level, 65);
+					return;
+				}
+				
+				// SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
 			RoomTriggers.Add(new RoomTrigger(5, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (itemLocation.IsPickedUp || !level.GameSave.HasCutsceneBeenTriggered("Keep0_Demons0")) return;

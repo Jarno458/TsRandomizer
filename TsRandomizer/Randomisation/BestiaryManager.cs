@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Timespinner.Core;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
@@ -6,7 +7,6 @@ using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Settings;
-
 
 namespace TsRandomizer.Randomisation
 {
@@ -272,6 +272,16 @@ namespace TsRandomizer.Randomisation
 			}
 		}
 
+		public static BossAttributes GetReplacedBoss(Level level, SeedOptions seedOptions, SettingCollection gameSettings, int bossId)
+		{
+			Random random = new Random(seedOptions.GetHashCode());
+			int replacedBossId = Enumerable.Range(65, 12).SelectRandom(random);
+
+			BossAttributes replacedBossInfo = GetBossAttributes(level, replacedBossId);
+
+			return replacedBossInfo;
+		}
+
 		public static void UpdateBestiary(Level level, SeedOptions seedOptions, SettingCollection gameSettings)
 		{
 			TimeSpinnerGame.Localizer.OverrideKey("inv_use_PlaceHolderItem1", "Nothing");
@@ -285,7 +295,14 @@ namespace TsRandomizer.Randomisation
 				{
 					level.GameSave.SetValue(string.Format(bestiaryEntry.Key.Replace("Enemy_", "KILL_")), 1);
 				}
-				bestiaryEntry.VisibleDescription = bestiaryEntry.Key + " ~ " + bestiaryEntry.TouchDamage + "~" + bestiaryEntry.EnemyType;
+				if (bestiaryEntry.Index >= 65 && bestiaryEntry.Index <= 80)
+				{
+					BossAttributes replacedBossInfo = GetReplacedBoss(level, seedOptions, gameSettings, bestiaryEntry.Index);
+					bestiaryEntry.VisibleName = replacedBossInfo.VisibleName + "-esque " + bestiaryEntry.VisibleName;
+					bestiaryEntry.HP = replacedBossInfo.HP;
+					bestiaryEntry.TouchDamage = replacedBossInfo.TouchDamage;
+					bestiaryEntry.Exp = replacedBossInfo.XP;
+				}
 
 				foreach (var loot in bestiaryEntry.LootTable)
 				{
