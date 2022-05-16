@@ -33,17 +33,21 @@ namespace TsRandomizer.LevelObjects.Other
 	{
 		bool hasRun;
 		BossAttributes currentBoss;
-		BossAttributes replacedBoss;
+		BossAttributes vanillaBoss;
 
-		public NightmareBoss(Mobile typedObject) : base(typedObject)
+		protected override void Initialize(SeedOptions options)
 		{
 			Level level = (Level)Dynamic._level;
 			// TODO account for enemy argument
 			var bestiaryEntry = level.GCM.Bestiary.GetEntry(Dynamic.EnemyType, 0);
 			int bossId = bestiaryEntry.Index;
 			currentBoss = BestiaryManager.GetBossAttributes(level, bossId);
-			replacedBoss = BestiaryManager.GetBossAttributes(level, 65);
-			// replacedBoss = BestiaryManager.GetReplacedBoss(level, seedOptions, gameSettings, bossId);
+
+			vanillaBoss = BestiaryManager.GetVanillaBoss(level, options, bossId);
+		}
+
+		public NightmareBoss(Mobile typedObject) : base(typedObject)
+		{
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
@@ -73,8 +77,8 @@ namespace TsRandomizer.LevelObjects.Other
 
 			level.RequestChangeLevel(new LevelChangeRequest
 				{
-					LevelID = replacedBoss.RoomKey.LevelId,
-					RoomID = replacedBoss.RoomKey.RoomId,
+					LevelID = vanillaBoss.RoomKey.LevelId,
+					RoomID = vanillaBoss.RoomKey.RoomId,
 					IsUsingWarp = true,
 					IsUsingWhiteFadeOut = true,
 					FadeInTime = 0.5f,

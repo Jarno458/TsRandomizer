@@ -31,13 +31,13 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type PedestalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
 
-		static int CurrentBossId = 1;
-		static void SpawnBoss(Level level, SeedOptions seedOptions, SettingCollection gameSettings, int bossId, Point position)
+		static int VanillaBossId = 1;
+		static void SpawnBoss(Level level, SeedOptions seedOptions, int vanillaBossId, Point position)
 		{
 			level.JukeBox.StopSong();
-			BossAttributes bossInfo = BestiaryManager.GetBossAttributes(level, bossId);
-			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, seedOptions, gameSettings, bossId);
-			level.JukeBox.PlaySong(bossInfo.Song);
+			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
+			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, seedOptions, vanillaBossId);
+			level.JukeBox.PlaySong(vanillaBossInfo.Song);
 
 			ObjectTileSpecification bossTile = new ObjectTileSpecification();
 			bossTile.Category = EObjectTileCategory.Enemy;
@@ -53,7 +53,7 @@ namespace TsRandomizer.LevelObjects
 		{
 			level.JukeBox.StopSong();
 
-			CurrentBossId = bossId;
+			VanillaBossId = bossId;
 
 			level.RequestChangeLevel(new LevelChangeRequest
 			{
@@ -70,7 +70,7 @@ namespace TsRandomizer.LevelObjects
 		{
 			RoomTriggers.Add(new RoomTrigger(5, 46, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// False boss room for boss randomization
-				SpawnBoss(level, seedOptions, gameSettings, CurrentBossId, new Point(100, 200));
+				SpawnBoss(level, seedOptions, VanillaBossId, new Point(100, 200));
 			}));
 
 			RoomTriggers.Add(new RoomTrigger(0, 3, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
@@ -102,15 +102,29 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.SetCutsceneTriggered("LakeDesolation1_Entrance", true); // Fixes music when returning to Lake Desolation later
 			}));
 			RoomTriggers.Add(new RoomTrigger(1, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (itemLocation.IsPickedUp || !level.GameSave.GetSaveBool("IsBossDead_RoboKitty"))
-				{
+				if (!level.GameSave.GetSaveBool("IsBossDead_RoboKitty"))
 					CreateBossWarp(level, 65);
-					return;
-				}
-				
+
 				// SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
+			RoomTriggers.Add(new RoomTrigger(2, 29, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				if (!level.GameSave.GetSaveBool("IsBossDead_Varndagorth"))
+					CreateBossWarp(level, 66);
+			}));
+			RoomTriggers.Add(new RoomTrigger(7, 0, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				if (!level.GameSave.GetSaveBool("IsBossDead_GodBirdBoss"))
+					CreateBossWarp(level, 67);
+			}));
+			RoomTriggers.Add(new RoomTrigger(6, 15, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				if (!level.GameSave.GetSaveBool("IsBossDead_Aelana"))
+					CreateBossWarp(level, 69);
+			}));
+
 			RoomTriggers.Add(new RoomTrigger(5, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// todo make play nice with cutscene
+				if (!level.GameSave.GetSaveBool("IsBossDead_Demons"))
+					CreateBossWarp(level, 68);
+
 				if (itemLocation.IsPickedUp || !level.GameSave.HasCutsceneBeenTriggered("Keep0_Demons0")) return;
 
 				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);

@@ -272,14 +272,36 @@ namespace TsRandomizer.Randomisation
 			}
 		}
 
-		public static BossAttributes GetReplacedBoss(Level level, SeedOptions seedOptions, SettingCollection gameSettings, int bossId)
+		public static BossAttributes GetReplacedBoss(Level level, SeedOptions seedOptions, int vanillaBossId)
 		{
+			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80};
+
 			Random random = new Random(seedOptions.GetHashCode());
-			int replacedBossId = Enumerable.Range(65, 12).SelectRandom(random);
+			int[] replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
+
+			int bossIndex = Array.IndexOf(validBosses, vanillaBossId, 0);
+
+			int replacedBossId = replacedBosses[bossIndex];
 
 			BossAttributes replacedBossInfo = GetBossAttributes(level, replacedBossId);
 
 			return replacedBossInfo;
+		}
+
+		public static BossAttributes GetVanillaBoss(Level level, SeedOptions seedOptions, int replacedBossId)
+		{
+			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 };
+
+			Random random = new Random(seedOptions.GetHashCode());
+			int[] replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
+
+			int bossIndex = Array.IndexOf(replacedBosses, replacedBossId, 0);
+
+			int vanillaBossId = validBosses[bossIndex];
+
+			BossAttributes vanillaBossInfo = GetBossAttributes(level, vanillaBossId);
+
+			return vanillaBossInfo;
 		}
 
 		public static void UpdateBestiary(Level level, SeedOptions seedOptions, SettingCollection gameSettings)
@@ -297,8 +319,8 @@ namespace TsRandomizer.Randomisation
 				}
 				if (bestiaryEntry.Index >= 65 && bestiaryEntry.Index <= 80)
 				{
-					BossAttributes replacedBossInfo = GetReplacedBoss(level, seedOptions, gameSettings, bestiaryEntry.Index);
-					bestiaryEntry.VisibleName = replacedBossInfo.VisibleName + "-esque " + bestiaryEntry.VisibleName;
+					BossAttributes replacedBossInfo = GetReplacedBoss(level, seedOptions, bestiaryEntry.Index);
+					bestiaryEntry.VisibleName = replacedBossInfo.VisibleName;
 					bestiaryEntry.HP = replacedBossInfo.HP;
 					bestiaryEntry.TouchDamage = replacedBossInfo.TouchDamage;
 					bestiaryEntry.Exp = replacedBossInfo.XP;
