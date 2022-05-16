@@ -137,9 +137,11 @@ namespace TsRandomizer.LevelObjects
 
 			var lunais = level.MainHero;
 			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
-			if (gameSettings.MaxHP)
-				lunais.MaxHP = gameSettings.MaxHP;
-			if (gameSettings.DamageRando.Value)
+
+			int hpCap = Convert.ToInt32(gameSettings.HpCap.Value);
+			lunais.MaxHP = hpCap > lunais.MaxHP ? lunais.MaxHP : hpCap;
+
+			if (gameSettings.DamageRando.Value != "Off")
 				OrbDamageManager.UpdateOrbDamage(level.GameSave, level.MainHero);
 
 			KnownItemIds.Clear();

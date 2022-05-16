@@ -88,8 +88,10 @@ namespace TsRandomizer.Screens
 
 			ItemManipulator.Initialize(ItemLocations);
 
-			if (settings.DamageRando.Value)
-				OrbDamageManager.PopulateOrbLookups(Level.GameSave);
+			if (settings.DamageRando.Value != "Off")
+				OrbDamageManager.PopulateOrbLookups(Level.GameSave, settings.DamageRando.Value, settings.DamageRandoOverrides.Value);
+
+
 
 			BestiaryManager.UpdateBestiary(Level, seedOptions, settings);
 
@@ -130,7 +132,7 @@ namespace TsRandomizer.Screens
 
 			FamiliarManager.Update(Level);
 
-			deathLinkService.Update(Level, ScreenManager);
+			deathLinkService?.Update(Level, ScreenManager);
 
 #if DEBUG
 			TimespinnerAfterDark(input);

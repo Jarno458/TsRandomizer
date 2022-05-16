@@ -9,7 +9,7 @@ namespace TsRandomizer.Settings
 		public static readonly GameSettingCategoryInfo[] Categories = {
 			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.DamageRando, s => s.MaxHP
+					s => s.DamageRando, s => s.HpCap
 				}},
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -33,11 +33,15 @@ namespace TsRandomizer.Settings
 				}}
 		};
 
-		public OnOffGameSetting DamageRando = new OnOffGameSetting("Damage Randomizer",
-			"Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false);
+		public SpecificValuesGameSetting DamageRando = new SpecificValuesGameSetting("Damage Randomizer",
+			"Randomly nerfs and buffs orbs, spells, and some rings. \"Manual\" requires editing the randomizer settings file.",
+			new List<string> { "Off", "All Nerfs", "Mostly Nerfs", "Balanced", "Mostly Buffs", "All Buffs", "Manual" }, "Off");
 
-		public SpecificValuesGameSetting MaxHP = new SpecificValuesGameSetting("Max HP", "Sets the maximum HP Lunais is allowed to have",
-			new List<string> { "1", "64", "128", "192", "256", "999" }, "999", false);
+		public DamageRandoOverridesSetting DamageRandoOverrides = new DamageRandoOverridesSetting("Damage Randomizer Overrides",
+			"Overrides the odds for each orb to be nerfed or buffed. Only editable from the file, so you shouldn't even be seeing this text.");
+
+		public NumberGameSetting HpCap = new NumberGameSetting("HP Cap",
+			"Sets the maximum HP Lunais is allowed to have", 1, 999, 64, 999);
 
 		public OnOffGameSetting ShowBestiary = new OnOffGameSetting("Show Bestiary",
 			"All bestiary entries in the journal are visible by default.", false, false);

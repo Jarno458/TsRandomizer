@@ -98,7 +98,6 @@ There are several settings for randomization of how much damage orbs, spells, an
 # Known Bugs
 ##### I am aware of these issues, but I found them small enough not to fix at this moment
 * Having the Varndagrath collected away will cause the door to close and softlock the player
-* Itemlinks do not work for the player who picks up the item
 * Orb pedestal in the room before Emperor Nuvius always spawns even if you didn't kill him yet
 
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
@@ -108,7 +107,6 @@ There are several settings for randomization of how much damage orbs, spells, an
 # TODO
 ##### Things I plan on doing in the future
 * Archipelago TODO:
-  * Change save game menu to make AP seeds more clear like adding player name & server (optionally)
   * Add option to change credentails of the save
 * Implement skin selection
 
