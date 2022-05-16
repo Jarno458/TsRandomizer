@@ -11,7 +11,7 @@ namespace TsRandomizer.Settings
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.DamageRando
 				}},
-			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.", 
+			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.ShopFill, s => s.ShopMultiplier, s => s.ShopWarpShards, s => s.LootPool
 				}},
@@ -25,7 +25,7 @@ namespace TsRandomizer.Settings
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.NumberOfOnScreenLogLines, s => s.OnScreenLogLineScreenTime, s => s.ShowSendItemsFromMe, s => s.ShowReceivedItemsFromMe,
 					s => s.ShowSendGenericItems, s => s.ShowSendImportantItems, s => s.ShowSendProgressionItems, s => s.ShowSendTrapItems,
-					s => s.ShowSystemMessages
+					s => s.ShowSystemMessages, s => s.DeathLink
 				}},
 			new GameSettingCategoryInfo { Name = "Other", Description = "Miscellaneous settings",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -33,8 +33,12 @@ namespace TsRandomizer.Settings
 				}}
 		};
 
-		public OnOffGameSetting DamageRando = new OnOffGameSetting("Damage Randomizer",
-			"Adds a high chance to make orb damage very low, and a low chance to make orb damage very, very high", false);
+		public SpecificValuesGameSetting DamageRando = new SpecificValuesGameSetting("Damage Randomizer",
+			"Randomly nerfs and buffs orbs, spells, and some rings. \"Manual\" requires editing the randomizer settings file.",
+			new List<string> { "Off", "All Nerfs", "Mostly Nerfs", "Balanced", "Mostly Buffs", "All Buffs", "Manual" }, "Off");
+
+		public DamageRandoOverridesSetting DamageRandoOverrides = new DamageRandoOverridesSetting("Damage Randomizer Overrides",
+			"Overrides the odds for each orb to be nerfed or buffed. Only editable from the file, so you shouldn't even be seeing this text.");
 
 		public OnOffGameSetting ShowBestiary = new OnOffGameSetting("Show Bestiary",
 			"All bestiary entries in the journal are visible by default.", false, false);
@@ -104,5 +108,8 @@ namespace TsRandomizer.Settings
 
 		public ColorGameSetting PastTransitionMinimapColor = new ColorGameSetting("Past transition color",
 			"Sets the color for rooms that have items in them for you", "#9712C2", true);
+
+		public OnOffGameSetting DeathLink = new OnOffGameSetting("DeathLink",
+			"Sets whether DeathLink is on or off", false, true);
 	}
 }

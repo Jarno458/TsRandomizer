@@ -81,10 +81,23 @@ The item tracker features a few options:
 * You can use you scroll wheel to make the window bigger of smaller.
 * You can click with your right mouse button to change the background to a few per-defined backgrounds.
 
+# Damage Randomizer
+There are several settings for randomization of how much damage orbs, spells, and some rings do. Some notes on that:
+* Orbs, spells, and rings are connected. If an orb is buffed, then all three will be buffed, etc.
+* Most ring buffs and nerfs do nothing, but it is noted on the item for information about the rest of the set. Pyro, Scythe, and Icicle ring damage is affected.
+* There are 5 presets for damage randomization:
+  * All Nerfs: Every orb is significantly weaker.
+  * Mostly Nerfs: For fans of the way Damage Rando used to work. Each orb has a 5/8 chance of being nerfed, a 1/4 chance of being normal, and a 1/8 chance of being buffed.
+  * Balanced: Each orb has an even chance to be buffed, nerfed, or unaffected.
+  * Mostly Buffs: Each orb has a 1/8 chance of being nerfed, a 1/4 chance of being unaffected, and a 5/8 chance of being buffed.
+  * All Buffs: Every orb is significantly stronger.
+* There is also a "Manual" mode that can be used with a manual editing of your settings.json file.
+  * The first time you launch Timespinner Randomizer, a path and a settings.json file will be added to your game folder.
+  * The section "DamageRandoOverrides" in settings.json can be manually edited to weight the odds of each orb. You can set a specific odds to 0 in order to remove its possibility entirely.
+
 # Known Bugs
 ##### I am aware of these issues, but I found them small enough not to fix at this moment
 * Having the Varndagrath collected away will cause the door to close and softlock the player
-* Itemlinks do not work for the player who picks up the item
 * Orb pedestal in the room before Emperor Nuvius always spawns even if you didn't kill him yet
 
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
@@ -94,7 +107,6 @@ The item tracker features a few options:
 # TODO
 ##### Things I plan on doing in the future
 * Archipelago TODO:
-  * Change save game menu to make AP seeds more clear like adding player name & server (optionally)
   * Add option to change credentails of the save
 * Implement skin selection
 

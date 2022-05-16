@@ -28,7 +28,6 @@ namespace TsRandomizer
 
 		//Non visable flags
 		public bool Archipelago => (Flags & 1 << 16) > 0;
-		public bool DeathLink => (Flags & 1 << 17) > 0;
 
 		public SeedOptions(uint flags)
 		{
@@ -53,8 +52,7 @@ namespace TsRandomizer
 				{"StinkyMaw", 1U << 9},
 				{"GyreArchives", 1U << 10},
 				{"Cantoran", 1U << 11},
-				{"LoreChecks", 1U << 12},
-				{"DeathLink", 1U << 17}
+				{"LoreChecks", 1U << 12}
 			};
 
 			foreach (var kvp in stringToFlagMapping)
