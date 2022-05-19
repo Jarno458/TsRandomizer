@@ -41,6 +41,9 @@ namespace TsRandomizer.LevelObjects
 			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, seedOptions, vanillaBossId);
 			level.JukeBox.PlaySong(vanillaBossInfo.Song);
 
+			if (vanillaBossId == 70 && seedOptions.GassMaw)
+				FillRoomWithGas(level);
+
 			ObjectTileSpecification bossTile = new ObjectTileSpecification();
 			bossTile.Category = EObjectTileCategory.Enemy;
 			bossTile.Layer = ETileLayerType.Objects;
@@ -132,6 +135,42 @@ namespace TsRandomizer.LevelObjects
 				// Aelana
 				CreateBossWarp(level, 69);
 			}));
+			RoomTriggers.Add(new RoomTrigger(8, 7, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Maw
+				CreateBossWarp(level, 70);
+			}));
+			RoomTriggers.Add(new RoomTrigger(12, 20, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Nuvius
+				CreateBossWarp(level, 73);
+			}));
+			RoomTriggers.Add(new RoomTrigger(13, 1, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Terrilis
+				CreateBossWarp(level, 74);
+			}));
+			RoomTriggers.Add(new RoomTrigger(13, 0, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Prince
+				CreateBossWarp(level, 75);
+			}));
+			RoomTriggers.Add(new RoomTrigger(9, 7, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Xarion
+				CreateBossWarp(level, 76);
+			}));
+			RoomTriggers.Add(new RoomTrigger(14, 4, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Ravenlord
+				CreateBossWarp(level, 77);
+			}));
+			RoomTriggers.Add(new RoomTrigger(14, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Ifrit
+				CreateBossWarp(level, 78);
+			}));
+			RoomTriggers.Add(new RoomTrigger(16, 4, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Sandman
+				CreateBossWarp(level, 79);
+			}));
+			RoomTriggers.Add(new RoomTrigger(16, 26, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Sandman
+				CreateBossWarp(level, 80);
+			}));
 
 			RoomTriggers.Add(new RoomTrigger(5, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// todo make play nice with cutscene
@@ -143,6 +182,9 @@ namespace TsRandomizer.LevelObjects
 				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Genza
+				CreateBossWarp(level, 72);
+
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.HasRelic(EInventoryRelicType.ScienceKeycardA)
 					&& level.GameSave.GetSaveBool("IsBossDead_Shapeshift"))
@@ -158,6 +200,12 @@ namespace TsRandomizer.LevelObjects
 				if (!level.GameSave.GetSaveBool("IsBossDead_Cantoran"))
 				{
 					level.GameSave.SetValue("IsCantoranActive", true);
+					return;
+				}
+				if (!level.GameSave.GetSaveBool("IsBossDead_Cantoran") && level.GameSave.GetSaveBool("IsCantoranActive"))
+				{
+					level.GameSave.SetValue("IsCantoranActive", false);
+					SpawnBoss(level, seedOptions, 71);
 					return;
 				}
 
@@ -308,20 +356,15 @@ namespace TsRandomizer.LevelObjects
 			RoomTriggers.Add(new RoomTrigger(8, 6, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (!seedOptions.GassMaw) return;
 
-				FillRoomWithGass(level);
-			}));
-			RoomTriggers.Add(new RoomTrigger(8, 7, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (!seedOptions.GassMaw) return;
-
-				FillRoomWithGass(level);
+				FillRoomWithGas(level);
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 13, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (!seedOptions.GassMaw) return;
 
-				FillRoomWithGass(level);
+				FillRoomWithGas(level);
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (seedOptions.GassMaw) FillRoomWithGass(level);
+				if (seedOptions.GassMaw) FillRoomWithGas(level);
 
 				var levelReflected = level.AsDynamic();
 				IEnumerable<Animate> eventObjects = levelReflected._levelEvents.Values;
@@ -334,7 +377,7 @@ namespace TsRandomizer.LevelObjects
 			RoomTriggers.Add(new RoomTrigger(8, 33, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (!seedOptions.GassMaw) return;
 
-				FillRoomWithGass(level);
+				FillRoomWithGas(level);
 			}));
 			RoomTriggers.Add(new RoomTrigger(16, 1, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Allow the post-Nightmare chest to spawn
@@ -505,7 +548,7 @@ namespace TsRandomizer.LevelObjects
 			level.AsDynamic().RequestAddObject(gyrePortal);
 		}
 
-		static void FillRoomWithGass(Level level)
+		static void FillRoomWithGas(Level level)
 		{
 			var gass = (GameEvent)LakeVacuumLevelEffectType.CreateInstance(false, level, new Point(), -1, new ObjectTileSpecification());
 

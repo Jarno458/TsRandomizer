@@ -120,7 +120,8 @@ namespace TsRandomizer.Randomisation
 						Index = bossId,
 						VisibleName = "The Maw",
 						SaveName = "IsBossDead_Maw",
-						RoomKey = new RoomItemKey(8, 7),
+						// Actually 8, 7, but 8, 13 is where Lunais is spit out
+						RoomKey = new RoomItemKey(8, 13),
 						Position = new Point(200, 200),
 						HP = 2250,
 						XP = 366,
@@ -264,7 +265,9 @@ namespace TsRandomizer.Randomisation
 						Index = bossId,
 						VisibleName = "Sandman",
 						SaveName = "IsBossDead_Sandman",
-						RoomKey = new RoomItemKey(7, 5),
+						// Actual room is 16, 4, but trigger final Nightmare instead as return
+						// RoomKey = new RoomItemKey(16, 4),
+						RoomKey = new RoomItemKey(16, 26),
 						Position = new Point(200, 200),
 						HP = 5000,
 						XP = 800,
@@ -280,8 +283,10 @@ namespace TsRandomizer.Randomisation
 						Index = bossId,
 						VisibleName = "Nightmare",
 						SaveName = "IsBossDead_Nightmare",
-						RoomKey = new RoomItemKey(12, 26),
-						Position = new Point(200, 200),
+						// Actual room is 16, 26, but trigger ! instead
+						// RoomKey = new RoomItemKey(16, 26),
+						RoomKey = new RoomItemKey(16, 27),
+						Position = new Point(500, 200),
 						HP = 6666,
 						XP = 0,
 						TouchDamage = 111,
