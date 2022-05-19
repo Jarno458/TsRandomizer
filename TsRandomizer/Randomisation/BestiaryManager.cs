@@ -23,8 +23,13 @@ namespace TsRandomizer.Randomisation
 					level.GameSave.SetValue(string.Format(bestiaryEntry.Key.Replace("Enemy_", "KILL_")), 1);
 				}
 
+				int dropSlot = 0;
 				foreach (var loot in bestiaryEntry.LootTable)
 				{
+					if (gameSettings.ShowDrops.Value)
+					{
+						level.GameSave.SetValue(string.Format(bestiaryEntry.Key.Replace("Enemy_", "DROP_" + dropSlot + "_")), true);
+					}
 					if (gameSettings.LootPool.Value == "Random")
 					{
 						var item = Helper.GetAllLoot().SelectRandom(random);
@@ -40,6 +45,7 @@ namespace TsRandomizer.Randomisation
 						loot.Item = (int)EInventoryUseItemType.PlaceHolderItem1;
 						loot.Category = (int)EInventoryCategoryType.UseItem;
 					}
+					dropSlot++;
 				}
 			}
 		}
