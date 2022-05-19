@@ -29,7 +29,7 @@ namespace TsRandomizer.Settings
 				}},
 			new GameSettingCategoryInfo { Name = "Other", Description = "Miscellaneous settings",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.ShowBestiary
+					s => s.ShowBestiary, s => s.ShowDrops
 				}}
 		};
 
@@ -45,6 +45,9 @@ namespace TsRandomizer.Settings
 
 		public OnOffGameSetting ShowBestiary = new OnOffGameSetting("Show Bestiary",
 			"All bestiary entries in the journal are visible by default.", false, false);
+
+		public OnOffGameSetting ShowDrops = new OnOffGameSetting("Show Enemy Drops",
+			"All item drops in the bestiary are visible by default.", false, false);
 
 		public SpecificValuesGameSetting LootPool = new SpecificValuesGameSetting("Loot Pool",
 			"Sets which items enemies will drop: [Vanilla, Random, Empty]",

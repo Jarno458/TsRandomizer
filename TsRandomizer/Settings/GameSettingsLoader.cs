@@ -183,8 +183,13 @@ namespace TsRandomizer.Settings
 
 			if (slotData.TryGetValue("ShowBestiary", out var showBestiary))
 				settings.ShowBestiary.Value = IsTrue(showBestiary);
+
 			if (slotData.TryGetValue("HpCap", out var hpCap))
 				settings.HpCap.Value = ToInt(hpCap, 999);
+
+			if (slotData.TryGetValue("ShowDrops", out var showDrops))
+				settings.ShowDrops.Value = IsTrue(showDrops);
+
 			if (slotData.TryGetValue("DeathLink", out var deathLink))
 				settings.DeathLink.Value = IsTrue(deathLink);
 
