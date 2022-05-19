@@ -187,7 +187,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Prince Nuvius",
-						SaveName = "Placeholder4",
+						SaveName = "IsPrinceDead",
 						RoomKey = new RoomItemKey(13, 0),
 						HP = 2500,
 						XP = 350,
@@ -232,7 +232,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Ifrit",
-						SaveName = "Placeholder6",
+						SaveName = "IsBossDead_Zel",
 						RoomKey = new RoomItemKey(14, 5),
 						HP = 5000,
 						XP = 700,
