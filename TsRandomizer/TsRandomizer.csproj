@@ -119,7 +119,7 @@
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="LevelObjects\TextReplacer.cs" />
     <Compile Include="LevelObjects\Other\MerchantCrowNPC.cs" />
-    <Compile Include="LevelObjects\Other\NightmareBoss.cs" />
+    <Compile Include="LevelObjects\Other\BossEnemy.cs" />
     <Compile Include="Randomisation\ExteralItemLocation.cs" />
     <Compile Include="Archipelago\Log.cs" />
     <Compile Include="Archipelago\Client.cs" />

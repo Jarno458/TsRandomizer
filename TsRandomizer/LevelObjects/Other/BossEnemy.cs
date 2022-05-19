@@ -1,4 +1,7 @@
-﻿using Archipelago.MultiClient.Net.Enums;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Archipelago.MultiClient.Net.Enums;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Archipelago;
@@ -6,15 +9,9 @@ using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
-using TsRandomizer.Settings;
-
-
 
 namespace TsRandomizer.LevelObjects.Other
 {
-	/*
-	[TimeSpinnerType("Timespinner.GameObjects.Bosses.ShapeshifterBoss")]
-	*/
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.RoboKitty.RoboKittyBoss")]
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.Varndagroth.VarndagrothBoss")]
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.Bird.GodBirdBoss")]
@@ -22,6 +19,7 @@ namespace TsRandomizer.LevelObjects.Other
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.AelanaBoss")]
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.MawBoss")]
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.CantoranBoss")]
+	// [TimeSpinnerType("Timespinner.GameObjects.Bosses.ShapeshifterBoss")]
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss")]
 	[TimeSpinnerType("Timespinner.GameAbstractions.GameObjects.XarionBoss")]
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.Z_Raven.RavenBoss")]
@@ -29,11 +27,13 @@ namespace TsRandomizer.LevelObjects.Other
 	[TimeSpinnerType("Timespinner.GameAbstractions.GameObjects.SandmanBoss")]
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.OtherBosses.NightmareBoss")]
 	// ReSharper disable once UnusedMember.Global
-	class NightmareBoss : LevelObject
+	class BossEnemy: LevelObject
 	{
 		bool hasRun;
 		BossAttributes currentBoss;
 		BossAttributes vanillaBoss;
+
+		static readonly Type SandStreamerEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Misc.SandStreamerEvent");
 
 		protected override void Initialize(SeedOptions options)
 		{
@@ -46,7 +46,7 @@ namespace TsRandomizer.LevelObjects.Other
 			vanillaBoss = BestiaryManager.GetVanillaBoss(level, options, bossId);
 		}
 
-		public NightmareBoss(Mobile typedObject) : base(typedObject)
+		public BossEnemy(Mobile typedObject) : base(typedObject)
 		{
 		}
 
@@ -67,23 +67,25 @@ namespace TsRandomizer.LevelObjects.Other
 				hasRun = true;
 				return;
 			};
-			if (level.RoomID != 46)
+
+			if (level.RoomID != 2)
 				return;
 
-			// TODO: set to value of the replaced boss
-			// TODO: unset the value of the killed boss
-			// use TSRandomizerIsBossDead_ to ensure they don't unset if the boss should actually be killed
-			level.GameSave.SetValue("IsBossDead_RoboKitty", true);
+			var eventTypes = ((Dictionary<int, GameEvent>)LevelReflected._levelEvents).Values.Select(e => e.GetType());
+			if (!eventTypes.Contains(SandStreamerEventType))
+				return;
+
+			BestiaryManager.SetBossKillSave(level, vanillaBoss.Index);
 
 			level.RequestChangeLevel(new LevelChangeRequest
-				{
-					LevelID = vanillaBoss.RoomKey.LevelId,
-					RoomID = vanillaBoss.RoomKey.RoomId,
-					IsUsingWarp = true,
-					IsUsingWhiteFadeOut = true,
-					FadeInTime = 0.5f,
-					FadeOutTime = 0.25f
-				});
+			{
+				LevelID = vanillaBoss.RoomKey.LevelId,
+				RoomID = vanillaBoss.RoomKey.RoomId,
+				IsUsingWarp = true,
+				IsUsingWhiteFadeOut = true,
+				FadeInTime = 0.5f,
+				FadeOutTime = 0.25f
+			});
 
 			hasRun = true;
 		}

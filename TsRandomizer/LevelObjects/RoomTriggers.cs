@@ -31,10 +31,12 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type PedestalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
 
-		static int VanillaBossId = 1;
-		static void SpawnBoss(Level level, SeedOptions seedOptions, int vanillaBossId, Point position)
+		static int TargetBossId = 1;
+
+		static void SpawnBoss(Level level, SeedOptions seedOptions, int vanillaBossId)
 		{
 			level.JukeBox.StopSong();
+			level.ToggleExits(false);
 			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
 			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, seedOptions, vanillaBossId);
 			level.JukeBox.PlaySong(vanillaBossInfo.Song);
@@ -44,21 +46,29 @@ namespace TsRandomizer.LevelObjects
 			bossTile.Layer = ETileLayerType.Objects;
 			bossTile.ObjectID = replacedBossInfo.TileId;
 
-			var boss = replacedBossInfo.BossType.CreateInstance(false, position, level, replacedBossInfo.Sprite, -1, bossTile);
+			var boss = replacedBossInfo.BossType.CreateInstance(false, replacedBossInfo.Position, level, replacedBossInfo.Sprite, -1, bossTile);
 
 			level.AsDynamic().RequestAddObject(boss);
 		}
 
-		static void CreateBossWarp(Level level, int bossId)
+		static void CreateBossWarp(Level level, int vanillaBossId)
 		{
-			level.JukeBox.StopSong();
+			// TODO: check if boss rando is on and exit before any of this if not
+			BestiaryManager.RefreshBossSaveFlags(level);
+			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
+			if (level.GameSave.GetSaveBool("TSRando_" + vanillaBossInfo.SaveName))
+				// Exit if boss associated with this room has been defeated
+				return;
 
-			VanillaBossId = bossId;
+			TargetBossId = vanillaBossId;
+
+			level.JukeBox.StopSong();
 
 			level.RequestChangeLevel(new LevelChangeRequest
 			{
-				LevelID = 5,
-				RoomID = 46,
+				// 5, 46 is an empty room
+				LevelID = 0,
+				RoomID = 2,
 				IsUsingWarp = true,
 				IsUsingWhiteFadeOut = true,
 				FadeInTime = 0.5f,
@@ -68,11 +78,6 @@ namespace TsRandomizer.LevelObjects
 
 		static RoomTrigger()
 		{
-			RoomTriggers.Add(new RoomTrigger(5, 46, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				// False boss room for boss randomization
-				SpawnBoss(level, seedOptions, VanillaBossId, new Point(100, 200));
-			}));
-
 			RoomTriggers.Add(new RoomTrigger(0, 3, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (seedOptions.StartWithJewelryBox)
 					level.AsDynamic().UnlockRelic(EInventoryRelicType.JewelryBox);
@@ -92,6 +97,11 @@ namespace TsRandomizer.LevelObjects
 				if (seedOptions.StartWithTalaria)
 					level.AsDynamic().UnlockRelic(EInventoryRelicType.Dash);
 			}));
+			RoomTriggers.Add(new RoomTrigger(0, 2, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// False boss room
+				if(TargetBossId != 1)
+					SpawnBoss(level, seedOptions, TargetBossId);
+			}));
 			RoomTriggers.Add(new RoomTrigger(1, 0, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (!seedOptions.Inverted || level.GameSave.GetSaveBool("TSRandomizerHasTeleportedPlayer")) return;
 
@@ -102,44 +112,35 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.SetCutsceneTriggered("LakeDesolation1_Entrance", true); // Fixes music when returning to Lake Desolation later
 			}));
 			RoomTriggers.Add(new RoomTrigger(1, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (!level.GameSave.GetSaveBool("IsBossDead_RoboKitty"))
-					CreateBossWarp(level, 65);
+				// Boots
+				CreateBossWarp(level, 65);
 
-				// SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
+				if (!itemLocation.IsPickedUp
+					&& level.GameSave.GetSaveBool("IsBossDead_RoboKitty")
+					&& level.GameSave.HasOrb(EInventoryOrbType.Blade))
+					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 29, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (!level.GameSave.GetSaveBool("IsBossDead_Varndagorth"))
-					CreateBossWarp(level, 66);
+				// Varndagroth
+				CreateBossWarp(level, 66);
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 0, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (!level.GameSave.GetSaveBool("IsBossDead_GodBirdBoss"))
-					CreateBossWarp(level, 67);
+				// Azure Queen
+				CreateBossWarp(level, 67);
 			}));
 			RoomTriggers.Add(new RoomTrigger(6, 15, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (!level.GameSave.GetSaveBool("IsBossDead_Aelana"))
-					CreateBossWarp(level, 69);
+				// Aelana
+				CreateBossWarp(level, 69);
 			}));
 
 			RoomTriggers.Add(new RoomTrigger(5, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// todo make play nice with cutscene
-				if (!level.GameSave.GetSaveBool("IsBossDead_Demons"))
-					CreateBossWarp(level, 68);
+				// Golden Idol
+				CreateBossWarp(level, 68);
 
 				if (itemLocation.IsPickedUp || !level.GameSave.HasCutsceneBeenTriggered("Keep0_Demons0")) return;
 
 				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
-			}));
-			RoomTriggers.Add(new RoomTrigger(11, 1, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (itemLocation.IsPickedUp || !level.GameSave.HasRelic(EInventoryRelicType.Dash)) return;
-
-				SpawnItemDropPickup(level, itemLocation.ItemInfo, 280, 191);
-			}));
-			RoomTriggers.Add(new RoomTrigger(11, 39, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (itemLocation.IsPickedUp
-					|| !level.GameSave.HasOrb(EInventoryOrbType.Eye)
-					|| !level.GameSave.GetSaveBool("11_LabPower")) return;
-
-				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 176);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (!itemLocation.IsPickedUp
@@ -147,7 +148,7 @@ namespace TsRandomizer.LevelObjects
 					&& level.GameSave.GetSaveBool("IsBossDead_Shapeshift"))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 
-				if(!seedOptions.Inverted && level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
+				if (!seedOptions.Inverted && level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
 					CreateSimpleOneWayWarp(level, 16, 12);
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
@@ -165,6 +166,19 @@ namespace TsRandomizer.LevelObjects
 					&& level.GameSave.GetSaveBool("IsBossDead_Cantoran")
 					&& level.GameSave.HasOrb(EInventoryOrbType.Barrier))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 170, 194);
+			}));
+
+			RoomTriggers.Add(new RoomTrigger(11, 1, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				if (itemLocation.IsPickedUp || !level.GameSave.HasRelic(EInventoryRelicType.Dash)) return;
+
+				SpawnItemDropPickup(level, itemLocation.ItemInfo, 280, 191);
+			}));
+			RoomTriggers.Add(new RoomTrigger(11, 39, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				if (itemLocation.IsPickedUp
+					|| !level.GameSave.HasOrb(EInventoryOrbType.Eye)
+					|| !level.GameSave.GetSaveBool("11_LabPower")) return;
+
+				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 176);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 26, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (itemLocation.IsPickedUp
