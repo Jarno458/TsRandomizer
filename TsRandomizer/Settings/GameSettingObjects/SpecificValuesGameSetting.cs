@@ -9,6 +9,12 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		[JsonIgnoreDeserialize]
 		public List<string> AllowedValues { get; }
 
+		[JsonIgnore]
+		public new string Value {
+			get { return CurrentValue as string ?? DefaultValue as string; }
+			set { CurrentValue = value; }
+		}
+
 		public SpecificValuesGameSetting(string name, string description, List<string> allowedValues,
 			string defaultValue = "Default", bool canBeChangedInGame = false)
 				: base(name, description, defaultValue, canBeChangedInGame)
