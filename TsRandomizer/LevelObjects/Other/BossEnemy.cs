@@ -79,8 +79,8 @@ namespace TsRandomizer.LevelObjects.Other
 
 			level.RequestChangeLevel(new LevelChangeRequest
 			{
-				LevelID = vanillaBoss.RoomKey.LevelId,
-				RoomID = vanillaBoss.RoomKey.RoomId,
+				LevelID = vanillaBoss.ReturnRoom.LevelId,
+				RoomID = vanillaBoss.ReturnRoom.RoomId,
 				IsUsingWarp = true,
 				IsUsingWhiteFadeOut = true,
 				FadeInTime = 0.5f,
