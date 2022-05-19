@@ -55,7 +55,8 @@ namespace TsRandomizer.Screens
 		{
 			try
 			{
-				gcm.UpdateMinimapColors(settings);
+				if (settings != null)
+					gcm.UpdateMinimapColors(settings);
 			}
 			catch
 			{
@@ -77,7 +78,7 @@ namespace TsRandomizer.Screens
 			{
 				var gameplayScreen = screenManager.FirstOrDefault<GameplayScreen>();
 
-				if(gameplayScreen != null)
+				if(gameplayScreen != null && gameplayScreen.Settings != null)
 					gcm.UpdateMinimapColors(gameplayScreen.Settings);
 			}
 
