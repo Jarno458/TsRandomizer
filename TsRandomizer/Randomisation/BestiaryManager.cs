@@ -25,6 +25,7 @@ namespace TsRandomizer.Randomisation
 		public Timespinner.GameAbstractions.EBGM Song;
 		public SpriteSheet Sprite;
 		public Type BossType;
+		public int Argument;
 		public int TileId;
 
 	}
@@ -50,6 +51,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss01,
 						Sprite = level.GCM.SpRoboKitty,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.RoboKitty.RoboKittyBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.RoboKittyBoss
 					};
 				case 66:
@@ -67,6 +69,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss02,
 						Sprite = level.GCM.SpVarndagroth,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Varndagroth.VarndagrothBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.VarndagrothBoss
 					};
 				case 67:
@@ -84,6 +87,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss07,
 						Sprite = level.GCM.SpBirdBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Bird.GodBirdBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.BirdBoss
 					};
 				case 68:
@@ -101,6 +105,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss05A,
 						Sprite = level.GCM.SpDemonBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.DemonBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.IncubusBoss
 					};
 				case 69:
@@ -118,6 +123,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss06,
 						Sprite = level.GCM.SpAelana,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.AelanaBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.AelanaBoss
 					};
 				case 70:
@@ -135,6 +141,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss08,
 						Sprite = level.GCM.SpMawBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.MawBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.MawBoss
 					};
 				case 71:
@@ -152,6 +159,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss07,
 						Sprite = level.GCM.SpCantoranBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.CantoranBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.CantoranBoss
 					};
 				case 72:
@@ -169,6 +177,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss11,
 						Sprite = level.GCM.SpShapeshifter,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.ShapeshifterBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.ShapeshiftBoss
 					};
 				case 73:
@@ -186,6 +195,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss12,
 						Sprite = level.GCM.SpEmperor,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.EmperorBoss
 					};
 				case 74:
@@ -201,8 +211,9 @@ namespace TsRandomizer.Randomisation
 						XP = 777,
 						TouchDamage = 85,
 						Song = Timespinner.GameAbstractions.EBGM.Boss12,
-						Sprite = level.GCM.SpEmperor,
+						Sprite = level.GCM.SpEmperorVilete,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
+						Argument = 1,
 						TileId = (int)EEnemyTileType.EmperorBoss
 					};
 				case 75:
@@ -218,8 +229,9 @@ namespace TsRandomizer.Randomisation
 						XP = 350,
 						TouchDamage = 70,
 						Song = Timespinner.GameAbstractions.EBGM.Boss12,
-						Sprite = level.GCM.SpEmperor,
+						Sprite = level.GCM.SpEmperorWinderia,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
+						Argument = 2,
 						TileId = (int)EEnemyTileType.EmperorBoss
 					};
 				case 76:
@@ -237,6 +249,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss13,
 						Sprite = level.GCM.SpXarionBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.XarionBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.XarionBoss
 					};
 				case 77:
@@ -254,6 +267,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss13,
 						Sprite = level.GCM.SpRavenBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Z_Raven.RavenBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.RavenBoss
 					};
 				case 78:
@@ -270,6 +284,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss12,
 						Sprite = level.GCM.SpZelBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.ZelBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.ZelBoss
 					};
 				case 79: 
@@ -287,6 +302,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss15,
 						Sprite = level.GCM.SpSandmanBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.SandmanBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.SandmanBoss
 					};
 				case 80:
@@ -304,6 +320,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss16,
 						Sprite = level.GCM.SpNightmareBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.OtherBosses.NightmareBoss"),
+						Argument = 0,
 						TileId = (int)EEnemyTileType.NightmareBoss
 					};
 				default: 
@@ -321,6 +338,7 @@ namespace TsRandomizer.Randomisation
 						Song = Timespinner.GameAbstractions.EBGM.Boss01,
 						Sprite = level.GCM.SpLakeBirdEgg,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.LakeBirdEgg"),
+						Argument = 1,
 						TileId = (int)EEnemyTileType.LakeBirdEgg
 					};
 			}

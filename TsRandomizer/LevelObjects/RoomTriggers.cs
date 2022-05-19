@@ -48,6 +48,7 @@ namespace TsRandomizer.LevelObjects
 			bossTile.Category = EObjectTileCategory.Enemy;
 			bossTile.Layer = ETileLayerType.Objects;
 			bossTile.ObjectID = replacedBossInfo.TileId;
+			bossTile.Argument = replacedBossInfo.Argument;
 
 			var boss = replacedBossInfo.BossType.CreateInstance(false, replacedBossInfo.Position, level, replacedBossInfo.Sprite, -1, bossTile);
 
