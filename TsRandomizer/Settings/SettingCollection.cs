@@ -7,9 +7,9 @@ namespace TsRandomizer.Settings
 	public class SettingCollection
 	{
 		public static readonly GameSettingCategoryInfo[] Categories = {
-			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.", 
+			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.DamageRando
+					s => s.DamageRando, s => s.HpCap
 				}},
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -39,6 +39,9 @@ namespace TsRandomizer.Settings
 
 		public DamageRandoOverridesSetting DamageRandoOverrides = new DamageRandoOverridesSetting("Damage Randomizer Overrides",
 			"Overrides the odds for each orb to be nerfed or buffed. Only editable from the file, so you shouldn't even be seeing this text.");
+
+		public NumberGameSetting HpCap = new NumberGameSetting("HP Cap",
+			"Sets the maximum HP Lunais is allowed to have", 1, 999, 64, 999);
 
 		public OnOffGameSetting ShowBestiary = new OnOffGameSetting("Show Bestiary",
 			"All bestiary entries in the journal are visible by default.", false, false);

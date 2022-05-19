@@ -14,7 +14,7 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		public double StepValue { get; set; }
 
 		public NumberGameSetting(string name, string description, double minValue, double maxValue, double stepValue,
-			double defaultValue, bool canBeChangedInGame = false) 
+			double defaultValue, bool canBeChangedInGame = false)
 			: base(name, description, defaultValue, canBeChangedInGame)
 		{
 			MinimumValue = minValue;
@@ -25,7 +25,20 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		[JsonConstructor]
 		public NumberGameSetting() { }
 
-		public override void ToggleValue() => 
-			Value = (Value + StepValue <= MaximumValue) ? Value + StepValue : MinimumValue;
+		public override void ToggleValue()
+		{
+			double newValue = Value + StepValue;
+			if (newValue <= MaximumValue)
+			{
+				if (Value == MinimumValue && MinimumValue < StepValue)
+					Value = StepValue;
+				else Value = newValue;
+			}
+			else
+			{
+				Value = Value == MaximumValue ? MinimumValue : MaximumValue;
+			}
+		}
+
 	}
 }
