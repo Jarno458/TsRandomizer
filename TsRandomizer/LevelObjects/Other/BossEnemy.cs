@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Archipelago.MultiClient.Net.Enums;
+using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Archipelago;
@@ -38,8 +39,21 @@ namespace TsRandomizer.LevelObjects.Other
 		protected override void Initialize(SeedOptions options)
 		{
 			Level level = (Level)Dynamic._level;
-			// TODO account for enemy argument
-			var bestiaryEntry = level.GCM.Bestiary.GetEntry(Dynamic.EnemyType, 0);
+			if (level.RoomID != 2)
+			{
+				// TODO fix this check for room 0, 2
+				return;
+			}
+			int argument = 0;
+			if (Dynamic.EnemyType == EEnemyTileType.EmperorBoss)
+			{
+				if (Dynamic._isPrinceEmperor)
+					argument = 2;
+				else if (Dynamic._isViletianEmperor)
+					argument = 1;
+			}
+
+			var bestiaryEntry = level.GCM.Bestiary.GetEntry(Dynamic.EnemyType, argument);
 			int bossId = bestiaryEntry.Index;
 			currentBoss = BestiaryManager.GetBossAttributes(level, bossId);
 
@@ -72,8 +86,8 @@ namespace TsRandomizer.LevelObjects.Other
 				return;
 
 			var eventTypes = ((Dictionary<int, GameEvent>)LevelReflected._levelEvents).Values.Select(e => e.GetType());
-			if (!eventTypes.Contains(SandStreamerEventType))
-				return;
+			//if (!eventTypes.Contains(SandStreamerEventType))
+			//	return;
 
 			BestiaryManager.SetBossKillSave(level, vanillaBoss.Index);
 
@@ -86,6 +100,7 @@ namespace TsRandomizer.LevelObjects.Other
 				FadeInTime = 0.5f,
 				FadeOutTime = 0.25f
 			});
+			level.PlayLevelSong();
 
 			hasRun = true;
 		}
