@@ -14,6 +14,7 @@ namespace TsRandomizer.Randomisation
 	{
 		public int Index;
 		public string VisibleName;
+		public string SaveName;
 		public RoomItemKey RoomKey;
 		public int HP;
 		public int XP;
@@ -36,6 +37,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Feline Sentry",
+						SaveName = "IsBossDead_RoboKitty",
 						RoomKey = new RoomItemKey(1, 5),
 						HP = 475,
 						XP = 50,
@@ -50,6 +52,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Varndagroth",
+						SaveName = "IsBossDead_Varndagroth",
 						RoomKey = new RoomItemKey(2, 29),
 						HP = 800,
 						XP = 100,
@@ -64,6 +67,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Azure Queen",
+						SaveName = "IsBossDead_Bird",
 						RoomKey = new RoomItemKey(7, 0),
 						HP = 1600,
 						XP = 200,
@@ -78,6 +82,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Golden Idol",
+						SaveName = "IsBossDead_Demon",
 						RoomKey = new RoomItemKey(5, 5),
 						HP = 2000,
 						XP = 250,
@@ -92,6 +97,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Aelana",
+						SaveName = "IsBossDead_Sorceress",
 						RoomKey = new RoomItemKey(6, 15),
 						HP = 2250,
 						XP = 300,
@@ -106,6 +112,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "The Maw",
+						SaveName = "IsBossDead_Maw",
 						RoomKey = new RoomItemKey(8, 7),
 						HP = 2250,
 						XP = 366,
@@ -120,6 +127,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Cantoran",
+						SaveName = "Placeholder1",
 						RoomKey = new RoomItemKey(7, 5),
 						HP = 2250,
 						XP = 300,
@@ -134,6 +142,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Genza",
+						SaveName = "IsBossDead_Shapeshift",
 						RoomKey = new RoomItemKey(11, 21),
 						HP = 3000,
 						XP = 500,
@@ -148,6 +157,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Emperor Nuvius",
+						SaveName = "Placeholder2",
 						RoomKey = new RoomItemKey(12, 20),
 						HP = 3500,
 						XP = 666,
@@ -162,6 +172,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Emperor Vol Terrilis",
+						SaveName = "Placeholder3",
 						RoomKey = new RoomItemKey(13, 1),
 						HP = 4000,
 						XP = 777,
@@ -176,6 +187,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Prince Nuvius",
+						SaveName = "Placeholder4",
 						RoomKey = new RoomItemKey(13, 0),
 						HP = 2500,
 						XP = 350,
@@ -190,6 +202,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Xarion",
+						SaveName = "IsBossDead_Xarion",
 						RoomKey = new RoomItemKey(9, 7),
 						HP = 3500,
 						XP = 550,
@@ -204,6 +217,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Ravenlord",
+						SaveName = "Placeholder5",
 						RoomKey = new RoomItemKey(14, 4),
 						HP = 5000,
 						XP = 680,
@@ -218,6 +232,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Ifrit",
+						SaveName = "Placeholder6",
 						RoomKey = new RoomItemKey(14, 5),
 						HP = 5000,
 						XP = 700,
@@ -232,6 +247,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Sandman",
+						SaveName = "Placeholder7",
 						RoomKey = new RoomItemKey(7, 5),
 						HP = 5000,
 						XP = 800,
@@ -246,6 +262,7 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = bossId,
 						VisibleName = "Nightmare",
+						SaveName = "Placeholder8",
 						RoomKey = new RoomItemKey(12, 26),
 						HP = 6666,
 						XP = 0,
@@ -260,6 +277,7 @@ namespace TsRandomizer.Randomisation
 					{ 
 						Index = 10,
 						VisibleName = "Baby Cheveur",
+						SaveName = "KILL_LakeCheveux",
 						RoomKey = new RoomItemKey(7, 5),
 						HP = 50,
 						XP = 9,
