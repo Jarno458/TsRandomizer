@@ -40,6 +40,8 @@ namespace TsRandomizer.LevelObjects
 
 			level.JukeBox.StopSong();
 			level.ToggleExits(false);
+			level.AsDynamic().IsInBossRoom = true;
+			level.LockAllBossDoors(0);
 			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
 			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, vanillaBossId);
 
@@ -125,13 +127,15 @@ namespace TsRandomizer.LevelObjects
 				CreateBossWarp(level, 65);
 
 				if (!itemLocation.IsPickedUp
-					&& level.GameSave.GetSaveBool("IsBossDead_RoboKitty")
-					&& level.GameSave.HasOrb(EInventoryOrbType.Blade))
+					&& level.GameSave.GetSaveBool("IsBossDead_RoboKitty"))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 29, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Varndagroth
 				CreateBossWarp(level, 66);
+
+				if (!itemLocation.IsPickedUp && level.GameSave.GetSaveBool("IsBossDead_Varndagroth") && !level.GameSave.HasRelic(EInventoryRelicType.TimespinnerSpindle))
+					SpawnItemDropPickup(level, itemLocation.ItemInfo, 280, 222);
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 0, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Azure Queen
@@ -174,7 +178,7 @@ namespace TsRandomizer.LevelObjects
 				CreateBossWarp(level, 79);
 			}));
 			RoomTriggers.Add(new RoomTrigger(16, 26, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				// Sandman
+				// Nightmare
 				CreateBossWarp(level, 80);
 			}));
 
@@ -183,17 +187,14 @@ namespace TsRandomizer.LevelObjects
 				// Golden Idol
 				CreateBossWarp(level, 68);
 
-				if (itemLocation.IsPickedUp || !level.GameSave.HasCutsceneBeenTriggered("Keep0_Demons0")) return;
-
-				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
+				if (!itemLocation.IsPickedUp && level.GameSave.GetSaveBool("IsBossDead_Demon"))
+					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 200);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				CreateBossWarp(level, 72);
 
-				if (!itemLocation.IsPickedUp
-					&& level.GameSave.HasRelic(EInventoryRelicType.ScienceKeycardA)
-					&& level.GameSave.GetSaveBool("IsBossDead_Shapeshift"))
-					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
+				if (!itemLocation.IsPickedUp && level.GameSave.GetSaveBool("IsBossDead_Shapeshift"))
+					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 200);
 
 				if (!seedOptions.Inverted && level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
 					CreateSimpleOneWayWarp(level, 16, 12);

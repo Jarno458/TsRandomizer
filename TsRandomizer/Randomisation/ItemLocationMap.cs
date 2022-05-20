@@ -261,7 +261,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(2, 23, 1112, 112), "Air vents right", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), UpperRightSideLibrary & (R.CardE | R.DoubleJump)); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
 			Add(new ItemKey(2, 23, 136, 304), "Air Vents left", ItemProvider.Get(EInventoryRelicType.ElevatorKeycard), UpperRightSideLibrary & (R.CardE | R.DoubleJump)); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
 			Add(new ItemKey(2, 11, 104, 192), "Varndagroth right bottom floor", ItemProvider.Get(EInventoryUseItemType.EssenceCrystal), LowerRightSideLibrary);
-			Add(new ItemKey(2, 29, 280, 222 + TimespinnerSpindle.YOffset), "Varndagroth", ItemProvider.Get(EInventoryRelicType.TimespinnerSpindle), RightSideLibraryElevator & R.CardC);
+			Add(new RoomItemKey(2, 29), "Varndagroth", ItemProvider.Get(EInventoryRelicType.TimespinnerSpindle), RightSideLibraryElevator & R.CardC);
 			Add(new RoomItemKey(2, 52), "Spider hell", ItemProvider.Get(EInventoryRelicType.TimespinnerGear2), RightSideLibraryElevator & R.CardA);
 			areaName = "Sealed Caves (Xarion)";
 			Add(new ItemKey(9, 10, 248, 848), "Skeleton", ItemProvider.Get(EInventoryRelicType.ScienceKeycardB), SealedCavesLeft);
