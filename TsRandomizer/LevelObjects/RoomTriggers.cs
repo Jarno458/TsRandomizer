@@ -127,14 +127,17 @@ namespace TsRandomizer.LevelObjects
 				CreateBossWarp(level, 65);
 
 				if (!itemLocation.IsPickedUp
-					&& level.GameSave.GetSaveBool("IsBossDead_RoboKitty"))
+					&& level.GameSave.GetSaveBool("IsBossDead_RoboKitty")
+					&& level.GameSave.HasOrb(EInventoryOrbType.Blade))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 29, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Varndagroth
 				CreateBossWarp(level, 66);
 
-				if (!itemLocation.IsPickedUp && level.GameSave.GetSaveBool("IsBossDead_Varndagroth") && !level.GameSave.HasRelic(EInventoryRelicType.TimespinnerSpindle))
+				if (!itemLocation.IsPickedUp
+					&& level.GameSave.GetSaveBool("IsBossDead_Varndagroth")
+					&& !level.GameSave.HasRelic(EInventoryRelicType.TimespinnerSpindle))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 280, 222);
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 0, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
@@ -187,13 +190,17 @@ namespace TsRandomizer.LevelObjects
 				// Golden Idol
 				CreateBossWarp(level, 68);
 
-				if (!itemLocation.IsPickedUp && level.GameSave.GetSaveBool("IsBossDead_Demon"))
+				if (!itemLocation.IsPickedUp
+					&& level.GameSave.GetSaveBool("IsBossDead_Demon")
+					&& level.GameSave.HasRelic(EInventoryRelicType.DoubleJump))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 200);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				CreateBossWarp(level, 72);
 
-				if (!itemLocation.IsPickedUp && level.GameSave.GetSaveBool("IsBossDead_Shapeshift"))
+				if (!itemLocation.IsPickedUp
+					&& level.GameSave.GetSaveBool("IsBossDead_Shapeshift")
+					&& level.GameSave.HasRelic(EInventoryRelicType.ScienceKeycardA))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 200);
 
 				if (!seedOptions.Inverted && level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
@@ -210,7 +217,6 @@ namespace TsRandomizer.LevelObjects
 				}
 				CreateBossWarp(level, 71);
 
-				// Spawn item if the room has been left without aquiring (only needed if Radiant-element possessed)
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.GetSaveBool("IsBossDead_Cantoran")
 					&& level.GameSave.HasOrb(EInventoryOrbType.Barrier))
