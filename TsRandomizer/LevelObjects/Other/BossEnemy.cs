@@ -65,12 +65,26 @@ namespace TsRandomizer.LevelObjects.Other
 
 		public BossEnemy(Mobile typedObject) : base(typedObject)
 		{
+			Level level = (Level)Dynamic._level;
+			isRandomized = level.GameSave.GetSettings().BossRando.Value;
+			if (!isRandomized)
+				return;
+
+
 			if (typedObject.AsDynamic().EnemyType == EEnemyTileType.IncubusBoss)
 			{
-				Level level = (Level)Dynamic._level;
 				level.GameSave.SetValue("HasSpawnedIdol", true);
 				typedObject.AsDynamic().InitializeMob();
 				typedObject.AsDynamic().EndBossIntroCutscene();
+			}
+			else if (typedObject.AsDynamic().EnemyType == EEnemyTileType.BirdBoss)
+			{
+				typedObject.AsDynamic().InitializeMob();
+				typedObject.AsDynamic().EndBossIntroCutscene();
+			}
+			else if(typedObject.AsDynamic().EnemyType == EEnemyTileType.SandmanBoss)
+			{
+				typedObject.AsDynamic().StartBattle();
 			}
 		}
 
