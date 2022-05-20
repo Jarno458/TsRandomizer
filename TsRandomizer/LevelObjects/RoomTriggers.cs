@@ -38,8 +38,7 @@ namespace TsRandomizer.LevelObjects
 			level.JukeBox.StopSong();
 			level.ToggleExits(false);
 			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
-			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, seedOptions, vanillaBossId);
-			level.JukeBox.PlaySong(vanillaBossInfo.Song);
+			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, vanillaBossId);
 
 			if (vanillaBossId == 70 && seedOptions.GassMaw)
 				FillRoomWithGas(level);
@@ -49,10 +48,13 @@ namespace TsRandomizer.LevelObjects
 			bossTile.Layer = ETileLayerType.Objects;
 			bossTile.ObjectID = replacedBossInfo.TileId;
 			bossTile.Argument = replacedBossInfo.Argument;
+			bossTile.IsFlippedHorizontally = !replacedBossInfo.IsFacingLeft;
 
 			var boss = replacedBossInfo.BossType.CreateInstance(false, replacedBossInfo.Position, level, replacedBossInfo.Sprite, -1, bossTile);
 
 			level.AsDynamic().RequestAddObject(boss);
+			level.JukeBox.StopSong();
+			level.JukeBox.PlaySong(vanillaBossInfo.Song);
 		}
 
 		static void CreateBossWarp(Level level, int vanillaBossId)
@@ -61,8 +63,11 @@ namespace TsRandomizer.LevelObjects
 			BestiaryManager.RefreshBossSaveFlags(level);
 			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
 			if (level.GameSave.GetSaveBool("TSRando_" + vanillaBossInfo.SaveName))
+			{
 				// Exit if boss associated with this room has been defeated
+				level.PlayLevelSong();
 				return;
+			}
 
 			TargetBossId = vanillaBossId;
 
@@ -183,7 +188,6 @@ namespace TsRandomizer.LevelObjects
 				SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				// Genza
 				CreateBossWarp(level, 72);
 
 				if (!itemLocation.IsPickedUp
@@ -198,17 +202,12 @@ namespace TsRandomizer.LevelObjects
 				if (!seedOptions.Cantoran)
 					return;
 				// Set Cantoran quest active when fighting Pink Bird
-				if (!level.GameSave.GetSaveBool("IsBossDead_Cantoran"))
+				if (!level.GameSave.GetSaveBool("IsBossDead_Cantoran") && !level.GameSave.GetSaveBool("IsCantoranActive"))
 				{
 					level.GameSave.SetValue("IsCantoranActive", true);
 					return;
 				}
-				if (!level.GameSave.GetSaveBool("IsBossDead_Cantoran") && level.GameSave.GetSaveBool("IsCantoranActive"))
-				{
-					level.GameSave.SetValue("IsCantoranActive", false);
-					SpawnBoss(level, seedOptions, 71);
-					return;
-				}
+				CreateBossWarp(level, 71);
 
 				// Spawn item if the room has been left without aquiring (only needed if Radiant-element possessed)
 				if (!itemLocation.IsPickedUp

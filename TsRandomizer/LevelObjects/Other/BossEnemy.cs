@@ -20,7 +20,7 @@ namespace TsRandomizer.LevelObjects.Other
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.AelanaBoss")]
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.MawBoss")]
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.CantoranBoss")]
-	// [TimeSpinnerType("Timespinner.GameObjects.Bosses.ShapeshifterBoss")]
+	[TimeSpinnerType("Timespinner.GameObjects.Bosses.ShapeshifterBoss")]
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss")]
 	[TimeSpinnerType("Timespinner.GameAbstractions.GameObjects.XarionBoss")]
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.Z_Raven.RavenBoss")]
@@ -35,6 +35,8 @@ namespace TsRandomizer.LevelObjects.Other
 		BossAttributes vanillaBoss;
 
 		static readonly Type SandStreamerEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Misc.SandStreamerEvent");
+		static readonly Type TimeBreakEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.BreakLevelEffect");
+		static readonly Type MawSuckType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.BreakLevelEffect");
 
 		protected override void Initialize(SeedOptions options)
 		{
@@ -57,7 +59,7 @@ namespace TsRandomizer.LevelObjects.Other
 			int bossId = bestiaryEntry.Index;
 			currentBoss = BestiaryManager.GetBossAttributes(level, bossId);
 
-			vanillaBoss = BestiaryManager.GetVanillaBoss(level, options, bossId);
+			vanillaBoss = BestiaryManager.GetVanillaBoss(level, bossId);
 		}
 
 		public BossEnemy(Mobile typedObject) : base(typedObject)
@@ -69,8 +71,7 @@ namespace TsRandomizer.LevelObjects.Other
 			if (hasRun || Dynamic._deathScriptTimer <= 0) return;
 
 			Level level = (Level)Dynamic._level;
-			// TODO: alter this check for being in a debug room
-			if (level.RoomID == 26)
+			if (vanillaBoss.Index == 80)
 			{
 				// Boss is Nightmare
 				var fillingMethod = Level.GameSave.GetFillingMethod();
@@ -78,16 +79,17 @@ namespace TsRandomizer.LevelObjects.Other
 				if (fillingMethod == FillingMethod.Archipelago)
 					Client.SetStatus(ArchipelagoClientState.ClientGoal);
 
-				hasRun = true;
-				return;
+				//hasRun = true;
+				//return;
 			};
 
 			if (level.RoomID != 2)
 				return;
 
+			// TODO: handle these transitions cleaner
 			var eventTypes = ((Dictionary<int, GameEvent>)LevelReflected._levelEvents).Values.Select(e => e.GetType());
-			//if (!eventTypes.Contains(SandStreamerEventType))
-			//	return;
+			if (currentBoss.Index != 70 && !eventTypes.Contains(SandStreamerEventType) && !eventTypes.Contains(TimeBreakEventType))
+				return;
 
 			BestiaryManager.SetBossKillSave(level, vanillaBoss.Index);
 
@@ -106,3 +108,40 @@ namespace TsRandomizer.LevelObjects.Other
 		}
 	}
 }
+
+// Genza information to fully incorporate
+/*
+[TimeSpinnerType("Timespinner.GameObjects.Bosses.ShapeshifterBoss")]
+// ReSharper disable once UnusedMember.Global
+class ShapeshifterBoss : ItemManipulator
+{
+	bool hasReplacedItemScript;
+
+	static readonly Type SandStreamerEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Misc.SandStreamerEvent");
+
+	public ShapeshifterBoss(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
+	{
+	}
+
+	protected override void OnUpdate(GameplayScreen gameplayScreen)
+	{
+		if (ItemInfo == null || hasReplacedItemScript || (Point)Dynamic.DeathPosition == Point.Zero)
+			return;
+
+		var eventTypes = ((Dictionary<int, GameEvent>)LevelReflected._levelEvents).Values.Select(e => e.GetType());
+		if (!eventTypes.Contains(SandStreamerEventType))
+			return;
+
+		if (((Dictionary<int, Item>)LevelReflected._items).Count == 0)
+		{
+			var itemDropPickupType = TimeSpinnerType.Get("Timespinner.GameObjects.Items.ItemDropPickup");
+			var itemPosition = (Point) Dynamic.Position;
+			var itemDropPickup = Activator.CreateInstance(itemDropPickupType, ItemInfo.BestiaryItemDropSpecification, Level, itemPosition, -1);
+
+			LevelReflected.RequestAddObject((Item)itemDropPickup);
+		}
+
+		hasReplacedItemScript = true;
+	}
+}
+*/

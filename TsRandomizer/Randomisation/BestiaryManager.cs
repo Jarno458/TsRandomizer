@@ -26,6 +26,7 @@ namespace TsRandomizer.Randomisation
 		public SpriteSheet Sprite;
 		public Type BossType;
 		public int Argument;
+		public bool IsFacingLeft;
 		public int TileId;
 
 	}
@@ -44,7 +45,7 @@ namespace TsRandomizer.Randomisation
 						SaveName = "IsBossDead_RoboKitty",
 						BossRoom = new RoomItemKey(1, 5),
 						ReturnRoom = new RoomItemKey(1, 5),
-						Position = new Point(200, 200),
+						Position = new Point(400, 200),
 						HP = 475,
 						XP = 50,
 						TouchDamage = 17,
@@ -52,6 +53,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpRoboKitty,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.RoboKitty.RoboKittyBoss"),
 						Argument = 0,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.RoboKittyBoss
 					};
 				case 66:
@@ -70,6 +72,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpVarndagroth,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Varndagroth.VarndagrothBoss"),
 						Argument = 0,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.VarndagrothBoss
 					};
 				case 67:
@@ -80,7 +83,7 @@ namespace TsRandomizer.Randomisation
 						SaveName = "IsBossDead_Bird",
 						BossRoom = new RoomItemKey(7, 0),
 						ReturnRoom = new RoomItemKey(7, 0),
-						Position = new Point(200, 200),
+						Position = new Point(100, 250),
 						HP = 1600,
 						XP = 200,
 						TouchDamage = 40,
@@ -88,6 +91,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpBirdBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Bird.GodBirdBoss"),
 						Argument = 0,
+						IsFacingLeft = false,
 						TileId = (int)EEnemyTileType.BirdBoss
 					};
 				case 68:
@@ -106,6 +110,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpDemonBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.DemonBoss"),
 						Argument = 0,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.IncubusBoss
 					};
 				case 69:
@@ -124,6 +129,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpAelana,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.AelanaBoss"),
 						Argument = 0,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.AelanaBoss
 					};
 				case 70:
@@ -133,7 +139,8 @@ namespace TsRandomizer.Randomisation
 						VisibleName = "The Maw",
 						SaveName = "IsBossDead_Maw",
 						BossRoom = new RoomItemKey(8, 7),
-						ReturnRoom = new RoomItemKey(8, 13),
+						ReturnRoom = new RoomItemKey(8, 6),
+						// ReturnRoom = new RoomItemKey(8, 13),
 						Position = new Point(-100, 250),
 						HP = 2250,
 						XP = 366,
@@ -142,6 +149,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpMawBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.MawBoss"),
 						Argument = 0,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.MawBoss
 					};
 				case 71:
@@ -160,6 +168,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpCantoranBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.CantoranBoss"),
 						Argument = 0,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.CantoranBoss
 					};
 				case 72:
@@ -178,6 +187,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpShapeshifter,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.ShapeshifterBoss"),
 						Argument = 0,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.ShapeshiftBoss
 					};
 				case 73:
@@ -196,6 +206,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpEmperor,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
 						Argument = 0,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.EmperorBoss
 					};
 				case 74:
@@ -214,6 +225,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpEmperorVilete,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
 						Argument = 1,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.EmperorBoss
 					};
 				case 75:
@@ -232,6 +244,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpEmperorWinderia,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
 						Argument = 2,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.EmperorBoss
 					};
 				case 76:
@@ -250,6 +263,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpXarionBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.XarionBoss"),
 						Argument = 0,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.XarionBoss
 					};
 				case 77:
@@ -268,6 +282,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpRavenBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Z_Raven.RavenBoss"),
 						Argument = 0,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.RavenBoss
 					};
 				case 78:
@@ -277,7 +292,8 @@ namespace TsRandomizer.Randomisation
 						VisibleName = "Ifrit",
 						SaveName = "IsBossDead_Zel",
 						BossRoom = new RoomItemKey(14, 5),
-						Position = new Point(200, 200),
+						ReturnRoom = new RoomItemKey(14, 5),
+						Position = new Point(400, 200),
 						HP = 5000,
 						XP = 700,
 						TouchDamage = 95,
@@ -285,6 +301,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpZelBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.ZelBoss"),
 						Argument = 0,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.ZelBoss
 					};
 				case 79: 
@@ -295,7 +312,7 @@ namespace TsRandomizer.Randomisation
 						SaveName = "IsBossDead_Sandman",
 						BossRoom = new RoomItemKey(16, 4),
 						ReturnRoom = new RoomItemKey(16, 26),
-						Position = new Point(200, 200),
+						Position = new Point(500, 200),
 						HP = 5000,
 						XP = 800,
 						TouchDamage = 90,
@@ -303,6 +320,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpSandmanBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.SandmanBoss"),
 						Argument = 0,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.SandmanBoss
 					};
 				case 80:
@@ -321,6 +339,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpNightmareBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.OtherBosses.NightmareBoss"),
 						Argument = 0,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.NightmareBoss
 					};
 				default: 
@@ -339,17 +358,17 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpLakeBirdEgg,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.LakeBirdEgg"),
 						Argument = 1,
+						IsFacingLeft = true,
 						TileId = (int)EEnemyTileType.LakeBirdEgg
 					};
 			}
 		}
 
-		public static BossAttributes GetReplacedBoss(Level level, SeedOptions seedOptions, int vanillaBossId)
+		public static BossAttributes GetReplacedBoss(Level level, int vanillaBossId)
 		{
-			// Add 72 when ShapeshifterBoss merged into BossEnemy
-			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 77, 78, 79, 80};
+			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80};
 
-			Random random = new Random(seedOptions.GetHashCode());
+			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
 			int[] replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
 
 			int bossIndex = Array.IndexOf(validBosses, vanillaBossId, 0);
@@ -372,22 +391,27 @@ namespace TsRandomizer.Randomisation
 		public static void RefreshBossSaveFlags(Level level)
 		{
 			// Iterate through all bosses and set their kill flag to reflect boss location, not actual boss
-			// Add 72 when ShapeshifterBoss merged into BossEnemy
-			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 77, 78, 79, 80 };
+			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 72,  73, 74, 75, 76, 77, 78, 79, 80 };
+			int pastBossesKilled = 0;
 			foreach (int bossIndex in validBosses)
 			{
 				BossAttributes bossInfo = GetBossAttributes(level, bossIndex);
 				bool isBossDead = level.GameSave.GetSaveBool($"TSRando_{bossInfo.SaveName}");
 				level.GameSave.SetValue(bossInfo.SaveName, isBossDead);
+
+				int[] pastBosses = new int[] { 68, 69, 70 };
+				if (isBossDead && Array.Exists(pastBosses, index => index == bossIndex))
+					pastBossesKilled++;
 			}
+			level.GameSave.SetValue("IsPastCleared", pastBossesKilled == 3);
+
 		}
 
-		public static BossAttributes GetVanillaBoss(Level level, SeedOptions seedOptions, int replacedBossId)
+		public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
 		{
-			// Add 72 when ShapeshifterBoss merged into BossEnemy
-			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 73, 74, 75, 76, 77, 78, 79, 80 };
+			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 };
 
-			Random random = new Random(seedOptions.GetHashCode());
+			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
 			int[] replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
 
 			int bossIndex = Array.IndexOf(replacedBosses, replacedBossId, 0);
@@ -399,24 +423,23 @@ namespace TsRandomizer.Randomisation
 			return vanillaBossInfo;
 		}
 
-		public static void UpdateBestiary(Level level, SeedOptions seedOptions, SettingCollection gameSettings)
+		public static void UpdateBestiary(Level level, SettingCollection gameSettings)
 		{
 			TimeSpinnerGame.Localizer.OverrideKey("inv_use_PlaceHolderItem1", "Nothing");
 			TimeSpinnerGame.Localizer.OverrideKey("inv_use_PlaceHolderItem1_desc", "You thought you picked something up, but it turned out to be nothing.");
 
 			var bestiary = level.GCM.Bestiary;
-			Random random = new Random(seedOptions.GetHashCode());
+			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
 			foreach (var bestiaryEntry in bestiary.BestiaryEntries)
 			{
 				if (gameSettings.ShowBestiary.Value)
 				{
 					level.GameSave.SetValue(string.Format(bestiaryEntry.Key.Replace("Enemy_", "KILL_")), 1);
 				}
-				// TODO: Add 72 when fixing ShapeshifterBoss
-				if (bestiaryEntry.Index >= 65 && bestiaryEntry.Index <= 80 && bestiaryEntry.Index != 72)
+				if (bestiaryEntry.Index >= 65 && bestiaryEntry.Index <= 80)
 				{
 					BossAttributes replacedBossInfo = GetBossAttributes(level, bestiaryEntry.Index);
-					BossAttributes vanillaBossInfo = GetVanillaBoss(level, seedOptions, bestiaryEntry.Index);
+					BossAttributes vanillaBossInfo = GetVanillaBoss(level, bestiaryEntry.Index);
 					bestiaryEntry.VisibleName = $"{replacedBossInfo.VisibleName} as {vanillaBossInfo.VisibleName}";
 					bestiaryEntry.HP = vanillaBossInfo.HP;
 					bestiaryEntry.TouchDamage = vanillaBossInfo.TouchDamage;
