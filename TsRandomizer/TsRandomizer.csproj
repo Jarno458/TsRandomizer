@@ -166,7 +166,6 @@
     <Compile Include="LevelObjects\Other\CurtainDrawbridge.cs" />
     <Compile Include="LevelObjects\ItemManipulator.cs" />
     <Compile Include="LevelObjects\RoomTriggers.cs" />
-    <Compile Include="LevelObjects\ItemManipulators\ShapeshifterBoss.cs" />
     <Compile Include="LevelObjects\ItemManipulators\EnvPrefabCursedCavesCorpse.cs" />
     <Compile Include="LevelObjects\ItemManipulators\RelicKeycardC.cs" />
     <Compile Include="LevelObjects\ItemManipulators\NelisteNpc.cs" />

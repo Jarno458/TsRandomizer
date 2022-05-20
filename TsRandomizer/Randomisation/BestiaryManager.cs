@@ -106,7 +106,7 @@ namespace TsRandomizer.Randomisation
 						HP = 2000,
 						XP = 250,
 						TouchDamage = 46,
-						Song = Timespinner.GameAbstractions.EBGM.Boss05A,
+						Song = Timespinner.GameAbstractions.EBGM.Boss05B,
 						Sprite = level.GCM.SpDemonBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.DemonBoss"),
 						Argument = 0,
@@ -164,7 +164,7 @@ namespace TsRandomizer.Randomisation
 						HP = 2250,
 						XP = 300,
 						TouchDamage = 54,
-						Song = Timespinner.GameAbstractions.EBGM.Boss07,
+						Song = Timespinner.GameAbstractions.EBGM.Boss06,
 						Sprite = level.GCM.SpCantoranBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.CantoranBoss"),
 						Argument = 0,
@@ -259,7 +259,7 @@ namespace TsRandomizer.Randomisation
 						HP = 3500,
 						XP = 550,
 						TouchDamage = 75,
-						Song = Timespinner.GameAbstractions.EBGM.Boss13,
+						Song = Timespinner.GameAbstractions.EBGM.Boss02,
 						Sprite = level.GCM.SpXarionBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.XarionBoss"),
 						Argument = 0,
@@ -278,7 +278,7 @@ namespace TsRandomizer.Randomisation
 						HP = 5000,
 						XP = 680,
 						TouchDamage = 95,
-						Song = Timespinner.GameAbstractions.EBGM.Boss13,
+						Song = Timespinner.GameAbstractions.EBGM.Boss02,
 						Sprite = level.GCM.SpRavenBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Z_Raven.RavenBoss"),
 						Argument = 0,
@@ -297,7 +297,7 @@ namespace TsRandomizer.Randomisation
 						HP = 5000,
 						XP = 700,
 						TouchDamage = 95,
-						Song = Timespinner.GameAbstractions.EBGM.Boss12,
+						Song = Timespinner.GameAbstractions.EBGM.Boss08,
 						Sprite = level.GCM.SpZelBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.ZelBoss"),
 						Argument = 0,
@@ -436,14 +436,17 @@ namespace TsRandomizer.Randomisation
 				{
 					level.GameSave.SetValue(string.Format(bestiaryEntry.Key.Replace("Enemy_", "KILL_")), 1);
 				}
-				if (bestiaryEntry.Index >= 65 && bestiaryEntry.Index <= 80)
+				if (gameSettings.BossRando.Value && bestiaryEntry.Index >= 65 && bestiaryEntry.Index <= 80)
 				{
 					BossAttributes replacedBossInfo = GetBossAttributes(level, bestiaryEntry.Index);
 					BossAttributes vanillaBossInfo = GetVanillaBoss(level, bestiaryEntry.Index);
 					bestiaryEntry.VisibleName = $"{replacedBossInfo.VisibleName} as {vanillaBossInfo.VisibleName}";
-					bestiaryEntry.HP = vanillaBossInfo.HP;
-					bestiaryEntry.TouchDamage = vanillaBossInfo.TouchDamage;
-					bestiaryEntry.Exp = vanillaBossInfo.XP;
+					if (gameSettings.BossScaling.Value)
+					{
+						bestiaryEntry.HP = vanillaBossInfo.HP;
+						bestiaryEntry.TouchDamage = vanillaBossInfo.TouchDamage;
+						bestiaryEntry.Exp = vanillaBossInfo.XP;
+					}
 				}
 
 				int dropSlot = 0;

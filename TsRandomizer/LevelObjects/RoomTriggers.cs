@@ -31,10 +31,13 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type PedestalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
 
-		static int TargetBossId = 1;
+		static int TargetBossId = -1;
 
 		static void SpawnBoss(Level level, SeedOptions seedOptions, int vanillaBossId)
 		{
+			if (!level.GameSave.GetSettings().BossRando.Value)
+				return;
+
 			level.JukeBox.StopSong();
 			level.ToggleExits(false);
 			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
@@ -59,15 +62,13 @@ namespace TsRandomizer.LevelObjects
 
 		static void CreateBossWarp(Level level, int vanillaBossId)
 		{
-			// TODO: check if boss rando is on and exit before any of this if not
+			if (!level.GameSave.GetSettings().BossRando.Value)
+				return;
+
 			BestiaryManager.RefreshBossSaveFlags(level);
 			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
 			if (level.GameSave.GetSaveBool("TSRando_" + vanillaBossInfo.SaveName))
-			{
-				// Exit if boss associated with this room has been defeated
-				level.PlayLevelSong();
 				return;
-			}
 
 			TargetBossId = vanillaBossId;
 
@@ -75,7 +76,6 @@ namespace TsRandomizer.LevelObjects
 
 			level.RequestChangeLevel(new LevelChangeRequest
 			{
-				// 5, 46 is an empty room
 				LevelID = 0,
 				RoomID = 2,
 				IsUsingWarp = true,

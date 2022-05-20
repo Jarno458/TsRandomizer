@@ -30,7 +30,9 @@ namespace TsRandomizer.LevelObjects.Other
 	// ReSharper disable once UnusedMember.Global
 	class BossEnemy: LevelObject
 	{
-		bool hasRun;
+		bool clearedHasRun;
+		bool warpHasRun;
+		bool isRandomized;
 		BossAttributes currentBoss;
 		BossAttributes vanillaBoss;
 
@@ -41,11 +43,7 @@ namespace TsRandomizer.LevelObjects.Other
 		protected override void Initialize(SeedOptions options)
 		{
 			Level level = (Level)Dynamic._level;
-			if (level.RoomID != 2)
-			{
-				// TODO fix this check for room 0, 2
-				return;
-			}
+			isRandomized = level.GameSave.GetSettings().BossRando.Value;
 			int argument = 0;
 			if (Dynamic.EnemyType == EEnemyTileType.EmperorBoss)
 			{
@@ -57,9 +55,12 @@ namespace TsRandomizer.LevelObjects.Other
 
 			var bestiaryEntry = level.GCM.Bestiary.GetEntry(Dynamic.EnemyType, argument);
 			int bossId = bestiaryEntry.Index;
-			currentBoss = BestiaryManager.GetBossAttributes(level, bossId);
 
-			vanillaBoss = BestiaryManager.GetVanillaBoss(level, bossId);
+			currentBoss = BestiaryManager.GetBossAttributes(level, bossId);
+			if (isRandomized)
+				vanillaBoss = BestiaryManager.GetVanillaBoss(level, bossId);
+			else
+				vanillaBoss = currentBoss;
 		}
 
 		public BossEnemy(Mobile typedObject) : base(typedObject)
@@ -68,10 +69,10 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
-			if (hasRun || Dynamic._deathScriptTimer <= 0) return;
+			if (warpHasRun || Dynamic._deathScriptTimer <= 0) return;
 
 			Level level = (Level)Dynamic._level;
-			if (vanillaBoss.Index == 80)
+			if (!clearedHasRun && vanillaBoss.Index == 80)
 			{
 				// Boss is Nightmare
 				var fillingMethod = Level.GameSave.GetFillingMethod();
@@ -79,12 +80,14 @@ namespace TsRandomizer.LevelObjects.Other
 				if (fillingMethod == FillingMethod.Archipelago)
 					Client.SetStatus(ArchipelagoClientState.ClientGoal);
 
-				//hasRun = true;
-				//return;
+				clearedHasRun = true;
 			};
 
-			if (level.RoomID != 2)
+			if (!isRandomized)
+			{
+				warpHasRun = true;
 				return;
+			}
 
 			// TODO: handle these transitions cleaner
 			var eventTypes = ((Dictionary<int, GameEvent>)LevelReflected._levelEvents).Values.Select(e => e.GetType());
@@ -100,11 +103,11 @@ namespace TsRandomizer.LevelObjects.Other
 				IsUsingWarp = true,
 				IsUsingWhiteFadeOut = true,
 				FadeInTime = 0.5f,
-				FadeOutTime = 0.25f
+				FadeOutTime = 0.25f,
+				ShouldPlayLevelSong = true
 			});
-			level.PlayLevelSong();
 
-			hasRun = true;
+			warpHasRun = true;
 		}
 	}
 }
