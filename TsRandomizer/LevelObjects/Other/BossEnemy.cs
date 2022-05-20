@@ -65,6 +65,13 @@ namespace TsRandomizer.LevelObjects.Other
 
 		public BossEnemy(Mobile typedObject) : base(typedObject)
 		{
+			if (typedObject.AsDynamic().EnemyType == EEnemyTileType.IncubusBoss)
+			{
+				Level level = (Level)Dynamic._level;
+				level.GameSave.SetValue("HasSpawnedIdol", true);
+				typedObject.AsDynamic().InitializeMob();
+				typedObject.AsDynamic().EndBossIntroCutscene();
+			}
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)

@@ -102,7 +102,7 @@ namespace TsRandomizer.Randomisation
 						SaveName = "IsBossDead_Demon",
 						BossRoom = new RoomItemKey(5, 5),
 						ReturnRoom = new RoomItemKey(5, 5),
-						Position = new Point(200, 200),
+						Position = new Point(350, 150),
 						HP = 2000,
 						XP = 250,
 						TouchDamage = 46,
