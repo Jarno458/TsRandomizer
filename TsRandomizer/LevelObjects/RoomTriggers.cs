@@ -78,8 +78,8 @@ namespace TsRandomizer.LevelObjects
 
 			level.RequestChangeLevel(new LevelChangeRequest
 			{
-				LevelID = 0,
-				RoomID = 2,
+				LevelID = 5,
+				RoomID = 46,
 				IsUsingWarp = true,
 				IsUsingWhiteFadeOut = true,
 				FadeInTime = 0.5f,
@@ -108,7 +108,7 @@ namespace TsRandomizer.LevelObjects
 				if (seedOptions.StartWithTalaria)
 					level.AsDynamic().UnlockRelic(EInventoryRelicType.Dash);
 			}));
-			RoomTriggers.Add(new RoomTrigger(0, 2, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+			RoomTriggers.Add(new RoomTrigger(5, 46, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// False boss room
 				if(TargetBossId != 1)
 					SpawnBoss(level, seedOptions, TargetBossId);
@@ -210,7 +210,7 @@ namespace TsRandomizer.LevelObjects
 				if (!seedOptions.Cantoran)
 					return;
 				// Set Cantoran quest active when fighting Pink Bird
-				if (!level.GameSave.GetSaveBool("IsBossDead_Cantoran") && !level.GameSave.GetSaveBool("IsCantoranActive"))
+				if (!level.GameSave.GetSaveBool("IsCantoranActive"))
 				{
 					level.GameSave.SetValue("IsCantoranActive", true);
 					return;

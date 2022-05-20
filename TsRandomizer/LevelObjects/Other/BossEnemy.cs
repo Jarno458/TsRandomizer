@@ -86,6 +86,11 @@ namespace TsRandomizer.LevelObjects.Other
 			{
 				typedObject.AsDynamic().StartBattle();
 			}
+			else if(typedObject.AsDynamic().EnemyType == EEnemyTileType.VarndagrothBoss)
+			{
+				// TODO: remove spindle
+				typedObject.AsDynamic().OnSpindlePickedUp();
+			}
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
