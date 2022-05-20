@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Linq;
+using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
-using TsRandomizer.Settings;
 
 namespace TsRandomizer.Screens
 {
@@ -26,6 +26,13 @@ namespace TsRandomizer.Screens
 				{
 					var dynamicShopMenuEntry = ((object)shopMenuEntry).AsDynamic();
 
+					var item = (InventoryItem)dynamicShopMenuEntry.Item;
+					if (item.NameKey == "inv_use_MagicMarbles")
+					{
+						item.IsSellable = false;
+						dynamicShopMenuEntry.ShopPrice = -1;
+					}
+					
 					int currentPrice = dynamicShopMenuEntry.ShopPrice;
 					if (currentPrice == 0)
 					{

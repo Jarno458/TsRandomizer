@@ -93,7 +93,7 @@ namespace TsRandomizer.Screens
 
 
 
-			BestiaryManager.UpdateBestiary(Level, seedOptions, settings);
+			BestiaryManager.UpdateBestiary(Level, settings);
 
 			if (seedOptions.Archipelago)
 			{

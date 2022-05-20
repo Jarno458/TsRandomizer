@@ -31,7 +31,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			this.saveGame = saveGame;
 
 			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MagicMarbles", "Archipelago Item");
-			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MagicMarbles_desc", "Item that belongs to a distant timeline somewhere in the Archipelago");
+			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MagicMarbles_desc", "Item that belongs to a distant timeline somewhere in the Archipelago (cannot be sold)");
+
+
 		}
 
 		public override ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly)
