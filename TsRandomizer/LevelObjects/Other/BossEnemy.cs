@@ -68,7 +68,7 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 			Level level = (Level)Dynamic._level;
 			isRandomized = level.GameSave.GetSettings().BossRando.Value;
-			if (!isRandomized)
+			if (!isRandomized || !level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 
 			var boss = typedObject.AsDynamic();

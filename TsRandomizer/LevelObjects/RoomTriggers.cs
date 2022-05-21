@@ -48,14 +48,6 @@ namespace TsRandomizer.LevelObjects
 			if (vanillaBossId == 70 && seedOptions.GassMaw)
 				FillRoomWithGas(level);
 
-			// TODO: some bosses are spawning even if killed
-			if (replacedBossInfo.Index == 79)
-			{
-				level.JukeBox.StopSong();
-				level.JukeBox.PlaySong(vanillaBossInfo.Song);
-				TargetBossId = -1;
-			}
-
 			ObjectTileSpecification bossTile = new ObjectTileSpecification();
 			bossTile.Category = EObjectTileCategory.Enemy;
 			bossTile.Layer = ETileLayerType.Objects;
@@ -121,7 +113,11 @@ namespace TsRandomizer.LevelObjects
 				if (seedOptions.StartWithTalaria)
 					level.AsDynamic().UnlockRelic(EInventoryRelicType.Dash);
 			}));
-			RoomTriggers.Add(new RoomTrigger(5, 46, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+			RoomTriggers.Add(new RoomTrigger(17, 8, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// False boss room
+				SpawnBoss(level, seedOptions, TargetBossId);
+			}));
+			RoomTriggers.Add(new RoomTrigger(17, 13, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// False boss room
 				SpawnBoss(level, seedOptions, TargetBossId);
 			}));
