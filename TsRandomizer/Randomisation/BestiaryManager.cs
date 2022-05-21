@@ -115,7 +115,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.DemonBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
-						ShouldSpawn = true,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.IncubusBoss
 					};
 				case 69:

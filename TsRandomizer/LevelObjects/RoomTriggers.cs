@@ -142,7 +142,7 @@ namespace TsRandomizer.LevelObjects
 
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.GetSaveBool("IsBossDead_RoboKitty")
-					&& !level.GameSave.HasOrb(EInventoryOrbType.Blade))
+					&& level.GameSave.HasOrb(EInventoryOrbType.Blade))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 29, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
@@ -235,16 +235,17 @@ namespace TsRandomizer.LevelObjects
 			}));
 
 			RoomTriggers.Add(new RoomTrigger(5, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				// todo make play nice with cutscene
 				// Golden Idol
 				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
+				{
 					return;
+				}
 				CreateBossWarp(level, 68);
 
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.GetSaveBool("IsBossDead_Demon")
-					&& !level.GameSave.HasRelic(EInventoryRelicType.DoubleJump))
+					&& level.GameSave.HasRelic(EInventoryRelicType.DoubleJump))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 200);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {

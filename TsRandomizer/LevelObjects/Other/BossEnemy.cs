@@ -77,11 +77,11 @@ namespace TsRandomizer.LevelObjects.Other
 
 			switch (boss.EnemyType)
 			{
-				case EEnemyTileType.IncubusBoss:
+				/*case EEnemyTileType.IncubusBoss:
 					level.GameSave.SetValue("HasSpawnedIdol", true);
 					boss.InitializeMob();
 					boss.EndBossIntroCutscene();
-					break;
+					break;*/
 				case EEnemyTileType.BirdBoss:
 					boss.InitializeMob();
 					boss.EndBossIntroCutscene();
