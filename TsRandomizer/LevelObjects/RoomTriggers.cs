@@ -155,7 +155,7 @@ namespace TsRandomizer.LevelObjects
 
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.GetSaveBool("IsBossDead_Varndagroth")
-					&& !level.GameSave.HasRelic(EInventoryRelicType.TimespinnerSpindle))
+					&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerSpindle))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 280, 222);
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 0, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
