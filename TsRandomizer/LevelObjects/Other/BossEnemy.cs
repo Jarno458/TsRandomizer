@@ -31,6 +31,7 @@ namespace TsRandomizer.LevelObjects.Other
 	class BossEnemy: LevelObject
 	{
 		bool clearedHasRun;
+		bool saveHasRun;
 		bool warpHasRun;
 		bool isRandomized;
 		BossAttributes currentBoss;
@@ -70,27 +71,33 @@ namespace TsRandomizer.LevelObjects.Other
 			if (!isRandomized)
 				return;
 
+			var boss = typedObject.AsDynamic();
 
-			if (typedObject.AsDynamic().EnemyType == EEnemyTileType.IncubusBoss)
+			level.LockAllBossDoors(0);
+
+			switch (boss.EnemyType)
 			{
-				level.GameSave.SetValue("HasSpawnedIdol", true);
-				typedObject.AsDynamic().InitializeMob();
-				typedObject.AsDynamic().EndBossIntroCutscene();
+				case EEnemyTileType.IncubusBoss:
+					level.GameSave.SetValue("HasSpawnedIdol", true);
+					boss.InitializeMob();
+					boss.EndBossIntroCutscene();
+					break;
+				case EEnemyTileType.BirdBoss:
+					boss.InitializeMob();
+					boss.EndBossIntroCutscene();
+					break;
+				case EEnemyTileType.SandmanBoss:
+					level.MainHero.TeleportToPoint(new Microsoft.Xna.Framework.Point(200, 200));
+					// boss.StartBattle();
+					break;
+				case EEnemyTileType.VarndagrothBoss:
+					boss._spindleItem.SilentKill();
+					boss.StartBattle();
+					break;
+				default:
+					break;
 			}
-			else if (typedObject.AsDynamic().EnemyType == EEnemyTileType.BirdBoss)
-			{
-				typedObject.AsDynamic().InitializeMob();
-				typedObject.AsDynamic().EndBossIntroCutscene();
-			}
-			else if(typedObject.AsDynamic().EnemyType == EEnemyTileType.SandmanBoss)
-			{
-				typedObject.AsDynamic().StartBattle();
-			}
-			else if(typedObject.AsDynamic().EnemyType == EEnemyTileType.VarndagrothBoss)
-			{
-				// TODO: remove spindle
-				typedObject.AsDynamic().OnSpindlePickedUp();
-			}
+
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
@@ -109,6 +116,12 @@ namespace TsRandomizer.LevelObjects.Other
 				clearedHasRun = true;
 			};
 
+			if (!saveHasRun)
+			{
+				BestiaryManager.SetBossKillSave(level, vanillaBoss.Index);
+				saveHasRun = true;
+			}
+
 			if (!isRandomized)
 			{
 				warpHasRun = true;
@@ -119,8 +132,6 @@ namespace TsRandomizer.LevelObjects.Other
 			var eventTypes = ((Dictionary<int, GameEvent>)LevelReflected._levelEvents).Values.Select(e => e.GetType());
 			if (currentBoss.Index != 70 && !eventTypes.Contains(SandStreamerEventType) && !eventTypes.Contains(TimeBreakEventType))
 				return;
-
-			BestiaryManager.SetBossKillSave(level, vanillaBoss.Index);
 
 			level.RequestChangeLevel(new LevelChangeRequest
 			{

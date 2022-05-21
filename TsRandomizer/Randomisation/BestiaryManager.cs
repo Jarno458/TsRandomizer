@@ -141,7 +141,7 @@ namespace TsRandomizer.Randomisation
 						BossRoom = new RoomItemKey(8, 7),
 						ReturnRoom = new RoomItemKey(8, 6),
 						// ReturnRoom = new RoomItemKey(8, 13),
-						Position = new Point(-100, 250),
+						Position = new Point(0, 200),
 						HP = 2250,
 						XP = 366,
 						TouchDamage = 52,
@@ -384,9 +384,20 @@ namespace TsRandomizer.Randomisation
 		{
 			BossAttributes vanillaBossInfo = GetBossAttributes(level, vanillaBossId);
 			level.GameSave.SetValue($"TSRando_{vanillaBossInfo.SaveName}", true);
+			level.GameSave.SetValue("IsFightingBoss", false);
 			RefreshBossSaveFlags(level);
 		}
 
+		public static void ClearBossSaveFlags(Level level)
+		{
+			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 };
+			foreach (int bossIndex in validBosses)
+			{
+				BossAttributes bossInfo = GetBossAttributes(level, bossIndex);
+				level.GameSave.SetValue(bossInfo.SaveName, true);
+				level.GameSave.SetValue("IsVileteSaved", false);
+			}
+		}
 
 		public static void RefreshBossSaveFlags(Level level)
 		{
@@ -402,9 +413,13 @@ namespace TsRandomizer.Randomisation
 				int[] pastBosses = new int[] { 68, 69, 70 };
 				if (isBossDead && Array.Exists(pastBosses, index => index == bossIndex))
 					pastBossesKilled++;
+
+				if (isBossDead && bossIndex == 70)
+				{
+					level.GameSave.SetValue("IsVileteSaved", true);
+				}
 			}
 			level.GameSave.SetValue("IsPastCleared", pastBossesKilled == 3);
-
 		}
 
 		public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
