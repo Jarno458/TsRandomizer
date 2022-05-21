@@ -48,16 +48,19 @@ namespace TsRandomizer.LevelObjects
 			if (vanillaBossId == 70 && seedOptions.GassMaw)
 				FillRoomWithGas(level);
 
-			ObjectTileSpecification bossTile = new ObjectTileSpecification();
-			bossTile.Category = EObjectTileCategory.Enemy;
-			bossTile.Layer = ETileLayerType.Objects;
-			bossTile.ObjectID = replacedBossInfo.TileId;
-			bossTile.Argument = replacedBossInfo.Argument;
-			bossTile.IsFlippedHorizontally = !replacedBossInfo.IsFacingLeft;
+			if (replacedBossInfo.ShouldSpawn)
+			{
+				ObjectTileSpecification bossTile = new ObjectTileSpecification();
+				bossTile.Category = EObjectTileCategory.Enemy;
+				bossTile.Layer = ETileLayerType.Objects;
+				bossTile.ObjectID = replacedBossInfo.TileId;
+				bossTile.Argument = replacedBossInfo.Argument;
+				bossTile.IsFlippedHorizontally = !replacedBossInfo.IsFacingLeft;
 
-			var boss = replacedBossInfo.BossType.CreateInstance(false, replacedBossInfo.Position, level, replacedBossInfo.Sprite, -1, bossTile);
+				var boss = replacedBossInfo.BossType.CreateInstance(false, replacedBossInfo.Position, level, replacedBossInfo.Sprite, -1, bossTile);
+				level.AsDynamic().RequestAddObject(boss);
+			}
 
-			level.AsDynamic().RequestAddObject(boss);
 			level.JukeBox.StopSong();
 			level.JukeBox.PlaySong(vanillaBossInfo.Song);
 			TargetBossId = -1;
@@ -78,7 +81,7 @@ namespace TsRandomizer.LevelObjects
 
 			level.JukeBox.StopSong();
 			RoomItemKey bossArena = replacedBossInfo.BossRoom;
-			BestiaryManager.ClearBossSaveFlags(level);
+			BestiaryManager.ClearBossSaveFlags(level, replacedBossInfo.ShouldSpawn);
 			level.GameSave.SetValue("IsFightingBoss", true);
 
 			level.RequestChangeLevel(new LevelChangeRequest
@@ -139,7 +142,7 @@ namespace TsRandomizer.LevelObjects
 
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.GetSaveBool("IsBossDead_RoboKitty")
-					&& level.GameSave.HasOrb(EInventoryOrbType.Blade))
+					&& !level.GameSave.HasOrb(EInventoryOrbType.Blade))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 29, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
@@ -150,8 +153,7 @@ namespace TsRandomizer.LevelObjects
 				CreateBossWarp(level, 66);
 
 				if (!itemLocation.IsPickedUp
-					&& level.GameSave.GetSaveBool("IsBossDead_Varndagroth")
-					&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerSpindle))
+					&& level.GameSave.GetSaveBool("IsBossDead_Varndagroth"))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 280, 222);
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 0, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
@@ -242,7 +244,7 @@ namespace TsRandomizer.LevelObjects
 
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.GetSaveBool("IsBossDead_Demon")
-					&& level.GameSave.HasRelic(EInventoryRelicType.DoubleJump))
+					&& !level.GameSave.HasRelic(EInventoryRelicType.DoubleJump))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 200);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {

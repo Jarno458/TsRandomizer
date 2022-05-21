@@ -27,6 +27,7 @@ namespace TsRandomizer.Randomisation
 		public Type BossType;
 		public int Argument;
 		public bool IsFacingLeft;
+		public bool ShouldSpawn;
 		public int TileId;
 
 	}
@@ -54,6 +55,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.RoboKitty.RoboKittyBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.RoboKittyBoss
 					};
 				case 66:
@@ -73,6 +75,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Varndagroth.VarndagrothBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.VarndagrothBoss
 					};
 				case 67:
@@ -92,6 +95,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Bird.GodBirdBoss"),
 						Argument = 0,
 						IsFacingLeft = false,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.BirdBoss
 					};
 				case 68:
@@ -111,6 +115,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.DemonBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
+						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.IncubusBoss
 					};
 				case 69:
@@ -130,6 +135,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.AelanaBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
+						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.AelanaBoss
 					};
 				case 70:
@@ -150,6 +156,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.MawBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
+						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.MawBoss
 					};
 				case 71:
@@ -169,6 +176,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.CantoranBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
+						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.CantoranBoss
 					};
 				case 72:
@@ -188,6 +196,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.ShapeshifterBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
+						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.ShapeshiftBoss
 					};
 				case 73:
@@ -207,6 +216,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
+						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.EmperorBoss
 					};
 				case 74:
@@ -226,6 +236,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
 						Argument = 1,
 						IsFacingLeft = true,
+						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.EmperorBoss
 					};
 				case 75:
@@ -245,6 +256,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
 						Argument = 2,
 						IsFacingLeft = true,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.EmperorBoss
 					};
 				case 76:
@@ -264,6 +276,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.XarionBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.XarionBoss
 					};
 				case 77:
@@ -283,6 +296,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Z_Raven.RavenBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.RavenBoss
 					};
 				case 78:
@@ -302,6 +316,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.ZelBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.ZelBoss
 					};
 				case 79: 
@@ -321,6 +336,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.SandmanBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.SandmanBoss
 					};
 				case 80:
@@ -340,11 +356,12 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.OtherBosses.NightmareBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
+						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.NightmareBoss
 					};
-				default: 
+				default:
 					return new BossAttributes
-					{ 
+					{
 						Index = 10,
 						VisibleName = "Baby Cheveur",
 						SaveName = "KILL_LakeCheveux",
@@ -359,6 +376,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.LakeBirdEgg"),
 						Argument = 1,
 						IsFacingLeft = true,
+						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.LakeBirdEgg
 					};
 			}
@@ -388,13 +406,13 @@ namespace TsRandomizer.Randomisation
 			RefreshBossSaveFlags(level);
 		}
 
-		public static void ClearBossSaveFlags(Level level)
+		public static void ClearBossSaveFlags(Level level, bool valueToSet)
 		{
 			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 };
 			foreach (int bossIndex in validBosses)
 			{
 				BossAttributes bossInfo = GetBossAttributes(level, bossIndex);
-				level.GameSave.SetValue(bossInfo.SaveName, true);
+				level.GameSave.SetValue(bossInfo.SaveName, valueToSet);
 				level.GameSave.SetValue("IsVileteSaved", false);
 			}
 		}
