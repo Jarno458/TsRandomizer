@@ -10,9 +10,11 @@ namespace TsRandomizer
 {
 	static class DummyPlatformHelper
 	{
-		public static PlatformHelper CreateStreamInstance()
+		public static PlatformHelper CreateSteamInstance()
 		{
 			var platformHelper = (PlatformHelper)Activator.CreateInstance(TimeSpinnerType.Get("Timespinner.PlatformHelper"), true);
+
+			var startTime = DateTime.UtcNow;
 
 			do {
 				Thread.Sleep(100);
@@ -26,7 +28,7 @@ namespace TsRandomizer
 					process.Kill();
 
 				break;
-			} while (true);
+			} while (DateTime.UtcNow - startTime < TimeSpan.FromSeconds(10));
 
 			return platformHelper;
 		}

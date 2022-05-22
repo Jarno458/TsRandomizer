@@ -82,7 +82,7 @@ namespace TsRandomizer
 		{
 			WithExceptionLogging(() => {
 				var platformHelper = IsSteam
-					? DummyPlatformHelper.CreateStreamInstance()
+					? DummyPlatformHelper.CreateSteamInstance()
 					: DummyPlatformHelper.CreateDrmFreeInstance();
 
 				new TimeSpinnerGame(platformHelper).Run();
