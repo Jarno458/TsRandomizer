@@ -278,8 +278,8 @@ namespace TsRandomizer.LevelObjects
 			{
 				if (!level.GameSave.DataKeyStrings.ContainsKey(ArchipelagoItemLocationRandomizer.GameSaveServerKey)) return;
 
-				AskPermissionMessage(screenManager, "forfeit", Client.ForfeitPermissions);
 				AskPermissionMessage(screenManager, "collect", Client.CollectPermissions);
+				AskPermissionMessage(screenManager, "forfeit", Client.ForfeitPermissions);
 			}));
 		}
 
