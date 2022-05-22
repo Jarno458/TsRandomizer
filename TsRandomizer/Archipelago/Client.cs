@@ -242,7 +242,7 @@ namespace TsRandomizer.Archipelago
 		static void UpdateChecksTask(ItemLocationMap itemLocationMap)
 		{
 			var locations = itemLocationMap
-				.Where(l => l.IsPickedUp && !(l is ExteralItemLocation))
+				.Where(l => l.IsPickedUp && !(l is ExternalItemLocation))
 				.Select(l => LocationMap.GetLocationId(l.Key))
 				.ToArray();
 

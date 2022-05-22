@@ -45,7 +45,7 @@ namespace TsRandomizer.LevelObjects
 		protected void OnItemPickup()
 		{
 			ItemInfo.OnPickup(Level);
-			ItemLocation.SetPickedUp();
+			ItemLocation.SetPickedUp(Level);
 
 			if (ItemInfo.IsProgression)
 				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(itemLocationMap));

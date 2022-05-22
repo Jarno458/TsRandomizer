@@ -120,7 +120,7 @@
     <Compile Include="LevelObjects\TextReplacer.cs" />
     <Compile Include="LevelObjects\Other\MerchantCrowNPC.cs" />
     <Compile Include="LevelObjects\Other\NightmareBoss.cs" />
-    <Compile Include="Randomisation\ExteralItemLocation.cs" />
+    <Compile Include="Randomisation\ExternalItemLocation.cs" />
     <Compile Include="Archipelago\Log.cs" />
     <Compile Include="Archipelago\Client.cs" />
     <Compile Include="Archipelago\ItemMap.cs" />
