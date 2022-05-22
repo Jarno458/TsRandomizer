@@ -27,6 +27,7 @@ namespace TsRandomizer.Archipelago
 		public static bool IsConnected;
 
 		public static Permissions ForfeitPermissions => session.RoomState.ForfeitPermissions;
+		public static Permissions CollectPermissions => session.RoomState.CollectPermissions;
 
 		public static string ConnectionId => session.ConnectionInfo.Uuid;
 
