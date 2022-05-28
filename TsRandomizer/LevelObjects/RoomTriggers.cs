@@ -39,9 +39,8 @@ namespace TsRandomizer.LevelObjects
 				return;
 
 			level.JukeBox.StopSong();
-			level.ToggleExits(false);
-			level.AsDynamic().IsInBossRoom = true;
-			level.LockAllBossDoors(0);
+			level.PlayCue(Timespinner.GameAbstractions.ESFX.FoleyWarpGyreIn);
+
 			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
 			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, vanillaBossId);
 
@@ -84,6 +83,8 @@ namespace TsRandomizer.LevelObjects
 			BestiaryManager.ClearBossSaveFlags(level, replacedBossInfo.ShouldSpawn);
 			level.GameSave.SetValue("IsFightingBoss", true);
 
+			EDirection facing = replacedBossInfo.IsFacingLeft ? EDirection.West : EDirection.East;
+
 			level.RequestChangeLevel(new LevelChangeRequest
 			{
 				LevelID = bossArena.LevelId,
@@ -91,7 +92,9 @@ namespace TsRandomizer.LevelObjects
 				IsUsingWarp = true,
 				IsUsingWhiteFadeOut = true,
 				FadeInTime = 0.5f,
-				FadeOutTime = 0.25f
+				FadeOutTime = 0.25f,
+				EnterDirection = facing,
+				AdditionalBlackScreenTime = 0.5f,
 			});
 		}
 
@@ -617,9 +620,9 @@ namespace TsRandomizer.LevelObjects
 
 		static void FillRoomWithGas(Level level)
 		{
-			var gass = (GameEvent)LakeVacuumLevelEffectType.CreateInstance(false, level, new Point(), -1, new ObjectTileSpecification());
+			var gas = (GameEvent)LakeVacuumLevelEffectType.CreateInstance(false, level, new Point(), -1, new ObjectTileSpecification());
 
-			level.AsDynamic().RequestAddObject(gass);
+			level.AsDynamic().RequestAddObject(gas);
 
 			var foreground = level.Foregrounds.FirstOrDefault();
 

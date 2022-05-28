@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using Archipelago.MultiClient.Net.Enums;
+using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions;
+using Timespinner.GameAbstractions.HUD;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
+
 
 namespace TsRandomizer.LevelObjects.Other
 {
@@ -39,8 +43,6 @@ namespace TsRandomizer.LevelObjects.Other
 
 		static readonly Type SandStreamerEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Misc.SandStreamerEvent");
 		static readonly Type TimeBreakEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.BreakLevelEffect");
-		static readonly Type MawSuckType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.BreakLevelEffect");
-
 		protected override void Initialize(SeedOptions options)
 		{
 			Level level = (Level)Dynamic._level;
@@ -62,6 +64,16 @@ namespace TsRandomizer.LevelObjects.Other
 				vanillaBoss = BestiaryManager.GetVanillaBoss(level, bossId);
 			else
 				vanillaBoss = currentBoss;
+
+			if (!isRandomized)
+				return;
+			level.ToggleExits(false);
+			level.OpenAllBossDoors(-1f);
+			level.LockAllBossDoors(0.5f);
+			level.AsDynamic().IsInBossRoom = true;
+
+			level.JukeBox.StopSong();
+			level.JukeBox.PlaySong(vanillaBoss.Song);
 		}
 
 		public BossEnemy(Mobile typedObject) : base(typedObject)
@@ -73,31 +85,33 @@ namespace TsRandomizer.LevelObjects.Other
 
 			var boss = typedObject.AsDynamic();
 
-			level.LockAllBossDoors(0);
-
 			switch (boss.EnemyType)
 			{
-				/*case EEnemyTileType.IncubusBoss:
-					level.GameSave.SetValue("HasSpawnedIdol", true);
+				case EEnemyTileType.EmperorBoss:
+					if (boss._isPrinceEmperor)
+					{
+						boss.IsSpawnedForCutscene = false;
+						boss.InitializeMob();
+						boss.EndBossIntroCutscene();
+					}	
+					break;
+				case EEnemyTileType.MawBoss:
 					boss.InitializeMob();
 					boss.EndBossIntroCutscene();
-					break;*/
+					boss.DoIntroCloseMouth();
+					break;
 				case EEnemyTileType.BirdBoss:
 					boss.InitializeMob();
 					boss.EndBossIntroCutscene();
 					break;
-				case EEnemyTileType.SandmanBoss:
-					level.MainHero.TeleportToPoint(new Microsoft.Xna.Framework.Point(200, 200));
-					// boss.StartBattle();
-					break;
 				case EEnemyTileType.VarndagrothBoss:
+					level.SetPlayerPosition(new Point(100, 200));
 					boss._spindleItem.SilentKill();
 					boss.StartBattle();
 					break;
 				default:
 					break;
 			}
-
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
@@ -128,10 +142,27 @@ namespace TsRandomizer.LevelObjects.Other
 				return;
 			}
 
-			// TODO: handle these transitions cleaner
 			var eventTypes = ((Dictionary<int, GameEvent>)LevelReflected._levelEvents).Values.Select(e => e.GetType());
 			if (currentBoss.Index != 70 && !eventTypes.Contains(SandStreamerEventType) && !eventTypes.Contains(TimeBreakEventType))
 				return;
+
+			//abort already triggered scripts
+			((List<ScriptAction>)LevelReflected._activeScripts).Clear();
+			((Queue<DialogueBox>)LevelReflected._dialogueQueue).Clear();
+			((Queue<ScriptAction>)LevelReflected._waitingScripts).Clear();
+			level.JukeBox.StopAllSFX();
+			level.JukeBox.StopSong();
+
+			// Cause Time break
+			if (vanillaBoss.ReturnRoom.LevelId == 15)
+			{
+				var timeBreak = (GameEvent)TimeBreakEventType.CreateInstance(false, level, new Point(), -1, new ObjectTileSpecification());
+				level.AsDynamic().RequestAddObject(timeBreak);
+				warpHasRun = true;
+			}
+
+			EDirection facing = vanillaBoss.IsFacingLeft ? EDirection.East : EDirection.West;
+			level.PlayCue(ESFX.FoleyWarpGyreOut);
 
 			level.RequestChangeLevel(new LevelChangeRequest
 			{
@@ -139,9 +170,11 @@ namespace TsRandomizer.LevelObjects.Other
 				RoomID = vanillaBoss.ReturnRoom.RoomId,
 				IsUsingWarp = true,
 				IsUsingWhiteFadeOut = true,
+				AdditionalBlackScreenTime = 0.5f,
 				FadeInTime = 0.5f,
 				FadeOutTime = 0.25f,
-				ShouldPlayLevelSong = true
+				ShouldPlayLevelSong = true,
+				EnterDirection = facing
 			});
 
 			warpHasRun = true;

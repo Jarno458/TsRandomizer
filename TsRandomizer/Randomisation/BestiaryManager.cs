@@ -134,7 +134,7 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpAelana,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.AelanaBoss"),
 						Argument = 0,
-						IsFacingLeft = true,
+						IsFacingLeft = false,
 						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.AelanaBoss
 					};
@@ -145,8 +145,8 @@ namespace TsRandomizer.Randomisation
 						VisibleName = "The Maw",
 						SaveName = "IsBossDead_Maw",
 						BossRoom = new RoomItemKey(8, 7),
-						ReturnRoom = new RoomItemKey(8, 6),
-						// ReturnRoom = new RoomItemKey(8, 13),
+						// ReturnRoom = new RoomItemKey(8, 6),
+						ReturnRoom = new RoomItemKey(8, 13),
 						Position = new Point(46, 176),
 						HP = 2250,
 						XP = 366,
@@ -155,8 +155,8 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpMawBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.MawBoss"),
 						Argument = 0,
-						IsFacingLeft = true,
-						ShouldSpawn = true,
+						IsFacingLeft = false,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.MawBoss
 					};
 				case 71:
@@ -165,7 +165,7 @@ namespace TsRandomizer.Randomisation
 						Index = bossId,
 						VisibleName = "Cantoran",
 						SaveName = "IsBossDead_Cantoran",
-						BossRoom = new RoomItemKey(7, 5),
+						BossRoom = new RoomItemKey(7, 21),
 						ReturnRoom = new RoomItemKey(7, 5),
 						Position = new Point(184, 224),
 						HP = 2250,
