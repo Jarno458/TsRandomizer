@@ -8,6 +8,7 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.HUD;
 using Timespinner.GameObjects.BaseClasses;
+using Timespinner.GameObjects.Events.Cutscene;
 using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -43,6 +44,8 @@ namespace TsRandomizer.LevelObjects.Other
 
 		static readonly Type SandStreamerEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Misc.SandStreamerEvent");
 		static readonly Type TimeBreakEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.BreakLevelEffect");
+		static readonly Type MawSpitType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Cutscene.CutsceneCavesPast6");
+
 		protected override void Initialize(SeedOptions options)
 		{
 			Level level = (Level)Dynamic._level;
@@ -143,6 +146,7 @@ namespace TsRandomizer.LevelObjects.Other
 			}
 
 			var eventTypes = ((Dictionary<int, GameEvent>)LevelReflected._levelEvents).Values.Select(e => e.GetType());
+
 			if (currentBoss.Index != 70 && !eventTypes.Contains(SandStreamerEventType) && !eventTypes.Contains(TimeBreakEventType))
 				return;
 
@@ -156,9 +160,13 @@ namespace TsRandomizer.LevelObjects.Other
 			// Cause Time break
 			if (vanillaBoss.ReturnRoom.LevelId == 15)
 			{
-				var timeBreak = (GameEvent)TimeBreakEventType.CreateInstance(false, level, new Point(), -1, new ObjectTileSpecification());
-				level.AsDynamic().RequestAddObject(timeBreak);
 				warpHasRun = true;
+				var cutsceneEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Cutscene.CutsceneBase+ECutsceneType");
+				var createAndCallCutsceneMethod = typeof(CutsceneBase).GetPrivateStaticMethod("CreateAndCallCutscene", cutsceneEnumType, typeof(Level), typeof(Point));
+
+				var enumValue = cutsceneEnumType.GetEnumValue("Alt2_Win");
+				createAndCallCutsceneMethod.InvokeStatic(enumValue, level, new Point(200, 200));
+				return;
 			}
 
 			EDirection facing = vanillaBoss.IsFacingLeft ? EDirection.East : EDirection.West;

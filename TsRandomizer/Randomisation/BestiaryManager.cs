@@ -145,7 +145,6 @@ namespace TsRandomizer.Randomisation
 						VisibleName = "The Maw",
 						SaveName = "IsBossDead_Maw",
 						BossRoom = new RoomItemKey(8, 7),
-						// ReturnRoom = new RoomItemKey(8, 6),
 						ReturnRoom = new RoomItemKey(8, 13),
 						Position = new Point(46, 176),
 						HP = 2250,

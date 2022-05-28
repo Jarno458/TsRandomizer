@@ -144,7 +144,7 @@ namespace TsRandomizer.LevelObjects
 				CreateBossWarp(level, 65);
 
 				if (!itemLocation.IsPickedUp
-					&& level.GameSave.GetSaveBool("IsBossDead_RoboKitty")
+					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_RoboKitty")
 					&& level.GameSave.HasOrb(EInventoryOrbType.Blade))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
@@ -156,7 +156,7 @@ namespace TsRandomizer.LevelObjects
 				CreateBossWarp(level, 66);
 
 				if (!itemLocation.IsPickedUp
-					&& level.GameSave.GetSaveBool("IsBossDead_Varndagroth"))
+					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Varndagroth"))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 280, 222);
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 0, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
@@ -247,7 +247,7 @@ namespace TsRandomizer.LevelObjects
 				CreateBossWarp(level, 68);
 
 				if (!itemLocation.IsPickedUp
-					&& level.GameSave.GetSaveBool("IsBossDead_Demon")
+					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Demon")
 					&& level.GameSave.HasRelic(EInventoryRelicType.DoubleJump))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 200);
 			}));
@@ -258,7 +258,7 @@ namespace TsRandomizer.LevelObjects
 				CreateBossWarp(level, 72);
 
 				if (!itemLocation.IsPickedUp
-					&& level.GameSave.GetSaveBool("IsBossDead_Shapeshift")
+					&& level.GameSave.GetSaveBool("TSRando__IsBossDead_Shapeshift")
 					&& level.GameSave.HasRelic(EInventoryRelicType.ScienceKeycardA))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 200);
 
@@ -281,7 +281,7 @@ namespace TsRandomizer.LevelObjects
 				CreateBossWarp(level, 71);
 
 				if (!itemLocation.IsPickedUp
-					&& level.GameSave.GetSaveBool("IsBossDead_Cantoran")
+					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran")
 					&& level.GameSave.HasOrb(EInventoryOrbType.Barrier))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 170, 194);
 			}));
