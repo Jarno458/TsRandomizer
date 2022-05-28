@@ -72,6 +72,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 			if (!isRandomized)
 				return;
+
 			level.ToggleExits(false);
 			level.OpenAllBossDoors(-1f);
 			level.LockAllBossDoors(0.5f);
@@ -94,15 +95,11 @@ namespace TsRandomizer.LevelObjects.Other
 			{
 				case EEnemyTileType.EmperorBoss:
 					if (boss._isPrinceEmperor)
-					{
-						boss.IsSpawnedForCutscene = false;
-						boss.InitializeMob();
-						boss.EndBossIntroCutscene();
-					}	
+						CreateAndCallCutsceneMethod.InvokeStatic(CutsceneEnumType.GetEnumValue("Alt0_Nuvius"), level, new Point(200, 200));
+					else if (boss._isViletianEmperor)
+						CreateAndCallCutsceneMethod.InvokeStatic(CutsceneEnumType.GetEnumValue("Alt1_Vol"), level, new Point(200, 200));
 					break;
 				case EEnemyTileType.MawBoss:
-					boss.InitializeMob();
-					boss.EndBossIntroCutscene();
 					boss.DoIntroCloseMouth();
 					break;
 				case EEnemyTileType.BirdBoss:
@@ -110,7 +107,6 @@ namespace TsRandomizer.LevelObjects.Other
 					boss.EndBossIntroCutscene();
 					break;
 				case EEnemyTileType.VarndagrothBoss:
-					level.SetPlayerPosition(new Point(100, 200));
 					boss._spindleItem.SilentKill();
 					boss.StartBattle();
 					break;

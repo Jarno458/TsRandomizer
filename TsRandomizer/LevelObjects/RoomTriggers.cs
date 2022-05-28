@@ -442,6 +442,7 @@ namespace TsRandomizer.LevelObjects
 					&& !level.GameSave.GetSaveBool("IsVileteSaved"))
 				{
 					var enumValue = CutsceneEnumType.GetEnumValue("CavesPast6_MawBoom");
+					level.GameSave.SetValue("TSRando_IsVileteSaved", true);
 					CreateAndCallCutsceneMethod.InvokeStatic(enumValue, level, new Point(200, 200));
 					return;
 				}

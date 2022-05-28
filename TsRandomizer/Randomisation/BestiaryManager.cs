@@ -135,7 +135,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.AelanaBoss"),
 						Argument = 0,
 						IsFacingLeft = false,
-						ShouldSpawn = true,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.AelanaBoss
 					};
 				case 70:
@@ -164,7 +164,7 @@ namespace TsRandomizer.Randomisation
 						Index = bossId,
 						VisibleName = "Cantoran",
 						SaveName = "IsBossDead_Cantoran",
-						BossRoom = new RoomItemKey(7, 21),
+						BossRoom = new RoomItemKey(7, 5),
 						ReturnRoom = new RoomItemKey(7, 5),
 						Position = new Point(184, 224),
 						HP = 2250,
@@ -194,8 +194,8 @@ namespace TsRandomizer.Randomisation
 						Sprite = level.GCM.SpShapeshifter,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.ShapeshifterBoss"),
 						Argument = 0,
-						IsFacingLeft = true,
-						ShouldSpawn = true,
+						IsFacingLeft = false,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.ShapeshiftBoss
 					};
 				case 73:
@@ -412,8 +412,9 @@ namespace TsRandomizer.Randomisation
 			{
 				BossAttributes bossInfo = GetBossAttributes(level, bossIndex);
 				level.GameSave.SetValue(bossInfo.SaveName, valueToSet);
-				level.GameSave.SetValue("IsVileteSaved", false);
 			}
+			level.GameSave.SetValue("IsVileteSaved", valueToSet);
+			level.GameSave.SetCutsceneTriggered("LakeSerene0_Seykis", valueToSet);
 		}
 
 		public static void RefreshBossSaveFlags(Level level)
@@ -432,6 +433,8 @@ namespace TsRandomizer.Randomisation
 					pastBossesKilled++;
 			}
 			level.GameSave.SetValue("IsPastCleared", pastBossesKilled == 3);
+			bool isVileteSafe = level.GameSave.GetSaveBool("TSRando_IsVileteSaved");
+			level.GameSave.SetValue("IsVileteSaved", isVileteSafe);
 		}
 
 		public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
