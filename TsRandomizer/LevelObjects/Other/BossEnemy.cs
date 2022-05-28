@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
@@ -44,7 +45,8 @@ namespace TsRandomizer.LevelObjects.Other
 
 		static readonly Type SandStreamerEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Misc.SandStreamerEvent");
 		static readonly Type TimeBreakEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.BreakLevelEffect");
-		static readonly Type MawSpitType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Cutscene.CutsceneCavesPast6");
+		static readonly Type CutsceneEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Cutscene.CutsceneBase+ECutsceneType");
+		static readonly MethodInfo CreateAndCallCutsceneMethod = typeof(CutsceneBase).GetPrivateStaticMethod("CreateAndCallCutscene", CutsceneEnumType, typeof(Level), typeof(Point));
 
 		protected override void Initialize(SeedOptions options)
 		{
@@ -161,11 +163,8 @@ namespace TsRandomizer.LevelObjects.Other
 			if (vanillaBoss.ReturnRoom.LevelId == 15)
 			{
 				warpHasRun = true;
-				var cutsceneEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Cutscene.CutsceneBase+ECutsceneType");
-				var createAndCallCutsceneMethod = typeof(CutsceneBase).GetPrivateStaticMethod("CreateAndCallCutscene", cutsceneEnumType, typeof(Level), typeof(Point));
-
-				var enumValue = cutsceneEnumType.GetEnumValue("Alt2_Win");
-				createAndCallCutsceneMethod.InvokeStatic(enumValue, level, new Point(200, 200));
+				var enumValue = CutsceneEnumType.GetEnumValue("Alt2_Win");
+				CreateAndCallCutsceneMethod.InvokeStatic(enumValue, level, new Point(200, 200));
 				return;
 			}
 

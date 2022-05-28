@@ -430,11 +430,6 @@ namespace TsRandomizer.Randomisation
 				int[] pastBosses = new int[] { 68, 69, 70 };
 				if (isBossDead && Array.Exists(pastBosses, index => index == bossIndex))
 					pastBossesKilled++;
-
-				if (isBossDead && bossIndex == 70)
-				{
-					level.GameSave.SetValue("IsVileteSaved", true);
-				}
 			}
 			level.GameSave.SetValue("IsPastCleared", pastBossesKilled == 3);
 		}

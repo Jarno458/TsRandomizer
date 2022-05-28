@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
@@ -9,6 +10,7 @@ using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events.EnvironmentPrefabs;
 using Timespinner.GameObjects.Events;
+using Timespinner.GameObjects.Events.Cutscene;
 using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -16,6 +18,7 @@ using TsRandomizer.Randomisation;
 using TsRandomizer.Randomisation.ItemPlacers;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
+
 
 namespace TsRandomizer.LevelObjects
 {
@@ -30,6 +33,9 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type GlowingFloorEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.EnvironmentPrefabs.L11_Lab.EnvPrefabLabVilete");
 		static readonly Type PedestalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
+		static readonly Type CutsceneEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Cutscene.CutsceneBase+ECutsceneType");
+		static readonly MethodInfo CreateAndCallCutsceneMethod = typeof(CutsceneBase).GetPrivateStaticMethod("CreateAndCallCutscene", CutsceneEnumType, typeof(Level), typeof(Point));
+
 
 		static int TargetBossId = -1;
 
@@ -429,9 +435,16 @@ namespace TsRandomizer.LevelObjects
 				FillRoomWithGas(level);
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 13, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (!seedOptions.GassMaw) return;
-
-				FillRoomWithGas(level);
+				if (seedOptions.GassMaw)
+					FillRoomWithGas(level);
+				if (gameSettings.BossRando.Value 
+					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Maw")
+					&& !level.GameSave.GetSaveBool("IsVileteSaved"))
+				{
+					var enumValue = CutsceneEnumType.GetEnumValue("CavesPast6_MawBoom");
+					CreateAndCallCutsceneMethod.InvokeStatic(enumValue, level, new Point(200, 200));
+					return;
+				}
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (seedOptions.GassMaw) FillRoomWithGas(level);
