@@ -413,8 +413,9 @@ namespace TsRandomizer.Randomisation
 				BossAttributes bossInfo = GetBossAttributes(level, bossIndex);
 				level.GameSave.SetValue(bossInfo.SaveName, valueToSet);
 			}
-			level.GameSave.SetValue("IsVileteSaved", valueToSet);
+			level.GameSave.SetValue("IsVileteSaved", false);
 			level.GameSave.SetCutsceneTriggered("LakeSerene0_Seykis", true);
+			level.GameSave.SetValue("IsCantoranActive", false);
 		}
 
 		public static void RefreshBossSaveFlags(Level level)
@@ -435,6 +436,11 @@ namespace TsRandomizer.Randomisation
 			level.GameSave.SetValue("IsPastCleared", pastBossesKilled == 3);
 			bool isVileteSafe = level.GameSave.GetSaveBool("TSRando_IsVileteSaved");
 			level.GameSave.SetValue("IsVileteSaved", isVileteSafe);
+
+			bool isPinkBirdDead = level.GameSave.GetSaveBool("TSRando_IsPinkBirdDead");
+			bool isCantoranDead = level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran");
+			level.GameSave.SetCutsceneTriggered("LakeSerene0_Seykis", isPinkBirdDead);
+			level.GameSave.SetValue("IsCantoranActive", isPinkBirdDead && !isCantoranDead);
 		}
 
 		public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
