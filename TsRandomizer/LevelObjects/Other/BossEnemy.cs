@@ -114,6 +114,25 @@ namespace TsRandomizer.LevelObjects.Other
 			}
 		}
 
+		void TeleportPlayer(Level level)
+		{
+			EDirection facing = vanillaBoss.IsFacingLeft ? EDirection.East : EDirection.West;
+			level.PlayCue(ESFX.FoleyWarpGyreOut);
+
+			level.RequestChangeLevel(new LevelChangeRequest
+			{
+				LevelID = vanillaBoss.ReturnRoom.LevelId,
+				RoomID = vanillaBoss.ReturnRoom.RoomId,
+				IsUsingWarp = true,
+				IsUsingWhiteFadeOut = true,
+				AdditionalBlackScreenTime = 0.5f,
+				FadeInTime = 0.5f,
+				FadeOutTime = 0.25f,
+				ShouldPlayLevelSong = true,
+				EnterDirection = facing
+			});
+		}
+
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
 			if (warpHasRun || Dynamic._deathScriptTimer <= 0) return;
@@ -155,7 +174,7 @@ namespace TsRandomizer.LevelObjects.Other
 			level.JukeBox.StopSong();
 
 			// Cause Time break
-			if (vanillaBoss.ReturnRoom.LevelId == 15)
+			if (vanillaBoss.ReturnRoom.LevelId == 15 && currentBoss.Index != 70)
 			{
 				warpHasRun = true;
 				var enumValue = CutsceneEnumType.GetEnumValue("Alt2_Win");
@@ -163,22 +182,7 @@ namespace TsRandomizer.LevelObjects.Other
 				return;
 			}
 
-			EDirection facing = vanillaBoss.IsFacingLeft ? EDirection.East : EDirection.West;
-			level.PlayCue(ESFX.FoleyWarpGyreOut);
-
-			level.RequestChangeLevel(new LevelChangeRequest
-			{
-				LevelID = vanillaBoss.ReturnRoom.LevelId,
-				RoomID = vanillaBoss.ReturnRoom.RoomId,
-				IsUsingWarp = true,
-				IsUsingWhiteFadeOut = true,
-				AdditionalBlackScreenTime = 0.5f,
-				FadeInTime = 0.5f,
-				FadeOutTime = 0.25f,
-				ShouldPlayLevelSong = true,
-				EnterDirection = facing
-			});
-
+			TeleportPlayer(level);
 			warpHasRun = true;
 		}
 	}
