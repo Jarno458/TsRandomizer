@@ -132,5 +132,7 @@ namespace TsRandomizer.Screens
 		}
 
 		public T FirstOrDefault<T>() where T : Screen => (T)hookedScreens.FirstOrDefault(s => s.GetType() == typeof(T));
+
+		public GameScreen FirstOrDefaultTimespinnerOfType(Type type) => ((List<GameScreen>)Dynamic._screens).FirstOrDefault(s => s.GetType() == type);
 	}
 }
