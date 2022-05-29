@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework;
 using Timespinner.Core;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Heroes;
 using TsRandomizer.Extensions;
@@ -15,6 +14,9 @@ using TsRandomizer.Randomisation;
 using TsRandomizer.ReplacementObjects;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
+#if DEBUG
+using Timespinner.GameAbstractions.Inventory;
+#endif
 
 namespace TsRandomizer.LevelObjects
 {
@@ -150,7 +152,7 @@ namespace TsRandomizer.LevelObjects
 			foreach (var obj in Objects)
 				obj.OnUpdate(gameplayScreen);
 
-			if (lunais.AsDynamic()._isHittingHeadOnCeiling && lunais.CurrentState == EAFSM.Skydashing && lunais.Velocity.Y == 0)
+			if (lunais.CurrentState == EAFSM.Skydashing && lunais.Velocity.Y == 0 && lunais.AsDynamic()._isHittingHeadOnCeiling)
 				level.GameSave.AddConcussion();
 		}
 
