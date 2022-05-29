@@ -175,7 +175,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.CantoranBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
-						ShouldSpawn = true,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.CantoranBoss
 					};
 				case 72:
@@ -415,7 +415,7 @@ namespace TsRandomizer.Randomisation
 			}
 			level.GameSave.SetValue("IsVileteSaved", false);
 			level.GameSave.SetCutsceneTriggered("LakeSerene0_Seykis", true);
-			level.GameSave.SetValue("IsCantoranActive", false);
+			level.GameSave.SetValue("IsCantoranActive", true);
 		}
 
 		public static void RefreshBossSaveFlags(Level level)

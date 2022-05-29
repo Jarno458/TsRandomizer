@@ -76,7 +76,6 @@ namespace TsRandomizer.LevelObjects.Other
 			level.ToggleExits(false);
 			level.OpenAllBossDoors(-1f);
 			level.LockAllBossDoors(0.5f);
-			level.AsDynamic().IsInBossRoom = true;
 
 			level.JukeBox.StopSong();
 			level.JukeBox.PlaySong(vanillaBoss.Song);
@@ -172,6 +171,7 @@ namespace TsRandomizer.LevelObjects.Other
 			((Queue<ScriptAction>)LevelReflected._waitingScripts).Clear();
 			level.JukeBox.StopAllSFX();
 			level.JukeBox.StopSong();
+			level.MainHero.IsBlocked = false;
 
 			// Cause Time break
 			if (vanillaBoss.ReturnRoom.LevelId == 15 && currentBoss.Index != 70)
