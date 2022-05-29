@@ -35,6 +35,8 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
 		static readonly Type CutsceneEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Cutscene.CutsceneBase+ECutsceneType");
 		static readonly MethodInfo CreateAndCallCutsceneMethod = typeof(CutsceneBase).GetPrivateStaticMethod("CreateAndCallCutscene", CutsceneEnumType, typeof(Level), typeof(Point));
+		static readonly Type CirclePlatformType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Platforms.CirclePlatformEvent");
+		static readonly Type MovingPlatformType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Platforms.MovingPlatformEvent");
 
 
 		static int TargetBossId = -1;
@@ -216,6 +218,13 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(14, 4, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Ravenlord
+				SpawnMovingPlatform(level, 185, 520);
+				SpawnMovingPlatform(level, 615, 520);
+				SpawnCirclePlatform(level, 185, 415, true);
+				SpawnCirclePlatform(level, 615, 415, false);
+				SpawnMovingPlatform(level, 185, 220);
+				SpawnMovingPlatform(level, 615, 220);
+
 				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
@@ -550,7 +559,7 @@ namespace TsRandomizer.LevelObjects
 			var pedistalSpecification = new TileSpecification
 			{
 				Argument = (int)EInventoryOrbType.Monske,
-				ID = 480, //orb pedistal
+				ID = 480, //orb pedestal
 				Layer = ETileLayerType.Objects,
 			};
 			var orbPedestalEvent = Activator.CreateInstance(orbPedestalEventType, level, itemPosition, -1, ObjectTileSpecification.FromTileSpecification(pedistalSpecification));
@@ -638,6 +647,26 @@ namespace TsRandomizer.LevelObjects
 
 			level.AsDynamic().RequestAddObject(gyrePortal);
 		}
+
+		static void SpawnMovingPlatform(Level level, int x, int y)
+		{
+			var position = new Point(x, y);
+			var platform = MovingPlatformType.CreateInstance(false, level, position, -1, new ObjectTileSpecification());
+
+			level.AsDynamic().RequestAddObject(platform);
+		}
+
+		static void SpawnCirclePlatform(Level level, int x, int y, bool isClockwise)
+		{
+			var position = new Point(x, y);
+			ObjectTileSpecification platformTile = new ObjectTileSpecification();
+			if (!isClockwise)
+				platformTile.Argument = 1;
+			var platform = CirclePlatformType.CreateInstance(false, level, position, -1, platformTile);
+
+			level.AsDynamic().RequestAddObject(platform);
+		}
+
 
 		static void FillRoomWithGas(Level level)
 		{
