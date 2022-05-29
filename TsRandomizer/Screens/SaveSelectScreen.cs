@@ -188,6 +188,8 @@ namespace TsRandomizer.Screens
 
 		void UpdateInput(InputState input)
 		{
+			if (!GameScreen.IsActive) return;
+
 			if (input.IsButtonHold(Buttons.LeftTrigger))
 			{
 				UpdateDescription(true);
@@ -240,7 +242,7 @@ namespace TsRandomizer.Screens
 				var seed = selectedSaveFile.GetSeed();
 				if (seed.HasValue && seed.Value.Options.Archipelago)
 				{
-					//TODO: Implement, change credentials
+					ScreenManager.AddScreen(ArchipelagoSelectionScreen.Create(ScreenManager), null);
 				}
 			}
  		}
@@ -443,6 +445,16 @@ namespace TsRandomizer.Screens
 					if (!archipelagoRepresentation.Key.AsDynamic().IsScrolledOff)
 						archipelagoRepresentation.Value.Draw(spriteBatch);
 			}
+		}
+
+		public void UpdateSave(Action<GameSave> updater)
+		{
+			if (CurrentSelectedSave == null) return;
+
+			updater(CurrentSelectedSave);
+
+			var saveFileManager = ((object)Dynamic._saveFileManager).AsDynamic();
+			saveFileManager.RequestGameSave(CurrentSelectedSave, PlayerIndex.One);
 		}
 	}
 }
