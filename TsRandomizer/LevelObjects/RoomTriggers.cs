@@ -6,6 +6,7 @@ using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.HUD;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events.EnvironmentPrefabs;
@@ -18,7 +19,6 @@ using TsRandomizer.Randomisation;
 using TsRandomizer.Randomisation.ItemPlacers;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
-
 
 namespace TsRandomizer.LevelObjects
 {
@@ -46,11 +46,11 @@ namespace TsRandomizer.LevelObjects
 			if (TargetBossId == -1 || !level.GameSave.GetSettings().BossRando.Value || !level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 
-			level.JukeBox.StopSong();
-			level.PlayCue(Timespinner.GameAbstractions.ESFX.FoleyWarpGyreIn);
-
 			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
 			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, vanillaBossId);
+
+			level.JukeBox.StopSong();
+			level.PlayCue(Timespinner.GameAbstractions.ESFX.FoleyWarpGyreIn);
 
 			if (vanillaBossId == 70 && seedOptions.GassMaw)
 				FillRoomWithGas(level);

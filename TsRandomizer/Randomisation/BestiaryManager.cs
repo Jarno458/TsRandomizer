@@ -414,7 +414,7 @@ namespace TsRandomizer.Randomisation
 				level.GameSave.SetValue(bossInfo.SaveName, valueToSet);
 			}
 			level.GameSave.SetValue("IsVileteSaved", valueToSet);
-			level.GameSave.SetCutsceneTriggered("LakeSerene0_Seykis", valueToSet);
+			level.GameSave.SetCutsceneTriggered("LakeSerene0_Seykis", true);
 		}
 
 		public static void RefreshBossSaveFlags(Level level)
