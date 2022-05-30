@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.HUD;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
-
+using TsRandomizer.Screens;
 
 namespace TsRandomizer.LevelObjects.Other
 {
@@ -14,6 +15,7 @@ namespace TsRandomizer.LevelObjects.Other
 		public CutsceneCavesPast4(Mobile typedObject) : base(typedObject)
 		{
 		}
+		bool hasRun = false;
 
 		protected override void Initialize(SeedOptions options)
 		{
@@ -22,14 +24,13 @@ namespace TsRandomizer.LevelObjects.Other
 			bool isRandomized = level.GameSave.GetSettings().BossRando.Value;
 			if (!isRandomized)
 				return;
-			foreach (Monster visibleEnemy in level.AsDynamic().GetVisibleEnemies())
-			{
-				visibleEnemy.SilentKill();
-				//visibleEnemy.AsDynamic()._doesHarmOnTouch = false;
-			}
 
 			if (!level.GameSave.GetSaveBool("IsFightingBoss"))
 			{
+				foreach (Monster visibleEnemy in level.AsDynamic().GetVisibleEnemies())
+				{
+					visibleEnemy.SilentKill();
+				}
 				Dynamic.SilentKill();
 
 				//abort already triggered scripts
@@ -37,6 +38,26 @@ namespace TsRandomizer.LevelObjects.Other
 				((Queue<DialogueBox>)LevelReflected._dialogueQueue).Clear();
 				((Queue<ScriptAction>)LevelReflected._waitingScripts).Clear();
 			}
+			else
+			{
+				// Set invulnerability during the Maw intro
+				level.AsDynamic().TogglePlayerIsInvulnerable(true);
+			}
+		}
+
+		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		{
+			if (hasRun)
+				return;
+			// Undo invulnerability after the cutscene ends
+			if (((List<ScriptAction>)LevelReflected._activeScripts).Count == 0 &&
+				((Queue<DialogueBox>)LevelReflected._dialogueQueue).Count == 0 &&
+				((Queue<ScriptAction>)LevelReflected._waitingScripts).Count == 0)
+			{
+				LevelReflected.TogglePlayerIsInvulnerable(false);
+				hasRun = true;
+			}
 		}
 	}
 }
+
