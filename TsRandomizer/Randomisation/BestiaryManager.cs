@@ -436,6 +436,7 @@ namespace TsRandomizer.Randomisation
 			level.GameSave.SetCutsceneTriggered("LakeSerene0_Seykis", true);
 			level.GameSave.SetValue("IsCantoranActive", true);
 			level.GameSave.SetValue("IsEndingABCleared", false);
+			level.GameSave.SetValue("IsLabTSReady", false);
 		}
 
 		public static void RefreshBossSaveFlags(Level level)
@@ -462,6 +463,8 @@ namespace TsRandomizer.Randomisation
 			level.GameSave.SetValue("IsCantoranActive", isPinkBirdDead && !isCantoranDead);
 
 			level.GameSave.SetValue("IsEndingABCleared", level.GameSave.GetSaveBool("TSRando_IsBossDead_Emperor"));
+
+			level.GameSave.SetValue("IsLabTSReady", level.GameSave.GetSaveBool("TSRando_IsLabTSReady"));
 		}
 
 		public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
