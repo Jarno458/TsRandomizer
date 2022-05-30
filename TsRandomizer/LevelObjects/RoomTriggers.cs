@@ -196,6 +196,8 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(13, 1, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Terrilis
+				if (level.GameSave.GetSettings().BossRando.Value)
+					CreateAndCallCutsceneMethod.InvokeStatic(CutsceneEnumType.GetEnumValue("Alt1_Vol"), level, new Point(200, 200));
 				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;

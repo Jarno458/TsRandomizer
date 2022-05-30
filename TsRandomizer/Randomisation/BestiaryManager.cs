@@ -235,7 +235,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
 						Argument = 1,
 						IsFacingLeft = true,
-						ShouldSpawn = true,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.EmperorBoss
 					};
 				case 75:

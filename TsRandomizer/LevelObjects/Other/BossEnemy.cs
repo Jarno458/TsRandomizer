@@ -95,8 +95,6 @@ namespace TsRandomizer.LevelObjects.Other
 				case EEnemyTileType.EmperorBoss:
 					if (boss._isPrinceEmperor)
 						CreateAndCallCutsceneMethod.InvokeStatic(CutsceneEnumType.GetEnumValue("Alt0_Nuvius"), level, new Point(200, 200));
-					else if (boss._isViletianEmperor)
-						CreateAndCallCutsceneMethod.InvokeStatic(CutsceneEnumType.GetEnumValue("Alt1_Vol"), level, new Point(200, 200));
 					break;
 				case EEnemyTileType.MawBoss:
 					boss.DoIntroCloseMouth();
@@ -173,7 +171,6 @@ namespace TsRandomizer.LevelObjects.Other
 			((Queue<ScriptAction>)LevelReflected._waitingScripts).Clear();
 			level.JukeBox.StopAllSFX();
 			level.JukeBox.StopSong();
-			level.MainHero.IsBlocked = false;
 
 			// Cause Time break
 			if (vanillaBoss.ReturnRoom.LevelId == 15 && currentBoss.Index != 70)
