@@ -454,8 +454,7 @@ namespace TsRandomizer.Randomisation
 					pastBossesKilled++;
 			}
 			level.GameSave.SetValue("IsPastCleared", pastBossesKilled == 3);
-			bool isVileteSafe = level.GameSave.GetSaveBool("TSRando_IsVileteSaved");
-			level.GameSave.SetValue("IsVileteSaved", isVileteSafe);
+			level.GameSave.SetValue("IsVileteSaved", level.GameSave.GetSaveBool("TSRando_IsVileteSaved"));
 
 			bool isPinkBirdDead = level.GameSave.GetSaveBool("TSRando_IsPinkBirdDead");
 			bool isCantoranDead = level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran");
