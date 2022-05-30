@@ -138,10 +138,12 @@ namespace TsRandomizer.LevelObjects
 				if (!seedOptions.Inverted || level.GameSave.GetSaveBool("TSRandomizerHasTeleportedPlayer")) return;
 
 				level.GameSave.SetValue("TSRandomizerHasTeleportedPlayer", true);
-
-				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 3, RoomID = 6 }); //Refugee Camp
-
 				level.GameSave.SetCutsceneTriggered("LakeDesolation1_Entrance", true); // Fixes music when returning to Lake Desolation later
+				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 3, RoomID = 28 }); // Waterfall cutscene
+			}));
+			RoomTriggers.Add(new RoomTrigger(3, 28, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				if (!seedOptions.Inverted) return;
+				CreateAndCallCutsceneMethod.InvokeStatic(CutsceneEnumType.GetEnumValue("Forest0_Warp"), level, new Point(200, 200));
 			}));
 			RoomTriggers.Add(new RoomTrigger(1, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Boots
