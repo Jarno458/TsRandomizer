@@ -36,6 +36,7 @@ namespace TsRandomizer.LevelObjects.Other
 	// ReSharper disable once UnusedMember.Global
 	class BossEnemy: LevelObject
 	{
+		bool songHasRun;
 		bool clearedHasRun;
 		bool saveHasRun;
 		bool warpHasRun;
@@ -134,9 +135,16 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
+			Level level = (Level)Dynamic._level;
+			if (isRandomized && !songHasRun && level.JukeBox.CurrentSongEnum != vanillaBoss.Song)
+			{
+				level.JukeBox.StopSong();
+				level.JukeBox.PlaySong(vanillaBoss.Song);
+				songHasRun = true;
+			}
+
 			if (warpHasRun || Dynamic._deathScriptTimer <= 0) return;
 
-			Level level = (Level)Dynamic._level;
 			if (!clearedHasRun && vanillaBoss.Index == 80)
 			{
 				// Boss is Nightmare
