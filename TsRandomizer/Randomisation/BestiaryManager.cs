@@ -361,7 +361,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.OtherBosses.NightmareBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
-						ShouldSpawn = true,
+						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.NightmareBoss
 					};
 				default:

@@ -275,7 +275,7 @@ namespace TsRandomizer.LevelObjects
 				CreateBossWarp(level, 72);
 
 				if (!itemLocation.IsPickedUp
-					&& level.GameSave.GetSaveBool("TSRando__IsBossDead_Shapeshift")
+					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Shapeshift")
 					&& level.GameSave.HasRelic(EInventoryRelicType.ScienceKeycardA))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 200);
 
@@ -299,8 +299,7 @@ namespace TsRandomizer.LevelObjects
 				CreateBossWarp(level, 71);
 
 				if (!itemLocation.IsPickedUp
-					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran")
-					&& level.GameSave.HasOrb(EInventoryOrbType.Barrier))
+					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran"))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 170, 194);
 			}));
 
