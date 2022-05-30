@@ -434,7 +434,7 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(12, 11, (level, itemLocation, seedOptions, gameSettings, screenManager) => // Remove Daddy's pedestal if you havent killed him yet
 			{
-				if (level.GameSave.DataKeyBools.ContainsKey("IsEndingABCleared")) return;
+				if (level.GameSave.GetSaveBool("TSRando_IsBossDead_Emperor")) return;
 
 				((Dictionary<int, GameEvent>)level.AsDynamic()._levelEvents).Values
 					.FirstOrDefault(obj => obj.GetType() == PedestalType)

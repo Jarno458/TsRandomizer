@@ -36,9 +36,16 @@ namespace TsRandomizer.Randomisation
 	{
 		public static int[] GetValidBosses(Level level)
 		{
-			// TODO account for flags for Cantoran, Ravenlord, Ifrit
-			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 };
-			return validBosses;
+			var validBosses = Enumerable.Range(65, 16).ToList();
+			var seedOptions = level.GameSave.GetSeed().AsDynamic().Options;
+			if (!seedOptions.Cantoran)
+				validBosses.Remove(71);
+			if (!seedOptions.GyreArchives)
+			{
+				validBosses.Remove(77);
+				validBosses.Remove(78);
+			}
+			return validBosses.ToArray();
 		}
 		public static BossAttributes GetBossAttributes(Level level, int bossId)
 		{
@@ -422,6 +429,7 @@ namespace TsRandomizer.Randomisation
 			level.GameSave.SetValue("IsVileteSaved", false);
 			level.GameSave.SetCutsceneTriggered("LakeSerene0_Seykis", true);
 			level.GameSave.SetValue("IsCantoranActive", true);
+			level.GameSave.SetValue("IsEndingABCleared", false);
 		}
 
 		public static void RefreshBossSaveFlags(Level level)
@@ -447,6 +455,8 @@ namespace TsRandomizer.Randomisation
 			bool isCantoranDead = level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran");
 			level.GameSave.SetCutsceneTriggered("LakeSerene0_Seykis", isPinkBirdDead);
 			level.GameSave.SetValue("IsCantoranActive", isPinkBirdDead && !isCantoranDead);
+
+			level.GameSave.SetValue("IsEndingABCleared", level.GameSave.GetSaveBool("TSRando_IsBossDead_Emperor"));
 		}
 
 		public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
@@ -472,13 +482,14 @@ namespace TsRandomizer.Randomisation
 
 			var bestiary = level.GCM.Bestiary;
 			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
+			int[] validBosses = GetValidBosses(level);
 			foreach (var bestiaryEntry in bestiary.BestiaryEntries)
 			{
 				if (gameSettings.ShowBestiary.Value)
 				{
 					level.GameSave.SetValue(string.Format(bestiaryEntry.Key.Replace("Enemy_", "KILL_")), 1);
 				}
-				if (gameSettings.BossRando.Value && bestiaryEntry.Index >= 65 && bestiaryEntry.Index <= 80)
+				if (gameSettings.BossRando.Value && validBosses.Contains(bestiaryEntry.Index))
 				{
 					BossAttributes replacedBossInfo = GetBossAttributes(level, bestiaryEntry.Index);
 					BossAttributes vanillaBossInfo = GetVanillaBoss(level, bestiaryEntry.Index);
