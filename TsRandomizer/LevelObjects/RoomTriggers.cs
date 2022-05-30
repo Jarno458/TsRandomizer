@@ -495,18 +495,22 @@ namespace TsRandomizer.LevelObjects
 
 				if (!level.GameSave.DataKeyStrings.ContainsKey(ArchipelagoItemLocationRandomizer.GameSaveServerKey)) return;
 
-				var forfeitFlags = Client.ForfeitPermissions;
-
-				if (!forfeitFlags.HasFlag(Permissions.Auto) &&
-					(forfeitFlags.HasFlag(Permissions.Enabled) || forfeitFlags.HasFlag(Permissions.Goal)))
-				{
-					var messageBox = MessageBox.Create(screenManager, "Press OK for forfeit remaining item checks", _ => {
-						Client.Say("!forfeit");
-					});
-
-					screenManager.AddScreen(messageBox.Screen, null);
-				}
+				AskPermissionMessage(screenManager, "collect", Client.CollectPermissions);
+				AskPermissionMessage(screenManager, "forfeit", Client.ForfeitPermissions);
 			}));
+		}
+
+		static void AskPermissionMessage(ScreenManager screenManager, string command, Permissions permissionFlags)
+		{
+			if (!permissionFlags.HasFlag(Permissions.Auto) &&
+			    (permissionFlags.HasFlag(Permissions.Enabled) || permissionFlags.HasFlag(Permissions.Goal)))
+			{
+				var messageBox = MessageBox.Create(screenManager, $"Press OK to {command} remaining item checks", _ => {
+					Client.Say($"!{command}");
+				});
+
+				screenManager.AddScreen(messageBox.Screen, null);
+			}
 		}
 
 		readonly RoomItemKey key;

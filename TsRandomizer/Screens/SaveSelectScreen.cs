@@ -9,11 +9,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SDL2;
 using Timespinner.GameAbstractions.Saving;
+using Timespinner.GameStateManagement;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Drawables;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Screens
 {
@@ -21,6 +23,8 @@ namespace TsRandomizer.Screens
 	// ReSharper disable once UnusedMember.Global
 	class SaveSelectScreen : Screen
 	{
+		static readonly Type MessageBoxScreenType = TimeSpinnerType.Get("Timespinner.GameStateManagement.MessageBoxScreen");
+
 		const int NumberOfSaveFileSlots = 8;
 
 		readonly Dictionary<object, SeedRepresentation> seedRepresentations = new Dictionary<object, SeedRepresentation>(10);
@@ -184,6 +188,8 @@ namespace TsRandomizer.Screens
 
 		void UpdateInput(InputState input)
 		{
+			if (!GameScreen.IsActive) return;
+
 			if (input.IsButtonHold(Buttons.LeftTrigger))
 			{
 				UpdateDescription(true);
@@ -222,31 +228,48 @@ namespace TsRandomizer.Screens
 
 				SDL.SDL_SetClipboardText(seed.Value.ToString());
 			}
+
+			if (input.IsNewPressTertiary(null))
+			{
+				var selectedSaveFile = CurrentSelectedSave;
+				if (selectedSaveFile == null)
+					return;
+
+				//if save is cleared, cancel newgame+ menu
+				if (selectedSaveFile.IsGameCleared)
+					ScreenManager.RemoveScreen(ScreenManager.FirstOrDefaultTimespinnerOfType(MessageBoxScreenType));
+
+				var seed = selectedSaveFile.GetSeed();
+				if (seed.HasValue && seed.Value.Options.Archipelago)
+				{
+					ScreenManager.AddScreen(ArchipelagoSelectionScreen.Create(ScreenManager), null);
+				}
+			}
  		}
 
 		void UpdateDescription(bool displayDeleteAll)
 		{
-			var x = CurrentSelectedMenuEntry?.AsDynamic();
-			if (x == null) return;
+			if (CurrentSelectedMenuEntry == null) return;
 
-			string desc = (x._isCleared)
-				? TimeSpinnerGame.Localizer.Get("SaveSelectContClearedDescription")
-				: TimeSpinnerGame.Localizer.Get("SaveSelectContinueDescription");
+			var menuEntry = CurrentSelectedMenuEntry?.AsDynamic();
+			if (menuEntry == null) return;
+
+			string desc = TimeSpinnerGame.Localizer.Get("SaveSelectContinueDescription");
 
 			if (displayDeleteAll)
 			{
 				var xStringStart = desc.IndexOf("$X", StringComparison.InvariantCulture);
-				var xStringEnd = desc.IndexOf("$Y", xStringStart, StringComparison.InvariantCulture);
 
 				var aString = desc.Substring(0, xStringStart + 3);
-				var yString = (xStringEnd != -1)
-					? desc.Substring(xStringEnd -1)
-					: "";
 
-				desc = aString + "to delete all files." + yString;
+				desc = aString + "to delete all files.";
 			}
 
-			x.Description = desc;
+			var seed = CurrentSelectedSave?.GetSeed();
+			if (seed.HasValue && seed.Value.Options.Archipelago)
+				desc += " Press $Y to change archipelago server/credentials";
+			
+			menuEntry.Description = desc;
 
 			Dynamic.OnSelectedEntryChanged(Dynamic.SelectedIndex);
 		}
@@ -422,6 +445,16 @@ namespace TsRandomizer.Screens
 					if (!archipelagoRepresentation.Key.AsDynamic().IsScrolledOff)
 						archipelagoRepresentation.Value.Draw(spriteBatch);
 			}
+		}
+
+		public void UpdateSave(Action<GameSave> updater)
+		{
+			if (CurrentSelectedSave == null) return;
+
+			updater(CurrentSelectedSave);
+
+			var saveFileManager = ((object)Dynamic._saveFileManager).AsDynamic();
+			saveFileManager.RequestGameSave(CurrentSelectedSave, PlayerIndex.One);
 		}
 	}
 }
