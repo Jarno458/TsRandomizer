@@ -200,7 +200,7 @@ namespace TsRandomizer.LevelObjects
 				// Terrilis
 				if (level.GameSave.GetSettings().BossRando.Value)
 					CreateAndCallCutsceneMethod.InvokeStatic(CutsceneEnumType.GetEnumValue("Alt1_Vol"), level, new Point(200, 200));
-				// SpawnBoss(level, seedOptions, TargetBossId); // Currently has issue with double-spawning, rely on cutscene to spawn
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
 				CreateBossWarp(level, 74);
