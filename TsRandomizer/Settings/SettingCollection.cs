@@ -9,7 +9,7 @@ namespace TsRandomizer.Settings
 		public static readonly GameSettingCategoryInfo[] Categories = {
 			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.BossRando, s => s.BossScaling, s => s.DamageRando, s => s.HpCap
+					s => s.BossRando, s => s.BossScaling, s => s.DamageRando, s => s.HpCap, s => s.BossHealing
 				}},
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -36,7 +36,7 @@ namespace TsRandomizer.Settings
 			"All boss locations are shuffled.", false, false);
 
 		public OnOffGameSetting BossScaling = new OnOffGameSetting("Random Boss Scaling",
-			"Random bosses inherit the HP, ATK, and XP of their location (Reccomended).", true, false);
+			"Random bosses inherit the HP, ATK, and XP of their location (Recommended).", true, false);
 
 		public SpecificValuesGameSetting DamageRando = new SpecificValuesGameSetting("Damage Randomizer",
 			"Randomly nerfs and buffs orbs, spells, and some rings. \"Manual\" requires editing the randomizer settings file.",
@@ -47,6 +47,9 @@ namespace TsRandomizer.Settings
 
 		public NumberGameSetting HpCap = new NumberGameSetting("HP Cap",
 			"Sets the maximum HP Lunais is allowed to have", 1, 999, 64, 999);
+
+		public OnOffGameSetting BossHealing = new OnOffGameSetting("Heal After Bosses",
+			"When disabled, bosses will not provide healing. NOTE: currently only applicable for Boss Rando", true, false);
 
 		public OnOffGameSetting ShowBestiary = new OnOffGameSetting("Show Bestiary",
 			"All bestiary entries in the journal are visible by default.", false, false);
