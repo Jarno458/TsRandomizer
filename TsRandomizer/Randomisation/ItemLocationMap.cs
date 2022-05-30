@@ -94,7 +94,7 @@ namespace TsRandomizer.Randomisation
 				AddLoreLocations();
 
 			if (options.StartWithTalaria)
-				Add(new ExteralItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
+				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
 		}
 
 		void SetupGates()

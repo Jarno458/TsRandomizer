@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Xml;
 using Archipelago.MultiClient.Net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -41,8 +42,9 @@ namespace TsRandomizer.Screens
 		MenuEntry connectMenuEntry;
 
 		readonly GameDifficultyMenuScreen difficultyMenu;
+		readonly SaveSelectScreen saveSelectScreen;
 
-		bool IsUsedAsArchipelagoSelectionMenu => difficultyMenu != null;
+		bool IsUsedAsArchipelagoSelectionMenu => difficultyMenu != null || saveSelectScreen != null;
 
 		public static GameScreen Create(ScreenManager screenManager)
 		{
@@ -56,6 +58,7 @@ namespace TsRandomizer.Screens
 		public ArchipelagoSelectionScreen(ScreenManager screenManager, GameScreen videoScreen) : base(screenManager, videoScreen)
 		{
 			difficultyMenu = screenManager.FirstOrDefault<GameDifficultyMenuScreen>();
+			saveSelectScreen = screenManager.FirstOrDefault<SaveSelectScreen>();
 
 #if DEBUG
 			values[ServerIndex] = "localhost";
@@ -176,22 +179,39 @@ namespace TsRandomizer.Screens
 			}
 			else
 			{
-				var connected = (LoginSuccessful)result;
+				if (difficultyMenu != null)
+				{
+					var connected = (LoginSuccessful)result;
 
-				var slotDataParser = new SlotDataParser(connected.SlotData, Client.SeedString);
+					var slotDataParser = new SlotDataParser(connected.SlotData, Client.SeedString);
 
-				difficultyMenu.SetSeedAndFillingMethod(slotDataParser.GetSeed(), FillingMethod.Archipelago, slotDataParser.GetSettings());
-				difficultyMenu.HookOnDifficultySelected(saveGame => {
-					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = server; 
-					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = values[UserIndex]; 
-					if(!string.IsNullOrEmpty(values[PasswordIndex]))
-						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePasswordKey] = values[PasswordIndex];
-					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveConnectionId] = Client.ConnectionId;
-					saveGame.DataKeyInts[ArchipelagoItemLocationMap.GameItemIndex] = 0;
-					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePyramidsKeysUnlock] = slotDataParser.GetPyramidKeysGate().ToString();
-					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePersonalItemIds] =
-						JsonConvert.SerializeObject(slotDataParser.GetPersonalItems());
-				});
+					difficultyMenu.SetSeedAndFillingMethod(slotDataParser.GetSeed(), FillingMethod.Archipelago,
+						slotDataParser.GetSettings());
+					difficultyMenu.HookOnDifficultySelected(saveGame => {
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = server;
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = values[UserIndex];
+						if (!string.IsNullOrEmpty(values[PasswordIndex]))
+							saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePasswordKey] =
+								values[PasswordIndex];
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveConnectionId] =
+							Client.ConnectionId;
+						saveGame.DataKeyInts[ArchipelagoItemLocationMap.GameItemIndex] = 0;
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePyramidsKeysUnlock] =
+							slotDataParser.GetPyramidKeysGate().ToString();
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePersonalItemIds] =
+							JsonConvert.SerializeObject(slotDataParser.GetPersonalItems());
+					});
+				}
+				else if (saveSelectScreen != null)
+				{
+					saveSelectScreen.UpdateSave(saveGame => {
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = server;
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = values[UserIndex];
+						if (!string.IsNullOrEmpty(values[PasswordIndex]))
+							saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePasswordKey] =
+								values[PasswordIndex];
+					});
+				}
 
 				Dynamic.OnCancel(playerIndex);
 			}

@@ -86,7 +86,7 @@ namespace TsRandomizer.Archipelago
 
 					item.OnPickup(level);
 
-					Add(new ExteralItemLocation(item));
+					Add(new ExternalItemLocation(item));
 
 					updateTracker = true;
 				}
@@ -109,7 +109,7 @@ namespace TsRandomizer.Archipelago
 			}
 			else
 			{
-				location = new ExteralItemLocation();
+				location = new ExternalItemLocation();
 
 				Add(location);
 			}

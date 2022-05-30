@@ -1,24 +1,25 @@
-﻿using Timespinner.GameAbstractions.Saving;
+﻿using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.IntermediateObjects;
 
 namespace TsRandomizer.Randomisation
 {
-	class ExteralItemLocation : ItemLocation
+	class ExternalItemLocation : ItemLocation
 	{
 		static int externalCounter;
 
-		public ExteralItemLocation() : base(new ItemKey(0, 0, 0, externalCounter++), "External", "", null)
+		public ExternalItemLocation() : base(new ItemKey(0, 0, 0, externalCounter++), "External", "", null)
 		{
 		}
 
-		public ExteralItemLocation(ItemInfo item) : this()
+		public ExternalItemLocation(ItemInfo item) : this()
 		{
 			SetItem(item);
 
 			IsPickedUp = true;
 		}
 
-		public override void SetPickedUp()
+		public override void SetPickedUp(Level level)
 		{
 			//we are going to need proper progression handling at some point
 			//if (ItemInfo is ProgressiveItemInfo progressiveItemInfo) 
