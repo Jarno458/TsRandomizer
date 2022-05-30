@@ -171,6 +171,7 @@ namespace TsRandomizer.LevelObjects.Other
 			((Queue<ScriptAction>)LevelReflected._waitingScripts).Clear();
 			level.JukeBox.StopAllSFX();
 			level.JukeBox.StopSong();
+			level.AsDynamic().FullyHealPlayer();
 
 			// Cause Time break
 			if (vanillaBoss.ReturnRoom.LevelId == 15 && currentBoss.Index != 70)
