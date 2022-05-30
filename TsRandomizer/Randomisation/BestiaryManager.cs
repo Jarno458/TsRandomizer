@@ -37,10 +37,10 @@ namespace TsRandomizer.Randomisation
 		public static int[] GetValidBosses(Level level)
 		{
 			var validBosses = Enumerable.Range(65, 16).ToList();
-			var seedOptions = level.GameSave.GetSeed().AsDynamic().Options;
-			if (!seedOptions.Cantoran)
+			var seed = level.GameSave.GetSeed();
+			if (seed.HasValue && !seed.Value.Options.Cantoran)
 				validBosses.Remove(71);
-			if (!seedOptions.GyreArchives)
+			if (seed.HasValue && !seed.Value.Options.GyreArchives)
 			{
 				validBosses.Remove(77);
 				validBosses.Remove(78);
