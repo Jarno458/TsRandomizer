@@ -1,0 +1,42 @@
+﻿using System.Collections.Generic;
+using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.HUD;
+using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
+
+
+namespace TsRandomizer.LevelObjects.Other
+{
+	[TimeSpinnerType("Timespinner.GameObjects.Events.Cutscene.CutsceneCavesPast4")]
+	class CutsceneCavesPast4 : LevelObject
+	{
+		public CutsceneCavesPast4(Mobile typedObject) : base(typedObject)
+		{
+		}
+
+		protected override void Initialize(SeedOptions options)
+		{
+			// Spindle cutscene, to be removed during boss rando
+			Level level = (Level)Dynamic._level;
+			bool isRandomized = level.GameSave.GetSettings().BossRando.Value;
+			if (!isRandomized)
+				return;
+			foreach (Monster visibleEnemy in level.AsDynamic().GetVisibleEnemies())
+			{
+				visibleEnemy.SilentKill();
+				//visibleEnemy.AsDynamic()._doesHarmOnTouch = false;
+			}
+
+			if (!level.GameSave.GetSaveBool("IsFightingBoss"))
+			{
+				Dynamic.SilentKill();
+
+				//abort already triggered scripts
+				((List<ScriptAction>)LevelReflected._activeScripts).Clear();
+				((Queue<DialogueBox>)LevelReflected._dialogueQueue).Clear();
+				((Queue<ScriptAction>)LevelReflected._waitingScripts).Clear();
+			}
+		}
+	}
+}
