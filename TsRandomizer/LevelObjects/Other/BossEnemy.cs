@@ -16,7 +16,6 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 
-
 namespace TsRandomizer.LevelObjects.Other
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.RoboKitty.RoboKittyBoss")]
@@ -170,6 +169,8 @@ namespace TsRandomizer.LevelObjects.Other
 			}
 
 			var eventTypes = ((Dictionary<int, GameEvent>)LevelReflected._levelEvents).Values.Select(e => e.GetType());
+			if (eventTypes.Contains(EScriptType.GiveItem.GetType()))
+				Scripts.RemoveGiveItem();
 
 			if (currentBoss.Index != 70 && !eventTypes.Contains(SandStreamerEventType) && !eventTypes.Contains(TimeBreakEventType))
 				return;
