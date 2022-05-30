@@ -34,6 +34,12 @@ namespace TsRandomizer.Randomisation
 
 	static class BestiaryManager
 	{
+		public static int[] GetValidBosses(Level level)
+		{
+			// TODO account for flags for Cantoran, Ravenlord, Ifrit
+			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 };
+			return validBosses;
+		}
 		public static BossAttributes GetBossAttributes(Level level, int bossId)
 		{
 			switch (bossId)
@@ -383,7 +389,7 @@ namespace TsRandomizer.Randomisation
 
 		public static BossAttributes GetReplacedBoss(Level level, int vanillaBossId)
 		{
-			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80};
+			int[] validBosses = GetValidBosses(level);
 
 			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
 			int[] replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
@@ -407,7 +413,7 @@ namespace TsRandomizer.Randomisation
 
 		public static void ClearBossSaveFlags(Level level, bool valueToSet)
 		{
-			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 };
+			int[] validBosses = GetValidBosses(level);
 			foreach (int bossIndex in validBosses)
 			{
 				BossAttributes bossInfo = GetBossAttributes(level, bossIndex);
@@ -421,7 +427,7 @@ namespace TsRandomizer.Randomisation
 		public static void RefreshBossSaveFlags(Level level)
 		{
 			// Iterate through all bosses and set their kill flag to reflect boss location, not actual boss
-			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 72,  73, 74, 75, 76, 77, 78, 79, 80 };
+			int[] validBosses = GetValidBosses(level);
 			int pastBossesKilled = 0;
 			foreach (int bossIndex in validBosses)
 			{
@@ -445,7 +451,7 @@ namespace TsRandomizer.Randomisation
 
 		public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
 		{
-			int[] validBosses = new int[] { 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 };
+			int[] validBosses = GetValidBosses(level);
 
 			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
 			int[] replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
