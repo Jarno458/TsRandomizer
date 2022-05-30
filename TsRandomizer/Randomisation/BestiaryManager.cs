@@ -396,6 +396,10 @@ namespace TsRandomizer.Randomisation
 
 		public static BossAttributes GetReplacedBoss(Level level, int vanillaBossId)
 		{
+			if (!level.GameSave.GetSettings().BossRando.Value)
+			{
+				return GetBossAttributes(level, vanillaBossId);
+			}
 			int[] validBosses = GetValidBosses(level);
 
 			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
@@ -461,6 +465,10 @@ namespace TsRandomizer.Randomisation
 
 		public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
 		{
+			if (!level.GameSave.GetSettings().BossRando.Value)
+			{
+				return GetBossAttributes(level, replacedBossId);
+			}
 			int[] validBosses = GetValidBosses(level);
 
 			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);

@@ -154,6 +154,7 @@ namespace TsRandomizer.LevelObjects.Other
 				saveHasRun = true;
 			}
 
+
 			if (!isRandomized)
 			{
 				warpHasRun = true;
@@ -172,6 +173,7 @@ namespace TsRandomizer.LevelObjects.Other
 			level.JukeBox.StopAllSFX();
 			level.JukeBox.StopSong();
 			level.AsDynamic().FullyHealPlayer();
+
 
 			// Cause Time break
 			if (vanillaBoss.ReturnRoom.LevelId == 15 && currentBoss.Index != 70)
