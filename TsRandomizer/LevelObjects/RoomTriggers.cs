@@ -42,7 +42,7 @@ namespace TsRandomizer.LevelObjects
 
 		static void SpawnBoss(Level level, SeedOptions seedOptions, int vanillaBossId)
 		{
-			if (TargetBossId != vanillaBossId || !level.GameSave.GetSettings().BossRando.Value || !level.GameSave.GetSaveBool("IsFightingBoss"))
+			if (TargetBossId != -1 || !level.GameSave.GetSettings().BossRando.Value || !level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 
 			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
@@ -145,11 +145,10 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(1, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Boots
-				int vanillaBossId = 65;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 65);
 
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_RoboKitty")
@@ -158,11 +157,10 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 29, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Varndagroth
-				int vanillaBossId = 66;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 66);
 
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Varndagroth"))
@@ -170,63 +168,55 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 0, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Azure Queen
-				int vanillaBossId = 67;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 67);
 			}));
 			RoomTriggers.Add(new RoomTrigger(6, 15, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Aelana
-				int vanillaBossId = 69;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 69);
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 7, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Maw
-				int vanillaBossId = 70;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 70);
 			}));
 			RoomTriggers.Add(new RoomTrigger(12, 20, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Nuvius
-				int vanillaBossId = 73;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 73);
 			}));
 			RoomTriggers.Add(new RoomTrigger(13, 1, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Terrilis
-				int vanillaBossId = 74;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 74);
 			}));
 			RoomTriggers.Add(new RoomTrigger(13, 0, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Prince
-				int vanillaBossId = 75;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 75);
 			}));
 			RoomTriggers.Add(new RoomTrigger(9, 7, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Xarion
-				int vanillaBossId = 76;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 76);
 			}));
 			RoomTriggers.Add(new RoomTrigger(14, 4, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Ravenlord
-				int vanillaBossId = 77;
 				if (level.GameSave.GetSettings().BossRando.Value)
 				{
 					SpawnMovingPlatform(level, 185, 520);
@@ -237,43 +227,39 @@ namespace TsRandomizer.LevelObjects
 					SpawnMovingPlatform(level, 615, 220);
 				}
 
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 77);
 			}));
 			RoomTriggers.Add(new RoomTrigger(14, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Ifrit
-				int vanillaBossId = 78;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 78);
 			}));
 			RoomTriggers.Add(new RoomTrigger(16, 4, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Sandman
-				int vanillaBossId = 79;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 79);
 			}));
 			RoomTriggers.Add(new RoomTrigger(16, 26, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Nightmare
-				int vanillaBossId = 80;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 80);
 			}));
 
 			RoomTriggers.Add(new RoomTrigger(5, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Golden Idol
-				int vanillaBossId = 68;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 68);
 
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Demon")
@@ -281,11 +267,10 @@ namespace TsRandomizer.LevelObjects
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 200);
 			}));
 			RoomTriggers.Add(new RoomTrigger(11, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				int vanillaBossId = 72;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 72);
 
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.GetSaveBool("TSRando__IsBossDead_Shapeshift")
@@ -296,8 +281,7 @@ namespace TsRandomizer.LevelObjects
 					CreateSimpleOneWayWarp(level, 16, 12);
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				int vanillaBossId = 71;
-				SpawnBoss(level, seedOptions, vanillaBossId);
+				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
 
@@ -310,7 +294,7 @@ namespace TsRandomizer.LevelObjects
 					BestiaryManager.RefreshBossSaveFlags(level);
 					return;
 				}
-				CreateBossWarp(level, vanillaBossId);
+				CreateBossWarp(level, 71);
 
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran")
