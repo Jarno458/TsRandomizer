@@ -406,6 +406,8 @@ namespace TsRandomizer.Randomisation
 			int[] replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
 
 			int bossIndex = Array.IndexOf(validBosses, vanillaBossId, 0);
+			if (bossIndex == -1)
+				return GetBossAttributes(level,vanillaBossId);
 
 			int replacedBossId = replacedBosses[bossIndex];
 
@@ -475,9 +477,10 @@ namespace TsRandomizer.Randomisation
 			int[] replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
 
 			int bossIndex = Array.IndexOf(replacedBosses, replacedBossId, 0);
+			if (bossIndex == -1)
+				return GetBossAttributes(level, replacedBossId);
 
 			int vanillaBossId = validBosses[bossIndex];
-
 			BossAttributes vanillaBossInfo = GetBossAttributes(level, vanillaBossId);
 
 			return vanillaBossInfo;
