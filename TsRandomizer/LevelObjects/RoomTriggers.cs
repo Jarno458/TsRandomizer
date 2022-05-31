@@ -51,7 +51,7 @@ namespace TsRandomizer.LevelObjects
 			level.JukeBox.StopSong();
 			level.PlayCue(Timespinner.GameAbstractions.ESFX.FoleyWarpGyreIn);
 
-			if (vanillaBossId == 70 && seedOptions.GassMaw)
+			if (vanillaBossId == (int)EBossID.Maw && seedOptions.GassMaw)
 				FillRoomWithGas(level);
 
 			if (replacedBossInfo.ShouldSpawn)
