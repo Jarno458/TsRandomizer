@@ -139,6 +139,7 @@ namespace TsRandomizer.LevelObjects
 
 				level.GameSave.SetValue("TSRandomizerHasTeleportedPlayer", true);
 				level.GameSave.SetCutsceneTriggered("LakeDesolation1_Entrance", true); // Fixes music when returning to Lake Desolation later
+
 				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 3, RoomID = 28 }); // Waterfall cutscene
 			}));
 			RoomTriggers.Add(new RoomTrigger(3, 28, (level, itemLocation, seedOptions, gameSettings, screenManager) => {

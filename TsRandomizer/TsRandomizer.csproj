@@ -113,6 +113,7 @@
     <Compile Include="LevelObjects\Other\CutsceneCavesPast4.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCity2.cs" />
     <Compile Include="LevelObjects\Other\DoorTeleportEvent.cs" />
+    <Compile Include="LevelObjects\Other\CutsceneForest0.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="Randomisation\HintGenerator.cs" />
