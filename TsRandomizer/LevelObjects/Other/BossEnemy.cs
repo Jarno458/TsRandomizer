@@ -141,7 +141,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 			if (warpHasRun || Dynamic._deathScriptTimer <= 0) return;
 
-			if (!clearedHasRun && vanillaBoss.Index == 80)
+			if (!clearedHasRun && vanillaBoss.Index == (int)EBossID.Nightmare)
 			{
 				// Boss is Nightmare
 				var fillingMethod = Level.GameSave.GetFillingMethod();
@@ -169,7 +169,7 @@ namespace TsRandomizer.LevelObjects.Other
 			if (eventTypes.Contains(EScriptType.GiveItem.GetType()))
 				Scripts.RemoveGiveItem();
 
-			if (currentBoss.Index != 70 && !eventTypes.Contains(SandStreamerEventType) && !eventTypes.Contains(TimeBreakEventType))
+			if (currentBoss.Index != (int)EBossID.Maw && !eventTypes.Contains(SandStreamerEventType) && !eventTypes.Contains(TimeBreakEventType))
 				return;
 
 			//abort already triggered scripts
@@ -182,7 +182,7 @@ namespace TsRandomizer.LevelObjects.Other
 				LevelReflected.FullyHealPlayer();
 
 			// Cause Time break
-			if (vanillaBoss.ReturnRoom.LevelId == 15 && currentBoss.Index != 70)
+			if (vanillaBoss.ReturnRoom.LevelId == 15 && currentBoss.Index != (int)EBossID.Maw)
 			{
 				warpHasRun = true;
 				var enumValue = CutsceneEnumType.GetEnumValue("Alt2_Win");

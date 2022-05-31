@@ -59,11 +59,11 @@ namespace TsRandomizer.Randomisation
 			var validBosses = Enumerable.Range(65, 16).ToList();
 			var seed = level.GameSave.GetSeed();
 			if (seed.HasValue && !seed.Value.Options.Cantoran)
-				validBosses.Remove(71);
+				validBosses.Remove((int)EBossID.Cantoran);
 			if (seed.HasValue && !seed.Value.Options.GyreArchives)
 			{
-				validBosses.Remove(77);
-				validBosses.Remove(78);
+				validBosses.Remove((int)EBossID.Ravenlord);
+				validBosses.Remove((int)EBossID.Ifrit);
 			}
 			return validBosses.ToArray();
 		}
@@ -470,7 +470,7 @@ namespace TsRandomizer.Randomisation
 				bool isBossDead = level.GameSave.GetSaveBool($"TSRando_{bossInfo.SaveName}");
 				level.GameSave.SetValue(bossInfo.SaveName, isBossDead);
 
-				int[] pastBosses = new int[] { 68, 69, 70 };
+				int[] pastBosses = new int[] { (int)EBossID.GoldenIdol, (int)EBossID.Aelana, (int)EBossID.Maw };
 				if (isBossDead && Array.Exists(pastBosses, index => index == bossIndex))
 					pastBossesKilled++;
 			}
