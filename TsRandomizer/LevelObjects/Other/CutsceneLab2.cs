@@ -16,11 +16,10 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(SeedOptions options)
 		{
-			Level level = (Level)Dynamic._level;
 			bool hasTimespinnerPieces = AreTriggerConditionsMet();
-			level.GameSave.SetValue("TSRando_IsLabTSReady", hasTimespinnerPieces);
+			Level.GameSave.SetValue("TSRando_IsLabTSReady", hasTimespinnerPieces);
 
-			if ((level.GameSave.GetSettings().BossRando.Value && level.GameSave.GetSaveBool("IsFightingBoss")) || !hasTimespinnerPieces)
+			if ((Level.GameSave.GetSettings().BossRando.Value && Level.GameSave.GetSaveBool("IsFightingBoss")) || !hasTimespinnerPieces)
 				Dynamic.SilentKill();
 		}
 
