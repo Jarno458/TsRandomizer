@@ -32,6 +32,26 @@ namespace TsRandomizer.Randomisation
 
 	}
 
+	enum EBossID
+	{
+		FelineSentry = 65,
+		Varndagroth,
+		AzureQueen,
+		GoldenIdol,
+		Aelana,
+		Maw,
+		Cantoran,
+		Genza,
+		Nuvius,
+		Vol,
+		Prince,
+		Xarion,
+		Ravenlord,
+		Ifrit,
+		Sandman,
+		Nightmare
+	}
+
 	static class BestiaryManager
 	{
 		public static int[] GetValidBosses(Level level)
@@ -51,7 +71,7 @@ namespace TsRandomizer.Randomisation
 		{
 			switch (bossId)
 			{
-				case 65:
+				case (int)EBossID.FelineSentry:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -71,7 +91,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.RoboKittyBoss
 					};
-				case 66:
+				case (int)EBossID.Varndagroth:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -91,7 +111,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.VarndagrothBoss
 					};
-				case 67:
+				case (int)EBossID.AzureQueen:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -111,7 +131,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.BirdBoss
 					};
-				case 68:
+				case (int)EBossID.GoldenIdol:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -131,7 +151,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.IncubusBoss
 					};
-				case 69:
+				case (int)EBossID.Aelana:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -151,7 +171,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.AelanaBoss
 					};
-				case 70:
+				case (int)EBossID.Maw:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -171,7 +191,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.MawBoss
 					};
-				case 71:
+				case (int)EBossID.Cantoran:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -191,7 +211,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.CantoranBoss
 					};
-				case 72:
+				case (int)EBossID.Genza:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -211,7 +231,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.ShapeshiftBoss
 					};
-				case 73:
+				case (int)EBossID.Nuvius:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -231,7 +251,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.EmperorBoss
 					};
-				case 74:
+				case (int)EBossID.Vol:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -251,7 +271,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.EmperorBoss
 					};
-				case 75:
+				case (int)EBossID.Prince:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -271,7 +291,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.EmperorBoss
 					};
-				case 76:
+				case (int)EBossID.Xarion:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -291,7 +311,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.XarionBoss
 					};
-				case 77:
+				case (int)EBossID.Ravenlord:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -311,7 +331,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.RavenBoss
 					};
-				case 78:
+				case (int)EBossID.Ifrit:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -331,7 +351,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.ZelBoss
 					};
-				case 79: 
+				case (int)EBossID.Sandman: 
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -351,7 +371,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.SandmanBoss
 					};
-				case 80:
+				case (int)EBossID.Nightmare:
 					return new BossAttributes
 					{
 						Index = bossId,
