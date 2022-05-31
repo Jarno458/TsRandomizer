@@ -135,7 +135,7 @@ namespace TsRandomizer.LevelObjects.Other
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
 			Level level = (Level)Dynamic._level;
-			if (isRandomized && !songHasRun && level.JukeBox.CurrentSongEnum != vanillaBoss.Song)
+			if (isRandomized && !songHasRun && Scripts.Count == 0 && level.JukeBox.CurrentSongEnum != vanillaBoss.Song)
 			{
 				level.JukeBox.StopSong();
 				level.JukeBox.PlaySong(vanillaBoss.Song);
