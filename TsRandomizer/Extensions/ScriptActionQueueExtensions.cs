@@ -46,5 +46,13 @@ namespace TsRandomizer.Extensions
 			reflectedScript.Delegate = (Action)(() => {});
 			reflectedScript.Arguments = ReplacedArguments;
 		}
+
+		internal static void MakeEventsSkippable(this Queue<ScriptAction> scripts)
+		{
+			foreach (var script in scripts)
+			{
+				script.AsDynamic().IsUnskippable = false;
+			}
+		}
 	}
 }

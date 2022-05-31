@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
@@ -9,6 +10,7 @@ using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events.EnvironmentPrefabs;
 using Timespinner.GameObjects.Events;
+using Timespinner.GameObjects.Events.Cutscene;
 using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -30,6 +32,8 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type GlowingFloorEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.EnvironmentPrefabs.L11_Lab.EnvPrefabLabVilete");
 		static readonly Type PedestalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
+		static readonly Type CutsceneEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Cutscene.CutsceneBase+ECutsceneType");
+		static readonly MethodInfo CreateAndCallCutsceneMethod = typeof(CutsceneBase).GetPrivateStaticMethod("CreateAndCallCutscene", CutsceneEnumType, typeof(Level), typeof(Point));
 
 		static RoomTrigger()
 		{
@@ -56,10 +60,13 @@ namespace TsRandomizer.LevelObjects
 				if (!seedOptions.Inverted || level.GameSave.GetSaveBool("TSRandomizerHasTeleportedPlayer")) return;
 
 				level.GameSave.SetValue("TSRandomizerHasTeleportedPlayer", true);
-
-				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 3, RoomID = 6 }); //Refugee Camp
-
 				level.GameSave.SetCutsceneTriggered("LakeDesolation1_Entrance", true); // Fixes music when returning to Lake Desolation later
+
+				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 3, RoomID = 28 }); // Waterfall cutscene
+			}));
+			RoomTriggers.Add(new RoomTrigger(3, 28, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				if (!seedOptions.Inverted) return;
+				CreateAndCallCutsceneMethod.InvokeStatic(CutsceneEnumType.GetEnumValue("Forest0_Warp"), level, new Point(200, 200));
 			}));
 			RoomTriggers.Add(new RoomTrigger(1, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (itemLocation.IsPickedUp || !level.GameSave.GetSaveBool("IsBossDead_RoboKitty")) return;
