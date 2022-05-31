@@ -56,7 +56,7 @@ namespace TsRandomizer.Randomisation
 	{
 		public static int[] GetValidBosses(Level level)
 		{
-			var validBosses = Enumerable.Range(65, 16).ToList();
+			var validBosses = EBossID.GetValues(typeof(EBossID)).Cast<int>().ToList();
 			var seed = level.GameSave.GetSeed();
 			if (seed.HasValue && !seed.Value.Options.Cantoran)
 				validBosses.Remove((int)EBossID.Cantoran);
