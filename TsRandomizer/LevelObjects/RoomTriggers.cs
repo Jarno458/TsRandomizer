@@ -154,7 +154,7 @@ namespace TsRandomizer.LevelObjects
 
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_RoboKitty")
-					&& (!level.GameSave.GetSettings().BossRando.Value || level.GameSave.HasOrb(EInventoryOrbType.Blade)))
+					&& level.AsDynamic()._newObjects.Count == 0) // Orb Pedestal event
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 29, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
@@ -301,7 +301,8 @@ namespace TsRandomizer.LevelObjects
 				CreateBossWarp(level, 71);
 
 				if (!itemLocation.IsPickedUp
-					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran"))
+					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran")
+					&& level.AsDynamic()._newObjects.Count == 0) // Orb Pedestal event
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 170, 194);
 			}));
 
