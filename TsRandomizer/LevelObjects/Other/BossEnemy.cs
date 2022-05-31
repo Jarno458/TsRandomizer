@@ -50,8 +50,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(SeedOptions options)
 		{
-			Level level = (Level)Dynamic._level;
-			isRandomized = level.GameSave.GetSettings().BossRando.Value;
+			isRandomized = Level.GameSave.GetSettings().BossRando.Value;
 			int argument = 0;
 			if (Dynamic.EnemyType == EEnemyTileType.EmperorBoss)
 			{
@@ -61,31 +60,30 @@ namespace TsRandomizer.LevelObjects.Other
 					argument = 1;
 			}
 
-			var bestiaryEntry = level.GCM.Bestiary.GetEntry(Dynamic.EnemyType, argument);
+			var bestiaryEntry = Level.GCM.Bestiary.GetEntry(Dynamic.EnemyType, argument);
 			int bossId = bestiaryEntry.Index;
 
-			currentBoss = BestiaryManager.GetBossAttributes(level, bossId);
+			currentBoss = BestiaryManager.GetBossAttributes(Level, bossId);
 			if (isRandomized)
-				vanillaBoss = BestiaryManager.GetVanillaBoss(level, bossId);
+				vanillaBoss = BestiaryManager.GetVanillaBoss(Level, bossId);
 			else
 				vanillaBoss = currentBoss;
 
 			if (!isRandomized)
 				return;
 
-			level.ToggleExits(false);
-			level.OpenAllBossDoors(-1f);
-			level.LockAllBossDoors(0.5f);
+			Level.ToggleExits(false);
+			Level.OpenAllBossDoors(-1f);
+			Level.LockAllBossDoors(0.5f);
 
-			level.JukeBox.StopSong();
-			level.JukeBox.PlaySong(vanillaBoss.Song);
+			Level.JukeBox.StopSong();
+			Level.JukeBox.PlaySong(vanillaBoss.Song);
 		}
 
 		public BossEnemy(Mobile typedObject) : base(typedObject)
 		{
-			Level level = (Level)Dynamic._level;
-			isRandomized = level.GameSave.GetSettings().BossRando.Value;
-			if (!isRandomized || !level.GameSave.GetSaveBool("IsFightingBoss"))
+			isRandomized = Level.GameSave.GetSettings().BossRando.Value;
+			if (!isRandomized || !Level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 
 			var boss = typedObject.AsDynamic();
@@ -94,7 +92,7 @@ namespace TsRandomizer.LevelObjects.Other
 			{
 				case EEnemyTileType.EmperorBoss:
 					if (boss._isPrinceEmperor)
-						CreateAndCallCutsceneMethod.InvokeStatic(CutsceneEnumType.GetEnumValue("Alt0_Nuvius"), level, new Point(200, 200));
+						CreateAndCallCutsceneMethod.InvokeStatic(CutsceneEnumType.GetEnumValue("Alt0_Nuvius"), Level, new Point(200, 200));
 					break;
 				case EEnemyTileType.MawBoss:
 					boss.DoIntroCloseMouth();
@@ -104,7 +102,7 @@ namespace TsRandomizer.LevelObjects.Other
 					boss.EndBossIntroCutscene();
 					break;
 				case EEnemyTileType.VarndagrothBoss:
-					level.MainHero.TeleportToPoint(new Point(200, 200));
+					Level.MainHero.TeleportToPoint(new Point(200, 200));
 					boss._spindleItem.SilentKill();
 					boss.StartBattle();
 					break;
@@ -113,12 +111,12 @@ namespace TsRandomizer.LevelObjects.Other
 			}
 		}
 
-		void TeleportPlayer(Level level)
+		void TeleportPlayer()
 		{
 			EDirection facing = vanillaBoss.IsFacingLeft ? EDirection.East : EDirection.West;
-			level.PlayCue(ESFX.FoleyWarpGyreOut);
+			Level.PlayCue(ESFX.FoleyWarpGyreOut);
 
-			level.RequestChangeLevel(new LevelChangeRequest
+			Level.RequestChangeLevel(new LevelChangeRequest
 			{
 				LevelID = vanillaBoss.ReturnRoom.LevelId,
 				RoomID = vanillaBoss.ReturnRoom.RoomId,
@@ -134,11 +132,10 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
-			Level level = (Level)Dynamic._level;
-			if (isRandomized && !songHasRun && Scripts.Count == 0 && level.JukeBox.CurrentSongEnum != vanillaBoss.Song)
+			if (isRandomized && !songHasRun && Scripts.Count == 0 && Level.JukeBox.CurrentSongEnum != vanillaBoss.Song)
 			{
-				level.JukeBox.StopSong();
-				level.JukeBox.PlaySong(vanillaBoss.Song);
+				Level.JukeBox.StopSong();
+				Level.JukeBox.PlaySong(vanillaBoss.Song);
 				songHasRun = true;
 			}
 
@@ -157,7 +154,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 			if (!saveHasRun)
 			{
-				BestiaryManager.SetBossKillSave(level, vanillaBoss.Index);
+				BestiaryManager.SetBossKillSave(Level, vanillaBoss.Index);
 				saveHasRun = true;
 			}
 
@@ -179,21 +176,21 @@ namespace TsRandomizer.LevelObjects.Other
 			((List<ScriptAction>)LevelReflected._activeScripts).Clear();
 			((Queue<DialogueBox>)LevelReflected._dialogueQueue).Clear();
 			((Queue<ScriptAction>)LevelReflected._waitingScripts).Clear();
-			level.JukeBox.StopAllSFX();
-			level.JukeBox.StopSong();
-			if (level.GameSave.GetSettings().BossHealing.Value)
-				level.AsDynamic().FullyHealPlayer();
+			Level.JukeBox.StopAllSFX();
+			Level.JukeBox.StopSong();
+			if (Level.GameSave.GetSettings().BossHealing.Value)
+				LevelReflected.FullyHealPlayer();
 
 			// Cause Time break
 			if (vanillaBoss.ReturnRoom.LevelId == 15 && currentBoss.Index != 70)
 			{
 				warpHasRun = true;
 				var enumValue = CutsceneEnumType.GetEnumValue("Alt2_Win");
-				CreateAndCallCutsceneMethod.InvokeStatic(enumValue, level, new Point(200, 200));
+				CreateAndCallCutsceneMethod.InvokeStatic(enumValue, Level, new Point(200, 200));
 				return;
 			}
 
-			TeleportPlayer(level);
+			TeleportPlayer();
 			warpHasRun = true;
 		}
 	}
