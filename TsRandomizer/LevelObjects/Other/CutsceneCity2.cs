@@ -18,9 +18,8 @@ namespace TsRandomizer.LevelObjects.Other
 		protected override void Initialize(SeedOptions options)
 		{
 			// Spindle cutscene, to be removed during boss rando
-			Level level = (Level)Dynamic._level;
-			bool isRandomized = level.GameSave.GetSettings().BossRando.Value;
-			if (!isRandomized || !level.GameSave.GetSaveBool("IsFightingBoss"))
+			bool isRandomized = Level.GameSave.GetSettings().BossRando.Value;
+			if (!isRandomized || !Level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 
 			Dynamic.SilentKill();

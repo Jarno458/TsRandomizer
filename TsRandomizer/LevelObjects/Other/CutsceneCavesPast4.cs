@@ -20,14 +20,13 @@ namespace TsRandomizer.LevelObjects.Other
 		protected override void Initialize(SeedOptions options)
 		{
 			// Spindle cutscene, to be removed during boss rando
-			Level level = (Level)Dynamic._level;
-			bool isRandomized = level.GameSave.GetSettings().BossRando.Value;
+			bool isRandomized = Level.GameSave.GetSettings().BossRando.Value;
 			if (!isRandomized)
 				return;
 
-			if (!level.GameSave.GetSaveBool("IsFightingBoss"))
+			if (!Level.GameSave.GetSaveBool("IsFightingBoss"))
 			{
-				foreach (Monster visibleEnemy in level.AsDynamic().GetVisibleEnemies())
+				foreach (Monster visibleEnemy in Level.AsDynamic().GetVisibleEnemies())
 				{
 					visibleEnemy.SilentKill();
 				}
@@ -41,7 +40,7 @@ namespace TsRandomizer.LevelObjects.Other
 			else
 			{
 				// Set invulnerability during the Maw intro
-				level.AsDynamic().TogglePlayerIsInvulnerable(true);
+				Level.AsDynamic().TogglePlayerIsInvulnerable(true);
 			}
 		}
 
