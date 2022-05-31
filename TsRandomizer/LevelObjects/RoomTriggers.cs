@@ -154,7 +154,7 @@ namespace TsRandomizer.LevelObjects
 
 				if (!itemLocation.IsPickedUp
 					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_RoboKitty")
-					&& level.GameSave.HasOrb(EInventoryOrbType.Blade))
+					&& (!level.GameSave.GetSettings().BossRando.Value || level.GameSave.HasOrb(EInventoryOrbType.Blade)))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 			}));
 			RoomTriggers.Add(new RoomTrigger(2, 29, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
