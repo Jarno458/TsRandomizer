@@ -290,15 +290,16 @@ namespace TsRandomizer.LevelObjects
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
 
-				if (!seedOptions.Cantoran)
-					return;
 				// Set Cantoran quest active when fighting Pink Bird
 				if (!level.GameSave.GetSaveBool("TSRando_IsPinkBirdDead"))
 				{
 					level.GameSave.SetValue("TSRando_IsPinkBirdDead", true);
 					BestiaryManager.RefreshBossSaveFlags(level);
-					return;
 				}
+
+				if (!seedOptions.Cantoran)
+					return;
+
 				CreateBossWarp(level, (int)EBossID.Cantoran);
 
 				if (!itemLocation.IsPickedUp
