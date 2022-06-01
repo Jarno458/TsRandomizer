@@ -295,6 +295,7 @@ namespace TsRandomizer.LevelObjects
 				{
 					level.GameSave.SetValue("TSRando_IsPinkBirdDead", true);
 					BestiaryManager.RefreshBossSaveFlags(level);
+					return;
 				}
 
 				if (!seedOptions.Cantoran)
