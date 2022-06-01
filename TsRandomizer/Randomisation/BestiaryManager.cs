@@ -464,6 +464,7 @@ namespace TsRandomizer.Randomisation
 			// Iterate through all bosses and set their kill flag to reflect boss location, not actual boss
 			int[] validBosses = GetValidBosses(level);
 			int pastBossesKilled = 0;
+			bool labTSUsed = false;
 			foreach (int bossIndex in validBosses)
 			{
 				BossAttributes bossInfo = GetBossAttributes(level, bossIndex);
@@ -473,6 +474,9 @@ namespace TsRandomizer.Randomisation
 				int[] pastBosses = new int[] { (int)EBossID.GoldenIdol, (int)EBossID.Aelana, (int)EBossID.Maw };
 				if (isBossDead && Array.Exists(pastBosses, index => index == bossIndex))
 					pastBossesKilled++;
+
+				if (isBossDead && (bossIndex == (int)EBossID.Vol || bossIndex == (int)EBossID.Prince))
+					labTSUsed = true;
 			}
 			level.GameSave.SetValue("IsPastCleared", pastBossesKilled == 3);
 			level.GameSave.SetValue("IsVileteSaved", level.GameSave.GetSaveBool("TSRando_IsVileteSaved"));
@@ -483,8 +487,7 @@ namespace TsRandomizer.Randomisation
 			level.GameSave.SetValue("IsCantoranActive",  isPinkBirdDead && !isCantoranDead);
 
 			level.GameSave.SetValue("IsEndingABCleared", level.GameSave.GetSaveBool("TSRando_IsBossDead_Emperor"));
-
-			level.GameSave.SetValue("IsLabTSReady", level.GameSave.GetSaveBool("TSRando_IsLabTSReady"));
+			level.GameSave.SetValue("IsLabTSReady", !labTSUsed && level.GameSave.GetSaveBool("TSRando_IsLabTSReady"));
 		}
 
 		public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
