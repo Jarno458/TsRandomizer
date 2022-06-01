@@ -478,9 +478,9 @@ namespace TsRandomizer.Randomisation
 			level.GameSave.SetValue("IsVileteSaved", level.GameSave.GetSaveBool("TSRando_IsVileteSaved"));
 
 			bool isPinkBirdDead = level.GameSave.GetSaveBool("TSRando_IsPinkBirdDead");
-			bool isCantoranDead = level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran");
+			bool isCantoranDead = level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran") || !level.GameSave.GetSeed().Value.Options.Cantoran;
 			level.GameSave.SetCutsceneTriggered("LakeSerene0_Seykis", isPinkBirdDead);
-			level.GameSave.SetValue("IsCantoranActive", isPinkBirdDead && !isCantoranDead);
+			level.GameSave.SetValue("IsCantoranActive",  isPinkBirdDead && !isCantoranDead);
 
 			level.GameSave.SetValue("IsEndingABCleared", level.GameSave.GetSaveBool("TSRando_IsBossDead_Emperor"));
 
