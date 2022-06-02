@@ -33,7 +33,7 @@ namespace TsRandomizer.LevelObjects.Other
 	[TimeSpinnerType("Timespinner.GameAbstractions.GameObjects.SandmanBoss")]
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.OtherBosses.NightmareBoss")]
 	// ReSharper disable once UnusedMember.Global
-	class BossEnemy: LevelObject
+	class BossEnemy: LevelObject<Monster>
 	{
 		bool songHasRun;
 		bool clearedHasRun;
@@ -80,7 +80,7 @@ namespace TsRandomizer.LevelObjects.Other
 			Level.JukeBox.PlaySong(vanillaBoss.Song);
 		}
 
-		public BossEnemy(Mobile typedObject) : base(typedObject)
+		public BossEnemy(Monster typedObject) : base(typedObject)
 		{
 			isRandomized = Level.GameSave.GetSettings().BossRando.Value;
 			if (!isRandomized || !Level.GameSave.GetSaveBool("IsFightingBoss"))
@@ -88,7 +88,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 			var boss = typedObject.AsDynamic();
 
-			switch (boss.EnemyType)
+			switch (typedObject.EnemyType)
 			{
 				case EEnemyTileType.EmperorBoss:
 					if (boss._isPrinceEmperor)
