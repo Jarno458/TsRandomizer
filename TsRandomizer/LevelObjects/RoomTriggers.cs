@@ -249,16 +249,12 @@ namespace TsRandomizer.LevelObjects
 				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				if (level.GameSave.GetSaveBool("TSRando_IsBossDead_Nightmare"))
-				{
-					level.RequestChangeLevel(new LevelChangeRequest
-					{
-						LevelID = 16,
-						RoomID = 27
-					});
-					// Game is already beaten, exit
-				}
 				CreateBossWarp(level, (int)EBossID.Sandman);
+			}));
+			RoomTriggers.Add(new RoomTrigger(16, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Clear final boss saves
+				level.GameSave.SetValue("TSRando_IsBossDead_Sandman", false);
+				level.GameSave.SetValue("TSRando_IsBossDead_Nightmare", false);
 			}));
 			RoomTriggers.Add(new RoomTrigger(16, 26, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Nightmare
