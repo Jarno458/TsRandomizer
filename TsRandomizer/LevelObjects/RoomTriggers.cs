@@ -42,7 +42,7 @@ namespace TsRandomizer.LevelObjects
 
 		static void SpawnBoss(Level level, SeedOptions seedOptions, int vanillaBossId)
 		{
-			if (TargetBossId != -1 || !level.GameSave.GetSettings().BossRando.Value || !level.GameSave.GetSaveBool("IsFightingBoss"))
+			if (!level.GameSave.GetSettings().BossRando.Value || !level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 
 			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
