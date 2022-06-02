@@ -506,7 +506,7 @@ namespace TsRandomizer.LevelObjects
 				level.JukeBox.StopSong();
 
 				if (!level.GameSave.DataKeyStrings.ContainsKey(ArchipelagoItemLocationRandomizer.GameSaveServerKey)) return;
-
+				Client.SetStatus(ArchipelagoClientState.ClientGoal);
 				AskPermissionMessage(screenManager, "collect", Client.CollectPermissions);
 				AskPermissionMessage(screenManager, "forfeit", Client.ForfeitPermissions);
 			}));
