@@ -182,7 +182,7 @@ namespace TsRandomizer.LevelObjects.Other
 				LevelReflected.FullyHealPlayer();
 
 			// Cause Time break
-			if (vanillaBoss.ReturnRoom.LevelId == 15 && currentBoss.Index != (int)EBossID.Maw)
+			if (vanillaBoss.ReturnRoom.LevelId == 15)
 			{
 				warpHasRun = true;
 				var enumValue = CutsceneEnumType.GetEnumValue("Alt2_Win");

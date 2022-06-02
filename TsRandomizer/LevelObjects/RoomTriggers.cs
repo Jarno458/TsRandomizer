@@ -498,6 +498,7 @@ namespace TsRandomizer.LevelObjects
 					var enumValue = CutsceneEnumType.GetEnumValue("Temple2_End");
 					CreateAndCallCutsceneMethod.InvokeStatic(enumValue, level, new Point(200, 200));
 				}
+				level.JukeBox.StopSong();
 
 				if (!level.GameSave.DataKeyStrings.ContainsKey(ArchipelagoItemLocationRandomizer.GameSaveServerKey)) return;
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.HUD;
 using Timespinner.GameObjects.BaseClasses;
@@ -19,7 +18,6 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(SeedOptions options)
 		{
-			// Spindle cutscene, to be removed during boss rando
 			bool isRandomized = Level.GameSave.GetSettings().BossRando.Value;
 			if (!isRandomized)
 				return;
