@@ -22,6 +22,7 @@ namespace TsRandomizer.Randomisation
 		public int HP;
 		public int XP;
 		public int TouchDamage;
+		public int[] Minions;
 		public Timespinner.GameAbstractions.EBGM Song;
 		public SpriteSheet Sprite;
 		public Type BossType;
@@ -29,7 +30,14 @@ namespace TsRandomizer.Randomisation
 		public bool IsFacingLeft;
 		public bool ShouldSpawn;
 		public int TileId;
+	}
 
+	struct MinionAttributes
+	{
+		public int Index;
+		public string VisibleName;
+		public int HP;
+		public int TouchDamage;
 	}
 
 	enum EBossID
@@ -52,11 +60,22 @@ namespace TsRandomizer.Randomisation
 		Nightmare
 	}
 
+	enum EMinionID
+	{
+		IncubusPuppet = 81,
+		SuccubusPuppet,
+		Incubus,
+		Succubus,
+		MawWheel,
+		XarionHand,
+		ShieldKnight
+	}
+
 	static class BestiaryManager
 	{
 		public static int[] GetValidBosses(Level level)
 		{
-			var validBosses = EBossID.GetValues(typeof(EBossID)).Cast<int>().ToList();
+			var validBosses = Enum.GetValues(typeof(EBossID)).Cast<int>().ToList();
 			var seed = level.GameSave.GetSeed();
 			if (seed.HasValue && !seed.Value.Options.Cantoran)
 				validBosses.Remove((int)EBossID.Cantoran);
@@ -83,6 +102,7 @@ namespace TsRandomizer.Randomisation
 						HP = 475,
 						XP = 50,
 						TouchDamage = 17,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss01,
 						Sprite = level.GCM.SpRoboKitty,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.RoboKitty.RoboKittyBoss"),
@@ -103,6 +123,7 @@ namespace TsRandomizer.Randomisation
 						HP = 800,
 						XP = 100,
 						TouchDamage = 25,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss02,
 						Sprite = level.GCM.SpVarndagroth,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Varndagroth.VarndagrothBoss"),
@@ -123,6 +144,7 @@ namespace TsRandomizer.Randomisation
 						HP = 1600,
 						XP = 200,
 						TouchDamage = 40,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss07,
 						Sprite = level.GCM.SpBirdBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Bird.GodBirdBoss"),
@@ -143,6 +165,7 @@ namespace TsRandomizer.Randomisation
 						HP = 2000,
 						XP = 250,
 						TouchDamage = 46,
+						Minions = new int[] { (int)EMinionID.Incubus, (int)EMinionID.IncubusPuppet, (int)EMinionID.Succubus, (int)EMinionID.SuccubusPuppet },
 						Song = Timespinner.GameAbstractions.EBGM.Boss05B,
 						Sprite = level.GCM.SpDemonBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.DemonBoss"),
@@ -163,6 +186,7 @@ namespace TsRandomizer.Randomisation
 						HP = 2250,
 						XP = 300,
 						TouchDamage = 48,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss06,
 						Sprite = level.GCM.SpAelana,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.AelanaBoss"),
@@ -183,6 +207,7 @@ namespace TsRandomizer.Randomisation
 						HP = 2250,
 						XP = 366,
 						TouchDamage = 52,
+						Minions = new int[] { (int)EMinionID.MawWheel },
 						Song = Timespinner.GameAbstractions.EBGM.Boss08,
 						Sprite = level.GCM.SpMawBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.MawBoss"),
@@ -203,6 +228,7 @@ namespace TsRandomizer.Randomisation
 						HP = 2250,
 						XP = 300,
 						TouchDamage = 54,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss06,
 						Sprite = level.GCM.SpCantoranBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.CantoranBoss"),
@@ -223,6 +249,7 @@ namespace TsRandomizer.Randomisation
 						HP = 3000,
 						XP = 500,
 						TouchDamage = 60,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss11,
 						Sprite = level.GCM.SpShapeshifter,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.ShapeshifterBoss"),
@@ -243,6 +270,7 @@ namespace TsRandomizer.Randomisation
 						HP = 3500,
 						XP = 666,
 						TouchDamage = 80,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss12,
 						Sprite = level.GCM.SpEmperor,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
@@ -263,6 +291,7 @@ namespace TsRandomizer.Randomisation
 						HP = 4000,
 						XP = 777,
 						TouchDamage = 85,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss12,
 						Sprite = level.GCM.SpEmperorVilete,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
@@ -283,6 +312,7 @@ namespace TsRandomizer.Randomisation
 						HP = 2500,
 						XP = 350,
 						TouchDamage = 70,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss12,
 						Sprite = level.GCM.SpEmperorWinderia,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Emperor.EmperorBoss"),
@@ -303,6 +333,7 @@ namespace TsRandomizer.Randomisation
 						HP = 3500,
 						XP = 550,
 						TouchDamage = 75,
+						Minions = new int[] { (int)EMinionID.XarionHand },
 						Song = Timespinner.GameAbstractions.EBGM.Boss02,
 						Sprite = level.GCM.SpXarionBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.XarionBoss"),
@@ -323,6 +354,7 @@ namespace TsRandomizer.Randomisation
 						HP = 5000,
 						XP = 680,
 						TouchDamage = 95,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss02,
 						Sprite = level.GCM.SpRavenBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Z_Raven.RavenBoss"),
@@ -343,6 +375,7 @@ namespace TsRandomizer.Randomisation
 						HP = 5000,
 						XP = 700,
 						TouchDamage = 95,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss08,
 						Sprite = level.GCM.SpZelBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.ZelBoss"),
@@ -363,6 +396,7 @@ namespace TsRandomizer.Randomisation
 						HP = 5000,
 						XP = 800,
 						TouchDamage = 90,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss15,
 						Sprite = level.GCM.SpSandmanBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.SandmanBoss"),
@@ -383,6 +417,7 @@ namespace TsRandomizer.Randomisation
 						HP = 6666,
 						XP = 0,
 						TouchDamage = 111,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss16,
 						Sprite = level.GCM.SpNightmareBoss,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.OtherBosses.NightmareBoss"),
@@ -396,13 +431,14 @@ namespace TsRandomizer.Randomisation
 					{
 						Index = 10,
 						VisibleName = "Baby Cheveur",
-						SaveName = "KILL_LakeCheveux",
+						SaveName = "IsPinkBirdDead",
 						BossRoom = new RoomItemKey(17, 13),
 						ReturnRoom = new RoomItemKey(7, 5),
 						Position = new Point(200, 200),
 						HP = 50,
 						XP = 9,
 						TouchDamage = 25,
+						Minions = new int[] { },
 						Song = Timespinner.GameAbstractions.EBGM.Boss01,
 						Sprite = level.GCM.SpLakeBirdEgg,
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.LakeBirdEgg"),
@@ -410,6 +446,69 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.LakeBirdEgg
+					};
+			}
+		}
+
+		public static MinionAttributes GetMinionAttributes(Level level, int minionId)
+		{
+			switch (minionId)
+			{
+				case (int)EMinionID.Incubus:
+					return new MinionAttributes
+					{
+						Index = minionId,
+						VisibleName = "Incubus",
+						HP = 250,
+						TouchDamage = 40
+					};
+				case (int)EMinionID.IncubusPuppet:
+					return new MinionAttributes
+					{
+						Index = minionId,
+						VisibleName = "Incubus Puppet",
+						HP = 200,
+						TouchDamage = 40
+					};
+				case (int)EMinionID.Succubus:
+					return new MinionAttributes
+					{
+						Index = minionId,
+						VisibleName = "Succubus",
+						HP = 250,
+						TouchDamage = 40
+					};
+				case (int)EMinionID.SuccubusPuppet:
+					return new MinionAttributes
+					{
+						Index = minionId,
+						VisibleName = "Succubus Puppet",
+						HP = 200,
+						TouchDamage = 40
+					};
+				case (int)EMinionID.MawWheel:
+					return new MinionAttributes
+					{
+						Index = minionId,
+						VisibleName = "Maw Wheel",
+						HP = 32,
+						TouchDamage = 48
+					};
+				case (int)EMinionID.XarionHand:
+					return new MinionAttributes
+					{
+						Index = minionId,
+						VisibleName = "Xarion's Hand",
+						HP = 1000,
+						TouchDamage = 75
+					};
+				default:
+					return new MinionAttributes
+					{
+						Index = minionId,
+						VisibleName = "Shield Knight",
+						HP = 1,
+						TouchDamage = 0
 					};
 			}
 		}
@@ -535,6 +634,15 @@ namespace TsRandomizer.Randomisation
 						bestiaryEntry.HP = vanillaBossInfo.HP;
 						bestiaryEntry.TouchDamage = vanillaBossInfo.TouchDamage;
 						bestiaryEntry.Exp = vanillaBossInfo.XP;
+						if (replacedBossInfo.Minions.Length > 0)
+							foreach (int minionId in replacedBossInfo.Minions)
+							{
+								MinionAttributes minionInfo = GetMinionAttributes(level, minionId);
+								var minionEntry = bestiary.BestiaryEntries[minionId];
+								minionEntry.VisibleName = minionInfo.VisibleName;
+								minionEntry.HP = (int)((float)vanillaBossInfo.HP/ replacedBossInfo.HP * minionInfo.HP);
+								minionEntry.TouchDamage = (int)((float)vanillaBossInfo.TouchDamage / replacedBossInfo.TouchDamage * minionInfo.TouchDamage);
+							}
 					}
 				}
 
