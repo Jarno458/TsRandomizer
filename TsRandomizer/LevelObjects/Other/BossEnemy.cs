@@ -45,6 +45,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 		static readonly Type SandStreamerEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Misc.SandStreamerEvent");
 		static readonly Type TimeBreakEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.BreakLevelEffect");
+		static readonly Type VarndagrothEyeEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Varndagroth.VarndagrothBoss+EEyelidAction");
 		static readonly Type CutsceneEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Cutscene.CutsceneBase+ECutsceneType");
 		static readonly MethodInfo CreateAndCallCutsceneMethod = typeof(CutsceneBase).GetPrivateStaticMethod("CreateAndCallCutscene", CutsceneEnumType, typeof(Level), typeof(Point));
 
@@ -104,6 +105,7 @@ namespace TsRandomizer.LevelObjects.Other
 				case EEnemyTileType.VarndagrothBoss:
 					Level.MainHero.TeleportToPoint(new Point(200, 200));
 					boss._spindleItem.SilentKill();
+					boss.ChangeEyelidAnimation(VarndagrothEyeEnumType.GetEnumValue("Open"));
 					boss.StartBattle();
 					break;
 				default:
@@ -184,7 +186,7 @@ namespace TsRandomizer.LevelObjects.Other
 				LevelReflected.FullyHealPlayer();
 
 			// Cause Time break
-			if (vanillaBoss.ReturnRoom.LevelId == 15)
+			if (vanillaBoss.ReturnRoom.LevelId == 15 && currentBoss.Index != (int)EBossID.Nightmare)
 			{
 				warpHasRun = true;
 				var enumValue = CutsceneEnumType.GetEnumValue("Alt2_Win");
