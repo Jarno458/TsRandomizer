@@ -157,7 +157,7 @@ namespace TsRandomizer.LevelObjects.Other
 				BestiaryManager.SetBossKillSave(Level, vanillaBoss.Index);
 				saveHasRun = true;
 			}
-
+			
 
 			if (!isRandomized)
 			{
@@ -165,10 +165,12 @@ namespace TsRandomizer.LevelObjects.Other
 				return;
 			}
 
-			var eventTypes = ((Dictionary<int, GameEvent>)LevelReflected._levelEvents).Values.Select(e => e.GetType());
-			if (eventTypes.Contains(EScriptType.GiveItem.GetType()))
-				Scripts.RemoveGiveItem();
+			var visibleItems = (Dictionary<int, Item>)LevelReflected._items;
+			if (visibleItems.Count > 0)
+				foreach (KeyValuePair<int, Item> itemKey in visibleItems)
+					itemKey.Value.Kill();
 
+			var eventTypes = ((Dictionary<int, GameEvent>)LevelReflected._levelEvents).Values.Select(e => e.GetType());
 			if (currentBoss.Index != (int)EBossID.Maw && !eventTypes.Contains(SandStreamerEventType) && !eventTypes.Contains(TimeBreakEventType))
 				return;
 
