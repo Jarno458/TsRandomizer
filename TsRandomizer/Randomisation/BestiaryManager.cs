@@ -615,6 +615,7 @@ namespace TsRandomizer.Randomisation
 			TimeSpinnerGame.Localizer.OverrideKey("inv_use_PlaceHolderItem1", "Nothing");
 			TimeSpinnerGame.Localizer.OverrideKey("inv_use_PlaceHolderItem1_desc", "You thought you picked something up, but it turned out to be nothing.");
 
+			level.GCM.AsDynamic()._bestiary = BestiarySpecification.FromCompressedFile("./Content/Bestiary.dat");
 			var bestiary = level.GCM.Bestiary;
 			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
 			int[] validBosses = GetValidBosses(level);
