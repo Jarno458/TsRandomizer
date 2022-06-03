@@ -618,32 +618,48 @@ namespace TsRandomizer.Randomisation
 			var bestiary = level.GCM.Bestiary;
 			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
 			int[] validBosses = GetValidBosses(level);
+			int[] minions = Enum.GetValues(typeof(EBossID)).Cast<int>().ToArray();
 			foreach (var bestiaryEntry in bestiary.BestiaryEntries)
 			{
 				if (gameSettings.ShowBestiary.Value)
 				{
 					level.GameSave.SetValue(string.Format(bestiaryEntry.Key.Replace("Enemy_", "KILL_")), 1);
 				}
-				if (gameSettings.BossRando.Value && validBosses.Contains(bestiaryEntry.Index))
+				if (validBosses.Contains(bestiaryEntry.Index))
 				{
 					BossAttributes replacedBossInfo = GetBossAttributes(level, bestiaryEntry.Index);
-					BossAttributes vanillaBossInfo = GetVanillaBoss(level, bestiaryEntry.Index);
-					bestiaryEntry.VisibleName = $"{replacedBossInfo.VisibleName} as {vanillaBossInfo.VisibleName}";
-					if (gameSettings.BossScaling.Value)
+					// Clear data from previous runs
+					bestiaryEntry.VisibleName = replacedBossInfo.VisibleName;
+					bestiaryEntry.TouchDamage = replacedBossInfo.TouchDamage;
+					bestiaryEntry.Exp = replacedBossInfo.XP;
+					bestiaryEntry.HP = replacedBossInfo.HP;
+
+					if (gameSettings.BossRando.Value)
 					{
-						bestiaryEntry.HP = vanillaBossInfo.HP;
-						bestiaryEntry.TouchDamage = vanillaBossInfo.TouchDamage;
-						bestiaryEntry.Exp = vanillaBossInfo.XP;
-						if (replacedBossInfo.Minions.Length > 0)
-							foreach (int minionId in replacedBossInfo.Minions)
-							{
-								MinionAttributes minionInfo = GetMinionAttributes(level, minionId);
-								var minionEntry = bestiary.BestiaryEntries[minionId];
-								minionEntry.VisibleName = minionInfo.VisibleName;
-								minionEntry.HP = (int)((float)vanillaBossInfo.HP/ replacedBossInfo.HP * minionInfo.HP);
-								minionEntry.TouchDamage = (int)((float)vanillaBossInfo.TouchDamage / replacedBossInfo.TouchDamage * minionInfo.TouchDamage);
-							}
+						BossAttributes vanillaBossInfo = GetVanillaBoss(level, bestiaryEntry.Index);
+						bestiaryEntry.VisibleName = $"{replacedBossInfo.VisibleName} as {vanillaBossInfo.VisibleName}";
+						if (gameSettings.BossScaling.Value)
+						{
+							bestiaryEntry.HP = vanillaBossInfo.HP;
+							bestiaryEntry.TouchDamage = vanillaBossInfo.TouchDamage;
+							bestiaryEntry.Exp = vanillaBossInfo.XP;
+							if (replacedBossInfo.Minions.Length > 0)
+								foreach (int minionId in replacedBossInfo.Minions)
+								{
+									MinionAttributes minionInfo = GetMinionAttributes(level, minionId);
+									var minionEntry = bestiary.BestiaryEntries[minionId];
+									minionEntry.VisibleName = minionInfo.VisibleName;
+									minionEntry.HP = (int)((float)vanillaBossInfo.HP / replacedBossInfo.HP * minionInfo.HP);
+									minionEntry.TouchDamage = (int)((float)vanillaBossInfo.TouchDamage / replacedBossInfo.TouchDamage * minionInfo.TouchDamage);
+								}
+						}
 					}
+				}
+				if (minions.Contains(bestiaryEntry.Index) && (!gameSettings.BossRando.Value || !gameSettings.BossScaling.Value))
+				{
+					MinionAttributes minionInfo = GetMinionAttributes(level, bestiaryEntry.Index);
+					bestiaryEntry.HP = minionInfo.HP;
+					bestiaryEntry.TouchDamage = minionInfo.TouchDamage;
 				}
 
 				int dropSlot = 0;
