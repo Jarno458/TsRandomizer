@@ -42,7 +42,7 @@ namespace TsRandomizer.LevelObjects
 
 		static void SpawnBoss(Level level, SeedOptions seedOptions, int vanillaBossId)
 		{
-			if (!level.GameSave.GetSettings().BossRando.Value || !level.GameSave.GetSaveBool("IsFightingBoss"))
+			if (!level.GameSave.GetSettings().BossRando.Value || TargetBossId == -1 || !level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 
 			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
@@ -376,6 +376,10 @@ namespace TsRandomizer.LevelObjects
 
 				SpawnGyreWarp(level, 200, 200); // Historical Documents room to Ravenlord
 			}));
+			RoomTriggers.Add(new RoomTrigger(14, 8, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Reset boss save flags cleared by Gyre portal
+				BestiaryManager.RefreshBossSaveFlags(level);
+			}));
 			RoomTriggers.Add(new RoomTrigger(14, 24, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (!seedOptions.GyreArchives)
 					return;
@@ -405,6 +409,10 @@ namespace TsRandomizer.LevelObjects
 				if (((Dictionary<int, NPCBase>)level.AsDynamic()._npcs).Values.Any(npc => npc.GetType() == YorneNpcType)) return;
 				SpawnYorne(level); // Dialog for needing Kobo
 			}));
+			RoomTriggers.Add(new RoomTrigger(14, 6, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Reset boss save flags cleared by Gyre portal
+				BestiaryManager.RefreshBossSaveFlags(level);
+			}));
 			RoomTriggers.Add(new RoomTrigger(14, 25, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (!seedOptions.GyreArchives) return;
 				level.JukeBox.StopSong();
@@ -428,7 +436,8 @@ namespace TsRandomizer.LevelObjects
 			RoomTriggers.Add(new RoomTrigger(14, 11, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Play Gyre music in gyre
 				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Level14);
-				level.AsDynamic().SetLevelSaveInt("GyreDungeonSeed", seedOptions.Flags.GetHashCode()); // Warp to Ravenlord
+				level.AsDynamic().SetLevelSaveInt("GyreDungeonSeed", seedOptions.Flags.GetHashCode()); // Set Gyre enemies
+				BestiaryManager.RefreshBossSaveFlags(level); // Reset boss save flags cleared by Gyre portal
 			}));
 			RoomTriggers.Add(new RoomTrigger(14, 23, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				level.JukeBox.StopSong();
