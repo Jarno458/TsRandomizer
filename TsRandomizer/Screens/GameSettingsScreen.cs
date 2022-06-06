@@ -91,7 +91,8 @@ namespace TsRandomizer.Screens
 		{
 			var defaultsMenu = MenuEntry.Create("Defaults", () => OnDefaultsSelected(menusToClear, isSubmenu)).AsTimeSpinnerMenuEntry();
 
-			defaultsMenu.AsDynamic().Description = "Restore all values to their defaults";
+			string menuDescription = isSubmenu ? menusToClear[0].Name : "all";
+			defaultsMenu.AsDynamic().Description = $"Restore {menuDescription} settings to their defaults";
 			defaultsMenu.AsDynamic().IsCenterAligned = false;
 
 			return defaultsMenu;
