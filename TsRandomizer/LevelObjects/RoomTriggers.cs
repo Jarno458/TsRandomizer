@@ -468,15 +468,16 @@ namespace TsRandomizer.LevelObjects
 			RoomTriggers.Add(new RoomTrigger(8, 13, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (seedOptions.GassMaw)
 					FillRoomWithGas(level);
-				if (gameSettings.BossRando.Value 
-					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Maw")
+				if (!level.GameSave.GetSaveBool("TSRando_IsBossDead_Maw"))
+					return;
+				level.GameSave.SetValue("TSRando_IsVileteSaved", true);
+				if (gameSettings.BossRando.Value
 					&& !level.GameSave.GetSaveBool("IsVileteSaved"))
 				{
 					var enumValue = CutsceneEnumType.GetEnumValue("CavesPast6_MawBoom");
-					level.GameSave.SetValue("TSRando_IsVileteSaved", true);
 					CreateAndCallCutsceneMethod.InvokeStatic(enumValue, level, new Point(200, 200));
-					return;
 				}
+				BestiaryManager.RefreshBossSaveFlags(level);
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (seedOptions.GassMaw) FillRoomWithGas(level);
