@@ -100,30 +100,10 @@ namespace TsRandomizer.Screens
 
 		void OnDefaultsSelected(GameSettingCategoryInfo[] menusToClear, bool isSubmenu)
 		{
-			if (isSubmenu)
-			{
-				foreach (var category in menusToClear)
-				{
-					foreach (var settingsFunc in category.SettingsPerCategory)
-					{
-						var setting = settingsFunc(settings);
-						if (IsInGame && !setting.CanBeChangedInGame)
-							continue;
-						setting.SetDefault();
-					}
-				}
-				ResetMenu();
-				Dynamic.GoToPreviousMenuCollection();
-				return;
-			}
 			// Clear the root menu
-			if (!IsInGame)
+			if (!IsInGame && !isSubmenu)
 			{
-				var defaultSettings = new SettingCollection();
-
-				GameSettingsLoader.WriteSettingsToFile(defaultSettings);
-
-				settings = defaultSettings;
+				settings = new SettingCollection();
 			}
 			else
 			{
@@ -133,17 +113,22 @@ namespace TsRandomizer.Screens
 					{
 						var setting = settingsFunc(settings);
 
-						if(!setting.CanBeChangedInGame)
+						if(IsInGame && !setting.CanBeChangedInGame)
 							continue;
 
 						setting.SetDefault();
 					}
 				}
-
-				save.SetSettings(settings);
 			}
 
+			if (IsInGame)
+				save.SetSettings(settings);
+			else
+				GameSettingsLoader.WriteSettingsToFile(settings);
+
 			ResetMenu();
+			if (isSubmenu)
+				Dynamic.GoToPreviousMenuCollection();
 		}
 
 		void ResetMenu()
