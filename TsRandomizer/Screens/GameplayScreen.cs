@@ -92,6 +92,8 @@ namespace TsRandomizer.Screens
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave, settings.DamageRando.Value, settings.DamageRandoOverrides.Value);
 
 			BestiaryManager.UpdateBestiary(Level, settings);
+			if (!saveFile.GetSaveBool("IsFightingBoss"))
+				BestiaryManager.RefreshBossSaveFlags(Level);
 
 			if (seedOptions.Archipelago)
 			{
