@@ -107,6 +107,8 @@ namespace TsRandomizer.Screens
 					foreach (var settingsFunc in category.SettingsPerCategory)
 					{
 						var setting = settingsFunc(settings);
+						if (IsInGame && !setting.CanBeChangedInGame)
+							continue;
 						setting.SetDefault();
 					}
 				}
