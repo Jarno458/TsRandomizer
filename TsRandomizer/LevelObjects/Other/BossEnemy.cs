@@ -53,7 +53,7 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 			isRandomized = Level.GameSave.GetSettings().BossRando.Value;
 			int argument = 0;
-			if (Dynamic.EnemyType == EEnemyTileType.EmperorBoss)
+			if (TypedObject.EnemyType == EEnemyTileType.EmperorBoss)
 			{
 				if (Dynamic._isPrinceEmperor)
 					argument = 2;
@@ -61,14 +61,13 @@ namespace TsRandomizer.LevelObjects.Other
 					argument = 1;
 			}
 
-			var bestiaryEntry = Level.GCM.Bestiary.GetEntry(Dynamic.EnemyType, argument);
+			var bestiaryEntry = Level.GCM.Bestiary.GetEntry(TypedObject.EnemyType, argument);
 			int bossId = bestiaryEntry.Index;
 
 			currentBoss = BestiaryManager.GetBossAttributes(Level, bossId);
-			if (isRandomized)
-				vanillaBoss = BestiaryManager.GetVanillaBoss(Level, bossId);
-			else
-				vanillaBoss = currentBoss;
+			vanillaBoss = isRandomized 
+				? BestiaryManager.GetVanillaBoss(Level, bossId) 
+				: currentBoss;
 
 			if (!isRandomized)
 				return;
@@ -87,28 +86,24 @@ namespace TsRandomizer.LevelObjects.Other
 			if (!isRandomized || !Level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 
-			var boss = typedObject.AsDynamic();
-
-			switch (typedObject.EnemyType)
+			switch (TypedObject.EnemyType)
 			{
 				case EEnemyTileType.EmperorBoss:
-					if (boss._isPrinceEmperor)
+					if (Dynamic._isPrinceEmperor)
 						CreateAndCallCutsceneMethod.InvokeStatic(CutsceneEnumType.GetEnumValue("Alt0_Nuvius"), Level, new Point(200, 200));
 					break;
 				case EEnemyTileType.MawBoss:
-					boss.DoIntroCloseMouth();
+					Dynamic.DoIntroCloseMouth();
 					break;
 				case EEnemyTileType.BirdBoss:
-					boss.InitializeMob();
-					boss.EndBossIntroCutscene();
+					Dynamic.InitializeMob();
+					Dynamic.EndBossIntroCutscene();
 					break;
 				case EEnemyTileType.VarndagrothBoss:
 					Level.MainHero.TeleportToPoint(new Point(200, 200));
-					boss._spindleItem.SilentKill();
-					boss.ChangeEyelidAnimation(VarndagrothEyeEnumType.GetEnumValue("Open"));
-					boss.StartBattle();
-					break;
-				default:
+					Dynamic._spindleItem.SilentKill();
+					Dynamic.ChangeEyelidAnimation(VarndagrothEyeEnumType.GetEnumValue("Open"));
+					Dynamic.StartBattle();
 					break;
 			}
 		}
@@ -160,7 +155,6 @@ namespace TsRandomizer.LevelObjects.Other
 				saveHasRun = true;
 			}
 			
-
 			if (!isRandomized)
 			{
 				warpHasRun = true;
@@ -169,7 +163,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 			var visibleItems = (Dictionary<int, Item>)LevelReflected._items;
 			if (visibleItems.Count > 0)
-				foreach (KeyValuePair<int, Item> itemKey in visibleItems)
+				foreach (var itemKey in visibleItems)
 					itemKey.Value.Kill();
 
 			var eventTypes = ((Dictionary<int, GameEvent>)LevelReflected._levelEvents).Values.Select(e => e.GetType());
