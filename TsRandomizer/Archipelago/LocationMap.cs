@@ -64,7 +64,7 @@ namespace TsRandomizer.Archipelago
 				{1337039, new ItemKey(2, 23, 1112, 112)},
 				{1337040, new ItemKey(2, 23, 136, 304)},
 				{1337041, new ItemKey(2, 11, 104, 192)},
-				{1337042, new ItemKey(2, 29, 280, 222 + TimespinnerSpindle.YOffset)},
+				{1337042, new RoomItemKey(2, 29)},
 				{1337043, new RoomItemKey(2, 52)},
 				// Sealed Caves (Xarion)
 				{1337044, new ItemKey(9, 10, 248, 848)},

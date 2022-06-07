@@ -111,6 +111,12 @@ namespace TsRandomizer.Settings
 
 				settings.ShopFill.Value = enumValue;
 			}
+			if (slotData.TryGetValue("BossRando", out var bossRando))
+				settings.BossRando.Value = IsTrue(bossRando);
+			if (slotData.TryGetValue("BossScaling", out var bossScaling))
+				settings.BossScaling.Value = IsTrue(bossScaling);
+			if (slotData.TryGetValue("BossHealing", out var bossHealing))
+				settings.BossHealing.Value = IsTrue(bossHealing);
 
 			if (slotData.TryGetValue("DamageRando", out var damageRando))
 			{

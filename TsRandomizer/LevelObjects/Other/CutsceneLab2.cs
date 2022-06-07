@@ -1,5 +1,7 @@
-﻿using Timespinner.GameAbstractions.Inventory;
+﻿using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 
 namespace TsRandomizer.LevelObjects.Other
@@ -14,9 +16,11 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(SeedOptions options)
 		{
-			if (AreTriggerConditionsMet()) return;
+			bool hasTimespinnerPieces = AreTriggerConditionsMet();
+			Level.GameSave.SetValue("TSRando_IsLabTSReady", hasTimespinnerPieces);
 
-			Dynamic.SilentKill();
+			if ((Level.GameSave.GetSettings().BossRando.Value && Level.GameSave.GetSaveBool("IsFightingBoss")) || !hasTimespinnerPieces)
+				Dynamic.SilentKill();
 		}
 
 		bool AreTriggerConditionsMet()
