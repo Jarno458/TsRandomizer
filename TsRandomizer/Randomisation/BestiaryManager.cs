@@ -587,6 +587,14 @@ namespace TsRandomizer.Randomisation
 
 			level.GameSave.SetValue("IsEndingABCleared", level.GameSave.GetSaveBool("TSRando_IsBossDead_Emperor"));
 			level.GameSave.SetValue("IsLabTSReady", !labTSUsed && level.GameSave.GetSaveBool("TSRando_IsLabTSReady"));
+
+			// Clear the following save flags for vanilla boss seeds
+			if (!level.GameSave.GetSettings().BossRando.Value)
+			{
+				level.GameSave.SetValue("IsBossDead_Emperor", false);
+				level.GameSave.SetValue("IsBossDead_Sandman", false);
+				level.GameSave.SetValue("IsBossDead_Nightmare", false);
+			}
 		}
 
 		public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
