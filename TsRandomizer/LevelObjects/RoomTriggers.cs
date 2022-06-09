@@ -188,6 +188,8 @@ namespace TsRandomizer.LevelObjects
 				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
+				if (!level.GameSave.GetSettings().BossRando.Value)
+					FillRoomWithGas(level);
 				CreateBossWarp(level, (int)EBossID.Maw);
 			}));
 			RoomTriggers.Add(new RoomTrigger(12, 20, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
