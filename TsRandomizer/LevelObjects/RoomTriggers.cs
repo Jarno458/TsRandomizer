@@ -188,7 +188,7 @@ namespace TsRandomizer.LevelObjects
 				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				if (!level.GameSave.GetSettings().BossRando.Value)
+				if (seedOptions.GassMaw && !level.GameSave.GetSettings().BossRando.Value)
 					FillRoomWithGas(level);
 				CreateBossWarp(level, (int)EBossID.Maw);
 			}));
