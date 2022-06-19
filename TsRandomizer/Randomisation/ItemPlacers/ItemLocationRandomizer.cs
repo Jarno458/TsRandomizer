@@ -74,7 +74,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.ChaosHeal),
 				ItemInfoProvider.Get(EInventoryUseItemType.Antidote),
 				ItemInfoProvider.Get(EInventoryUseItemType.SandBottle),
-				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle)
+				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle),
+				ItemInfoProvider.Get(EInventoryUseItemType.PlaceHolderItem1) // "Nothing"/empty chest
 			};
 		}
 

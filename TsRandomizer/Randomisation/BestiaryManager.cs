@@ -71,6 +71,8 @@ namespace TsRandomizer.Randomisation
 		ShieldKnight
 	}
 
+
+
 	static class BestiaryManager
 	{
 		public static int[] GetValidBosses(Level level)
@@ -654,17 +656,67 @@ namespace TsRandomizer.Randomisation
 							}
 					}
 				}
+				bestiaryEntry.VisibleDescription = $"ATK - {bestiaryEntry.TouchDamage}";
 
 				int dropSlot = 0;
 				foreach (var loot in bestiaryEntry.LootTable)
 				{
+					var item = Helper.GetAllLoot().SelectRandom(random);
+					switch (gameSettings.DropRateCategory.Value)
+					{
+						case "Fixed":
+							loot.DropRate = (int)gameSettings.DropRate.Value;
+							break;
+						case "Tiered":
+							if (item.LootType == LootType.Equipment)
+								loot.DropRate = (int)Helper.LookupEquipmentRarity((EInventoryEquipmentType)item.ItemId);
+							else
+								loot.DropRate = (int)Helper.LookupUseItemRarity((EInventoryUseItemType)item.ItemId);
+							break;
+						case "Random":
+							Array lootTiers = Enum.GetValues(typeof(ELootTier));
+							if (gameSettings.LootTierDistro.Value == "Full Random")
+								loot.DropRate = (int)lootTiers.GetValue(random.Next(lootTiers.Length));
+							else
+							{
+								int offset = 0;
+								if (gameSettings.LootTierDistro.Value == "Inverted Weight")
+									offset = 4;
+								int rarityRoll = random.Next(21);
+								switch (rarityRoll)
+								{
+									case int roll when (roll >= 20):
+										loot.DropRate = (int)lootTiers.GetValue(Math.Abs(4 - offset));
+										break;
+									case int roll when (roll >= 16):
+										loot.DropRate = (int)lootTiers.GetValue(Math.Abs(3 - offset));
+										break;
+									case int roll when (roll >= 13):
+										loot.DropRate = (int)lootTiers.GetValue(Math.Abs(2 - offset));
+										break;
+									case int roll when (roll >= 8):
+										loot.DropRate = (int)lootTiers.GetValue(Math.Abs(1 - offset));
+										break;
+									case int roll when (roll >= 0):
+										loot.DropRate = (int)lootTiers.GetValue(Math.Abs(0 - offset));
+										break;
+									default:
+										loot.DropRate = (int)ELootTier.Uncommon;
+										break;
+								}
+							}
+							break;
+						case "Vanilla":
+						default:
+							break;
+					}
+					bestiaryEntry.VisibleDescription += $"\nItem {dropSlot + 1} base drop rate: {loot.DropRate}%";
 					if (gameSettings.ShowDrops.Value)
 					{
 						level.GameSave.SetValue(string.Format(bestiaryEntry.Key.Replace("Enemy_", "DROP_" + dropSlot + "_")), true);
 					}
 					if (gameSettings.LootPool.Value == "Random")
 					{
-						var item = Helper.GetAllLoot().SelectRandom(random);
 						loot.Item = item.ItemId;
 						if (item.LootType == LootType.Equipment)
 							loot.Category = (int)EInventoryCategoryType.Equipment;

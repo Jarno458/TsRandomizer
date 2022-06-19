@@ -13,7 +13,7 @@ namespace TsRandomizer.Settings
 				}},
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.ShopFill, s => s.ShopMultiplier, s => s.ShopWarpShards, s => s.LootPool
+					s => s.ShopFill, s => s.ShopMultiplier, s => s.ShopWarpShards, s => s.LootPool, s => s.DropRateCategory, s => s.DropRate, s => s.LootTierDistro
 				}},
 			new GameSettingCategoryInfo { Name = "Minimap", Description = "Settings related to minimap colors.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -61,6 +61,16 @@ namespace TsRandomizer.Settings
 			"Sets which items enemies will drop: [Vanilla, Random, Empty]",
 			new List<string> { "Vanilla", "Random", "Empty" }, "Vanilla", true);
 
+		public SpecificValuesGameSetting DropRateCategory = new SpecificValuesGameSetting("Drop Rate Category",
+			"Sets the drop rate of enemy items [Tiered (based on item), Vanilla (based on enemy), Random (2-12%), Fixed",
+			new List<string> { "Tiered", "Vanilla", "Random", "Fixed" }, "Tiered", true);
+
+		public NumberGameSetting DropRate = new NumberGameSetting("Fixed Drop Rate",
+			"Drop rate to be used when Drop Rate Category set to 'Fixed'", 0, 100, 2.5, 5);
+
+		public SpecificValuesGameSetting LootTierDistro = new SpecificValuesGameSetting("Loot Tier Distribution",
+			"Sets how frequently items of each loot rarity tier will be assigned to a drop slot.",
+			new List<string> { "Default Weight", "Full Random", "Inverted Weight" }, "Default Weight", true);
 
 		public SpecificValuesGameSetting ShopFill = new SpecificValuesGameSetting("Shop Inventory",
 			"Sets the items for sale in Merchant Crow's shops. Options: [Default,Random,Vanilla,Empty]",
