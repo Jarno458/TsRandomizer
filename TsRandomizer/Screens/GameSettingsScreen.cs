@@ -191,9 +191,6 @@ namespace TsRandomizer.Screens
 			{
 				// Currently using quest layout for most, other layouts may be useful for other menus
 				// Leaving as switch to easily add new menus as Memories, Letters, Files, Quests, Bestiary, Feats
-				case "Archipelago":
-					collection = Dynamic._bestiaryInventory;
-					break;
 				case "Sprite":
 					collection = Dynamic._featsInventory;
 					break;
