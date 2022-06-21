@@ -16,12 +16,12 @@ namespace TsRandomizer
 		public bool ProgressiveVerticalMovement => (Flags & 1 << 1) > 0;
 		public bool ProgressiveKeycard => (Flags & 1 << 2) > 0;
 		public bool DownloadableItems => (Flags & 1 << 3) > 0;
-		public bool RequireEyeOrbRing => (Flags & 1 << 4) > 0;
+		public bool EyeSpy => (Flags & 1 << 4) > 0;
 		public bool StartWithMeyef => (Flags & 1 << 5) > 0;
 		public bool StartWithTalaria => (Flags & 1 << 6) > 0;
 		public bool SpecificKeys => (Flags & 1 << 7) > 0;
 		public bool Inverted => (Flags & 1 << 8) > 0;
-		public bool GassMaw => (Flags & 1 << 9) > 0;
+		public bool GasMaw => (Flags & 1 << 9) > 0;
 		public bool GyreArchives => (Flags & 1 << 10) > 0;
 		public bool Cantoran => (Flags & 1 << 11) > 0;
 		public bool LoreChecks => (Flags & 1 << 12) > 0;
@@ -44,7 +44,7 @@ namespace TsRandomizer
 				{"ProgressiveVerticalMovement", 1U << 1},
 				{"ProgressiveKeycards", 1U << 2},
 				{"DownloadableItems", 1U << 3},
-				{"FacebookMode", 1U << 4},
+				{"EyeSpy", 1U << 4},
 				{"StartWithMeyef", 1U << 5},
 				{"QuickSeed", 1U << 6},
 				{"SpecificKeycards", 1U << 7},

@@ -26,7 +26,7 @@ namespace TsRandomizer.Randomisation
 		public static readonly Requirement Swimming = 1UL << 11;
 		public static readonly Requirement UpwardDash = 1UL << 12;
 		public static readonly Requirement DoubleJump = 1UL << 13;
-		public static readonly Requirement GassMask = 1UL << 14;
+		public static readonly Requirement GasMask = 1UL << 14;
 		public static readonly Requirement Teleport = 1UL << 15;
 		public static readonly Requirement TimespinnerPiece1 = 1UL << 21;
 		public static readonly Requirement TimespinnerPiece2 = 1UL << 22;
@@ -147,7 +147,7 @@ namespace TsRandomizer.Randomisation
 				case "CardV": return "cV";
 				case "TimespinnerSpindle": return "Spindle";
 				case "Swimming": return "Sw";
-				case "GassMask": return "Gas";
+				case "GasMask": return "Gas";
 				case "Teleport": return "TP";
 				case "PinkOrb": return "PO";
 				default:

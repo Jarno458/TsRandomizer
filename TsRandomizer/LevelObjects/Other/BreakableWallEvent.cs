@@ -22,7 +22,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
-			if(!options.RequireEyeOrbRing)
+			if(!options.EyeSpy)
 				return;
 
 			if (!Level.GameSave.HasRing(EInventoryOrbType.Eye))

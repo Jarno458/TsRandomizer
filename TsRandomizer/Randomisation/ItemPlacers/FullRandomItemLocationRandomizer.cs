@@ -32,8 +32,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		{
 			PlaceStarterProgressionItems(random, itemLocations);
 
-			if(!SeedOptions.GassMaw)
-				PlaceGassMaskInALegalSpot(random, itemLocations);
+			if(!SeedOptions.GasMaw)
+				PlaceGasMaskInALegalSpot(random, itemLocations);
 
 			var alreadyAssingedItems = itemLocations
 				.Where(l => l.IsUsed)

@@ -45,7 +45,7 @@ namespace TsRandomizer.Tests
 			var itemLocations = new ItemLocationMap(new ItemInfoProvider(SeedOptions.None, unlockingMap), unlockingMap, SeedOptions.None);
 
 			var accessableLocations = itemLocations.GetReachableLocations(
-					Requirement.GassMask | Requirement.AntiWeed | Requirement.Swimming | Requirement.GateLakeSereneRight | Requirement.DoubleJump)
+					Requirement.GasMask | Requirement.AntiWeed | Requirement.Swimming | Requirement.GateLakeSereneRight | Requirement.DoubleJump)
 				.ToArray();
 
 			Assert.That(Contains(accessableLocations, new ItemKey(1, 18, 1320, 189))); 
