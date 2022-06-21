@@ -14,7 +14,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 3, new SeedOptionInfo { Name = "Downloadable Items", Description = "With the tablet you will be able to download items from terminals." } },
 			{ 1 << 4, new SeedOptionInfo { Name = "Eye Spy", Description = "Requires Oculus Ring in inventory to be able to break hidden walls." } },
 			{ 1 << 5, new SeedOptionInfo { Name = "Start with Meyef", Description = "Start with Meyef, ideal for when you want to play multiplayer" } },
-			{ 1 << 6, new SeedOptionInfo { Name = "Quick seed", Description = "Start with Talaria Attachment, Nyoom!" } },
+			{ 1 << 6, new SeedOptionInfo { Name = "Quick Seed", Description = "Start with Talaria Attachment, Nyoom!" } },
 			{ 1 << 7, new SeedOptionInfo { Name = "Specific Keycards", Description = "Keycards can only open corresponding doors." } },
 			{ 1 << 8, new SeedOptionInfo { Name = "Inverted", Description = "Start in the past." } },
 			{ 1 << 9, new SeedOptionInfo { Name = "Stinky Maw", Description = "Require Gas Mask for Maw." } },
