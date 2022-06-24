@@ -51,7 +51,7 @@ namespace TsRandomizer.LevelObjects
 			level.JukeBox.StopSong();
 			level.PlayCue(Timespinner.GameAbstractions.ESFX.FoleyWarpGyreIn);
 
-			if (seedOptions.GassMaw && (vanillaBossId == (int)EBossID.Maw || (vanillaBossId == (int)EBossID.FelineSentry && level.GameSave.GetSaveBool("TSRando_IsVileteSaved"))))
+			if (seedOptions.GasMaw && (vanillaBossId == (int)EBossID.Maw || (vanillaBossId == (int)EBossID.FelineSentry && level.GameSave.GetSaveBool("TSRando_IsVileteSaved"))))
 				FillRoomWithGas(level);
 
 			if (replacedBossInfo.ShouldSpawn)
@@ -188,7 +188,7 @@ namespace TsRandomizer.LevelObjects
 				SpawnBoss(level, seedOptions, TargetBossId);
 				if (level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
-				if (seedOptions.GassMaw && !level.GameSave.GetSettings().BossRando.Value)
+				if (seedOptions.GasMaw && !level.GameSave.GetSettings().BossRando.Value)
 					FillRoomWithGas(level);
 				CreateBossWarp(level, (int)EBossID.Maw);
 			}));
@@ -463,12 +463,12 @@ namespace TsRandomizer.LevelObjects
 					?.SilentKill();
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 6, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (!seedOptions.GassMaw) return;
+				if (!seedOptions.GasMaw) return;
 
 				FillRoomWithGas(level);
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 13, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (seedOptions.GassMaw)
+				if (seedOptions.GasMaw)
 					FillRoomWithGas(level);
 				if (!level.GameSave.GetSaveBool("TSRando_IsBossDead_Maw"))
 					return;
@@ -482,7 +482,7 @@ namespace TsRandomizer.LevelObjects
 				BestiaryManager.RefreshBossSaveFlags(level);
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (seedOptions.GassMaw) FillRoomWithGas(level);
+				if (seedOptions.GasMaw) FillRoomWithGas(level);
 
 				var levelReflected = level.AsDynamic();
 				IEnumerable<Animate> eventObjects = levelReflected._levelEvents.Values;
@@ -493,7 +493,7 @@ namespace TsRandomizer.LevelObjects
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 312, 912);
 			}));
 			RoomTriggers.Add(new RoomTrigger(8, 33, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
-				if (!seedOptions.GassMaw) return;
+				if (!seedOptions.GasMaw) return;
 
 				FillRoomWithGas(level);
 			}));

@@ -13,7 +13,7 @@ namespace TsRandomizer.Randomisation
 	class ItemLocationMap : LookupDictionary<ItemKey, ItemLocation>
 	{
 		internal R OculusRift;
-		internal R MawGassMask;
+		internal R MawGasMask;
 
 		internal Gate AccessToPast;
 		internal Gate AccessToLakeDesolation;
@@ -99,12 +99,12 @@ namespace TsRandomizer.Randomisation
 
 		void SetupGates()
 		{
-			OculusRift = (SeedOptions.RequireEyeOrbRing)
+			OculusRift = (SeedOptions.EyeSpy)
 				? R.OculusRift
 				: R.None;
 
-			MawGassMask = (SeedOptions.GassMaw)
-				? R.GassMask
+			MawGasMask = (SeedOptions.GasMaw)
+				? R.GasMask
 				: R.None;
 
 			AccessToLakeDesolation = (!SeedOptions.Inverted)
@@ -134,7 +134,7 @@ namespace TsRandomizer.Randomisation
 				| R.GateRoyalTowers
 				| R.GateCastleRamparts
 				| R.GateCastleKeep
-				| (MawGassMask & (R.GateCavesOfBanishment | R.GateMaw)
+				| (MawGasMask & (R.GateCavesOfBanishment | R.GateMaw)
 				| R.GateCavesOfBanishment & R.Swimming
 				| R.GateMaw & R.DoubleJump & R.Swimming);
 
@@ -158,7 +158,7 @@ namespace TsRandomizer.Randomisation
 			RoyalTower = (CastleKeep & R.DoubleJump) | R.GateRoyalTowers;
 			MidRoyalTower = RoyalTower & (MultipleSmallJumpsOfNpc | ForwardDashDoubleJump);
 			UpperRoyalTower = MidRoyalTower & R.DoubleJump;
-			KillMaw = (LowerLakeSirine | R.GateCavesOfBanishment | R.GateMaw) & MawGassMask;
+			KillMaw = (LowerLakeSirine | R.GateCavesOfBanishment | R.GateMaw) & MawGasMask;
 			var killTwins = CastleKeep & R.TimeStop;
 			var killAelana = UpperRoyalTower;
 
@@ -231,8 +231,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(1, 20, 168, 240), "Lake Desolation (Upper): Double jump cave floor", ItemProvider.Get(EInventoryUseItemType.FuturePotion), UpperLakeDesolation);
 			Add(new ItemKey(1, 22, 344, 160), "Lake Desolation (Upper): Sparrow chest", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), UpperLakeDesolation);
 			Add(new ItemKey(1, 18, 1320, 189), "Lake Desolation (Upper): Crash site pedestal", ItemProvider.Get(EInventoryOrbType.Moon, EOrbSlot.Melee), UpperLakeDesolation);
-			Add(new ItemKey(1, 18, 1272, 192), "Lake Desolation (Upper): Crash site chest 1", ItemProvider.Get(EInventoryEquipmentType.CaptainsCap), UpperLakeDesolation & R.GassMask & KillMaw);
-			Add(new ItemKey(1, 18, 1368, 192), "Lake Desolation (Upper): Crash site chest 2", ItemProvider.Get(EInventoryEquipmentType.CaptainsJacket), UpperLakeDesolation & R.GassMask & KillMaw);
+			Add(new ItemKey(1, 18, 1272, 192), "Lake Desolation (Upper): Crash site chest 1", ItemProvider.Get(EInventoryEquipmentType.CaptainsCap), UpperLakeDesolation & R.GasMask & KillMaw);
+			Add(new ItemKey(1, 18, 1368, 192), "Lake Desolation (Upper): Crash site chest 2", ItemProvider.Get(EInventoryEquipmentType.CaptainsJacket), UpperLakeDesolation & R.GasMask & KillMaw);
 			Add(new RoomItemKey(1, 5), "Lake Desolation: Kitty Boss", ItemProvider.Get(EInventoryOrbType.Blade, EOrbSlot.Melee), UpperLakeDesolation | LowerLakeDesolationBridge);
 			areaName = "Library";
 			Add(new ItemKey(2, 60, 328, 160), "Library: Basement", ItemProvider.Get(EItemType.MaxHP), LeftLibrary);
@@ -363,8 +363,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(8, 41, 312, 192), "Caves of Banishment (Maw): Jackpot room chest 4", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & ForwardDashDoubleJump);
 			Add(new ItemKey(8, 42, 216, 189), "Caves of Banishment (Maw): Pedestal", ItemProvider.Get(EInventoryOrbType.Wind, EOrbSlot.Melee), LowerCavesOfBanishment);
 			Add(new ItemKey(8, 15, 248, 192), "Caves of Banishment (Maw): Last chance before Maw", ItemProvider.Get(EInventoryUseItemType.SilverOre), LowerCavesOfBanishment & R.DoubleJump);
-			Add(new RoomItemKey(8, 21), "Caves of Banishment (Maw): Plasma Crystal", ItemProvider.Get(EInventoryUseItemType.RadiationCrystal), LowerCavesOfBanishment & (MawGassMask | R.ForwardDash));
-			Add(new ItemKey(8, 31, 88, 400), "Caves of Banishment (Maw): Mineshaft", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & MawGassMask);
+			Add(new RoomItemKey(8, 21), "Caves of Banishment (Maw): Plasma Crystal", ItemProvider.Get(EInventoryUseItemType.RadiationCrystal), LowerCavesOfBanishment & (MawGasMask | R.ForwardDash));
+			Add(new ItemKey(8, 31, 88, 400), "Caves of Banishment (Maw): Mineshaft", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LowerCavesOfBanishment & MawGasMask);
 			areaName = "Caves of Banishment (Sirens)";
 			Add(new ItemKey(8, 4, 664, 144), "Caves of Banishment (Sirens): Wyvern room", ItemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment);
 			Add(new ItemKey(8, 3, 808, 144), "Caves of Banishment (Sirens): Siren room above water chest", ItemProvider.Get(EInventoryUseItemType.SilverOre), UpperCavesOfBanishment);
@@ -562,7 +562,7 @@ namespace TsRandomizer.Randomisation
 
 		public virtual bool IsBeatable()
 		{
-			if ((!SeedOptions.GassMaw && !IsGassMaskReachableWithTheMawRequirements())
+			if ((!SeedOptions.GasMaw && !IsGasMaskReachableWithTheMawRequirements())
 				|| ProgressiveItemsOfTheSameTypeAreInTheSameRoom())
 				return false;
 
@@ -594,12 +594,12 @@ namespace TsRandomizer.Randomisation
 						p => p.Key != progressiveItemLocation.Key && p.Key.ToRoomItemKey() == progressiveItemLocation.Key.ToRoomItemKey())));
 		}
 
-		bool IsGassMaskReachableWithTheMawRequirements()
+		bool IsGasMaskReachableWithTheMawRequirements()
 		{
-			//gassmask may never be placed in a gass effected place
-			//the very basics to reach maw should also allow you to get gassmask
+			//Gasmask may never be placed in a Gas effected place
+			//the very basics to reach maw should also allow you to get Gasmask
 			//unless we run inverted, then we can garantee the user has the pyramid keys before entering lake desolation
-			var gassmaskLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
+			var GasmaskLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
 
 			var levelIdsToAvoid = new List<int>(3) { 1 }; //lake desolation
 			var mawRequirements = R.None;
@@ -626,7 +626,7 @@ namespace TsRandomizer.Randomisation
 				mawRequirements |= UnlockingMap.PyramidKeysUnlock;
 			}
 
-			return !levelIdsToAvoid.Contains(gassmaskLocation.Key.LevelId) && gassmaskLocation.Gate.CanBeOpenedWith(mawRequirements);
+			return !levelIdsToAvoid.Contains(GasmaskLocation.Key.LevelId) && GasmaskLocation.Gate.CanBeOpenedWith(mawRequirements);
 		}
 
 		R GetObtainedRequirements(R obtainedRequirements)

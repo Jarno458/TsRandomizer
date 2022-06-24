@@ -156,7 +156,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			PutItemAtLocation(ItemInfoProvider.Get(meleeOrbType, EOrbSlot.Melee), itemLocations[ItemKey.TutorialMeleeOrb]);
 		}
 
-		protected void PlaceGassMaskInALegalSpot(Random random, ItemLocationMap itemLocations)
+		protected void PlaceGasMaskInALegalSpot(Random random, ItemLocationMap itemLocations)
 		{
 			var levelIdsToAvoid = new List<int>(3) { 1 };
 			var minimalMawRequirements = R.None;
@@ -183,13 +183,13 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				minimalMawRequirements |= UnlockingMap.PyramidKeysUnlock;
 			}
 
-			var gassMaskLocation = itemLocations
+			var GasMaskLocation = itemLocations
 				.Where(l => !l.IsUsed
 							&& !levelIdsToAvoid.Contains(l.Key.LevelId)
 							&& l.Gate.CanBeOpenedWith(minimalMawRequirements))
 				.SelectRandom(random);
 
-			PutItemAtLocation(ItemInfoProvider.Get(EInventoryRelicType.AirMask), gassMaskLocation);
+			PutItemAtLocation(ItemInfoProvider.Get(EInventoryRelicType.AirMask), GasMaskLocation);
 		}
 
 		protected void FillRemainingChests(Random random, ItemLocationMap itemLocations)
