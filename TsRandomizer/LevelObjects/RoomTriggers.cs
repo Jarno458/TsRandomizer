@@ -438,7 +438,7 @@ namespace TsRandomizer.LevelObjects
 			RoomTriggers.Add(new RoomTrigger(14, 11, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Play Gyre music in gyre
 				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Level14);
-				level.AsDynamic().SetLevelSaveInt("GyreDungeonSeed", seedOptions.Flags.GetHashCode()); // Set Gyre enemies
+				level.AsDynamic().SetLevelSaveInt("GyreDungeonSeed", (int)level.GameSave.GetSeed().Value.Id); // Set Gyre enemies
 				BestiaryManager.RefreshBossSaveFlags(level); // Reset boss save flags cleared by Gyre portal
 			}));
 			RoomTriggers.Add(new RoomTrigger(14, 23, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
