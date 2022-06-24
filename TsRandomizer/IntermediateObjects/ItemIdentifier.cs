@@ -7,6 +7,14 @@ using TsRandomizer.Extensions;
 
 namespace TsRandomizer.IntermediateObjects
 {
+	public enum ELootTier
+	{
+		Trash = 16,
+		Common = 10,
+		Uncommon = 6,
+		Rare = 3,
+		UltraRare = 2,
+	}
 	public class ItemIdentifier : IEquatable<ItemIdentifier>
 	{
 		public LootType LootType { get; }
