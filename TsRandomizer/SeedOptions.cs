@@ -45,6 +45,7 @@ namespace TsRandomizer
 				{"ProgressiveKeycards", 1U << 2},
 				{"DownloadableItems", 1U << 3},
 				{"EyeSpy", 1U << 4},
+				{"FacebookMode", 1U << 4}, //backward compatibility
 				{"StartWithMeyef", 1U << 5},
 				{"QuickSeed", 1U << 6},
 				{"SpecificKeycards", 1U << 7},
