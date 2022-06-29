@@ -16,27 +16,33 @@ namespace TsRandomizer
 
 			var startTime = DateTime.UtcNow;
 
-			do {
-				Thread.Sleep(100);
+			try
+			{
+				do
+				{
+					Thread.Sleep(100);
 
-				var processes = GetTimespinnerProcesses().ToArray();
+					var processes = GetTimespinnerProcesses().ToArray();
 
-				if (!processes.Any())
-					continue;
+					if (!processes.Any())
+						continue;
 
-				foreach (var process in processes)
-					process.Kill();
+					foreach (var process in processes)
+						process.Kill();
 
-				break;
-			} while (DateTime.UtcNow - startTime < TimeSpan.FromSeconds(10));
+					break;
+				} while (DateTime.UtcNow - startTime < TimeSpan.FromSeconds(10));
+
+			}
+			catch
+			{
+			}
 
 			return platformHelper;
 		}
 
-		public static PlatformHelper CreateDrmFreeInstance()
-		{
-			return (PlatformHelper)Activator.CreateInstance(TimeSpinnerType.Get("Timespinner.PlatformHelper"), true);
-		}
+		public static PlatformHelper CreateDrmFreeInstance() => 
+			(PlatformHelper)Activator.CreateInstance(TimeSpinnerType.Get("Timespinner.PlatformHelper"), true);
 
 		static IEnumerable<Process> GetTimespinnerProcesses()
 		{

@@ -57,8 +57,11 @@ namespace TsRandomizer.Extensions
 				: GameSettingsLoader.FromJson(json);
 		}
 
-		internal static void SetSettings(this GameSave gameSave, SettingCollection settings) =>
+		internal static void SetSettings(this GameSave gameSave, SettingCollection settings)
+		{
+			ExceptionLogger.SetSettingsContext(settings);
 			gameSave.SetValue(SaveFileSettingKey, GameSettingsLoader.ToJson(settings, false));
+		}
 
 		internal static bool HasMeleeOrb(this GameSave gameSave, EInventoryOrbType orbType) => 
 			gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int) orbType);
