@@ -23,7 +23,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		public ArchipelagoItemLocationRandomizer(
 			Seed seed,
-			ItemInfoProvider itemInfoProvider, 
+			ItemInfoProvider itemInfoProvider,
 			ItemUnlockingMap unlockingMap,
 			GameSave saveGame
 		) : base(seed, itemInfoProvider, unlockingMap)
@@ -55,7 +55,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			if (isProgressionOnly)
 				return itemLocations;
 
-			UnlockingMap.SetTeleporterPickupAction(pyramidKeysUnlock);
+			UnlockingMap.SetTeleporterPickupAction(pyramidKeysUnlock, Seed.Options.FastPyramid);
 
 			foreach (var itemLocation in itemLocations)
 			{

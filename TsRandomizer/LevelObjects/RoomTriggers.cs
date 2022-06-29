@@ -30,6 +30,7 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type GlowingFloorEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.EnvironmentPrefabs.L11_Lab.EnvPrefabLabVilete");
 		static readonly Type PedestalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
+		static readonly Type BossDoorEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.BossDoorEvent");
 
 		static RoomTrigger()
 		{
@@ -89,7 +90,7 @@ namespace TsRandomizer.LevelObjects
 					&& level.GameSave.GetSaveBool("IsBossDead_Shapeshift"))
 					SpawnItemDropPickup(level, itemLocation.ItemInfo, 200, 208);
 
-				if(!seedOptions.Inverted && level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
+				if (!seedOptions.Inverted && level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
 					CreateSimpleOneWayWarp(level, 16, 12);
 			}));
 			RoomTriggers.Add(new RoomTrigger(7, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
@@ -269,13 +270,42 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.SetValue("IsGameCleared", true);
 				level.GameSave.SetValue("IsEndingCDCleared", true);
 			}));
+			RoomTriggers.Add(new RoomTrigger(16, 5, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+
+				if (!(seedOptions.FastPyramid || seedOptions.EnterSandman))
+					return;
+
+				var bossDoor = ((Dictionary<int, GameEvent>)level.AsDynamic()._levelEvents).Values
+						.FirstOrDefault(obj => obj.GetType() == BossDoorEventType);
+				if (!seedOptions.EnterSandman)
+				{
+					level.GameSave.DataKeyBools.TryGetValue("IsPrinceKilled", out var isPrinceKilled);
+					level.GameSave.DataKeyBools.TryGetValue("IsTerillisKilled", out var isTerillisKilled);
+					if (!(isPrinceKilled || isTerillisKilled))
+					{
+						bossDoor.AsDynamic()._isLocked = true;
+						bossDoor.AsDynamic()._isDemonLocked = true;
+					}
+				}
+				else
+				{
+					if (!(level.GameSave.HasRelic(EInventoryRelicType.TimespinnerWheel)
+						&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerSpindle)
+						&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear1)
+						&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear2)
+						&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear3)))
+					{
+						bossDoor.AsDynamic()._isLocked = true;
+						bossDoor.AsDynamic()._isDemonLocked = true;
+					}
+				}
+			}));
 			RoomTriggers.Add(new RoomTrigger(16, 21, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Spawn glowing floor event to give a soft-lock exit warp
 				if (((Dictionary<int, NPCBase>)level.AsDynamic()._npcs).Values.Any(npc => npc.GetType() == GlowingFloorEventType)) return;
 				SpawnGlowingFloor(level);
 			}));
-			RoomTriggers.Add(new RoomTrigger(16, 27, (level, itemLocation, seedOptions,  gameSettings, screenManager) =>
-			{
+			RoomTriggers.Add(new RoomTrigger(16, 27, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				if (!level.GameSave.DataKeyStrings.ContainsKey(ArchipelagoItemLocationRandomizer.GameSaveServerKey)) return;
 
 				var forfeitFlags = Client.ForfeitPermissions;
