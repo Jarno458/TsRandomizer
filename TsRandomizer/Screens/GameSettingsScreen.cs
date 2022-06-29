@@ -87,45 +87,48 @@ namespace TsRandomizer.Screens
 			return (GameScreen)Activator.CreateInstance(JournalMenuType, GameSave.DemoSave, gcm, (Action)Noop);
 		}
 
-		object CreateDefaultsMenu()
+		object CreateDefaultsMenu(GameSettingCategoryInfo[] menusToClear, bool isSubmenu)
 		{
-			var defaultsMenu = MenuEntry.Create("Defaults", OnDefaultsSelected).AsTimeSpinnerMenuEntry();
+			var defaultsMenu = MenuEntry.Create("Defaults", () => OnDefaultsSelected(menusToClear, isSubmenu)).AsTimeSpinnerMenuEntry();
 
-			defaultsMenu.AsDynamic().Description = "Restore all values to their defaults";
+			string menuDescription = isSubmenu ? menusToClear[0].Name : "all";
+			defaultsMenu.AsDynamic().Description = $"Restore {menuDescription} settings to their defaults";
 			defaultsMenu.AsDynamic().IsCenterAligned = false;
 
 			return defaultsMenu;
 		}
 
-		void OnDefaultsSelected()
+		void OnDefaultsSelected(GameSettingCategoryInfo[] menusToClear, bool isSubmenu)
 		{
-			if (!IsInGame)
+			// Clear the root menu
+			if (!IsInGame && !isSubmenu)
 			{
-				var defaultSettings = new SettingCollection();
-
-				GameSettingsLoader.WriteSettingsToFile(defaultSettings);
-
-				settings = defaultSettings;
+				settings = new SettingCollection();
 			}
 			else
 			{
-				foreach (var category in SettingCollection.Categories)
+				foreach (var category in menusToClear)
 				{
 					foreach (var settingsFunc in category.SettingsPerCategory)
 					{
 						var setting = settingsFunc(settings);
 
-						if(!setting.CanBeChangedInGame)
+						if(IsInGame && !setting.CanBeChangedInGame)
 							continue;
 
 						setting.SetDefault();
 					}
 				}
-
-				save.SetSettings(settings);
 			}
 
+			if (IsInGame)
+				save.SetSettings(settings);
+			else
+				GameSettingsLoader.WriteSettingsToFile(settings);
+
 			ResetMenu();
+			if (isSubmenu)
+				Dynamic.GoToPreviousMenuCollection();
 		}
 
 		void ResetMenu()
@@ -144,7 +147,7 @@ namespace TsRandomizer.Screens
 				menuEntryList.Add(submenu.AsTimeSpinnerMenuEntry());
 			}
 
-			menuEntryList.Add(CreateDefaultsMenu());
+			menuEntryList.Add(CreateDefaultsMenu(SettingCollection.Categories, false));
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = menuEntryList;
 			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
@@ -173,8 +176,7 @@ namespace TsRandomizer.Screens
 			foreach (var settingFunc in category.SettingsPerCategory)
 				submenu.Add(CreateMenuForSetting(settingFunc(settings)).AsTimeSpinnerMenuEntry());
 
-			// Exclude submenu defaults for now, enable when they don't wipe the current view
-			// submenu.Add(CreateDefaultsMenu(category.Settings));
+			submenu.Add(CreateDefaultsMenu(new GameSettingCategoryInfo[] { category }, true));
 			Dynamic.ChangeMenuCollection(collection, true);
 
 			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);

@@ -10,8 +10,7 @@ Quests are not considered part of the randomizer, and they will not contain any 
 
 When you feel stuck, you can open the minimap and hold X (the key to remove map markers), it will highlight all locations that you can reach which have remaining checks.
 
-For questions / remarks and feedback, feel free to join the #randomizer channel on the official timespinner discord https://discord.gg/CH3cgD6
-
+For questions / remarks and feedback, feel free to join the #randomizer channel on the official timespinner discord https://discord.gg/Timespinner
 # Installation \ Startup
 Download latest TsRandomizer.exe or Linux / Mac zip file from the release page https://github.com/JarnoWesthof/TsRandomizer/releases
 
@@ -99,15 +98,12 @@ There are several settings for randomization of how much damage orbs, spells, an
 ##### I am aware of these issues, but I found them small enough not to fix at this moment
 * Having the Varndagrath collected away will cause the door to close and softlock the player
 * Orb pedestal in the room before Emperor Nuvius always spawns even if you didn't kill him yet
-
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
 * Entering a door backwards with a higher level keycard will permanently open it even when specific keycards are on
 * When Progressive Vertical Movement is enabled, collecting Hairpin/Lightwall/Sash may show a popup with the wrong item
 
 # TODO
 ##### Things I plan on doing in the future
-* Archipelago TODO:
-  * Add option to change credentails of the save
 * Implement skin selection
 
 # Ideas

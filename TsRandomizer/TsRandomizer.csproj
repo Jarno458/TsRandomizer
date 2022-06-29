@@ -110,6 +110,11 @@
     <Compile Include="Drawables\ArchipelagoRepresentation.cs" />
     <Compile Include="Extensions\GameContentManagerExtension.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
+    <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />
+    <Compile Include="LevelObjects\Other\CutsceneCavesPast4.cs" />
+    <Compile Include="LevelObjects\Other\CutsceneCity2.cs" />
+    <Compile Include="LevelObjects\Other\DoorTeleportEvent.cs" />
+    <Compile Include="LevelObjects\Other\CutsceneForest0.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="Randomisation\HintGenerator.cs" />
@@ -119,8 +124,8 @@
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="LevelObjects\TextReplacer.cs" />
     <Compile Include="LevelObjects\Other\MerchantCrowNPC.cs" />
-    <Compile Include="LevelObjects\Other\NightmareBoss.cs" />
-    <Compile Include="Randomisation\ExteralItemLocation.cs" />
+    <Compile Include="LevelObjects\Other\BossEnemy.cs" />
+    <Compile Include="Randomisation\ExternalItemLocation.cs" />
     <Compile Include="Archipelago\Log.cs" />
     <Compile Include="Archipelago\Client.cs" />
     <Compile Include="Archipelago\ItemMap.cs" />
@@ -166,7 +171,6 @@
     <Compile Include="LevelObjects\Other\CurtainDrawbridge.cs" />
     <Compile Include="LevelObjects\ItemManipulator.cs" />
     <Compile Include="LevelObjects\RoomTriggers.cs" />
-    <Compile Include="LevelObjects\ItemManipulators\ShapeshifterBoss.cs" />
     <Compile Include="LevelObjects\ItemManipulators\EnvPrefabCursedCavesCorpse.cs" />
     <Compile Include="LevelObjects\ItemManipulators\RelicKeycardC.cs" />
     <Compile Include="LevelObjects\ItemManipulators\NelisteNpc.cs" />

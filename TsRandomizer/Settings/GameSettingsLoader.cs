@@ -111,6 +111,12 @@ namespace TsRandomizer.Settings
 
 				settings.ShopFill.Value = enumValue;
 			}
+			if (slotData.TryGetValue("BossRando", out var bossRando))
+				settings.BossRando.Value = IsTrue(bossRando);
+			if (slotData.TryGetValue("BossScaling", out var bossScaling))
+				settings.BossScaling.Value = IsTrue(bossScaling);
+			if (slotData.TryGetValue("BossHealing", out var bossHealing))
+				settings.BossHealing.Value = IsTrue(bossHealing);
 
 			if (slotData.TryGetValue("DamageRando", out var damageRando))
 			{
@@ -180,7 +186,55 @@ namespace TsRandomizer.Settings
 
 				settings.LootPool.Value = enumValue;
 			}
+			if (slotData.TryGetValue("Drop Rate Category", out var dropRateCategory))
+			{
+				var value = ToInt(dropRateCategory);
+				string enumValue;
 
+				switch (value)
+				{
+					case 1:
+						enumValue = "Vanilla";
+						break;
+
+					case 2:
+						enumValue = "Random";
+						break;
+
+					case 3:
+						enumValue = "Fixed";
+						break;
+					case 0:
+					default:
+						enumValue = "Tiered";
+						break;
+				}
+
+				settings.DropRateCategory.Value = enumValue;
+			}
+			if (slotData.TryGetValue("DropRate", out var dropRate))
+				settings.DropRate.Value = ToInt(dropRate, 5);
+			if (slotData.TryGetValue("Loot Tier Distro", out var lootTierDistro))
+			{
+				var value = ToInt(lootTierDistro);
+				string enumValue;
+
+				switch (value)
+				{
+					case 1:
+						enumValue = "Full Random";
+						break;
+					case 2:
+						enumValue = "Inverted Weight";
+						break;
+					case 0:
+					default:
+						enumValue = "Default Weight";
+						break;
+				}
+
+				settings.LootTierDistro.Value = enumValue;
+			}
 			if (slotData.TryGetValue("ShowBestiary", out var showBestiary))
 				settings.ShowBestiary.Value = IsTrue(showBestiary);
 

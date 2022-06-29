@@ -1,4 +1,5 @@
 ﻿using System;
+using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.IntermediateObjects;
 
@@ -16,7 +17,7 @@ namespace TsRandomizer.Randomisation
 		public string Name { get; internal set; }
 		public string AreaName { get; internal set; }
 		public bool IsPickedUp { get; internal set; }
-		public Action<ItemLocation> OnPickup { get; set; }
+		public Action<Level> OnPickup { get; set; }
 		public ItemInfo ItemInfo { get; internal set; }
 		public ItemInfo DefaultItem { get; internal set; }
 
@@ -43,7 +44,7 @@ namespace TsRandomizer.Randomisation
 
 		public void SetItem(ItemInfo item) => ItemInfo = item;
 
-		public virtual void SetPickedUp()
+		public virtual void SetPickedUp(Level level)
 		{
 			IsPickedUp = true;
 
@@ -53,7 +54,7 @@ namespace TsRandomizer.Randomisation
 			if (ItemInfo is ProgressiveItemInfo progressiveItemInfo)
 				progressiveItemInfo.Next();
 
-			OnPickup?.Invoke(this);
+			OnPickup?.Invoke(level);
 		}
 
 		public override string ToString() =>

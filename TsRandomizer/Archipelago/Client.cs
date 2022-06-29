@@ -27,6 +27,7 @@ namespace TsRandomizer.Archipelago
 		public static bool IsConnected;
 
 		public static Permissions ForfeitPermissions => session.RoomState.ForfeitPermissions;
+		public static Permissions CollectPermissions => session.RoomState.CollectPermissions;
 
 		public static string ConnectionId => session.ConnectionInfo.Uuid;
 
@@ -242,7 +243,7 @@ namespace TsRandomizer.Archipelago
 		static void UpdateChecksTask(ItemLocationMap itemLocationMap)
 		{
 			var locations = itemLocationMap
-				.Where(l => l.IsPickedUp && !(l is ExteralItemLocation))
+				.Where(l => l.IsPickedUp && !(l is ExternalItemLocation))
 				.Select(l => LocationMap.GetLocationId(l.Key))
 				.ToArray();
 
