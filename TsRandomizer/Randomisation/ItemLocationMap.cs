@@ -150,7 +150,6 @@ namespace TsRandomizer.Randomisation
 				& R.TimespinnerPiece3
 				& R.TimespinnerSpindle
 				& R.TimespinnerWheel;
-			FinalBossKillable = SeedOptions.EnterSandman ? R.Teleport & CompletedTimespinner : UpperLab & CompletedTimespinner;
 
 			//past
 			LeftSideForestCaves =
@@ -194,6 +193,7 @@ namespace TsRandomizer.Randomisation
 			EmperorsTower = UpperLab;
 
 			//pyramid
+			FinalBossKillable = SeedOptions.EnterSandman ? R.Teleport & CompletedTimespinner : UpperLab & CompletedTimespinner;
 			TemporalGyre = MilitaryFortress & R.TimespinnerWheel;
 			LeftPyramid = (SeedOptions.FastPyramid || SeedOptions.EnterSandman)
 				? (Gate)R.Teleport | FinalBossKillable
