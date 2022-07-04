@@ -131,6 +131,7 @@ namespace TsRandomizer.Extensions
 					&& o != EInventoryUseItemType.HistoricalDocuments
 					&& o != EInventoryUseItemType.FoodSynth
 					&& o != EInventoryUseItemType.GalaxyStone
+				        && o != EInventoryUseItemType.PlaceHolderItem1
 					)
 				.ToArray();
 			var equipment =
