@@ -135,9 +135,14 @@ namespace TsRandomizer.LevelObjects
 				SpawnBoss(level, seedOptions, TargetBossId);
 			}));
 			RoomTriggers.Add(new RoomTrigger(1, 0, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
+				// Inverted mode triggers
 				if (!seedOptions.Inverted || level.GameSave.GetSaveBool("TSRandomizerHasTeleportedPlayer")) return;
 
 				level.GameSave.SetValue("TSRandomizerHasTeleportedPlayer", true);
+				level.GameSave.SetValue("HasUsedCityTS", true);
+				level.GameSave.SetCutsceneTriggered("City1_Frame", true);
+				level.GameSave.SetCutsceneTriggered("City2_Spindle", true);
+				level.GameSave.SetCutsceneTriggered("City3_Warp", true);
 				level.GameSave.SetCutsceneTriggered("LakeDesolation1_Entrance", true); // Fixes music when returning to Lake Desolation later
 
 				level.RequestChangeLevel(new LevelChangeRequest { LevelID = 3, RoomID = 28 }); // Waterfall cutscene
