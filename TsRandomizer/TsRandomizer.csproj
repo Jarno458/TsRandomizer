@@ -110,6 +110,7 @@
     <Compile Include="Commands\ConsoleCommand.cs" />
     <Compile Include="Commands\GiveOrbCommand.cs" />
     <Compile Include="Commands\GiveFamiliarCommand.cs" />
+    <Compile Include="Commands\ToggleDeathLinkCommand.cs" />
     <Compile Include="Commands\GiveRelicCommand.cs" />
     <Compile Include="Commands\ScoutCommand.cs" />
     <Compile Include="Commands\GetKeyCommand.cs" />

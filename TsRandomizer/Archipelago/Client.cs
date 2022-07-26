@@ -61,7 +61,7 @@ namespace TsRandomizer.Archipelago
 				session.Socket.PacketReceived += PackageReceived;
 
 				var result = session.TryConnectAndLogin("Timespinner", userName, 
-					ItemsHandlingFlags.IncludeStartingInventory, tags: new [] { "DeathLink" } , password: password);
+					ItemsHandlingFlags.IncludeStartingInventory, tags: new string[0] , password: password);
 
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;
@@ -78,11 +78,6 @@ namespace TsRandomizer.Archipelago
 			{
 				IsConnected = false;
 				cachedConnectionResult = new LoginFailure(e.GetBaseException().Message);
-			}
-			catch (Exception e)
-			{
-				IsConnected = false;
-				cachedConnectionResult = new LoginFailure(e.Message);
 			}
 
 			return cachedConnectionResult;
