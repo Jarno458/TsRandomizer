@@ -211,7 +211,7 @@ namespace TsRandomizer.Archipelago
 				: throw new Exception("itemIdentifier does not map to Archipelago itemId");
 
 
-		public static ItemIdentifier GetItemIdentifier(int itemId) =>
+		public static ItemIdentifier GetItemIdentifier(long itemId) =>
 			MapItemIdToItemItemIdentifier.TryGetValue(itemId, out var key)
 				? key
 				: new ItemIdentifier(EInventoryUseItemType.EssenceCrystal);

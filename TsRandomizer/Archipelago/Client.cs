@@ -33,7 +33,7 @@ namespace TsRandomizer.Archipelago
 
 		public static string SeedString => session.RoomState.Seed;
 
-		public static DeathLinkService GetDeathLinkService() => session.CreateDeathLinkServiceAndEnable();
+		public static DeathLinkService GetDeathLinkService() => session.CreateDeathLinkService();
 
 		public static string GetCurrentPlayerName() => session.Players.GetPlayerAliasAndName(session.ConnectionInfo.Slot);
 
@@ -60,8 +60,8 @@ namespace TsRandomizer.Archipelago
 				session = ArchipelagoSessionFactory.CreateSession(new Uri(serverUrl));
 				session.Socket.PacketReceived += PackageReceived;
 
-				var result = session.TryConnectAndLogin("Timespinner", userName, new Version(0, 3, 0),
-					ItemsHandlingFlags.IncludeStartingInventory, new [] { "DeathLink" } , password: password);
+				var result = session.TryConnectAndLogin("Timespinner", userName, 
+					ItemsHandlingFlags.IncludeStartingInventory, tags: new [] { "DeathLink" } , password: password);
 
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;
@@ -73,6 +73,11 @@ namespace TsRandomizer.Archipelago
 					ScreenManager.Console.AddCommand(new GetKeyCommand());
 #endif
 				}
+			}
+			catch (AggregateException e)
+			{
+				IsConnected = false;
+				cachedConnectionResult = new LoginFailure(e.GetBaseException().Message);
 			}
 			catch (Exception e)
 			{

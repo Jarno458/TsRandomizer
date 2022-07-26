@@ -30,7 +30,9 @@ namespace TsRandomizer.Commands
 				console.AddLine($"Item {l.Item}, Player {l.Player}, Location {l.Location}, Flags {l.Flags}");
 			}
 
-			Client.LocationCheckHelper.ScoutLocationsAsync(OnLocationScouted, int.Parse(parameters[0]));
+			Client.LocationCheckHelper
+				.ScoutLocationsAsync(long.Parse(parameters[0]))
+				.ContinueWith(t => OnLocationScouted(t.Result));
 
 			return true;
 		}

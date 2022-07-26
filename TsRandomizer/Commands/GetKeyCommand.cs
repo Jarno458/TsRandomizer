@@ -21,11 +21,11 @@ namespace TsRandomizer.Commands
 			}
 			else
 			{
-				Client.DataStorage[parameters[0]].GetAsync(v => {
-					if (v.Type == JTokenType.Array)
+				Client.DataStorage[parameters[0]].GetAsync().ContinueWith(v => {
+					if (v.Result.Type == JTokenType.Array)
 					{
 						console.AddLine("[");
-						foreach (var entry in v)
+						foreach (var entry in v.Result)
 							console.AddLine(entry.ToString());
 						console.AddLine("]");
 					}
