@@ -118,6 +118,7 @@
     <Compile Include="Commands\TeleportCommand.cs" />
     <Compile Include="Drawables\ArchipelagoRepresentation.cs" />
     <Compile Include="Extensions\GameContentManagerExtension.cs" />
+    <Compile Include="Extensions\SettingsExtensions.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast4.cs" />

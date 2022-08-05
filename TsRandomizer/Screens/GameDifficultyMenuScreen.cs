@@ -179,6 +179,9 @@ namespace TsRandomizer.Screens
 			fillingMethod = choosenFillingMethod;
 			settings = selectedSettings;
 
+			if (selectedSeed.Options.Tournament)
+				settings.EnforceTournamentSettings();
+
 			seedRepresentation.SetSeed(selectedSeed);
 
 			SetSelectedMenuItemByIndex(2);
