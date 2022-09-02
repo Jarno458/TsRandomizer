@@ -40,6 +40,8 @@ namespace TsRandomizer.LevelObjects.Other
 		bool saveHasRun;
 		bool warpHasRun;
 		bool isRandomized;
+		int lastWarpLevel;
+		int lastWarpRoom;
 		BossAttributes currentBoss;
 		BossAttributes vanillaBoss;
 
@@ -60,6 +62,8 @@ namespace TsRandomizer.LevelObjects.Other
 				else if (Dynamic._isViletianEmperor)
 					argument = 1;
 			}
+			lastWarpLevel = Level.GameSave.LastWarpLevel;
+			lastWarpRoom = Level.GameSave.LastWarpRoom;
 
 			var bestiaryEntry = Level.GCM.Bestiary.GetEntry(TypedObject.EnemyType, argument);
 			int bossId = bestiaryEntry.Index;
@@ -178,6 +182,9 @@ namespace TsRandomizer.LevelObjects.Other
 			Level.JukeBox.StopSong();
 			if (Level.GameSave.GetSettings().BossHealing.Value)
 				LevelReflected.FullyHealPlayer();
+
+			Level.GameSave.LastWarpLevel = lastWarpLevel;
+			Level.GameSave.LastWarpRoom = lastWarpRoom;
 
 			// Cause Time break
 			if (vanillaBoss.ReturnRoom.LevelId == 15 && currentBoss.Index != (int)EBossID.Nightmare)
