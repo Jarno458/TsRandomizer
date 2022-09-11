@@ -1,4 +1,5 @@
-﻿using Timespinner.GameObjects.BaseClasses;
+﻿using Microsoft.Xna.Framework;
+using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
 
 namespace TsRandomizer.LevelObjects.Other
@@ -29,7 +30,10 @@ namespace TsRandomizer.LevelObjects.Other
 				LevelReflected.SetLevelSaveInt("GyreDungeonSeed", 1); // Warp to Ifrit
 			}
 			else
+			{
 				Dynamic._isUsable = false;
+				Dynamic.SilentKill();
+			}
 		}
 	}
 }
