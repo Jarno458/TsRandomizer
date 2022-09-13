@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Timespinner.GameObjects.BaseClasses;
+﻿using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
 
 namespace TsRandomizer.LevelObjects.Other
