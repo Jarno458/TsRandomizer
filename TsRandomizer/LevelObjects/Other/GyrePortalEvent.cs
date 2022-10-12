@@ -29,7 +29,10 @@ namespace TsRandomizer.LevelObjects.Other
 				LevelReflected.SetLevelSaveInt("GyreDungeonSeed", 1); // Warp to Ifrit
 			}
 			else
+			{
 				Dynamic._isUsable = false;
+				Dynamic.SilentKill();
+			}
 		}
 	}
 }

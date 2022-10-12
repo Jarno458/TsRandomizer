@@ -26,7 +26,9 @@ namespace TsRandomizer.Screens
 		{
 			new Roomkey(5, 5),
 			new Roomkey(8, 13),
-			new Roomkey(9, 7)
+			new Roomkey(9, 7),
+			new Roomkey(14, 4),
+			new Roomkey(14, 5),
 		};
 
 		static readonly Roomkey[] GyreRooms =
@@ -60,7 +62,8 @@ namespace TsRandomizer.Screens
 		static readonly Roomkey[] FalseWarpRooms =
 		{
 			new Roomkey(11, 4), // Lab cabinet
-			new Roomkey(2, 51) // Backer memory room
+			new Roomkey(2, 51), // Backer memory room
+			new Roomkey(10, 0) // Military Hangar
 		};
 
 		ItemLocationMap itemLocations;
@@ -195,7 +198,7 @@ namespace TsRandomizer.Screens
 
 			foreach (var roomkey in FalseWarpRooms)
 				foreach (var block in GetRoom(roomkey).Blocks.Values)
-					block.IsTimespinner = true;
+					block.IsBoss = true;
 		}
 
 		public override void Update(GameTime gameTime, InputState input)

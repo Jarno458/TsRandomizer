@@ -445,6 +445,9 @@ namespace TsRandomizer.LevelObjects
 				level.JukeBox.PlaySong(Timespinner.GameAbstractions.EBGM.Level14);
 				level.AsDynamic().SetLevelSaveInt("GyreDungeonSeed", (int)level.GameSave.GetSeed().Value.Id); // Set Gyre enemies
 				BestiaryManager.RefreshBossSaveFlags(level); // Reset boss save flags cleared by Gyre portal
+			    // Set last warp room visited to military hangar warp (instead of crash site)
+				level.GameSave.LastWarpLevel = 10;
+				level.GameSave.LastWarpRoom = 12;
 			}));
 			RoomTriggers.Add(new RoomTrigger(14, 23, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				level.JukeBox.StopSong();
@@ -452,7 +455,7 @@ namespace TsRandomizer.LevelObjects
 				{
 					LevelID = 10,
 					RoomID = 0,
-					IsUsingWarp = true,
+					IsUsingWarp = false,
 					IsUsingWhiteFadeOut = true,
 					FadeInTime = 0.5f,
 					FadeOutTime = 0.25f
