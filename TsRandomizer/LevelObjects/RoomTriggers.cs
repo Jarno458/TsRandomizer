@@ -271,7 +271,7 @@ namespace TsRandomizer.LevelObjects
 				if (!seedOptions.EnterSandman)
 				{
 					// Is time unbroken? Then no door 4 u
-					if (!level.GameSave.HasCutsceneBeenTriggered("Alt2_Win"))
+					if (!level.GameSave.GetSaveBool("IsTimeBroken"))
 					{
 						bossDoor.AsDynamic()._isLocked = true;
 						bossDoor.AsDynamic()._isDemonLocked = true;
