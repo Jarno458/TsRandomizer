@@ -8,7 +8,7 @@ namespace TsRandomizer.Settings.GameSettingObjects
 {
 	public class DamageRandoOverridesSetting : GameSetting<Dictionary<string, OrbDamageOdds>>
 	{
-		private static Dictionary<string, OrbDamageOdds> GetDefaultOrbOdds()
+		internal static Dictionary<string, OrbDamageOdds> GetDefaultOrbOdds()
 		{
 			Dictionary<string, OrbDamageOdds> defaultOdds =
 				new Dictionary<string, OrbDamageOdds>();

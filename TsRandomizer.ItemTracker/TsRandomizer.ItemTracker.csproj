@@ -71,13 +71,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TestVersions\SteamVerison\Timespinner.exe</HintPath>
-      <Private>False</Private>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\Timespinner.exe</HintPath>
     </Reference>
-    <Reference Include="TsRandomizer, Version=0.0.9.13, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="TsRandomizer, Version=0.1.8.1, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TestVersions\SteamVerison\TsRandomizer.exe</HintPath>
-      <Private>False</Private>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\TsRandomizer.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

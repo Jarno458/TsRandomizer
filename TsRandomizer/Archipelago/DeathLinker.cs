@@ -22,6 +22,8 @@ namespace TsRandomizer.Archipelago
 			this.settings = settings;
 
 			service.OnDeathLinkReceived += OnDeathLinkReceived;
+
+			service.EnableDeathLink();
 		}
 
 		void OnDeathLinkReceived(DeathLink deathLink)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Timespinner.GameAbstractions.Saving;
 using TsRandomizer;
 using TsRandomizer.Randomisation;
 using TsRandomizer.ReplacementObjects;
@@ -60,7 +61,7 @@ namespace TsRandomizerSeedGeneratah
 
 		static void WriteSeed(GenerationResult result)
 		{
-			var itenLocationMap = Randomizer.Randomize(result.Seed, FillingMethod.Random);
+			var itenLocationMap = Randomizer.Randomize(result.Seed, FillingMethod.Random, GameSave.DemoSave, true);
 
 			var item1 = itenLocationMap[new ItemKey(1, 1, 1528, 144)];
 			var item2 = itenLocationMap[new ItemKey(1, 15, 264, 144)];

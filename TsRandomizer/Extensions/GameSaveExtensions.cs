@@ -52,13 +52,23 @@ namespace TsRandomizer.Extensions
 		{
 			var json = gameSave.GetSaveString(SaveFileSettingKey);
 
-			return string.IsNullOrEmpty(json)
+			var settings = string.IsNullOrEmpty(json)
 				? new SettingCollection()
 				: GameSettingsLoader.FromJson(json);
+
+			var seed = gameSave.GetSeed();
+
+			if (seed.HasValue && seed.Value.Options.Tournament)
+				settings.EnforceTournamentSettings();
+
+			return settings;
 		}
 
-		internal static void SetSettings(this GameSave gameSave, SettingCollection settings) =>
+		internal static void SetSettings(this GameSave gameSave, SettingCollection settings)
+		{
+			ExceptionLogger.SetSettingsContext(settings);
 			gameSave.SetValue(SaveFileSettingKey, GameSettingsLoader.ToJson(settings, false));
+		}
 
 		internal static bool HasMeleeOrb(this GameSave gameSave, EInventoryOrbType orbType) => 
 			gameSave.DataKeyBools.ContainsKey(MeleeOrbPrefixKey + (int) orbType);

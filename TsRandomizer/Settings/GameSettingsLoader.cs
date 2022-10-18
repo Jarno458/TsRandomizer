@@ -41,6 +41,8 @@ namespace TsRandomizer.Settings
 				settings = new SettingCollection();
 			}
 
+			ExceptionLogger.SetSettingsContext(settings);
+
 			WriteSettingsToFile(settings); // write to file to ensure any missing settings are added with defaults
 
 			return settings;
@@ -48,6 +50,8 @@ namespace TsRandomizer.Settings
 
 		public static void WriteSettingsToFile(SettingCollection settings)
 		{
+			ExceptionLogger.SetSettingsContext(settings);
+
 			try
 			{
 				var jsonSettings = ToJson(settings, true);
@@ -247,6 +251,8 @@ namespace TsRandomizer.Settings
 			if (slotData.TryGetValue("DeathLink", out var deathLink))
 				settings.DeathLink.Value = IsTrue(deathLink);
 
+			ExceptionLogger.SetSettingsContext(settings);
+
 			return settings;
 		}
 
@@ -280,6 +286,8 @@ namespace TsRandomizer.Settings
 				{
 					ContractResolver = new JsonSettingsContractResolver()
 				});
+
+				ExceptionLogger.SetSettingsContext(settings);
 
 				return settings;
 			}

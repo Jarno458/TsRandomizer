@@ -15,7 +15,6 @@ namespace TsRandomizer.LevelObjects.Other
 		public CutsceneCavesPast5(Mobile typedObject) : base(typedObject)
 		{
 		}
-		bool hasRun = false;
 
 		protected override void Initialize(SeedOptions options)
 		{

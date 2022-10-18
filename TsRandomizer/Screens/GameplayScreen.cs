@@ -99,7 +99,9 @@ namespace TsRandomizer.Screens
 			{
 				Client.SetStatus(ArchipelagoClientState.ClientPlaying);
 
-				deathLinkService = new DeathLinker(settings, Client.GetDeathLinkService());
+				var service = Client.GetDeathLinkService();
+				deathLinkService = new DeathLinker(settings, service);
+				ScreenManager.Console.AddCommand(new ToggleDeathLinkCommand(service, () => Level));
 			}
 
 #if DEBUG

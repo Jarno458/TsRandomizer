@@ -23,6 +23,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 12, new SeedOptionInfo { Name = "Lore Checks", Description = "Memories in the present and letters in the past contain items." } },
 			{ 1 << 13, new SeedOptionInfo { Name = "Fast Pyramid", Description = "Ancient Pyramid is unlocked by the Twin Pyramid Keys. You still need to break time to open the final boss door." } },
 			{ 1 << 14, new SeedOptionInfo { Name = "Enter Sandman", Description = "Fast Pyramid, but the final boss door opens if you have all 5 Timespinner pieces." } }
+			{ 1 << 15, new SeedOptionInfo { Name = "Tournament", Description = "Forces your settings to be the predefined tournament settings." } }
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)
