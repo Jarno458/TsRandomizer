@@ -94,7 +94,7 @@ namespace TsRandomizer.Commands
 			console.AddLine("Connected!");
 
 			var connected = (LoginSuccessful)connectionResult;
-			var slotDataParser = new SlotDataParser(connected.SlotData, Client.SeedString);
+			var slotDataParser = new SlotDataParser(connected.SlotData, Client.SeedString, connected.Slot);
 
 			IsWaitingForDifficulty = true;
 			Seed = slotDataParser.GetSeed();
