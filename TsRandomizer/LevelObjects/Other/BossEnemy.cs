@@ -40,6 +40,7 @@ namespace TsRandomizer.LevelObjects.Other
 		bool saveHasRun;
 		bool warpHasRun;
 		bool isRandomized;
+		bool nightmareRemoved;
 		int lastWarpLevel;
 		int lastWarpRoom;
 		BossAttributes currentBoss;
@@ -174,6 +175,13 @@ namespace TsRandomizer.LevelObjects.Other
 			if (currentBoss.Index != (int)EBossID.Maw && !eventTypes.Contains(SandStreamerEventType) && !eventTypes.Contains(TimeBreakEventType))
 				return;
 
+			if (!nightmareRemoved)
+			{
+				if (currentBoss.Index == (int)EBossID.Nightmare)
+					Dynamic.SilentKill();
+				nightmareRemoved = true;
+			}
+
 			//abort already triggered scripts
 			((List<ScriptAction>)LevelReflected._activeScripts).Clear();
 			((Queue<DialogueBox>)LevelReflected._dialogueQueue).Clear();
@@ -187,7 +195,7 @@ namespace TsRandomizer.LevelObjects.Other
 			Level.GameSave.LastWarpRoom = lastWarpRoom;
 
 			// Cause Time break
-			if (vanillaBoss.ReturnRoom.LevelId == 15 && currentBoss.Index != (int)EBossID.Nightmare)
+			if (vanillaBoss.ReturnRoom.LevelId == 15)
 			{
 				warpHasRun = true;
 				var enumValue = CutsceneEnumType.GetEnumValue("Alt2_Win");
