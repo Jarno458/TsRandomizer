@@ -386,7 +386,7 @@ namespace TsRandomizer.Randomisation
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.ZelBoss
 					};
-				case (int)EBossID.Sandman: 
+				case (int)EBossID.Sandman:
 					return new BossAttributes
 					{
 						Index = bossId,
@@ -528,7 +528,7 @@ namespace TsRandomizer.Randomisation
 
 			int bossIndex = Array.IndexOf(validBosses, vanillaBossId, 0);
 			if (bossIndex == -1)
-				return GetBossAttributes(level,vanillaBossId);
+				return GetBossAttributes(level, vanillaBossId);
 
 			int replacedBossId = replacedBosses[bossIndex];
 
@@ -585,7 +585,7 @@ namespace TsRandomizer.Randomisation
 			bool isPinkBirdDead = level.GameSave.GetSaveBool("TSRando_IsPinkBirdDead");
 			bool isCantoranDead = level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran") || !level.GameSave.GetSeed().Value.Options.Cantoran;
 			level.GameSave.SetCutsceneTriggered("LakeSerene0_Seykis", isPinkBirdDead);
-			level.GameSave.SetValue("IsCantoranActive",  isPinkBirdDead && !isCantoranDead);
+			level.GameSave.SetValue("IsCantoranActive", isPinkBirdDead && !isCantoranDead);
 
 			level.GameSave.SetValue("IsEndingABCleared", level.GameSave.GetSaveBool("TSRando_IsBossDead_Emperor"));
 			level.GameSave.SetValue("IsLabTSReady", !labTSUsed && level.GameSave.GetSaveBool("TSRando_IsLabTSReady"));
@@ -596,6 +596,13 @@ namespace TsRandomizer.Randomisation
 				level.GameSave.SetValue("IsBossDead_Emperor", false);
 				level.GameSave.SetValue("IsBossDead_Sandman", false);
 				level.GameSave.SetValue("IsBossDead_Nightmare", false);
+			}
+
+
+			if (level.GameSave.GetSaveBool("TSRando_IsPrinceDead")
+				|| level.GameSave.GetSaveBool("TSRando_IsTerillisDead"))
+			{
+				level.GameSave.SetValue("IsTimeBroken", true);
 			}
 		}
 
@@ -651,7 +658,7 @@ namespace TsRandomizer.Randomisation
 								MinionAttributes minionInfo = GetMinionAttributes(level, minionId);
 								var minionEntry = bestiary.BestiaryEntries[minionId];
 								minionEntry.VisibleName = minionInfo.VisibleName;
-								minionEntry.HP = (int)((float)vanillaBossInfo.HP/ replacedBossInfo.HP * minionInfo.HP);
+								minionEntry.HP = (int)((float)vanillaBossInfo.HP / replacedBossInfo.HP * minionInfo.HP);
 								minionEntry.TouchDamage = (int)((float)vanillaBossInfo.TouchDamage / replacedBossInfo.TouchDamage * minionInfo.TouchDamage);
 							}
 					}

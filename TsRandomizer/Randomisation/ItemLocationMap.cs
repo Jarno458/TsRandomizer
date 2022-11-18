@@ -23,6 +23,9 @@ namespace TsRandomizer.Randomisation
 		internal Gate ForwardDashDoubleJump;
 		internal Gate LowerLakeDesolationBridge;
 
+		internal Gate CompletedTimespinner;
+		internal Gate FinalBossKillable;
+
 		//past
 		internal Gate LeftSideForestCaves;
 		internal Gate UpperLakeSirine;
@@ -58,6 +61,7 @@ namespace TsRandomizer.Randomisation
 		//pyramid
 		internal Gate TemporalGyre;
 		internal Gate LeftPyramid;
+		internal Gate RightPyramid;
 		internal Gate Nightmare;
 
 		public new ItemLocation this[ItemKey key] => GetItemLocationBasedOnKeyOrRoomKey(key);
@@ -141,11 +145,16 @@ namespace TsRandomizer.Randomisation
 			MultipleSmallJumpsOfNpc = (Gate)(R.TimespinnerWheel | R.UpwardDash);
 			DoubleJumpOfNpc = (R.DoubleJump & R.TimespinnerWheel) | R.UpwardDash;
 			ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
+			CompletedTimespinner = R.TimespinnerPiece1
+				& R.TimespinnerPiece2
+				& R.TimespinnerPiece3
+				& R.TimespinnerSpindle
+				& R.TimespinnerWheel;
 
 			//past
-			LeftSideForestCaves = 
-				(AccessToPast & (R.TimeStop | R.ForwardDash)) 
-				| R.GateLakeSereneRight 
+			LeftSideForestCaves =
+				(AccessToPast & (R.TimeStop | R.ForwardDash))
+				| R.GateLakeSereneRight
 				| R.GateLakeSereneLeft
 				| R.GateCavesOfBanishment & R.Swimming
 				| R.GateMaw & R.DoubleJump & R.Swimming;
@@ -184,11 +193,13 @@ namespace TsRandomizer.Randomisation
 			EmperorsTower = UpperLab;
 
 			//pyramid
+			FinalBossKillable = SeedOptions.EnterSandman ? R.Teleport & CompletedTimespinner : UpperLab & CompletedTimespinner;
 			TemporalGyre = MilitaryFortress & R.TimespinnerWheel;
-			LeftPyramid = UpperLab & (
-				R.TimespinnerWheel & R.TimespinnerSpindle &
-				R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3);
-			Nightmare = LeftPyramid & R.UpwardDash;
+			LeftPyramid = (SeedOptions.FastPyramid || SeedOptions.EnterSandman)
+				? (Gate)R.Teleport | FinalBossKillable
+				: FinalBossKillable;
+			RightPyramid = LeftPyramid & R.UpwardDash;
+			Nightmare = RightPyramid & FinalBossKillable;
 		}
 
 		static int CalculateCapacity(SeedOptions options)
@@ -413,7 +424,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(16, 3, 88, 192), "Ancient Pyramid: Conviction guarded room", ItemProvider.Get(EItemType.MaxHP), LeftPyramid);
 			Add(new ItemKey(16, 22, 200, 192), "Ancient Pyramid: Pit secret room", ItemProvider.Get(EItemType.MaxAura), LeftPyramid & OculusRift);
 			Add(new ItemKey(16, 16, 1512, 144), "Ancient Pyramid: Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), LeftPyramid & OculusRift);
-			Add(new ItemKey(16, 5, 136, 192), "Ancient Pyramid: Nightmare Door chest", ItemProvider.Get(EInventoryEquipmentType.SelenBangle), Nightmare);
+			Add(new ItemKey(16, 5, 136, 192), "Ancient Pyramid: Nightmare Door chest", ItemProvider.Get(EInventoryEquipmentType.SelenBangle), RightPyramid);
 		}
 
 		void AddGyreItemLocations()

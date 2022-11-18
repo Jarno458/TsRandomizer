@@ -25,7 +25,9 @@ namespace TsRandomizer
 		public bool GyreArchives => (Flags & 1 << 10) > 0;
 		public bool Cantoran => (Flags & 1 << 11) > 0;
 		public bool LoreChecks => (Flags & 1 << 12) > 0;
-		public bool Tournament => (Flags & 1 << 13) > 0;
+		public bool FastPyramid => (Flags & 1 << 13) > 0;
+		public bool EnterSandman => (Flags & 1 << 14) > 0;
+		public bool Tournament => (Flags & 1 << 15) > 0;
 
 		//Non visable flags
 		public bool Archipelago => (Flags & 1 << 16) > 0;
@@ -55,7 +57,9 @@ namespace TsRandomizer
 				{"GyreArchives", 1U << 10},
 				{"Cantoran", 1U << 11},
 				{"LoreChecks", 1U << 12},
-				{"Tournament", 1U << 13}
+				{"FastPyramid", 1U << 13},
+				{"EnterSandman", 1U << 14},
+				{"Tournament", 1U << 15}
 			};
 
 			foreach (var kvp in stringToFlagMapping)

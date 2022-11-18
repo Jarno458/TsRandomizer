@@ -84,7 +84,7 @@ namespace TsRandomizer.Randomisation
 		public Requirement[] Split()
 		{
 			if (IsSingleRequirement())
-				return new[] {this};
+				return new[] { this };
 
 			List<Requirement> flaggedRequirements = new List<Requirement>();
 
