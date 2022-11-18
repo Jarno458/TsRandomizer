@@ -182,7 +182,7 @@ namespace TsRandomizer.Screens
 				{
 					var connected = (LoginSuccessful)result;
 
-					var slotDataParser = new SlotDataParser(connected.SlotData, Client.SeedString);
+					var slotDataParser = new SlotDataParser(connected.SlotData, Client.SeedString, connected.Slot);
 
 					difficultyMenu.SetSeedAndFillingMethod(slotDataParser.GetSeed(), FillingMethod.Archipelago,
 						slotDataParser.GetSettings());

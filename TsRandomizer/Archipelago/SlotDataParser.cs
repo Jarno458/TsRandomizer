@@ -11,11 +11,13 @@ namespace TsRandomizer.Archipelago
 	{
 		readonly Dictionary<string, object> slotData;
 		readonly string seedString;
+		readonly uint slotId;
 
-		public SlotDataParser(Dictionary<string, object> slotData, string seedString)
+		public SlotDataParser(Dictionary<string, object> slotData, string seedString, int slotId)
 		{
 			this.slotData = slotData;
 			this.seedString = seedString;
+			this.slotId = (uint)slotId;
 		}
 
 		public Requirement GetPyramidKeysGate() =>
@@ -42,6 +44,8 @@ namespace TsRandomizer.Archipelago
 
 			if (seedString != null && seedString.Length > 9)
 				uint.TryParse(seedString.Substring(seedString.Length - 9), NumberStyles.Integer, CultureInfo.InvariantCulture, out seedId);
+
+			seedId += (uint)slotId;
 			
 			return new Seed(seedId, new SeedOptions(slotData));
 		}
