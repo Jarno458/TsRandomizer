@@ -62,7 +62,7 @@ namespace TsRandomizer.Archipelago
 				session.MessageLog.OnMessageReceived += OnMessageReceived;
 
 				var result = session.TryConnectAndLogin("Timespinner", userName, 
-					ItemsHandlingFlags.IncludeStartingInventory, tags: new string[0] , password: password);
+					ItemsHandlingFlags.IncludeStartingInventory, password: password);
 
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;
