@@ -8,10 +8,11 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
-using Microsoft.Xna.Framework;
 using TsRandomizer.Commands;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
+using XnaColor = Microsoft.Xna.Framework.Color;
+using MessagePartColor = Archipelago.MultiClient.Net.Models.Color;
 
 namespace TsRandomizer.Archipelago
 {
@@ -124,7 +125,7 @@ namespace TsRandomizer.Archipelago
 			}
 		}
 
-		static Color FromDrawingColor(System.Drawing.Color drawingColor) => new Color(drawingColor.R, drawingColor.G, drawingColor.B, drawingColor.A);
+		static XnaColor FromDrawingColor(MessagePartColor drawingColor) => new XnaColor(drawingColor.R, drawingColor.G, drawingColor.B, 255);
 
 		static void SendPacket(ArchipelagoPacketBase packet) => session?.Socket?.SendPacket(packet);
 
