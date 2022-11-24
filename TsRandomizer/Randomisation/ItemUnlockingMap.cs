@@ -113,7 +113,7 @@ namespace TsRandomizer.Randomisation
 			unlockingSpecification.Unlocks = selectedGate.Gate;
 		}
 
-		public void SetTeleporterPickupAction(R requirement, bool isFastPyramid)
+		public void SetTeleporterPickupAction(R requirement, SeedOptions seedOptions)
 		{
 			var selectedGate = PresentTeleporterGates
 				.Union(PastTeleporterGates)
@@ -123,7 +123,8 @@ namespace TsRandomizer.Randomisation
 
 			unlockingSpecification.OnPickup = level => {
 				UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
-				if (isFastPyramid) UnlockFirstPyramidPortal(level);
+
+				if (seedOptions.EnterSandman) UnlockFirstPyramidPortal(level);
 			};
 			unlockingSpecification.Unlocks = selectedGate.Gate;
 		}
