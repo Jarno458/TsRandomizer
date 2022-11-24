@@ -106,7 +106,9 @@ namespace TsRandomizer.Randomisation
 
 			unlockingSpecification.OnPickup = level => {
 				UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
-				if (options.FastPyramid || options.EnterSandman) UnlockFirstPyramidPortal(level);
+
+				if (options.EnterSandman) 
+					UnlockFirstPyramidPortal(level);
 			};
 			unlockingSpecification.Unlocks = selectedGate.Gate;
 		}

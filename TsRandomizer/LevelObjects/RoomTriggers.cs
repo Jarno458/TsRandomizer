@@ -39,7 +39,6 @@ namespace TsRandomizer.LevelObjects
 		static readonly Type BossDoorEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.BossDoorEvent");
 		static readonly Type TeleportEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.TeleportEvent");
 
-
 		static int TargetBossId = -1;
 
 		static void SpawnBoss(Level level, SeedOptions seedOptions, int vanillaBossId)
@@ -265,7 +264,7 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.SetValue("TSRando_IsBossDead_Sandman", false);
 				level.GameSave.SetValue("TSRando_IsBossDead_Nightmare", false);
 
-				if (!(seedOptions.FastPyramid || seedOptions.EnterSandman))
+				if (!seedOptions.EnterSandman)
 					return;
 
 				var bossDoor = ((Dictionary<int, GameEvent>)level.AsDynamic()._levelEvents).Values
@@ -273,29 +272,18 @@ namespace TsRandomizer.LevelObjects
 				var bossTeleportEvent = ((Dictionary<int, GameEvent>)level.AsDynamic()._levelEvents).Values
 						.Where(obj => obj.GetType() == TeleportEventType)
 						.Single(te => te.AsDynamic().Direction == EDirection.West);
-				if (!seedOptions.EnterSandman)
+				
+				if (!(level.GameSave.HasRelic(EInventoryRelicType.TimespinnerWheel)
+					&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerSpindle)
+					&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear1)
+					&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear2)
+					&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear3)))
 				{
-					// Is time unbroken? Then no door 4 u
-					if (!level.GameSave.GetSaveBool("IsTimeBroken"))
-					{
-						bossDoor.AsDynamic()._isLocked = true;
-						bossDoor.AsDynamic()._isDemonLocked = true;
-						bossTeleportEvent.SilentKill();
-					}
+					bossDoor.AsDynamic()._isLocked = true;
+					bossDoor.AsDynamic()._isDemonLocked = true;
+					bossTeleportEvent.SilentKill();
 				}
-				else
-				{
-					if (!(level.GameSave.HasRelic(EInventoryRelicType.TimespinnerWheel)
-						&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerSpindle)
-						&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear1)
-						&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear2)
-						&& level.GameSave.HasRelic(EInventoryRelicType.TimespinnerGear3)))
-					{
-						bossDoor.AsDynamic()._isLocked = true;
-						bossDoor.AsDynamic()._isDemonLocked = true;
-						bossTeleportEvent.SilentKill();
-					}
-				}
+				
 			}));
 			RoomTriggers.Add(new RoomTrigger(16, 26, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Nightmare

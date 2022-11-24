@@ -23,9 +23,6 @@ namespace TsRandomizer.Randomisation
 		internal Gate ForwardDashDoubleJump;
 		internal Gate LowerLakeDesolationBridge;
 
-		internal Gate CompletedTimespinner;
-		internal Gate FinalBossKillable;
-
 		//past
 		internal Gate LeftSideForestCaves;
 		internal Gate UpperLakeSirine;
@@ -60,6 +57,7 @@ namespace TsRandomizer.Randomisation
 		internal Gate EmperorsTower;
 		//pyramid
 		internal Gate TemporalGyre;
+		internal Gate PyramidEntrance;
 		internal Gate LeftPyramid;
 		internal Gate RightPyramid;
 		internal Gate Nightmare;
@@ -145,11 +143,6 @@ namespace TsRandomizer.Randomisation
 			MultipleSmallJumpsOfNpc = (Gate)(R.TimespinnerWheel | R.UpwardDash);
 			DoubleJumpOfNpc = (R.DoubleJump & R.TimespinnerWheel) | R.UpwardDash;
 			ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
-			CompletedTimespinner = R.TimespinnerPiece1
-				& R.TimespinnerPiece2
-				& R.TimespinnerPiece3
-				& R.TimespinnerSpindle
-				& R.TimespinnerWheel;
 
 			//past
 			LeftSideForestCaves =
@@ -193,13 +186,12 @@ namespace TsRandomizer.Randomisation
 			EmperorsTower = UpperLab;
 
 			//pyramid
-			FinalBossKillable = SeedOptions.EnterSandman ? R.Teleport & CompletedTimespinner : UpperLab & CompletedTimespinner;
+			var completeTimespinner = R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3 & R.TimespinnerSpindle & R.TimespinnerWheel;
 			TemporalGyre = MilitaryFortress & R.TimespinnerWheel;
-			LeftPyramid = (SeedOptions.FastPyramid || SeedOptions.EnterSandman)
-				? (Gate)R.Teleport | FinalBossKillable
-				: FinalBossKillable;
+			PyramidEntrance = SeedOptions.EnterSandman ? (Gate)R.Teleport : (UpperLab & completeTimespinner);
+			LeftPyramid = PyramidEntrance & R.DoubleJump;
 			RightPyramid = LeftPyramid & R.UpwardDash;
-			Nightmare = RightPyramid & FinalBossKillable;
+			Nightmare = RightPyramid & completeTimespinner;
 		}
 
 		static int CalculateCapacity(SeedOptions options)
@@ -420,7 +412,7 @@ namespace TsRandomizer.Randomisation
 		void AddPyramidItemLocations()
 		{
 			areaName = "Ancient Pyramid";
-			Add(new ItemKey(16, 14, 312, 192), "Ancient Pyramid: Why not it's right there", ItemProvider.Get(EItemType.MaxSand), LeftPyramid);
+			Add(new ItemKey(16, 14, 312, 192), "Ancient Pyramid: Why not it's right there", ItemProvider.Get(EItemType.MaxSand), PyramidEntrance);
 			Add(new ItemKey(16, 3, 88, 192), "Ancient Pyramid: Conviction guarded room", ItemProvider.Get(EItemType.MaxHP), LeftPyramid);
 			Add(new ItemKey(16, 22, 200, 192), "Ancient Pyramid: Pit secret room", ItemProvider.Get(EItemType.MaxAura), LeftPyramid & OculusRift);
 			Add(new ItemKey(16, 16, 1512, 144), "Ancient Pyramid: Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), LeftPyramid & OculusRift);

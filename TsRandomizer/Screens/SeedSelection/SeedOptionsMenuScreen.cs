@@ -73,10 +73,8 @@ namespace TsRandomizer.Screens.SeedSelection
 			relicInventory._onSelectedAction = (Action<InventoryRelic>)OnSelected;
 		}
 
-		SeedOptionsCollection GetOptions()
-		{
-			return (SeedOptionsCollection)((object)Dynamic._relicInventory).AsDynamic()._collection;
-		}
+		SeedOptionsCollection GetOptions() => (SeedOptionsCollection)((object)Dynamic._relicInventory).AsDynamic()._collection;
+
 		static void UpdateMenuItems(object menuRelicInventory)
 		{
 			var relicInventory = menuRelicInventory.AsDynamic();
