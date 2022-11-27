@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Archipelago;
@@ -20,13 +21,16 @@ namespace TsRandomizer.Screens
 			Client.Disconnect();
 
 			var randomizerVersion = Assembly.GetExecutingAssembly().GetName().Version;
-			var newVersionString = $"TsRandomizer: v{randomizerVersion}, Timespinner: {Dynamic._versionNumber}";
+			var newVersionString = $"TsRandomizer: {GetVersion(randomizerVersion)}, Timespinner: {Dynamic._versionNumber}";
 
 			new Localizer().ResetStrings();
 			
 			Dynamic._versionNumber = newVersionString;
 			Dynamic.RefreshSizes();
 		}
+
+		static string GetVersion(Version v) =>
+			$"v{v.Major}.{v.Minor}.{v.Build}";
 	}
 }
  

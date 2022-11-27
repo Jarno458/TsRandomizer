@@ -50,7 +50,8 @@ namespace TsRandomizer.Screens.SeedSelection
 				var optionKey = Options.Keys.ElementAt(i);
 				var isActive = collection.Inventory[optionKey].IsActive;
 
-				flags |= (isActive ? 1U : 0U) << i;
+				if (isActive)
+					flags |= (uint)optionKey;
 			}
 
 			return new SeedOptions(flags);
