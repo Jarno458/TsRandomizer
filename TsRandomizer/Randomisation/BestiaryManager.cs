@@ -414,7 +414,7 @@ namespace TsRandomizer.Randomisation
 						VisibleName = "Nightmare",
 						SaveName = "IsBossDead_Nightmare",
 						BossRoom = new RoomItemKey(16, 26),
-						ReturnRoom = new RoomItemKey(16, 27),
+						ReturnRoom = new RoomItemKey(16, 5),
 						Position = new Point(376, 176),
 						HP = 6666,
 						XP = 0,
