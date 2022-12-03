@@ -58,7 +58,6 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 			isRandomized = Level.GameSave.GetSettings().BossRando.Value;
 			isDadFinalBoss = options.DadPercent;
-			isFinalBoss = false;
 			int argument = 0;
 			if (TypedObject.EnemyType == EEnemyTileType.EmperorBoss)
 			{
@@ -77,6 +76,8 @@ namespace TsRandomizer.LevelObjects.Other
 			vanillaBoss = isRandomized 
 				? BestiaryManager.GetVanillaBoss(Level, bossId) 
 				: currentBoss;
+
+			isFinalBoss = ((isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nuvius) || (!isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nightmare));
 
 			if (!isRandomized)
 				return;
@@ -154,9 +155,8 @@ namespace TsRandomizer.LevelObjects.Other
 			if (!clearedHasRun)
 			{
 				// Set AP goal state if this was the final boss
-				if ((isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nuvius) || (!isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nightmare))
+				if (isFinalBoss)
 				{
-					isFinalBoss = true;
 					var fillingMethod = Level.GameSave.GetFillingMethod();
 
 					if (fillingMethod == FillingMethod.Archipelago)
