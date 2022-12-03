@@ -191,7 +191,7 @@ namespace TsRandomizer.Randomisation
 			PyramidEntrance = SeedOptions.EnterSandman ? (Gate)R.Teleport : (UpperLab & completeTimespinner);
 			LeftPyramid = PyramidEntrance & R.DoubleJump;
 			RightPyramid = LeftPyramid & R.UpwardDash;
-			Nightmare = RightPyramid & completeTimespinner;
+			Nightmare = SeedOptions.DadPercent ? EmperorsTower : RightPyramid & completeTimespinner;
 		}
 
 		static int CalculateCapacity(SeedOptions options)
