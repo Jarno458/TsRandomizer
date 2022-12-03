@@ -40,7 +40,9 @@ namespace TsRandomizer.LevelObjects.Other
 		bool saveHasRun;
 		bool warpHasRun;
 		bool isRandomized;
+		bool isDadFinalBoss;
 		bool nightmareRemoved;
+		bool isFinalBoss;
 		int lastWarpLevel;
 		int lastWarpRoom;
 		BossAttributes currentBoss;
@@ -55,6 +57,7 @@ namespace TsRandomizer.LevelObjects.Other
 		protected override void Initialize(SeedOptions options)
 		{
 			isRandomized = Level.GameSave.GetSettings().BossRando.Value;
+			isDadFinalBoss = options.DadPercent;
 			int argument = 0;
 			if (TypedObject.EnemyType == EEnemyTileType.EmperorBoss)
 			{
@@ -73,6 +76,8 @@ namespace TsRandomizer.LevelObjects.Other
 			vanillaBoss = isRandomized 
 				? BestiaryManager.GetVanillaBoss(Level, bossId) 
 				: currentBoss;
+
+			isFinalBoss = ((isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nuvius) || (!isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nightmare));
 
 			if (!isRandomized)
 				return;
@@ -118,10 +123,14 @@ namespace TsRandomizer.LevelObjects.Other
 			EDirection facing = vanillaBoss.IsFacingLeft ? EDirection.East : EDirection.West;
 			Level.PlayCue(ESFX.FoleyWarpGyreOut);
 
+			// Return room is credits if the final boss was defeated
+			RoomItemKey returnRoom = isFinalBoss ? 
+				new RoomItemKey(16, 27) : new RoomItemKey(vanillaBoss.ReturnRoom.LevelId, vanillaBoss.ReturnRoom.RoomId);
+
 			Level.RequestChangeLevel(new LevelChangeRequest
 			{
-				LevelID = vanillaBoss.ReturnRoom.LevelId,
-				RoomID = vanillaBoss.ReturnRoom.RoomId,
+				LevelID = returnRoom.LevelId,
+				RoomID = returnRoom.RoomId,
 				IsUsingWarp = true,
 				IsUsingWhiteFadeOut = true,
 				AdditionalBlackScreenTime = 0.5f,
@@ -143,14 +152,16 @@ namespace TsRandomizer.LevelObjects.Other
 
 			if (warpHasRun || Dynamic._deathScriptTimer <= 0) return;
 
-			if (!clearedHasRun && vanillaBoss.Index == (int)EBossID.Nightmare)
+			if (!clearedHasRun)
 			{
-				// Boss is Nightmare
-				var fillingMethod = Level.GameSave.GetFillingMethod();
+				// Set AP goal state if this was the final boss
+				if (isFinalBoss)
+				{
+					var fillingMethod = Level.GameSave.GetFillingMethod();
 
-				if (fillingMethod == FillingMethod.Archipelago)
-					Client.SetStatus(ArchipelagoClientState.ClientGoal);
-
+					if (fillingMethod == FillingMethod.Archipelago)
+						Client.SetStatus(ArchipelagoClientState.ClientGoal);
+				}
 				clearedHasRun = true;
 			};
 
@@ -162,6 +173,9 @@ namespace TsRandomizer.LevelObjects.Other
 			
 			if (!isRandomized)
 			{
+				// Trigger teleport during Dad Percent to ensure "!" cutscene at game completion
+				if (isDadFinalBoss && (vanillaBoss.Index == (int)EBossID.Nuvius || vanillaBoss.Index == (int)EBossID.Nightmare))
+					TeleportPlayer();
 				warpHasRun = true;
 				return;
 			}
