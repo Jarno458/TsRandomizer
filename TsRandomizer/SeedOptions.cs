@@ -27,7 +27,7 @@ namespace TsRandomizer
 		public bool Tournament => (Flags & 1 << 13) > 0;
 		public bool EnterSandman => (Flags & 1 << 15) > 0;
 		public bool DadPercent => (Flags & 1 << 17) > 0;
-
+		public bool FloodBasement => (Flags & 1 << 18) > 0;
 		//Non visable flags
 		public bool Archipelago => (Flags & 1 << 16) > 0;
 
@@ -59,7 +59,9 @@ namespace TsRandomizer
 				{"Tournament", 1U << 13},
 				//FastPyramid, merged with EnterSandman
 				{"EnterSandman", 1U << 15},
-				{"DadPercent", 1U << 17}
+				//Archipelago, automaticly set above
+				{"DadPercent", 1U << 17},
+				{"FloodBasement", 1U << 18}
 			};
 
 			foreach (var kvp in stringToFlagMapping)

@@ -1,6 +1,5 @@
 ﻿using Archipelago.MultiClient.Net.Enums;
 using TsRandomizer.Archipelago;
-using TsRandomizer.Extensions;
 using TsRandomizer.Screens;
 
 namespace TsRandomizer.RoomTriggers.Triggers
@@ -11,7 +10,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (roomState.Level.GameSave.GetSettings().BossRando.Value)
+			if (roomState.Settings.BossRando.Value || roomState.SeedOptions.DadPercent)
 				RoomTriggerHelper.CreateAndCallCutScene(roomState, "Temple2_End");
 
 			roomState.Level.JukeBox.StopSong();

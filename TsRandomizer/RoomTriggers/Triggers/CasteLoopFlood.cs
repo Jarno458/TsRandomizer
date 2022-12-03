@@ -21,6 +21,9 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	{
 		public override void OnRoomLoad(RoomState state)
 		{
+			if (!state.SeedOptions.FloodBasement)
+				return;
+
 			switch (state.RoomKey.RoomId)
 			{
 				case 3:
