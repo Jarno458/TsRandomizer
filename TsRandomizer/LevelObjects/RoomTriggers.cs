@@ -539,7 +539,7 @@ namespace TsRandomizer.LevelObjects
 			}));
 			RoomTriggers.Add(new RoomTrigger(16, 27, (level, itemLocation, seedOptions, gameSettings, screenManager) => {
 				// Post-Nightmare void
-				if (level.GameSave.GetSettings().BossRando.Value)
+				if (level.GameSave.GetSettings().BossRando.Value || seedOptions.DadPercent)
 				{
 					var enumValue = CutsceneEnumType.GetEnumValue("Temple2_End");
 					CreateAndCallCutsceneMethod.InvokeStatic(enumValue, level, new Point(200, 200));

@@ -173,6 +173,9 @@ namespace TsRandomizer.LevelObjects.Other
 			
 			if (!isRandomized)
 			{
+				// Trigger teleport during Dad Percent to ensure "!" cutscene at game completion
+				if (isDadFinalBoss && (vanillaBoss.Index == (int)EBossID.Nuvius || vanillaBoss.Index == (int)EBossID.Nightmare))
+					TeleportPlayer();
 				warpHasRun = true;
 				return;
 			}
