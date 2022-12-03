@@ -9,9 +9,6 @@
 
 	static class RoomItemKeyExtensions
 	{
-		public static RoomItemKey ToRoomItemKey(this ItemKey key)
-		{
-			return new RoomItemKey(key.LevelId, key.RoomId);
-		}
+		public static RoomItemKey ToRoomItemKey(this ItemKey key) => new RoomItemKey(key.LevelId, key.RoomId);
 	}
 }

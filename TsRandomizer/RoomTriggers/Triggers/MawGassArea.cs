@@ -1,0 +1,15 @@
+﻿namespace TsRandomizer.RoomTriggers.Triggers
+{
+	[RoomTriggerTrigger(8, 6)]
+	[RoomTriggerTrigger(8, 13)]
+	[RoomTriggerTrigger(8, 21)]
+	[RoomTriggerTrigger(8, 33)]
+	class MawGassArea : RoomTrigger
+	{
+		public override void OnRoomLoad(RoomState roomState)
+		{
+			if (roomState.SeedOptions.GasMaw)
+				RoomTriggerHelper.FillRoomWithGas(roomState.Level);
+		}
+	}
+}

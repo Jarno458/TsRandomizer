@@ -12,6 +12,7 @@ using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.ReplacementObjects;
+using TsRandomizer.RoomTriggers;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
 #if DEBUG
@@ -169,7 +170,7 @@ namespace TsRandomizer.LevelObjects
 			Objects.Clear();
 			KnownItemIds.Clear();
 
-			IEnumerable<Animate> eventObjects = levelReflected._levelEvents.Values;
+			IEnumerable<GameEvent> eventObjects = levelReflected._levelEvents.Values;
 			IEnumerable<Animate> npcs = levelReflected.NPCs.Values;
 			IEnumerable<Animate> enemies = levelReflected._enemies.Values;
 
