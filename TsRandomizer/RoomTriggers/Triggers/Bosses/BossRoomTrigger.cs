@@ -37,7 +37,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 			if (roomKey.LevelId == 11 && roomKey.RoomId == 21)
 				return EBossID.Genza;
 			if (roomKey.LevelId == 12 && roomKey.RoomId == 20)
-				return EBossID.Prince;
+				return EBossID.Nuvius;
 			if (roomKey.LevelId == 13 && roomKey.RoomId == 0)
 				return EBossID.Prince;
 			if (roomKey.LevelId == 13 && roomKey.RoomId == 1)
