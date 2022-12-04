@@ -20,7 +20,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 			CreateBossWarp(roomState.Level, (int)GetVanillaBoss(roomState.RoomKey));
 		}
 
-		EBossID GetVanillaBoss(Roomkey roomKey)
+		static EBossID GetVanillaBoss(Roomkey roomKey)
 		{
 			if (roomKey.LevelId == 1 && roomKey.RoomId == 5)
 				return EBossID.FelineSentry;
