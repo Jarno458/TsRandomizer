@@ -8,9 +8,11 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 {
 	abstract class BossRoomTrigger : RoomTrigger
 	{
+		public static int TargetBossId = -1;
+
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			SpawnBoss(roomState.Level, roomState.SeedOptions, RoomTriggerHelper.TargetBossId);
+			SpawnBoss(roomState.Level, roomState.SeedOptions, TargetBossId);
 
 			if (roomState.Level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
@@ -57,7 +59,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 		protected static void SpawnBoss(Level level, SeedOptions seedOptions, int vanillaBossId)
 		{
 			if (!level.GameSave.GetSettings().BossRando.Value 
-				    || RoomTriggerHelper.TargetBossId == -1 
+				    || TargetBossId == -1 
 				    || !level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 
@@ -85,7 +87,8 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 
 			level.JukeBox.StopSong();
 			level.JukeBox.PlaySong(vanillaBossInfo.Song);
-			RoomTriggerHelper.TargetBossId = -1;
+
+			TargetBossId = -1;
 		}
 
 		protected static void CreateBossWarp(Level level, int vanillaBossId)
@@ -99,7 +102,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 			if (level.GameSave.GetSaveBool("TSRando_" + vanillaBossInfo.SaveName))
 				return;
 
-			RoomTriggerHelper.TargetBossId = vanillaBossId;
+			TargetBossId = vanillaBossId;
 
 			level.JukeBox.StopSong();
 			RoomItemKey bossArena = replacedBossInfo.BossRoom;

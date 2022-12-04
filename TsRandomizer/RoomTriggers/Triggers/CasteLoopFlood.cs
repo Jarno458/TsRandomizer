@@ -29,6 +29,19 @@ namespace TsRandomizer.RoomTriggers.Triggers
 				case 3:
 					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 20), state.Level.RoomSize16);
 					break;
+				case 1:
+				case 13:
+					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 4), state.Level.RoomSize16);
+					break;
+				case 9:
+				case 11: 
+				case 38:
+					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 3), state.Level.RoomSize16);
+					break;
+				case 10:
+					var waterLeftOffset = state.Level.GameSave.GetSaveBool("BW_5_10_0") ? 0 : 4;
+					RoomTriggerHelper.PlaceWater(state.Level, new Point(waterLeftOffset, 3), state.Level.RoomSize16);
+					break;
 				default:
 					RoomTriggerHelper.FillRoomWithWater(state.Level);
 					break;

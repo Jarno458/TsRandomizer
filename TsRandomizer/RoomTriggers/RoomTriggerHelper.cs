@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
@@ -11,11 +10,8 @@ using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events;
 using Timespinner.GameObjects.Events.Cutscene;
 using Timespinner.GameObjects.Events.EnvironmentPrefabs;
-using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
-using TsRandomizer.Randomisation;
-using TsRandomizer.Screens;
 
 namespace TsRandomizer.RoomTriggers
 {
@@ -23,86 +19,13 @@ namespace TsRandomizer.RoomTriggers
 	{
 		static readonly Type TransitionWarpEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.TransitionWarpEvent");
 		static readonly Type GyreType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.GyrePortalEvent");
-		static readonly Type NelisteNpcType = TimeSpinnerType.Get("Timespinner.GameObjects.NPCs.AstrologerNPC");
-		static readonly Type YorneNpcType = TimeSpinnerType.Get("Timespinner.GameObjects.NPCs.YorneNPC");
 		static readonly Type GlowingFloorEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.EnvironmentPrefabs.L11_Lab.EnvPrefabLabVilete");
-		static readonly Type PedestalType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type LakeVacuumLevelEffectType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.LevelEffects.LakeVacuumLevelEffect");
 		static readonly Type CirclePlatformType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Platforms.CirclePlatformEvent");
 		static readonly Type MovingPlatformType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Platforms.MovingPlatformEvent");
-		static readonly Type BossDoorEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.BossDoorEvent");
-		static readonly Type TeleportEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.TeleportEvent");
 		static readonly Type BaseLanternType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Lanterns.BaseLantern");
 		static readonly Type CutsceneEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Cutscene.CutsceneBase+ECutsceneType");
 		static readonly MethodInfo CreateAndCallCutsceneMethod = typeof(CutsceneBase).GetPrivateStaticMethod("CreateAndCallCutscene", CutsceneEnumType, typeof(Level), typeof(Point));
-
-
-		public static int TargetBossId = -1;
-
-		public static void SpawnBoss(Level level, SeedOptions seedOptions, int vanillaBossId)
-		{
-			if (!level.GameSave.GetSettings().BossRando.Value || TargetBossId == -1 || !level.GameSave.GetSaveBool("IsFightingBoss"))
-				return;
-
-			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
-			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, vanillaBossId);
-
-			level.JukeBox.StopSong();
-			level.PlayCue(Timespinner.GameAbstractions.ESFX.FoleyWarpGyreIn);
-
-			if (seedOptions.GasMaw && (vanillaBossId == (int)EBossID.Maw || (vanillaBossId == (int)EBossID.FelineSentry && level.GameSave.GetSaveBool("TSRando_IsVileteSaved"))))
-				FillRoomWithGas(level);
-
-			if (replacedBossInfo.ShouldSpawn)
-			{
-				ObjectTileSpecification bossTile = new ObjectTileSpecification();
-				bossTile.Category = EObjectTileCategory.Enemy;
-				bossTile.Layer = ETileLayerType.Objects;
-				bossTile.ObjectID = replacedBossInfo.TileId;
-				bossTile.Argument = replacedBossInfo.Argument;
-				bossTile.IsFlippedHorizontally = !replacedBossInfo.IsFacingLeft;
-
-				var boss = replacedBossInfo.BossType.CreateInstance(false, replacedBossInfo.Position, level, replacedBossInfo.Sprite, -1, bossTile);
-				level.AsDynamic().RequestAddObject(boss);
-			}
-
-			level.JukeBox.StopSong();
-			level.JukeBox.PlaySong(vanillaBossInfo.Song);
-			TargetBossId = -1;
-		}
-
-		public static void CreateBossWarp(Level level, int vanillaBossId)
-		{
-			if (!level.GameSave.GetSettings().BossRando.Value)
-				return;
-
-			BestiaryManager.RefreshBossSaveFlags(level);
-			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
-			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, vanillaBossId);
-			if (level.GameSave.GetSaveBool("TSRando_" + vanillaBossInfo.SaveName))
-				return;
-
-			TargetBossId = vanillaBossId;
-
-			level.JukeBox.StopSong();
-			RoomItemKey bossArena = replacedBossInfo.BossRoom;
-			BestiaryManager.ClearBossSaveFlags(level, replacedBossInfo.ShouldSpawn);
-			level.GameSave.SetValue("IsFightingBoss", true);
-
-			EDirection facing = replacedBossInfo.IsFacingLeft ? EDirection.West : EDirection.East;
-
-			level.RequestChangeLevel(new LevelChangeRequest
-			{
-				LevelID = bossArena.LevelId,
-				RoomID = bossArena.RoomId,
-				IsUsingWarp = true,
-				IsUsingWhiteFadeOut = true,
-				FadeInTime = 0.5f,
-				FadeOutTime = 0.25f,
-				EnterDirection = facing,
-				AdditionalBlackScreenTime = 0.5f,
-			});
-		}
 
 		public static void SpawnItemDropPickup(Level level, ItemInfo itemInfo, int x, int y)
 		{

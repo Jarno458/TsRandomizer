@@ -22,6 +22,9 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
+			if (options.FloodBasement && Level.ID == 5 && Level.RoomID == 10) //castle basement secret
+				Dynamic.IsUnderwater = true;
+
 			if(!options.EyeSpy)
 				return;
 
