@@ -8,7 +8,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			SpawnBoss(roomState.Level, roomState.SeedOptions, RoomTriggerHelper.TargetBossId);
+			SpawnBoss(roomState.Level, roomState.SeedOptions, TargetBossId);
 
 			if (roomState.Level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;

@@ -8,7 +8,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 {
 	abstract class BossRoomTrigger : RoomTrigger
 	{
-		public static int TargetBossId = -1;
+		protected static int TargetBossId = -1;
 
 		public override void OnRoomLoad(RoomState roomState)
 		{

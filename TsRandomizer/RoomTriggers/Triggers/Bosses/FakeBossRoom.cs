@@ -5,6 +5,6 @@
 	class FakeBossRoom : BossRoomTrigger
 	{
 		public override void OnRoomLoad(RoomState roomState) =>
-			SpawnBoss(roomState.Level, roomState.SeedOptions, RoomTriggerHelper.TargetBossId);
+			SpawnBoss(roomState.Level, roomState.SeedOptions, TargetBossId);
 	}
 }
