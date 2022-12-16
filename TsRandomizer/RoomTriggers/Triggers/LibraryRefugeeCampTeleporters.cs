@@ -8,7 +8,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (roomState.SeedOptions.Inverted
+			if (roomState.Seed.Options.Inverted
 			    || roomState.Level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)
 			    || !roomState.Level.GameSave.DataKeyBools.ContainsKey("HasUsedCityTS")) 
 				return;
@@ -22,7 +22,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (roomState.SeedOptions.Inverted 
+			if (roomState.Seed.Options.Inverted 
 			    || roomState.Level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)) 
 				return;
 			

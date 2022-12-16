@@ -6,7 +6,7 @@
 		public override void OnRoomLoad(RoomState roomState)
 		{
 			// Spawn warp after ship crashes
-			if (!roomState.SeedOptions.GyreArchives || !roomState.Level.GameSave.GetSaveBool("IsPastCleared"))
+			if (!roomState.Seed.Options.GyreArchives || !roomState.Level.GameSave.GetSaveBool("IsPastCleared"))
 				return;
 
 			// Military Hangar crash site to Gyre

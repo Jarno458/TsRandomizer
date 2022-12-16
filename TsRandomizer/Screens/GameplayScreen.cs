@@ -32,7 +32,7 @@ namespace TsRandomizer.Screens
 			.Get("Timespinner.GameStateManagement.Screens.MainMenu.TitleBackgroundScreen");
 
 		RoomSpecification currentRoom;
-		SeedOptions seedOptions;
+		Seed seed;
 
 		public SettingCollection Settings;
 
@@ -55,24 +55,22 @@ namespace TsRandomizer.Screens
 			GameContentManager = gameContentManager;
 
 			var saveFile = Save;
-			var seed = saveFile.GetSeed();
+			var saveFileSeed = saveFile.GetSeed();
 			var fillingMethod = saveFile.GetFillingMethod();
 			var settings = saveFile.GetSettings();
 
 			ScreenManager.Log.SetSettings(settings);
 			gameContentManager.UpdateMinimapColors(settings);
 
-			if (!seed.HasValue)
-				seed = Seed.Zero;
+			seed = saveFileSeed ?? Seed.Zero;
 
 			Console.Out.WriteLine($"Seed: {seed}");
 
-			seedOptions = seed.Value.Options;
 			Settings = settings;
 
 			try
 			{
-				ItemLocations = Randomizer.Randomize(seed.Value, fillingMethod, Level.GameSave);
+				ItemLocations = Randomizer.Randomize(seed, fillingMethod, Level.GameSave);
 			}
 			catch (ConnectionFailedException e)
 			{
@@ -84,7 +82,7 @@ namespace TsRandomizer.Screens
 
 			ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(ItemLocations));
 
-			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed.Value);
+			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed);
 
 			ItemManipulator.Initialize(ItemLocations);
 
@@ -95,7 +93,7 @@ namespace TsRandomizer.Screens
 			if (!saveFile.GetSaveBool("IsFightingBoss"))
 				BestiaryManager.RefreshBossSaveFlags(Level);
 
-			if (seedOptions.Archipelago)
+			if (seed.Options.Archipelago)
 			{
 				Client.SetStatus(ArchipelagoClientState.ClientPlaying);
 
@@ -130,7 +128,7 @@ namespace TsRandomizer.Screens
 			if (ItemLocations == null)
 				return;
 
-			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions, Settings, ScreenManager);
+			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seed, Settings, ScreenManager);
 
 			FamiliarManager.Update(Level);
 

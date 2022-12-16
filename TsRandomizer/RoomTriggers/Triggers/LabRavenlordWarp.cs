@@ -8,7 +8,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (!roomState.SeedOptions.GyreArchives || !roomState.Level.GameSave.HasFamiliar(EInventoryFamiliarType.MerchantCrow))
+			if (!roomState.Seed.Options.GyreArchives || !roomState.Level.GameSave.HasFamiliar(EInventoryFamiliarType.MerchantCrow))
 				return;
 
 			// Historical Documents room to Ravenlord

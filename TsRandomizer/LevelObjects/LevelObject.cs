@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Timespinner.Core;
 using Timespinner.Core.Specifications;
@@ -104,14 +105,14 @@ namespace TsRandomizer.LevelObjects
 				if (item.Value.Bbox.Intersects(lunais.Bbox)) item.Value.GetItem(lunais);
 			}
 		}
-
+		
 		public static void Update(
 			Level level, GameplayScreen gameplayScreen, ItemLocationMap itemLocations,
-			bool roomChanged, SeedOptions seedOptions, SettingCollection gameSettings,
+			bool roomChanged, Seed seed, SettingCollection gameSettings,
 			ScreenManager screenManager)
 		{
 			if (roomChanged)
-				OnChangeRoom(level, itemLocations, seedOptions, gameSettings, screenManager);
+				OnChangeRoom(level, itemLocations, seed, gameSettings, screenManager);
 			else
 				itemLocations.Update(level);
 
@@ -122,7 +123,7 @@ namespace TsRandomizer.LevelObjects
 
 			if (newNonItemObjects.Any())
 			{
-				GenerateShadowObjects(itemLocations, newNonItemObjects, seedOptions);
+				GenerateShadowObjects(itemLocations, newNonItemObjects, seed.Options);
 
 				SetMonsterHpTo1(newNonItemObjects.OfType<Alive>());
 			}
@@ -136,7 +137,7 @@ namespace TsRandomizer.LevelObjects
 				.ToArray();
 
 			if (newItems.Any())
-				GenerateShadowObjects(itemLocations, newItems, seedOptions);
+				GenerateShadowObjects(itemLocations, newItems, seed.Options);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
@@ -157,7 +158,7 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.AddConcussion();
 		}
 
-		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, SeedOptions seedOptions,
+		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, Seed seed,
 			SettingCollection gameSettings, ScreenManager screenManager)
 		{
 #if DEBUG
@@ -182,12 +183,12 @@ namespace TsRandomizer.LevelObjects
 				.ToList();
 
 			RoomTrigger.OnChangeRoom(
-				level, seedOptions, gameSettings, itemLocations, screenManager,
+				level, seed, gameSettings, itemLocations, screenManager,
 				levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
-			TextReplacer.OnChangeRoom(level, seedOptions, itemLocations,
+			TextReplacer.OnChangeRoom(level, seed.Options, itemLocations,
 				levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
 			Replaces.ReplaceObjects(level, objects);
-			GenerateShadowObjects(itemLocations, objects, seedOptions);
+			GenerateShadowObjects(itemLocations, objects, seed.Options);
 			SpawnMissingObjects(level, levelReflected, itemLocations);
 		}
 

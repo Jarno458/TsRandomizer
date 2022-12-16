@@ -18,10 +18,8 @@ namespace TsRandomizer
 			Options = options;
 		}
 
-		public static Seed GenerateRandom(SeedOptions options, Random random)
-		{
-			return new Seed((uint)random.Next(), options);
-		}
+		public static Seed GenerateRandom(SeedOptions options, Random random) 
+			=> new Seed((uint)random.Next(), options);
 
 		public static bool TryParse(string seedString, out Seed seed)
 		{
