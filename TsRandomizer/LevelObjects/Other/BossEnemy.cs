@@ -203,7 +203,10 @@ namespace TsRandomizer.LevelObjects.Other
 			Level.JukeBox.StopAllSFX();
 			Level.JukeBox.StopSong();
 			if (Level.GameSave.GetSettings().BossHealing.Value)
+			{
 				LevelReflected.FullyHealPlayer();
+				Level.MainHero.MP = Level.MainHero.MaxMP;
+			}
 
 			Level.GameSave.LastWarpLevel = lastWarpLevel;
 			Level.GameSave.LastWarpRoom = lastWarpRoom;

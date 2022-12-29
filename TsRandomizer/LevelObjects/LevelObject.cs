@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Timespinner.Core;
 using Timespinner.Core.Specifications;
@@ -39,6 +38,7 @@ namespace TsRandomizer.LevelObjects
 		static readonly Dictionary<Type, Type> RegisteredTypes = new Dictionary<Type, Type>(); //ObjectType, EventHandler
 		static readonly Dictionary<EEventTileType, AlwaysSpawnAttribute> AlwaysSpawningEventTypes = new Dictionary<EEventTileType, AlwaysSpawnAttribute>(); //EEventTileType, SpawnerMethod
 		static readonly List<int> KnownItemIds = new List<int>();
+
 
 		public readonly dynamic Dynamic;
 		public readonly Mobile TypedObject;
@@ -129,13 +129,11 @@ namespace TsRandomizer.LevelObjects
 			}
 
 			var itemsDictionary = (Dictionary<int, Item>)levelReflected._items;
-
 			var currentItemIds = itemsDictionary.Keys;
 			var newItems = currentItemIds
 				.Except(KnownItemIds)
 				.Select(i => itemsDictionary[i])
 				.ToArray();
-
 			if (newItems.Any())
 				GenerateShadowObjects(itemLocations, newItems, seed);
 

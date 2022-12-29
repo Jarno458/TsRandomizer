@@ -25,13 +25,6 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			FloodMaw = random.Next() % 4 == 0;
 			FloodPyramid = random.Next() % 4 == 0;
 			FloodBackPyramid = random.Next() % 4 == 0;
-
-			FloodBasementHigh = true;
-			FloodBasement = true;
-			FloodXarion = true;
-			FloodMaw = true;
-			FloodPyramid = true;
-			FloodBackPyramid = true;
 		}
 	}
 	
@@ -81,9 +74,11 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	[RoomTriggerTrigger(8, 36)]
 	[RoomTriggerTrigger(8, 38)]
 	[RoomTriggerTrigger(8, 40)]
-	[RoomTriggerTrigger(8, 44)]
+	[RoomTriggerTrigger(8, 42)]
 	[RoomTriggerTrigger(8, 43)]
+	[RoomTriggerTrigger(8, 44)]
 	[RoomTriggerTrigger(8, 45)]
+	[RoomTriggerTrigger(8, 46)]
 	[RoomTriggerTrigger(8, 47)]
 	[RoomTriggerTrigger(8, 48)]
 	[RoomTriggerTrigger(8, 49)]
@@ -216,6 +211,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					{
 						RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 0), new Point(state.Level.RoomSize16.X - 4, state.Level.RoomSize16.Y));
 						RoomTriggerHelper.PlaceWater(state.Level, new Point(state.Level.RoomSize16.X - 4, 40), state.Level.RoomSize16);
+						RoomTriggerHelper.PlaceWater(state.Level, new Point(state.Level.RoomSize16.X - 4, 0), new Point(state.Level.RoomSize16.X, 10));
 					}
 					break;
 				case 16:
