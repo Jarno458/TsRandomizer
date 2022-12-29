@@ -123,7 +123,7 @@ namespace TsRandomizer.LevelObjects
 
 			if (newNonItemObjects.Any())
 			{
-				GenerateShadowObjects(itemLocations, newNonItemObjects, seed.Options);
+				GenerateShadowObjects(itemLocations, newNonItemObjects, seed);
 
 				SetMonsterHpTo1(newNonItemObjects.OfType<Alive>());
 			}
@@ -137,7 +137,7 @@ namespace TsRandomizer.LevelObjects
 				.ToArray();
 
 			if (newItems.Any())
-				GenerateShadowObjects(itemLocations, newItems, seed.Options);
+				GenerateShadowObjects(itemLocations, newItems, seed);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
@@ -188,11 +188,11 @@ namespace TsRandomizer.LevelObjects
 			TextReplacer.OnChangeRoom(level, seed.Options, itemLocations,
 				levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
 			Replaces.ReplaceObjects(level, objects);
-			GenerateShadowObjects(itemLocations, objects, seed.Options);
+			GenerateShadowObjects(itemLocations, objects, seed);
 			SpawnMissingObjects(level, levelReflected, itemLocations);
 		}
 
-		public static void GenerateShadowObjects(ItemLocationMap itemLocations, IEnumerable<Mobile> objects, SeedOptions options)
+		public static void GenerateShadowObjects(ItemLocationMap itemLocations, IEnumerable<Mobile> objects, Seed seed)
 		{
 			var objectsPerTypes = objects.GroupBy(o => o.GetType());
 
@@ -213,7 +213,7 @@ namespace TsRandomizer.LevelObjects
 						continue;
 
 					Objects.Add(levelObject);
-					levelObject.Initialize(options);
+					levelObject.Initialize(seed);
 				}
 			}
 		}
@@ -300,7 +300,7 @@ namespace TsRandomizer.LevelObjects
 			}
 		}
 
-		protected virtual void Initialize(SeedOptions options)
+		protected virtual void Initialize(Seed seed)
 		{
 		}
 

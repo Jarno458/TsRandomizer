@@ -11,7 +11,7 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 		}
 
-		protected override void Initialize(SeedOptions options)
+		protected override void Initialize(Seed seed)
 		{
 			Dynamic._isDrawbridgeUp = !LevelReflected.GetLevelSaveBool("HasWinchBeenUsed") ? false : LevelReflected.GetLevelSaveBool("IsDrawbridgeRaised");
 			Dynamic._isRotatingClockwise = Dynamic._isDrawbridgeUp;

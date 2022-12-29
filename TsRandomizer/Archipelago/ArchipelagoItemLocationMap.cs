@@ -23,8 +23,8 @@ namespace TsRandomizer.Archipelago
 
 		HashSet<ItemKey> personalLocationItemKeys;
 
-		public ArchipelagoItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, SeedOptions options, int slot)
-			: base(itemInfoProvider, itemUnlockingMap, options)
+		public ArchipelagoItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, Seed seed, int slot)
+			: base(itemInfoProvider, itemUnlockingMap, seed)
 		{
 			this.slot = slot;
 		}

@@ -54,10 +54,10 @@ namespace TsRandomizer.LevelObjects.Other
 		static readonly Type CutsceneEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Cutscene.CutsceneBase+ECutsceneType");
 		static readonly MethodInfo CreateAndCallCutsceneMethod = typeof(CutsceneBase).GetPrivateStaticMethod("CreateAndCallCutscene", CutsceneEnumType, typeof(Level), typeof(Point));
 
-		protected override void Initialize(SeedOptions options)
+		protected override void Initialize(Seed seed)
 		{
 			isRandomized = Level.GameSave.GetSettings().BossRando.Value;
-			isDadFinalBoss = options.DadPercent;
+			isDadFinalBoss = seed.Options.DadPercent;
 			int argument = 0;
 			if (TypedObject.EnemyType == EEnemyTileType.EmperorBoss)
 			{

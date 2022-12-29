@@ -17,7 +17,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 		}
 
-		protected override void Initialize(SeedOptions options)
+		protected override void Initialize(Seed seed)
 		{
 			var gameSettings = Level.GameSave.GetSettings();
 			var fillType = gameSettings.ShopFill.Value;
@@ -37,7 +37,7 @@ namespace TsRandomizer.LevelObjects.Other
 			}
 			if (fillType == "Random")
 			{
-				var random = new Random((int)Level.GameSave.GetSeed().Value.Id);
+				var random = new Random((int)seed.Id);
 				for (var i = 0; i < 8; i++)
 				{
 					var item = Helper.GetAllLoot().SelectRandom(random);

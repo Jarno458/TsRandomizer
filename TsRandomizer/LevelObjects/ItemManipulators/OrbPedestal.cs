@@ -37,13 +37,13 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				menuIcons = Level.GCM.SpMenuIcons;
 		}
 		
-		protected override void Initialize(SeedOptions options)
+		protected override void Initialize(Seed seed)
 		{
 			if (ItemInfo == null)
 				return;
 
 			if (IsPickedUp && (
-					!options.Archipelago
+					!seed.Options.Archipelago
 				    || (
 						ItemLocation.Key != new RoomItemKey(1, 5) //Kitty boss
 						&& ItemLocation.Key != new RoomItemKey(11, 39) //Dynamo Works

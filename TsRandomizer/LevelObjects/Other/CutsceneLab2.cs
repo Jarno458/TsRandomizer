@@ -14,7 +14,7 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 		}
 
-		protected override void Initialize(SeedOptions options)
+		protected override void Initialize(Seed seed)
 		{
 			bool hasTimespinnerPieces = AreTriggerConditionsMet();
 			Level.GameSave.SetValue("TSRando_IsLabTSReady", hasTimespinnerPieces);

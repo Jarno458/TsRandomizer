@@ -168,23 +168,23 @@ namespace TsRandomizer.RoomTriggers
 
 		public static void FillRoomWithWater(Level level) => PlaceWater(level, new Point(0, 0), level.RoomSize16);
 
-		public static void PlaceWater(Level level, Point topLeftTilePos, Point bottomLeftTilePos)
+		public static void PlaceWater(Level level, Point topLeftTilePos, Point bottomRightTilePos)
 		{
 			var topLeft = new WaterFillerEvent(level, new Point(topLeftTilePos.X * 16, topLeftTilePos.Y * 16), topLeftTilePos,
 				-1, true, new ObjectTileSpecification());
-			var bottomLeft = new WaterFillerEvent(level, new Point(bottomLeftTilePos.X * 16, bottomLeftTilePos.Y * 16), bottomLeftTilePos,
+			var bottomRight = new WaterFillerEvent(level, new Point(bottomRightTilePos.X * 16, bottomRightTilePos.Y * 16), bottomRightTilePos,
 				-1, false, new ObjectTileSpecification());
 
 			var dynamicLevel = level.AsDynamic();
 
 			var waterFillerTiles = (List<WaterFillerEvent>)dynamicLevel._waterFillerTiles;
 			waterFillerTiles.Add(topLeft);
-			waterFillerTiles.Add(bottomLeft);
+			waterFillerTiles.Add(bottomRight);
 
 			dynamicLevel.PlaceWaterTiles();
 
 			var tileSize = new Point(16, 16);
-			DestroyLanternsInArea(level, topLeftTilePos * tileSize, bottomLeftTilePos * tileSize);
+			DestroyLanternsInArea(level, topLeftTilePos * tileSize, bottomRightTilePos * tileSize);
 		}
 
 		public static void DestroyLanternsInArea(Level level, Point topLeft, Point bottomRight)
