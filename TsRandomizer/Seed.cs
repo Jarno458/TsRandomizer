@@ -9,6 +9,7 @@ namespace TsRandomizer
 
 		public readonly uint Id;
 		public readonly SeedOptions Options;
+		public readonly RandomFloodsFlags FloodFlags;
 
 		public static Seed Zero = new Seed(0U, SeedOptions.None);
 
@@ -16,6 +17,7 @@ namespace TsRandomizer
 		{
 			Id = id;
 			Options = options;
+			FloodFlags = new RandomFloodsFlags(id, options);
 		}
 
 		public static Seed GenerateRandom(SeedOptions options, Random random) 
@@ -39,5 +41,34 @@ namespace TsRandomizer
 
 		public override string ToString() =>
 			Id.ToString($"X{Length - SeedOptions.Length}") + Options;
+	}
+
+	class RandomFloodsFlags
+	{
+		public bool BasementHigh { get; }
+		public bool Basement { get; }
+		public bool Xarion { get; }
+		public bool Maw { get; }
+		public bool PyramidShaft { get; }
+		public bool BackPyramid { get; }
+		public bool CastleMoat { get; }
+
+		public RandomFloodsFlags(uint seedId, SeedOptions options)
+		{
+			if (!options.FloodBasement)
+				return;
+
+			var random = new Random(~(int)seedId);
+
+			BasementHigh = random.Next() % 2 == 0;
+			Basement = random.Next() % 3 == 0;
+			Xarion = random.Next() % 3 == 0;
+			Maw = random.Next() % 3 == 0;
+			PyramidShaft = random.Next() % 3 == 0;
+			BackPyramid = random.Next() % 3 == 0;
+			CastleMoat = random.Next() % 3 == 0;
+
+			CastleMoat = true;
+		}
 	}
 }

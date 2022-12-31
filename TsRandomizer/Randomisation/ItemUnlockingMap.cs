@@ -105,13 +105,8 @@ namespace TsRandomizer.Randomisation
 			{
 				IEnumerable<TeleporterGate> pastTeleporterGates = PastTeleporterGates;
 
-				if (seed.Options.FloodBasement)
-				{
-					var floodFlags = new RandomFloodsFlags(seed);
-
-					if (floodFlags.FloodMaw)
-						pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
-				}
+				if (seed.FloodFlags.Maw)
+					pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
 
 				teleporterGates = teleporterGates.Union(pastTeleporterGates);
 			}

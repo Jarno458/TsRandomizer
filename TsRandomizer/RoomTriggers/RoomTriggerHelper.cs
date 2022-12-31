@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
+using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
@@ -166,7 +168,7 @@ namespace TsRandomizer.RoomTriggers
 			foreground.DrawColor = new Color(8, 16, 2, 12);
 		}
 
-		public static void FillRoomWithWater(Level level) => PlaceWater(level, new Point(0, 0), level.RoomSize16);
+		public static void FillRoomWithWater(Level level) => PlaceWater(level, new Point(0, -1), level.RoomSize16);
 
 		public static void PlaceWater(Level level, Point topLeftTilePos, Point bottomRightTilePos)
 		{
@@ -202,6 +204,15 @@ namespace TsRandomizer.RoomTriggers
 						gameEvent.SilentKill();
 				}
 			}
+		}
+
+		public static void RemoveWotah(Level level)
+		{
+			var dynamic = level.AsDynamic();
+
+			((Dictionary<Point, WaterTile>)dynamic._waterTiles).Clear();
+			((List<WaterFillerEvent>)dynamic._waterFillerTiles).Clear();
+			((List<WaterTile>)dynamic._updatableWaterTiles).Clear();
 		}
 
 		public static void CreateAndCallCutScene(RoomState roomStat, string cutSceneName)

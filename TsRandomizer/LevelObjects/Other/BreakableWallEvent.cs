@@ -1,9 +1,7 @@
-﻿using System;
-using Timespinner.GameAbstractions.Inventory;
+﻿using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
-using TsRandomizer.RoomTriggers.Triggers;
 using TsRandomizer.Screens;
 
 namespace TsRandomizer.LevelObjects.Other
@@ -21,13 +19,11 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 			options = seed.Options;
 
-			var floodFlags = new RandomFloodsFlags(seed);
-
-			if (floodFlags.FloodBasement && Level.ID == 5 && Level.RoomID == 10) //castle basement secret
+			if (seed.FloodFlags.Basement && Level.ID == 5 && Level.RoomID == 10) //castle basement secret
 				Dynamic.IsUnderwater = true;
-			if (floodFlags.FloodMaw && Level.ID == 8 && Level.RoomID == 9) //maw basement secret
+			if (seed.FloodFlags.Maw && Level.ID == 8 && Level.RoomID == 9) //maw basement secret
 				Dynamic.IsUnderwater = true;
-			if (floodFlags.FloodPyramid && Level.ID == 16 && (Level.RoomID == 8 || Level.RoomID == 22)) //Pyramid shaft first
+			if (seed.FloodFlags.PyramidShaft && Level.ID == 16 && (Level.RoomID == 8 || Level.RoomID == 22)) //Pyramid shaft first
 				Dynamic.IsUnderwater = true;
 		}
 

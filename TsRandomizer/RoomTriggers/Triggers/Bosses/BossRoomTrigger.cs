@@ -71,31 +71,14 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 			level.JukeBox.StopSong();
 			level.PlayCue(Timespinner.GameAbstractions.ESFX.FoleyWarpGyreIn);
 
-			if (state.Seed.Options.GasMaw && (vanillaBossId == (int)EBossID.Maw || (vanillaBossId == (int)EBossID.FelineSentry && level.GameSave.GetSaveBool("TSRando_IsVileteSaved"))))
-				RoomTriggerHelper.FillRoomWithGas(level);
+			if ((state.Seed.Options.GasMaw && vanillaBossId == (int)EBossID.Maw)
+			    || (vanillaBossId == (int)EBossID.FelineSentry && level.GameSave.GetSaveBool("TSRando_IsVileteSaved")))
+					RoomTriggerHelper.FillRoomWithGas(level);
 
-			if (state.Seed.Options.FloodBasement)
-			{
-				var intenral = new Random((int)~state.Seed.Id);
-
-				var floodBasementHigh = state.Seed.Options.FloodBasement && intenral.Next() % 2 == 0;
-				var floodBasement = state.Seed.Options.FloodBasement && intenral.Next() % 4 == 0;
-				//var floodMaw = state.Seed.Options.FloodBasement && intenral.Next() % 4 == 0;
-				//var floodXarion = state.Seed.Options.FloodBasement && intenral.Next() % 4 == 0;
-				//var floodPyramid = state.Seed.Options.FloodBasement && intenral.Next() % 4 == 0;
-				//var floodBackPyramid = state.Seed.Options.FloodBasement && intenral.Next() % 3 == 0;
-
-				var floodXarion = true;
-				var floodMaw = true;
-				var floodBackPyramid = true;
-
-				if (floodMaw && vanillaBossId == (int)EBossID.Maw)
+			if ((state.Seed.FloodFlags.Maw && vanillaBossId == (int)EBossID.Maw)
+			    || (state.Seed.FloodFlags.Xarion && vanillaBossId == (int)EBossID.Xarion)
+			    || (state.Seed.FloodFlags.BackPyramid && (vanillaBossId == (int)EBossID.Sandman || vanillaBossId == (int)EBossID.Nightmare)))
 					RoomTriggerHelper.FillRoomWithWater(level);
-				else if (floodXarion && vanillaBossId == (int)EBossID.Xarion)
-					RoomTriggerHelper.FillRoomWithWater(level);
-				else if (floodBackPyramid && (vanillaBossId == (int)EBossID.Sandman || vanillaBossId == (int)EBossID.Nightmare))
-					RoomTriggerHelper.FillRoomWithWater(level);
-			}
 
 			if (replacedBossInfo.ShouldSpawn)
 			{
