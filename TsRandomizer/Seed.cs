@@ -67,8 +67,6 @@ namespace TsRandomizer
 			PyramidShaft = random.Next() % 3 == 0;
 			BackPyramid = random.Next() % 3 == 0;
 			CastleMoat = random.Next() % 3 == 0;
-
-			CastleMoat = true;
 		}
 	}
 }
