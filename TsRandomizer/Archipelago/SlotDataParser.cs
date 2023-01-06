@@ -45,9 +45,9 @@ namespace TsRandomizer.Archipelago
 			if (seedString != null && seedString.Length > 9)
 				uint.TryParse(seedString.Substring(seedString.Length - 9), NumberStyles.Integer, CultureInfo.InvariantCulture, out seedId);
 
-			seedId += (uint)slotId;
+			seedId += slotId;
 			
-			return new Seed(seedId, new SeedOptions(slotData));
+			return new Seed(seedId, new SeedOptions(slotData), new RandomFloodsFlags(slotData));
 		}
 
 		public SettingCollection GetSettings() =>

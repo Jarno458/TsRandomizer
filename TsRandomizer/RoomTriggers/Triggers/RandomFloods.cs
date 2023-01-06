@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
-using Timespinner.GameAbstractions;
-using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 
@@ -28,7 +25,6 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	[RoomTriggerTrigger(5, 45)]
 
 	//xarion
-	[RoomTriggerTrigger(9, 7)]
 	[RoomTriggerTrigger(9, 8)]
 	[RoomTriggerTrigger(9, 13)]
 	[RoomTriggerTrigger(9, 14)]
@@ -40,7 +36,6 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 	//maw
 	[RoomTriggerTrigger(8, 6)]
-	[RoomTriggerTrigger(8, 7)]
 	[RoomTriggerTrigger(8, 8)]
 	[RoomTriggerTrigger(8, 9)]
 	[RoomTriggerTrigger(8, 12)]
@@ -67,7 +62,6 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 	//pyramid back
 	[RoomTriggerTrigger(16, 1)]
-	[RoomTriggerTrigger(16, 4)]
 	[RoomTriggerTrigger(16, 5)]
 	//pyramid shaft
 	[RoomTriggerTrigger(16, 6)]
@@ -83,23 +77,38 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	[RoomTriggerTrigger(4, 18)]
 	[RoomTriggerTrigger(4, 19)]
 	[RoomTriggerTrigger(4, 20)]
+
+	//castle courtyard
+	[RoomTriggerTrigger(6, 1)]
+
+	//lake desolation
+	[RoomTriggerTrigger(1, 2)]
+	[RoomTriggerTrigger(1, 10)]
+	[RoomTriggerTrigger(1, 23)]
+
 	class RandomFloods : RoomTrigger
 	{
 		public override void OnRoomLoad(RoomState state)
 		{
 			switch (state.RoomKey.LevelId)
 			{
+				case 1 when state.Seed.FloodFlags.LakeDesolation:
+					HandleLakeDesolationFlood(state);
+					break;
 				case 4 when state.Seed.FloodFlags.CastleMoat:
 					HandleCastleMoatFlood(state);
 					break;
 				case 5 when state.Seed.FloodFlags.Basement:
 					HandleCastleLoopFlood(state, state.Seed.FloodFlags.BasementHigh);
 					break;
-				case 9 when state.Seed.FloodFlags.Xarion:
-					HandleXarionFlood(state);
+				case 6 when state.Seed.FloodFlags.CastleCourtyard:
+					HandleCastleCourtyardFlood(state);
 					break;
 				case 8 when state.Seed.FloodFlags.Maw:
 					HandleMawFlood(state);
+					break;
+				case 9 when state.Seed.FloodFlags.Xarion:
+					HandleXarionFlood(state);
 					break;
 				case 16:
 					if (state.Seed.FloodFlags.PyramidShaft)
@@ -130,7 +139,8 @@ namespace TsRandomizer.RoomTriggers.Triggers
 						break;
 					case 10:
 						var waterLeftOffset = state.Level.GameSave.GetSaveBool("BW_5_10_0") ? 0 : 4;
-						RoomTriggerHelper.PlaceWater(state.Level, new Point(waterLeftOffset, 3), state.Level.RoomSize16);
+						RoomTriggerHelper.PlaceWater(state.Level, new Point(waterLeftOffset, 3),
+							state.Level.RoomSize16);
 						break;
 					default:
 						RoomTriggerHelper.FillRoomWithWater(state.Level);
@@ -160,7 +170,8 @@ namespace TsRandomizer.RoomTriggers.Triggers
 						break;
 					case 10:
 						var waterLeftOffset = state.Level.GameSave.GetSaveBool("BW_5_10_0") ? 0 : 4;
-						RoomTriggerHelper.PlaceWater(state.Level, new Point(waterLeftOffset, 7), state.Level.RoomSize16);
+						RoomTriggerHelper.PlaceWater(state.Level, new Point(waterLeftOffset, 7),
+							state.Level.RoomSize16);
 						break;
 					default:
 						RoomTriggerHelper.FillRoomWithWater(state.Level);
@@ -198,16 +209,21 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					}
 					else
 					{
-						RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 0), new Point(state.Level.RoomSize16.X - 4, state.Level.RoomSize16.Y));
-						RoomTriggerHelper.PlaceWater(state.Level, new Point(state.Level.RoomSize16.X - 4, 40), state.Level.RoomSize16);
-						RoomTriggerHelper.PlaceWater(state.Level, new Point(state.Level.RoomSize16.X - 4, 0), new Point(state.Level.RoomSize16.X, 10));
+						RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 0),
+							new Point(state.Level.RoomSize16.X - 4, state.Level.RoomSize16.Y));
+						RoomTriggerHelper.PlaceWater(state.Level, new Point(state.Level.RoomSize16.X - 4, 40),
+							state.Level.RoomSize16);
+						RoomTriggerHelper.PlaceWater(state.Level, new Point(state.Level.RoomSize16.X - 4, 0),
+							new Point(state.Level.RoomSize16.X, 10));
 					}
+
 					break;
 				case 16:
 					RoomTriggerHelper.RemoveWotah(state.Level);
 					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 17), state.Level.RoomSize16);
 
-					state.Level.Foregrounds.RemoveAll(fg => fg.AsDynamic().TextureType == EBackgroundTextureType.Cave_Backdrops1);
+					state.Level.Foregrounds.RemoveAll(fg =>
+						fg.AsDynamic().TextureType == EBackgroundTextureType.Cave_Backdrops1);
 
 					var bgpTiles = (Dictionary<Point, List<Tile>>)state.Level.AsDynamic()._backgroundTiles;
 					foreach (var bgpTileArray in bgpTiles)
@@ -256,13 +272,15 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					var waterRightOffset8 = state.Level.GameSave.GetSaveBool("BW_16_8_0")
 						? state.Level.RoomSize16.X
 						: state.Level.RoomSize16.X - 3;
-					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 0), new Point(waterRightOffset8, state.Level.RoomSize16.Y));
+					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 0),
+						new Point(waterRightOffset8, state.Level.RoomSize16.Y));
 					break;
 				case 22:
 					var waterRightOffset22 = state.Level.GameSave.GetSaveBool("BW_16_22_0")
 						? state.Level.RoomSize16.X
 						: state.Level.RoomSize16.X - 3;
-					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 0), new Point(waterRightOffset22, state.Level.RoomSize16.Y));
+					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 0),
+						new Point(waterRightOffset22, state.Level.RoomSize16.Y));
 					break;
 				case 16:
 				case 20:
@@ -301,7 +319,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					state.Level.Backgrounds.RemoveAll(bg => {
 						var textureType = bg.AsDynamic().TextureType;
 						return textureType == EBackgroundTextureType.Curtain_Backdrops1 ||
-							   textureType == EBackgroundTextureType.Forest_Rocks_Near;
+						       textureType == EBackgroundTextureType.Forest_Rocks_Near;
 					});
 					break;
 				case 19:
@@ -309,6 +327,25 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					break;
 				case 20:
 					RoomTriggerHelper.FillRoomWithWater(state.Level);
+					break;
+			}
+		}
+
+		static void HandleCastleCourtyardFlood(RoomState state) =>
+			RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 7), state.Level.RoomSize16);
+
+		static void HandleLakeDesolationFlood(RoomState state)
+		{
+			switch (state.RoomKey.RoomId)
+			{
+				case 2:
+					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 39), state.Level.RoomSize16);
+					break;
+				case 10:
+					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 11), state.Level.RoomSize16);
+					break;
+				case 23:
+					RoomTriggerHelper.PlaceWater(state.Level, new Point(17, 7), state.Level.RoomSize16);
 					break;
 			}
 		}

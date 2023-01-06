@@ -13,6 +13,9 @@ namespace TsRandomizer.Randomisation
 {
 	class ItemLocationMap : LookupDictionary<ItemKey, ItemLocation>
 	{
+		static R NeedSwimming(bool floodArea) =>
+			floodArea ? R.Swimming : R.None;
+
 		internal R OculusRift;
 		internal R MawGasMask;
 
@@ -123,7 +126,7 @@ namespace TsRandomizer.Randomisation
 				| (R.GateSealedSirensCave & R.CardE)
 				| (R.GateMilitaryGate & (R.CardE | R.CardB));
 
-			LowerLakeDesolationBridge = AccessToLakeDesolation & (R.TimeStop | R.ForwardDash | R.GateKittyBoss | R.GateLeftLibrary);
+			LowerLakeDesolationBridge = AccessToLakeDesolation & (FloodsFlags.LakeDesolation ? R.None : (R.TimeStop | R.ForwardDash));
 
 			AccessToPast = (SeedOptions.Inverted)
 				? (Gate)R.None
@@ -141,7 +144,7 @@ namespace TsRandomizer.Randomisation
 				| R.GateRoyalTowers
 				| R.GateCastleRamparts
 				| R.GateCastleKeep
-				| (MawGasMask & (FloodsFlags.Maw ? R.Swimming : R.None) & (R.GateCavesOfBanishment | R.GateMaw)
+				| (MawGasMask & NeedSwimming(FloodsFlags.Maw) & (R.GateCavesOfBanishment | R.GateMaw)
 				| R.GateCavesOfBanishment & R.Swimming
 				| R.GateMaw & R.DoubleJump & R.Swimming);
 
@@ -159,11 +162,11 @@ namespace TsRandomizer.Randomisation
 			UpperLakeSirine = (LeftSideForestCaves & (R.TimeStop | R.Swimming)) | R.GateLakeSereneLeft;
 			LowerLakeSirine = (LeftSideForestCaves | R.GateLakeSereneLeft) & R.Swimming;
 			LowerCavesOfBanishment = LowerLakeSirine | R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump);
-			LowerCavesOfBanishmentFlooded = LowerCavesOfBanishment & (FloodsFlags.Maw ? R.Swimming : R.None);
+			LowerCavesOfBanishmentFlooded = LowerCavesOfBanishment & NeedSwimming(FloodsFlags.Maw);
 			UpperCavesOfBanishment = AccessToPast;
 			CastleRamparts = AccessToPast;
 			CastleKeep = CastleRamparts;
-			CastleBasement = CastleKeep & (FloodsFlags.Basement ? R.Swimming : R.None);
+			CastleBasement = CastleKeep & NeedSwimming(FloodsFlags.Basement);
 			RoyalTower = (CastleKeep & R.DoubleJump) | R.GateRoyalTowers;
 			MidRoyalTower = RoyalTower & (MultipleSmallJumpsOfNpc | ForwardDashDoubleJump);
 			UpperRoyalTower = MidRoyalTower & R.DoubleJump;
@@ -180,7 +183,7 @@ namespace TsRandomizer.Randomisation
 			UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | ((R.GateMilitaryGate | R.GateSealedSirensCave) & R.CardE);
 			RightSideLibraryElevator = R.CardE & ((MidLibrary & (R.CardC | R.CardB)) | R.GateMilitaryGate | R.GateSealedSirensCave);
 			LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSideLibraryElevator | R.GateMilitaryGate | (R.GateSealedSirensCave & R.CardE);
-			SealedCavesLeft = (AccessToLakeDesolation & R.DoubleJump) | R.GateSealedCaves;
+			SealedCavesLeft = (AccessToLakeDesolation & (FloodsFlags.LakeDesolation ? R.None : R.DoubleJump)) | R.GateSealedCaves;
 			SealedCavesLower = SealedCavesLeft & R.CardA;
 			SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
 			MilitaryFortress = LowerRightSideLibrary & KillMaw & killTwins & killAelana;
@@ -199,7 +202,7 @@ namespace TsRandomizer.Randomisation
 			LeftPyramid = PyramidEntrance & R.DoubleJump;
 			RightPyramid = LeftPyramid 
 				& (FloodsFlags.PyramidShaft ? R.None : R.UpwardDash) 
-				& (FloodsFlags.BackPyramid ? R.Swimming : R.None);
+				& NeedSwimming(FloodsFlags.BackPyramid);
 			Nightmare = RightPyramid & completeTimespinner;
 		}
 
@@ -284,7 +287,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(9, 12, 280, 160), "Sealed Caves (Xarion): Secret room", ItemProvider.Get(EItemType.MaxHP), SealedCavesLower & OculusRift);
 			Add(new ItemKey(9, 48, 104, 160), "Sealed Caves (Xarion): Bottom left room", ItemProvider.Get(EInventoryUseItemType.FutureEther), SealedCavesLower);
 			Add(new ItemKey(9, 15, 248, 192), "Sealed Caves (Xarion): Last chance before Xarion", ItemProvider.Get(EInventoryUseItemType.FutureEther), SealedCavesLower & R.DoubleJump);
-			Add(new RoomItemKey(9, 13), "Sealed Caves (Xarion): Xarion", ItemProvider.Get(EInventoryRelicType.TimespinnerGear3), SealedCavesLower & (FloodsFlags.Xarion ? R.Swimming : R.None));
+			Add(new RoomItemKey(9, 13), "Sealed Caves (Xarion): Xarion", ItemProvider.Get(EInventoryRelicType.TimespinnerGear3), SealedCavesLower & NeedSwimming(FloodsFlags.Xarion));
 			areaName = "Sealed Caves (Sirens)";
 			Add(new ItemKey(9, 5, 88, 496), "Sealed Caves (Sirens): Water hook", ItemProvider.Get(EItemType.MaxSand), SealedCavesSirens & R.Swimming);
 			Add(new ItemKey(9, 3, 1848, 576), "Sealed Caves (Sirens): Siren room underwater right", ItemProvider.Get(EInventoryEquipmentType.BirdStatue), SealedCavesSirens & R.Swimming);
@@ -345,7 +348,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(3, 11, 392, 608), "Forest: Waterfall chest 1", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), AccessToPast & R.Swimming);
 			Add(new ItemKey(3, 5, 184, 192), "Forest: Waterfall chest 2", ItemProvider.Get(EInventoryEquipmentType.Pendulum), AccessToPast & R.Swimming);
 			Add(new ItemKey(3, 2, 584, 368), "Forest: Batcave", ItemProvider.Get(EInventoryUseItemType.Potion), AccessToPast);
-			Add(new ItemKey(4, 20, 264, 160), "Castle Ramparts: In the moat", ItemProvider.Get(EItemType.MaxAura), AccessToPast & (FloodsFlags.CastleMoat ? R.Swimming : R.None));
+			Add(new ItemKey(4, 20, 264, 160), "Castle Ramparts: In the moat", ItemProvider.Get(EItemType.MaxAura), AccessToPast & NeedSwimming(FloodsFlags.CastleMoat));
 			Add(new ItemKey(3, 29, 248, 192), "Forest: Before Serene single bat cave", ItemProvider.Get(EItemType.MaxHP), LeftSideForestCaves);
 			areaName = "Upper Lake Serene";
 			Add(new ItemKey(7, 16, 152, 96), "Lake Serene (Upper): Rat nest", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), UpperLakeSirine);
@@ -404,8 +407,8 @@ namespace TsRandomizer.Randomisation
 			areaName = "Royal Towers";
 			Add(new ItemKey(6, 19, 200, 176), "Royal Towers: Floor secret", ItemProvider.Get(EItemType.MaxAura), RoyalTower & R.DoubleJump & OculusRift);
 			Add(new ItemKey(6, 27, 472, 384), "Royal Towers: Pre-climb gap", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), MidRoyalTower);
-			Add(new ItemKey(6, 1, 1512, 288), "Royal Towers: Long balcony", ItemProvider.Get(EInventoryUseItemType.Potion), MidRoyalTower);
-			Add(new ItemKey(6, 25, 360, 176), "Royal Towers: Past bottom struggle juggle", ItemProvider.Get(EInventoryUseItemType.HiEther), UpperRoyalTower & DoubleJumpOfNpc);
+			Add(new ItemKey(6, 1, 1512, 288), "Royal Towers: Long balcony", ItemProvider.Get(EInventoryUseItemType.Potion), MidRoyalTower & NeedSwimming(FloodsFlags.CastleCourtyard));
+			Add(new ItemKey(6, 25, 360, 176), "Royal Towers: Past bottom struggle juggle", ItemProvider.Get(EInventoryUseItemType.HiEther), UpperRoyalTower & (FloodsFlags.CastleCourtyard ? (Gate)R.None : DoubleJumpOfNpc));
 			Add(new ItemKey(6, 3, 120, 208), "Royal Towers: Bottom struggle juggle", ItemProvider.Get(EInventoryFamiliarType.Demon), UpperRoyalTower & DoubleJumpOfNpc);
 			Add(new ItemKey(6, 17, 200, 112), "Royal Towers: Top struggle juggle", ItemProvider.Get(EItemType.MaxHP), UpperRoyalTower & DoubleJumpOfNpc);
 			Add(new ItemKey(6, 17, 56, 448), "Royal Towers: No struggle required", ItemProvider.Get(EInventoryEquipmentType.VileteCrown), UpperRoyalTower);
@@ -423,8 +426,8 @@ namespace TsRandomizer.Randomisation
 			areaName = "Ancient Pyramid";
 			Add(new ItemKey(16, 14, 312, 192), "Ancient Pyramid: Why not it's right there", ItemProvider.Get(EItemType.MaxSand), PyramidEntrance);
 			Add(new ItemKey(16, 3, 88, 192), "Ancient Pyramid: Conviction guarded room", ItemProvider.Get(EItemType.MaxHP), LeftPyramid);
-			Add(new ItemKey(16, 22, 200, 192), "Ancient Pyramid: Pit secret room", ItemProvider.Get(EItemType.MaxAura), LeftPyramid & OculusRift);
-			Add(new ItemKey(16, 16, 1512, 144), "Ancient Pyramid: Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), LeftPyramid & OculusRift);
+			Add(new ItemKey(16, 22, 200, 192), "Ancient Pyramid: Pit secret room", ItemProvider.Get(EItemType.MaxAura), LeftPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft));
+			Add(new ItemKey(16, 16, 1512, 144), "Ancient Pyramid: Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), LeftPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft));
 			Add(new ItemKey(16, 5, 136, 192), "Ancient Pyramid: Nightmare Door chest", ItemProvider.Get(EInventoryEquipmentType.SelenBangle), RightPyramid);
 		}
 
@@ -491,7 +494,7 @@ namespace TsRandomizer.Randomisation
 			areaName = "Forest";
 			Add(new ItemKey(3, 12, 472, 161), "Forest: Journal - Rats (Lachiem Expedition)", null, AccessToPast);
 			Add(new ItemKey(3, 15, 328, 97), "Forest: Journal - Bat Jump Ledge (Peace Treaty)", null, AccessToPast & (DoubleJumpOfNpc | ForwardDashDoubleJump | (R.TimeStop & R.ForwardDash)));
-			Add(new ItemKey(4, 18, 456, 497), "Forest: Journal - Floating in Moat (Prime Edicts)", null, CastleRamparts & (FloodsFlags.CastleMoat ? R.Swimming : R.None));
+			Add(new ItemKey(4, 18, 456, 497), "Forest: Journal - Floating in Moat (Prime Edicts)", null, CastleRamparts & NeedSwimming(FloodsFlags.CastleMoat));
 			areaName = "Castle Ramparts";
 			Add(new ItemKey(4, 11, 360, 161), "Castle Ramparts: Journal - Archer + Knight (Declaration of Independence)", null, CastleRamparts);
 			areaName = "Castle Keep";
@@ -501,7 +504,7 @@ namespace TsRandomizer.Randomisation
 			areaName = "Royal Towers";
 			Add(new ItemKey(6, 17, 344, 433), "Royal Towers: Journal - Top Struggle Juggle Base (War of the Sisters)", null, UpperRoyalTower);
 			Add(new ItemKey(6, 14, 136, 177), "Royal Towers: Journal - Aelana Boss (Stained Letter)", null, UpperRoyalTower);
-			Add(new ItemKey(6, 25, 152, 145), "Royal Towers: Journal - Near Bottom Struggle Juggle (Mission Findings)", null, UpperRoyalTower & DoubleJumpOfNpc);
+			Add(new ItemKey(6, 25, 152, 145), "Royal Towers: Journal - Near Bottom Struggle Juggle (Mission Findings)", null, UpperRoyalTower & (FloodsFlags.CastleCourtyard ? (Gate)R.None : DoubleJumpOfNpc));
 			areaName = "Caves of Banishment (Maw)";
 			Add(new ItemKey(8, 36, 136, 145), "Caves of Banishment (Maw): Journal - Lower Left Caves (Naivety)", null, LowerCavesOfBanishment);
 		}

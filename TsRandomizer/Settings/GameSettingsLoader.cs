@@ -163,7 +163,7 @@ namespace TsRandomizer.Settings
 			if (settings.DamageRando.Value == "Manual"
 					  && slotData.TryGetValue("DamageRandoOverrides", out var damageRandoOverrides))
 			{
-				Dictionary<string, OrbDamageOdds> overrides = new Dictionary<string, OrbDamageOdds>();
+				var overrides = new Dictionary<string, OrbDamageOdds>();
 				JsonConvert.PopulateObject(damageRandoOverrides.ToString(), overrides);
 				settings.DamageRandoOverrides.Value = FixOrbNames(overrides);
 			}

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
+using Timespinner.Core;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
@@ -187,6 +188,27 @@ namespace TsRandomizer.RoomTriggers
 
 			var tileSize = new Point(16, 16);
 			DestroyLanternsInArea(level, topLeftTilePos * tileSize, bottomRightTilePos * tileSize);
+			
+			if (level.ID == 6) //counteract level specific water handling for level 6
+			{
+				var updatableWaterTiles = (List<WaterTile>)dynamicLevel._updatableWaterTiles;
+				var updatableWaterTilePositions = updatableWaterTiles
+					.Select(t => t.Position16)
+					.ToHashSet();
+
+				var waterTiles = (Dictionary<Point, WaterTile>)dynamicLevel._waterTiles;
+				var stillWaterFrameSource = ((SpriteSheet)waterTiles.Values.First().AsDynamic()._sprite).GetFrameSource(24);
+
+				foreach (var waterTile in waterTiles)
+				{
+					var tile = waterTile.Value.AsDynamic();
+
+					if (updatableWaterTilePositions.Contains(waterTile.Key))
+						tile.CurrentWaterType = EWaterTileType.Bottom;
+					else
+						tile._drawSource = stillWaterFrameSource;
+				}
+			}
 		}
 
 		public static void DestroyLanternsInArea(Level level, Point topLeft, Point bottomRight)

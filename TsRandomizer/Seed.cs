@@ -13,15 +13,18 @@ namespace TsRandomizer
 
 		public static Seed Zero = new Seed(0U, SeedOptions.None);
 
-		public Seed(uint id, SeedOptions options)
+		public Seed(uint id, SeedOptions options, RandomFloodsFlags floodFlags = null)
 		{
 			Id = id;
 			Options = options;
-			FloodFlags = new RandomFloodsFlags(id, options);
+			FloodFlags = floodFlags ?? new RandomFloodsFlags(id, options);
 		}
 
-		public static Seed GenerateRandom(SeedOptions options, Random random) 
-			=> new Seed((uint)random.Next(), options);
+		public static Seed GenerateRandom(SeedOptions options, Random random)
+		{
+			var id = (uint)random.Next();
+			return new Seed(id, options);
+		}
 
 		public static bool TryParse(string seedString, out Seed seed)
 		{
@@ -41,32 +44,5 @@ namespace TsRandomizer
 
 		public override string ToString() =>
 			Id.ToString($"X{Length - SeedOptions.Length}") + Options;
-	}
-
-	class RandomFloodsFlags
-	{
-		public bool BasementHigh { get; }
-		public bool Basement { get; }
-		public bool Xarion { get; }
-		public bool Maw { get; }
-		public bool PyramidShaft { get; }
-		public bool BackPyramid { get; }
-		public bool CastleMoat { get; }
-
-		public RandomFloodsFlags(uint seedId, SeedOptions options)
-		{
-			if (!options.FloodBasement)
-				return;
-
-			var random = new Random(~(int)seedId);
-
-			BasementHigh = random.Next() % 2 == 0;
-			Basement = random.Next() % 3 == 0;
-			Xarion = random.Next() % 3 == 0;
-			Maw = random.Next() % 3 == 0;
-			PyramidShaft = random.Next() % 3 == 0;
-			BackPyramid = random.Next() % 3 == 0;
-			CastleMoat = random.Next() % 3 == 0;
-		}
 	}
 }
