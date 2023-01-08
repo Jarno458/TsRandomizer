@@ -30,10 +30,7 @@ namespace TsRandomizer.Extensions
 				this.spriteBatch = spriteBatch;
 			}
 
-			public void Dispose()
-			{
-				spriteBatch.End();
-			}
+			public void Dispose() => spriteBatch.End();
 		}
 	}
 }

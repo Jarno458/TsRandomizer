@@ -32,9 +32,9 @@ namespace TsRandomizer.Screens
 			.Get("Timespinner.GameStateManagement.Screens.MainMenu.TitleBackgroundScreen");
 
 		RoomSpecification currentRoom;
-		Seed seed;
 
-		public SettingCollection Settings;
+		public Seed Seed { get; private set; }
+		public SettingCollection Settings { get; private set; }
 
 		public GameSave Save => (GameSave)Dynamic.SaveFile;
 		Level Level => (Level)Dynamic._level;
@@ -62,15 +62,15 @@ namespace TsRandomizer.Screens
 			ScreenManager.Log.SetSettings(settings);
 			gameContentManager.UpdateMinimapColors(settings);
 
-			seed = saveFileSeed ?? Seed.Zero;
+			Seed = saveFileSeed ?? Seed.Zero;
 
-			Console.Out.WriteLine($"Seed: {seed}");
+			Console.Out.WriteLine($"Seed: {Seed}");
 
 			Settings = settings;
 
 			try
 			{
-				ItemLocations = Randomizer.Randomize(seed, fillingMethod, Level.GameSave);
+				ItemLocations = Randomizer.Randomize(Seed, fillingMethod, Level.GameSave);
 			}
 			catch (ConnectionFailedException e)
 			{
@@ -82,7 +82,7 @@ namespace TsRandomizer.Screens
 
 			ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(ItemLocations));
 
-			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed);
+			LevelReflected._random = new DeRandomizer(LevelReflected._random, Seed);
 
 			ItemManipulator.Initialize(ItemLocations);
 
@@ -93,7 +93,7 @@ namespace TsRandomizer.Screens
 			if (!saveFile.GetSaveBool("IsFightingBoss"))
 				BestiaryManager.RefreshBossSaveFlags(Level);
 
-			if (seed.Options.Archipelago)
+			if (Seed.Options.Archipelago)
 			{
 				Client.SetStatus(ArchipelagoClientState.ClientPlaying);
 
@@ -128,7 +128,7 @@ namespace TsRandomizer.Screens
 			if (ItemLocations == null)
 				return;
 
-			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seed, Settings, ScreenManager);
+			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), Seed, Settings, ScreenManager);
 
 			FamiliarManager.Update(Level);
 

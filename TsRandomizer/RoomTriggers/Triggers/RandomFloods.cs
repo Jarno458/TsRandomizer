@@ -86,6 +86,13 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	[RoomTriggerTrigger(1, 10)]
 	[RoomTriggerTrigger(1, 23)]
 
+	//lake serene
+	[RoomTriggerTrigger(7, 1)]
+	[RoomTriggerTrigger(7, 2)]
+	[RoomTriggerTrigger(7, 3)]
+	[RoomTriggerTrigger(7, 6)]
+	[RoomTriggerTrigger(7, 10)]
+	[RoomTriggerTrigger(7, 29)]
 	class RandomFloods : RoomTrigger
 	{
 		public override void OnRoomLoad(RoomState state)
@@ -103,6 +110,9 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					break;
 				case 6 when state.Seed.FloodFlags.CastleCourtyard:
 					HandleCastleCourtyardFlood(state);
+					break;
+				case 7:
+					HandleLakeSereneDroughts(state);
 					break;
 				case 8 when state.Seed.FloodFlags.Maw:
 					HandleMawFlood(state);
@@ -346,6 +356,123 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					break;
 				case 23:
 					RoomTriggerHelper.PlaceWater(state.Level, new Point(17, 7), state.Level.RoomSize16);
+					break;
+			}
+		}
+
+		static void HandleLakeSereneDroughts(RoomState state)
+		{
+			RoomTriggerHelper.RemoveWotah(state.Level);
+
+			switch (state.RoomKey.RoomId)
+			{
+				case 1:
+					state.Level.Backgrounds.RemoveAll(bg => {
+						var background = bg.AsDynamic();
+						var textureType = background.TextureType;
+						return textureType == EBackgroundTextureType.Fog
+							|| (textureType == EBackgroundTextureType.L7_Backdrop2
+							    && background._frameSource == new Rectangle(0, 0, 16, 144));
+					});
+
+					foreach (var background in state.Level.Backgrounds)
+					{
+						var bg = background.AsDynamic();
+						var textureType = bg.TextureType;
+
+						if (textureType == EBackgroundTextureType.L7_Backdrop3)
+						{
+							background.Position = new Vector2(background.Position.X, background.Position.Y + 109);
+							bg._isInitialized = false;
+							background.RefreshCameraValues();
+
+						}
+						else if (textureType == EBackgroundTextureType.L7_Backdrop1)
+						{
+							background.Position = new Vector2(background.Position.X, background.Position.Y + 80);
+							bg._isInitialized = false;
+							background.RefreshCameraValues();
+						}
+					}
+
+					var dynamic = state.Level.AsDynamic();
+					dynamic.BackgroundWipeColor = new Color(122, 155, 145);
+					
+					foreach (var enemy in dynamic._enemies.Values)
+						if (enemy.EnemyType == EEnemyTileType.LakeAnemone)
+							enemy.SilentKill();
+
+					var anemone1 = new ObjectTileSpecification
+					{
+						Category = EObjectTileCategory.Enemy,
+						Layer = ETileLayerType.Objects,
+						ObjectID = (int)EEnemyTileType.LakeAnemone,
+						Argument = 1,
+						X = 64,
+						Y = 15
+					};
+					var anemone2 = new ObjectTileSpecification
+					{
+						Category = EObjectTileCategory.Enemy,
+						Layer = ETileLayerType.Objects,
+						ObjectID = (int)EEnemyTileType.LakeAnemone,
+						Argument = 1,
+						X = 87,
+						Y = 16
+					};
+					var anemone3 = new ObjectTileSpecification
+					{
+						Category = EObjectTileCategory.Enemy,
+						Layer = ETileLayerType.Objects,
+						ObjectID = (int)EEnemyTileType.LakeAnemone,
+						Argument = 1,
+						X = 115,
+						Y = 14
+					};
+
+					state.Level.PlaceEvent(anemone1, true);
+					state.Level.PlaceEvent(anemone2, true);
+					state.Level.PlaceEvent(anemone3, true);
+
+					break;
+				case 2:
+					var specification = new ObjectTileSpecification
+					{
+						Category = EObjectTileCategory.Enemy,
+						Layer = ETileLayerType.Objects,
+						ObjectID = (int)EEnemyTileType.KickstarterFoe,
+						Argument = 0,
+						IsFlippedHorizontally = state.Level.MainHero.Position.X > 50,
+						X = state.Level.MainHero.Position.X > 50 ? 58 : 57,
+						Y = 38,
+					};
+
+					state.Level.PlaceEvent(specification, false);
+
+					break;
+				case 3:
+					var specification1 = new ObjectTileSpecification
+					{
+						Category = EObjectTileCategory.Enemy,
+						Layer = ETileLayerType.Objects,
+						ObjectID = (int)EEnemyTileType.ForestBabyCheveux,
+						IsFlippedHorizontally = state.Level.MainHero.Position.X > 50,
+						X = 23,
+						Y = 68,
+					};
+					var specification2 = new ObjectTileSpecification
+					{
+						Category = EObjectTileCategory.Enemy,
+						Layer = ETileLayerType.Objects,
+						ObjectID = (int)EEnemyTileType.ForestBabyCheveux,
+						IsFlippedHorizontally = state.Level.MainHero.Position.X > 50,
+						X = 30,
+						Y = 50,
+					};
+
+					state.Level.PlaceEvent(specification1, false);
+					state.Level.PlaceEvent(specification2, false);
+
 					break;
 			}
 		}

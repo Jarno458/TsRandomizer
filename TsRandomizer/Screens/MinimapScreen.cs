@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Timespinner.Core;
 using Timespinner.Core.Specifications;
 using Timespinner.Core.Specifications.Minimap;
 using Timespinner.GameAbstractions;
@@ -8,7 +11,6 @@ using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
-using TsRandomizer.Settings;
 
 namespace TsRandomizer.Screens
 {
@@ -16,6 +18,10 @@ namespace TsRandomizer.Screens
 	// ReSharper disable once UnusedMember.Global
 	class MinimapScreen : Screen
 	{
+		public const EMinimapRoomColor EMinimapRoomColor_Transparent = (EMinimapRoomColor)21;
+		public const EMinimapRoomColor EMinimapRoomColor_Hinted = (EMinimapRoomColor)24;
+		public const EMinimapRoomColor EMinimapRoomColor_FinalBoss = (EMinimapRoomColor)25;
+
 		static readonly Roomkey[] DisabledCheckpoints =
 		{
 			new Roomkey(2, 20),
@@ -29,6 +35,7 @@ namespace TsRandomizer.Screens
 			new Roomkey(9, 7),
 			new Roomkey(14, 4),
 			new Roomkey(14, 5),
+			new Roomkey(16, 4)
 		};
 
 		static readonly Roomkey[] GyreRooms =
@@ -69,15 +76,24 @@ namespace TsRandomizer.Screens
 		ItemLocationMap itemLocations;
 		bool isShowingAviableLocations;
 
-		readonly SettingCollection settings;
-
 		LookupDictionary<Roomkey, MinimapRoomState> preservedRoomStates;
 
+		List<RoomColor> RoomsWithOverdrawColor = new List<RoomColor>();
+		List<RoomColor> HardcodedOverdrawRooms = new List<RoomColor>(1);
+		
 		MinimapSpecification Minimap => ((object)Dynamic._minimapHud).AsDynamic()._minimap;
+
+		SpriteSheet minimapSpriteSheet;
+		float overlayColorAlpha;
+
+		Seed seed;
 
 		public MinimapScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
-			settings = screenManager.FirstOrDefault<GameplayScreen>().Settings;
+			var gameplayScreen = screenManager.FirstOrDefault<GameplayScreen>();
+
+			minimapSpriteSheet = gameplayScreen.GameContentManager.SpMiniMap;
+			seed = gameplayScreen.Seed;
 		}
 
 		static MinimapSpecification DeepClone(MinimapSpecification spec)
@@ -103,8 +119,7 @@ namespace TsRandomizer.Screens
 						Height = room.Height,
 						Position = room.Position
 					};
-
-
+					
 					foreach (var kvp in room.Blocks)
 					{
 						var point = kvp.Key;
@@ -199,11 +214,28 @@ namespace TsRandomizer.Screens
 			foreach (var roomkey in FalseWarpRooms)
 				foreach (var block in GetRoom(roomkey).Blocks.Values)
 					block.IsBoss = true;
+
+			var finalBossRoomKey = !seed.Options.DadPercent
+				? new Roomkey(12, 20)
+				: new Roomkey(16, 4);
+			var finalBossRoom = GetRoom(finalBossRoomKey);
+
+			MakeSureEraIsVisable(finalBossRoom);
+
+			HardcodedOverdrawRooms.Add(new RoomColor { Color = EMinimapRoomColor_FinalBoss, Room = finalBossRoom });
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
 			var shouldShowItemLocationHints = input.IsPressSecondary(null);
+
+			if (isShowingAviableLocations && shouldShowItemLocationHints)
+			{
+				overlayColorAlpha += 0.025f;
+
+				if (overlayColorAlpha > 0.5)
+					overlayColorAlpha -= 1;
+			}
 
 			if ((isShowingAviableLocations && shouldShowItemLocationHints)
 				|| (!shouldShowItemLocationHints && !isShowingAviableLocations))
@@ -213,13 +245,66 @@ namespace TsRandomizer.Screens
 			{
 				MarkAvailableItemLocations();
 				MarkBasicMapKnowledge();
+				MarkHintedLocationsForOverDraw();
+
 				isShowingAviableLocations = true;
 			}
 			else
 			{
 				ResetMinimap();
+
 				isShowingAviableLocations = false;
+
+				overlayColorAlpha = 0;
 			}
+		}
+
+		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
+		{
+			if (!isShowingAviableLocations)
+				return;
+
+			var zoom = ((object)Dynamic._minimapHud).AsDynamic().Zoom;
+			var viewBlockRectangle = ((object)Dynamic._minimapHud).AsDynamic()._viewBlockRectangle;
+			var mediumDrawTopLeft = ((object)Dynamic._minimapHud).AsDynamic()._mediumDrawTopLeft;
+			var alpha = Math.Abs(overlayColorAlpha);
+
+			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
+			{
+				foreach (var roomWithCustomColor in RoomsWithOverdrawColor.Union(HardcodedOverdrawRooms))
+				{
+					var blocks = roomWithCustomColor.Room.Blocks.ToDictionary(
+							kvp => new Point(kvp.Key.X + roomWithCustomColor.Room.Position.X, kvp.Key.Y + roomWithCustomColor.Room.Position.Y),
+							kvp => kvp.Value);
+
+					float num = zoom * 4;
+					for (int top = viewBlockRectangle.Top; top < viewBlockRectangle.Bottom; ++top)
+					{
+						for (int left = viewBlockRectangle.Left; left < viewBlockRectangle.Right; ++left)
+						{
+							var key = new Point(left, top);
+							if (!blocks.ContainsKey(key))
+								continue;
+
+							var block = blocks[key];
+							if (block.IsSolidWall)
+								continue;
+
+							Vector2 drawPosition = Vector2.Add(mediumDrawTopLeft, new Vector2((left - viewBlockRectangle.X) * num, (top - viewBlockRectangle.Y) * num));
+
+							OverDrawBlock(spriteBatch, drawPosition, block, roomWithCustomColor.Color, zoom, alpha);
+						}
+					}
+				}
+			}
+		}
+
+		void OverDrawBlock(SpriteBatch spriteBatch, Vector2 drawPosition, MinimapBlock block, EMinimapRoomColor color, float zoom, float alpha)
+		{
+			var backupRoomColor = block.RoomColor;
+			block.RoomColor = color;
+			block.Draw(spriteBatch, minimapSpriteSheet, drawPosition, zoom, Color.White, alpha);
+			block.RoomColor = backupRoomColor;
 		}
 
 		public override void Unload() => ResetMinimap();
@@ -238,7 +323,7 @@ namespace TsRandomizer.Screens
 
 				var room = GetRoom(roomKey);
 
-				MakeSureEraIsVisable(visableAreas, room);
+				MakeSureEraIsVisable(room);
 				preservedRoomStates.Add(new MinimapRoomState(roomKey, room));
 
 				foreach (var block in room.Blocks.Values)
@@ -262,7 +347,20 @@ namespace TsRandomizer.Screens
 				}
 			}
 		}
+		
+		void MarkHintedLocationsForOverDraw()
+		{
+			foreach (var itemLocation in itemLocations.Where(l => l.IsHinted && !l.IsPickedUp))
+			{
+				var roomKey = new Roomkey(itemLocation.Key.LevelId, itemLocation.Key.RoomId); //somehow they keys dont match if we use itemLocation.Key directly
+				var room = GetRoom(roomKey);
 
+				MakeSureEraIsVisable(room);
+
+				RoomsWithOverdrawColor.Add(new RoomColor { Room = room, Color = EMinimapRoomColor_Hinted });
+			}
+		}
+		
 		static void MarkBlockAsBossOrTimespinner(MinimapBlock block)
 		{
 			block.RoomColor = EMinimapRoomColor.DotRed;
@@ -297,6 +395,8 @@ namespace TsRandomizer.Screens
 
 		void ResetMinimap()
 		{
+			RoomsWithOverdrawColor.Clear();
+
 			if (preservedRoomStates == null)
 				return;
 
@@ -313,8 +413,10 @@ namespace TsRandomizer.Screens
 			return locations;
 		}
 
-		static void MakeSureEraIsVisable(ICollection<EMinimapEraType> visableAreas, MinimapRoom room)
+		void MakeSureEraIsVisable(MinimapRoom room)
 		{
+			var visableAreas = (List<EMinimapEraType>)Dynamic._availableEras;
+
 			switch (room.DefaultColor)
 			{
 				case EMinimapRoomColor.Blue:
@@ -373,5 +475,11 @@ namespace TsRandomizer.Screens
 				block.IsTransition = isTransition;
 			}
 		}
+	}
+
+	class RoomColor
+	{
+		public MinimapRoom Room { get; set; }
+		public EMinimapRoomColor Color { get; set; }
 	}
 }

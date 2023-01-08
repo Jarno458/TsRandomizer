@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Timespinner.Core;
 using Timespinner.Core.Specifications;
-using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
@@ -146,9 +144,11 @@ namespace TsRandomizer.RoomTriggers
 		public static void SpawnCirclePlatform(Level level, int x, int y, bool isClockwise)
 		{
 			var position = new Point(x, y);
-			ObjectTileSpecification platformTile = new ObjectTileSpecification();
+			var platformTile = new ObjectTileSpecification();
+
 			if (!isClockwise)
 				platformTile.Argument = 1;
+
 			var platform = CirclePlatformType.CreateInstance(false, level, position, -1, platformTile);
 
 			level.AsDynamic().RequestAddObject(platform);
@@ -235,6 +235,10 @@ namespace TsRandomizer.RoomTriggers
 			((Dictionary<Point, WaterTile>)dynamic._waterTiles).Clear();
 			((List<WaterFillerEvent>)dynamic._waterFillerTiles).Clear();
 			((List<WaterTile>)dynamic._updatableWaterTiles).Clear();
+
+			foreach (var enemy in dynamic._enemies.Values)
+				if (enemy.EnemyType == EEnemyTileType.LakeEel)
+					enemy.SilentKill();
 		}
 
 		public static void CreateAndCallCutScene(RoomState roomStat, string cutSceneName)

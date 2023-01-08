@@ -14,6 +14,7 @@ namespace TsRandomizer
 		public bool CastleMoat { get; }
 		public bool CastleCourtyard { get; }
 		public bool LakeDesolation { get; }
+		public bool DryLakeSerene { get; }
 
 		public RandomFloodsFlags(uint seedId, SeedOptions options)
 		{
@@ -31,6 +32,7 @@ namespace TsRandomizer
 			CastleMoat = random.Next() % 3 == 0;
 			CastleCourtyard = random.Next() % 3 == 0;
 			LakeDesolation = random.Next() % 3 == 0;
+			DryLakeSerene = random.Next() % 3 == 0;
 		}
 
 		public RandomFloodsFlags(Dictionary<string, object> slotData)
@@ -43,7 +45,7 @@ namespace TsRandomizer
 			if (slotData.TryGetValue("Xarion", out var xarion))
 				Xarion = IsTrue(xarion);
 			if (slotData.TryGetValue("Maw", out var maw))
-				Xarion = IsTrue(maw);
+				Maw = IsTrue(maw);
 			if (slotData.TryGetValue("PyramidShaft", out var pyramidShaft))
 				PyramidShaft = IsTrue(pyramidShaft);
 			if (slotData.TryGetValue("BackPyramid", out var backPyramid))
@@ -51,9 +53,11 @@ namespace TsRandomizer
 			if (slotData.TryGetValue("CastleMoat", out var castleMoat))
 				CastleMoat = IsTrue(castleMoat);
 			if (slotData.TryGetValue("CastleCourtyard", out var castleCourtyard))
-				CastleMoat = IsTrue(castleCourtyard);
+				CastleCourtyard = IsTrue(castleCourtyard);
 			if (slotData.TryGetValue("LakeDesolation", out var lakeDesolation))
-				CastleMoat = IsTrue(lakeDesolation);
+				LakeDesolation = IsTrue(lakeDesolation);
+			if (slotData.TryGetValue("DryLakeSerene", out var dryLakeSerene))
+				DryLakeSerene = IsTrue(dryLakeSerene);
 		}
 
 		static bool IsTrue(object o)
