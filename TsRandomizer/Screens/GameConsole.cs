@@ -287,7 +287,7 @@ namespace TsRandomizer.Screens
 			var spriteBatch = ScreenManager.SpriteBatch;
 			var gameplayScreenSize = ScreenManager.SmallScreenRect;
 
-			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
+			using (spriteBatch.BeginUsing())
 			{
 				DrawBackdrop(spriteBatch, gameplayScreenSize);
 

@@ -18,7 +18,6 @@ namespace TsRandomizer.Screens
 	// ReSharper disable once UnusedMember.Global
 	class MinimapScreen : Screen
 	{
-		public const EMinimapRoomColor EMinimapRoomColor_Transparent = (EMinimapRoomColor)21;
 		public const EMinimapRoomColor EMinimapRoomColor_Hinted = (EMinimapRoomColor)24;
 		public const EMinimapRoomColor EMinimapRoomColor_FinalBoss = (EMinimapRoomColor)25;
 
@@ -125,25 +124,7 @@ namespace TsRandomizer.Screens
 						var point = kvp.Key;
 						var block = kvp.Value;
 
-						var cloneBlock = new MinimapBlock(cloneRoom)
-						{
-							IsKnown = block.IsKnown,
-							IsVisited = block.IsVisited,
-							IsBoss = block.IsBoss,
-							IsTimespinner = block.IsTimespinner,
-							IsTransition = block.IsTransition,
-							IsCheckpoint = block.IsCheckpoint,
-							IsSolidWall = block.IsSolidWall,
-							HasSolidWallToNW = block.HasSolidWallToNW,
-							RoomColor = block.RoomColor,
-							Position = block.Position
-						};
-
-						var dynamicCloneBlock = cloneBlock.AsDynamic();
-
-						dynamicCloneBlock._walls = block.Walls;
-						dynamicCloneBlock._doors = block.Doors;
-						dynamicCloneBlock._secretDoors = block.SecretDoors;
+						var cloneBlock = DeepClone(block);
 
 						cloneRoom.Blocks.Add(point, cloneBlock);
 					}
@@ -188,6 +169,30 @@ namespace TsRandomizer.Screens
 			clone.PopulateAllBlocks();
 
 			return clone;
+		}
+
+		static MinimapBlock DeepClone(MinimapBlock block)
+		{
+			var cloneBlock = new MinimapBlock(block.ParentRoom)
+			{
+				IsKnown = block.IsKnown,
+				IsVisited = block.IsVisited,
+				IsBoss = block.IsBoss,
+				IsTimespinner = block.IsTimespinner,
+				IsTransition = block.IsTransition,
+				IsCheckpoint = block.IsCheckpoint,
+				IsSolidWall = block.IsSolidWall,
+				HasSolidWallToNW = block.HasSolidWallToNW,
+				RoomColor = block.RoomColor,
+				Position = block.Position
+			};
+
+			var dynamicCloneBlock = cloneBlock.AsDynamic();
+
+			dynamicCloneBlock._walls = block.Walls;
+			dynamicCloneBlock._doors = block.Doors;
+			dynamicCloneBlock._secretDoors = block.SecretDoors;
+			return cloneBlock;
 		}
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
@@ -269,42 +274,47 @@ namespace TsRandomizer.Screens
 			var mediumDrawTopLeft = ((object)Dynamic._minimapHud).AsDynamic()._mediumDrawTopLeft;
 			var alpha = Math.Abs(overlayColorAlpha);
 
-			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
+			var blocks = new Dictionary<Point, MinimapBlock>();
+
+			foreach (var roomWithCustomColor in RoomsWithOverdrawColor.Union(HardcodedOverdrawRooms))
 			{
-				foreach (var roomWithCustomColor in RoomsWithOverdrawColor.Union(HardcodedOverdrawRooms))
+				var roomBlocks = roomWithCustomColor.Room.Blocks.ToDictionary(
+					kvp => new Point(kvp.Key.X + roomWithCustomColor.Room.Position.X, kvp.Key.Y + roomWithCustomColor.Room.Position.Y),
+					kvp => {
+						var block = DeepClone(kvp.Value);
+
+						block.RoomColor = roomWithCustomColor.Color;
+						block.IsVisited = true;
+						block.IsKnown = true;
+
+						return block;
+					});
+
+				foreach (var roomBlock in roomBlocks)
+					blocks.Add(roomBlock.Key, roomBlock.Value);
+			}
+			
+			using (spriteBatch.BeginUsing())
+			{
+				float num = zoom * 4;
+				for (int top = viewBlockRectangle.Top; top < viewBlockRectangle.Bottom; ++top)
 				{
-					var blocks = roomWithCustomColor.Room.Blocks.ToDictionary(
-							kvp => new Point(kvp.Key.X + roomWithCustomColor.Room.Position.X, kvp.Key.Y + roomWithCustomColor.Room.Position.Y),
-							kvp => kvp.Value);
-
-					float num = zoom * 4;
-					for (int top = viewBlockRectangle.Top; top < viewBlockRectangle.Bottom; ++top)
+					for (int left = viewBlockRectangle.Left; left < viewBlockRectangle.Right; ++left)
 					{
-						for (int left = viewBlockRectangle.Left; left < viewBlockRectangle.Right; ++left)
-						{
-							var key = new Point(left, top);
-							if (!blocks.ContainsKey(key))
-								continue;
+						var key = new Point(left, top);
+						if (!blocks.ContainsKey(key))
+							continue;
 
-							var block = blocks[key];
-							if (block.IsSolidWall)
-								continue;
+						var block = blocks[key];
+						if (block.IsSolidWall)
+							continue;
 
-							Vector2 drawPosition = Vector2.Add(mediumDrawTopLeft, new Vector2((left - viewBlockRectangle.X) * num, (top - viewBlockRectangle.Y) * num));
+						Vector2 drawPosition = Vector2.Add(mediumDrawTopLeft, new Vector2((left - viewBlockRectangle.X) * num, (top - viewBlockRectangle.Y) * num));
 
-							OverDrawBlock(spriteBatch, drawPosition, block, roomWithCustomColor.Color, zoom, alpha);
-						}
+						block.Draw(spriteBatch, minimapSpriteSheet, drawPosition, zoom, Color.White, alpha);
 					}
 				}
 			}
-		}
-
-		void OverDrawBlock(SpriteBatch spriteBatch, Vector2 drawPosition, MinimapBlock block, EMinimapRoomColor color, float zoom, float alpha)
-		{
-			var backupRoomColor = block.RoomColor;
-			block.RoomColor = color;
-			block.Draw(spriteBatch, minimapSpriteSheet, drawPosition, zoom, Color.White, alpha);
-			block.RoomColor = backupRoomColor;
 		}
 
 		public override void Unload() => ResetMinimap();
@@ -312,8 +322,6 @@ namespace TsRandomizer.Screens
 		void MarkAvailableItemLocations()
 		{
 			preservedRoomStates = new LookupDictionary<Roomkey, MinimapRoomState>(r => r.RoomKey);
-
-			var visableAreas = (List<EMinimapEraType>)Dynamic._availableEras;
 
 			foreach (var itemLocation in GetAvailableItemLocations())
 			{

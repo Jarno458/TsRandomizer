@@ -119,7 +119,7 @@ namespace TsRandomizer.Archipelago
 			if(ScreenManager.IsConsoleOpen)
 				return;
 
-			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
+			using (spriteBatch.BeginUsing())
 			{
 				var i = 1;
 				foreach (var message in lines)

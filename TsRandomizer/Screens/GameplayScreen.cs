@@ -151,7 +151,7 @@ namespace TsRandomizer.Screens
 
 			var inGameZoom = (int)TimeSpinnerGame.Constants.InGameZoom;
 
-			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
+			using (spriteBatch.BeginUsing())
 				spriteBatch.DrawString(menuFont, text, new Vector2(30, 130), Color.Red, inGameZoom);
 		}
 #endif

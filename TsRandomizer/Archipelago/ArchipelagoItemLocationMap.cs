@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
+using Newtonsoft.Json.Linq;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.Extensions;
@@ -41,6 +44,8 @@ namespace TsRandomizer.Archipelago
 
 			Client.LocationCheckHelper.CheckedLocationsUpdated += MarkCheckedLocations;
 			MarkCheckedLocations(Client.LocationCheckHelper.AllLocationsChecked);
+
+			Client.DataStorage.TrackHints(OnHintReceived);
 
 			firstPass = true;
 		}
@@ -97,7 +102,7 @@ namespace TsRandomizer.Archipelago
 		}
 
 		public override ProgressionChain GetProgressionChain() => 
-			throw new InvalidOperationException("Progression chains arent supported for Archipelago seeds");
+			throw new InvalidOperationException("Progression chains aren't supported for Archipelago seeds");
 
 		void ReceiveItem(NetworkItem networkItem, Level level)
 		{
@@ -137,11 +142,21 @@ namespace TsRandomizer.Archipelago
 				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(this));
 		}
 
-		bool TryGetLocation(NetworkItem networkItem, out ItemLocation location)
+		void OnHintReceived(Hint[] hints)
+		{
+			foreach (var hint in hints)
+				if (hint.ReceivingPlayer == Client.Slot && TryGetLocation(hint.LocationId, out var location))
+					location.IsHinted = true;
+		}
+
+		bool TryGetLocation(NetworkItem networkItem, out ItemLocation location) =>
+			TryGetLocation(networkItem.Location, out location);
+
+		bool TryGetLocation(long locationId, out ItemLocation location)
 		{
 			try
 			{
-				location = this[LocationMap.GetItemkey(networkItem.Location)];
+				location = this[LocationMap.GetItemkey(locationId)];
 				return true;
 			}
 			catch

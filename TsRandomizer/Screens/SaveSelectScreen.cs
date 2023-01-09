@@ -436,7 +436,7 @@ namespace TsRandomizer.Screens
 			if (!GameScreen.IsActive)
 				return;
 
-			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
+			using (spriteBatch.BeginUsing())
 			{
 				foreach (var seedRepresentation in seedRepresentations)
 					if (!seedRepresentation.Key.AsDynamic().IsScrolledOff)
