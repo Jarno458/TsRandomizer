@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Archipelago.MultiClient.Net.Enums;
-using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
-using Newtonsoft.Json.Linq;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.Extensions;
@@ -145,7 +142,7 @@ namespace TsRandomizer.Archipelago
 		void OnHintReceived(Hint[] hints)
 		{
 			foreach (var hint in hints)
-				if (hint.ReceivingPlayer == Client.Slot && TryGetLocation(hint.LocationId, out var location))
+				if (hint.FindingPlayer == Client.Slot && TryGetLocation(hint.LocationId, out var location))
 					location.IsHinted = true;
 		}
 

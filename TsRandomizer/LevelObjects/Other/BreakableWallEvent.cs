@@ -23,8 +23,10 @@ namespace TsRandomizer.LevelObjects.Other
 				Dynamic.IsUnderwater = true;
 			if (seed.FloodFlags.Maw && Level.ID == 8 && Level.RoomID == 9) //maw basement secret
 				Dynamic.IsUnderwater = true;
-			if (seed.FloodFlags.PyramidShaft && Level.ID == 16 && (Level.RoomID == 8 || Level.RoomID == 22)) //Pyramid shaft first
+			if (seed.FloodFlags.PyramidShaft && Level.ID == 16 && (Level.RoomID == 8 || Level.RoomID == 22)) //Pyramid shaft
 				Dynamic.IsUnderwater = true;
+			if (seed.FloodFlags.DryLakeSerene && Level.ID == 7 && Level.RoomID == 6) //Lake serene secret
+				Dynamic.IsUnderwater = false;
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)

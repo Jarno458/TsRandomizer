@@ -192,21 +192,26 @@ namespace TsRandomizer.Screens
 			dynamicCloneBlock._walls = block.Walls;
 			dynamicCloneBlock._doors = block.Doors;
 			dynamicCloneBlock._secretDoors = block.SecretDoors;
+
 			return cloneBlock;
 		}
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
-			var hud = ((object) Dynamic._minimapHud).AsDynamic();
-
+			var hud = ((object)Dynamic._minimapHud).AsDynamic();
 			hud._minimap = DeepClone(Dynamic._minimap);
-
-			foreach (var roomkey in GyreRooms)
-				GetRoom(roomkey).IsDebug = false;
 
 			itemLocations = itemLocationMap;
 
 			Dynamic._removeMarkerText = (string)Dynamic._removeMarkerText + " / Show where to go next";
+
+			var yikes = Minimap.Areas.SelectMany(a => a.Rooms).Where(r => r.IsDebug).ToArray();
+
+			foreach (var roomkey in GyreRooms)
+				GetRoom(roomkey).IsDebug = false;
+
+			var yikes2 = Minimap.Areas.SelectMany(a => a.Rooms).Where(r => r.IsDebug).ToArray();
+
 
 			foreach (var roomkey in DisabledCheckpoints)
 				foreach (var block in GetRoom(roomkey).Blocks.Values)
@@ -220,7 +225,7 @@ namespace TsRandomizer.Screens
 				foreach (var block in GetRoom(roomkey).Blocks.Values)
 					block.IsBoss = true;
 
-			var finalBossRoomKey = !seed.Options.DadPercent
+			var finalBossRoomKey = seed.Options.DadPercent
 				? new Roomkey(12, 20)
 				: new Roomkey(16, 4);
 			var finalBossRoom = GetRoom(finalBossRoomKey);

@@ -31,7 +31,6 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	[RoomTriggerTrigger(9, 21)]
 	[RoomTriggerTrigger(9, 33)]
 	[RoomTriggerTrigger(9, 36)]
-	[RoomTriggerTrigger(9, 43)]
 	[RoomTriggerTrigger(9, 49)]
 
 	//maw
@@ -92,6 +91,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	[RoomTriggerTrigger(7, 3)]
 	[RoomTriggerTrigger(7, 6)]
 	[RoomTriggerTrigger(7, 10)]
+	[RoomTriggerTrigger(7, 11)]
 	[RoomTriggerTrigger(7, 29)]
 	class RandomFloods : RoomTrigger
 	{
@@ -111,7 +111,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 				case 6 when state.Seed.FloodFlags.CastleCourtyard:
 					HandleCastleCourtyardFlood(state);
 					break;
-				case 7:
+				case 7 when state.Seed.FloodFlags.DryLakeSerene:
 					HandleLakeSereneDroughts(state);
 					break;
 				case 8 when state.Seed.FloodFlags.Maw:
@@ -127,6 +127,9 @@ namespace TsRandomizer.RoomTriggers.Triggers
 						HandleFloodPyramidBack(state);
 					break;
 			}
+
+			if (state.RoomKey.LevelId == 7 && state.RoomKey.RoomId == 2)
+				PlaceLakeSereneUnderwaterPlatforms(state);
 		}
 
 		static void HandleCastleLoopFlood(RoomState state, bool high)
@@ -371,8 +374,8 @@ namespace TsRandomizer.RoomTriggers.Triggers
 						var background = bg.AsDynamic();
 						var textureType = background.TextureType;
 						return textureType == EBackgroundTextureType.Fog
-							|| (textureType == EBackgroundTextureType.L7_Backdrop2
-							    && background._frameSource == new Rectangle(0, 0, 16, 144));
+						       || (textureType == EBackgroundTextureType.L7_Backdrop2
+						           && background._frameSource == new Rectangle(0, 0, 16, 144));
 					});
 
 					foreach (var background in state.Level.Backgrounds)
@@ -397,13 +400,12 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 					var dynamic = state.Level.AsDynamic();
 					dynamic.BackgroundWipeColor = new Color(122, 155, 145);
-					
+
 					foreach (var enemy in dynamic._enemies.Values)
 						if (enemy.EnemyType == EEnemyTileType.LakeAnemone)
 							enemy.SilentKill();
 
-					var anemone1 = new ObjectTileSpecification
-					{
+					var anemone1 = new ObjectTileSpecification {
 						Category = EObjectTileCategory.Enemy,
 						Layer = ETileLayerType.Objects,
 						ObjectID = (int)EEnemyTileType.LakeAnemone,
@@ -411,8 +413,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 						X = 64,
 						Y = 15
 					};
-					var anemone2 = new ObjectTileSpecification
-					{
+					var anemone2 = new ObjectTileSpecification {
 						Category = EObjectTileCategory.Enemy,
 						Layer = ETileLayerType.Objects,
 						ObjectID = (int)EEnemyTileType.LakeAnemone,
@@ -420,8 +421,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 						X = 87,
 						Y = 16
 					};
-					var anemone3 = new ObjectTileSpecification
-					{
+					var anemone3 = new ObjectTileSpecification {
 						Category = EObjectTileCategory.Enemy,
 						Layer = ETileLayerType.Objects,
 						ObjectID = (int)EEnemyTileType.LakeAnemone,
@@ -436,8 +436,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 					break;
 				case 2:
-					var specification = new ObjectTileSpecification
-					{
+					var specification = new ObjectTileSpecification {
 						Category = EObjectTileCategory.Enemy,
 						Layer = ETileLayerType.Objects,
 						ObjectID = (int)EEnemyTileType.KickstarterFoe,
@@ -448,7 +447,6 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					};
 
 					state.Level.PlaceEvent(specification, false);
-
 					break;
 				case 3:
 					var specification1 = new ObjectTileSpecification
@@ -475,6 +473,23 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 					break;
 			}
+		}
+
+		void PlaceLakeSereneUnderwaterPlatforms(RoomState state)
+		{
+			var tileSpecifications = new[] {
+				new TileSpecification { Layer = ETileLayerType.Middle, ID = 109, X = 7, Y = 35 },
+				new TileSpecification { Layer = ETileLayerType.Middle, ID = 110, X = 8, Y = 35 },
+				new TileSpecification { Layer = ETileLayerType.Middle, ID = 110, X = 9, Y = 35 },
+				new TileSpecification { Layer = ETileLayerType.Middle, ID = 111, X = 10, Y = 35 },
+				new TileSpecification { Layer = ETileLayerType.Middle, ID = 109, X = 11, Y = 39 },
+				new TileSpecification { Layer = ETileLayerType.Middle, ID = 110, X = 12, Y = 39 },
+				new TileSpecification { Layer = ETileLayerType.Middle, ID = 110, X = 13, Y = 39 },
+				new TileSpecification { Layer = ETileLayerType.Middle, ID = 111, X = 14, Y = 39 },
+			};
+
+			foreach (var tile in tileSpecifications)
+				state.Level.SolidTiles.Add(new Point(tile.X, tile.Y), Tile.FromSpecification(tile, state.Level));
 		}
 	}
 }

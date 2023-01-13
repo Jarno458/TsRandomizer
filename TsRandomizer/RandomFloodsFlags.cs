@@ -18,7 +18,7 @@ namespace TsRandomizer
 
 		public RandomFloodsFlags(uint seedId, SeedOptions options)
 		{
-			if (!options.RandomFloods)
+			if (!options.RisingTides)
 				return;
 
 			var random = new Random(~(int)seedId);
