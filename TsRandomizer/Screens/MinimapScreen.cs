@@ -124,7 +124,7 @@ namespace TsRandomizer.Screens
 						var point = kvp.Key;
 						var block = kvp.Value;
 
-						var cloneBlock = DeepClone(block);
+						var cloneBlock = DeepClone(block, cloneRoom);
 
 						cloneRoom.Blocks.Add(point, cloneBlock);
 					}
@@ -171,9 +171,9 @@ namespace TsRandomizer.Screens
 			return clone;
 		}
 
-		static MinimapBlock DeepClone(MinimapBlock block)
+		static MinimapBlock DeepClone(MinimapBlock block, MinimapRoom clonedParent)
 		{
-			var cloneBlock = new MinimapBlock(block.ParentRoom)
+			var cloneBlock = new MinimapBlock(clonedParent)
 			{
 				IsKnown = block.IsKnown,
 				IsVisited = block.IsVisited,
@@ -205,13 +205,8 @@ namespace TsRandomizer.Screens
 
 			Dynamic._removeMarkerText = (string)Dynamic._removeMarkerText + " / Show where to go next";
 
-			var yikes = Minimap.Areas.SelectMany(a => a.Rooms).Where(r => r.IsDebug).ToArray();
-
 			foreach (var roomkey in GyreRooms)
 				GetRoom(roomkey).IsDebug = false;
-
-			var yikes2 = Minimap.Areas.SelectMany(a => a.Rooms).Where(r => r.IsDebug).ToArray();
-
 
 			foreach (var roomkey in DisabledCheckpoints)
 				foreach (var block in GetRoom(roomkey).Blocks.Values)
@@ -286,7 +281,7 @@ namespace TsRandomizer.Screens
 				var roomBlocks = roomWithCustomColor.Room.Blocks.ToDictionary(
 					kvp => new Point(kvp.Key.X + roomWithCustomColor.Room.Position.X, kvp.Key.Y + roomWithCustomColor.Room.Position.Y),
 					kvp => {
-						var block = DeepClone(kvp.Value);
+						var block = DeepClone(kvp.Value, roomWithCustomColor.Room);
 
 						block.RoomColor = roomWithCustomColor.Color;
 						block.IsVisited = true;
