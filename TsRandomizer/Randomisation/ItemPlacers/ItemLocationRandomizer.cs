@@ -16,7 +16,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		protected readonly ItemUnlockingMap UnlockingMap;
 
 		readonly List<ItemInfo> itemsToRemoveFromGame;
-		readonly ItemInfo[] itemsToAddToGame;
+		readonly List<ItemInfo> itemsToAddToGame;
 		readonly ItemInfo[] genericItems;
 
 		protected ItemLocationRandomizer(Seed seed, ItemInfoProvider itemInfoProvider, ItemUnlockingMap unlockingMap)
@@ -42,7 +42,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			if (SeedOptions.StartWithTalaria)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));
 
-			itemsToAddToGame = new[]
+			itemsToAddToGame = new List<ItemInfo>
 			{
 				ItemInfoProvider.Get(EInventoryEquipmentType.GlassPumpkin),
 				ItemInfoProvider.Get(EInventoryEquipmentType.EternalCoat),
@@ -60,6 +60,21 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltMeyef),
 				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow)
 			};
+			if (SeedOptions.UnchainedKeys)
+			{
+				itemsToAddToGame.Add(ItemInfoProvider.Get(EInventoryUseItemType.MapReveal0)); // Past
+				itemsToAddToGame.Add(ItemInfoProvider.Get(EInventoryUseItemType.MapReveal1)); // Present
+				if (SeedOptions.EnterSandman)
+				{
+					itemsToAddToGame.Add(ItemInfoProvider.Get(EInventoryUseItemType.MapReveal2)); // Pyramid
+				}
+				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal0", "Timeworn Warp Beacon");
+				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal0_desc", "Attunes warps to a gate in the past");
+				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal1", "Modern Warp Beacon");
+				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal1_desc", "Attunes warps gate within the present");
+				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal2", "Mysterious Warp Beacon");
+				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal2_desc", "Attunes warps to a gate beyond time");
+			}
 
 			genericItems = new[]
 			{

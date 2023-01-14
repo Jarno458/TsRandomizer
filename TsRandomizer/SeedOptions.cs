@@ -28,6 +28,7 @@ namespace TsRandomizer
 		public bool EnterSandman => (Flags & 1 << 15) > 0;
 		public bool DadPercent => (Flags & 1 << 17) > 0;
 		public bool FloodBasement => (Flags & 1 << 18) > 0;
+		public bool UnchainedKeys => (Flags & 1 << 19) > 0;
 		//Non visable flags
 		public bool Archipelago => (Flags & 1 << 16) > 0;
 
@@ -61,7 +62,8 @@ namespace TsRandomizer
 				{"EnterSandman", 1U << 15},
 				//Archipelago, automaticly set above
 				{"DadPercent", 1U << 17},
-				{"FloodBasement", 1U << 18}
+				{"FloodBasement", 1U << 18},
+				{"UnchainedKeys", 1U << 19}
 			};
 
 			foreach (var kvp in stringToFlagMapping)
