@@ -18,6 +18,8 @@ namespace TsRandomizer.RoomTriggers
 {
 	static class RoomTriggerHelper
 	{
+		static readonly Type ItemDropPickupType = TimeSpinnerType.Get("Timespinner.GameObjects.Items.ItemDropPickup");
+		static readonly Type OrbPedestalEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type TransitionWarpEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.TransitionWarpEvent");
 		static readonly Type GyreType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.GyrePortalEvent");
 		static readonly Type GlowingFloorEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.EnvironmentPrefabs.L11_Lab.EnvPrefabLabVilete");
@@ -30,9 +32,8 @@ namespace TsRandomizer.RoomTriggers
 
 		public static void SpawnItemDropPickup(Level level, ItemInfo itemInfo, int x, int y)
 		{
-			var itemDropPickupType = TimeSpinnerType.Get("Timespinner.GameObjects.Items.ItemDropPickup");
 			var itemPosition = new Point(x, y);
-			var itemDropPickup = Activator.CreateInstance(itemDropPickupType, itemInfo.BestiaryItemDropSpecification, level, itemPosition, -1);
+			var itemDropPickup = Activator.CreateInstance(ItemDropPickupType, itemInfo.BestiaryItemDropSpecification, level, itemPosition, -1);
 
 			var item = itemDropPickup.AsDynamic();
 			item.Initialize();
@@ -56,7 +57,6 @@ namespace TsRandomizer.RoomTriggers
 
 		public static void SpawnOrbPredestal(Level level, int x, int y)
 		{
-			var orbPedestalEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 			var itemPosition = new Point(x, y);
 			var pedistalSpecification = new TileSpecification
 			{
@@ -64,7 +64,7 @@ namespace TsRandomizer.RoomTriggers
 				ID = 480, //orb pedestal
 				Layer = ETileLayerType.Objects,
 			};
-			var orbPedestalEvent = Activator.CreateInstance(orbPedestalEventType, level, itemPosition, -1, ObjectTileSpecification.FromTileSpecification(pedistalSpecification));
+			var orbPedestalEvent = Activator.CreateInstance(OrbPedestalEventType, level, itemPosition, -1, ObjectTileSpecification.FromTileSpecification(pedistalSpecification));
 
 			var pedestal = orbPedestalEvent.AsDynamic();
 			pedestal.DoesSpawnDespiteBeingOwned = true;
