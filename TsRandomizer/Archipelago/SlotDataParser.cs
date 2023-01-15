@@ -47,7 +47,7 @@ namespace TsRandomizer.Archipelago
 
 			seedId += slotId;
 			
-			return new Seed(seedId, new SeedOptions(slotData), new RandomFloodsFlags(slotData));
+			return new Seed(seedId, new SeedOptions(slotData), new RisingTides(slotData));
 		}
 
 		public SettingCollection GetSettings() =>

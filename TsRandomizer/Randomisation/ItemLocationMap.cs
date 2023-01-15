@@ -72,7 +72,7 @@ namespace TsRandomizer.Randomisation
 		protected readonly ItemInfoProvider ItemProvider;
 		protected readonly ItemUnlockingMap UnlockingMap;
 		protected readonly SeedOptions SeedOptions;
-		protected readonly RandomFloodsFlags FloodsFlags;
+		protected readonly RisingTides FloodsFlags;
 
 		string areaName;
 

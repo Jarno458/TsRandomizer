@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TsRandomizer
 {
-	class RandomFloodsFlags
+	class RisingTides
 	{
 		public bool BasementHigh { get; }
 		public bool Basement { get; }
@@ -16,7 +16,7 @@ namespace TsRandomizer
 		public bool LakeDesolation { get; }
 		public bool DryLakeSerene { get; }
 
-		public RandomFloodsFlags(uint seedId, SeedOptions options)
+		public RisingTides(uint seedId, SeedOptions options)
 		{
 			if (!options.RisingTides)
 				return;
@@ -33,9 +33,20 @@ namespace TsRandomizer
 			CastleCourtyard = random.Next() % 3 == 0;
 			LakeDesolation = random.Next() % 3 == 0;
 			DryLakeSerene = random.Next() % 3 == 0;
+
+			BasementHigh = true;
+			Basement = true;
+			Xarion = true;
+			Maw = true;
+			PyramidShaft = true;
+			BackPyramid = true;
+			CastleMoat = true;
+			CastleCourtyard = true;
+			LakeDesolation = true;
+			DryLakeSerene = true;
 		}
 
-		public RandomFloodsFlags(Dictionary<string, object> slotData)
+		public RisingTides(Dictionary<string, object> slotData)
 		{
 			if (slotData.TryGetValue("Basement", out var basementFlood))
 			{

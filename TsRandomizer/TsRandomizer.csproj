@@ -124,7 +124,7 @@
     <Compile Include="LevelObjects\Other\DoorTeleportEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneForest0.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
-    <Compile Include="RandomFloodsFlags.cs" />
+    <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="Randomisation\HintGenerator.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />
@@ -138,7 +138,7 @@
     <Compile Include="RoomTriggers\Triggers\Bosses\Maw.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\Ravenlord.cs" />
     <Compile Include="RoomTriggers\Triggers\OneHpFix.cs" />
-    <Compile Include="RoomTriggers\Triggers\RandomFloods.cs" />
+    <Compile Include="RoomTriggers\Triggers\RisingTides.cs" />
     <Compile Include="RoomTriggers\Triggers\DadsPedistal.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\Genza.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\GoldenIdol.cs" />

@@ -196,15 +196,14 @@ namespace TsRandomizer.RoomTriggers
 					.Select(t => t.Position16)
 					.ToHashSet();
 
-				var waterTiles = (Dictionary<Point, WaterTile>)dynamicLevel._waterTiles;
-				var stillWaterFrameSource = ((SpriteSheet)waterTiles.Values.First().AsDynamic()._sprite).GetFrameSource(24);
+				var stillWaterFrameSource = ((SpriteSheet)level.WaterTiles.Values.First().AsDynamic()._sprite).GetFrameSource(24);
 
-				foreach (var waterTile in waterTiles)
+				foreach (var waterTile in level.WaterTiles)
 				{
 					var tile = waterTile.Value.AsDynamic();
 
 					if (updatableWaterTilePositions.Contains(waterTile.Key))
-						tile.CurrentWaterType = EWaterTileType.Bottom;
+						tile._bbox = new Rectangle(-1000, -1000, 0, 0);
 					else
 						tile._drawSource = stillWaterFrameSource;
 				}

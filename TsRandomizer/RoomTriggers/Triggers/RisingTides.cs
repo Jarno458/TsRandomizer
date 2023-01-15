@@ -93,7 +93,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	[RoomTriggerTrigger(7, 10)]
 	[RoomTriggerTrigger(7, 11)]
 	[RoomTriggerTrigger(7, 29)]
-	class RandomFloods : RoomTrigger
+	class RisingTides : RoomTrigger
 	{
 		public override void OnRoomLoad(RoomState state)
 		{
