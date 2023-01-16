@@ -26,6 +26,12 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 			if (roomState.SeedOptions.StartWithTalaria)
 				roomState.Level.AsDynamic().UnlockRelic(EInventoryRelicType.Dash);
+
+			if (roomState.SeedOptions.UnchainedKeys)
+			{
+				roomState.Level.AsDynamic().UnlockRelic(EInventoryRelicType.PyramidsKey);
+
+			}
 		}
 	}
 }
