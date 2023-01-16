@@ -71,12 +71,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				{
 					itemsToAddToGame.Add(ItemInfoProvider.Get(EInventoryUseItemType.MapReveal2)); // Pyramid
 				}
-				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal0", "Timeworn Warp Beacon");
-				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal0_desc", "Attunes warps to a gate in the past");
-				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal1", "Modern Warp Beacon");
-				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal1_desc", "Attunes warps gate within the present");
-				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal2", "Mysterious Warp Beacon");
-				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal2_desc", "Attunes warps to a gate beyond time");
 			}
 
 			genericItems = new[]

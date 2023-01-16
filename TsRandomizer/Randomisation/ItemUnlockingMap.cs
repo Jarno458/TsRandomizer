@@ -13,33 +13,33 @@ namespace TsRandomizer.Randomisation
 	{
 		static readonly TeleporterGate[] PresentTeleporterGates =
 		{
-			new TeleporterGate{Gate = R.GateKittyBoss, LevelId = 2, RoomId = 55},
-			new TeleporterGate{Gate = R.GateLeftLibrary, LevelId = 2, RoomId = 54},
-			new TeleporterGate{Gate = R.GateMilitaryGate, LevelId = 10, RoomId = 12},
-			new TeleporterGate{Gate = R.GateSealedCaves, LevelId = 9, RoomId = 50},
+			new TeleporterGate{Gate = R.GateKittyBoss, LevelId = 2, RoomId = 55, Name = "Sewers"},
+			new TeleporterGate{Gate = R.GateLeftLibrary, LevelId = 2, RoomId = 54, Name = "Library"},
+			new TeleporterGate{Gate = R.GateMilitaryGate, LevelId = 10, RoomId = 12, Name = "Military Hangar"},
+			new TeleporterGate{Gate = R.GateSealedCaves, LevelId = 9, RoomId = 50, Name = "Xarion's Cave Entrance"},
 			//new TeleporterGate{Gate = R.GateXarion, LevelId = 9, RoomId = 49}, //dont want to spawn infront of xarion
-			new TeleporterGate{Gate = R.GateSealedSirensCave, LevelId = 9, RoomId = 51},
-			new TeleporterGate{Gate = R.GateLakeDesolation, LevelId = 1, RoomId = 25},
+			new TeleporterGate{Gate = R.GateSealedSirensCave, LevelId = 9, RoomId = 51, Name = "Siren's Cave"},
+			new TeleporterGate{Gate = R.GateLakeDesolation, LevelId = 1, RoomId = 25, Name = "Lake Desolation"},
 		};
 
 		static readonly TeleporterGate[] PastTeleporterGates =
 		{
 			//new TeleporterGate{Gate = Requirement.GateLakeSirineLeft, LevelId = 7, RoomId = 30}, //you dont want to spawn with a boss in your face
-			new TeleporterGate{Gate = R.GateLakeSereneRight, LevelId = 7, RoomId = 31},
-			new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51},
+			new TeleporterGate{Gate = R.GateLakeSereneRight, LevelId = 7, RoomId = 31, Name = "East Lake Serene"},
+			new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51, Name = "Forest"},
 			//new TeleporterGate{Gate = Requirement.GateAccessToPast, LevelId = 3, RoomId = 6}, //Refugee Camp, Somehow doesnt work ¯\_(ツ)_/¯
-			new TeleporterGate{Gate = R.GateCastleRamparts, LevelId = 4, RoomId = 23},
-			new TeleporterGate{Gate = R.GateCastleKeep, LevelId = 5, RoomId = 24},
-			new TeleporterGate{Gate = R.GateRoyalTowers, LevelId = 6, RoomId = 0},
-			new TeleporterGate{Gate = R.GateMaw, LevelId = 8, RoomId = 49},
-			new TeleporterGate{Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50},
+			new TeleporterGate{Gate = R.GateCastleRamparts, LevelId = 4, RoomId = 23, Name = "Castle Ramparts"},
+			new TeleporterGate{Gate = R.GateCastleKeep, LevelId = 5, RoomId = 24, Name = "Castle Keep"},
+			new TeleporterGate{Gate = R.GateRoyalTowers, LevelId = 6, RoomId = 0, Name = "Royal Towers"},
+			new TeleporterGate{Gate = R.GateMaw, LevelId = 8, RoomId = 49, Name = "Maw's Lair"},
+			new TeleporterGate{Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50, Name = "Caves of Banishment"},
 		};
 
 		static readonly TeleporterGate[] PyramidTeleporterGates =
 		{
-			new TeleporterGate{Gate = R.GateGyre, LevelId = 14, RoomId = 1},
-			new TeleporterGate{Gate = R.GateLeftPyramid, LevelId = 16, RoomId = 12},
-			new TeleporterGate{Gate = R.GateRightPyramid, LevelId = 16, RoomId = 19},
+			new TeleporterGate{Gate = R.GateGyre, LevelId = 14, RoomId = 1, Name = "Temporal Gyre Entrance"},
+			new TeleporterGate{Gate = R.GateLeftPyramid, LevelId = 16, RoomId = 12, Name = "Pyramid Entrance"},
+			new TeleporterGate{Gate = R.GateRightPyramid, LevelId = 16, RoomId = 19, Name = "East Pyramid"},
 		};
 
 		readonly LookupDictionary<ItemIdentifier, UnlockingSpecification> unlockingSpecifications;
@@ -99,19 +99,31 @@ namespace TsRandomizer.Randomisation
 		}
 
 		void SetMapRevealPickupAction(Random random, SeedOptions seedOptions) {
+			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal0", "Timeworn Warp Beacon");
+			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal0_desc", "Attunes warps to a gate in the past");
+			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal1", "Modern Warp Beacon");
+			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal1_desc", "Attunes warps gate within the present");
+			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal2", "Mysterious Warp Beacon");
+			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal2_desc", "Attunes warps to a gate beyond time");
+
 			var pastWarpUnlockingSpecification = new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.MapReveal0), R.PastWarp);
 			var presentWarpUnlockingSpecification = new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.MapReveal1), R.PresentWarp);
 
 			var pastGate = PastTeleporterGates.SelectRandom(random);
 			var presentGate = PresentTeleporterGates.SelectRandom(random);
 
+			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal0_desc", "You feel the pyramid keys attune to: " + pastGate.Name);
+			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal1_desc", "You feel the pyramid keys attune to: " + presentGate.Name);
+
 			pastWarpUnlockingSpecification.OnPickup = level => {
 				UnlockRoom(level, pastGate.LevelId, pastGate.RoomId);
+				level.ShowGhostDialogueMessage("inv_use_MapReveal0_desc");
 			};
 			pastWarpUnlockingSpecification.Unlocks = pastGate.Gate;
 
 			presentWarpUnlockingSpecification.OnPickup = level => {
 				UnlockRoom(level, presentGate.LevelId, presentGate.RoomId);
+				level.ShowGhostDialogueMessage("inv_use_MapReveal1_desc");
 			};
 			presentWarpUnlockingSpecification.Unlocks = presentGate.Gate;
 
@@ -123,9 +135,12 @@ namespace TsRandomizer.Randomisation
 			{
 				var pyramidWarpUnlockingSpecification = new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.MapReveal2), R.PyramidWarp);
 				var pyramidGate = PyramidTeleporterGates.SelectRandom(random);
+				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal2_desc", "You feel the pyramid keys attune to: " +  pyramidGate.Name);
+
 
 				pyramidWarpUnlockingSpecification.OnPickup = level => {
 					UnlockRoom(level, pyramidGate.LevelId, pyramidGate.RoomId);
+					level.ShowGhostDialogueMessage("inv_use_MapReveal2_desc");
 				};
 				pyramidWarpUnlockingSpecification.Unlocks = pyramidGate.Gate;
 				unlockingSpecifications.Add(pyramidWarpUnlockingSpecification);
@@ -240,6 +255,7 @@ namespace TsRandomizer.Randomisation
 			public R Gate { get; internal set; }
 			public int LevelId { get; internal set; }
 			public int RoomId { get; internal set; }
+			public string Name { get; internal set; }
 		}
 	}
 }
