@@ -8,7 +8,7 @@
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (roomState.SeedOptions.GasMaw)
+			if (roomState.Seed.Options.GasMaw)
 				RoomTriggerHelper.FillRoomWithGas(roomState.Level);
 		}
 	}

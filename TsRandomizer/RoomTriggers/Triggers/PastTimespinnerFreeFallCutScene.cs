@@ -5,7 +5,7 @@
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (!roomState.SeedOptions.Inverted) return;
+			if (!roomState.Seed.Options.Inverted) return;
 				RoomTriggerHelper.CreateAndCallCutScene(roomState, "Forest0_Warp");
 		}
 	}

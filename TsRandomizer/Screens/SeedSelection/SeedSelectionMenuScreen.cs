@@ -39,8 +39,7 @@ namespace TsRandomizer.Screens.SeedSelection
 		{
 			void Noop() { }
 
-			return (GameScreen)Activator.CreateInstance(PasswordMenuScreenType, null, screenManager.Dynamic.GCM,
-				(Action)Noop);
+			return (GameScreen)Activator.CreateInstance(PasswordMenuScreenType, null, screenManager.GameContentManager, (Action)Noop);
 		}
 
 		public SeedSelectionMenuScreen(ScreenManager screenManager, GameScreen passwordScreen) : base(screenManager,
@@ -243,7 +242,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			if (!IsUsedAsSeedSelectionMenu || !GameScreen.IsActive)
 				return;
 
-			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
+			using (spriteBatch.BeginUsing())
 			{
 				var zoom = (int)TimeSpinnerGame.Constants.InGameZoom;
 

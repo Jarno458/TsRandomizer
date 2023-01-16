@@ -27,7 +27,7 @@ namespace TsRandomizer.RoomTriggers
 	{
 		internal Level Level { get; set; }
 		internal ItemLocation RoomItemLocation { get; set; }
-		internal SeedOptions SeedOptions { get; set; }
+		internal Seed Seed { get; set; }
 		internal SettingCollection Settings { get; set; }
 		internal ScreenManager ScreenManager { get; set; }
 		internal Roomkey RoomKey { get; set; }
@@ -73,7 +73,7 @@ namespace TsRandomizer.RoomTriggers
 		}
 		
 		public static void OnChangeRoom(
-			Level level, SeedOptions seedOptions, SettingCollection gameSettings, ItemLocationMap itemLocations, ScreenManager screenManager,
+			Level level, Seed seed, SettingCollection gameSettings, ItemLocationMap itemLocations, ScreenManager screenManager,
 			int levelId, int roomId)
 		{
 			var roomKey = new Roomkey(levelId, roomId);
@@ -83,7 +83,7 @@ namespace TsRandomizer.RoomTriggers
 				var roomState = new RoomState {
 					Level = level,
 					RoomItemLocation = itemLocations[new RoomItemKey(roomKey.LevelId, roomKey.RoomId)],
-					SeedOptions = seedOptions,
+					Seed = seed,
 					Settings = gameSettings,
 					ScreenManager = screenManager,
 					RoomKey = roomKey

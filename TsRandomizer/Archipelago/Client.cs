@@ -43,6 +43,9 @@ namespace TsRandomizer.Archipelago
 
 		public static DataStorageHelper DataStorage => session.DataStorage;
 
+		public static int Slot => session.ConnectionInfo.Slot;
+		public static int Team => session.ConnectionInfo.Team;
+
 		public static LoginResult Connect(string server, string user, string pass = null, string connectionId = null)
 		{
 			if (IsConnected && session.Socket.Connected && cachedConnectionResult != null)

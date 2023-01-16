@@ -36,7 +36,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		{
 			AddRandomItemsToLocationMap(isProgressionOnly);
 
-			itemLocations = new ItemLocationMap(ItemInfoProvider, UnlockingMap, Seed.Options);
+			itemLocations = new ItemLocationMap(ItemInfoProvider, UnlockingMap, Seed);
 
 			return itemLocations;
 		}

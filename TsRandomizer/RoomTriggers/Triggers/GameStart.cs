@@ -9,10 +9,10 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (roomState.SeedOptions.StartWithJewelryBox)
+			if (roomState.Seed.Options.StartWithJewelryBox)
 				roomState.Level.AsDynamic().UnlockRelic(EInventoryRelicType.JewelryBox);
 
-			if (roomState.SeedOptions.StartWithMeyef)
+			if (roomState.Seed.Options.StartWithMeyef)
 			{
 				roomState.Level.GameSave.AddItem(roomState.Level, new ItemIdentifier(EInventoryFamiliarType.Meyef));
 				roomState.Level.GameSave.Inventory.EquippedFamiliar = EInventoryFamiliarType.Meyef;
@@ -24,7 +24,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 				familiarManager.AddFamiliarPoofAnimation();
 			}
 
-			if (roomState.SeedOptions.StartWithTalaria)
+			if (roomState.Seed.Options.StartWithTalaria)
 				roomState.Level.AsDynamic().UnlockRelic(EInventoryRelicType.Dash);
 		}
 	}

@@ -38,6 +38,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -48,6 +49,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -76,8 +78,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Archipelago.MultiClient.Net, Version=4.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Archipelago.MultiClient.Net.4.1.2\lib\net40\Archipelago.MultiClient.Net.dll</HintPath>
+    <Reference Include="Archipelago.MultiClient.Net, Version=4.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Archipelago.MultiClient.Net.4.2.2\lib\net40\Archipelago.MultiClient.Net.dll</HintPath>
     </Reference>
     <Reference Include="FNA">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
@@ -87,7 +89,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Archipelago.MultiClient.Net.4.1.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Archipelago.MultiClient.Net.4.2.2\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -96,7 +98,7 @@
       <HintPath>..\..\Timespinner\Timespinner.exe</HintPath>
     </Reference>
     <Reference Include="websocket-sharp, Version=1.0.2.34775, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Archipelago.MultiClient.Net.4.1.2\lib\net40\websocket-sharp.dll</HintPath>
+      <HintPath>..\packages\Archipelago.MultiClient.Net.4.2.2\lib\net40\websocket-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +117,7 @@
     <Compile Include="Drawables\ArchipelagoRepresentation.cs" />
     <Compile Include="Extensions\GameContentManagerExtension.cs" />
     <Compile Include="Extensions\SettingsExtensions.cs" />
+    <Compile Include="LevelObjects\CollisionDetectionEvent.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast4.cs" />
@@ -122,6 +125,7 @@
     <Compile Include="LevelObjects\Other\DoorTeleportEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneForest0.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
+    <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="Randomisation\HintGenerator.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />
@@ -134,7 +138,8 @@
     <Compile Include="RoomTriggers\Triggers\Bosses\Varndagroth.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\Maw.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\Ravenlord.cs" />
-    <Compile Include="RoomTriggers\Triggers\CasteLoopFlood.cs" />
+    <Compile Include="RoomTriggers\Triggers\OneHpFix.cs" />
+    <Compile Include="RoomTriggers\Triggers\RisingTides.cs" />
     <Compile Include="RoomTriggers\Triggers\DadsPedistal.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\Genza.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\GoldenIdol.cs" />

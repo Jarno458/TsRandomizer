@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
+using Timespinner.Core;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
@@ -17,6 +18,8 @@ namespace TsRandomizer.RoomTriggers
 {
 	static class RoomTriggerHelper
 	{
+		static readonly Type ItemDropPickupType = TimeSpinnerType.Get("Timespinner.GameObjects.Items.ItemDropPickup");
+		static readonly Type OrbPedestalEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 		static readonly Type TransitionWarpEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.TransitionWarpEvent");
 		static readonly Type GyreType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Doors.GyrePortalEvent");
 		static readonly Type GlowingFloorEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.EnvironmentPrefabs.L11_Lab.EnvPrefabLabVilete");
@@ -29,9 +32,8 @@ namespace TsRandomizer.RoomTriggers
 
 		public static void SpawnItemDropPickup(Level level, ItemInfo itemInfo, int x, int y)
 		{
-			var itemDropPickupType = TimeSpinnerType.Get("Timespinner.GameObjects.Items.ItemDropPickup");
 			var itemPosition = new Point(x, y);
-			var itemDropPickup = Activator.CreateInstance(itemDropPickupType, itemInfo.BestiaryItemDropSpecification, level, itemPosition, -1);
+			var itemDropPickup = Activator.CreateInstance(ItemDropPickupType, itemInfo.BestiaryItemDropSpecification, level, itemPosition, -1);
 
 			var item = itemDropPickup.AsDynamic();
 			item.Initialize();
@@ -55,7 +57,6 @@ namespace TsRandomizer.RoomTriggers
 
 		public static void SpawnOrbPredestal(Level level, int x, int y)
 		{
-			var orbPedestalEventType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.Treasure.OrbPedestalEvent");
 			var itemPosition = new Point(x, y);
 			var pedistalSpecification = new TileSpecification
 			{
@@ -63,7 +64,7 @@ namespace TsRandomizer.RoomTriggers
 				ID = 480, //orb pedestal
 				Layer = ETileLayerType.Objects,
 			};
-			var orbPedestalEvent = Activator.CreateInstance(orbPedestalEventType, level, itemPosition, -1, ObjectTileSpecification.FromTileSpecification(pedistalSpecification));
+			var orbPedestalEvent = Activator.CreateInstance(OrbPedestalEventType, level, itemPosition, -1, ObjectTileSpecification.FromTileSpecification(pedistalSpecification));
 
 			var pedestal = orbPedestalEvent.AsDynamic();
 			pedestal.DoesSpawnDespiteBeingOwned = true;
@@ -143,9 +144,11 @@ namespace TsRandomizer.RoomTriggers
 		public static void SpawnCirclePlatform(Level level, int x, int y, bool isClockwise)
 		{
 			var position = new Point(x, y);
-			ObjectTileSpecification platformTile = new ObjectTileSpecification();
+			var platformTile = new ObjectTileSpecification();
+
 			if (!isClockwise)
 				platformTile.Argument = 1;
+
 			var platform = CirclePlatformType.CreateInstance(false, level, position, -1, platformTile);
 
 			level.AsDynamic().RequestAddObject(platform);
@@ -166,25 +169,45 @@ namespace TsRandomizer.RoomTriggers
 			foreground.DrawColor = new Color(8, 16, 2, 12);
 		}
 
-		public static void FillRoomWithWater(Level level) => PlaceWater(level, new Point(0, 0), level.RoomSize16);
+		public static void FillRoomWithWater(Level level) => PlaceWater(level, new Point(0, -1), level.RoomSize16);
 
-		public static void PlaceWater(Level level, Point topLeftTilePos, Point bottomLeftTilePos)
+		public static void PlaceWater(Level level, Point topLeftTilePos, Point bottomRightTilePos)
 		{
 			var topLeft = new WaterFillerEvent(level, new Point(topLeftTilePos.X * 16, topLeftTilePos.Y * 16), topLeftTilePos,
 				-1, true, new ObjectTileSpecification());
-			var bottomLeft = new WaterFillerEvent(level, new Point(bottomLeftTilePos.X * 16, bottomLeftTilePos.Y * 16), bottomLeftTilePos,
+			var bottomRight = new WaterFillerEvent(level, new Point(bottomRightTilePos.X * 16, bottomRightTilePos.Y * 16), bottomRightTilePos,
 				-1, false, new ObjectTileSpecification());
 
 			var dynamicLevel = level.AsDynamic();
 
 			var waterFillerTiles = (List<WaterFillerEvent>)dynamicLevel._waterFillerTiles;
 			waterFillerTiles.Add(topLeft);
-			waterFillerTiles.Add(bottomLeft);
+			waterFillerTiles.Add(bottomRight);
 
 			dynamicLevel.PlaceWaterTiles();
 
 			var tileSize = new Point(16, 16);
-			DestroyLanternsInArea(level, topLeftTilePos * tileSize, bottomLeftTilePos * tileSize);
+			DestroyLanternsInArea(level, topLeftTilePos * tileSize, bottomRightTilePos * tileSize);
+			
+			if (level.ID == 6) //counteract level specific water handling for level 6
+			{
+				var updatableWaterTiles = (List<WaterTile>)dynamicLevel._updatableWaterTiles;
+				var updatableWaterTilePositions = updatableWaterTiles
+					.Select(t => t.Position16)
+					.ToHashSet();
+
+				var stillWaterFrameSource = ((SpriteSheet)level.WaterTiles.Values.First().AsDynamic()._sprite).GetFrameSource(24);
+
+				foreach (var waterTile in level.WaterTiles)
+				{
+					var tile = waterTile.Value.AsDynamic();
+
+					if (updatableWaterTilePositions.Contains(waterTile.Key))
+						tile._bbox = new Rectangle(-1000, -1000, 0, 0);
+					else
+						tile._drawSource = stillWaterFrameSource;
+				}
+			}
 		}
 
 		public static void DestroyLanternsInArea(Level level, Point topLeft, Point bottomRight)
@@ -202,6 +225,19 @@ namespace TsRandomizer.RoomTriggers
 						gameEvent.SilentKill();
 				}
 			}
+		}
+
+		public static void RemoveWotah(Level level)
+		{
+			var dynamic = level.AsDynamic();
+
+			((Dictionary<Point, WaterTile>)dynamic._waterTiles).Clear();
+			((List<WaterFillerEvent>)dynamic._waterFillerTiles).Clear();
+			((List<WaterTile>)dynamic._updatableWaterTiles).Clear();
+
+			foreach (var enemy in dynamic._enemies.Values)
+				if (enemy.EnemyType == EEnemyTileType.LakeEel)
+					enemy.SilentKill();
 		}
 
 		public static void CreateAndCallCutScene(RoomState roomStat, string cutSceneName)

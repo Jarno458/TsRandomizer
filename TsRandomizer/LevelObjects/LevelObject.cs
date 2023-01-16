@@ -39,6 +39,7 @@ namespace TsRandomizer.LevelObjects
 		static readonly Dictionary<EEventTileType, AlwaysSpawnAttribute> AlwaysSpawningEventTypes = new Dictionary<EEventTileType, AlwaysSpawnAttribute>(); //EEventTileType, SpawnerMethod
 		static readonly List<int> KnownItemIds = new List<int>();
 
+
 		public readonly dynamic Dynamic;
 		public readonly Mobile TypedObject;
 
@@ -105,13 +106,18 @@ namespace TsRandomizer.LevelObjects
 			}
 		}
 
+		static void OnCollisionDetection()
+		{
+
+		}
+
 		public static void Update(
 			Level level, GameplayScreen gameplayScreen, ItemLocationMap itemLocations,
-			bool roomChanged, SeedOptions seedOptions, SettingCollection gameSettings,
+			bool roomChanged, Seed seed, SettingCollection gameSettings,
 			ScreenManager screenManager)
 		{
 			if (roomChanged)
-				OnChangeRoom(level, itemLocations, seedOptions, gameSettings, screenManager);
+				OnChangeRoom(level, itemLocations, seed, gameSettings, screenManager);
 			else
 				itemLocations.Update(level);
 
@@ -122,21 +128,19 @@ namespace TsRandomizer.LevelObjects
 
 			if (newNonItemObjects.Any())
 			{
-				GenerateShadowObjects(itemLocations, newNonItemObjects, seedOptions);
+				GenerateShadowObjects(itemLocations, newNonItemObjects, seed);
 
 				SetMonsterHpTo1(newNonItemObjects.OfType<Alive>());
 			}
 
 			var itemsDictionary = (Dictionary<int, Item>)levelReflected._items;
-
 			var currentItemIds = itemsDictionary.Keys;
 			var newItems = currentItemIds
 				.Except(KnownItemIds)
 				.Select(i => itemsDictionary[i])
 				.ToArray();
-
 			if (newItems.Any())
-				GenerateShadowObjects(itemLocations, newItems, seedOptions);
+				GenerateShadowObjects(itemLocations, newItems, seed);
 
 			KnownItemIds.Clear();
 			KnownItemIds.AddRange(currentItemIds);
@@ -157,12 +161,13 @@ namespace TsRandomizer.LevelObjects
 				level.GameSave.AddConcussion();
 		}
 
-		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, SeedOptions seedOptions,
+		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, Seed seed,
 			SettingCollection gameSettings, ScreenManager screenManager)
 		{
 #if DEBUG
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.EssenceOfSpace));
+			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.DoubleJump));
 #endif
 
 			var levelReflected = level.AsDynamic();
@@ -182,16 +187,18 @@ namespace TsRandomizer.LevelObjects
 				.ToList();
 
 			RoomTrigger.OnChangeRoom(
-				level, seedOptions, gameSettings, itemLocations, screenManager,
+				level, seed, gameSettings, itemLocations, screenManager,
 				levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
-			TextReplacer.OnChangeRoom(level, seedOptions, itemLocations,
+			TextReplacer.OnChangeRoom(level, seed.Options, itemLocations,
 				levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
 			Replaces.ReplaceObjects(level, objects);
-			GenerateShadowObjects(itemLocations, objects, seedOptions);
+			GenerateShadowObjects(itemLocations, objects, seed);
 			SpawnMissingObjects(level, levelReflected, itemLocations);
+
+			level.AddEvent(new CollisionDetectionEvent(level, OnCollisionDetection));
 		}
 
-		public static void GenerateShadowObjects(ItemLocationMap itemLocations, IEnumerable<Mobile> objects, SeedOptions options)
+		public static void GenerateShadowObjects(ItemLocationMap itemLocations, IEnumerable<Mobile> objects, Seed seed)
 		{
 			var objectsPerTypes = objects.GroupBy(o => o.GetType());
 
@@ -212,7 +219,7 @@ namespace TsRandomizer.LevelObjects
 						continue;
 
 					Objects.Add(levelObject);
-					levelObject.Initialize(options);
+					levelObject.Initialize(seed);
 				}
 			}
 		}
@@ -299,7 +306,7 @@ namespace TsRandomizer.LevelObjects
 			}
 		}
 
-		protected virtual void Initialize(SeedOptions options)
+		protected virtual void Initialize(Seed seed)
 		{
 		}
 

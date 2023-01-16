@@ -5,6 +5,7 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.RoomTriggers.Triggers;
 using R = TsRandomizer.Randomisation.Requirement;
 
 namespace TsRandomizer.Randomisation
@@ -83,7 +84,7 @@ namespace TsRandomizer.Randomisation
 			var pyramidUnlockingSpecification =
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.None, R.Teleport);
 
-			SetTeleporterPickupAction(random, pyramidUnlockingSpecification, seed.Options);
+			SetTeleporterPickupAction(random, pyramidUnlockingSpecification, seed);
 
 			unlockingSpecifications.Add(pyramidUnlockingSpecification);
 		}
@@ -96,18 +97,26 @@ namespace TsRandomizer.Randomisation
 			unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardD)].AdditionalUnlocks = R.None;
 		}
 
-		static void SetTeleporterPickupAction(Random random, UnlockingSpecification unlockingSpecification, SeedOptions options)
+		static void SetTeleporterPickupAction(Random random, UnlockingSpecification unlockingSpecification, Seed seed)
 		{
-			var teleporterGates = (!options.Inverted)
-				? PresentTeleporterGates.Union(PastTeleporterGates)
-				: PresentTeleporterGates;
+			IEnumerable<TeleporterGate> teleporterGates = PresentTeleporterGates;
+
+			if (!seed.Options.Inverted)
+			{
+				IEnumerable<TeleporterGate> pastTeleporterGates = PastTeleporterGates;
+
+				if (seed.FloodFlags.Maw)
+					pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
+
+				teleporterGates = teleporterGates.Union(pastTeleporterGates);
+			}
 
 			var selectedGate = teleporterGates.SelectRandom(random);
 
 			unlockingSpecification.OnPickup = level => {
 				UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
 
-				if (options.EnterSandman) 
+				if (seed.Options.EnterSandman) 
 					UnlockFirstPyramidPortal(level);
 			};
 			unlockingSpecification.Unlocks = selectedGate.Gate;

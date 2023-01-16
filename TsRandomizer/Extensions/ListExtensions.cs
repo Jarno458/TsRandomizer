@@ -5,10 +5,7 @@ namespace TsRandomizer.Extensions
 {
 	static class ListExtensions
 	{
-		internal static T SelectRandom<T>(this IList<T> items, Random r)
-		{
-			return items[r.Next(items.Count)];
-		}
+		internal static T SelectRandom<T>(this IList<T> items, Random r) => items[r.Next(items.Count)];
 
 		internal static T PopRandom<T>(this IList<T> items, Random r)
 		{

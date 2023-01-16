@@ -8,7 +8,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (!roomState.SeedOptions.Inverted || roomState.Level.GameSave.GetSaveBool("TSRandomizerHasTeleportedPlayer")) 
+			if (!roomState.Seed.Options.Inverted || roomState.Level.GameSave.GetSaveBool("TSRandomizerHasTeleportedPlayer")) 
 				return;
 
 			roomState.Level.GameSave.SetValue("TSRandomizerHasTeleportedPlayer", true);
