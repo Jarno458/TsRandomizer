@@ -105,7 +105,12 @@ namespace TsRandomizer.LevelObjects
 				if (item.Value.Bbox.Intersects(lunais.Bbox)) item.Value.GetItem(lunais);
 			}
 		}
-		
+
+		static void OnCollisionDetection()
+		{
+
+		}
+
 		public static void Update(
 			Level level, GameplayScreen gameplayScreen, ItemLocationMap itemLocations,
 			bool roomChanged, Seed seed, SettingCollection gameSettings,
@@ -189,6 +194,8 @@ namespace TsRandomizer.LevelObjects
 			Replaces.ReplaceObjects(level, objects);
 			GenerateShadowObjects(itemLocations, objects, seed);
 			SpawnMissingObjects(level, levelReflected, itemLocations);
+
+			level.AddEvent(new CollisionDetectionEvent(level, OnCollisionDetection));
 		}
 
 		public static void GenerateShadowObjects(ItemLocationMap itemLocations, IEnumerable<Mobile> objects, Seed seed)
