@@ -41,6 +41,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryFamiliarType.Meyef));
 			if (SeedOptions.StartWithTalaria)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));
+			if (SeedOptions.UnchainedKeys)
+				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.PyramidsKey));
+
 
 			itemsToAddToGame = new List<ItemInfo>
 			{

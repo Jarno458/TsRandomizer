@@ -98,6 +98,9 @@ namespace TsRandomizer.Randomisation
 
 			if (options.StartWithTalaria)
 				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
+
+			if (options.UnchainedKeys)
+				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.PyramidsKey)));
 		}
 
 		void SetupGates()

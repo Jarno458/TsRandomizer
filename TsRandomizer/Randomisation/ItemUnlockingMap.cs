@@ -35,6 +35,11 @@ namespace TsRandomizer.Randomisation
 			new TeleporterGate{Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50},
 		};
 
+		static readonly TeleporterGate[] PyramidTeleporterGates =
+		{
+
+		};
+
 		readonly LookupDictionary<ItemIdentifier, UnlockingSpecification> unlockingSpecifications;
 
 		public R AllUnlockableRequirements => unlockingSpecifications.Aggregate(R.None, (a, b) => a | b.AllUnlocks);
@@ -45,7 +50,7 @@ namespace TsRandomizer.Randomisation
 		{
 			var random = new Random((int)seed.Id);
 
-			unlockingSpecifications = new LookupDictionary<ItemIdentifier, UnlockingSpecification>(26, s => s.Item)
+			unlockingSpecifications = new LookupDictionary<ItemIdentifier, UnlockingSpecification>(29, s => s.Item)
 			{
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.TimespinnerWheel), R.TimespinnerWheel, R.TimeStop),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.DoubleJump), R.DoubleJump, R.TimeStop),
@@ -75,6 +80,9 @@ namespace TsRandomizer.Randomisation
 				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive), R.OculusRift),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.Kobo), R.Kobo),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.MerchantCrow), R.MerchantCrow),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.MapReveal0), R.PastWarp),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.MapReveal1), R.PresentWarp),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.MapReveal2), R.PyramidWarp),
 			};
 
 			if (seed.Options.SpecificKeys)

@@ -33,11 +33,15 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			Dynamic._doesPlayerHaveTablet = Level.GameSave.HasRelic(EInventoryRelicType.Tablet);
 		}
 
+		/*protected override void GetMapReveal()
+		{
+
+		}*/
+
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
 		{
 			if (ItemInfo == null || hasAwardedItem || !Dynamic._isTriggered || !Dynamic._wasActivating)
 				return;
-
 			ShowItemAwardPopup();
 			AwardContainedItem();
 

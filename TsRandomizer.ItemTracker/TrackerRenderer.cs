@@ -82,6 +82,14 @@ namespace TsRandomizerItemTracker
 				DrawItem(spriteBatch, state.MerchantCrow, new ItemIdentifier(EInventoryFamiliarType.MerchantCrow));
 				DrawFireSource(spriteBatch, state);
 				DrawPinkSource(spriteBatch, state);
+				// TODO give "proper" sprites"
+				if (state.PyramidKeys)
+                {
+					DrawItem(spriteBatch, state.PastWarp, new ItemIdentifier(EInventoryRelicType.PyramidsKey));
+					DrawItem(spriteBatch, state.PresentWarp, new ItemIdentifier(EInventoryRelicType.PyramidsKey));
+					DrawItem(spriteBatch, state.PyramidWarp, new ItemIdentifier(EInventoryRelicType.PyramidsKey));
+				}
+				
 			}
 		}
 
