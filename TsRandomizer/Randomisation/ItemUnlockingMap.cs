@@ -201,11 +201,6 @@ namespace TsRandomizer.Randomisation
 			unlockingSpecification.Unlocks = selectedGate.Gate;
 		}
 
-		static void UnlockFirstPyramidPortal(Level level)
-		{ 
-			UnlockRoom(level, 16, 12);
-        }
-
 	public R GetUnlock(ItemIdentifier identifier) =>
 			unlockingSpecifications.TryGetValue(identifier, out var value)
 				? value.Unlocks
@@ -233,6 +228,10 @@ namespace TsRandomizer.Randomisation
 			minimapRoom.SetVisited(true);
 		}
 
+		static void UnlockFirstPyramidPortal(Level level)
+		{
+			UnlockRoom(level, 16, 12);
+		}
 
 		class UnlockingSpecification
 		{
