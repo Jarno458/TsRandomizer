@@ -104,6 +104,9 @@ namespace TsRandomizer.Randomisation
 
 			if (SeedOptions.StartWithTalaria)
 				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
+
+			if (SeedOptions.UnchainedKeys)
+				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.PyramidsKey)));
 		}
 
 		void SetupGates()
@@ -197,11 +200,11 @@ namespace TsRandomizer.Randomisation
 			//pyramid
 			var completeTimespinner = R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3 & R.TimespinnerSpindle & R.TimespinnerWheel;
 			TemporalGyre = MilitaryFortress & R.TimespinnerWheel;
-			PyramidEntrance = SeedOptions.EnterSandman ? (Gate)R.Teleport : (UpperLab & completeTimespinner);
+			PyramidEntrance = SeedOptions.EnterSandman ? (Gate)(R.GateGyre | R.GateLeftLibrary | R.GateRightPyramid) : (UpperLab & completeTimespinner);
 			LeftPyramid = PyramidEntrance & R.DoubleJump;
 			RightPyramid = LeftPyramid 
 				& (FloodsFlags.PyramidShaft ? R.None : R.UpwardDash) 
-				& NeedSwimming(FloodsFlags.BackPyramid);
+				& NeedSwimming(FloodsFlags.BackPyramid) | R.GateRightPyramid;
 			Nightmare = RightPyramid & completeTimespinner;
 		}
 

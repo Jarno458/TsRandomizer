@@ -16,7 +16,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		protected readonly ItemUnlockingMap UnlockingMap;
 
 		readonly List<ItemInfo> itemsToRemoveFromGame;
-		readonly ItemInfo[] itemsToAddToGame;
+		readonly List<ItemInfo> itemsToAddToGame;
 		readonly ItemInfo[] genericItems;
 
 		protected ItemLocationRandomizer(Seed seed, ItemInfoProvider itemInfoProvider, ItemUnlockingMap unlockingMap)
@@ -41,8 +41,11 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryFamiliarType.Meyef));
 			if (SeedOptions.StartWithTalaria)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));
+			if (SeedOptions.UnchainedKeys)
+				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.PyramidsKey));
 
-			itemsToAddToGame = new[]
+
+			itemsToAddToGame = new List<ItemInfo>
 			{
 				ItemInfoProvider.Get(EInventoryEquipmentType.GlassPumpkin),
 				ItemInfoProvider.Get(EInventoryEquipmentType.EternalCoat),
@@ -60,6 +63,15 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltMeyef),
 				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow)
 			};
+			if (SeedOptions.UnchainedKeys)
+			{
+				itemsToAddToGame.Add(ItemInfoProvider.Get(EInventoryUseItemType.MapReveal0)); // Past
+				itemsToAddToGame.Add(ItemInfoProvider.Get(EInventoryUseItemType.MapReveal1)); // Present
+				if (SeedOptions.EnterSandman)
+				{
+					itemsToAddToGame.Add(ItemInfoProvider.Get(EInventoryUseItemType.MapReveal2)); // Pyramid
+				}
+			}
 
 			genericItems = new[]
 			{
@@ -164,7 +176,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			{
 				minimalMawRequirements |= R.GateAccessToPast;
 
-				//for non inverted seeds we dont know pyramid keys are required as it can be a classic past seed
+				//for non inverted seeds we dont know if the twin pyramid key is required as it can be a classic past seed
 				/*var isWatermaskRequiredForMaw = UnlockingMap.PyramidKeysUnlock != R.GateMaw
 				                                && UnlockingMap.PyramidKeysUnlock != R.GateCavesOfBanishment;
 
