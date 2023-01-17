@@ -26,6 +26,7 @@ namespace TsRandomizer.Screens
 		ItemLocationMap itemLocationMap;
 
 		public readonly dynamic Dynamic;
+		public GCM GameContentManager => Dynamic.GCM;
 
 		public static Log Log;
 		public static GameConsole Console;
@@ -41,10 +42,10 @@ namespace TsRandomizer.Screens
 		{
 			base.LoadContent();
 
-			Dynamic.GCM.LatinFont.DefaultCharacter = '?';
+			GameContentManager.LatinFont.DefaultCharacter = '?';
 
-			Log = new Log(Dynamic.GCM);
-			Console = new GameConsole(this, Dynamic.GCM);
+			Log = new Log(GameContentManager);
+			Console = new GameConsole(this, GameContentManager);
 
 			Console.AddCommand(new ConnectCommand(this));
 		}
@@ -106,7 +107,7 @@ namespace TsRandomizer.Screens
 				hookedScreens.Add(screenHandler);
 				foundScreens.Add(screen);
 
-				screenHandler.Initialize(itemLocationMap, (GCM)Dynamic.GCM);
+				screenHandler.Initialize(itemLocationMap, GameContentManager);
 			}
 
 			if (foundScreens.Count != hookedScreens.Count)

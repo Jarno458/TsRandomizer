@@ -13,13 +13,15 @@ namespace TsRandomizer.Settings
 				}},
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.ShopFill, s => s.ShopMultiplier, s => s.ShopWarpShards, s => s.LootPool, s => s.DropRateCategory, s => s.DropRate, s => s.LootTierDistro
+					s => s.ShopFill, s => s.ShopMultiplier, s => s.ShopWarpShards, s => s.LootPool,
+					s => s.DropRateCategory, s => s.DropRate, s => s.LootTierDistro
 				}},
 			new GameSettingCategoryInfo { Name = "Minimap", Description = "Settings related to minimap colors.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.PastMinimapColor, s => s.PresentMinimapColor, s => s.PyramidMinimapColor,
 					s => s.LootMinimapColor, s => s.SpecailLootMinimapColor,
-					s => s.SaveStatueMinimapColor, s => s.PresentTransitionMinimapColor, s => s.PastTransitionMinimapColor
+					s => s.SaveStatueMinimapColor, s => s.PresentTransitionMinimapColor, s => s.PastTransitionMinimapColor,
+					s => s.HintedMinimapColor, s => s.FinalBossMinimapColor
 				}},
 			new GameSettingCategoryInfo { Name = "Archipelago", Description = "Settings related to games with the Archipelago multiworld.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -132,6 +134,12 @@ namespace TsRandomizer.Settings
 
 		public ColorGameSetting PastTransitionMinimapColor = new ColorGameSetting("Past transition color",
 			"Sets the color for rooms that have items in them for you", "#9712C2", true);
+
+		public ColorGameSetting HintedMinimapColor = new ColorGameSetting("Hinted loot color",
+			"Sets the overlay color for rooms that have items in them that have been hinted for", "#00FF85", true);
+
+		public ColorGameSetting FinalBossMinimapColor = new ColorGameSetting("Final Boss color",
+			"Sets the color for room of the final boss", "#EEEEEE", true);
 
 		public OnOffGameSetting DeathLink = new OnOffGameSetting("DeathLink",
 			"Sets whether DeathLink is on or off", false, true);

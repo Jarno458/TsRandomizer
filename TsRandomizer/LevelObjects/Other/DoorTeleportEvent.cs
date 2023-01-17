@@ -13,7 +13,7 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 		}
 
-		protected override void Initialize(SeedOptions options)
+		protected override void Initialize(Seed seed)
 		{
 			// Remove all exits during fights in boss rando
 			Level level = (Level)Dynamic._level;

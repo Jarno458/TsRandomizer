@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
-using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Heroes;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
-using TsRandomizer.Settings.GameSettingObjects;
 
 namespace TsRandomizer.Randomisation
 {
@@ -35,7 +34,6 @@ namespace TsRandomizer.Randomisation
 				double sumOfWeights = MinusOdds + PlusOdds + NormalOdds;
 				double minusPercent = MinusOdds / sumOfWeights;
 				double normalPercent = NormalOdds / sumOfWeights;
-				double plusPercent = PlusOdds / sumOfWeights;
 				double choice = random.NextDouble();
 				switch (choice)
 				{
@@ -56,6 +54,9 @@ namespace TsRandomizer.Randomisation
 
 	static class OrbDamageManager
 	{
+		static Type OrbManagerType = TimeSpinnerType.Get("Timespinner.GameObjects.Heroes.Orbs.LunaisOrbManager");
+		static MethodInfo RefreshDamage = OrbManagerType.GetMethod("RefreshDamage", BindingFlags.NonPublic | BindingFlags.Instance);
+		
 		public static Dictionary<int, int> OrbDamageLookup = new Dictionary<int, int>();
 		static readonly OrbDamageOdds nerfed = new OrbDamageOdds
 		{
@@ -88,7 +89,7 @@ namespace TsRandomizer.Randomisation
 			PlusOdds = 1
 		};
 
-		private static OrbDamageRange GetOrbDamageOptions(EInventoryOrbType orbType)
+		static OrbDamageRange GetOrbDamageOptions(EInventoryOrbType orbType)
 		{
 			switch (orbType)
 			{
@@ -112,9 +113,9 @@ namespace TsRandomizer.Randomisation
 			}
 		}
 
-		private static Dictionary<string, OrbDamageOdds> GetPresetOdds(OrbDamageOdds preset)
+		static Dictionary<string, OrbDamageOdds> GetPresetOdds(OrbDamageOdds preset)
 		{
-			Dictionary<string, OrbDamageOdds> defaultOdds = new Dictionary<string, OrbDamageOdds>();
+			var defaultOdds = new Dictionary<string, OrbDamageOdds>();
 			foreach (EInventoryOrbType orbType in Enum.GetValues(typeof(EInventoryOrbType)))
 			{
 				if (orbType != EInventoryOrbType.Monske && orbType != EInventoryOrbType.None)
@@ -125,7 +126,7 @@ namespace TsRandomizer.Randomisation
 			return defaultOdds;
 		}
 
-		private static Dictionary<string, OrbDamageOdds> GetOrbOdds(string setting, Dictionary<string, OrbDamageOdds> overrides)
+		static Dictionary<string, OrbDamageOdds> GetOrbOdds(string setting, Dictionary<string, OrbDamageOdds> overrides)
 		{
 			Dictionary<string, OrbDamageOdds> returnOdds;
 			switch (setting)
@@ -145,9 +146,7 @@ namespace TsRandomizer.Randomisation
 				case "Manual":
 					returnOdds = GetPresetOdds(balanced);
 					foreach (var item in overrides)
-					{
 						returnOdds[item.Key] = item.Value;
-					}
 					break;
 				default:
 					returnOdds = GetPresetOdds(balanced);
@@ -159,9 +158,11 @@ namespace TsRandomizer.Randomisation
 
 		public static void RandomizeOrb(string orbTypeName, OrbDamageOdds orbOdds, Random random)
 		{
-			EInventoryOrbType orbType = (EInventoryOrbType)Enum.Parse(typeof(EInventoryOrbType), orbTypeName);
+			var orbType = (EInventoryOrbType)Enum.Parse(typeof(EInventoryOrbType), orbTypeName);
 			var options = GetOrbDamageOptions(orbType);
+
 			int newDamage;
+
 			switch (orbOdds.GetModifier(random))
 			{
 				case OrbDamageOdds.OrbDamageModifier.Minus:
@@ -186,12 +187,14 @@ namespace TsRandomizer.Randomisation
 		public static void OverrideOrbNames(EInventoryOrbType orbType, string suffix)
 		{
 			var Localizer = TimeSpinnerGame.Localizer;
+
 			string locKey = $"inv_orb_{orbType}";
 			string spellLocKey = $"{locKey}_spell";
 			string ringLocKey = $"{locKey}_passive";
 			string actualOrbName = new InventoryOrb(orbType).Name;
 			string actualSpellName = new InventoryOrb(orbType).AsDynamic().SpellName;
 			string actualRingName = new InventoryOrb(orbType).AsDynamic().PassiveName;
+
 			if (!actualOrbName.EndsWith(suffix))
 				Localizer.OverrideKey(locKey, $"{actualOrbName} {suffix}");
 			if (!actualSpellName.EndsWith(suffix))
@@ -203,13 +206,17 @@ namespace TsRandomizer.Randomisation
 		public static void PopulateOrbLookups(GameSave save, string setting, Dictionary<string, OrbDamageOdds> overrides)
 		{
 			OrbDamageLookup.Clear();
-			Dictionary<string, OrbDamageOdds> orbOdds = GetOrbOdds(setting, overrides);
+
+			var orbOdds = GetOrbOdds(setting, overrides);
+
 			var random = new Random((int)save.GetSeed().Value.Id);
 
-			foreach (KeyValuePair<string, OrbDamageOdds> odds in orbOdds)
+			foreach (var odds in orbOdds)
 			{
-				EInventoryOrbType orbType = (EInventoryOrbType)Enum.Parse(typeof(EInventoryOrbType), odds.Key);
+				var orbType = (EInventoryOrbType)Enum.Parse(typeof(EInventoryOrbType), odds.Key);
+
 				RandomizeOrb(odds.Key, odds.Value, random);
+
 				var orbInventory = save.Inventory.OrbInventory.Inventory;
 				if (orbInventory.ContainsKey((int)orbType))
 					SetOrbBaseDamage(orbInventory[(int)orbType]);
@@ -218,36 +225,33 @@ namespace TsRandomizer.Randomisation
 
 		public static void SetOrbBaseDamage(InventoryOrb orb)
 		{
-			if (OrbDamageLookup.TryGetValue((int)orb.OrbType, out int storedOrbDamage))
-			{
+			if (OrbDamageLookup.TryGetValue((int)orb.OrbType, out var storedOrbDamage))
 				orb.BaseDamage = storedOrbDamage;
-			}
 		}
 
 		public static void UpdateOrbDamage(GameSave save, Protagonist lunais)
 		{
-			var OrbManagerType = TimeSpinnerType.Get("Timespinner.GameObjects.Heroes.Orbs.LunaisOrbManager");
-			var RefreshDamage = OrbManagerType.GetMethod("RefreshDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-			var orbManager = lunais.AsDynamic()._orbManager;
 			var inventory = save.Inventory;
+
 			var currentOrbAType = inventory.EquippedMeleeOrbA;
 			var currentOrbBType = inventory.EquippedMeleeOrbB;
 			var currentSpellType = inventory.EquippedSpellOrb;
 			var currentRingType = inventory.EquippedPassiveOrb;
+
 			var orbA = GetOrbFromType(inventory.OrbInventory, currentOrbAType);
 			var orbB = GetOrbFromType(inventory.OrbInventory, currentOrbBType);
 			var spell = GetOrbFromType(inventory.OrbInventory, currentSpellType);
 			var ring = GetOrbFromType(inventory.OrbInventory, currentRingType);
+
 			if (orbA != null) SetOrbBaseDamage(orbA);
 			if (orbB != null) SetOrbBaseDamage(orbB);
 			if (spell != null) SetOrbBaseDamage(spell);
 			if (ring != null) SetOrbBaseDamage(ring);
-			RefreshDamage.Invoke(orbManager, null);
+
+			RefreshDamage.Invoke(lunais.AsDynamic()._orbManager, null);
 		}
 
-		private static InventoryOrb GetOrbFromType(InventoryOrbCollection inventory, EInventoryOrbType orbType)
-		{
-			return inventory.GetItem((int)orbType);
-		}
+		static InventoryOrb GetOrbFromType(InventoryOrbCollection inventory, EInventoryOrbType orbType) => 
+			inventory.GetItem((int)orbType);
 	}
 }

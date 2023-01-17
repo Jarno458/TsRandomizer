@@ -8,10 +8,7 @@ namespace TsRandomizer.Extensions
 {
 	public static class ReflectExtensions
 	{
-		public static dynamic AsDynamic(this object instance)
-		{
-			return new Dynamic(instance);
-		}
+		public static dynamic AsDynamic(this object instance) => new Dynamic(instance);
 	}
 
 	public class Dynamic : DynamicObject

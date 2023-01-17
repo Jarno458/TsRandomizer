@@ -51,7 +51,7 @@ namespace TsRandomizer.Screens
 			seedMenuEntry = GetSelectSeedMenu();
 			AddMenuEntryAtIndex(0, seedMenuEntry);
 
-			seedRepresentation = new SeedRepresentation(ScreenManager.Dynamic.GCM);
+			seedRepresentation = new SeedRepresentation(ScreenManager.GameContentManager);
 
 			HookOnDifficultySelectedMethod();
 		}
@@ -266,7 +266,7 @@ namespace TsRandomizer.Screens
 
 			seedRepresentation.SetDrawPoint(seedRepresentationDrawArea);
 
-			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp)) 
+			using (spriteBatch.BeginUsing()) 
 				seedRepresentation.Draw(spriteBatch);
 		}
 

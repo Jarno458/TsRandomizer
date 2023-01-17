@@ -12,7 +12,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			SpawnBoss(roomState.Level, roomState.SeedOptions, TargetBossId);
+			SpawnBoss(roomState, TargetBossId);
 
 			if (roomState.Level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
@@ -56,30 +56,39 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 			throw new ArgumentOutOfRangeException($"No vanilla boss found for room: {roomKey}");
 		}
 
-		protected static void SpawnBoss(Level level, SeedOptions seedOptions, int vanillaBossId)
+		protected static void SpawnBoss(RoomState state, int vanillaBossId)
 		{
+			var level = state.Level;
+			
 			if (!level.GameSave.GetSettings().BossRando.Value 
 				    || TargetBossId == -1 
 				    || !level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 
-			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
-			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, vanillaBossId);
+			var vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
+			var replacedBossInfo = BestiaryManager.GetReplacedBoss(level, vanillaBossId);
 
 			level.JukeBox.StopSong();
 			level.PlayCue(Timespinner.GameAbstractions.ESFX.FoleyWarpGyreIn);
 
-			if (seedOptions.GasMaw && (vanillaBossId == (int)EBossID.Maw || (vanillaBossId == (int)EBossID.FelineSentry && level.GameSave.GetSaveBool("TSRando_IsVileteSaved"))))
-				RoomTriggerHelper.FillRoomWithGas(level);
+			if ((state.Seed.Options.GasMaw && vanillaBossId == (int)EBossID.Maw)
+			    || (vanillaBossId == (int)EBossID.FelineSentry && level.GameSave.GetSaveBool("TSRando_IsVileteSaved")))
+					RoomTriggerHelper.FillRoomWithGas(level);
+
+			if ((state.Seed.FloodFlags.Maw && vanillaBossId == (int)EBossID.Maw)
+			    || (state.Seed.FloodFlags.Xarion && vanillaBossId == (int)EBossID.Xarion)
+			    || (state.Seed.FloodFlags.BackPyramid && (vanillaBossId == (int)EBossID.Sandman || vanillaBossId == (int)EBossID.Nightmare)))
+					RoomTriggerHelper.FillRoomWithWater(level);
 
 			if (replacedBossInfo.ShouldSpawn)
 			{
-				ObjectTileSpecification bossTile = new ObjectTileSpecification();
-				bossTile.Category = EObjectTileCategory.Enemy;
-				bossTile.Layer = ETileLayerType.Objects;
-				bossTile.ObjectID = replacedBossInfo.TileId;
-				bossTile.Argument = replacedBossInfo.Argument;
-				bossTile.IsFlippedHorizontally = !replacedBossInfo.IsFacingLeft;
+				var bossTile = new ObjectTileSpecification {
+					Category = EObjectTileCategory.Enemy,
+					Layer = ETileLayerType.Objects,
+					ObjectID = replacedBossInfo.TileId,
+					Argument = replacedBossInfo.Argument,
+					IsFlippedHorizontally = !replacedBossInfo.IsFacingLeft
+				};
 
 				var boss = replacedBossInfo.BossType.CreateInstance(false, replacedBossInfo.Position, level, replacedBossInfo.Sprite, -1, bossTile);
 				level.AsDynamic().RequestAddObject(boss);
@@ -97,19 +106,19 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 				return;
 
 			BestiaryManager.RefreshBossSaveFlags(level);
-			BossAttributes vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
-			BossAttributes replacedBossInfo = BestiaryManager.GetReplacedBoss(level, vanillaBossId);
+			var vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
+			var replacedBossInfo = BestiaryManager.GetReplacedBoss(level, vanillaBossId);
 			if (level.GameSave.GetSaveBool("TSRando_" + vanillaBossInfo.SaveName))
 				return;
 
 			TargetBossId = vanillaBossId;
 
 			level.JukeBox.StopSong();
-			RoomItemKey bossArena = replacedBossInfo.BossRoom;
+			var bossArena = replacedBossInfo.BossRoom;
 			BestiaryManager.ClearBossSaveFlags(level, replacedBossInfo.ShouldSpawn);
 			level.GameSave.SetValue("IsFightingBoss", true);
 
-			EDirection facing = replacedBossInfo.IsFacingLeft ? EDirection.West : EDirection.East;
+			var facing = replacedBossInfo.IsFacingLeft ? EDirection.West : EDirection.East;
 
 			level.RequestChangeLevel(new LevelChangeRequest
 			{

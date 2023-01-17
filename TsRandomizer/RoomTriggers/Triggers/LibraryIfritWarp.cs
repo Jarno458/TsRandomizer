@@ -18,7 +18,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (!roomState.SeedOptions.GyreArchives) 
+			if (!roomState.Seed.Options.GyreArchives) 
 				return;
 
 			if (roomState.Level.GameSave.HasFamiliar(EInventoryFamiliarType.Kobo))

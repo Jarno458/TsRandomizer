@@ -23,8 +23,8 @@ namespace TsRandomizer.Archipelago
 
 		HashSet<ItemKey> personalLocationItemKeys;
 
-		public ArchipelagoItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, SeedOptions options, int slot)
-			: base(itemInfoProvider, itemUnlockingMap, options)
+		public ArchipelagoItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, Seed seed, int slot)
+			: base(itemInfoProvider, itemUnlockingMap, seed)
 		{
 			this.slot = slot;
 		}
@@ -41,6 +41,8 @@ namespace TsRandomizer.Archipelago
 
 			Client.LocationCheckHelper.CheckedLocationsUpdated += MarkCheckedLocations;
 			MarkCheckedLocations(Client.LocationCheckHelper.AllLocationsChecked);
+
+			Client.DataStorage.TrackHints(OnHintReceived);
 
 			firstPass = true;
 		}
@@ -97,7 +99,7 @@ namespace TsRandomizer.Archipelago
 		}
 
 		public override ProgressionChain GetProgressionChain() => 
-			throw new InvalidOperationException("Progression chains arent supported for Archipelago seeds");
+			throw new InvalidOperationException("Progression chains aren't supported for Archipelago seeds");
 
 		void ReceiveItem(NetworkItem networkItem, Level level)
 		{
@@ -137,11 +139,21 @@ namespace TsRandomizer.Archipelago
 				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(this));
 		}
 
-		bool TryGetLocation(NetworkItem networkItem, out ItemLocation location)
+		void OnHintReceived(Hint[] hints)
+		{
+			foreach (var hint in hints)
+				if (hint.FindingPlayer == Client.Slot && TryGetLocation(hint.LocationId, out var location))
+					location.IsHinted = true;
+		}
+
+		bool TryGetLocation(NetworkItem networkItem, out ItemLocation location) =>
+			TryGetLocation(networkItem.Location, out location);
+
+		bool TryGetLocation(long locationId, out ItemLocation location)
 		{
 			try
 			{
-				location = this[LocationMap.GetItemkey(networkItem.Location)];
+				location = this[LocationMap.GetItemkey(locationId)];
 				return true;
 			}
 			catch

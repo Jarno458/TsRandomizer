@@ -117,40 +117,32 @@ namespace TsRandomizer.Extensions
 		public static List<ItemIdentifier> GetAllLoot()
 		{
 			// Exclude unique and placeholder objects
-			var useItems = ((EInventoryUseItemType[])Enum.GetValues(typeof(EInventoryUseItemType)))
-				.Where(o => o != EInventoryUseItemType.None
-					&& o != EInventoryUseItemType.AlchemistTools
-					&& o != EInventoryUseItemType.MagicMarbles
-					&& o != EInventoryUseItemType.EssenceCrystal
-					&& o != EInventoryUseItemType.GoldNecklace
-					&& o != EInventoryUseItemType.MapReveal0
-					&& o != EInventoryUseItemType.MapReveal1
-					&& o != EInventoryUseItemType.MapReveal2
-					&& o != EInventoryUseItemType.RadiationCrystal
-					&& o != EInventoryUseItemType.PlasmaIV
-					&& o != EInventoryUseItemType.HistoricalDocuments
-					&& o != EInventoryUseItemType.FoodSynth
-					&& o != EInventoryUseItemType.GalaxyStone
-					&& o != EInventoryUseItemType.PlaceHolderItem1
-					)
-				.ToArray();
-			var equipment =
-				((EInventoryEquipmentType[])Enum.GetValues(typeof(EInventoryEquipmentType)))
-				.Where(o => o != EInventoryEquipmentType.None
-					&& o != EInventoryEquipmentType.FamiliarEgg
-					&& o != EInventoryEquipmentType.SelenBangle
-					&& o != EInventoryEquipmentType.ShinyRock
-					&& o != EInventoryEquipmentType.GlassPumpkin
-					&& o != EInventoryEquipmentType.EternalCoat
-					&& o != EInventoryEquipmentType.EternalTiara
-					)
-				.ToArray();
-			List<ItemIdentifier> loot = new List<ItemIdentifier>();
-			foreach (EInventoryUseItemType item in useItems)
-				loot.Add(new ItemIdentifier(item));
-			foreach (EInventoryEquipmentType item in equipment)
-				loot.Add(new ItemIdentifier(item));
-			return loot;
+			return ((EInventoryUseItemType[])Enum.GetValues(typeof(EInventoryUseItemType)))
+					.Where(o => o != EInventoryUseItemType.None
+				            && o != EInventoryUseItemType.AlchemistTools
+				            && o != EInventoryUseItemType.MagicMarbles
+				            && o != EInventoryUseItemType.EssenceCrystal
+				            && o != EInventoryUseItemType.GoldNecklace
+				            && o != EInventoryUseItemType.MapReveal0
+				            && o != EInventoryUseItemType.MapReveal1
+				            && o != EInventoryUseItemType.MapReveal2
+				            && o != EInventoryUseItemType.RadiationCrystal
+				            && o != EInventoryUseItemType.PlasmaIV
+				            && o != EInventoryUseItemType.HistoricalDocuments
+				            && o != EInventoryUseItemType.FoodSynth
+				            && o != EInventoryUseItemType.GalaxyStone
+				            && o != EInventoryUseItemType.PlaceHolderItem1
+					).Select(item => new ItemIdentifier(item))
+				.Union(((EInventoryEquipmentType[])Enum.GetValues(typeof(EInventoryEquipmentType)))
+					.Where(o => o != EInventoryEquipmentType.None
+				            && o != EInventoryEquipmentType.FamiliarEgg
+				            && o != EInventoryEquipmentType.SelenBangle
+				            && o != EInventoryEquipmentType.ShinyRock
+				            && o != EInventoryEquipmentType.GlassPumpkin
+				            && o != EInventoryEquipmentType.EternalCoat
+				            && o != EInventoryEquipmentType.EternalTiara
+					).Select(item => new ItemIdentifier(item)))
+				.ToList();
 		}
 	}
 }

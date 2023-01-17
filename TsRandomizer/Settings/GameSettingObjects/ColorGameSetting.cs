@@ -148,7 +148,6 @@ namespace TsRandomizer.Settings.GameSettingObjects
 			"Turquoise",
 			"Violet",
 			"Wheat",
-			"White",
 			"WhiteSmoke",
 			"Yellow",
 			"YellowGreen"

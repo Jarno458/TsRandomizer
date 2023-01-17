@@ -18,7 +18,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 					&& roomState.Level.GameSave.HasRelic(EInventoryRelicType.ScienceKeycardA))
 				RoomTriggerHelper.SpawnItemDropPickup(roomState.Level, roomState.RoomItemLocation.ItemInfo, 200, 200);
 
-			if (!roomState.SeedOptions.Inverted && roomState.Level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
+			if (!roomState.Seed.Options.Inverted && roomState.Level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
 				RoomTriggerHelper.CreateSimpleOneWayWarp(roomState.Level, 16, 12);
 		}
 	}

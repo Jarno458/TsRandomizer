@@ -17,10 +17,11 @@ namespace TsRandomizer.Randomisation
 		public string Name { get; internal set; }
 		public string AreaName { get; internal set; }
 		public bool IsPickedUp { get; internal set; }
+		public bool IsHinted { get; internal set; }
 		public Action<Level> OnPickup { get; set; }
 		public ItemInfo ItemInfo { get; internal set; }
 		public ItemInfo DefaultItem { get; internal set; }
-
+		
 		public bool IsUsed => ItemInfo != null;
 		
 		public ItemLocation(ItemKey key, string areaName, string name, ItemInfo defaultItem) 

@@ -8,7 +8,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			SpawnBoss(roomState.Level, roomState.SeedOptions, TargetBossId);
+			SpawnBoss(roomState, TargetBossId);
 
 			if (roomState.Level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
@@ -23,7 +23,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 				return;
 			}
 
-			if (!roomState.SeedOptions.Cantoran)
+			if (!roomState.Seed.Options.Cantoran)
 				return;
 
 			CreateBossWarp(roomState.Level, (int)EBossID.Cantoran);

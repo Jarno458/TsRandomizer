@@ -32,9 +32,9 @@ namespace TsRandomizer.Screens
 			.Get("Timespinner.GameStateManagement.Screens.MainMenu.TitleBackgroundScreen");
 
 		RoomSpecification currentRoom;
-		SeedOptions seedOptions;
 
-		public SettingCollection Settings;
+		public Seed Seed { get; private set; }
+		public SettingCollection Settings { get; private set; }
 
 		public GameSave Save => (GameSave)Dynamic.SaveFile;
 		Level Level => (Level)Dynamic._level;
@@ -55,24 +55,22 @@ namespace TsRandomizer.Screens
 			GameContentManager = gameContentManager;
 
 			var saveFile = Save;
-			var seed = saveFile.GetSeed();
+			var saveFileSeed = saveFile.GetSeed();
 			var fillingMethod = saveFile.GetFillingMethod();
 			var settings = saveFile.GetSettings();
 
 			ScreenManager.Log.SetSettings(settings);
 			gameContentManager.UpdateMinimapColors(settings);
 
-			if (!seed.HasValue)
-				seed = Seed.Zero;
+			Seed = saveFileSeed ?? Seed.Zero;
 
-			Console.Out.WriteLine($"Seed: {seed}");
+			Console.Out.WriteLine($"Seed: {Seed}");
 
-			seedOptions = seed.Value.Options;
 			Settings = settings;
 
 			try
 			{
-				ItemLocations = Randomizer.Randomize(seed.Value, fillingMethod, Level.GameSave);
+				ItemLocations = Randomizer.Randomize(Seed, fillingMethod, Level.GameSave);
 			}
 			catch (ConnectionFailedException e)
 			{
@@ -84,7 +82,7 @@ namespace TsRandomizer.Screens
 
 			ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(ItemLocations));
 
-			LevelReflected._random = new DeRandomizer(LevelReflected._random, seed.Value);
+			LevelReflected._random = new DeRandomizer(LevelReflected._random, Seed);
 
 			ItemManipulator.Initialize(ItemLocations);
 
@@ -95,7 +93,7 @@ namespace TsRandomizer.Screens
 			if (!saveFile.GetSaveBool("IsFightingBoss"))
 				BestiaryManager.RefreshBossSaveFlags(Level);
 
-			if (seedOptions.Archipelago)
+			if (Seed.Options.Archipelago)
 			{
 				Client.SetStatus(ArchipelagoClientState.ClientPlaying);
 
@@ -130,7 +128,7 @@ namespace TsRandomizer.Screens
 			if (ItemLocations == null)
 				return;
 
-			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), seedOptions, Settings, ScreenManager);
+			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), Seed, Settings, ScreenManager);
 
 			FamiliarManager.Update(Level);
 
@@ -153,7 +151,7 @@ namespace TsRandomizer.Screens
 
 			var inGameZoom = (int)TimeSpinnerGame.Constants.InGameZoom;
 
-			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
+			using (spriteBatch.BeginUsing())
 				spriteBatch.DrawString(menuFont, text, new Vector2(30, 130), Color.Red, inGameZoom);
 		}
 #endif

@@ -9,18 +9,21 @@ namespace TsRandomizer
 
 		public readonly uint Id;
 		public readonly SeedOptions Options;
+		public readonly RisingTides FloodFlags;
 
 		public static Seed Zero = new Seed(0U, SeedOptions.None);
 
-		public Seed(uint id, SeedOptions options)
+		public Seed(uint id, SeedOptions options, RisingTides floodFlags = null)
 		{
 			Id = id;
 			Options = options;
+			FloodFlags = floodFlags ?? new RisingTides(id, options);
 		}
 
 		public static Seed GenerateRandom(SeedOptions options, Random random)
 		{
-			return new Seed((uint)random.Next(), options);
+			var id = (uint)random.Next();
+			return new Seed(id, options);
 		}
 
 		public static bool TryParse(string seedString, out Seed seed)

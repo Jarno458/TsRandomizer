@@ -17,9 +17,9 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 		}
 
-		protected override void Initialize(SeedOptions options)
+		protected override void Initialize(Seed seed)
 		{
-			requiresSpecificKey = options.SpecificKeys;
+			requiresSpecificKey = seed.Options.SpecificKeys;
 		}
 
 		protected override void OnUpdate(GameplayScreen gameplayScreen)
