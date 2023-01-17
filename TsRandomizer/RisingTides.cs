@@ -33,17 +33,6 @@ namespace TsRandomizer
 			CastleCourtyard = random.Next() % 3 == 0;
 			LakeDesolation = random.Next() % 3 == 0;
 			DryLakeSerene = random.Next() % 3 == 0;
-
-			BasementHigh = true;
-			Basement = true;
-			Xarion = true;
-			Maw = true;
-			PyramidShaft = true;
-			BackPyramid = true;
-			CastleMoat = true;
-			CastleCourtyard = true;
-			LakeDesolation = true;
-			DryLakeSerene = true;
 		}
 
 		public RisingTides(Dictionary<string, object> slotData)

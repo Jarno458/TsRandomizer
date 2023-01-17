@@ -33,8 +33,12 @@ namespace TsRandomizerItemTracker
 
 			var numberOfFireSourcesCombined = 4;
 			var numberOfPinkSourcesCombined = 3;
+            var numberOfPyramidKeysSourcesCombined = 4;
 
-			numberOfItems = ItemTrackerState.NumberOfItems - (numberOfFireSourcesCombined-1) - (numberOfPinkSourcesCombined-1);
+			numberOfItems = ItemTrackerState.NumberOfItems 
+                            - (numberOfFireSourcesCombined-1) 
+                            - (numberOfPinkSourcesCombined-1)
+                            - (numberOfPyramidKeysSourcesCombined-1);
 		}
 
 		public void SetWidth(int clientBoundsWidth)
@@ -67,7 +71,7 @@ namespace TsRandomizerItemTracker
 				DrawItem(spriteBatch, state.DoubleJump, new ItemIdentifier(EInventoryRelicType.DoubleJump));
 				DrawItem(spriteBatch, state.Lightwall, new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Spell));
 				DrawItem(spriteBatch, state.CelestialSash, new ItemIdentifier(EInventoryRelicType.EssenceOfSpace));
-				DrawItem(spriteBatch, state.PyramidKeys, new ItemIdentifier(EInventoryRelicType.PyramidsKey));
+                DrawPyramidKeys(spriteBatch, state);
 				DrawItem(spriteBatch, state.WaterMask, new ItemIdentifier(EInventoryRelicType.WaterMask));
 				DrawItem(spriteBatch, state.GasMask, new ItemIdentifier(EInventoryRelicType.AirMask));
 				DrawItem(spriteBatch, state.CardA, new ItemIdentifier(EInventoryRelicType.ScienceKeycardA));
@@ -82,16 +86,20 @@ namespace TsRandomizerItemTracker
 				DrawItem(spriteBatch, state.MerchantCrow, new ItemIdentifier(EInventoryFamiliarType.MerchantCrow));
 				DrawFireSource(spriteBatch, state);
 				DrawPinkSource(spriteBatch, state);
-
-				if (state.PyramidKeys)
-                {
-					DrawItem(spriteBatch, state.PastWarp, new ItemIdentifier(EInventoryRelicType.PyramidsKey), Color.Cyan);
-					DrawItem(spriteBatch, state.PresentWarp, new ItemIdentifier(EInventoryRelicType.PyramidsKey), Color.Fuchsia);
-					DrawItem(spriteBatch, state.PyramidWarp, new ItemIdentifier(EInventoryRelicType.PyramidsKey), Color.LimeGreen);
-				}
-				
 			}
 		}
+
+        void DrawPyramidKeys(SpriteBatch spriteBatch, ItemTrackerState state)
+        {
+            DrawItem(spriteBatch, state.PyramidKeys, new ItemIdentifier(EInventoryRelicType.PyramidsKey));
+
+			if (!state.PastWarp && !state.PresentWarp && !state.PyramidWarp)
+				return;
+
+            DrawSubItem(spriteBatch, state.PastWarp, new ItemIdentifier(EInventoryRelicType.PyramidsKey), 2, new Point(0,1), Color.Cyan);
+            DrawSubItem(spriteBatch, state.PresentWarp, new ItemIdentifier(EInventoryRelicType.PyramidsKey), 2, new Point(1, 1), Color.Fuchsia);
+            DrawSubItem(spriteBatch, state.PyramidWarp, new ItemIdentifier(EInventoryRelicType.PyramidsKey), 2, new Point(1, 0), Color.LimeGreen);
+        }
 
 		void DrawFireSource(SpriteBatch spriteBatch, ItemTrackerState state)
 		{
@@ -130,16 +138,15 @@ namespace TsRandomizerItemTracker
 			DrawItem(spriteBatch, obtained, itemInfo, Color.White);
 		}
 
-		void DrawItem(SpriteBatch spriteBatch, Point point, bool obtained, int animationIndex, Color obtainedColor)
+		void DrawItem(SpriteBatch spriteBatch, Rectangle destination, bool obtained, int animationIndex, Color obtainedColor)
 		{
-			var position = new Rectangle(point.X, point.Y, IconSize, IconSize);
 			var spritePosition = menuIcons.FrameStarts[animationIndex];
 			var sprite = new Rectangle(spritePosition.X, spritePosition.Y, menuIcons.FrameSize.X, menuIcons.FrameSize.Y);
 			
 			var color = obtained ? obtainedColor : Color.Black;
 			color.A = obtained ? (byte)255 : (byte)50;
 
-			spriteBatch.Draw(menuIcons.Texture, position, sprite, color);
+			spriteBatch.Draw(menuIcons.Texture, destination, sprite, color);
 		}
 
 		void DrawItem(SpriteBatch spriteBatch, bool obtained, ItemIdentifier itemInfo, Color color)
@@ -152,8 +159,23 @@ namespace TsRandomizerItemTracker
 
 			var position = new Point(xIndex++ * IconSize, yIndex * IconSize);
 
-			DrawItem(spriteBatch, position, obtained, GetAnimationIndex(itemInfo), color);
+			DrawItem(spriteBatch, new Rectangle(position.X, position.Y, IconSize, IconSize), 
+                obtained, GetAnimationIndex(itemInfo), color);
 		}
+
+        void DrawSubItem(SpriteBatch spriteBatch, bool obtained, ItemIdentifier itemInfo, 
+            int subGridSize, Point subItemCoordinate, Color color)
+        {
+            var gridSectionSize = IconSize / subGridSize;
+			var position = new Point(
+                --xIndex * IconSize + (gridSectionSize * subItemCoordinate.X),
+                  yIndex * IconSize + (gridSectionSize * subItemCoordinate.Y));
+
+            DrawItem(spriteBatch, new Rectangle(position.X, position.Y, gridSectionSize, gridSectionSize), 
+                obtained, GetAnimationIndex(itemInfo), color);
+
+            xIndex++;
+        }
 
 		static int GetAnimationIndex(ItemIdentifier itemInfo)
 		{
