@@ -200,7 +200,7 @@ namespace TsRandomizer.Randomisation
 			//pyramid
 			var completeTimespinner = R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3 & R.TimespinnerSpindle & R.TimespinnerWheel;
 			TemporalGyre = MilitaryFortress & R.TimespinnerWheel;
-			PyramidEntrance = SeedOptions.EnterSandman ? (Gate)(R.GateGyre | R.GateLeftLibrary | R.GateRightPyramid) : (UpperLab & completeTimespinner);
+			PyramidEntrance = SeedOptions.EnterSandman ? (Gate)(R.GateGyre | R.GateLeftPyramid | R.GateRightPyramid) : (UpperLab & completeTimespinner);
 			LeftPyramid = PyramidEntrance & R.DoubleJump;
 			RightPyramid = LeftPyramid 
 				& (FloodsFlags.PyramidShaft ? R.None : R.UpwardDash) 
