@@ -176,7 +176,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			{
 				minimalMawRequirements |= R.GateAccessToPast;
 
-				//for non inverted seeds we dont know pyramid keys are required as it can be a classic past seed
+				//for non inverted seeds we dont know if the twin pyramid key is required as it can be a classic past seed
 				/*var isWatermaskRequiredForMaw = UnlockingMap.PyramidKeysUnlock != R.GateMaw
 				                                && UnlockingMap.PyramidKeysUnlock != R.GateCavesOfBanishment;
 

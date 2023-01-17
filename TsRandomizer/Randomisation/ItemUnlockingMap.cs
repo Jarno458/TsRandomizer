@@ -5,7 +5,6 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
-using TsRandomizer.RoomTriggers.Triggers;
 using R = TsRandomizer.Randomisation.Requirement;
 
 namespace TsRandomizer.Randomisation
@@ -113,8 +112,8 @@ namespace TsRandomizer.Randomisation
 			var pastGate = PastTeleporterGates.SelectRandom(random);
 			var presentGate = PresentTeleporterGates.SelectRandom(random);
 
-			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal0_desc", "You feel the pyramid keys attune to: " + pastGate.Name);
-			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal1_desc", "You feel the pyramid keys attune to: " + presentGate.Name);
+			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal0_desc", "You feel the twin pyramid key attune to: " + pastGate.Name);
+			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal1_desc", "You feel the twin pyramid key attune to: " + presentGate.Name);
 
 			pastWarpUnlockingSpecification.OnPickup = level => {
 				UnlockRoom(level, pastGate.LevelId, pastGate.RoomId);
@@ -136,7 +135,7 @@ namespace TsRandomizer.Randomisation
 			{
 				var pyramidWarpUnlockingSpecification = new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.MapReveal2), R.PyramidWarp);
 				var pyramidGate = PyramidTeleporterGates.SelectRandom(random);
-				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal2_desc", "You feel the pyramid keys attune to: " +  pyramidGate.Name);
+				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal2_desc", "You feel the twin pyramid key attune to: " +  pyramidGate.Name);
 
 
 				pyramidWarpUnlockingSpecification.OnPickup = level => {
