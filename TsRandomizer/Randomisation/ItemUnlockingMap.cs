@@ -179,7 +179,8 @@ namespace TsRandomizer.Randomisation
 			unlockingSpecification.OnPickup = level => {
 				UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
 
-				if (seed.Options.EnterSandman) 
+				if (seed.Options.EnterSandman)
+				{
 					UnlockFirstPyramidPortal(level);
 					unlockingSpecification.AdditionalUnlocks = PyramidTeleporterGates[1].Gate;
 				}
@@ -209,7 +210,7 @@ namespace TsRandomizer.Randomisation
 			unlockingSpecification.Unlocks = selectedGate.Gate;
 		}
 
-		public R GetUnlock(ItemIdentifier identifier) =>
+	public R GetUnlock(ItemIdentifier identifier) =>
 			unlockingSpecifications.TryGetValue(identifier, out var value)
 				? value.Unlocks
 				: R.None;

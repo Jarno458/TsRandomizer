@@ -105,7 +105,7 @@ namespace TsRandomizer.Randomisation
 			if (SeedOptions.StartWithTalaria)
 				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
 
-			if (options.UnchainedKeys)
+			if (SeedOptions.UnchainedKeys)
 				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.PyramidsKey)));
 		}
 
