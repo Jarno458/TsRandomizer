@@ -30,7 +30,7 @@ namespace TsRandomizer
 			}
 		}
 
-		public void OverrideKey(string key, string value, String speaker = null)
+		public void OverrideKey(string key, string value, string speaker = null)
 		{
 			try
 			{
