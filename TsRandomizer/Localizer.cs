@@ -52,6 +52,24 @@ namespace TsRandomizer
 			}
 		}
 
+		public void OverrideKey(string key, string value, String speaker)
+		{
+			try
+			{
+				OverrideKey(key, value);
+				var stringLibrary = (StringLibrary)Type
+					.GetField("_currentLibrary", BindingFlags.Static | BindingFlags.NonPublic)
+					.GetValue(null);
+				var stringInstances = (Dictionary<string, StringInstance>)stringLibrary.AsDynamic()._stringInstances;
+
+				stringInstances[key].Speaker = speaker;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Error replacing text: " + ex.Message);
+			}
+		}
+
 		public void ResetStrings()
 		{
 			Type ELanguageLocale = 
