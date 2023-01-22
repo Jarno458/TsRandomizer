@@ -95,9 +95,9 @@ namespace TsRandomizer.IntermediateObjects
 				case LootType.ConstRelic:
 					return (int)GetIconFromRelicMethod.InvokeStatic(Relic) - 1;
 				case LootType.ConstStat:
-					return (int)GetIconFromStat();
+					return GetIconFromStat();
 				case LootType.ConstUseItem:
-					return (int)GetIconFromUseItemMethod.InvokeStatic(UseItem) - 1;
+					return GetIconFromUseItem();
 				default:
 					throw new ArgumentOutOfRangeException($"LootType {LootType} isnt a valid loot type");
 			}
@@ -115,6 +115,19 @@ namespace TsRandomizer.IntermediateObjects
 					return 26;
 				default:
 					throw new ArgumentOutOfRangeException($"Stat {Stat} isnt a valid stat boost type");
+			}
+		}
+
+		int GetIconFromUseItem()
+		{
+			switch (UseItem)
+			{
+				case EInventoryUseItemType.MapReveal0:
+				case EInventoryUseItemType.MapReveal1:
+				case EInventoryUseItemType.MapReveal2:
+					return 5; // Twin Pyramid Key
+				default:
+					return (int)GetIconFromUseItemMethod.InvokeStatic(UseItem) - 1;
 			}
 		}
 
