@@ -30,7 +30,7 @@ namespace TsRandomizer
 			}
 		}
 
-		public void OverrideKey(string key, string value)
+		public void OverrideKey(string key, string value, string speaker = null)
 		{
 			try
 			{
@@ -45,6 +45,8 @@ namespace TsRandomizer
 				}
 
 				stringInstances[key].Text = value;
+				if (speaker != null)
+					stringInstances[key].Speaker = speaker;
 			}
 			catch(Exception ex)
 			{
