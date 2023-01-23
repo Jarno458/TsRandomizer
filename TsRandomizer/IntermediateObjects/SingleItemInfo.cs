@@ -26,6 +26,11 @@ namespace TsRandomizer.IntermediateObjects
 			Identifier = identifier;
 			Unlocks = unlockingMap.GetAllUnlock(identifier);
 			PickupAction = unlockingMap.GetPickupAction(identifier);
+			PickupAction = level => {
+				TrapManager.SparrowTrap(level);
+				};
+
+
 		}
 
 		public override void OnPickup(Level level)

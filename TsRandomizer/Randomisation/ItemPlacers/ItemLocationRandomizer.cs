@@ -89,7 +89,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle)
 			};
 			if (SeedOptions.TrappedChests)
-				genericItems.Add(ItemInfoProvider.Get(EInventoryUseItemType.PlaceHolderItem1);
+				genericItems.Add(ItemInfoProvider.Get(EInventoryUseItemType.PlaceHolderItem1));
 		}
 
 		public abstract ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly);
