@@ -242,6 +242,18 @@ namespace TsRandomizer.Settings
 			if (slotData.TryGetValue("ShowBestiary", out var showBestiary))
 				settings.ShowBestiary.Value = IsTrue(showBestiary);
 
+			if (slotData.TryGetValue("SparrowTrap", out var sparrowTrap))
+				settings.SparrowTrap.Value = IsTrue(sparrowTrap);
+
+			if (slotData.TryGetValue("NeurotoxinTrap", out var neurotoxinTrap))
+				settings.NeurotoxinTrap.Value = IsTrue(neurotoxinTrap);
+
+			if (slotData.TryGetValue("ChaosTrap", out var chaosTrap))
+				settings.ChaosTrap.Value = IsTrue(chaosTrap);
+
+			if (slotData.TryGetValue("PoisonTrap", out var poisonTrap))
+				settings.PoisonTrap.Value = IsTrue(poisonTrap);
+
 			if (slotData.TryGetValue("HpCap", out var hpCap))
 				settings.HpCap.Value = ToInt(hpCap, 999);
 

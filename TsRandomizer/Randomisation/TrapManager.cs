@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Timespinner.Core;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Settings;
@@ -27,7 +24,7 @@ namespace TsRandomizer.Randomisation
 	{
 		public static void TriggerRandomTrap(Level level, Random random)
 		{
-			ETrapType[] validTraps = GetValidTraps();
+			ETrapType[] validTraps = GetValidTraps(level);
 			// TODO: make random seed varied on chest room/location
 			ETrapType selectedTrap = validTraps[random.Next(validTraps.Length)];
 			TriggerTrap(level, selectedTrap);
@@ -53,11 +50,18 @@ namespace TsRandomizer.Randomisation
 			}
 			level.JukeBox.PlayCue(Timespinner.GameAbstractions.ESFX.DoorKeycardError);
 		}
-		static ETrapType[] GetValidTraps()
+		static ETrapType[] GetValidTraps(Level level)
 		{
+			SettingCollection gameSettings = level.GameSave.GetSettings();
 			List<ETrapType> validTraps = new List<ETrapType>();
-			// TODO: assemble list based on settings
-			validTraps.Add(ETrapType.MeteorSparrow);
+			if (gameSettings.SparrowTrap.Value)
+				validTraps.Add(ETrapType.MeteorSparrow);
+			if (gameSettings.NeurotoxinTrap.Value)
+				validTraps.Add(ETrapType.Neurotoxin);
+			if (gameSettings.ChaosTrap.Value)
+				validTraps.Add(ETrapType.Chaos);
+			if (gameSettings.PoisonTrap.Value)
+				validTraps.Add(ETrapType.Poison);
 
 			if (validTraps.Count == 0)
 				validTraps.Add(ETrapType.None);
@@ -85,17 +89,24 @@ namespace TsRandomizer.Randomisation
 
 		static void NeurotoxinTrap(Level level)
 		{
-
+			ApplyStatus(level, "NeuroToxin");
 		}
 
 		static void ChaosTrap(Level level)
 		{
-
+			ApplyStatus(level, "Chaos");
 		}
 
 		static void PoisonTrap(Level level)
 		{
-
+			ApplyStatus(level, "Poison");
 		}
+
+		static void ApplyStatus(Level level, string status)
+		{
+			var statusEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.StatusEffects+EStatuseffectType");
+			level.MainHero.AsDynamic().GiveStatusEffect(statusEnumType.GetEnumValue(status), 100);
+		}
+		
 	}
 }
