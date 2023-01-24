@@ -53,32 +53,25 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 			if (roomKey.LevelId == 16 && roomKey.RoomId == 26)
 				return EBossID.Nightmare;
 
-			throw new ArgumentOutOfRangeException($"No vanilla boss found for room: {roomKey}");
+			return (EBossID)(-1);
 		}
 
 		protected static void SpawnBoss(RoomState state, int vanillaBossId)
 		{
 			var level = state.Level;
-			
-			if (!level.GameSave.GetSettings().BossRando.Value 
-				    || TargetBossId == -1 
-				    || !level.GameSave.GetSaveBool("IsFightingBoss"))
-				return;
 
+			SpawnWaterOrGassIfNeeded(state, vanillaBossId == -1 ? (int)GetVanillaBoss(state.RoomKey) : vanillaBossId);
+
+			if (!level.GameSave.GetSettings().BossRando.Value
+			    || TargetBossId == -1
+			    || !level.GameSave.GetSaveBool("IsFightingBoss"))
+					return;
+			
 			var vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
 			var replacedBossInfo = BestiaryManager.GetReplacedBoss(level, vanillaBossId);
 
 			level.JukeBox.StopSong();
 			level.PlayCue(Timespinner.GameAbstractions.ESFX.FoleyWarpGyreIn);
-
-			if ((state.Seed.Options.GasMaw && vanillaBossId == (int)EBossID.Maw)
-			    || (vanillaBossId == (int)EBossID.FelineSentry && level.GameSave.GetSaveBool("TSRando_IsVileteSaved")))
-					RoomTriggerHelper.FillRoomWithGas(level);
-
-			if ((state.Seed.FloodFlags.Maw && vanillaBossId == (int)EBossID.Maw)
-			    || (state.Seed.FloodFlags.Xarion && vanillaBossId == (int)EBossID.Xarion)
-			    || (state.Seed.FloodFlags.BackPyramid && (vanillaBossId == (int)EBossID.Sandman || vanillaBossId == (int)EBossID.Nightmare)))
-					RoomTriggerHelper.FillRoomWithWater(level);
 
 			if (replacedBossInfo.ShouldSpawn)
 			{
@@ -100,22 +93,39 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 			TargetBossId = -1;
 		}
 
+		static void SpawnWaterOrGassIfNeeded(RoomState state, int vanillaBossId)
+		{
+			if ((state.Seed.Options.GasMaw && vanillaBossId == (int)EBossID.Maw)
+			    || (vanillaBossId == (int)EBossID.FelineSentry && state.Level.GameSave.GetSaveBool("TSRando_IsVileteSaved")))
+				RoomTriggerHelper.FillRoomWithGas(state.Level);
+
+			if ((state.Seed.FloodFlags.Maw && vanillaBossId == (int)EBossID.Maw)
+			    || (state.Seed.FloodFlags.Xarion && vanillaBossId == (int)EBossID.Xarion)
+			    || (state.Seed.FloodFlags.BackPyramid && (vanillaBossId == (int)EBossID.Sandman || vanillaBossId == (int)EBossID.Nightmare)))
+				RoomTriggerHelper.FillRoomWithWater(state.Level);
+		}
+
 		protected static void CreateBossWarp(Level level, int vanillaBossId)
 		{
 			if (!level.GameSave.GetSettings().BossRando.Value)
 				return;
 
 			BestiaryManager.RefreshBossSaveFlags(level);
+
 			var vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
 			var replacedBossInfo = BestiaryManager.GetReplacedBoss(level, vanillaBossId);
+
 			if (level.GameSave.GetSaveBool("TSRando_" + vanillaBossInfo.SaveName))
 				return;
 
 			TargetBossId = vanillaBossId;
 
 			level.JukeBox.StopSong();
+
 			var bossArena = replacedBossInfo.BossRoom;
+
 			BestiaryManager.ClearBossSaveFlags(level, replacedBossInfo.ShouldSpawn);
+
 			level.GameSave.SetValue("IsFightingBoss", true);
 
 			var facing = replacedBossInfo.IsFacingLeft ? EDirection.West : EDirection.East;

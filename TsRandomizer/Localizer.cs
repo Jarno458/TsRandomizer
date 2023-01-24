@@ -10,8 +10,8 @@ namespace TsRandomizer
 {
 	class Localizer : DynamicObject
 	{
-		static readonly Type Type = TimeSpinnerType
-			.Get("Timespinner.Core.Localization.Loc");
+		static readonly Type Type = TimeSpinnerType.Get("Timespinner.Core.Localization.Loc");
+		static readonly Type ELanguageLocale = TimeSpinnerType.Get("Timespinner.Core.Localization.ELanguageLocale");
 
 		public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
 		{
@@ -38,15 +38,9 @@ namespace TsRandomizer
 					.GetField("_currentLibrary", BindingFlags.Static | BindingFlags.NonPublic)
 					.GetValue(null);
 
-				var stringInstances = (Dictionary<string, StringInstance>) stringLibrary.AsDynamic()._stringInstances;
-				if (!stringInstances.ContainsKey(key))
-				{
-					stringInstances.Add(key, new StringInstance() { Key = key, Text = value });
-				}
+				var stringInstances = (Dictionary<string, StringInstance>)stringLibrary.AsDynamic()._stringInstances;
+				stringInstances[key] = new StringInstance { Key = key, Text = value, Speaker = speaker };
 
-				stringInstances[key].Text = value;
-				if (speaker != null)
-					stringInstances[key].Speaker = speaker;
 			}
 			catch(Exception ex)
 			{
@@ -56,19 +50,18 @@ namespace TsRandomizer
 
 		public void ResetStrings()
 		{
-			Type ELanguageLocale = 
-				TimeSpinnerType.Get("Timespinner.Core.Localization.ELanguageLocale");
-			var currentLocale = 
-				Type.GetField("_currentLocale", BindingFlags.Static | BindingFlags.NonPublic)
-					.GetValue(null);
+			var currentLocale = Type.GetField("_currentLocale", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
 			var currentLibrary = Type.GetField("_currentLibrary", BindingFlags.Static | BindingFlags.NonPublic);
+
 			var constructor = 
 				typeof(StringLibrary).GetConstructor(
 					BindingFlags.NonPublic | BindingFlags.Instance, 
 					null, 
-					new Type[] { ELanguageLocale }, 
+					new [] { ELanguageLocale }, 
 					null);
-			var newLibrary = constructor.Invoke(new object[] { currentLocale });
+
+			var newLibrary = constructor.Invoke(new [] { currentLocale });
+
 			currentLibrary.SetValue(null, newLibrary);
 		}
 	}

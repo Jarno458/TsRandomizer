@@ -130,13 +130,11 @@ namespace TsRandomizer.Randomisation
 			unlockingSpecifications.Add(pastWarpUnlockingSpecification);
 			unlockingSpecifications.Add(presentWarpUnlockingSpecification);
 
-
 			if (seedOptions.EnterSandman)
 			{
 				var pyramidWarpUnlockingSpecification = new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.MapReveal2), R.PyramidWarp);
 				var pyramidGate = PyramidTeleporterGates.SelectRandom(random);
 				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal2_desc", "You feel the twin pyramid key attune to: " +  pyramidGate.Name, "Twin Pyramid Key");
-
 
 				pyramidWarpUnlockingSpecification.OnPickup = level => {
 					UnlockRoom(level, pyramidGate.LevelId, pyramidGate.RoomId);
@@ -145,8 +143,6 @@ namespace TsRandomizer.Randomisation
 				pyramidWarpUnlockingSpecification.Unlocks = pyramidGate.Gate;
 				unlockingSpecifications.Add(pyramidWarpUnlockingSpecification);
 			}
-			
-			
 		}
 
 		void MakeKeyCardUnlocksCardSpecific()
