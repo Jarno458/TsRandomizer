@@ -13,7 +13,6 @@ namespace TsRandomizer.Randomisation
 {
 	enum ETrapType
 	{
-		None,
 		MeteorSparrow,
 		Neurotoxin,
 		Chaos,

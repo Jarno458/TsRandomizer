@@ -97,8 +97,8 @@ namespace TsRandomizer.Randomisation
 			if (seed.Options.UnchainedKeys)
 				SetMapRevealPickupAction(random, seed.Options);
 
-			if (seed.Options.TrappedChests)
-				SetTrapPickupAction(random, seed.Options);
+			/*if (seed.Options.TrappedChests)
+				SetTrapPickupAction(random, seed.Options);*/
 		}
 
 		void SetMapRevealPickupAction(Random random, SeedOptions seedOptions) {
@@ -150,17 +150,6 @@ namespace TsRandomizer.Randomisation
 			}
 			
 			
-		}
-
-		void SetTrapPickupAction(Random random, SeedOptions seedOptions)
-		{
-			var trapUnlockingSpecification = new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.MapReveal0), R.None);
-			trapUnlockingSpecification.OnPickup = level => {
-				// TODO put call to trap manager here
-				TimeSpinnerGame.Localizer.OverrideKey("trap_msg", "Trap Triggered!");
-				level.MainHero.Kill();
-			};
-			unlockingSpecifications.Add(trapUnlockingSpecification);
 		}
 
 		void MakeKeyCardUnlocksCardSpecific()

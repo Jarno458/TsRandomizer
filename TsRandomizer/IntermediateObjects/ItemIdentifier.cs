@@ -126,6 +126,8 @@ namespace TsRandomizer.IntermediateObjects
 				case EInventoryUseItemType.MapReveal1:
 				case EInventoryUseItemType.MapReveal2:
 					return 5; // Twin Pyramid Key
+				case EInventoryUseItemType.PlaceHolderItem1:
+					return 208; // 'starry void' item
 				default:
 					return (int)GetIconFromUseItemMethod.InvokeStatic(UseItem) - 1;
 			}
