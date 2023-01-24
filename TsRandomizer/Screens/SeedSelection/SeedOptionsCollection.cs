@@ -23,8 +23,9 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 12, new SeedOptionInfo { Name = "Lore Checks", Description = "Memories in the present and letters in the past contain items." } },
 			{ 1 << 15, new SeedOptionInfo { Name = "Enter Sandman", Description = "Ancient Pyramid is unlocked by the Twin Pyramid Key, but the final boss door opens if you have all 5 Timespinner pieces." } },
 			{ 1 << 17, new SeedOptionInfo { Name = "Dad Percent", Description = "The win condition is beating the boss of Emperor's Tower" } },
-			{ 1 << 18, new SeedOptionInfo { Name = "Rising Tides", Description = "Random area's are flooded or drained" } },
+			{ 1 << 18, new SeedOptionInfo { Name = "Rising Tides", Description = "Random areas are flooded or drained" } },
 			{ 1 << 19, new SeedOptionInfo { Name = "Unchained Keys", Description = "Start with Twin Pyramid Key, which does not give free warp; warp items for Past, Present, (and ??? with Enter Sandman) can be found." } },
+			{ 1 << 20, new SeedOptionInfo { Name = "Trapped Chests", Description = "Empty chests have traps. Toggle available traps in the 'Traps' settings." } },
 			{ 1 << 13, new SeedOptionInfo { Name = "Tournament", Description = "Forces your settings to be the predefined tournament settings." } }
 		};
 

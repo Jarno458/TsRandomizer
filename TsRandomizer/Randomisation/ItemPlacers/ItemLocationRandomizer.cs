@@ -17,7 +17,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		readonly List<ItemInfo> itemsToRemoveFromGame;
 		readonly List<ItemInfo> itemsToAddToGame;
-		readonly ItemInfo[] genericItems;
+		readonly List<ItemInfo> genericItems;
 
 		protected ItemLocationRandomizer(Seed seed, ItemInfoProvider itemInfoProvider, ItemUnlockingMap unlockingMap)
 		{
@@ -73,7 +73,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				}
 			}
 
-			genericItems = new[]
+			genericItems = new List<ItemInfo>
 			{
 				ItemInfoProvider.Get(EInventoryUseItemType.Potion),
 				ItemInfoProvider.Get(EInventoryUseItemType.HiPotion),
@@ -88,6 +88,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.SandBottle),
 				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle)
 			};
+			if (SeedOptions.TrappedChests)
+				genericItems.Add(ItemInfoProvider.Get(EInventoryUseItemType.PlaceHolderItem1));
 		}
 
 		public abstract ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly);
