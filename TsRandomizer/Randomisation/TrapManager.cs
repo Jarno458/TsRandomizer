@@ -41,7 +41,7 @@ namespace TsRandomizer.Randomisation
 			enemy = enemyType.CreateInstance(false, new Point(lunaisPos.X - 100, lunaisPos.Y - 50), level, sprite, -1, enemyTile);
 			enemy.AsDynamic()._isAggroed = true;
 			level.AsDynamic().RequestAddObject(enemy);
-			level.JukeBox.PlayCue(Timespinner.GameAbstractions.ESFX.CsPrologueTableFlip);
+			level.JukeBox.PlayCue(Timespinner.GameAbstractions.ESFX.DoorKeycardError);
 		}
 	}
 }

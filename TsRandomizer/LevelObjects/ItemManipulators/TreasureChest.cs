@@ -80,10 +80,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (ItemInfo.Identifier.LootType == LootType.Orb || ItemInfo.Identifier.LootType == LootType.Familiar)
 				Level.GameSave.AddItem(Level, ItemInfo.Identifier);
 
-			var animationIndex = ItemInfo.AnimationIndex;
-			var itemPopupAppendage = (Appendage)Dynamic._itemPopupAppendage;
-			itemPopupAppendage.ChangeAnimation(animationIndex);
-
+			((Appendage)Dynamic._itemPopupAppendage).ChangeAnimation(ItemInfo.AnimationIndex);
 			OnItemPickup();
 
 			hasDroppedLoot = true;
