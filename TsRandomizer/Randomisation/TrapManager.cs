@@ -22,10 +22,10 @@ namespace TsRandomizer.Randomisation
 
 	static class TrapManager
 	{
-		public static void TriggerRandomTrap(Level level, Random random)
+		public static void TriggerRandomTrap(Level level)
 		{
 			ETrapType[] validTraps = GetValidTraps(level);
-			// TODO: make random seed varied on chest room/location
+			Random random = new Random((int)level.GameSave.GetSeed().Value.Id + level.RoomIndex);
 			ETrapType selectedTrap = validTraps[random.Next(validTraps.Length)];
 			TriggerTrap(level, selectedTrap);
 		}
@@ -104,7 +104,7 @@ namespace TsRandomizer.Randomisation
 
 		static void ApplyStatus(Level level, string status)
 		{
-			var statusEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.StatusEffects+EStatuseffectType");
+			var statusEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.StatusEffects.EStatusEffectType");
 			level.MainHero.AsDynamic().GiveStatusEffect(statusEnumType.GetEnumValue(status), 100);
 		}
 		

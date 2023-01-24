@@ -98,7 +98,7 @@ namespace TsRandomizer.Randomisation
 				SetMapRevealPickupAction(random, seed.Options);
 
 			if (seed.Options.TrappedChests)
-				SetTrapPickupAction(random, seed.Options);
+				SetTrapPickupAction();
 		}
 
 		void SetMapRevealPickupAction(Random random, SeedOptions seedOptions) {
@@ -152,11 +152,11 @@ namespace TsRandomizer.Randomisation
 			
 		}
 
-		void SetTrapPickupAction(Random random, SeedOptions seedOptions)
+		void SetTrapPickupAction()
 		{
 			var trapUnlockingSpecification = new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), R.None);
 			trapUnlockingSpecification.OnPickup = level => {
-				TrapManager.TriggerRandomTrap(level, random);
+				TrapManager.TriggerRandomTrap(level);
 			};
 			unlockingSpecifications.Add(trapUnlockingSpecification);
 		}
