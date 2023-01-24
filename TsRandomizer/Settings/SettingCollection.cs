@@ -35,7 +35,7 @@ namespace TsRandomizer.Settings
 				}},
 			new GameSettingCategoryInfo { Name = "Other", Description = "Miscellaneous settings",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.ShowBestiary, s => s.ShowDrops
+					s => s.ShowBestiary, s => s.ShowDrops, s => s.NoSaveStatues
 				}}
 		};
 		public OnOffGameSetting BossRando = new OnOffGameSetting("Boss Randomization",
@@ -159,5 +159,8 @@ namespace TsRandomizer.Settings
 
 		public OnOffGameSetting DeathLink = new OnOffGameSetting("DeathLink",
 			"Sets whether DeathLink is on or off", false, true);
+
+		public OnOffGameSetting NoSaveStatues = new OnOffGameSetting("NoSaveStatues",
+			"Breaks all the save statues", false, false);
 	}
 }
