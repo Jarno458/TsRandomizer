@@ -30,6 +30,7 @@ namespace TsRandomizer
 		public bool DadPercent => (Flags & 1 << 17) > 0;
 		public bool RisingTides => (Flags & 1 << 18) > 0;
 		public bool UnchainedKeys => (Flags & 1 << 19) > 0;
+		public bool TrappedChests => (Flags & 1 << 20) > 0;
 
 		public SeedOptions(uint flags)
 		{

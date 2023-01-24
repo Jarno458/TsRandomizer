@@ -16,6 +16,10 @@ namespace TsRandomizer.Settings
 					s => s.ShopFill, s => s.ShopMultiplier, s => s.ShopWarpShards, s => s.LootPool,
 					s => s.DropRateCategory, s => s.DropRate, s => s.LootTierDistro
 				}},
+			new GameSettingCategoryInfo { Name = "Traps", Description = "Toggles traps available via the Trapped Chests flag.",
+				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
+					s => s.SparrowTrap, s => s.NeurotoxinTrap, s => s.ChaosTrap, s => s.PoisonTrap
+				}},
 			new GameSettingCategoryInfo { Name = "Minimap", Description = "Settings related to minimap colors.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.PastMinimapColor, s => s.PresentMinimapColor, s => s.PyramidMinimapColor,
@@ -83,6 +87,18 @@ namespace TsRandomizer.Settings
 
 		public OnOffGameSetting ShopWarpShards = new OnOffGameSetting("Always Sell Warp Shards",
 			"Shops always sell warp shards (when keys possessed), ignoring inventory setting.", false);
+
+		public OnOffGameSetting SparrowTrap = new OnOffGameSetting("Meteor Sparrows",
+			"Traps can spawn meteor sparrows.", true, false);
+
+		public OnOffGameSetting NeurotoxinTrap = new OnOffGameSetting("Neurotoxin",
+			"Traps can inflict aura-draining neurotoxin.", true, false);
+
+		public OnOffGameSetting ChaosTrap = new OnOffGameSetting("Chaos",
+			"Traps can cause sand-draining chaos.", true, false);
+
+		public OnOffGameSetting PoisonTrap = new OnOffGameSetting("Poison",
+			"Traps can inflict poison.", true, false);
 
 		public NumberGameSetting NumberOfOnScreenLogLines = new NumberGameSetting("Log Number of Lines",
 			"Max number of messages to show at the bottom left of the screen, 0 to turn onscreen log off", 0, 25, 1, 3, true);

@@ -63,7 +63,6 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				default:
 					throw new ArgumentOutOfRangeException(nameof(ItemInfo.Identifier.LootType), ItemInfo.Identifier.LootType, $"lootType cannot be droppd by {nameof(TreasureChest)}");
 			}
-
 			var pickedUp = IsPickedUp;
 			Dynamic._isOpened = pickedUp;
 			Dynamic._hasDroppedLoot = pickedUp;
@@ -81,6 +80,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (ItemInfo.Identifier.LootType == LootType.Orb || ItemInfo.Identifier.LootType == LootType.Familiar)
 				Level.GameSave.AddItem(Level, ItemInfo.Identifier);
 
+			((Appendage)Dynamic._itemPopupAppendage).ChangeAnimation(ItemInfo.AnimationIndex);
 			OnItemPickup();
 
 			hasDroppedLoot = true;

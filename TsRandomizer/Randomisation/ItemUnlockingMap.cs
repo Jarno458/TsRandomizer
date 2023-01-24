@@ -81,7 +81,7 @@ namespace TsRandomizer.Randomisation
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.Tablet), R.Tablet),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive), R.OculusRift),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.Kobo), R.Kobo),
-				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.MerchantCrow), R.MerchantCrow),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.MerchantCrow), R.MerchantCrow)
 			};
 
 			if (seed.Options.SpecificKeys)
@@ -96,6 +96,9 @@ namespace TsRandomizer.Randomisation
 
 			if (seed.Options.UnchainedKeys)
 				SetMapRevealPickupAction(random, seed.Options);
+
+			if (seed.Options.TrappedChests)
+				SetTrapPickupAction();
 		}
 
 		void SetMapRevealPickupAction(Random random, SeedOptions seedOptions) {
@@ -148,6 +151,16 @@ namespace TsRandomizer.Randomisation
 			
 			
 		}
+
+		void SetTrapPickupAction()
+		{
+			var trapUnlockingSpecification = new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), R.None);
+			trapUnlockingSpecification.OnPickup = level => {
+				TrapManager.TriggerRandomTrap(level);
+			};
+			unlockingSpecifications.Add(trapUnlockingSpecification);
+		}
+
 
 		void MakeKeyCardUnlocksCardSpecific()
 		{
