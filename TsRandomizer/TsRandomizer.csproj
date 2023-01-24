@@ -128,7 +128,6 @@
     <Compile Include="Randomisation\TrapManager.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
-    <Compile Include="Randomisation\HintGenerator.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\Cantoran.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\BossRoomTrigger.cs" />

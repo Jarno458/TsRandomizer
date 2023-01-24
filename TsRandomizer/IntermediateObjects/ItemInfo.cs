@@ -8,14 +8,6 @@ namespace TsRandomizer.IntermediateObjects
 {
 	public abstract class ItemInfo : IEquatable<ItemInfo>
 	{
-		private List<string> AlwaysRequiredItems = new List<string>
-		{
-			"TimespinnerWheel",
-			"TimespinnerSpindle",
-			"TimespinnerGear1",
-			"TimespinnerGear2",
-			"TimespinnerGear3"
-		};
         public abstract ItemIdentifier Identifier { get; }
 		public abstract Enum TreasureLootType { get; }
 		public abstract int AnimationIndex { get; }
@@ -24,8 +16,6 @@ namespace TsRandomizer.IntermediateObjects
 		public abstract void OnPickup(Level level);
 
 		public bool IsProgression => Unlocks != Requirement.None;
-
-		public bool IsExplicitlyRequired => AlwaysRequiredItems.Contains(Identifier.ToString());
 
 		public bool Equals(ItemInfo other)
 		{
