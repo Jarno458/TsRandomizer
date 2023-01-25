@@ -14,7 +14,7 @@ namespace TsRandomizer.IntermediateObjects
 		public override int AnimationIndex => Identifier.GetAnimationIndex();
 		public override BestiaryItemDropSpecification BestiaryItemDropSpecification => Identifier.GetBestiaryItemDropSpecification();
 
-		Action<Level> PickupAction { get; }
+		public Action<Level> PickupAction { get; protected set; }
 
 		public SingleItemInfo(ItemIdentifier identifier)
 		{
@@ -28,9 +28,6 @@ namespace TsRandomizer.IntermediateObjects
 			PickupAction = unlockingMap.GetPickupAction(identifier);
 		}
 
-		public override void OnPickup(Level level)
-		{
-			PickupAction?.Invoke(level);
-		}
+		public override void OnPickup(Level level) => PickupAction?.Invoke(level);
 	}
 }

@@ -7,6 +7,7 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.ItemTracker;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Randomisation.ItemPlacers;

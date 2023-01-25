@@ -4,6 +4,7 @@ using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using R = TsRandomizer.Randomisation.Requirement;
 
 namespace TsRandomizer.Randomisation.ItemPlacers
@@ -43,8 +44,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));
 			if (SeedOptions.UnchainedKeys)
 				itemsToRemoveFromGame.Add(ItemInfoProvider.Get(EInventoryRelicType.PyramidsKey));
-
-
+			
 			itemsToAddToGame = new List<ItemInfo>
 			{
 				ItemInfoProvider.Get(EInventoryEquipmentType.GlassPumpkin),
@@ -63,6 +63,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltMeyef),
 				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow)
 			};
+
 			if (SeedOptions.UnchainedKeys)
 			{
 				itemsToAddToGame.Add(ItemInfoProvider.Get(EInventoryUseItemType.MapReveal0)); // Past
@@ -88,8 +89,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.SandBottle),
 				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle)
 			};
-			if (SeedOptions.TrappedChests)
-				genericItems.Add(ItemInfoProvider.Get(EInventoryUseItemType.PlaceHolderItem1));
 		}
 
 		public abstract ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly);
@@ -213,15 +212,58 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.Where(l => !l.IsUsed)
 				.ToList();
 
+			//TODO: remove
+			itemlist.Clear();
+
+			if (itemlist.Count > freeLocations.Count)
+				throw new Exception($"Not enough locations to place all items, locations {freeLocations.Count}, items: {itemlist.Count}");
+
+			var customItemList = new ItemInfo[] {
+				new SparrowTrap(),
+				new NeurotoxinTrap(),
+				new PoisonTrap(),
+				new ChaosTrap(),
+				new ArchipelagoRemoteItem()
+			};
+
 			do
 			{
 				var location = freeLocations.PopRandom(random);
-				var item = itemlist.Count > 0
-					? itemlist.PopRandom(random)
-					: genericItems.SelectRandom(random);
+				var item = customItemList.SelectRandom(random);
 
 				PutItemAtLocation(item, location);
 
+			} while (freeLocations.Count > 0);
+
+			return;
+
+			//item pool
+			do
+			{
+				var location = freeLocations.PopRandom(random);
+				var item = itemlist.PopRandom(random);
+
+				PutItemAtLocation(item, location);
+
+			} while (itemlist.Count > 0);
+
+			//traps
+			var trapChance = SeedOptions.TrappedChests ? 8d : 0d;
+			for (int i = 0; i < Math.Round((freeLocations.Count / 100d) * trapChance); i++)
+			{
+				var location = freeLocations.PopRandom(random);
+				var item = ItemInfoProvider.Get((EInventoryUseItemType)99999);
+
+				PutItemAtLocation(item, location);
+			}
+
+			//filler
+			do
+			{
+				var location = freeLocations.PopRandom(random);
+				var item = genericItems.SelectRandom(random); 
+
+				PutItemAtLocation(item, location);
 			} while (freeLocations.Count > 0);
 
 			FixProgressiveNonProgressionItemsInSameRoom(random, itemLocations);

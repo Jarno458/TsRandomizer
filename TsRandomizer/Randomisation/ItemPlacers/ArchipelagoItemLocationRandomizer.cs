@@ -5,6 +5,7 @@ using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects.CustomItems;
 
 namespace TsRandomizer.Randomisation.ItemPlacers
 {

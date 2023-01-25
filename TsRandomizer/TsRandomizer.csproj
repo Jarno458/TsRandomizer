@@ -103,7 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
-    <Compile Include="Archipelago\ArchipelagoRemoteItem.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\ArchipelagoRemoteItem.cs" />
     <Compile Include="Archipelago\ConnectionFailedException.cs" />
     <Compile Include="Commands\ConnectCommand.cs" />
     <Compile Include="Commands\ConsoleCommand.cs" />
@@ -117,6 +117,7 @@
     <Compile Include="Drawables\ArchipelagoRepresentation.cs" />
     <Compile Include="Extensions\GameContentManagerExtension.cs" />
     <Compile Include="Extensions\SettingsExtensions.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\CustomItem.cs" />
     <Compile Include="LevelObjects\CollisionDetectionEvent.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />
