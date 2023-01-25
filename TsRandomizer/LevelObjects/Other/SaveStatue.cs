@@ -4,6 +4,7 @@ using Timespinner.GameAbstractions.GameObjects;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Screens;
 
 namespace TsRandomizer.LevelObjects.Other
 {
@@ -13,7 +14,7 @@ namespace TsRandomizer.LevelObjects.Other
 	{
 		static readonly Type SaveOrbStateType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.SaveStatue+ESaveOrbState");
 
-		public SaveStatue(Mobile typedObject) : base(typedObject)
+		public SaveStatue(Mobile typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
 		{
 		}
 

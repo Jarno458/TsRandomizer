@@ -90,7 +90,7 @@ namespace TsRandomizer.LevelObjects.Other
 			Level.JukeBox.PlaySong(vanillaBoss.Song);
 		}
 
-		public BossEnemy(Monster typedObject) : base(typedObject)
+		public BossEnemy(Monster typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
 		{
 			isRandomized = Level.GameSave.GetSettings().BossRando.Value;
 			if (!isRandomized || !Level.GameSave.GetSaveBool("IsFightingBoss"))
@@ -141,7 +141,7 @@ namespace TsRandomizer.LevelObjects.Other
 			});
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (isRandomized && !songHasRun && Scripts.Count == 0 && Level.JukeBox.CurrentSongEnum != vanillaBoss.Song)
 			{

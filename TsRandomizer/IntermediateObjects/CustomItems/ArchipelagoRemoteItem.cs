@@ -1,12 +1,13 @@
 ﻿namespace TsRandomizer.IntermediateObjects.CustomItems
 {
-	class ArchipelagoRemoteItem : CustomItemBase
+	class ArchipelagoRemoteItem : CustomItem
 	{
-		public ArchipelagoRemoteItem() : 
-			base(CustomItem.Archipelago, "Archipelago Item", 
-				"Item that belongs to a distant timeline somewhere in the Archipelago (cannot be sold)",
-				32)
+		public override string Name => "Archipelago Item";
+		public override int AnimationIndex => 32;
+
+		public ArchipelagoRemoteItem() : base(CustomItemType.Archipelago)
 		{
+			SetDescription("Item that belongs to a distant timeline somewhere in the Archipelago (cannot be sold)", "Archipelago");
 		}
 
 		/*public override void OnPickup(Level level)

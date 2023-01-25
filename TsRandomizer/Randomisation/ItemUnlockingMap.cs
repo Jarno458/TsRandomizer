@@ -5,6 +5,7 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using R = TsRandomizer.Randomisation.Requirement;
 
 namespace TsRandomizer.Randomisation
@@ -94,70 +95,30 @@ namespace TsRandomizer.Randomisation
 
 			unlockingSpecifications.Add(pyramidUnlockingSpecification);
 
-			//TODO Fix me
 			if (seed.Options.UnchainedKeys)
-				SetMapRevealPickupAction(random, seed.Options);
-
-			if (seed.Options.TrappedChests)
-				SetTrapPickupAction();
+				SetUnchainedKeyPickupActions(random, seed.Options);
 		}
 
-		void SetMapRevealPickupAction(Random random, SeedOptions seedOptions) {
-			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal0", "Timeworn Warp Beacon");
-			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal0_desc", "Attunes warps to a gate in the past");
-			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal1", "Modern Warp Beacon");
-			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal1_desc", "Attunes warps gate within the present");
-			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal2", "Mysterious Warp Beacon");
-			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal2_desc", "Attunes warps to a gate beyond time");
-
-			var pastWarpUnlockingSpecification = new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.MapReveal0), R.PastWarp);
-			var presentWarpUnlockingSpecification = new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.MapReveal1), R.PresentWarp);
-
-			var pastGate = PastTeleporterGates.SelectRandom(random);
-			var presentGate = PresentTeleporterGates.SelectRandom(random);
-
-			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal0_desc", "You feel the twin pyramid key attune to: " + pastGate.Name, "Twin Pyramid Key");
-			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal1_desc", "You feel the twin pyramid key attune to: " + presentGate.Name, "Twin Pyramid Key");
-
-			pastWarpUnlockingSpecification.OnPickup = level => {
-				UnlockRoom(level, pastGate.LevelId, pastGate.RoomId);
-				level.ShowGhostDialogueMessage("inv_use_MapReveal0_desc");
-			};
-			pastWarpUnlockingSpecification.Unlocks = pastGate.Gate;
-
-			presentWarpUnlockingSpecification.OnPickup = level => {
-				UnlockRoom(level, presentGate.LevelId, presentGate.RoomId);
-				level.ShowGhostDialogueMessage("inv_use_MapReveal1_desc");
-			};
-			presentWarpUnlockingSpecification.Unlocks = presentGate.Gate;
-
-			unlockingSpecifications.Add(pastWarpUnlockingSpecification);
-			unlockingSpecifications.Add(presentWarpUnlockingSpecification);
+		void SetUnchainedKeyPickupActions(Random random, SeedOptions seedOptions) {
+			SetUnchainedKeysUnlock(random, new TimewornWarpBeacon(), R.PastWarp, PastTeleporterGates);
+			SetUnchainedKeysUnlock(random, new ModernWarpBeacon(), R.PresentWarp, PresentTeleporterGates);
 
 			if (seedOptions.EnterSandman)
-			{
-				var pyramidWarpUnlockingSpecification = new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.MapReveal2), R.PyramidWarp);
-				var pyramidGate = PyramidTeleporterGates.SelectRandom(random);
-				TimeSpinnerGame.Localizer.OverrideKey("inv_use_MapReveal2_desc", "You feel the twin pyramid key attune to: " +  pyramidGate.Name, "Twin Pyramid Key");
-
-				pyramidWarpUnlockingSpecification.OnPickup = level => {
-					UnlockRoom(level, pyramidGate.LevelId, pyramidGate.RoomId);
-					level.ShowGhostDialogueMessage("inv_use_MapReveal2_desc");
-				};
-				pyramidWarpUnlockingSpecification.Unlocks = pyramidGate.Gate;
-				unlockingSpecifications.Add(pyramidWarpUnlockingSpecification);
-			}
+				SetUnchainedKeysUnlock(random, new MysteriousWarpBeacon(), R.PyramidWarp, PyramidTeleporterGates);
 		}
 
-		void SetTrapPickupAction()
+		void SetUnchainedKeysUnlock(Random random, CustomItem item, R unlock, TeleporterGate[] gates)
 		{
-			var trapUnlockingSpecification = new UnlockingSpecification(new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), R.None);
-			trapUnlockingSpecification.OnPickup = level => {
-				TrapManager.TriggerRandomTrap(level);
-			};
-			unlockingSpecifications.Add(trapUnlockingSpecification);
-		}
+			var pyramidWarpUnlockingSpecification = new UnlockingSpecification(item.Identifier, unlock);
+			var pyramidGate = gates.SelectRandom(random);
 
+			item.SetDescription($"You feel the twin pyramid key attune to: {pyramidGate.Name}", "Twin Pyramid Key");
+
+			pyramidWarpUnlockingSpecification.OnPickup = level => UnlockRoom(level, pyramidGate.LevelId, pyramidGate.RoomId);
+			pyramidWarpUnlockingSpecification.Unlocks = pyramidGate.Gate;
+
+			unlockingSpecifications.Add(pyramidWarpUnlockingSpecification);
+		}
 
 		void MakeKeyCardUnlocksCardSpecific()
 		{
@@ -228,6 +189,7 @@ namespace TsRandomizer.Randomisation
 			unlockingSpecifications.TryGetValue(identifier, out var value)
 				? value.AllUnlocks
 				: R.None;
+
 		public Action<Level> GetPickupAction(ItemIdentifier identifier) =>
 			unlockingSpecifications.TryGetValue(identifier, out var value)
 				? value.OnPickup

@@ -3,6 +3,7 @@ using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Screens;
 
 namespace TsRandomizer.LevelObjects.Other
 {
@@ -11,9 +12,8 @@ namespace TsRandomizer.LevelObjects.Other
 	{
 		readonly MerchantInventory merchandiseInventory = new MerchantInventory();
 
-		public MerchantCrowNpc(Mobile typedObject) : base(typedObject)
+		public MerchantCrowNpc(Mobile typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
 		{
-
 		}
 
 		protected override void Initialize(Seed seed)

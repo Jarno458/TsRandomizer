@@ -19,7 +19,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		bool hasDroppedLoot;
 		bool hasCardC;
 
-		public RelicKeycardC(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
+		public RelicKeycardC(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+			: base(typedObject, gameplayScreen, itemLocation)
 		{
 		}
 
@@ -36,7 +37,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			hasCardC = Level.GameSave.Inventory.RelicInventory.Inventory.ContainsKey((int)EInventoryRelicType.ScienceKeycardC);
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (ItemInfo == null || hasDroppedLoot || !Dynamic.IsFading)
 				return;
@@ -44,7 +45,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if(!hasCardC)
 				Level.GameSave.Inventory.RelicInventory.RemoveItem((int)EInventoryRelicType.ScienceKeycardC);
 
-			Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
+			UpdateRelicOrbGetToastToItem();
 
 			AwardContainedItem();
 

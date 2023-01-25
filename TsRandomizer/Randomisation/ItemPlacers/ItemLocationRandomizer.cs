@@ -219,7 +219,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				throw new Exception($"Not enough locations to place all items, locations {freeLocations.Count}, items: {itemlist.Count}");
 
 			var customItemList = new ItemInfo[] {
-				new SparrowTrap(),
+				new MeteorSparrowTrap(),
 				new NeurotoxinTrap(),
 				new PoisonTrap(),
 				new ChaosTrap(),

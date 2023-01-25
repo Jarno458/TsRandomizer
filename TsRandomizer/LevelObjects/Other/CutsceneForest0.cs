@@ -1,6 +1,7 @@
 ﻿using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Screens;
 
 
 namespace TsRandomizer.LevelObjects.Other
@@ -9,7 +10,7 @@ namespace TsRandomizer.LevelObjects.Other
 	// ReSharper disable once UnusedMember.Global
 	class CutsceneForest0 : LevelObject
 	{
-		public CutsceneForest0(Mobile typedObject) : base(typedObject)
+		public CutsceneForest0(Mobile typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
 		{
 		}
 

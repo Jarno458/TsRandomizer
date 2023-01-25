@@ -1,5 +1,6 @@
 ﻿using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Screens;
 
 namespace TsRandomizer.LevelObjects.Other
 {
@@ -7,7 +8,7 @@ namespace TsRandomizer.LevelObjects.Other
 	// ReSharper disable once UnusedMember.Global
 	class GyrePortalEvent : LevelObject
 	{
-		public GyrePortalEvent(Mobile typedObject) : base(typedObject)
+		public GyrePortalEvent(Mobile typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
 		{
 			Dynamic._isUsable = true;
 			// Crash Site

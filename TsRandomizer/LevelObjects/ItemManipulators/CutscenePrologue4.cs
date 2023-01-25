@@ -13,7 +13,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	{
 		bool hasAwardedMeleeOrb;
 
-		public CutscenePrologue4(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
+		public CutscenePrologue4(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+			: base(typedObject, gameplayScreen, itemLocation)
 		{
 		}
 
@@ -22,10 +23,10 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (ItemInfo == null)
 				return;
 
-			Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
+			UpdateRelicOrbGetToastToItem();
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (ItemInfo == null)
 				return;
@@ -36,6 +37,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				return;
 
 			AwardContainedItem();
+
 			hasAwardedMeleeOrb = true;
 		}
 	}

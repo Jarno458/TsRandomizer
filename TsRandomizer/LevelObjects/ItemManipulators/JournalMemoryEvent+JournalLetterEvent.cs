@@ -12,16 +12,23 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	{
 		bool hasAwardedItem;
 
-		public MemoryEvent(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
+		public MemoryEvent(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+			: base(typedObject, gameplayScreen, itemLocation)
 		{
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			Dynamic._oscillationDelta = 0; // Fix the item's position so the replacement doesn't miss
+
 			if (ItemInfo == null || hasAwardedItem || !Dynamic._isFading)
 				return;
+
+			var x = GameplayScreen;
+			var y = Level;
+
 			ShowItemAwardPopup();
+
 			AwardContainedItem();
 
 			hasAwardedItem = true;

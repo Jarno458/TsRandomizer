@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Archipelago;
@@ -156,7 +157,20 @@ namespace TsRandomizer.Screens
 		}
 #endif
 
-		public void HideItemPickupBar() => ((object)Dynamic._itemGetBanner).AsDynamic()._displayTimer = 3;
+		public void HideItemPickupBar() => ((object)Dynamic._itemGetBanner).AsDynamic()._displayTimer = 3f;
+
+		//public void ChangeItemPickupBar(string name) => ((object)Dynamic._itemGetBanner).AsDynamic()._itemName = name;
+
+		public void ShowItemPickupBar(string name)
+		{
+			var itemBanner = ((object)Dynamic._itemGetBanner).AsDynamic();
+
+			itemBanner._viewButton = null; // Wont allow you to open menu
+			itemBanner.IsMapReveal = false;
+			itemBanner.ItemCategory = EInventoryCategoryType.UseItem;
+			itemBanner._itemName = name;
+			itemBanner._displayTimer = 0f;
+		}
 
 		bool IsRoomChanged()
 		{

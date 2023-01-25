@@ -5,7 +5,9 @@ using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.ReplacementObjects;
+using TsRandomizer.Screens;
 using R = TsRandomizer.Randomisation.Requirement;
 
 namespace TsRandomizer.Randomisation
@@ -79,6 +81,8 @@ namespace TsRandomizer.Randomisation
 		public ItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, Seed seed)
 			: base(CalculateCapacity(seed.Options), l => l.Key)
 		{
+			CustomItem.SetItemNames();
+
 			ItemProvider = itemInfoProvider;
 			UnlockingMap = itemUnlockingMap;
 			SeedOptions = seed.Options;
@@ -712,7 +716,7 @@ namespace TsRandomizer.Randomisation
 				? EmperorsTower.CanBeOpenedWith(obtainedRequirements)
 				: Nightmare.CanBeOpenedWith(obtainedRequirements);
 
-		public virtual void Update(Level level)
+		public virtual void Update(Level level, GameplayScreen gameplayScreen)
 		{
 		}
 

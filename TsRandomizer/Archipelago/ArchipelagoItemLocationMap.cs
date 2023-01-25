@@ -11,6 +11,7 @@ using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.ItemTracker;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Randomisation.ItemPlacers;
+using TsRandomizer.Screens;
 
 namespace TsRandomizer.Archipelago
 {
@@ -48,7 +49,7 @@ namespace TsRandomizer.Archipelago
 			firstPass = true;
 		}
 
-		public override void Update(Level level)
+		public override void Update(Level level, GameplayScreen gameplayScreen)
 		{
 			var receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
 
@@ -56,13 +57,13 @@ namespace TsRandomizer.Archipelago
 			{
 				while (receivedItem.HasValue)
 				{
-					ReceiveItem(receivedItem.Value, level);
+					ReceiveItem(receivedItem.Value, level, gameplayScreen);
 					level.GameSave.DataKeyInts[GameItemIndex] = level.GameSave.GetSaveInt(GameItemIndex) + 1;
 
 					receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
 				}
 
-				LoadObtainedProgressionItemsFromSave(level);
+				LoadObtainedProgressionItemsFromSave(level, gameplayScreen);
 
 				firstPass = false;
 			}
@@ -70,11 +71,11 @@ namespace TsRandomizer.Archipelago
 			if(!receivedItem.HasValue)
 				return;
 			
-			ReceiveItem(receivedItem.Value, level);
+			ReceiveItem(receivedItem.Value, level, gameplayScreen);
 			level.GameSave.DataKeyInts[GameItemIndex] = level.GameSave.GetSaveInt(GameItemIndex) + 1;
 		}
 
-		void LoadObtainedProgressionItemsFromSave(Level level)
+		void LoadObtainedProgressionItemsFromSave(Level level, GameplayScreen gameplayScreen)
 		{
 			var itemsInMap = this.Select(l => l.ItemInfo.Identifier)
 				.Distinct().ToHashSet();
@@ -87,7 +88,7 @@ namespace TsRandomizer.Archipelago
 				{
 					var item = new SingleItemInfo(UnlockingMap, progressionItem);
 
-					item.OnPickup(level);
+					item.OnPickup(level, gameplayScreen);
 
 					Add(new ExternalItemLocation(item));
 
@@ -102,7 +103,7 @@ namespace TsRandomizer.Archipelago
 		public override ProgressionChain GetProgressionChain() => 
 			throw new InvalidOperationException("Progression chains aren't supported for Archipelago seeds");
 
-		void ReceiveItem(NetworkItem networkItem, Level level)
+		void ReceiveItem(NetworkItem networkItem, Level level, GameplayScreen gameplayScreen)
 		{
 			if (TryGetLocation(networkItem, out var location) && networkItem.Player == slot)
 			{
@@ -126,7 +127,7 @@ namespace TsRandomizer.Archipelago
 			location.SetItem(item);
 
 			location.IsPickedUp = true;
-			item.OnPickup(level);
+			item.OnPickup(level, gameplayScreen);
 
 			level.GameSave.AddItem(level, itemIdentifier);
 

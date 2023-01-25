@@ -12,11 +12,12 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	{
 		int lastSubProgress;
 
-		public NelisteNpc(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
+		public NelisteNpc(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+			: base(typedObject, gameplayScreen, itemLocation)
 		{
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (ItemInfo == null)
 				return;
@@ -28,14 +29,14 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 			if (Dynamic.IsTalking && lastSubProgress == 0 && currentSubProgress == 1)
 			{
-				Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
+				UpdateRelicOrbGetToastToItem();
 
 				AwardContainedItem();
 
 				var fireOrbAppendage = ((Animate)Dynamic._fireOrb).AsDynamic();
 
-				fireOrbAppendage._sprite = gameplayScreen.GameContentManager.SpMenuIcons;
-				fireOrbAppendage._unhiddenAnimationIndex = ItemInfo.AnimationIndex; //uses differnt sprite sheet
+				fireOrbAppendage._sprite = Level.GCM.SpMenuIcons;
+				fireOrbAppendage._unhiddenAnimationIndex = ItemInfo.AnimationIndex; //uses different sprite sheet
 			}
 
 			lastSubProgress = Dynamic.SubProgress;

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.IntermediateObjects
@@ -31,6 +34,8 @@ namespace TsRandomizer.IntermediateObjects
 			statItems = new Dictionary<EItemType, ItemInfo>();
 
 			progressiveItems = new Dictionary<ItemInfo, ProgressiveItemInfo>();
+
+			LoadCustomItems();
 
 			MakeGearsProgressive();
 			MakeBroochProgressive();
@@ -150,6 +155,24 @@ namespace TsRandomizer.IntermediateObjects
 			var newItem = createNew();
 			dictionary[item] = newItem;
 			return newItem;
+		}
+
+		void LoadCustomItems()
+		{
+			var customItemType = typeof(CustomItem);
+
+			var customItemTypes = GetType().Assembly.GetTypes()
+				.Where(t => customItemType.IsAssignableFrom(t)
+				            && !t.IsGenericType
+				            && t != customItemType
+							&& t.GetConstructors().Any(c => c.GetParameters().Length == 0));
+
+			foreach (var itemType in customItemTypes)
+			{
+				var item = (ItemInfo)itemType.CreateInstance();
+
+				useItems.Add(item.Identifier.UseItem, item);
+			}
 		}
 	}
 }

@@ -2,10 +2,11 @@
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Screens;
 
 namespace TsRandomizer.IntermediateObjects
 {
-	public class SingleItemInfo : ItemInfo
+	class SingleItemInfo : ItemInfo
 	{
 		public override ItemIdentifier Identifier { get; }
 		internal override Requirement Unlocks { get; }
@@ -14,7 +15,7 @@ namespace TsRandomizer.IntermediateObjects
 		public override int AnimationIndex => Identifier.GetAnimationIndex();
 		public override BestiaryItemDropSpecification BestiaryItemDropSpecification => Identifier.GetBestiaryItemDropSpecification();
 
-		public Action<Level> PickupAction { get; protected set; }
+		Action<Level> PickupAction { get; }
 
 		public SingleItemInfo(ItemIdentifier identifier)
 		{
@@ -28,6 +29,9 @@ namespace TsRandomizer.IntermediateObjects
 			PickupAction = unlockingMap.GetPickupAction(identifier);
 		}
 
-		public override void OnPickup(Level level) => PickupAction?.Invoke(level);
+		internal override void OnPickup(Level level, GameplayScreen gameplayScreen)
+		{
+			PickupAction?.Invoke(level);
+		}
 	}
 }
