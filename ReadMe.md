@@ -12,7 +12,7 @@ When you feel stuck, you can open the minimap and hold X (the key to remove map 
 
 For questions / remarks and feedback, feel free to join the #randomizer channel on the official timespinner discord https://discord.gg/Timespinner
 # Installation \ Startup
-Download latest TsRandomizer.exe or Linux / Mac zip file from the release page https://github.com/JarnoWesthof/TsRandomizer/releases
+Download latest TsRandomizer.exe or Linux / Mac zip file from the release page https://github.com/Jarno458/TsRandomizer/releases
 
 For windows:
 Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located, and start TsRandomizer.exe to start the game with the randomizer enabled, or Timespinner.exe to start the game normally
