@@ -161,6 +161,6 @@ namespace TsRandomizer.Settings
 			"Sets whether DeathLink is on or off", false, true);
 
 		public OnOffGameSetting NoSaveStatues = new OnOffGameSetting("No Save Statues",
-			"Breaks all the save statues", false, false);
+			"Breaks all the save statues", false, true);
 	}
 }
