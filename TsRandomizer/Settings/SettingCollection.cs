@@ -42,7 +42,7 @@ namespace TsRandomizer.Settings
 			"All boss locations are shuffled.", false, false);
 
 		public OnOffGameSetting BossScaling = new OnOffGameSetting("Random Boss Scaling",
-			"Random bosses inherit the HP, ATK, and XP of their location (Recommended).", true, false);
+			"Random bosses inherit the HP, ATK, and XP of their location (Recommended).", true, true);
 
 		public SpecificValuesGameSetting DamageRando = new SpecificValuesGameSetting("Damage Randomizer",
 			"Randomly nerfs and buffs orbs, spells, and some rings. \"Manual\" requires editing the randomizer settings file.",
