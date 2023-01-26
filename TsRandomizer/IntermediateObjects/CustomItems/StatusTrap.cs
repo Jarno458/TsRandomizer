@@ -1,6 +1,7 @@
 ﻿using System;
 using Timespinner.GameAbstractions.Gameplay;
 using TsRandomizer.Extensions;
+using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 
 namespace TsRandomizer.IntermediateObjects.CustomItems
@@ -13,7 +14,8 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 		public override int AnimationIndex => 208; // 'starry void' item
 
-		public StatusTrap(CustomItemType itemType, string statusToApply) : base(itemType)
+		public StatusTrap(ItemUnlockingMap unlockingMap, CustomItemType itemType, string statusToApply) 
+			: base(unlockingMap, itemType)
 		{
 			statusEnumValue = StatusEnumType.GetEnumValue(statusToApply);
 		}
@@ -28,16 +30,16 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 	class NeurotoxinTrap : StatusTrap
 	{
-		public NeurotoxinTrap() : base(CustomItemType.NeurotoxinTrap, "NeuroToxin") { }
+		public NeurotoxinTrap(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.NeurotoxinTrap, "NeuroToxin") { }
 	}
 
 	class ChaosTrap : StatusTrap
 	{
-		public ChaosTrap() : base(CustomItemType.ChaosTrap, "Chaos") { }
+		public ChaosTrap(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.ChaosTrap, "Chaos") { }
 	}
 
 	class PoisonTrap : StatusTrap
 	{
-		public PoisonTrap() : base(CustomItemType.PoisonTrap, "Poison") { }
+		public PoisonTrap(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.PoisonTrap, "Poison") { }
 	}
 }

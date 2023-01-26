@@ -117,10 +117,12 @@
     <Compile Include="Drawables\ArchipelagoRepresentation.cs" />
     <Compile Include="Extensions\GameContentManagerExtension.cs" />
     <Compile Include="Extensions\SettingsExtensions.cs" />
-    <Compile Include="IntermediateObjects\CustomItems\CustomItemType.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\CustomItem.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\BeeTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\MeteorSparrowTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\StatusTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\UnchainedKey.cs" />
+    <Compile Include="IntermediateObjects\ProgressiveItemProvider.cs" />
     <Compile Include="LevelObjects\CollisionDetectionEvent.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="LevelObjects\Other\DoorTeleportEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneForest0.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
+    <Compile Include="Archipelago\ArchipelagoUnlockingMap.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />
@@ -241,7 +244,6 @@
     <Compile Include="ReplacementObjects\PyramidKeys.cs" />
     <Compile Include="ReplacementObjects\TimespinnerSpindle.cs" />
     <Compile Include="IntermediateObjects\TriggerAfterLootDrop.cs" />
-    <Compile Include="DeRandomizer.cs" />
     <Compile Include="FamiliarManager.cs" />
     <Compile Include="Screens\ArchipelagoSelectionScreen.cs" />
     <Compile Include="Screens\OptionsMenuScreen.cs" />

@@ -2,6 +2,7 @@
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using TsRandomizer.Extensions;
+using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 
 namespace TsRandomizer.IntermediateObjects.CustomItems
@@ -10,7 +11,7 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 	{
 		public override int AnimationIndex => 208; // 'starry void' item
 
-		public MeteorSparrowTrap() : base(CustomItemType.MeteorSparrowTrap) {}
+		public MeteorSparrowTrap(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.MeteorSparrowTrap) {}
 
 		internal override void OnPickup(Level level, GameplayScreen gameplayScreen)
 		{

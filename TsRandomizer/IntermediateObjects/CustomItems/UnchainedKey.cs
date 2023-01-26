@@ -1,4 +1,5 @@
 ﻿using Timespinner.GameAbstractions.Gameplay;
+using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 
 namespace TsRandomizer.IntermediateObjects.CustomItems
@@ -8,7 +9,7 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		public override int AnimationIndex => 5;
 		protected override bool RemoveFromInventory => false;
 
-		public UnchainedKey(CustomItemType itemType) : base(itemType)
+		public UnchainedKey(ItemUnlockingMap unlockingMap, CustomItemType itemType) : base(unlockingMap, itemType)
 		{
 		}
 
@@ -24,9 +25,8 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 	{
 		public override string Name => "Timeworn Warp Beacon";
 
-		public TimewornWarpBeacon() : base(CustomItemType.TimewornWarpBeacon)
+		public TimewornWarpBeacon(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.TimewornWarpBeacon)
 		{
-			SetDescription("Attunes warps to a gate in the past", "Twin Pyramid Key");
 		}
 	}
 
@@ -34,9 +34,8 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 	{
 		public override string Name => "Modern Warp Beacon";
 
-		public ModernWarpBeacon() : base(CustomItemType.ModernWarpBeacon)
+		public ModernWarpBeacon(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.ModernWarpBeacon)
 		{
-			SetDescription("Attunes warps gate within the present", "Twin Pyramid Key");
 		}
 	}
 
@@ -44,9 +43,8 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 	{
 		public override string Name => "Mysterious Warp Beacon";
 
-		public MysteriousWarpBeacon() : base(CustomItemType.MysteriousWarpBeacon)
+		public MysteriousWarpBeacon(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.MysteriousWarpBeacon)
 		{
-			SetDescription("Attunes warps to a gate beyond time", "Twin Pyramid Key");
 		}
 	}
 }

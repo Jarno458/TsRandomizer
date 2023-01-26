@@ -81,8 +81,6 @@ namespace TsRandomizer.Randomisation
 		public ItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, Seed seed)
 			: base(CalculateCapacity(seed.Options), l => l.Key)
 		{
-			CustomItem.SetItemNames();
-
 			ItemProvider = itemInfoProvider;
 			UnlockingMap = itemUnlockingMap;
 			SeedOptions = seed.Options;
@@ -620,34 +618,31 @@ namespace TsRandomizer.Randomisation
 			//Gasmask may never be placed in a Gas effected place
 			//the very basics to reach maw should also allow you to get Gasmask
 			//unless we run inverted, then we can garantee the user has the pyramid keys before entering lake desolation
-			var GasmaskLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
+			var gasmaskLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
 
 			var levelIdsToAvoid = new List<int>(3) { 1 }; //lake desolation
 			var mawRequirements = R.None;
-
+			
 			if (!SeedOptions.Inverted)
 			{
 				mawRequirements |= R.GateAccessToPast;
 
-				//for non inverted seeds we dont know pyramid keys are required as it can be a classic past seed
-				/*var isWatermaskRequiredForMaw = unlockingMap.PyramidKeysUnlock != R.GateMaw
-				                                && unlockingMap.PyramidKeysUnlock != R.GateCavesOfBanishment;
-
-				if (isWatermaskRequiredForMaw)
-					mawRequirements |= R.Swimming;*/
-
 				levelIdsToAvoid.Add(2); //library
-
-				//if(unlockingMap.PyramidKeysUnlock != R.GateSealedCaves)
 				levelIdsToAvoid.Add(9); //xarion skelleton
 			}
 			else
 			{
-				mawRequirements |= R.Swimming;
-				mawRequirements |= UnlockingMap.PyramidKeysUnlock;
+				if (!FloodsFlags.DryLakeSerene)
+					mawRequirements |= R.Swimming;
+				
+				var pastUnlock = SeedOptions.UnchainedKeys
+					? UnlockingMap.GetAllUnlock(CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon))
+					: UnlockingMap.GetAllUnlock(new ItemIdentifier(EInventoryRelicType.PyramidsKey));
+				
+				mawRequirements |= pastUnlock;
 			}
 
-			return !levelIdsToAvoid.Contains(GasmaskLocation.Key.LevelId) && GasmaskLocation.Gate.CanBeOpenedWith(mawRequirements);
+			return !levelIdsToAvoid.Contains(gasmaskLocation.Key.LevelId) && gasmaskLocation.Gate.CanBeOpenedWith(mawRequirements);
 		}
 
 		R GetObtainedRequirements(R obtainedRequirements)

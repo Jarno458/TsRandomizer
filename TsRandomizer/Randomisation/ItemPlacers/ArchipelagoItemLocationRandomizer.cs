@@ -1,5 +1,4 @@
 ﻿using Archipelago.MultiClient.Net;
-using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Archipelago;
@@ -41,7 +40,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			saveGame.DataKeyStrings.TryGetValue(GameSavePasswordKey, out var password);
 			saveGame.DataKeyStrings.TryGetValue(GameSaveConnectionId, out var connectionId);
 			saveGame.DataKeyStrings.TryParsePersonalItems(GameSavePersonalItemIds, out var personalLocations);
-			saveGame.DataKeyStrings.TryParsePyramidKeysUnlock(GameSavePyramidsKeysUnlock, out var pyramidKeysUnlock);
 
 			var result = Client.Connect(server, user, password, connectionId);
 
@@ -53,25 +51,18 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			if (isProgressionOnly)
 				return itemLocations;
 
-			UnlockingMap.SetTeleporterPickupActionExternally(pyramidKeysUnlock, Seed.Options);
-
 			foreach (var itemLocation in itemLocations)
 			{
 				itemLocation.SetItem(personalLocations.TryGetValue(itemLocation.Key, out var personalItemInfo)
 					? ItemInfoProvider.Get(personalItemInfo)
-					: new ArchipelagoRemoteItem());
+					: ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.Archipelago)));
 
-				itemLocation.OnPickup = OnItemLocationChecked;
+				itemLocation.OnPickup = _ => Client.UpdateChecks(itemLocations);
 			}
 
 			return itemLocations;
 		}
 
-		void OnItemLocationChecked(Level level)
-		{
-			Client.UpdateChecks(itemLocations);
-		}
-		
 		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation) => 
 			itemLocation.SetItem(itemInfo);
 	}

@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.ItemTracker
@@ -104,9 +105,9 @@ namespace TsRandomizer.ItemTracker
 			{new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive), s => s.EyeRing},
 			{new ItemIdentifier(EInventoryFamiliarType.Kobo), s => s.Kobo},
 			{new ItemIdentifier(EInventoryFamiliarType.MerchantCrow), s => s.MerchantCrow},
-			{new ItemIdentifier(EInventoryUseItemType.MapReveal0), s => s.PastWarp},
-			{new ItemIdentifier(EInventoryUseItemType.MapReveal1), s => s.PresentWarp},
-			{new ItemIdentifier(EInventoryUseItemType.MapReveal2), s => s.PyramidWarp},
+			{CustomItem.GetIdentifier(CustomItemType.TimewornWarpBeacon), s => s.PastWarp},
+			{CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon), s => s.PresentWarp},
+			{CustomItem.GetIdentifier(CustomItemType.MysteriousWarpBeacon), s => s.PyramidWarp},
 		};
 
 		static void SetMemberForItem(ItemTrackerState trackerState, ItemIdentifier itemInfo)

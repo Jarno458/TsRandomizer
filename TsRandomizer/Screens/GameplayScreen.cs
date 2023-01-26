@@ -83,8 +83,6 @@ namespace TsRandomizer.Screens
 
 			ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(ItemLocations));
 
-			LevelReflected._random = new DeRandomizer(LevelReflected._random, Seed);
-
 			ItemManipulator.Initialize(ItemLocations);
 
 			if (settings.DamageRando.Value != "Off")

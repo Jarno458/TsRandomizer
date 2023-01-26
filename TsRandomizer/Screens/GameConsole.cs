@@ -158,7 +158,7 @@ namespace TsRandomizer.Screens
 			}
 			else
 			{
-				AddLine("Unknown command: parts[0]");
+				AddLine($"Unknown command: {parts[0]}");
 			}
 		}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Timespinner.GameAbstractions.Saving;
+using TsRandomizer.Archipelago;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation.ItemPlacers;
 using TsRandomizer.Screens;

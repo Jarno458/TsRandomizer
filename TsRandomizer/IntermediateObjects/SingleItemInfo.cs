@@ -17,16 +17,11 @@ namespace TsRandomizer.IntermediateObjects
 
 		Action<Level> PickupAction { get; }
 
-		public SingleItemInfo(ItemIdentifier identifier)
-		{
-			Identifier = identifier;
-		}
-
 		internal SingleItemInfo(ItemUnlockingMap unlockingMap, ItemIdentifier identifier)
 		{
 			Identifier = identifier;
 			Unlocks = unlockingMap.GetAllUnlock(identifier);
-			PickupAction = unlockingMap.GetPickupAction(identifier);
+			PickupAction = unlockingMap?.GetPickupAction(identifier);
 		}
 
 		internal override void OnPickup(Level level, GameplayScreen gameplayScreen)

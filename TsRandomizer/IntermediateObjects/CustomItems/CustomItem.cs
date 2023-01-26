@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
+using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 
 namespace TsRandomizer.IntermediateObjects.CustomItems
@@ -19,12 +20,7 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		MysteriousWarpBeacon
 	}
 
-	/* TODO
-		AP sending items
-		Correct filling trap %
-		Bee trap
-		pyramid pickup message
-	*/
+	// item tracker link
 
 	abstract class CustomItem : SingleItemInfo
 	{
@@ -37,7 +33,7 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		public static ItemIdentifier GetIdentifier(CustomItemType itemType) =>
 			new ItemIdentifier((EInventoryUseItemType)itemType + Offset);
 
-		public static void SetItemNames()
+		static CustomItem()
 		{
 			foreach (CustomItemType customItemType in Enum.GetValues(typeof(CustomItemType)))
 			{
@@ -56,13 +52,16 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 		protected virtual bool RemoveFromInventory => true;
 
-		protected CustomItem(CustomItemType itemType) : base(GetIdentifier(itemType))
+		protected CustomItem(ItemUnlockingMap unlockingMap, CustomItemType itemType) 
+			: base(unlockingMap, GetIdentifier(itemType))
 		{
 			ItemType = itemType;
 		}
-		
-		public void SetDescription(string description, string speaker) => 
-			TimeSpinnerGame.Localizer.OverrideKey(GetDescriptionKey(ItemType), description, speaker);
+
+		public static void SetDescription(CustomItemType type, string description, string speaker) =>
+			TimeSpinnerGame.Localizer.OverrideKey(GetDescriptionKey(type), description, speaker);
+
+		protected void SetDescription(string description, string speaker) => SetDescription(ItemType, description, speaker);
 
 		internal override void OnPickup(Level level, GameplayScreen gameplayScreen)
 		{
@@ -70,7 +69,8 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 			gameplayScreen.ShowItemPickupBar(Name);
 
-			level.GameSave.Inventory.UseItemInventory.RemoveItem((int)Identifier.UseItem, 999);
+			if (RemoveFromInventory)
+				level.GameSave.Inventory.UseItemInventory.RemoveItem((int)Identifier.UseItem, 999);
 		}
 	}
 }

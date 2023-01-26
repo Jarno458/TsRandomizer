@@ -19,6 +19,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		readonly List<ItemInfo> itemsToRemoveFromGame;
 		readonly List<ItemInfo> itemsToAddToGame;
 		readonly List<ItemInfo> genericItems;
+		readonly List<ItemInfo> traps;
 
 		protected ItemLocationRandomizer(Seed seed, ItemInfoProvider itemInfoProvider, ItemUnlockingMap unlockingMap)
 		{
@@ -66,12 +67,10 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			if (SeedOptions.UnchainedKeys)
 			{
-				itemsToAddToGame.Add(ItemInfoProvider.Get(EInventoryUseItemType.MapReveal0)); // Past
-				itemsToAddToGame.Add(ItemInfoProvider.Get(EInventoryUseItemType.MapReveal1)); // Present
+				itemsToAddToGame.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.TimewornWarpBeacon))); // Past
+				itemsToAddToGame.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon))); // Present
 				if (SeedOptions.EnterSandman)
-				{
-					itemsToAddToGame.Add(ItemInfoProvider.Get(EInventoryUseItemType.MapReveal2)); // Pyramid
-				}
+					itemsToAddToGame.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.MysteriousWarpBeacon))); // Pyramid
 			}
 
 			genericItems = new List<ItemInfo>
@@ -88,6 +87,15 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.Antidote),
 				ItemInfoProvider.Get(EInventoryUseItemType.SandBottle),
 				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle)
+			};
+
+			traps = new List<ItemInfo>
+			{
+				ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.MeteorSparrowTrap)),
+				ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.PoisonTrap)),
+				ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.ChaosTrap)),
+				ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.NeurotoxinTrap)),
+				ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.BeeTrap))
 			};
 		}
 
@@ -185,14 +193,18 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 					minimalMawRequirements |= R.Swimming;*/
 
 				levelIdsToAvoid.Add(2); //library
-
-				if (UnlockingMap.PyramidKeysUnlock != R.GateSealedCaves)
-					levelIdsToAvoid.Add(9); //xarion skelleton
+				levelIdsToAvoid.Add(9); //xarion skelleton
 			}
 			else
 			{
-				minimalMawRequirements |= R.Swimming;
-				minimalMawRequirements |= UnlockingMap.PyramidKeysUnlock;
+				if (!Seed.FloodFlags.DryLakeSerene)
+					minimalMawRequirements |= R.Swimming;
+				
+				var pastUnlock = SeedOptions.UnchainedKeys
+					? UnlockingMap.GetAllUnlock(CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon))
+					: UnlockingMap.GetAllUnlock(new ItemIdentifier(EInventoryRelicType.PyramidsKey));
+
+				minimalMawRequirements |= pastUnlock;
 			}
 
 			var GasMaskLocation = itemLocations
@@ -212,30 +224,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.Where(l => !l.IsUsed)
 				.ToList();
 
-			//TODO: remove
-			itemlist.Clear();
-
 			if (itemlist.Count > freeLocations.Count)
 				throw new Exception($"Not enough locations to place all items, locations {freeLocations.Count}, items: {itemlist.Count}");
-
-			var customItemList = new ItemInfo[] {
-				new MeteorSparrowTrap(),
-				new NeurotoxinTrap(),
-				new PoisonTrap(),
-				new ChaosTrap(),
-				new ArchipelagoRemoteItem()
-			};
-
-			do
-			{
-				var location = freeLocations.PopRandom(random);
-				var item = customItemList.SelectRandom(random);
-
-				PutItemAtLocation(item, location);
-
-			} while (freeLocations.Count > 0);
-
-			return;
 
 			//item pool
 			do
@@ -252,7 +242,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			for (int i = 0; i < Math.Round((freeLocations.Count / 100d) * trapChance); i++)
 			{
 				var location = freeLocations.PopRandom(random);
-				var item = ItemInfoProvider.Get((EInventoryUseItemType)99999);
+				var item = traps.SelectRandom(random);
 
 				PutItemAtLocation(item, location);
 			}

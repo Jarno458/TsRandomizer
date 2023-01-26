@@ -21,15 +21,15 @@ namespace TsRandomizer.Archipelago
 		}
 
 		public Requirement GetPyramidKeysGate() =>
-			GetPyramidKeysGate("PyramidKeysGate");
+			GetPyramidKeysGate(slotData, "PyramidKeysGate");
 		public Requirement GetPastPyramidKeysGate() =>
-			GetPyramidKeysGate("PastGate");
+			GetPyramidKeysGate(slotData, "PastGate");
 		public Requirement GetPresentPyramidKeysGate() =>
-			GetPyramidKeysGate("PresentGate");
+			GetPyramidKeysGate(slotData, "PresentGate");
 		public Requirement GetTimePyramidKeysGate() =>
-			GetPyramidKeysGate("TimeGate");
+			GetPyramidKeysGate(slotData, "TimeGate");
 
-		public Requirement GetPyramidKeysGate(string gateName)
+		public static Requirement GetPyramidKeysGate(Dictionary<string, object> slotData, string gateName)
 		{
 			if (!slotData.TryGetValue(gateName, out var slotDataGate))
 				return Requirement.None;
