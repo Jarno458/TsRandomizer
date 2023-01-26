@@ -20,8 +20,6 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		MysteriousWarpBeacon
 	}
 
-	// item tracker link
-
 	abstract class CustomItem : SingleItemInfo
 	{
 		const int Offset = 500;
