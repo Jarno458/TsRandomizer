@@ -20,10 +20,12 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(Seed seed)
 		{
-			if (Dynamic._isBroken) 
+			if (Dynamic._isBroken)
 				return;
 
-			if ((Level.ID != 2 || Level.RoomID != 20) // Right side libarary elevator room
+			bool breakAllSaves = Level.GameSave.GetSettings().NoSaveStatues.Value;
+
+			if (!breakAllSaves && (Level.ID != 2 || Level.RoomID != 20) // Right side libarary elevator room
 				&& (Level.ID != 14 || Level.RoomID != 8) // Ravenlord
 				&& (Level.ID != 14 || Level.RoomID != 6))  // Ifrit
 				return;
@@ -31,7 +33,7 @@ namespace TsRandomizer.LevelObjects.Other
 			Dynamic._isBroken = true;
 			Dynamic._orbSaveState = SaveOrbStateType.GetEnumValue("Dead");
 
-			var orbAppendage = (Appendage) Dynamic._orbAppendage;
+			var orbAppendage = (Appendage)Dynamic._orbAppendage;
 			orbAppendage.ChangeAnimation(5); //5 = broken
 			orbAppendage.ClearBattleAnimations();
 			orbAppendage.IsGlowing = false;
