@@ -19,16 +19,13 @@ namespace TsRandomizer.Archipelago
 	{
 		public const string GameItemIndex = "ArchipelagoGameItemIndex";
 
-		readonly int slot;
-
 		bool firstPass;
 
 		HashSet<ItemKey> personalLocationItemKeys;
 
-		public ArchipelagoItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, Seed seed, int slot)
+		public ArchipelagoItemLocationMap(ItemInfoProvider itemInfoProvider, ItemUnlockingMap itemUnlockingMap, Seed seed)
 			: base(itemInfoProvider, itemUnlockingMap, seed)
 		{
-			this.slot = slot;
 		}
 
 		public override bool IsBeatable() => true;
@@ -77,8 +74,7 @@ namespace TsRandomizer.Archipelago
 
 		void LoadObtainedProgressionItemsFromSave(Level level, GameplayScreen gameplayScreen)
 		{
-			var itemsInMap = this.Select(l => l.ItemInfo.Identifier)
-				.Distinct().ToHashSet();
+			var itemsInMap = this.Select(l => l.ItemInfo.Identifier).Distinct().ToHashSet();
 
 			var updateTracker = false;
 			
@@ -105,7 +101,7 @@ namespace TsRandomizer.Archipelago
 
 		void ReceiveItem(NetworkItem networkItem, Level level, GameplayScreen gameplayScreen)
 		{
-			if (TryGetLocation(networkItem, out var location) && networkItem.Player == slot)
+			if (TryGetLocation(networkItem, out var location) && networkItem.Player == Client.Slot)
 			{
 				//ignore message if its from my slot and a location i already picked up
 				if (location.IsPickedUp && personalLocationItemKeys.Contains(location.Key))
@@ -121,8 +117,7 @@ namespace TsRandomizer.Archipelago
 			if (!TryGetItemIdentifier(networkItem, out var itemIdentifier))
 				return;
 
-			// itemInfoProvider's cache is out of date here when it comes to pyramid unlocks
-			var item = new SingleItemInfo(UnlockingMap, itemIdentifier);
+			var item = ItemProvider.Get(itemIdentifier);
 
 			location.SetItem(item);
 

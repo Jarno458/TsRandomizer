@@ -1,6 +1,5 @@
 ﻿using Archipelago.MultiClient.Net;
 using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Archipelago;
@@ -16,6 +15,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		public const string GameSavePasswordKey = "ArchipelagoPassword";
 		public const string GameSaveConnectionId = "ArchipelagoConnectionId";
 		public const string GameSavePyramidsKeysUnlock = "ArchipelagoPyramidsKeysUnlock";
+		public const string GameSavePastPyramidsKeysUnlock = "GameSavePastPyramidsKeysUnlock";
+		public const string GameSavePresentPyramidsKeysUnlock = "GameSavePresentPyramidsKeysUnlock";
+		public const string GameSaveTimePyramidsKeysUnlock = "GameSaveTimePyramidsKeysUnlock";
 		public const string GameSavePersonalItemIds = "ArchipelagoPersonalItemIds";
 
 		readonly GameSave saveGame;
@@ -30,9 +32,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		) : base(seed, itemInfoProvider, unlockingMap)
 		{
 			this.saveGame = saveGame;
-
-			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MagicMarbles", "Archipelago Item");
-			TimeSpinnerGame.Localizer.OverrideKey("inv_use_MagicMarbles_desc", "Item that belongs to a distant timeline somewhere in the Archipelago (cannot be sold)");
 		}
 
 		public override ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly)
@@ -49,19 +48,18 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			if (!result.Successful)
 				throw new ConnectionFailedException((LoginFailure)result, server, user, password);
 
-			itemLocations = new ArchipelagoItemLocationMap(ItemInfoProvider, UnlockingMap, Seed, ((LoginSuccessful)result).Slot);
+			itemLocations = new ArchipelagoItemLocationMap(ItemInfoProvider, UnlockingMap, Seed);
 
 			if (isProgressionOnly)
 				return itemLocations;
 
-			UnlockingMap.SetTeleporterPickupAction(pyramidKeysUnlock, Seed.Options);
+			UnlockingMap.SetTeleporterPickupActionExternally(pyramidKeysUnlock, Seed.Options);
 
 			foreach (var itemLocation in itemLocations)
 			{
-				if (personalLocations.TryGetValue(itemLocation.Key, out var personalItemInfo))
-					itemLocation.SetItem(new SingleItemInfo(UnlockingMap, personalItemInfo)); //avoiding item provider as we cant handle progressive items atm
-				else
-					itemLocation.SetItem(new ArchipelagoRemoteItem());
+				itemLocation.SetItem(personalLocations.TryGetValue(itemLocation.Key, out var personalItemInfo)
+					? ItemInfoProvider.Get(personalItemInfo)
+					: new ArchipelagoRemoteItem());
 
 				itemLocation.OnPickup = OnItemLocationChecked;
 			}
@@ -72,13 +70,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		void OnItemLocationChecked(Level level)
 		{
 			Client.UpdateChecks(itemLocations);
-
-			RemoveRemoteItemsFromInventory(level);
 		}
-
-		static void RemoveRemoteItemsFromInventory(Level level) => 
-			level.GameSave.Inventory.UseItemInventory.RemoveItem((int)EInventoryUseItemType.MagicMarbles, 999);
-
+		
 		protected override void PutItemAtLocation(ItemInfo itemInfo, ItemLocation itemLocation) => 
 			itemLocation.SetItem(itemInfo);
 	}

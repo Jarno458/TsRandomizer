@@ -20,13 +20,10 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 	}
 
 	/* TODO
-	 Remove Items
-	AP sending items
-	Correct filling trap %
-	AP item Logo
-	pyramid Keys
-	Bee trap
-	Fix unchained keys teleport to flooded maw
+		AP sending items
+		Correct filling trap %
+		Bee trap
+		pyramid pickup message
 	*/
 
 	abstract class CustomItem : SingleItemInfo
@@ -72,6 +69,8 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 			base.OnPickup(level, gameplayScreen);
 
 			gameplayScreen.ShowItemPickupBar(Name);
+
+			level.GameSave.Inventory.UseItemInventory.RemoveItem((int)Identifier.UseItem, 999);
 		}
 	}
 }

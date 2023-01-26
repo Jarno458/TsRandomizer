@@ -268,7 +268,6 @@
     <Compile Include="Randomisation\Requirement.cs" />
     <Compile Include="Randomisation\ItemLocation.cs" />
     <Compile Include="IntermediateObjects\ItemInfo.cs" />
-    <Compile Include="Randomisation\ItemPlacers\ForwardFillingItemLocationRandomizer.cs" />
     <Compile Include="LevelObjects\ItemManipulators\OrbPedestal.cs" />
     <Compile Include="LevelObjects\ItemManipulators\TreasureChest.cs" />
     <Compile Include="Extensions\GameComponentCollectionExtensions.cs" />

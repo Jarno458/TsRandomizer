@@ -3,16 +3,149 @@ using System.Collections.Generic;
 using System.Linq;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
+using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.IntermediateObjects.CustomItems;
+using TsRandomizer.Randomisation.ItemPlacers;
 using R = TsRandomizer.Randomisation.Requirement;
 
 namespace TsRandomizer.Randomisation
 {
-	class ItemUnlockingMap
+	class DefaultItemUnlockingMap : ItemUnlockingMap
 	{
-		static readonly TeleporterGate[] PresentTeleporterGates =
+		public DefaultItemUnlockingMap(Seed seed) : base(seed)
+		{
+			if (!seed.Options.UnchainedKeys)
+				SetTeleporterPickupAction(seed);
+			else
+				SetUnchainedKeyPickupActions(seed);
+		}
+
+		void SetTeleporterPickupAction(Seed seed)
+		{
+			IEnumerable<TeleporterGate> teleporterGates = PresentTeleporterGates;
+
+			if (!seed.Options.Inverted)
+			{
+				IEnumerable<TeleporterGate> pastTeleporterGates = PastTeleporterGates;
+
+				if (seed.FloodFlags.Maw)
+					pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
+
+				teleporterGates = teleporterGates.Union(pastTeleporterGates);
+			}
+
+			var selectedGate = teleporterGates.SelectRandom(Random);
+
+			var pyramidUnlockingSpecification =
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.None, R.Teleport);
+
+			pyramidUnlockingSpecification.OnPickup = level => {
+				UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
+
+				if (seed.Options.EnterSandman)
+				{
+					UnlockFirstPyramidPortal(level);
+					pyramidUnlockingSpecification.AdditionalUnlocks = PyramidTeleporterGates[1].Gate;
+				}
+
+			};
+
+			pyramidUnlockingSpecification.Unlocks = selectedGate.Gate;
+
+			UnlockingSpecifications.Add(pyramidUnlockingSpecification);
+		}
+
+		void SetUnchainedKeyPickupActions(Seed seed)
+		{
+			IEnumerable<TeleporterGate> pastTeleporterGates = PastTeleporterGates;
+
+			if (seed.FloodFlags.Maw)
+				pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
+
+			SetUnchainedKeysUnlock(Random, new TimewornWarpBeacon(), R.PastWarp, pastTeleporterGates.ToArray());
+			SetUnchainedKeysUnlock(Random, new ModernWarpBeacon(), R.PresentWarp, PresentTeleporterGates);
+
+			if (seed.Options.EnterSandman)
+				SetUnchainedKeysUnlock(Random, new MysteriousWarpBeacon(), R.PyramidWarp, PyramidTeleporterGates);
+		}
+
+		protected void SetUnchainedKeysUnlock(Random random, CustomItem item, R unlock, TeleporterGate[] gates)
+		{
+			var pyramidWarpUnlockingSpecification = new UnlockingSpecification(item.Identifier, unlock);
+			var pyramidGate = gates.SelectRandom(random);
+
+			item.SetDescription($"You feel the twin pyramid key attune to: {pyramidGate.Name}", "Twin Pyramid Key");
+
+			pyramidWarpUnlockingSpecification.OnPickup = level => UnlockRoom(level, pyramidGate.LevelId, pyramidGate.RoomId);
+			pyramidWarpUnlockingSpecification.Unlocks = pyramidGate.Gate;
+
+			UnlockingSpecifications.Add(pyramidWarpUnlockingSpecification);
+		}
+	}
+
+	class ArchipelagoUnlockingMap : ItemUnlockingMap
+	{
+		public ArchipelagoUnlockingMap(Seed seed, GameSave saveGame) : base(seed)
+		{
+			var allTeleporterGates = PresentTeleporterGates
+				.Union(PastTeleporterGates)
+				.Union(PyramidTeleporterGates)
+				.ToArray();
+
+			if (!seed.Options.UnchainedKeys)
+			{
+				saveGame.DataKeyStrings
+					.TryParsePyramidKeysUnlock(ArchipelagoItemLocationRandomizer.GameSavePyramidsKeysUnlock, out var pyramidsGate);
+
+				SetTeleporterPickupAction(seed, allTeleporterGates, pyramidsGate, new ItemIdentifier(EInventoryRelicType.PyramidsKey));
+			}
+			else
+			{
+				saveGame.DataKeyStrings.TryParsePyramidKeysUnlock(
+					ArchipelagoItemLocationRandomizer.GameSavePastPyramidsKeysUnlock, out var pastGate);
+				SetTeleporterPickupAction(
+					seed, allTeleporterGates, pastGate, CustomItem.GetIdentifier(CustomItemType.TimewornWarpBeacon));
+
+				saveGame.DataKeyStrings.TryParsePyramidKeysUnlock(
+					ArchipelagoItemLocationRandomizer.GameSavePresentPyramidsKeysUnlock, out var presentGate);
+				SetTeleporterPickupAction(
+					seed, allTeleporterGates, presentGate, CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon));
+
+				saveGame.DataKeyStrings.TryParsePyramidKeysUnlock(
+					ArchipelagoItemLocationRandomizer.GameSaveTimePyramidsKeysUnlock, out var timeGate);
+				SetTeleporterPickupAction(
+					seed, allTeleporterGates, timeGate, CustomItem.GetIdentifier(CustomItemType.MysteriousWarpBeacon));
+			}
+		}
+		
+		void SetTeleporterPickupAction(Seed seed, TeleporterGate[] allGates, R gateToUnlock, ItemIdentifier item)
+		{
+			var selectedGate = allGates.First(g => g.Gate == gateToUnlock);
+
+			var unlockingSpecification = new UnlockingSpecification(item, R.None, R.Teleport);
+
+			unlockingSpecification.OnPickup = level => {
+				UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
+
+				if (seed.Options.EnterSandman)
+				{
+					UnlockFirstPyramidPortal(level);
+
+					unlockingSpecification.AdditionalUnlocks = PyramidTeleporterGates[1].Gate;
+				}
+			};
+
+			unlockingSpecification.Unlocks = selectedGate.Gate;
+
+			UnlockingSpecifications.Add(unlockingSpecification);
+		}
+	}
+
+	abstract class ItemUnlockingMap
+	{
+		protected static readonly TeleporterGate[] PresentTeleporterGates =
 		{
 			new TeleporterGate{Gate = R.GateKittyBoss, LevelId = 2, RoomId = 55, Name = "Sewers"},
 			new TeleporterGate{Gate = R.GateLeftLibrary, LevelId = 2, RoomId = 54, Name = "Library"},
@@ -23,7 +156,7 @@ namespace TsRandomizer.Randomisation
 			new TeleporterGate{Gate = R.GateLakeDesolation, LevelId = 1, RoomId = 25, Name = "Lake Desolation"}
 		};
 
-		static readonly TeleporterGate[] PastTeleporterGates =
+		protected static readonly TeleporterGate[] PastTeleporterGates =
 		{
 			//new TeleporterGate{Gate = Requirement.GateLakeSirineLeft, LevelId = 7, RoomId = 30}, //you dont want to spawn with a boss in your face
 			new TeleporterGate{Gate = R.GateLakeSereneRight, LevelId = 7, RoomId = 31, Name = "East Lake Serene"},
@@ -36,24 +169,26 @@ namespace TsRandomizer.Randomisation
 			new TeleporterGate{Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50, Name = "Maw's Cave Entrance"}
 		};
 
-		static readonly TeleporterGate[] PyramidTeleporterGates =
+		protected static readonly TeleporterGate[] PyramidTeleporterGates =
 		{
 			new TeleporterGate{Gate = R.GateGyre, LevelId = 14, RoomId = 1, Name = "Temporal Gyre Entrance"},
 			new TeleporterGate{Gate = R.GateLeftPyramid, LevelId = 16, RoomId = 12, Name = "Ancient Pyramid Entrance"},
 			new TeleporterGate{Gate = R.GateRightPyramid, LevelId = 16, RoomId = 19, Name = "Inner Ancient Pyramid"}
 		};
 
-		readonly LookupDictionary<ItemIdentifier, UnlockingSpecification> unlockingSpecifications;
+		protected readonly LookupDictionary<ItemIdentifier, UnlockingSpecification> UnlockingSpecifications;
 
-		public R AllUnlockableRequirements => unlockingSpecifications.Aggregate(R.None, (a, b) => a | b.AllUnlocks);
-		public IEnumerable<ItemIdentifier> AllProgressionItems => unlockingSpecifications.Select(us => us.Item);
-		public R PyramidKeysUnlock => unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.PyramidsKey)].Unlocks;
+		public IEnumerable<ItemIdentifier> AllProgressionItems => UnlockingSpecifications.Select(us => us.Item);
+		public R PyramidKeysUnlock => UnlockingSpecifications[new ItemIdentifier(EInventoryRelicType.PyramidsKey)].Unlocks;
 
-		public ItemUnlockingMap(Seed seed)
+
+		protected Random Random;
+
+		protected ItemUnlockingMap(Seed seed)
 		{
-			var random = new Random((int)seed.Id);
+			Random = new Random((int)seed.Id);
 
-			unlockingSpecifications = new LookupDictionary<ItemIdentifier, UnlockingSpecification>(29, s => s.Item)
+			UnlockingSpecifications = new LookupDictionary<ItemIdentifier, UnlockingSpecification>(29, s => s.Item)
 			{
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.TimespinnerWheel), R.TimespinnerWheel, R.TimeStop),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.DoubleJump), R.DoubleJump, R.TimeStop),
@@ -87,120 +222,27 @@ namespace TsRandomizer.Randomisation
 
 			if (seed.Options.SpecificKeys)
 				MakeKeyCardUnlocksCardSpecific();
-
-			var pyramidUnlockingSpecification =
-				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.None, R.Teleport);
-
-			SetTeleporterPickupAction(random, pyramidUnlockingSpecification, seed);
-
-			unlockingSpecifications.Add(pyramidUnlockingSpecification);
-
-			if (seed.Options.UnchainedKeys)
-				SetUnchainedKeyPickupActions(random, seed.Options);
-		}
-
-		void SetUnchainedKeyPickupActions(Random random, SeedOptions seedOptions) {
-			SetUnchainedKeysUnlock(random, new TimewornWarpBeacon(), R.PastWarp, PastTeleporterGates);
-			SetUnchainedKeysUnlock(random, new ModernWarpBeacon(), R.PresentWarp, PresentTeleporterGates);
-
-			if (seedOptions.EnterSandman)
-				SetUnchainedKeysUnlock(random, new MysteriousWarpBeacon(), R.PyramidWarp, PyramidTeleporterGates);
-		}
-
-		void SetUnchainedKeysUnlock(Random random, CustomItem item, R unlock, TeleporterGate[] gates)
-		{
-			var pyramidWarpUnlockingSpecification = new UnlockingSpecification(item.Identifier, unlock);
-			var pyramidGate = gates.SelectRandom(random);
-
-			item.SetDescription($"You feel the twin pyramid key attune to: {pyramidGate.Name}", "Twin Pyramid Key");
-
-			pyramidWarpUnlockingSpecification.OnPickup = level => UnlockRoom(level, pyramidGate.LevelId, pyramidGate.RoomId);
-			pyramidWarpUnlockingSpecification.Unlocks = pyramidGate.Gate;
-
-			unlockingSpecifications.Add(pyramidWarpUnlockingSpecification);
 		}
 
 		void MakeKeyCardUnlocksCardSpecific()
 		{
-			unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardA)].AdditionalUnlocks = R.None;
-			unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardB)].AdditionalUnlocks = R.None;
-			unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardC)].AdditionalUnlocks = R.None;
-			unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardD)].AdditionalUnlocks = R.None;
+			UnlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardA)].AdditionalUnlocks = R.None;
+			UnlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardB)].AdditionalUnlocks = R.None;
+			UnlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardC)].AdditionalUnlocks = R.None;
+			UnlockingSpecifications[new ItemIdentifier(EInventoryRelicType.ScienceKeycardD)].AdditionalUnlocks = R.None;
 		}
-
-		static void SetTeleporterPickupAction(Random random, UnlockingSpecification unlockingSpecification, Seed seed)
-		{
-			if (seed.Options.UnchainedKeys)
-				return;
-			IEnumerable<TeleporterGate> teleporterGates = PresentTeleporterGates;
-
-			if (!seed.Options.Inverted)
-			{
-				IEnumerable<TeleporterGate> pastTeleporterGates = PastTeleporterGates;
-
-				if (seed.FloodFlags.Maw)
-					pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
-
-				teleporterGates = teleporterGates.Union(pastTeleporterGates);
-			}
-
-			var selectedGate = teleporterGates.SelectRandom(random);
-
-			unlockingSpecification.OnPickup = level => {
-				UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
-
-				if (seed.Options.EnterSandman)
-				{
-					UnlockFirstPyramidPortal(level);
-					unlockingSpecification.AdditionalUnlocks = PyramidTeleporterGates[1].Gate;
-				}
-					
-			};
-			unlockingSpecification.Unlocks = selectedGate.Gate;
-		}
-
-		public void SetTeleporterPickupAction(R requirement, SeedOptions seedOptions)
-		{
-			if (seedOptions.UnchainedKeys)
-				return;
-			var selectedGate = PresentTeleporterGates
-				.Union(PastTeleporterGates)
-				.First(g => g.Gate == requirement);
-
-			var unlockingSpecification = unlockingSpecifications[new ItemIdentifier(EInventoryRelicType.PyramidsKey)];
-
-			unlockingSpecification.OnPickup = level => {
-				UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
-				if (seedOptions.EnterSandman)
-				{
-					UnlockFirstPyramidPortal(level);
-					unlockingSpecification.AdditionalUnlocks = PyramidTeleporterGates[1].Gate;
-				}
-			};
-			unlockingSpecification.Unlocks = selectedGate.Gate;
-		}
-
-	public R GetUnlock(ItemIdentifier identifier) =>
-			unlockingSpecifications.TryGetValue(identifier, out var value)
-				? value.Unlocks
-				: R.None;
 
 		public R GetAllUnlock(ItemIdentifier identifier) =>
-			unlockingSpecifications.TryGetValue(identifier, out var value)
+			UnlockingSpecifications.TryGetValue(identifier, out var value)
 				? value.AllUnlocks
 				: R.None;
 
 		public Action<Level> GetPickupAction(ItemIdentifier identifier) =>
-			unlockingSpecifications.TryGetValue(identifier, out var value)
+			UnlockingSpecifications.TryGetValue(identifier, out var value)
 				? value.OnPickup
 				: null;
 
-		public IEnumerable<ItemIdentifier> AllItemThatUnlockProgression(R requirement) =>
-			unlockingSpecifications
-				.Where(s => s.AllUnlocks.Contains(requirement))
-				.Select(s => s.Item);
-
-		static void UnlockRoom(Level level, int levelId, int roomId)
+		protected static void UnlockRoom(Level level, int levelId, int roomId)
 		{
 			var minimapRoom = level.Minimap.Areas[levelId].Rooms[roomId];
 
@@ -208,12 +250,10 @@ namespace TsRandomizer.Randomisation
 			minimapRoom.SetVisited(true);
 		}
 
-		static void UnlockFirstPyramidPortal(Level level)
-		{
+		protected static void UnlockFirstPyramidPortal(Level level) =>
 			UnlockRoom(level, 16, 12);
-		}
 
-		class UnlockingSpecification
+		protected class UnlockingSpecification
 		{
 			public ItemIdentifier Item { get; }
 			public R Unlocks { get; internal set; }
@@ -229,7 +269,7 @@ namespace TsRandomizer.Randomisation
 			}
 		}
 
-		class TeleporterGate
+		protected class TeleporterGate
 		{
 			public R Gate { get; internal set; }
 			public int LevelId { get; internal set; }

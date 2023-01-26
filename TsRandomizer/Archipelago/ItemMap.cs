@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 
 namespace TsRandomizer.Archipelago
 {
@@ -195,7 +196,18 @@ namespace TsRandomizer.Archipelago
 				{1337178, new ItemIdentifier(EInventoryOrbType.Barrier, EOrbSlot.Passive)},
 				{1337179, new ItemIdentifier(EItemType.MaxHP)},
 				{1337180, new ItemIdentifier(EItemType.MaxAura)},
-				// 1337181 - 1337248 Reserved
+
+				{1337181, CustomItem.GetIdentifier(CustomItemType.TimewornWarpBeacon)},
+				{1337182, CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon)},
+				{1337183, CustomItem.GetIdentifier(CustomItemType.MysteriousWarpBeacon)},
+				{1337184, CustomItem.GetIdentifier(CustomItemType.MeteorSparrowTrap)},
+				{1337185, CustomItem.GetIdentifier(CustomItemType.PoisonTrap)},
+				{1337186, CustomItem.GetIdentifier(CustomItemType.ChaosTrap)},
+				{1337187, CustomItem.GetIdentifier(CustomItemType.NeurotoxinTrap)},
+				{1337188, CustomItem.GetIdentifier(CustomItemType.BeeTrap)},
+
+				// 1337189 - 1337248 Reserved
+
 				{1337249, new ItemIdentifier(EItemType.MaxSand)}
 			};
 

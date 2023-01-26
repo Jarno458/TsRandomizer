@@ -19,9 +19,7 @@ namespace TsRandomizer.IntermediateObjects
 		readonly Dictionary<EInventoryFamiliarType, ItemInfo> familierItems;
 		readonly Dictionary<int, ItemInfo> orbItems;
 		readonly Dictionary<EItemType, ItemInfo> statItems;
-
-		readonly Dictionary<ItemInfo, ProgressiveItemInfo> progressiveItems;
-
+		
 		public ItemInfoProvider(SeedOptions options, ItemUnlockingMap unlockingMap)
 		{
 			this.unlockingMap = unlockingMap;
@@ -33,9 +31,81 @@ namespace TsRandomizer.IntermediateObjects
 			orbItems = new Dictionary<int, ItemInfo>();
 			statItems = new Dictionary<EItemType, ItemInfo>();
 
-			progressiveItems = new Dictionary<ItemInfo, ProgressiveItemInfo>();
-
 			LoadCustomItems();
+		}
+		
+		public virtual ItemInfo Get(ItemIdentifier identifier)
+		{
+			switch (identifier.LootType)
+			{
+				case LootType.ConstEquipment: return Get((EInventoryEquipmentType)identifier.ItemId);
+				case LootType.ConstFamiliar: return Get((EInventoryFamiliarType)identifier.ItemId);
+				case LootType.ConstOrb: return Get((EInventoryOrbType)identifier.ItemId, (EOrbSlot)identifier.SubItemId);
+				case LootType.ConstRelic: return Get((EInventoryRelicType)identifier.ItemId);
+				case LootType.ConstStat: return Get((EItemType)identifier.ItemId);
+				case LootType.ConstUseItem: return Get((EInventoryUseItemType)identifier.ItemId);
+				default: throw new ArgumentOutOfRangeException($"Loottype {identifier.LootType} is not supported");
+			}
+		}
+
+		public ItemInfo Get(EInventoryRelicType relicItem) =>
+			GetOrAdd(relicItems, relicItem, () => CreateNew(new ItemIdentifier(relicItem)));
+
+		public ItemInfo Get(EInventoryOrbType orbType, EOrbSlot orbSlot) =>
+			GetOrAdd(orbItems, GetOrbKey(orbType, orbSlot), () => CreateNew(new ItemIdentifier(orbType, orbSlot)));
+
+		public ItemInfo Get(EInventoryUseItemType useItem) =>
+			GetOrAdd(useItems, useItem, () => CreateNew(new ItemIdentifier(useItem)));
+
+		public ItemInfo Get(EInventoryEquipmentType equipmentItem) =>
+			GetOrAdd(enquipmentItems, equipmentItem, () => CreateNew(new ItemIdentifier(equipmentItem)));
+
+		public ItemInfo Get(EInventoryFamiliarType familiarItem) =>
+			GetOrAdd(familierItems, familiarItem, () => CreateNew(new ItemIdentifier(familiarItem)));
+
+		public ItemInfo Get(EItemType stat) =>
+			GetOrAdd(statItems, stat, () => CreateNew(new ItemIdentifier(stat)));
+
+		static int GetOrbKey(EInventoryOrbType orbType, EOrbSlot orbSlot) => ((int)orbType * 10) + (int)orbSlot;
+
+		ItemInfo CreateNew(ItemIdentifier identifier) => new SingleItemInfo(unlockingMap, identifier);
+
+		static ItemInfo GetOrAdd<T>(IDictionary<T, ItemInfo> dictionary, T item, Func<ItemInfo> createNew)
+		{
+			if (dictionary.ContainsKey(item))
+				return dictionary[item];
+
+			var newItem = createNew();
+			dictionary[item] = newItem;
+			return newItem;
+		}
+
+		void LoadCustomItems()
+		{
+			var customItemType = typeof(CustomItem);
+
+			var customItemTypes = GetType().Assembly.GetTypes()
+				.Where(t => customItemType.IsAssignableFrom(t)
+				            && !t.IsGenericType
+				            && t != customItemType
+							&& t.GetConstructors().Any(c => c.GetParameters().Length == 0));
+
+			foreach (var itemType in customItemTypes)
+			{
+				var item = (ItemInfo)itemType.CreateInstance();
+
+				useItems.Add(item.Identifier.UseItem, item);
+			}
+		}
+	}
+
+	class ProgressiveItemProvider : ItemInfoProvider
+	{
+		readonly Dictionary<ItemInfo, ProgressiveItemInfo> progressiveItems;
+
+		public ProgressiveItemProvider(SeedOptions options, ItemUnlockingMap unlockingMap) : base(options, unlockingMap)
+		{
+			progressiveItems = new Dictionary<ItemInfo, ProgressiveItemInfo>();
 
 			MakeGearsProgressive();
 			MakeBroochProgressive();
@@ -99,80 +169,21 @@ namespace TsRandomizer.IntermediateObjects
 			progressiveItems.Add(celestialSash, progressiveItem);
 		}
 
-		public ItemInfo Get(ItemIdentifier identifier)
+		public override ItemInfo Get(ItemIdentifier identifier)
 		{
 			switch (identifier.LootType)
 			{
-				case LootType.ConstEquipment: return Get((EInventoryEquipmentType)identifier.ItemId);
-				case LootType.ConstFamiliar: return Get((EInventoryFamiliarType)identifier.ItemId);
-				case LootType.ConstOrb: return Get((EInventoryOrbType)identifier.ItemId, (EOrbSlot)identifier.SubItemId);
-				case LootType.ConstRelic: return Get((EInventoryRelicType)identifier.ItemId);
-				case LootType.ConstStat: return Get((EItemType)identifier.ItemId);
-				case LootType.ConstUseItem: return Get((EInventoryUseItemType)identifier.ItemId);
-				default: throw new ArgumentOutOfRangeException($"Loottype {identifier.LootType} is not supported");
+				case LootType.ConstOrb:  
+				case LootType.ConstRelic: 
+					return HandleProgression(base.Get(identifier));
+				default: 
+					return base.Get(identifier);
 			}
 		}
 
-		public ItemInfo Get(EInventoryRelicType relicItem)
-		{
-			var item = GetOrAdd(relicItems, relicItem, () => CreateNew(new ItemIdentifier(relicItem)));
-
-			return progressiveItems.TryGetValue(item, out var progressiveItem)
+		public ItemInfo HandleProgression(ItemInfo item) =>
+			progressiveItems.TryGetValue(item, out var progressiveItem)
 				? progressiveItem
 				: item;
-		}
-
-		public ItemInfo Get(EInventoryOrbType orbType, EOrbSlot orbSlot)
-		{
-			var orb = GetOrAdd(orbItems, GetOrbKey(orbType, orbSlot), () => CreateNew(new ItemIdentifier(orbType, orbSlot)));
-
-			return progressiveItems.TryGetValue(orb, out var progressiveItem)
-				? progressiveItem
-				: orb;
-		}
-
-		public ItemInfo Get(EInventoryUseItemType useItem) =>
-			GetOrAdd(useItems, useItem, () => CreateNew(new ItemIdentifier(useItem)));
-
-		public ItemInfo Get(EInventoryEquipmentType equipmentItem) =>
-			GetOrAdd(enquipmentItems, equipmentItem, () => CreateNew(new ItemIdentifier(equipmentItem)));
-
-		public ItemInfo Get(EInventoryFamiliarType familiarItem) =>
-			GetOrAdd(familierItems, familiarItem, () => CreateNew(new ItemIdentifier(familiarItem)));
-
-		public ItemInfo Get(EItemType stat) =>
-			GetOrAdd(statItems, stat, () => CreateNew(new ItemIdentifier(stat)));
-
-		static int GetOrbKey(EInventoryOrbType orbType, EOrbSlot orbSlot) => ((int)orbType * 10) + (int)orbSlot;
-
-		ItemInfo CreateNew(ItemIdentifier identifier) => new SingleItemInfo(unlockingMap, identifier);
-
-		static ItemInfo GetOrAdd<T>(IDictionary<T, ItemInfo> dictionary, T item, Func<ItemInfo> createNew)
-		{
-			if (dictionary.ContainsKey(item))
-				return dictionary[item];
-
-			var newItem = createNew();
-			dictionary[item] = newItem;
-			return newItem;
-		}
-
-		void LoadCustomItems()
-		{
-			var customItemType = typeof(CustomItem);
-
-			var customItemTypes = GetType().Assembly.GetTypes()
-				.Where(t => customItemType.IsAssignableFrom(t)
-				            && !t.IsGenericType
-				            && t != customItemType
-							&& t.GetConstructors().Any(c => c.GetParameters().Length == 0));
-
-			foreach (var itemType in customItemTypes)
-			{
-				var item = (ItemInfo)itemType.CreateInstance();
-
-				useItems.Add(item.Identifier.UseItem, item);
-			}
-		}
 	}
 }

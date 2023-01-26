@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation.ItemPlacers;
+using TsRandomizer.Screens;
 
 namespace TsRandomizer.Randomisation
 {
@@ -11,30 +12,25 @@ namespace TsRandomizer.Randomisation
 	{
 		public static ItemLocationMap Randomize(Seed seed, FillingMethod fillingMethod, GameSave saveGame, bool progressionOnly = false)
 		{
-			var unlockingMap = new ItemUnlockingMap(seed);
-			var itemInfoProvider = new ItemInfoProvider(seed.Options, unlockingMap);
-
-			ItemLocationRandomizer randomizer;
-
 			switch (fillingMethod)
 			{
-				case FillingMethod.Forward:
-					randomizer = new ForwardFillingItemLocationRandomizer(seed, itemInfoProvider, unlockingMap);
-					break;
-
 				case FillingMethod.Random:
-					randomizer = new FullRandomItemLocationRandomizer(seed, itemInfoProvider, unlockingMap);
-					break;
+					var defaultUnlockingMap = new DefaultItemUnlockingMap(seed);
+					var progressiveItemInfoProvider = new ProgressiveItemProvider(seed.Options, defaultUnlockingMap);
+
+					return new FullRandomItemLocationRandomizer(seed, progressiveItemInfoProvider, defaultUnlockingMap)
+						.GenerateItemLocationMap(progressionOnly);
 
 				case FillingMethod.Archipelago:
-					randomizer = new ArchipelagoItemLocationRandomizer(seed, itemInfoProvider, unlockingMap, saveGame);
-					break;
+					var archipelagoUnlockingMap = new ArchipelagoUnlockingMap(seed, saveGame);
+					var itemInfoProvider = new ItemInfoProvider(seed.Options, archipelagoUnlockingMap);
+
+					return new ArchipelagoItemLocationRandomizer(seed, itemInfoProvider, archipelagoUnlockingMap, saveGame)
+						.GenerateItemLocationMap(progressionOnly);
 
 				default:
 					throw new NotImplementedException($"filling method {fillingMethod} is not implemented");
 			}
-
-			return randomizer.GenerateItemLocationMap(progressionOnly);
 		}
 
 		public static GenerationResult Generate(FillingMethod fillingMethod, SeedOptions options)
@@ -55,7 +51,7 @@ namespace TsRandomizer.Randomisation
 
 			stopwatch.Stop();
 
-			Console.Out.WriteLine($"Spend {itterations} itterations to generate seed {seed}, in {stopwatch.Elapsed}");
+			ScreenManager.Console.AddLine($"Spend {itterations} itterations to generate seed {seed}, in {stopwatch.Elapsed}");
 
 			return new GenerationResult
 			{
