@@ -283,7 +283,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			//traps
 			if (SeedOptions.TrappedChests)
 			{
-				var trapChance = 8d;
+				var trapChance = 15d;
 				for (int i = 0; i < Math.Ceiling((freeLocations.Count / 100d) * trapChance); i++)
 					if (freeLocations.Any())
 					{

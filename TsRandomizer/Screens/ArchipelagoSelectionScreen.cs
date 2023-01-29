@@ -12,7 +12,6 @@ using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
-using TsRandomizer.Randomisation.ItemPlacers;
 using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Screens
@@ -184,7 +183,9 @@ namespace TsRandomizer.Screens
 
 					var slotDataParser = new SlotDataParser(connected.SlotData, Client.SeedString, connected.Slot);
 
-					difficultyMenu.SetSeedAndFillingMethod(slotDataParser.GetSeed(), FillingMethod.Archipelago,
+					var seed = slotDataParser.GetSeed();
+
+					difficultyMenu.SetSeedAndFillingMethod(seed, FillingMethod.Archipelago,
 						slotDataParser.GetSettings());
 					difficultyMenu.HookOnDifficultySelected(saveGame => {
 						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = server;
