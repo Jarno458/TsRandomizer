@@ -10,7 +10,7 @@ namespace TsRandomizer.IntermediateObjects
 {
 	class ProgressiveItemInfo : ItemInfo
 	{
-		ItemInfo[] Items { get; }
+		public ItemInfo[] Items { get; }
 
 		int index;
 		ItemInfo CurrentItem => index < Items.Length ? Items[index] : Items.Last();

@@ -160,7 +160,7 @@ namespace TsRandomizer.Screens.SeedSelection
 				return;
 			}
 
-			if (!forceSeed && !Randomizer.IsBeatable(seed, FillingMethod.Random))
+			if (!forceSeed && !Randomizer.IsBeatable(seed, new SettingCollection(), FillingMethod.Random))
 			{
 				ShowErrorDescription("Invalid seed id, it cannot be beaten.");
 				return;

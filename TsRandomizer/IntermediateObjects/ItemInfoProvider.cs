@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
-using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.Randomisation;
 
@@ -34,7 +32,7 @@ namespace TsRandomizer.IntermediateObjects
 			LoadCustomItems();
 		}
 		
-		public virtual ItemInfo Get(ItemIdentifier identifier)
+		public ItemInfo Get(ItemIdentifier identifier)
 		{
 			switch (identifier.LootType)
 			{
@@ -48,22 +46,22 @@ namespace TsRandomizer.IntermediateObjects
 			}
 		}
 
-		public ItemInfo Get(EInventoryRelicType relicItem) =>
+		public virtual ItemInfo Get(EInventoryRelicType relicItem) =>
 			GetOrAdd(relicItems, relicItem, () => CreateNew(new ItemIdentifier(relicItem)));
 
-		public ItemInfo Get(EInventoryOrbType orbType, EOrbSlot orbSlot) =>
+		public virtual ItemInfo Get(EInventoryOrbType orbType, EOrbSlot orbSlot) =>
 			GetOrAdd(orbItems, GetOrbKey(orbType, orbSlot), () => CreateNew(new ItemIdentifier(orbType, orbSlot)));
 
-		public ItemInfo Get(EInventoryUseItemType useItem) =>
+		public virtual ItemInfo Get(EInventoryUseItemType useItem) =>
 			GetOrAdd(useItems, useItem, () => CreateNew(new ItemIdentifier(useItem)));
 
-		public ItemInfo Get(EInventoryEquipmentType equipmentItem) =>
+		public virtual ItemInfo Get(EInventoryEquipmentType equipmentItem) =>
 			GetOrAdd(enquipmentItems, equipmentItem, () => CreateNew(new ItemIdentifier(equipmentItem)));
 
-		public ItemInfo Get(EInventoryFamiliarType familiarItem) =>
+		public virtual ItemInfo Get(EInventoryFamiliarType familiarItem) =>
 			GetOrAdd(familierItems, familiarItem, () => CreateNew(new ItemIdentifier(familiarItem)));
 
-		public ItemInfo Get(EItemType stat) =>
+		public virtual ItemInfo Get(EItemType stat) =>
 			GetOrAdd(statItems, stat, () => CreateNew(new ItemIdentifier(stat)));
 
 		static int GetOrbKey(EInventoryOrbType orbType, EOrbSlot orbSlot) => ((int)orbType * 10) + (int)orbSlot;
@@ -82,22 +80,8 @@ namespace TsRandomizer.IntermediateObjects
 
 		void LoadCustomItems()
 		{
-			var customItemType = typeof(CustomItem);
-
-			var customItemTypes = GetType().Assembly.GetTypes()
-				.Where(t => customItemType.IsAssignableFrom(t)
-				            && !t.IsGenericType
-				            && t != customItemType
-							&& t.GetConstructors().
-					            Any(c => c.GetParameters().Length == 1
-					                     && c.GetParameters()[0].ParameterType == typeof(ItemUnlockingMap)));
-
-			foreach (var itemType in customItemTypes)
-			{
-				var item = (ItemInfo)itemType.CreateInstance(args: unlockingMap);
-
+			foreach (var item in CustomItem.GetAllCustomItems(unlockingMap))
 				useItems.Add(item.Identifier.UseItem, item);
-			}
 		}
 	}
 }

@@ -4,9 +4,10 @@ using TsRandomizer.Screens;
 
 namespace TsRandomizer.IntermediateObjects.CustomItems
 {
-	class UnchainedKey : CustomItem
+	abstract class UnchainedKey : CustomItem
 	{
 		public override int AnimationIndex => 5;
+
 		protected override bool RemoveFromInventory => false;
 
 		public UnchainedKey(ItemUnlockingMap unlockingMap, CustomItemType itemType) : base(unlockingMap, itemType)
@@ -23,8 +24,6 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 	
 	class TimewornWarpBeacon : UnchainedKey
 	{
-		public override string Name => "Timeworn Warp Beacon";
-
 		public TimewornWarpBeacon(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.TimewornWarpBeacon)
 		{
 		}
@@ -32,8 +31,6 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 	class ModernWarpBeacon : UnchainedKey
 	{
-		public override string Name => "Modern Warp Beacon";
-
 		public ModernWarpBeacon(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.ModernWarpBeacon)
 		{
 		}
@@ -41,8 +38,6 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 	class MysteriousWarpBeacon : UnchainedKey
 	{
-		public override string Name => "Mysterious Warp Beacon";
-
 		public MysteriousWarpBeacon(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.MysteriousWarpBeacon)
 		{
 		}

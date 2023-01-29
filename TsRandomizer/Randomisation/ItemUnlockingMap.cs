@@ -36,8 +36,7 @@ namespace TsRandomizer.Randomisation
 
 			var selectedGate = teleporterGates.SelectRandom(Random);
 
-			var pyramidUnlockingSpecification =
-				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.None, R.Teleport);
+			var pyramidUnlockingSpecification = UnlockingSpecifications[new ItemIdentifier(EInventoryRelicType.PyramidsKey)];
 
 			pyramidUnlockingSpecification.OnPickup = level => {
 				UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
@@ -45,14 +44,11 @@ namespace TsRandomizer.Randomisation
 				if (seed.Options.EnterSandman)
 				{
 					UnlockFirstPyramidPortal(level);
-					pyramidUnlockingSpecification.AdditionalUnlocks = PyramidTeleporterGates[1].Gate;
+					pyramidUnlockingSpecification.AdditionalUnlocks |= PyramidTeleporterGates[1].Gate;
 				}
-
 			};
 
 			pyramidUnlockingSpecification.Unlocks = selectedGate.Gate;
-
-			UnlockingSpecifications.Add(pyramidUnlockingSpecification);
 		}
 
 		void SetUnchainedKeyPickupActions(Seed seed)
@@ -101,7 +97,7 @@ namespace TsRandomizer.Randomisation
 
 		protected static readonly TeleporterGate[] PastTeleporterGates =
 		{
-			//new TeleporterGate{Gate = Requirement.GateLakeSirineLeft, LevelId = 7, RoomId = 30}, //you dont want to spawn with a boss in your face
+			//new TeleporterGate{Gate = Requirement.GateLakeSereneLeft, LevelId = 7, RoomId = 30}, //you dont want to spawn with a boss in your face
 			new TeleporterGate{Gate = R.GateLakeSereneRight, LevelId = 7, RoomId = 31, Name = "East Lake Serene"},
 			new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51, Name = "Upper Caves of Banishment"},
 			//new TeleporterGate{Gate = Requirement.GateAccessToPast, LevelId = 3, RoomId = 6}, //Refugee Camp, Somehow doesnt work ¯\_(ツ)_/¯
@@ -158,7 +154,8 @@ namespace TsRandomizer.Randomisation
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.Tablet), R.Tablet),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive), R.OculusRift),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.Kobo), R.Kobo),
-				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.MerchantCrow), R.MerchantCrow)
+				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.MerchantCrow), R.MerchantCrow),
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.None, R.Teleport) //actual gate is decided later
 			};
 
 			if (seed.Options.SpecificKeys)

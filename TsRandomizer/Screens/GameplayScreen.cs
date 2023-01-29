@@ -65,13 +65,13 @@ namespace TsRandomizer.Screens
 
 			Seed = saveFileSeed ?? Seed.Zero;
 
-			Console.Out.WriteLine($"Seed: {Seed}");
+			ScreenManager.Console.AddLine($"Loading Seed: {Seed}");
 
 			Settings = settings;
 
 			try
 			{
-				ItemLocations = Randomizer.Randomize(Seed, fillingMethod, Level.GameSave);
+				ItemLocations = Randomizer.Randomize(Seed, Settings, fillingMethod, Level.GameSave);
 			}
 			catch (ConnectionFailedException e)
 			{

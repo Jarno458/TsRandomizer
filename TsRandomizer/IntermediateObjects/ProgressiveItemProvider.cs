@@ -24,9 +24,9 @@ namespace TsRandomizer.IntermediateObjects
 
 		void MakeGearsProgressive()
 		{
-			var gear1 = Get(EInventoryRelicType.TimespinnerGear1);
-			var gear2 = Get(EInventoryRelicType.TimespinnerGear2);
-			var gear3 = Get(EInventoryRelicType.TimespinnerGear3);
+			var gear1 = base.Get(EInventoryRelicType.TimespinnerGear1);
+			var gear2 = base.Get(EInventoryRelicType.TimespinnerGear2);
+			var gear3 = base.Get(EInventoryRelicType.TimespinnerGear3);
 
 			var progressiveItem = new ProgressiveItemInfo(gear1, gear2, gear3);
 
@@ -37,8 +37,8 @@ namespace TsRandomizer.IntermediateObjects
 
 		void MakeBroochProgressive()
 		{
-			var empireBrooch = Get(EInventoryRelicType.EmpireBrooch);
-			var godestBrooch = Get(EInventoryRelicType.EternalBrooch);
+			var empireBrooch = base.Get(EInventoryRelicType.EmpireBrooch);
+			var godestBrooch = base.Get(EInventoryRelicType.EternalBrooch);
 
 			var progressiveItem = new ProgressiveItemInfo(empireBrooch, godestBrooch);
 
@@ -48,10 +48,10 @@ namespace TsRandomizer.IntermediateObjects
 
 		void MakeKeycardsProgressive()
 		{
-			var cardA = Get(EInventoryRelicType.ScienceKeycardA);
-			var cardB = Get(EInventoryRelicType.ScienceKeycardB);
-			var cardC = Get(EInventoryRelicType.ScienceKeycardC);
-			var cardD = Get(EInventoryRelicType.ScienceKeycardD);
+			var cardA = base.Get(EInventoryRelicType.ScienceKeycardA);
+			var cardB = base.Get(EInventoryRelicType.ScienceKeycardB);
+			var cardC = base.Get(EInventoryRelicType.ScienceKeycardC);
+			var cardD = base.Get(EInventoryRelicType.ScienceKeycardD);
 
 			var progressiveItem = new ProgressiveItemInfo(cardD, cardC, cardB, cardA);
 
@@ -63,9 +63,9 @@ namespace TsRandomizer.IntermediateObjects
 
 		void MakeVerticalMovementProgressive()
 		{
-			var doubleJump = Get(EInventoryRelicType.DoubleJump);
-			var lightwall = Get(EInventoryOrbType.Barrier, EOrbSlot.Spell);
-			var celestialSash = Get(EInventoryRelicType.EssenceOfSpace);
+			var doubleJump = base.Get(EInventoryRelicType.DoubleJump);
+			var lightwall = base.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell);
+			var celestialSash = base.Get(EInventoryRelicType.EssenceOfSpace);
 
 			var progressiveItem = new ProgressiveItemInfo(doubleJump, lightwall, celestialSash);
 
@@ -74,17 +74,11 @@ namespace TsRandomizer.IntermediateObjects
 			progressiveItems.Add(celestialSash, progressiveItem);
 		}
 
-		public override ItemInfo Get(ItemIdentifier identifier)
-		{
-			switch (identifier.LootType)
-			{
-				case LootType.ConstOrb:  
-				case LootType.ConstRelic: 
-					return HandleProgression(base.Get(identifier));
-				default: 
-					return base.Get(identifier);
-			}
-		}
+		public override ItemInfo Get(EInventoryOrbType orbType, EOrbSlot orbSlot) 
+			=> HandleProgression(base.Get(orbType, orbSlot));
+
+		public override ItemInfo Get(EInventoryRelicType relicItem) => 
+			HandleProgression(base.Get(relicItem));
 
 		public ItemInfo HandleProgression(ItemInfo item) =>
 			progressiveItems.TryGetValue(item, out var progressiveItem)

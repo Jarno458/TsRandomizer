@@ -21,8 +21,24 @@ namespace TsRandomizer.Archipelago
 
 			if (!seed.Options.UnchainedKeys)
 			{
-				var pyramidsGate = SlotDataParser.GetPyramidKeysGate(saveData, ArchipelagoItemLocationRandomizer.GameSavePyramidsKeysUnlock);
-				SetTeleporterPickupAction(seed, allTeleporterGates, pyramidsGate, new ItemIdentifier(EInventoryRelicType.PyramidsKey));
+				var gateToUnlock = SlotDataParser.GetPyramidKeysGate(saveData, ArchipelagoItemLocationRandomizer.GameSavePyramidsKeysUnlock);
+
+				var unlockingSpecification = UnlockingSpecifications[new ItemIdentifier(EInventoryRelicType.PyramidsKey)];
+
+				var selectedGate = allTeleporterGates.First(g => g.Gate == gateToUnlock);
+
+				unlockingSpecification.OnPickup = level => {
+					UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
+
+					if (seed.Options.EnterSandman)
+					{
+						UnlockFirstPyramidPortal(level);
+
+						unlockingSpecification.AdditionalUnlocks |= PyramidTeleporterGates[1].Gate;
+					}
+				};
+
+				unlockingSpecification.Unlocks = selectedGate.Gate;
 			}
 			else
 			{
@@ -31,6 +47,9 @@ namespace TsRandomizer.Archipelago
 
 				var presentGate = SlotDataParser.GetPyramidKeysGate(saveData, ArchipelagoItemLocationRandomizer.GameSavePresentPyramidsKeysUnlock);
 				SetTeleporterPickupAction(seed, allTeleporterGates, presentGate, CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon));
+
+				if (!seed.Options.EnterSandman)
+					return;
 
 				var timeGate = SlotDataParser.GetPyramidKeysGate(saveData, ArchipelagoItemLocationRandomizer.GameSaveTimePyramidsKeysUnlock);
 				SetTeleporterPickupAction(seed, allTeleporterGates, timeGate, CustomItem.GetIdentifier(CustomItemType.MysteriousWarpBeacon));
@@ -45,13 +64,6 @@ namespace TsRandomizer.Archipelago
 
 			unlockingSpecification.OnPickup = level => {
 				UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
-
-				if (seed.Options.EnterSandman)
-				{
-					UnlockFirstPyramidPortal(level);
-
-					unlockingSpecification.AdditionalUnlocks = PyramidTeleporterGates[1].Gate;
-				}
 			};
 
 			unlockingSpecification.Unlocks = selectedGate.Gate;

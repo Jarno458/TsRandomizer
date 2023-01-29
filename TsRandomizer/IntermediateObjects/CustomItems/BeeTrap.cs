@@ -8,8 +8,6 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 {
 	class BeeTrap : CustomItem
 	{
-		public override int AnimationIndex => 208; // 'starry void' item
-
 		public BeeTrap(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.BeeTrap) {}
 
 		internal override void OnPickup(Level level, GameplayScreen gameplayScreen)

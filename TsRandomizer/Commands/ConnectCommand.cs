@@ -9,6 +9,7 @@ using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation.ItemPlacers;
 using TsRandomizer.Screens;
+using TsRandomizer.Screens.Console;
 using TsRandomizer.Settings;
 using ScreenManager = TsRandomizer.Screens.ScreenManager;
 

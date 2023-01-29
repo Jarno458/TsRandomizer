@@ -12,7 +12,7 @@ using TsRandomizer.Archipelago;
 using TsRandomizer.Commands;
 using TsRandomizer.Extensions;
 
-namespace TsRandomizer.Screens
+namespace TsRandomizer.Screens.Console
 {
 	class GameConsole : GameScreen
 	{
@@ -42,6 +42,9 @@ namespace TsRandomizer.Screens
 		{
 			this.screenManager = screenManager;
 			this.gcm = gcm;
+
+			System.Console.SetOut(new ConsoleTextWriter(this, Color.LightGray));
+			System.Console.SetError(new ConsoleTextWriter(this, Color.DarkRed));
 
 			AddCommand(new HelpCommand());
 		}

@@ -3,6 +3,7 @@ using System.Linq;
 using Archipelago.MultiClient.Net.Packets;
 using TsRandomizer.Archipelago;
 using TsRandomizer.Screens;
+using TsRandomizer.Screens.Console;
 
 namespace TsRandomizer.Commands
 {

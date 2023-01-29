@@ -1,11 +1,12 @@
 ﻿using Archipelago.MultiClient.Net;
 using Timespinner.GameAbstractions.Saving;
-using TsRandomizer.IntermediateObjects;
-using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
 using TsRandomizer.IntermediateObjects.CustomItems;
+using TsRandomizer.Randomisation;
+using TsRandomizer.Randomisation.ItemPlacers;
 
-namespace TsRandomizer.Randomisation.ItemPlacers
+namespace TsRandomizer.Archipelago
 {
 	class ArchipelagoItemLocationRandomizer : ItemLocationRandomizer
 	{

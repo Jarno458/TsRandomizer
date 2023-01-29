@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
@@ -23,6 +24,13 @@ namespace TsRandomizer.RoomTriggers.Triggers
 				80
 			};
 
+			var random = new Random();
+			var frameSources = new[] {
+				spriteSheet.GetFrameSource(109),
+				spriteSheet.GetFrameSource(110),
+				spriteSheet.GetFrameSource(111)
+			};
+
 			foreach (var bridgeStart in bridgeStarts)
 			{
 				for (int i = 0; i < 16; i++)
@@ -41,7 +49,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					var dynamic = ((Dictionary<int, GameEvent>)state.Level.AsDynamic()._levelEvents).Last().Value.AsDynamic();
 
 					dynamic._sprite = spriteSheet;
-					dynamic.ChangeAnimation(state.Level.NextRandomInt(109, 111), 0, 1f, EAnimationType.None);
+					dynamic._frameSource = frameSources.SelectRandom(random);
 				}
 			}
 

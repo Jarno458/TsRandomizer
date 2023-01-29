@@ -178,7 +178,7 @@ namespace TsRandomizer.Archipelago
 		{
 			foreach (var locationId in locationsChecked)
 				if (TryGetValue(LocationMap.GetItemkey(locationId), out var location))
-					if (location.ItemInfo is ArchipelagoRemoteItem)
+					if (location.ItemInfo is ArchipelagoItem)
 						location.IsPickedUp = true;
 		}
 	}

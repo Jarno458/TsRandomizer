@@ -7,10 +7,8 @@ using TsRandomizer.Screens;
 
 namespace TsRandomizer.IntermediateObjects.CustomItems
 {
-	class MeteorSparrowTrap : CustomItem
+	class MeteorSparrowTrap : Trap
 	{
-		public override int AnimationIndex => 208; // 'starry void' item
-
 		public MeteorSparrowTrap(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.MeteorSparrowTrap) {}
 
 		internal override void OnPickup(Level level, GameplayScreen gameplayScreen)

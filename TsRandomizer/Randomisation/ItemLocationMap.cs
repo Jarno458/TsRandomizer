@@ -88,6 +88,8 @@ namespace TsRandomizer.Randomisation
 
 			SetupGates();
 
+			var x = ItemProvider.Get(EInventoryRelicType.TimespinnerGear3);
+
 			AddPresentItemLocations();
 			AddPastItemLocations();
 			AddPyramidItemLocations();
@@ -148,9 +150,11 @@ namespace TsRandomizer.Randomisation
 				| R.GateRoyalTowers
 				| R.GateCastleRamparts
 				| R.GateCastleKeep
-				| (MawGasMask & NeedSwimming(FloodsFlags.Maw) & (R.GateCavesOfBanishment | R.GateMaw)
-				| R.GateCavesOfBanishment & R.Swimming
-				| R.GateMaw & R.DoubleJump & R.Swimming);
+				| (
+					MawGasMask & NeedSwimming(FloodsFlags.Maw) & (R.GateCavesOfBanishment | R.GateMaw) //through shaft
+					//| R.GateCavesOfBanishment & NeedSwimming(!FloodsFlags.DryLakeSerene) // though left entrance
+					//| R.GateMaw & R.DoubleJump & NeedSwimming(!FloodsFlags.DryLakeSerene) // though left entrance
+				);
 
 			MultipleSmallJumpsOfNpc = (Gate)(R.TimespinnerWheel | R.UpwardDash);
 			DoubleJumpOfNpc = (R.DoubleJump & R.TimespinnerWheel) | R.UpwardDash;
@@ -215,6 +219,8 @@ namespace TsRandomizer.Randomisation
 			var capacity = 166;
 
 			if (options.StartWithTalaria)
+				capacity += 1;
+			if (options.UnchainedKeys)
 				capacity += 1;
 			if (options.DownloadableItems)
 				capacity += 14;

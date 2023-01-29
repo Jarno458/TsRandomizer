@@ -64,6 +64,9 @@ namespace TsRandomizer.Archipelago
 			{
 				session = ArchipelagoSessionFactory.CreateSession(new Uri(serverUrl));
 				session.MessageLog.OnMessageReceived += OnMessageReceived;
+				session.Socket.ErrorReceived += Socket_ErrorReceived;
+				session.Socket.SocketOpened += Socket_SocketOpened;
+				session.Socket.SocketClosed += Socket_SocketClosed;
 
 				var result = session.TryConnectAndLogin("Timespinner", userName, 
 					ItemsHandlingFlags.IncludeStartingInventory, password: password);
@@ -87,6 +90,19 @@ namespace TsRandomizer.Archipelago
 
 			return cachedConnectionResult;
 		}
+
+		static void Socket_ErrorReceived(Exception e, string message)
+		{
+			ScreenManager.Console.AddLine($"Socket Error: {message}", XnaColor.Red);
+			ScreenManager.Console.AddLine($"Socket Exception: {e.Message}", XnaColor.Red);
+
+			foreach (var line in e.StackTrace.Split('\n'))
+				ScreenManager.Console.AddLine($"    {line}");
+		}
+		static void Socket_SocketOpened() =>
+			ScreenManager.Console.AddLine($"Socket opened to: {session.Socket.Uri}", XnaColor.Gray);
+		static void Socket_SocketClosed(string reason) =>
+			ScreenManager.Console.AddLine($"Socket closed: {reason}", XnaColor.Gray);
 
 		public static void Disconnect()
 		{

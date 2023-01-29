@@ -121,6 +121,7 @@
     <Compile Include="IntermediateObjects\CustomItems\BeeTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\MeteorSparrowTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\StatusTrap.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\Trap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\UnchainedKey.cs" />
     <Compile Include="IntermediateObjects\ProgressiveItemProvider.cs" />
     <Compile Include="LevelObjects\CollisionDetectionEvent.cs" />
@@ -174,7 +175,8 @@
     <Compile Include="RoomTriggers\Triggers\PreGyreBosses.cs" />
     <Compile Include="RoomTriggers\Triggers\RefugeeCampNelisteSpawn.cs" />
     <Compile Include="RoomTriggers\Triggers\TimespinnerGears.cs" />
-    <Compile Include="Screens\GameConsole.cs" />
+    <Compile Include="Screens\Console\ConsoleTextWriter.cs" />
+    <Compile Include="Screens\Console\GameConsole.cs" />
     <Compile Include="Archipelago\DeathLinker.cs" />
     <Compile Include="Archipelago\SlotDataParser.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
@@ -233,7 +235,7 @@
     <Compile Include="LevelObjects\ItemManipulators\CutscenePrologue4.cs" />
     <Compile Include="LevelObjects\ItemManipulators\ItemDropPickup.cs" />
     <Compile Include="PlatformHelper.cs" />
-    <Compile Include="Randomisation\ItemPlacers\ArchipelagoItemLocationRandomizer.cs" />
+    <Compile Include="Archipelago\ArchipelagoItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemPlacers\FullRandomItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemPlacers\ItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemUnlockingMap.cs" />

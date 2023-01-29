@@ -6,13 +6,11 @@ using TsRandomizer.Screens;
 
 namespace TsRandomizer.IntermediateObjects.CustomItems
 {
-	class StatusTrap : CustomItem
+	abstract class StatusTrap : Trap
 	{
 		static Type StatusEnumType = TimeSpinnerType.Get("Timespinner.GameObjects.StatusEffects.EStatusEffectType");
 
 		readonly object statusEnumValue;
-
-		public override int AnimationIndex => 208; // 'starry void' item
 
 		public StatusTrap(ItemUnlockingMap unlockingMap, CustomItemType itemType, string statusToApply) 
 			: base(unlockingMap, itemType)
@@ -30,16 +28,19 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 	class NeurotoxinTrap : StatusTrap
 	{
-		public NeurotoxinTrap(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.NeurotoxinTrap, "NeuroToxin") { }
+		public NeurotoxinTrap(ItemUnlockingMap unlockingMap) 
+			: base(unlockingMap, CustomItemType.NeurotoxinTrap, "NeuroToxin") { }
 	}
 
 	class ChaosTrap : StatusTrap
 	{
-		public ChaosTrap(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.ChaosTrap, "Chaos") { }
+		public ChaosTrap(ItemUnlockingMap unlockingMap) 
+			: base(unlockingMap, CustomItemType.ChaosTrap, "Chaos") { }
 	}
 
 	class PoisonTrap : StatusTrap
 	{
-		public PoisonTrap(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.PoisonTrap, "Poison") { }
+		public PoisonTrap(ItemUnlockingMap unlockingMap) 
+			: base(unlockingMap, CustomItemType.PoisonTrap, "Poison") { }
 	}
 }

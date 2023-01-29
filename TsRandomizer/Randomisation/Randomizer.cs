@@ -6,12 +6,14 @@ using TsRandomizer.Archipelago;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation.ItemPlacers;
 using TsRandomizer.Screens;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.Randomisation
 {
 	class Randomizer
 	{
-		public static ItemLocationMap Randomize(Seed seed, FillingMethod fillingMethod, GameSave saveGame, bool progressionOnly = false)
+		public static ItemLocationMap Randomize(
+			Seed seed, SettingCollection settings, FillingMethod fillingMethod, GameSave saveGame, bool progressionOnly = false)
 		{
 			switch (fillingMethod)
 			{
@@ -19,7 +21,7 @@ namespace TsRandomizer.Randomisation
 					var defaultUnlockingMap = new DefaultItemUnlockingMap(seed);
 					var progressiveItemInfoProvider = new ProgressiveItemProvider(seed.Options, defaultUnlockingMap);
 
-					return new FullRandomItemLocationRandomizer(seed, progressiveItemInfoProvider, defaultUnlockingMap)
+					return new FullRandomItemLocationRandomizer(seed, settings, progressiveItemInfoProvider, defaultUnlockingMap)
 						.GenerateItemLocationMap(progressionOnly);
 
 				case FillingMethod.Archipelago:
@@ -39,6 +41,7 @@ namespace TsRandomizer.Randomisation
 			var random = new Random();
 
 			Seed seed;
+			var settings = new SettingCollection();
 			var itterations = 0;
 
 			var stopwatch = new Stopwatch();
@@ -48,7 +51,7 @@ namespace TsRandomizer.Randomisation
 			{
 				itterations++;
 				seed = Seed.GenerateRandom(options, random);
-			} while (!IsBeatable(seed, fillingMethod));
+			} while (!IsBeatable(seed, settings, fillingMethod));
 
 			stopwatch.Stop();
 
@@ -62,8 +65,8 @@ namespace TsRandomizer.Randomisation
 			};
 		}
 
-		public static bool IsBeatable(Seed seed, FillingMethod fillingMethod) =>
-			Randomize(seed, fillingMethod, null, true).IsBeatable();
+		public static bool IsBeatable(Seed seed, SettingCollection settings, FillingMethod fillingMethod) =>
+			Randomize(seed, settings, fillingMethod, null, true).IsBeatable();
 	}
 
 	class GenerationResult : IEqualityComparer<GenerationResult>

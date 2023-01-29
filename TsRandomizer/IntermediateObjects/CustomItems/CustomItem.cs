@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
+using TsRandomizer.Extensions;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 
@@ -28,10 +31,18 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 		protected static string GetDescriptionKey(CustomItemType itemType) => $"inv_use_{(int)itemType + Offset}_desc";
 
+		public static void SetDescription(CustomItemType type, string description, string speaker) =>
+			TimeSpinnerGame.Localizer.OverrideKey(GetDescriptionKey(type), description, speaker);
+
 		public static ItemIdentifier GetIdentifier(CustomItemType itemType) =>
 			new ItemIdentifier((EInventoryUseItemType)itemType + Offset);
 
 		static CustomItem()
+		{
+			Initialize();
+		}
+
+		static void Initialize()
 		{
 			foreach (CustomItemType customItemType in Enum.GetValues(typeof(CustomItemType)))
 			{
@@ -42,11 +53,33 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 			}
 		}
 
+		public static List<ItemInfo> GetAllCustomItems(ItemUnlockingMap unlockingMap)
+		{
+			Initialize();
+
+			var items = new List<ItemInfo>(Enum.GetValues(typeof(CustomItemType)).Length);
+
+			var customItemType = typeof(CustomItem);
+
+			var customItemTypes = customItemType.Assembly.GetTypes()
+				.Where(t => customItemType.IsAssignableFrom(t)
+				            && !t.IsAbstract
+				            && !t.IsGenericType
+				            && t.GetConstructors().
+					            Any(c => c.GetParameters().Length == 1
+					                     && c.GetParameters()[0].ParameterType == typeof(ItemUnlockingMap)));
+
+			foreach (var itemType in customItemTypes)
+				items.Add((ItemInfo)itemType.CreateInstance(args: unlockingMap));
+
+			return items;
+		}
+
 		static string GetName(CustomItemType itemType) => string.Join(" ", Regex.Split(itemType.ToString(), @"(?<!^)(?=[A-Z])"));
 		
 		protected readonly CustomItemType ItemType;
 
-		public virtual string Name => GetName(ItemType);
+		public string Name => GetName(ItemType);
 
 		protected virtual bool RemoveFromInventory => true;
 
@@ -55,9 +88,6 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		{
 			ItemType = itemType;
 		}
-
-		public static void SetDescription(CustomItemType type, string description, string speaker) =>
-			TimeSpinnerGame.Localizer.OverrideKey(GetDescriptionKey(type), description, speaker);
 
 		protected void SetDescription(string description, string speaker) => SetDescription(ItemType, description, speaker);
 
