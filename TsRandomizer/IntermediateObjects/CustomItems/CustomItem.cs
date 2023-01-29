@@ -37,12 +37,7 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		public static ItemIdentifier GetIdentifier(CustomItemType itemType) =>
 			new ItemIdentifier((EInventoryUseItemType)itemType + Offset);
 
-		static CustomItem()
-		{
-			Initialize();
-		}
-
-		static void Initialize()
+		public static void Initialize()
 		{
 			foreach (CustomItemType customItemType in Enum.GetValues(typeof(CustomItemType)))
 			{
@@ -55,8 +50,6 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 		public static List<ItemInfo> GetAllCustomItems(ItemUnlockingMap unlockingMap)
 		{
-			Initialize();
-
 			var items = new List<ItemInfo>(Enum.GetValues(typeof(CustomItemType)).Length);
 
 			var customItemType = typeof(CustomItem);

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.Archipelago;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.Randomisation.ItemPlacers;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
@@ -15,6 +16,8 @@ namespace TsRandomizer.Randomisation
 		public static ItemLocationMap Randomize(
 			Seed seed, SettingCollection settings, FillingMethod fillingMethod, GameSave saveGame, bool progressionOnly = false)
 		{
+			CustomItem.Initialize();
+
 			switch (fillingMethod)
 			{
 				case FillingMethod.Random:
