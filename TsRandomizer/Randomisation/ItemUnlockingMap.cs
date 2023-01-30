@@ -58,16 +58,16 @@ namespace TsRandomizer.Randomisation
 			if (seed.FloodFlags.Maw)
 				pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
 
-			SetUnchainedKeysUnlock(Random, CustomItemType.TimewornWarpBeacon, R.PastWarp, pastTeleporterGates.ToArray());
-			SetUnchainedKeysUnlock(Random, CustomItemType.ModernWarpBeacon, R.PresentWarp, PresentTeleporterGates);
+			SetUnchainedKeysUnlock(Random, CustomItemType.TimewornWarpBeacon, pastTeleporterGates.ToArray());
+			SetUnchainedKeysUnlock(Random, CustomItemType.ModernWarpBeacon, PresentTeleporterGates);
 
 			if (seed.Options.EnterSandman)
-				SetUnchainedKeysUnlock(Random, CustomItemType.MysteriousWarpBeacon, R.PyramidWarp, PyramidTeleporterGates);
+				SetUnchainedKeysUnlock(Random, CustomItemType.MysteriousWarpBeacon, PyramidTeleporterGates);
 		}
 
-		protected void SetUnchainedKeysUnlock(Random random, CustomItemType type, R unlock, TeleporterGate[] gates)
+		protected void SetUnchainedKeysUnlock(Random random, CustomItemType type, TeleporterGate[] gates)
 		{
-			var pyramidWarpUnlockingSpecification = new UnlockingSpecification(CustomItem.GetIdentifier(type), unlock);
+			var pyramidWarpUnlockingSpecification = new UnlockingSpecification(CustomItem.GetIdentifier(type), R.None);
 			var pyramidGate = gates.SelectRandom(random);
 
 			CustomItem.SetDescription(type, $"You feel the twin pyramid key attune to: {pyramidGate.Name}", "Twin Pyramid Key");

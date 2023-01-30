@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
@@ -44,9 +45,14 @@ namespace TsRandomizer.Archipelago
 			if (pyramidKeysGate == "GateLakeSirineRight")
 				return Requirement.GateLakeSereneRight;
 
-			return (Requirement)typeof(Requirement)
+			var req = (Requirement?)typeof(Requirement)
 				.GetField(pyramidKeysGate, BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-				.GetValue(null);
+				?.GetValue(null);
+
+			if (!req.HasValue)
+				throw new Exception($"cannot find requirement for pyramid gate {pyramidKeysGate}");
+
+			return req.Value;
 		}
 
 		public Seed GetSeed()
