@@ -291,7 +291,7 @@ namespace TsRandomizer.Screens
 					});
 
 				foreach (var roomBlock in roomBlocks)
-					blocks.Add(roomBlock.Key, roomBlock.Value);
+					blocks[roomBlock.Key] = roomBlock.Value;
 			}
 			
 			using (spriteBatch.BeginUsing())

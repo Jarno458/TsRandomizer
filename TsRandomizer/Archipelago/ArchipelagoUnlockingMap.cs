@@ -4,7 +4,6 @@ using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.Randomisation;
-using TsRandomizer.Randomisation.ItemPlacers;
 
 namespace TsRandomizer.Archipelago
 {
@@ -43,20 +42,20 @@ namespace TsRandomizer.Archipelago
 			else
 			{
 				var pastGate = SlotDataParser.GetPyramidKeysGate(saveData, ArchipelagoItemLocationRandomizer.GameSavePastPyramidsKeysUnlock);
-				SetTeleporterPickupAction(seed, allTeleporterGates, pastGate, CustomItem.GetIdentifier(CustomItemType.TimewornWarpBeacon));
+				SetTeleporterPickupAction(allTeleporterGates, pastGate, CustomItem.GetIdentifier(CustomItemType.TimewornWarpBeacon));
 
 				var presentGate = SlotDataParser.GetPyramidKeysGate(saveData, ArchipelagoItemLocationRandomizer.GameSavePresentPyramidsKeysUnlock);
-				SetTeleporterPickupAction(seed, allTeleporterGates, presentGate, CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon));
+				SetTeleporterPickupAction(allTeleporterGates, presentGate, CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon));
 
 				if (!seed.Options.EnterSandman)
 					return;
 
 				var timeGate = SlotDataParser.GetPyramidKeysGate(saveData, ArchipelagoItemLocationRandomizer.GameSaveTimePyramidsKeysUnlock);
-				SetTeleporterPickupAction(seed, allTeleporterGates, timeGate, CustomItem.GetIdentifier(CustomItemType.MysteriousWarpBeacon));
+				SetTeleporterPickupAction(allTeleporterGates, timeGate, CustomItem.GetIdentifier(CustomItemType.MysteriousWarpBeacon));
 			}
 		}
 		
-		void SetTeleporterPickupAction(Seed seed, TeleporterGate[] allGates, Requirement gateToUnlock, ItemIdentifier item)
+		void SetTeleporterPickupAction(TeleporterGate[] allGates, Requirement gateToUnlock, ItemIdentifier item)
 		{
 			var selectedGate = allGates.First(g => g.Gate == gateToUnlock);
 
