@@ -154,6 +154,12 @@ namespace TsRandomizer.LevelObjects
 			int hpCap = Convert.ToInt32(gameSettings.HpCap.Value);
 			lunais.MaxHP = hpCap > lunais.MaxHP ? lunais.MaxHP : hpCap;
 
+			if (gameSettings.ExtraEarringsXP.Value > 0)
+			{
+				OrbExperienceManager.UpdateHitRegistry(lunais);
+				OrbExperienceManager.UpdateOrbXp(level, lunais, gameSettings.ExtraEarringsXP.Value);
+			}
+
 			if (gameSettings.DamageRando.Value != "Off")
 				OrbDamageManager.UpdateOrbDamage(level.GameSave, level.MainHero);
 
@@ -195,6 +201,10 @@ namespace TsRandomizer.LevelObjects
 			GenerateShadowObjects(itemLocations, objects, seed);
 			SpawnMissingObjects(level, levelReflected, itemLocations);
 
+			if (gameSettings.ExtraEarringsXP.Value > 0)
+			{
+				OrbExperienceManager.ResetHitRegistry();
+			}
 			level.AddEvent(new CollisionDetectionEvent(level, OnCollisionDetection));
 		}
 

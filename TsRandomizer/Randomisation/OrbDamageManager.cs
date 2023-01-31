@@ -56,7 +56,7 @@ namespace TsRandomizer.Randomisation
 	{
 		static Type OrbManagerType = TimeSpinnerType.Get("Timespinner.GameObjects.Heroes.Orbs.LunaisOrbManager");
 		static MethodInfo RefreshDamage = OrbManagerType.GetMethod("RefreshDamage", BindingFlags.NonPublic | BindingFlags.Instance);
-		
+
 		public static Dictionary<int, int> OrbDamageLookup = new Dictionary<int, int>();
 		static readonly OrbDamageOdds nerfed = new OrbDamageOdds
 		{
@@ -251,7 +251,7 @@ namespace TsRandomizer.Randomisation
 			RefreshDamage.Invoke(lunais.AsDynamic()._orbManager, null);
 		}
 
-		static InventoryOrb GetOrbFromType(InventoryOrbCollection inventory, EInventoryOrbType orbType) => 
+		static InventoryOrb GetOrbFromType(InventoryOrbCollection inventory, EInventoryOrbType orbType) =>
 			inventory.GetItem((int)orbType);
 	}
 }

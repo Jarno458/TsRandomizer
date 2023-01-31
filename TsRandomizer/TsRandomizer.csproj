@@ -125,6 +125,7 @@
     <Compile Include="LevelObjects\Other\DoorTeleportEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneForest0.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
+    <Compile Include="Randomisation\OrbExperienceManager.cs" />
     <Compile Include="Randomisation\TrapManager.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
