@@ -62,7 +62,7 @@ namespace TsRandomizer.Archipelago
 
 			try
 			{
-				session = ArchipelagoSessionFactory.CreateSession(new Uri(serverUrl));
+				session = ArchipelagoSessionFactory.CreateSession(serverUrl);
 				session.MessageLog.OnMessageReceived += OnMessageReceived;
 				session.Socket.ErrorReceived += Socket_ErrorReceived;
 				session.Socket.SocketOpened += Socket_SocketOpened;

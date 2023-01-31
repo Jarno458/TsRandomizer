@@ -158,15 +158,9 @@ namespace TsRandomizer.Screens
 
 		void OnConnectEntrySelected(PlayerIndex playerIndex)
 		{
-			var server = "ws://" + values[ServerIndex];
-			if (!values[ServerIndex].Contains(":"))
-				server += ":38281";
-			else if (values[ServerIndex].EndsWith(":"))
-				server += "38281";
-
 			var password = string.IsNullOrEmpty(values[PasswordIndex]) ? null : values[PasswordIndex];
 
-			var result = Client.Connect(server, values[UserIndex], password);
+			var result = Client.Connect(values[ServerIndex], values[UserIndex], password);
 			if (!result.Successful)
 			{
 				var failure = (LoginFailure)result;
@@ -188,7 +182,7 @@ namespace TsRandomizer.Screens
 					difficultyMenu.SetSeedAndFillingMethod(seed, FillingMethod.Archipelago,
 						slotDataParser.GetSettings());
 					difficultyMenu.HookOnDifficultySelected(saveGame => {
-						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = server;
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = values[ServerIndex];
 						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = values[UserIndex];
 						if (!string.IsNullOrEmpty(values[PasswordIndex]))
 							saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePasswordKey] =
@@ -211,7 +205,7 @@ namespace TsRandomizer.Screens
 				else if (saveSelectScreen != null)
 				{
 					saveSelectScreen.UpdateSave(saveGame => {
-						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = server;
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = values[ServerIndex];
 						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = values[UserIndex];
 						if (!string.IsNullOrEmpty(values[PasswordIndex]))
 							saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePasswordKey] =
