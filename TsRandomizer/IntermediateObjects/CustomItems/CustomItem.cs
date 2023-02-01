@@ -23,6 +23,8 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		MysteriousWarpBeacon
 	}
 
+	// consider beacons as starting items
+
 	abstract class CustomItem : SingleItemInfo
 	{
 		const int Offset = 500;

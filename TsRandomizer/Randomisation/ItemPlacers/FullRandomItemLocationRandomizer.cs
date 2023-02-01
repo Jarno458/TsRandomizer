@@ -161,13 +161,29 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryRelicType.DoubleJump),
 				ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel),
 				ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel),
-				ItemInfoProvider.Get(EInventoryRelicType.PyramidsKey),
 			};
 
 			if (!SeedOptions.ProgressiveVerticalMovement)
 			{
 				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryOrbType.Barrier, EOrbSlot.Spell));
 				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.EssenceOfSpace));
+			}
+
+			if (SeedOptions.UnchainedKeys)
+			{
+				starterProgressionItems.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.TimewornWarpBeacon)));
+				starterProgressionItems.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.TimewornWarpBeacon)));
+				starterProgressionItems.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon)));
+
+				if (SeedOptions.EnterSandman)
+				{
+					starterProgressionItems.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.MysteriousWarpBeacon)));
+					starterProgressionItems.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.MysteriousWarpBeacon)));
+				}
+			}
+			else
+			{
+				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.PyramidsKey));
 			}
 
 			var starterProgressionItem = starterProgressionItems.SelectRandom(random);
@@ -181,8 +197,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			else
 			{
 				GiveOrbsToMom(random, false);
-
-				if (SeedOptions.StartWithTalaria) return;
 
 				PutStarterProgressionItemInReachableLocation(random, starterProgressionItem);
 			}

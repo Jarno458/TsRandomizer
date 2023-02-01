@@ -10,7 +10,6 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.ItemTracker;
 using TsRandomizer.Randomisation;
-using TsRandomizer.Randomisation.ItemPlacers;
 using TsRandomizer.Screens;
 
 namespace TsRandomizer.Archipelago

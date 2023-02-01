@@ -42,30 +42,30 @@ namespace TsRandomizer.Archipelago
 			else
 			{
 				var pastGate = SlotDataParser.GetPyramidKeysGate(saveData, ArchipelagoItemLocationRandomizer.GameSavePastPyramidsKeysUnlock);
-				SetTeleporterPickupAction(allTeleporterGates, pastGate, CustomItem.GetIdentifier(CustomItemType.TimewornWarpBeacon));
+				SetTeleporterPickupAction(allTeleporterGates, pastGate, CustomItemType.TimewornWarpBeacon);
 
 				var presentGate = SlotDataParser.GetPyramidKeysGate(saveData, ArchipelagoItemLocationRandomizer.GameSavePresentPyramidsKeysUnlock);
-				SetTeleporterPickupAction(allTeleporterGates, presentGate, CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon));
+				SetTeleporterPickupAction(allTeleporterGates, presentGate, CustomItemType.ModernWarpBeacon);
 
 				if (!seed.Options.EnterSandman)
 					return;
 
 				var timeGate = SlotDataParser.GetPyramidKeysGate(saveData, ArchipelagoItemLocationRandomizer.GameSaveTimePyramidsKeysUnlock);
-				SetTeleporterPickupAction(allTeleporterGates, timeGate, CustomItem.GetIdentifier(CustomItemType.MysteriousWarpBeacon));
+				SetTeleporterPickupAction(allTeleporterGates, timeGate, CustomItemType.MysteriousWarpBeacon);
 			}
 		}
 		
-		void SetTeleporterPickupAction(TeleporterGate[] allGates, Requirement gateToUnlock, ItemIdentifier item)
+		void SetTeleporterPickupAction(TeleporterGate[] allGates, Requirement gateToUnlock, CustomItemType type)
 		{
 			var selectedGate = allGates.First(g => g.Gate == gateToUnlock);
 
-			var unlockingSpecification = new UnlockingSpecification(item, Requirement.None, Requirement.Teleport);
+			CustomItem.SetDescription(type, $"You feel the twin pyramid key attune to: {selectedGate.Name}", "Twin Pyramid Key");
 
-			unlockingSpecification.OnPickup = level => {
-				UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
+			var unlockingSpecification = new UnlockingSpecification(CustomItem.GetIdentifier(type) , Requirement.None, Requirement.Teleport)
+			{
+				Unlocks = selectedGate.Gate,
+				OnPickup = level => UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId)
 			};
-
-			unlockingSpecification.Unlocks = selectedGate.Gate;
 
 			UnlockingSpecifications.Add(unlockingSpecification);
 		}
