@@ -13,7 +13,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	{
 		bool hasDroppedLoot;
 
-		public ItemDropPickup(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
+		public ItemDropPickup(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+			: base(typedObject, gameplayScreen, itemLocation)
 		{
 		}
 
@@ -63,7 +64,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			Dynamic.ChangeAnimation(ItemInfo.AnimationIndex);
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (ItemInfo == null || hasDroppedLoot || !Dynamic.IsFound)
 				return;
@@ -75,7 +76,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				case LootType.ConstFamiliar:
 				case LootType.ConstStat:
 					AwardContainedItem();
-					UndoBaseGameAwardedEquipment(gameplayScreen);
+					UndoBaseGameAwardedEquipment();
 					ShowItemAwardPopup();
 					break;
 
@@ -92,10 +93,10 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			hasDroppedLoot = true;
 		}
 
-		void UndoBaseGameAwardedEquipment(GameplayScreen gameplayScreen)
+		void UndoBaseGameAwardedEquipment()
 		{
 			Level.GameSave.Inventory.EquipmentInventory.RemoveItem(ItemInfo.BestiaryItemDropSpecification.Item, 1);
-			gameplayScreen.HideItemPickupBar();
+			GameplayScreen.HideItemPickupBar();
 		}
 	}
 }

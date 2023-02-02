@@ -154,13 +154,13 @@ namespace TsRandomizer.Screens.SeedSelection
 		{
 			var hexString = GetHexString();
 
-			if (!Seed.TryParse(hexString, out var seed))
+			if (!Seed.TryParse(hexString, null, out var seed))
 			{
 				ShowErrorDescription("Invalid seed id, it is not a valid hexidecimal value.");
 				return;
 			}
 
-			if (!forceSeed && !Randomizer.IsBeatable(seed, FillingMethod.Random))
+			if (!forceSeed && !Randomizer.IsBeatable(seed, new SettingCollection(), FillingMethod.Random))
 			{
 				ShowErrorDescription("Invalid seed id, it cannot be beaten.");
 				return;
@@ -194,7 +194,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			var seedId = hexString.Substring(0, Seed.Length - SeedOptions.Length);
 
-			if (Seed.TryParse(seedId + options, out var seed))
+			if (Seed.TryParse(seedId + options, null, out var seed))
 				SetSeed(seed.ToString());
 		}
 
@@ -211,7 +211,7 @@ namespace TsRandomizer.Screens.SeedSelection
 		{
 			var hexString = GetHexString();
 
-			return !Seed.TryParse(hexString, out var seed)
+			return !Seed.TryParse(hexString, null, out var seed)
 				? new SeedOptionsCollection(SeedOptions.None)
 				: new SeedOptionsCollection(seed.Options);
 		}

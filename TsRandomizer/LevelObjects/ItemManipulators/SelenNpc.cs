@@ -14,18 +14,19 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		bool hasReplacedSpellPopup;
 		bool hasAwardedSpellOrb;
 
-		public SelenNpc(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
+		public SelenNpc(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+			: base(typedObject, gameplayScreen, itemLocation)
 		{
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (ItemInfo == null)
 				return;
 
 			if (!hasReplacedSpellPopup && Dynamic._tutorialSection == 2)
 			{
-				Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
+				UpdateRelicOrbGetToastToItem();
 				hasReplacedSpellPopup = true;
 			}
 			

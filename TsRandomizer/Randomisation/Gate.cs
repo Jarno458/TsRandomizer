@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using TsRandomizer.Extensions;
 
@@ -13,61 +12,49 @@ namespace TsRandomizer.Randomisation
 
 		public abstract Gate[] Gates { get; }
 
-		public List<Gate> GetRequirementGates()
-        {
-			return GetRequirementGates(new List<Gate>());
-        }
-
-		private List<Gate> GetRequirementGates(List<Gate> currentGates)
+		public static Gate operator &(Gate a, Gate b)
 		{
-			if (Gates.Length == 0)
-			{
-				currentGates.Add(this);
-				return currentGates;
-			}
-			else
-			{
-				var subgates = Gates;
-				foreach (var subgate in subgates)
-				{
-					if (subgate.Gates != null)
-						subgate.GetRequirementGates(currentGates);
-					else
-					{
-						currentGates.Add(subgate);
-					}
-				}
-				return currentGates;
-			}
-		}
+			if (a is RequirementGate requirementGateA && requirementGateA.Requirements == Requirement.None)
+				return b is RequirementGate requirementGateB && requirementGateB.Requirements == Requirement.None
+					? (Gate)Requirement.None
+					: b;
 
-		public static Gate operator &(Gate a, Gate b) => new AndGate(a, b);
+			if (b is RequirementGate rGateB && rGateB.Requirements == Requirement.None)
+				return a;
+
+			return new AndGate(a, b);
+		} 
 
 		public static Gate operator |(Gate a, Gate b)
 		{
-			if(a is RequirementGate requirementGateA && b is RequirementGate requirementGateB)
-				return new RequirementGate(requirementGateA.Requirements | requirementGateB.Requirements);
+			if (a is RequirementGate rGateA)
+			{
+				if (rGateA.Requirements == Requirement.None)
+					return (Gate)Requirement.None;
+
+				if (b is RequirementGate rGateB)
+				{
+					if (rGateB.Requirements == Requirement.None)
+						return (Gate)Requirement.None;
+					
+					return new RequirementGate(rGateA.Requirements | rGateB.Requirements);
+				}
+			}
 
 			return new OrGate(a, b);
 		}
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() => base.GetHashCode();
 
-        public bool Equals(Gate other)
-        {
-			return ToString() == other.ToString();
-        }
+        public bool Equals(Gate other) => ToString() == other.ToString();
 
-        public static Gate operator &(Gate a, Requirement b) => a & new RequirementGate(b);
+        public static Gate operator &(Gate a, Requirement b) => a & (Gate)b;
 
-		public static Gate operator &(Requirement b, Gate a) => a & new RequirementGate(b);
+		public static Gate operator &(Requirement b, Gate a) => a & (Gate)b;
 
-		public static Gate operator |(Gate a, Requirement b) => a | new RequirementGate(b);
+		public static Gate operator |(Gate a, Requirement b) => a | (Gate)b;
 
-		public static Gate operator |(Requirement b, Gate a) => a | new RequirementGate(b);
+		public static Gate operator |(Requirement b, Gate a) => a | (Gate)b;
 
 		public static explicit operator Gate(Requirement requiredItems) => new RequirementGate(requiredItems);
 
@@ -93,19 +80,18 @@ namespace TsRandomizer.Randomisation
 
 		internal class AndGate : Gate
 		{
-			private Gate[] _gates;
-			public override Gate[] Gates { get { return _gates; } }
+			public override Gate[] Gates { get; }
 
 			internal AndGate(Gate a, Gate b)
 			{
 				if (a is AndGate andGateA && b is AndGate andGateB)
-					_gates = andGateA.Gates.Union(andGateB.Gates).ToArray();
+					Gates = andGateA.Gates.Union(andGateB.Gates).ToArray();
 				else if (a is AndGate gateA)
-					_gates = gateA.Gates.Concat(b).ToArray();
+					Gates = gateA.Gates.Concat(b).ToArray();
 				else if (b is AndGate gateB)
-					_gates = gateB.Gates.Concat(a).ToArray();
+					Gates = gateB.Gates.Concat(a).ToArray();
 				else
-					_gates = new[] {a, b};
+					Gates = new[] {a, b};
 			}
 
 			public override bool CanBeOpenedWith(Requirement obtainedRequirements) =>
@@ -119,19 +105,18 @@ namespace TsRandomizer.Randomisation
 
 		internal class OrGate : Gate
 		{
-			private Gate[] _gates;
-			public override Gate[] Gates { get { return _gates; } }
+			public override Gate[] Gates { get; }
 
 			internal OrGate(Gate a, Gate b)
 			{
 				if (a is OrGate orGateA && b is OrGate orGateB)
-					_gates = orGateA.Gates.Union(orGateB.Gates).ToArray();
+					Gates = orGateA.Gates.Union(orGateB.Gates).ToArray();
 				else if (a is OrGate gateA)
-					_gates = gateA.Gates.Concat(b).ToArray();
+					Gates = gateA.Gates.Concat(b).ToArray();
 				else if (b is OrGate gateB)
-					_gates = gateB.Gates.Concat(a).ToArray();
+					Gates = gateB.Gates.Concat(a).ToArray();
 				else
-					_gates = new[] { a, b };
+					Gates = new[] { a, b };
 			}
 
 			public override bool CanBeOpenedWith(Requirement obtainedRequirements) =>

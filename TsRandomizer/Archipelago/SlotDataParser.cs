@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
@@ -21,10 +22,21 @@ namespace TsRandomizer.Archipelago
 		}
 
 		public Requirement GetPyramidKeysGate() =>
-			 GetPyramidKeysGate((string)slotData["PyramidKeysGate"]);
+			GetPyramidKeysGate(slotData, "PyramidKeysGate");
+		public Requirement GetPastPyramidKeysGate() =>
+			GetPyramidKeysGate(slotData, "PastGate");
+		public Requirement GetPresentPyramidKeysGate() =>
+			GetPyramidKeysGate(slotData, "PresentGate");
+		public Requirement GetTimePyramidKeysGate() =>
+			GetPyramidKeysGate(slotData, "TimeGate");
 
-		public static Requirement GetPyramidKeysGate(string pyramidKeysGate)
+		public static Requirement GetPyramidKeysGate(Dictionary<string, object> slotData, string gateName)
 		{
+			if (!slotData.TryGetValue(gateName, out var slotDataGate))
+				return Requirement.None;
+
+			var pyramidKeysGate = (string)slotDataGate;
+
 			//TODO: remove when clients & server are update with correct value
 			if (pyramidKeysGate == "GateMilitairyGate")
 				return Requirement.GateMilitaryGate;
@@ -33,9 +45,14 @@ namespace TsRandomizer.Archipelago
 			if (pyramidKeysGate == "GateLakeSirineRight")
 				return Requirement.GateLakeSereneRight;
 
-			return (Requirement)typeof(Requirement)
+			var req = (Requirement?)typeof(Requirement)
 				.GetField(pyramidKeysGate, BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-				.GetValue(null);
+				?.GetValue(null);
+
+			if (!req.HasValue)
+				throw new Exception($"cannot find requirement for pyramid gate {pyramidKeysGate}");
+
+			return req.Value;
 		}
 
 		public Seed GetSeed()

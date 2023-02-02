@@ -18,7 +18,7 @@ namespace TsRandomizer.Settings
 				}},
 			new GameSettingCategoryInfo { Name = "Traps", Description = "Toggles traps available via the Trapped Chests flag.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.SparrowTrap, s => s.NeurotoxinTrap, s => s.ChaosTrap, s => s.PoisonTrap
+					s => s.SparrowTrap, s => s.NeurotoxinTrap, s => s.ChaosTrap, s => s.PoisonTrap, s => s.BeeTrap
 				}},
 			new GameSettingCategoryInfo { Name = "Minimap", Description = "Settings related to minimap colors.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -35,14 +35,14 @@ namespace TsRandomizer.Settings
 				}},
 			new GameSettingCategoryInfo { Name = "Other", Description = "Miscellaneous settings",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.ShowBestiary, s => s.ShowDrops
+					s => s.ShowBestiary, s => s.ShowDrops, s => s.NoSaveStatues
 				}}
 		};
 		public OnOffGameSetting BossRando = new OnOffGameSetting("Boss Randomization",
 			"All boss locations are shuffled.", false, false);
 
 		public OnOffGameSetting BossScaling = new OnOffGameSetting("Random Boss Scaling",
-			"Random bosses inherit the HP, ATK, and XP of their location (Recommended).", true, false);
+			"Random bosses inherit the HP, ATK, and XP of their location (Recommended).", true, true);
 
 		public SpecificValuesGameSetting DamageRando = new SpecificValuesGameSetting("Damage Randomizer",
 			"Randomly nerfs and buffs orbs, spells, and some rings. \"Manual\" requires editing the randomizer settings file.",
@@ -89,16 +89,19 @@ namespace TsRandomizer.Settings
 			"Shops always sell warp shards (when keys possessed), ignoring inventory setting.", false);
 
 		public OnOffGameSetting SparrowTrap = new OnOffGameSetting("Meteor Sparrows",
-			"Traps can spawn meteor sparrows.", true, false);
+			"Traps can spawn meteor sparrows.", true);
 
 		public OnOffGameSetting NeurotoxinTrap = new OnOffGameSetting("Neurotoxin",
-			"Traps can inflict aura-draining neurotoxin.", true, false);
+			"Traps can inflict aura-draining neurotoxin.", true);
 
 		public OnOffGameSetting ChaosTrap = new OnOffGameSetting("Chaos",
-			"Traps can cause sand-draining chaos.", true, false);
+			"Traps can cause sand-draining chaos.", true);
 
 		public OnOffGameSetting PoisonTrap = new OnOffGameSetting("Poison",
-			"Traps can inflict poison.", true, false);
+			"Traps can inflict poison.", true);
+
+		public OnOffGameSetting BeeTrap = new OnOffGameSetting("Bee's",
+			"Beeeeeeeeeeeeeeeeeeeeeeeeees!", true);
 
 		public NumberGameSetting NumberOfOnScreenLogLines = new NumberGameSetting("Log Number of Lines",
 			"Max number of messages to show at the bottom left of the screen, 0 to turn onscreen log off", 0, 25, 1, 3, true);
@@ -162,5 +165,9 @@ namespace TsRandomizer.Settings
 
 		public NumberGameSetting ExtraEarringsXP = new NumberGameSetting("Extra Earrings XP",
 			"Adds additional XP granted by Galaxy Earrings", 0, 24, 1, 0, true);
+
+		public OnOffGameSetting NoSaveStatues = new OnOffGameSetting("No Save Statues",
+			"Breaks all the save statues", false, true);
+
 	}
 }

@@ -13,7 +13,7 @@ namespace TsRandomizer.LevelObjects.Other
 	{
 		bool requiresSpecificKey;
 
-		public KeycardDoorEvent(Mobile typedObject) : base(typedObject)
+		public KeycardDoorEvent(Mobile typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
 		{
 		}
 
@@ -22,14 +22,14 @@ namespace TsRandomizer.LevelObjects.Other
 			requiresSpecificKey = seed.Options.SpecificKeys;
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if(!requiresSpecificKey || Level.GameSave.GetSaveBool(Dynamic.GetSaveKey))
 				return;
 
 			var requirementToOpenDoor = GetCorrespondingRequirement(Dynamic._keycardType);
 
-			Dynamic._isOpened = !gameplayScreen.ItemLocations
+			Dynamic._isOpened = !GameplayScreen.ItemLocations
 				.GetAvailableRequirementsBasedOnObtainedItems().Contains(requirementToOpenDoor);
 		}
 

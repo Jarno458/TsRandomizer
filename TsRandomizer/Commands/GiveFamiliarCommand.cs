@@ -3,6 +3,7 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.Screens;
+using TsRandomizer.Screens.Console;
 
 namespace TsRandomizer.Commands
 {

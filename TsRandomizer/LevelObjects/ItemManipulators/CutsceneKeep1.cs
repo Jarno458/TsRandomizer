@@ -19,11 +19,12 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		dynamic Incubus => ((object)Dynamic._incubus).AsDynamic();
 		dynamic Succubus => ((object)Dynamic._succubus).AsDynamic();
 
-		public CutsceneKeep1(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
+		public CutsceneKeep1(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+			: base(typedObject, gameplayScreen, itemLocation)
 		{
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (ItemInfo == null || hasReplacedItemScript)
 				return;

@@ -4,6 +4,7 @@ using Timespinner.GameAbstractions.GameObjects;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Screens;
 
 namespace TsRandomizer.LevelObjects.Other
 {
@@ -13,16 +14,18 @@ namespace TsRandomizer.LevelObjects.Other
 	{
 		static readonly Type SaveOrbStateType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.SaveStatue+ESaveOrbState");
 
-		public SaveStatue(Mobile typedObject) : base(typedObject)
+		public SaveStatue(Mobile typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
 		{
 		}
 
 		protected override void Initialize(Seed seed)
 		{
-			if (Dynamic._isBroken) 
+			if (Dynamic._isBroken)
 				return;
 
-			if ((Level.ID != 2 || Level.RoomID != 20) // Right side libarary elevator room
+			bool breakAllSaves = Level.GameSave.GetSettings().NoSaveStatues.Value;
+
+			if (!breakAllSaves && (Level.ID != 2 || Level.RoomID != 20) // Right side libarary elevator room
 				&& (Level.ID != 14 || Level.RoomID != 8) // Ravenlord
 				&& (Level.ID != 14 || Level.RoomID != 6))  // Ifrit
 				return;
@@ -30,7 +33,7 @@ namespace TsRandomizer.LevelObjects.Other
 			Dynamic._isBroken = true;
 			Dynamic._orbSaveState = SaveOrbStateType.GetEnumValue("Dead");
 
-			var orbAppendage = (Appendage) Dynamic._orbAppendage;
+			var orbAppendage = (Appendage)Dynamic._orbAppendage;
 			orbAppendage.ChangeAnimation(5); //5 = broken
 			orbAppendage.ClearBattleAnimations();
 			orbAppendage.IsGlowing = false;

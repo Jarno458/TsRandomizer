@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
@@ -14,20 +15,27 @@ namespace TsRandomizer.RoomTriggers.Triggers
 		public override void OnRoomLoad(RoomState state)
 		{
 			var spriteSheet = state.RoomKey.LevelId == 8
-				? state.ScreenManager.GameContentManager.TsForestPastTileset
-				: state.ScreenManager.GameContentManager.TsL1Tileset;
+				? state.Level.GCM.TsForestPastTileset
+				: state.Level.GCM.TsL1Tileset;
 
-			int[] bridgeStarts = new[] {
+			int[] bridgeStarts = {
 				4,
 				42,
 				80
+			};
+
+			var random = new Random();
+			var frameSources = new[] {
+				spriteSheet.GetFrameSource(109),
+				spriteSheet.GetFrameSource(110),
+				spriteSheet.GetFrameSource(111)
 			};
 
 			foreach (var bridgeStart in bridgeStarts)
 			{
 				for (int i = 0; i < 16; i++)
 				{
-					var donotSpecification = new ObjectTileSpecification
+					var donutSpecification = new ObjectTileSpecification
 					{
 						Category = EObjectTileCategory.Event,
 						Layer = ETileLayerType.Middle,
@@ -36,12 +44,12 @@ namespace TsRandomizer.RoomTriggers.Triggers
 						Y = 11
 					};
 
-					state.Level.PlaceEvent(donotSpecification, false);
+					state.Level.PlaceEvent(donutSpecification, false);
 
 					var dynamic = ((Dictionary<int, GameEvent>)state.Level.AsDynamic()._levelEvents).Last().Value.AsDynamic();
 
 					dynamic._sprite = spriteSheet;
-					dynamic.ChangeAnimation(state.Level.NextRandomInt(109, 111), 0, 1f, EAnimationType.None);
+					dynamic._frameSource = frameSources.SelectRandom(random);
 				}
 			}
 

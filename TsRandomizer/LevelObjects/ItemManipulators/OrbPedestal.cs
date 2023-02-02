@@ -31,7 +31,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		int appendagesCount;
 		bool hasDroppedLoot;
 
-		public OrbPedestal(Mobile typedObject, ItemLocation itemInfo) : base(typedObject, itemInfo)
+		public OrbPedestal(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+			: base(typedObject, gameplayScreen, itemLocation)
 		{
 			if(Level != null)
 				menuIcons = Level.GCM.SpMenuIcons;
@@ -88,7 +89,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			levelReflected.RequestAddObject((Item)itemDropPickup);
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (ItemInfo == null || hasDroppedLoot)
 				return;
@@ -109,7 +110,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				return;
 			}
 
-			Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
+			UpdateRelicOrbGetToastToItem();
 
 			AwardContainedItem();
 			hasDroppedLoot = true;

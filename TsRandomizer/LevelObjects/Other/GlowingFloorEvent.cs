@@ -12,26 +12,31 @@ namespace TsRandomizer.LevelObjects.Other
 	// ReSharper disable once UnusedMember.Global
 	class GlowingFloorEvent : LevelObject
 	{
-		bool teleportEnabled = false;
-		bool teleportTriggered = false;
-		public GlowingFloorEvent(Mobile typedObject) : base(typedObject)
+		bool teleportEnabled;
+		bool teleportTriggered;
+
+		public GlowingFloorEvent(Mobile typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
 		{
 			if (Dynamic.Level.ID == 16)
 			{
 				Dynamic._textPromptOffsetX = -20;
 				Dynamic._textPromptText = "Exit the pyramid";
+
 				return;
 			}
+
 			if (Dynamic.Level.ID == 11 && Level.GameSave.GetSettings().BossRando.Value)
 			{
 				int bossId = Dynamic.PrefabType.ToString() == "L11_SwitchWinderia" ? (int)EBossID.Prince : (int)EBossID.Vol;
+
 				BossAttributes boss = BestiaryManager.GetReplacedBoss(Level, bossId);
+
 				Dynamic._textPromptOffsetX = -20;
 				Dynamic._textPromptText = $"Fight {boss.VisibleName}";
 			}
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (Dynamic.Level.ID != 16)
 				return;

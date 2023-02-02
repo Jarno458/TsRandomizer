@@ -13,7 +13,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		bool hasReplacedItem;
 		int initialProgress;
 
-		public LibrarianNpc(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
+		public LibrarianNpc(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+			: base(typedObject, gameplayScreen, itemLocation)
 		{
 		}
 
@@ -22,7 +23,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			initialProgress = Dynamic.PrimaryProgress;
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (ItemInfo == null || hasReplacedItem || initialProgress != 0 || Dynamic.PrimaryProgress != 1)
 				return;
@@ -30,7 +31,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (Dynamic.IsTalking && Dynamic._isStandingUp)
 			{
 				Scripts.RemoveGiveItem();
-				Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
+				UpdateRelicOrbGetToastToItem();
 
 				AwardContainedItem();
 

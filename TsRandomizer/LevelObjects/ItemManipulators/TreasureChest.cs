@@ -15,7 +15,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 		bool hasDroppedLoot;
 
-		public TreasureChest(TreasureChestEvent treasureChest, ItemLocation itemLocation) : base(treasureChest, itemLocation)
+		public TreasureChest(TreasureChestEvent treasureChest, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+			: base(treasureChest, gameplayScreen, itemLocation)
 		{
 		}
 
@@ -71,7 +72,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				((Appendage)Dynamic._lidAppendage).AsDynamic().ChangeAnimation(Dynamic._animationIndexOffset + 5, 1, 1f, EAnimationType.None);
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (ItemInfo == null || hasDroppedLoot || !Dynamic._hasDroppedLoot)
 				return;

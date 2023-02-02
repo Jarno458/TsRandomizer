@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.ItemTracker;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Screens;
 
 namespace TsRandomizer.LevelObjects
 {
@@ -11,7 +16,8 @@ namespace TsRandomizer.LevelObjects
 	{
 		public readonly new T TypedObject;
 
-		protected ItemManipulator(T typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
+		protected ItemManipulator(T typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation)
+			: base(typedObject, gameplayScreen, itemLocation)
 		{
 			TypedObject = typedObject;
 		}
@@ -26,10 +32,11 @@ namespace TsRandomizer.LevelObjects
 		public readonly ItemInfo ItemInfo;
 		public readonly ItemLocation ItemLocation;
 
-		protected ItemManipulator(Mobile typedObject, ItemLocation itemLocation) : base(typedObject)
+		protected ItemManipulator(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+			: base(typedObject, gameplayScreen)
 		{
-			ItemLocation = itemLocation;
 			ItemInfo = itemLocation?.ItemInfo;
+			ItemLocation = itemLocation;
 		}
 
 		protected void AwardContainedItem()
@@ -44,7 +51,7 @@ namespace TsRandomizer.LevelObjects
 
 		protected void OnItemPickup()
 		{
-			ItemInfo.OnPickup(Level);
+			ItemInfo.OnPickup(Level, GameplayScreen);
 			ItemLocation.SetPickedUp(Level);
 
 			if (ItemInfo.IsProgression)
@@ -53,7 +60,8 @@ namespace TsRandomizer.LevelObjects
 
 		public static void Initialize(ItemLocationMap itemLocations) => itemLocationMap = itemLocations;
 
-		public static ItemManipulator GenerateShadowObject(Type levelObjectType, Mobile obj, ItemLocationMap itemLocations)
+		public static ItemManipulator GenerateShadowObject(
+			Type levelObjectType, Mobile obj, GameplayScreen gameplayScreen, ItemLocationMap itemLocations)
 		{
 			var itemKey = GetKey(obj);
 			var itemLocation = itemLocations[itemKey];
@@ -64,10 +72,30 @@ namespace TsRandomizer.LevelObjects
 				return null;
 			}
 
-			return (ItemManipulator)Activator.CreateInstance(levelObjectType, obj, itemLocation);
+			return (ItemManipulator)Activator.CreateInstance(levelObjectType, obj, gameplayScreen, itemLocation);
 		}
 
-		protected void ShowItemAwardPopup() =>
-			Level.ShowItemAwardPopup(ItemInfo.Identifier);
+		protected void ShowItemAwardPopup()
+		{
+			if (ItemInfo is CustomItem customItem)
+				GameplayScreen.ShowItemPickupBar(customItem.Name);
+			else
+				Level.ShowItemAwardPopup(ItemInfo.Identifier);
+		}
+
+		protected void UpdateRelicOrbGetToastToItem()
+		{
+			var scripts = (Queue<ScriptAction>)LevelReflected._waitingScripts;
+
+			var giveOrbScript = scripts.LastOrDefault(s => s.AsDynamic().ScriptType == EScriptType.RelicOrbGetToast);
+			if (giveOrbScript == null)
+				return;
+
+			var reflectedScript = giveOrbScript.AsDynamic();
+
+			reflectedScript.ScriptType = EScriptType.Delegate;
+			reflectedScript.Delegate = (Action)ShowItemAwardPopup;
+			reflectedScript.Arguments = ScriptActionQueueExtensions.ReplacedArguments;
+		}
 	}
 }

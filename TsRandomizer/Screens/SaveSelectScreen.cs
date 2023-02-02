@@ -9,13 +9,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SDL2;
 using Timespinner.GameAbstractions.Saving;
-using Timespinner.GameStateManagement;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Drawables;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
-using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Screens
 {
@@ -317,7 +315,6 @@ namespace TsRandomizer.Screens
 		void OnSpoilerLogCreationAccepted(GameSave save)
 		{
 			var fillingMethod = save.GetFillingMethod();
-
 			if (fillingMethod == FillingMethod.Archipelago)
 			{
 				var messageBox = MessageBox.Create(ScreenManager, "Not supported for Archipelago based seed");
@@ -328,6 +325,7 @@ namespace TsRandomizer.Screens
 			}
 
 			var seed = save.GetSeed();
+			var settings = save.GetSettings();
 
 			if (!seed.HasValue)
 				return;
@@ -338,18 +336,24 @@ namespace TsRandomizer.Screens
 				file.WriteLine($"Timespinner version: v{TimeSpinnerGame.Constants.GameVersion}");
 				file.WriteLine($"TsRandomizer version: v{Assembly.GetExecutingAssembly().GetName().Version}");
 
-				var itemLocations = Randomizer.Randomize(seed.Value, fillingMethod, save);
+				var itemLocations = Randomizer.Randomize(seed.Value, settings, fillingMethod, save);
 
 				var progressionItems = itemLocations.Where(l => l.ItemInfo.Unlocks != Requirement.None);
 				var otherItems = itemLocations.Where(l => l.ItemInfo.Unlocks == Requirement.None);
 
-				WriteProgressionChain(file, itemLocations);
-				WriteItemListSection(file, progressionItems, "Progression Items:");
+				var progressionChainLocations = new List<ItemLocation>();
+			
+				WriteProgressionChain(file, itemLocations, progressionChainLocations);
+
+				var chainLocationKeys = progressionChainLocations.Select(p => p.Key).ToHashSet();
+
+				WriteItemListSection(file, progressionItems.Where(p => !chainLocationKeys.Contains(p.Key)), "Other Progression Items (not in chain):");
 				WriteItemListSection(file, otherItems, "Other Locations:");
 			}
 		}
 
-		static void WriteProgressionChain(StreamWriter file, ItemLocationMap itemLocations)
+		static void WriteProgressionChain(
+			StreamWriter file, ItemLocationMap itemLocations, List<ItemLocation> progressionChainLocations)
 		{
 			file.WriteLine();
 			file.WriteLine("Progression Chain:");
@@ -359,6 +363,8 @@ namespace TsRandomizer.Screens
 
 			do
 			{
+				progressionChainLocations.AddRange(progressionChain.Locations);
+
 				WriteItemList(file, progressionChain.Locations, depth);
 
 				depth++;

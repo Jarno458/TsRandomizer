@@ -78,8 +78,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Archipelago.MultiClient.Net, Version=4.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Archipelago.MultiClient.Net.4.2.2\lib\net40\Archipelago.MultiClient.Net.dll</HintPath>
+    <Reference Include="Archipelago.MultiClient.Net, Version=4.2.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Archipelago.MultiClient.Net.4.2.4\lib\net40\Archipelago.MultiClient.Net.dll</HintPath>
     </Reference>
     <Reference Include="FNA">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
@@ -89,7 +89,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Archipelago.MultiClient.Net.4.2.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Archipelago.MultiClient.Net.4.2.4\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -98,12 +98,12 @@
       <HintPath>..\..\Timespinner\Timespinner.exe</HintPath>
     </Reference>
     <Reference Include="websocket-sharp, Version=1.0.2.34775, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Archipelago.MultiClient.Net.4.2.2\lib\net40\websocket-sharp.dll</HintPath>
+      <HintPath>..\packages\Archipelago.MultiClient.Net.4.2.4\lib\net40\websocket-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
-    <Compile Include="Archipelago\ArchipelagoRemoteItem.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\ArchipelagoRemoteItem.cs" />
     <Compile Include="Archipelago\ConnectionFailedException.cs" />
     <Compile Include="Commands\ConnectCommand.cs" />
     <Compile Include="Commands\ConsoleCommand.cs" />
@@ -117,6 +117,13 @@
     <Compile Include="Drawables\ArchipelagoRepresentation.cs" />
     <Compile Include="Extensions\GameContentManagerExtension.cs" />
     <Compile Include="Extensions\SettingsExtensions.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\CustomItem.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\BeeTrap.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\MeteorSparrowTrap.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\StatusTrap.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\Trap.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\UnchainedKey.cs" />
+    <Compile Include="IntermediateObjects\ProgressiveItemProvider.cs" />
     <Compile Include="LevelObjects\CollisionDetectionEvent.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />
@@ -127,6 +134,7 @@
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
     <Compile Include="Randomisation\OrbExperienceManager.cs" />
     <Compile Include="Randomisation\TrapManager.cs" />
+    <Compile Include="Archipelago\ArchipelagoUnlockingMap.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />
@@ -169,7 +177,8 @@
     <Compile Include="RoomTriggers\Triggers\PreGyreBosses.cs" />
     <Compile Include="RoomTriggers\Triggers\RefugeeCampNelisteSpawn.cs" />
     <Compile Include="RoomTriggers\Triggers\TimespinnerGears.cs" />
-    <Compile Include="Screens\GameConsole.cs" />
+    <Compile Include="Screens\Console\ConsoleTextWriter.cs" />
+    <Compile Include="Screens\Console\GameConsole.cs" />
     <Compile Include="Archipelago\DeathLinker.cs" />
     <Compile Include="Archipelago\SlotDataParser.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
@@ -228,7 +237,7 @@
     <Compile Include="LevelObjects\ItemManipulators\CutscenePrologue4.cs" />
     <Compile Include="LevelObjects\ItemManipulators\ItemDropPickup.cs" />
     <Compile Include="PlatformHelper.cs" />
-    <Compile Include="Randomisation\ItemPlacers\ArchipelagoItemLocationRandomizer.cs" />
+    <Compile Include="Archipelago\ArchipelagoItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemPlacers\FullRandomItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemPlacers\ItemLocationRandomizer.cs" />
     <Compile Include="Randomisation\ItemUnlockingMap.cs" />
@@ -239,7 +248,6 @@
     <Compile Include="ReplacementObjects\PyramidKeys.cs" />
     <Compile Include="ReplacementObjects\TimespinnerSpindle.cs" />
     <Compile Include="IntermediateObjects\TriggerAfterLootDrop.cs" />
-    <Compile Include="DeRandomizer.cs" />
     <Compile Include="FamiliarManager.cs" />
     <Compile Include="Screens\ArchipelagoSelectionScreen.cs" />
     <Compile Include="Screens\OptionsMenuScreen.cs" />
@@ -266,7 +274,6 @@
     <Compile Include="Randomisation\Requirement.cs" />
     <Compile Include="Randomisation\ItemLocation.cs" />
     <Compile Include="IntermediateObjects\ItemInfo.cs" />
-    <Compile Include="Randomisation\ItemPlacers\ForwardFillingItemLocationRandomizer.cs" />
     <Compile Include="LevelObjects\ItemManipulators\OrbPedestal.cs" />
     <Compile Include="LevelObjects\ItemManipulators\TreasureChest.cs" />
     <Compile Include="Extensions\GameComponentCollectionExtensions.cs" />
