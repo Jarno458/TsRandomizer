@@ -15,6 +15,7 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 		internal override void OnPickup(Level level, GameplayScreen gameplayScreen)
 		{
+			base.OnPickup(level, gameplayScreen);
 			level.JukeBox.PlayCue(Timespinner.GameAbstractions.ESFX.DoorKeycardError);
 		}
 	}
