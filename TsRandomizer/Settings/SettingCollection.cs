@@ -110,19 +110,19 @@ namespace TsRandomizer.Settings
 			"Beeeeeeeeeeeeeeeeeeeeeeeeees!", true);
 
 		public SpriteGameSetting LunaisSprite = new SpriteGameSetting("Lunais",
-			"Sets the default Lunais sprite.", "Lunais", "Vanilla", true);
+			"Sets the default Lunais sprite.", "Lunais", "Content\\Sprites\\Heroes\\LunaisSprite.xnb", true);
 		public SpriteGameSetting LunaisEternalSprite = new SpriteGameSetting("Eternal",
-			"Sets the Lunais sprite used by the eternal brooch.", "Lunais", "Vanilla", true);
+			"Sets the Lunais sprite used by the eternal brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite.xnb", true);
 		public SpriteGameSetting LunaisGoddessSprite = new SpriteGameSetting("Goddess",
-			"Sets the Lunais sprite used by the goddess brooch.", "Lunais", "Vanilla", true);
+			"Sets the Lunais sprite used by the goddess brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite2.xnb", true);
 		public SpriteGameSetting MeyefSprite = new SpriteGameSetting("Meyef",
-			"Sets the default Meyef sprite.", "Meyef", "Vanilla", true);
+			"Sets the default Meyef sprite.", "Meyef", "Content\\Sprites\\Heroes\\FamiliarMeyef.xnb", true);
 		public SpriteGameSetting MeyefWyrmSprite = new SpriteGameSetting("Wyrm",
-			"Sets the Meyef Sprite used by the wyrm brooch.", "Meyef", "Vanilla", true);
+			"Sets the Meyef Sprite used by the wyrm brooch.", "Meyef", "Content\\Sprites\\Heroes\\FamiliarAltMeyef.xnb", true);
 		public SpriteGameSetting MerchantCrowSprite = new SpriteGameSetting("Merchant Crow",
-			"Sets the default Merchant Crow sprite.", "Crow", "Vanilla", true);
+			"Sets the default Merchant Crow sprite.", "Crow", "Content\\Sprites\\Heroes\\FamiliarCrow.xnb", true);
 		public SpriteGameSetting MerchantCrowGreedSprite = new SpriteGameSetting("Greed",
-			"Sets the Merchant Crow sprite used by the greed brooch.", "Crow", "Vanilla", true);
+			"Sets the Merchant Crow sprite used by the greed brooch.", "Crow", "Content\\Sprites\\Heroes\\FamiliarAltCrow.xnb", true);
 
 		public NumberGameSetting NumberOfOnScreenLogLines = new NumberGameSetting("Log Number of Lines",
 			"Max number of messages to show at the bottom left of the screen, 0 to turn onscreen log off", 0, 25, 1, 3, true);

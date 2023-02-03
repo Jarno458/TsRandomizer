@@ -133,6 +133,7 @@
     <Compile Include="LevelObjects\Other\CutsceneForest0.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
     <Compile Include="Archipelago\ArchipelagoUnlockingMap.cs" />
+    <Compile Include="Randomisation\SpriteManager.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />
@@ -295,6 +296,7 @@
     <Compile Include="Settings\GameSettingObjects\GameSetting.cs" />
     <Compile Include="Settings\JsonSettingsContractResolver.cs" />
     <Compile Include="Settings\SettingCollection.cs" />
+    <Compile Include="Settings\GameSettingObjects\SpriteGameSetting.cs" />
     <Compile Include="TimeSpinnerGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -21,11 +21,10 @@ namespace TsRandomizer.Settings.GameSettingObjects
 			set { CurrentValue = value; }
 		}
 
-		string realValue;
 		string Character;
 
 		public SpriteGameSetting(string name, string description, string character,
-			string defaultValue, bool canBeChangedInGame = false) 
+			string defaultValue, bool canBeChangedInGame = false)
 				: base(name, description, defaultValue, 20, canBeChangedInGame)
 		{
 			Character = character;
@@ -43,19 +42,49 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		{
 			try
 			{
-				var currentIndex = AllowedValues.IndexOf(realValue);
+				var currentIndex = AllowedValues.IndexOf(Value);
 				var newIndex = currentIndex + 1 >= AllowedValues.Count ? 0 : currentIndex + 1;
-				realValue = AllowedValues[newIndex];
-
-				var newString = realValue.Substring(realValue.LastIndexOf("\\") + 1).Replace(".xnb", "");
-				Value = newString;
+				Value = AllowedValues[newIndex];
 			}
 			catch
 			{
 				Value = (string)DefaultValue;
-				realValue = (string)DefaultValue;
 			}
 
+		}
+
+		internal override void UpdateMenuEntry(MenuEntry menuEntry)
+		{
+			base.UpdateMenuEntry(menuEntry);
+			string ShortName = Value.Substring(Value.LastIndexOf("\\") + 1).Replace(".xnb", "");
+			if (ShortName.Contains(Character))
+			{
+				ShortName = GetSpriteName(ShortName);
+			}
+			menuEntry.Text = $"{Name} - {ShortName}";
+		}
+
+		internal string GetSpriteName(string sprite)
+		{
+			switch (sprite)
+			{
+				case "LunaisSprite":
+					return "Lunais";
+				case "LunaisAltSprite":
+					return "Eternal Brooch";
+				case "LunaisAltSprite2":
+					return "Goddess Brooch";
+				case "FamiliarMeyef":
+					return "Meyef";
+				case "FamiliarAltMeyef":
+					return "Wyrm Brooch";
+				case "FamiliarCrow":
+					return "Merchant Crow";
+				case "FamiliarAltCrow":
+					return "Greed Brooch";
+				default:
+					return sprite;
+			}
 		}
 	}
 }
