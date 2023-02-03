@@ -110,11 +110,11 @@ namespace TsRandomizer.Settings
 			"Beeeeeeeeeeeeeeeeeeeeeeeeees!", true);
 
 		public SpriteGameSetting LunaisSprite = new SpriteGameSetting("Lunais",
-			"Sets the default Lunais sprite.", "Lunais", "Content\\Sprites\\Heroes\\LunaisSprite.xnb", true);
+			"Sets the default Lunais sprite.", "Lunais", "Content\\Sprites\\Heroes\\LunaisSprite.xnb", false);
 		public SpriteGameSetting LunaisEternalSprite = new SpriteGameSetting("Eternal",
-			"Sets the Lunais sprite used by the eternal brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite.xnb", true);
+			"Sets the Lunais sprite used by the eternal brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite.xnb", false);
 		public SpriteGameSetting LunaisGoddessSprite = new SpriteGameSetting("Goddess",
-			"Sets the Lunais sprite used by the goddess brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite2.xnb", true);
+			"Sets the Lunais sprite used by the goddess brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite2.xnb", false);
 		public SpriteGameSetting MeyefSprite = new SpriteGameSetting("Meyef",
 			"Sets the default Meyef sprite.", "Meyef", "Content\\Sprites\\Heroes\\FamiliarMeyef.xnb", true);
 		public SpriteGameSetting MeyefWyrmSprite = new SpriteGameSetting("Wyrm",

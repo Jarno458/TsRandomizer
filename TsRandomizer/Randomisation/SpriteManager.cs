@@ -17,6 +17,7 @@ namespace TsRandomizer.Randomisation
 
 			level.GCM.SpFamiliarCrow = LoadCustomSprite(level, "Sprites/Heroes/FamiliarMeyef", level.GameSave.GetSettings().MerchantCrowSprite.Value);
 			level.GCM.SpFamiliarAltCrow = LoadCustomSprite(level, "Sprites/Heroes/FamiliarAltCrow", level.GameSave.GetSettings().MerchantCrowGreedSprite.Value);
+			ReloadLunaisSprite(level);
 		}
 
 		static SpriteSheet LoadCustomSprite(Level level, string spriteKey, string spritePath)
@@ -24,6 +25,19 @@ namespace TsRandomizer.Randomisation
 			var atlas = level.GCM.AsDynamic()._textureAtlasDatabase;
 			atlas.TextureAtlasSpecifications[spriteKey].ContentPath = $"..//{spritePath}";
 			return level.GCM.AsDynamic().Get(spriteKey);
+		}
+
+		public static void ReloadLunaisSprite(Level level)
+		{
+			// Lunais is loaded before the GameplayScreen hook, and as such her `_sprite` needs to be reset or it will be the default
+			// Familiars are loaded after the hook and apply automatically
+			SpriteSheet lunaisSprite = level.GCM.SpLunais;
+			if (level.GameSave.HasRelic(Timespinner.GameAbstractions.Inventory.EInventoryRelicType.EternalBrooch))
+				lunaisSprite = level.GCM.SpAltLunais2;
+			else if (level.GameSave.HasRelic(Timespinner.GameAbstractions.Inventory.EInventoryRelicType.EmpireBrooch))
+				lunaisSprite = level.GCM.SpAltLunais;
+			
+			level.MainHero.AsDynamic()._sprite = lunaisSprite;
 		}
 	}
 }

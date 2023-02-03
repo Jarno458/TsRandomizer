@@ -17,6 +17,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsRandomizer.SeedGeneratah"
 		{694E46C5-FD46-4CC8-8B71-D381E154CCF7} = {694E46C5-FD46-4CC8-8B71-D381E154CCF7}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Custom Sprites", "Custom Sprites", "{BE00D980-7D0A-4052-BD70-BEF49766D096}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meyef", "Meyef", "{28EA9218-8134-432A-A4B3-EFC3F8E20289}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crow", "Crow", "{46D059D0-53ED-4E9B-82D4-176DE1B1EC89}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lunais", "Lunais", "{A7E91DA1-B1ED-42D5-A905-C603AF562FA2}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\Colin\source\repos\TestVersions\DRMFreeVersion\Custom Sprites\Lunais\Demon Twins.xnb = ..\..\..\..\Colin\source\repos\TestVersions\DRMFreeVersion\Custom Sprites\Lunais\Demon Twins.xnb
+		..\..\..\..\Colin\source\repos\TestVersions\DRMFreeVersion\Custom Sprites\Lunais\Neliste.xnb = ..\..\..\..\Colin\source\repos\TestVersions\DRMFreeVersion\Custom Sprites\Lunais\Neliste.xnb
+		..\..\..\..\Colin\source\repos\TestVersions\DRMFreeVersion\Custom Sprites\Lunais\Pano.xnb = ..\..\..\..\Colin\source\repos\TestVersions\DRMFreeVersion\Custom Sprites\Lunais\Pano.xnb
+		..\..\..\..\Colin\source\repos\TestVersions\DRMFreeVersion\Custom Sprites\Lunais\Selen.xnb = ..\..\..\..\Colin\source\repos\TestVersions\DRMFreeVersion\Custom Sprites\Lunais\Selen.xnb
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug DRM Free|Any CPU = Debug DRM Free|Any CPU
@@ -80,6 +94,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BE00D980-7D0A-4052-BD70-BEF49766D096} = {CD8103A2-141D-4AD0-B2FE-533D86875C9C}
+		{28EA9218-8134-432A-A4B3-EFC3F8E20289} = {BE00D980-7D0A-4052-BD70-BEF49766D096}
+		{46D059D0-53ED-4E9B-82D4-176DE1B1EC89} = {BE00D980-7D0A-4052-BD70-BEF49766D096}
+		{A7E91DA1-B1ED-42D5-A905-C603AF562FA2} = {BE00D980-7D0A-4052-BD70-BEF49766D096}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5C37E60C-1A8D-4AE6-812F-A9C3301D87B9}
