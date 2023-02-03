@@ -63,9 +63,10 @@ namespace TsRandomizer.Randomisation
 			// minus the xp from the base game, minus the xp from the call to GiveOrbExperience to run the level up logic
 			int extraXpToAdd = (int)(extraXp - 2);
 			var levelReflected = level.AsDynamic();
-			dynamic orbManager = lunais.AsDynamic()._orbManager;
-			var spellManager = lunais.AsDynamic()._spellManager;
-			var ringManager = lunais.AsDynamic()._passiveManager;
+			var lunaisReflected = lunais.AsDynamic();
+			dynamic orbManager = lunaisReflected._orbManager;
+			var spellManager = lunaisReflected._spellManager;
+			var ringManager = lunaisReflected._passiveManager;
 			Dictionary<int, Monster> enemies = levelReflected._enemies;
 			var deadMonsters = enemies.Where(e => e.Value.HP <= 0).Select(e => e.Value);
 
