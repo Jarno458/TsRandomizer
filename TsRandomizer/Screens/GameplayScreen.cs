@@ -90,16 +90,8 @@ namespace TsRandomizer.Screens
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave, settings.DamageRando.Value, settings.DamageRandoOverrides.Value);
 
 			int levelCap = Convert.ToInt32(settings.LevelCap.Value) - 1; //the levels are 0-indexed. who knew?
-			if (levelCap != 98)
-			{
-				var stats = saveFile.CharacterStats.AsDynamic();
-				if (levelCap == 0)
-				{
-					//to prevent 1st level up.
-					stats.NextLevelThreshold = 0;
-				}
-				stats.MaxLevel = levelCap;
-			}
+			var stats = saveFile.CharacterStats.AsDynamic().MaxLevel = levelCap;
+
 			BestiaryManager.UpdateBestiary(Level, settings);
 			if (!saveFile.GetSaveBool("IsFightingBoss"))
 				BestiaryManager.RefreshBossSaveFlags(Level);
