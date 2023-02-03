@@ -1,25 +1,29 @@
-﻿using System;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Timespinner.Core;
-using Timespinner.Core.Specifications;
+﻿using Timespinner.Core;
 using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
-using TsRandomizer.IntermediateObjects;
-using TsRandomizer.Settings;
 
 namespace TsRandomizer.Randomisation
 {
 	static class SpriteManager
 	{
-		public static void ReplaceLunaisSprite(Level level)
+		public static void ReloadCustomSprites(Level level)
 		{
-			var lunais = level.MainHero.AsDynamic();
+			level.GCM.SpLunais = LoadCustomSprite(level, "Sprites/Heroes/LunaisSprite", level.GameSave.GetSettings().LunaisSprite.Value);
+			level.GCM.SpAltLunais = LoadCustomSprite(level, "Sprites/Heroes/LunaisAltSprite", level.GameSave.GetSettings().LunaisEternalSprite.Value);
+			level.GCM.SpAltLunais2 = LoadCustomSprite(level, "Sprites/Heroes/LunaisAltSprite2", level.GameSave.GetSettings().LunaisGoddessSprite.Value);
+
+			level.GCM.SpFamiliarMeyef = LoadCustomSprite(level, "Sprites/Heroes/FamiliarMeyef", level.GameSave.GetSettings().MeyefSprite.Value);
+			level.GCM.SpFamiliarAltMeyef = LoadCustomSprite(level, "Sprites/Heroes/FamiliarAltMeyef", level.GameSave.GetSettings().MeyefWyrmSprite.Value);
+
+			level.GCM.SpFamiliarCrow = LoadCustomSprite(level, "Sprites/Heroes/FamiliarMeyef", level.GameSave.GetSettings().MerchantCrowSprite.Value);
+			level.GCM.SpFamiliarAltCrow = LoadCustomSprite(level, "Sprites/Heroes/FamiliarAltCrow", level.GameSave.GetSettings().MerchantCrowGreedSprite.Value);
+		}
+
+		static SpriteSheet LoadCustomSprite(Level level, string spriteKey, string spritePath)
+		{
 			var atlas = level.GCM.AsDynamic()._textureAtlasDatabase;
-			var spritePath = level.GameSave.GetSettings().LunaisSprite.Value; //.AllowedValues[2];
-			atlas.TextureAtlasSpecifications["Sprites/Heroes/LunaisSprite"].ContentPath = $"..//{spritePath}";
-			lunais._sprite = level.GCM.AsDynamic().Get("Sprites/Heroes/LunaisSprite");
+			atlas.TextureAtlasSpecifications[spriteKey].ContentPath = $"..//{spritePath}";
+			return level.GCM.AsDynamic().Get(spriteKey);
 		}
 	}
 }

@@ -1,9 +1,6 @@
 ﻿using System.IO;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using TsRandomizer.Extensions;
 using TsRandomizer.Screens.Menu;
