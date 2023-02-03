@@ -320,8 +320,15 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="app.config" />
+    <None Include="Custom Sprites\Lunais\Demon Twins.xnb" />
+    <None Include="Custom Sprites\Lunais\Neliste.xnb" />
+    <None Include="Custom Sprites\Lunais\Pano.xnb" />
+    <None Include="Custom Sprites\Lunais\Selen.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Custom Sprites\Crow\" />
+    <Folder Include="Custom Sprites\Meyef\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
