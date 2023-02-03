@@ -149,6 +149,7 @@ namespace TsRandomizer.LevelObjects
 				obj.OnUpdate();
 
 			var lunais = level.MainHero;
+
 			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
 
 			int hpCap = Convert.ToInt32(gameSettings.HpCap.Value);

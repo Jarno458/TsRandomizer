@@ -78,6 +78,12 @@ namespace TsRandomizer.RoomTriggers
 		{
 			var roomKey = new Roomkey(levelId, roomId);
 
+			var lunais = level.MainHero.AsDynamic();
+			var atlas = level.GCM.AsDynamic()._textureAtlasDatabase;
+			atlas.TextureAtlasSpecifications["Sprites/Heroes/LunaisSprite"].ContentPath = "../Custom Sprites/LunaisSpriteOriginal";
+			lunais._sprite = level.GCM.AsDynamic().Get("Sprites/Heroes/LunaisSprite");
+			
+
 			if (RoomTriggers.TryGetValue(roomKey, out var triggersForRoom))
 			{
 				var roomState = new RoomState {

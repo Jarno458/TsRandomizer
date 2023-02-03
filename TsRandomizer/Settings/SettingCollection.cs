@@ -27,6 +27,12 @@ namespace TsRandomizer.Settings
 					s => s.SaveStatueMinimapColor, s => s.PresentTransitionMinimapColor, s => s.PastTransitionMinimapColor,
 					s => s.HintedMinimapColor, s => s.FinalBossMinimapColor
 				}},
+			new GameSettingCategoryInfo { Name = "Sprites", Description = "Changes custom sprites",
+				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
+					s => s.LunaisSprite, s => s.LunaisEternalSprite, s => s.LunaisGoddessSprite,
+					s => s.MeyefSprite, s => s.MeyefWyrmSprite,
+					s => s.MerchantCrowSprite, s => s.MerchantCrowGreedSprite
+				}},
 			new GameSettingCategoryInfo { Name = "Archipelago", Description = "Settings related to games with the Archipelago multiworld.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.NumberOfOnScreenLogLines, s => s.OnScreenLogLineScreenTime, s => s.ShowSendItemsFromMe, s => s.ShowReceivedItemsFromMe,
@@ -102,6 +108,21 @@ namespace TsRandomizer.Settings
 
 		public OnOffGameSetting BeeTrap = new OnOffGameSetting("Bee's",
 			"Beeeeeeeeeeeeeeeeeeeeeeeeees!", true);
+
+		public SpriteGameSetting LunaisSprite = new SpriteGameSetting("Lunais",
+			"Sets the default Lunais sprite.", "Lunais", "Vanilla", true);
+		public SpriteGameSetting LunaisEternalSprite = new SpriteGameSetting("Eternal",
+			"Sets the Lunais sprite used by the eternal brooch.", "Lunais", "Vanilla", true);
+		public SpriteGameSetting LunaisGoddessSprite = new SpriteGameSetting("Goddess",
+			"Sets the Lunais sprite used by the goddess brooch.", "Lunais", "Vanilla", true);
+		public SpriteGameSetting MeyefSprite = new SpriteGameSetting("Meyef",
+			"Sets the default Meyef sprite.", "Meyef", "Vanilla", true);
+		public SpriteGameSetting MeyefWyrmSprite = new SpriteGameSetting("Wyrm",
+			"Sets the Meyef Sprite used by the wyrm brooch.", "Meyef", "Vanilla", true);
+		public SpriteGameSetting MerchantCrowSprite = new SpriteGameSetting("Merchant Crow",
+			"Sets the default Merchant Crow sprite.", "Crow", "Vanilla", true);
+		public SpriteGameSetting MerchantCrowGreedSprite = new SpriteGameSetting("Greed",
+			"Sets the Merchant Crow sprite used by the greed brooch.", "Crow", "Vanilla", true);
 
 		public NumberGameSetting NumberOfOnScreenLogLines = new NumberGameSetting("Log Number of Lines",
 			"Max number of messages to show at the bottom left of the screen, 0 to turn onscreen log off", 0, 25, 1, 3, true);
