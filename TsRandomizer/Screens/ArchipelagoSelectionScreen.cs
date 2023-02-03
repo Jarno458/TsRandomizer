@@ -12,7 +12,6 @@ using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
-using TsRandomizer.Randomisation.ItemPlacers;
 using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Screens
@@ -159,15 +158,9 @@ namespace TsRandomizer.Screens
 
 		void OnConnectEntrySelected(PlayerIndex playerIndex)
 		{
-			var server = "ws://" + values[ServerIndex];
-			if (!values[ServerIndex].Contains(":"))
-				server += ":38281";
-			else if (values[ServerIndex].EndsWith(":"))
-				server += "38281";
-
 			var password = string.IsNullOrEmpty(values[PasswordIndex]) ? null : values[PasswordIndex];
 
-			var result = Client.Connect(server, values[UserIndex], password);
+			var result = Client.Connect(values[ServerIndex], values[UserIndex], password);
 			if (!result.Successful)
 			{
 				var failure = (LoginFailure)result;
@@ -184,10 +177,12 @@ namespace TsRandomizer.Screens
 
 					var slotDataParser = new SlotDataParser(connected.SlotData, Client.SeedString, connected.Slot);
 
-					difficultyMenu.SetSeedAndFillingMethod(slotDataParser.GetSeed(), FillingMethod.Archipelago,
+					var seed = slotDataParser.GetSeed();
+
+					difficultyMenu.SetSeedAndFillingMethod(seed, FillingMethod.Archipelago,
 						slotDataParser.GetSettings());
 					difficultyMenu.HookOnDifficultySelected(saveGame => {
-						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = server;
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = values[ServerIndex];
 						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = values[UserIndex];
 						if (!string.IsNullOrEmpty(values[PasswordIndex]))
 							saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePasswordKey] =
@@ -197,6 +192,12 @@ namespace TsRandomizer.Screens
 						saveGame.DataKeyInts[ArchipelagoItemLocationMap.GameItemIndex] = 0;
 						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePyramidsKeysUnlock] =
 							slotDataParser.GetPyramidKeysGate().ToString();
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePastPyramidsKeysUnlock] =
+							slotDataParser.GetPastPyramidKeysGate().ToString();
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePresentPyramidsKeysUnlock] =
+							slotDataParser.GetPresentPyramidKeysGate().ToString();
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveTimePyramidsKeysUnlock] =
+							slotDataParser.GetTimePyramidKeysGate().ToString();
 						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePersonalItemIds] =
 							JsonConvert.SerializeObject(slotDataParser.GetPersonalItems());
 					});
@@ -204,7 +205,7 @@ namespace TsRandomizer.Screens
 				else if (saveSelectScreen != null)
 				{
 					saveSelectScreen.UpdateSave(saveGame => {
-						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = server;
+						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = values[ServerIndex];
 						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = values[UserIndex];
 						if (!string.IsNullOrEmpty(values[PasswordIndex]))
 							saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePasswordKey] =

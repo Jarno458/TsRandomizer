@@ -9,20 +9,6 @@ namespace TsRandomizer.Extensions
 {
 	static class DictionaryExtensions
 	{
-		public static bool TryParsePyramidKeysUnlock(this Dictionary<string, string> dataKeyStrings, string key, out Requirement requirement)
-		{
-			try
-			{
-				requirement = SlotDataParser.GetPyramidKeysGate(dataKeyStrings[key]);
-				return true;
-			}
-			catch
-			{
-				requirement = Requirement.None;
-				return false;
-			}
-		}
-
 		public static bool TryParsePersonalItems(this Dictionary<string, string> dataKeyStrings, 
 			string key, out Dictionary<ItemKey, ItemIdentifier> personalItems)
 		{

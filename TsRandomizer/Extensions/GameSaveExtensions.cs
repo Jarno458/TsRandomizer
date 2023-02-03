@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
@@ -17,12 +19,29 @@ namespace TsRandomizer.Extensions
 		const string MeleeOrbPrefixKey = "TsRandomizerHasMeleeOrb";
 		const string FamiliarPrefixKey = "TsRandomizerHasFamiliar";
 		const string SaveFileSettingKey = "TSRandomizerGameSettings";
-
+		const string GameSaveRisingTidesKey = "TsRandomizerRisingTides";
+		
 		internal static Seed? GetSeed(this GameSave gameSave)
 		{
 			if (gameSave.DataKeyStrings.TryGetValue(SeedSaveFileKey, out var seedString)
-				&& Seed.TryParse(seedString, out var seed))
+				&& Seed.TryParse(seedString, TryGetRisingTides(gameSave), out var seed))
 				return seed;
+
+			return null;
+		}
+
+		static RisingTides TryGetRisingTides(GameSave gameSave)
+		{
+			if (gameSave.DataKeyStrings.TryGetValue(GameSaveRisingTidesKey, out var risingTidesJson))
+			{
+				try
+				{
+					return JsonConvert.DeserializeObject<RisingTides>(risingTidesJson);
+				}
+				catch
+				{
+				}
+			}
 
 			return null;
 		}
@@ -30,13 +49,14 @@ namespace TsRandomizer.Extensions
 		internal static void SetSeed(this GameSave gameSave, Seed seed)
 		{
 			gameSave.DataKeyStrings[SeedSaveFileKey] = seed.ToString();
+			gameSave.DataKeyStrings[GameSaveRisingTidesKey] = JsonConvert.SerializeObject(seed.FloodFlags);
 			gameSave.DataKeyInts[ConcussionCountFileKey] = 0;
 		}
 
 		internal static FillingMethod GetFillingMethod(this GameSave gameSave)
 		{
 			if (!gameSave.DataKeyStrings.ContainsKey(FillMethodSaveFileKey))
-				return FillingMethod.Forward;
+				return FillingMethod.Random;
 
 			if (!Enum.TryParse(gameSave.DataKeyStrings[FillMethodSaveFileKey], out FillingMethod fillingMethod))
 				throw new Exception("Cannot parse filling method");

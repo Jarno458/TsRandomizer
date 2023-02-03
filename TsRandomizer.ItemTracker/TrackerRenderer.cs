@@ -182,7 +182,7 @@ namespace TsRandomizerItemTracker
 			if (AnimationIndexes.TryGetValue(itemInfo, out int index))
 				return index;
 
-			var animationIndex = new SingleItemInfo(itemInfo).AnimationIndex;
+			var animationIndex = itemInfo.GetAnimationIndex();
 
 			AnimationIndexes.Add(itemInfo, animationIndex);
 

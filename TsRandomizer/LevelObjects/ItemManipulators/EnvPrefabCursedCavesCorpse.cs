@@ -19,7 +19,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		bool hasReplacedItemScript;
 		int animationIndex;
 
-		public EnvPrefabCursedCavesCorpse(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
+		public EnvPrefabCursedCavesCorpse(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+			: base(typedObject, gameplayScreen, itemLocation)
 		{
 		}
 
@@ -31,7 +32,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			Dynamic._hasKeycard = !IsPickedUp; 
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (ItemInfo == null || hasReplacedItemScript)
 				return;
@@ -46,7 +47,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 			animationIndex = ItemInfo.AnimationIndex;
 
-			Scripts.UpdateRelicOrbGetToastToItem(Level, ItemInfo);
+			UpdateRelicOrbGetToastToItem();
 
 			var rewardItemDelegate = Scripts.Single(s =>
 				{

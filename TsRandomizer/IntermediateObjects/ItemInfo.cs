@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Screens;
 
 namespace TsRandomizer.IntermediateObjects
 {
-	public abstract class ItemInfo : IEquatable<ItemInfo>
+	abstract class ItemInfo : IEquatable<ItemInfo>
 	{
         public abstract ItemIdentifier Identifier { get; }
 		public abstract Enum TreasureLootType { get; }
 		public abstract int AnimationIndex { get; }
 		public abstract BestiaryItemDropSpecification BestiaryItemDropSpecification { get; }
 		internal abstract Requirement Unlocks { get; }
-		public abstract void OnPickup(Level level);
+		internal abstract void OnPickup(Level level, GameplayScreen gameplayScreen);
 
 		public bool IsProgression => Unlocks != Requirement.None;
 

@@ -26,7 +26,7 @@ namespace TsRandomizer
 			return new Seed(id, options);
 		}
 
-		public static bool TryParse(string seedString, out Seed seed)
+		public static bool TryParse(string seedString, RisingTides floodFlags, out Seed seed)
 		{
 			ExceptionLogger.SetSeedContext(seedString);
 
@@ -34,7 +34,7 @@ namespace TsRandomizer
 				&& uint.TryParse(seedString.Substring(0, Length - SeedOptions.Length), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out var parsedSeedKey)
 				&& SeedOptions.TryParse(seedString, out var options))
 			{
-				seed = new Seed(parsedSeedKey, options);
+				seed = new Seed(parsedSeedKey, options, floodFlags);
 				return true;
 			}
 

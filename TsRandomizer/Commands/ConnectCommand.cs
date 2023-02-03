@@ -9,6 +9,7 @@ using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation.ItemPlacers;
 using TsRandomizer.Screens;
+using TsRandomizer.Screens.Console;
 using TsRandomizer.Settings;
 using ScreenManager = TsRandomizer.Screens.ScreenManager;
 
@@ -108,6 +109,12 @@ namespace TsRandomizer.Commands
 				saveGame.DataKeyInts[ArchipelagoItemLocationMap.GameItemIndex] = 0;
 				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePyramidsKeysUnlock] =
 					slotDataParser.GetPyramidKeysGate().ToString();
+				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePastPyramidsKeysUnlock] =
+					slotDataParser.GetPastPyramidKeysGate().ToString();
+				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePresentPyramidsKeysUnlock] =
+					slotDataParser.GetPresentPyramidKeysGate().ToString();
+				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveTimePyramidsKeysUnlock] =
+					slotDataParser.GetTimePyramidKeysGate().ToString();
 				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePersonalItemIds] =
 					JsonConvert.SerializeObject(slotDataParser.GetPersonalItems());
 			};

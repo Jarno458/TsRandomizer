@@ -23,7 +23,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	
 		bool hasAwardedItem;
 
-		public DownloadEvent(Mobile typedObject, ItemLocation itemLocation) : base(typedObject, itemLocation)
+		public DownloadEvent(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+			: base(typedObject, gameplayScreen, itemLocation)
 		{
 			if (ItemInfo == null || IsPickedUp || hasAwardedItem || ((List<Appendage>)Dynamic.Appendages).Any())
 				return;
@@ -38,7 +39,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 		}*/
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (ItemInfo == null || hasAwardedItem || !Dynamic._isTriggered || !Dynamic._wasActivating)
 				return;

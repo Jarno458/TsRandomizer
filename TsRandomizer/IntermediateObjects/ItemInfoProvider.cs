@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.IntermediateObjects
@@ -16,9 +17,7 @@ namespace TsRandomizer.IntermediateObjects
 		readonly Dictionary<EInventoryFamiliarType, ItemInfo> familierItems;
 		readonly Dictionary<int, ItemInfo> orbItems;
 		readonly Dictionary<EItemType, ItemInfo> statItems;
-
-		readonly Dictionary<ItemInfo, ProgressiveItemInfo> progressiveItems;
-
+		
 		public ItemInfoProvider(SeedOptions options, ItemUnlockingMap unlockingMap)
 		{
 			this.unlockingMap = unlockingMap;
@@ -30,70 +29,9 @@ namespace TsRandomizer.IntermediateObjects
 			orbItems = new Dictionary<int, ItemInfo>();
 			statItems = new Dictionary<EItemType, ItemInfo>();
 
-			progressiveItems = new Dictionary<ItemInfo, ProgressiveItemInfo>();
-
-			MakeGearsProgressive();
-			MakeBroochProgressive();
-
-			if (options.ProgressiveKeycard)
-				MakeKeycardsProgressive();
-
-			if (options.ProgressiveVerticalMovement)
-				MakeVerticalMovementProgressive();
+			LoadCustomItems();
 		}
-
-		void MakeGearsProgressive()
-		{
-			var gear1 = Get(EInventoryRelicType.TimespinnerGear1);
-			var gear2 = Get(EInventoryRelicType.TimespinnerGear2);
-			var gear3 = Get(EInventoryRelicType.TimespinnerGear3);
-
-			var progressiveItem = new ProgressiveItemInfo(gear1, gear2, gear3);
-
-			progressiveItems.Add(gear1, progressiveItem);
-			progressiveItems.Add(gear2, progressiveItem);
-			progressiveItems.Add(gear3, progressiveItem);
-		}
-
-		void MakeBroochProgressive()
-		{
-			var empireBrooch = Get(EInventoryRelicType.EmpireBrooch);
-			var godestBrooch = Get(EInventoryRelicType.EternalBrooch);
-
-			var progressiveItem = new ProgressiveItemInfo(empireBrooch, godestBrooch);
-
-			progressiveItems.Add(empireBrooch, progressiveItem);
-			progressiveItems.Add(godestBrooch, progressiveItem);
-		}
-
-		void MakeKeycardsProgressive()
-		{
-			var cardA = Get(EInventoryRelicType.ScienceKeycardA);
-			var cardB = Get(EInventoryRelicType.ScienceKeycardB);
-			var cardC = Get(EInventoryRelicType.ScienceKeycardC);
-			var cardD = Get(EInventoryRelicType.ScienceKeycardD);
-
-			var progressiveItem = new ProgressiveItemInfo(cardD, cardC, cardB, cardA);
-
-			progressiveItems.Add(cardA, progressiveItem);
-			progressiveItems.Add(cardB, progressiveItem);
-			progressiveItems.Add(cardC, progressiveItem);
-			progressiveItems.Add(cardD, progressiveItem);
-		}
-
-		void MakeVerticalMovementProgressive()
-		{
-			var doubleJump = Get(EInventoryRelicType.DoubleJump);
-			var lightwall = Get(EInventoryOrbType.Barrier, EOrbSlot.Spell);
-			var celestialSash = Get(EInventoryRelicType.EssenceOfSpace);
-
-			var progressiveItem = new ProgressiveItemInfo(doubleJump, lightwall, celestialSash);
-
-			progressiveItems.Add(doubleJump, progressiveItem);
-			progressiveItems.Add(lightwall, progressiveItem);
-			progressiveItems.Add(celestialSash, progressiveItem);
-		}
-
+		
 		public ItemInfo Get(ItemIdentifier identifier)
 		{
 			switch (identifier.LootType)
@@ -108,34 +46,22 @@ namespace TsRandomizer.IntermediateObjects
 			}
 		}
 
-		public ItemInfo Get(EInventoryRelicType relicItem)
-		{
-			var item = GetOrAdd(relicItems, relicItem, () => CreateNew(new ItemIdentifier(relicItem)));
+		public virtual ItemInfo Get(EInventoryRelicType relicItem) =>
+			GetOrAdd(relicItems, relicItem, () => CreateNew(new ItemIdentifier(relicItem)));
 
-			return progressiveItems.TryGetValue(item, out var progressiveItem)
-				? progressiveItem
-				: item;
-		}
+		public virtual ItemInfo Get(EInventoryOrbType orbType, EOrbSlot orbSlot) =>
+			GetOrAdd(orbItems, GetOrbKey(orbType, orbSlot), () => CreateNew(new ItemIdentifier(orbType, orbSlot)));
 
-		public ItemInfo Get(EInventoryOrbType orbType, EOrbSlot orbSlot)
-		{
-			var orb = GetOrAdd(orbItems, GetOrbKey(orbType, orbSlot), () => CreateNew(new ItemIdentifier(orbType, orbSlot)));
-
-			return progressiveItems.TryGetValue(orb, out var progressiveItem)
-				? progressiveItem
-				: orb;
-		}
-
-		public ItemInfo Get(EInventoryUseItemType useItem) =>
+		public virtual ItemInfo Get(EInventoryUseItemType useItem) =>
 			GetOrAdd(useItems, useItem, () => CreateNew(new ItemIdentifier(useItem)));
 
-		public ItemInfo Get(EInventoryEquipmentType equipmentItem) =>
+		public virtual ItemInfo Get(EInventoryEquipmentType equipmentItem) =>
 			GetOrAdd(enquipmentItems, equipmentItem, () => CreateNew(new ItemIdentifier(equipmentItem)));
 
-		public ItemInfo Get(EInventoryFamiliarType familiarItem) =>
+		public virtual ItemInfo Get(EInventoryFamiliarType familiarItem) =>
 			GetOrAdd(familierItems, familiarItem, () => CreateNew(new ItemIdentifier(familiarItem)));
 
-		public ItemInfo Get(EItemType stat) =>
+		public virtual ItemInfo Get(EItemType stat) =>
 			GetOrAdd(statItems, stat, () => CreateNew(new ItemIdentifier(stat)));
 
 		static int GetOrbKey(EInventoryOrbType orbType, EOrbSlot orbSlot) => ((int)orbType * 10) + (int)orbSlot;
@@ -150,6 +76,12 @@ namespace TsRandomizer.IntermediateObjects
 			var newItem = createNew();
 			dictionary[item] = newItem;
 			return newItem;
+		}
+
+		void LoadCustomItems()
+		{
+			foreach (var item in CustomItem.GetAllCustomItems(unlockingMap))
+				useItems.Add(item.Identifier.UseItem, item);
 		}
 	}
 }

@@ -4,6 +4,7 @@ using Timespinner.GameAbstractions.HUD;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Screens;
 
 
 namespace TsRandomizer.LevelObjects.Other
@@ -11,7 +12,7 @@ namespace TsRandomizer.LevelObjects.Other
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Cutscene.CutsceneCity2")]
 	class CutsceneCity2 : LevelObject
 	{
-		public CutsceneCity2(Mobile typedObject) : base(typedObject)
+		public CutsceneCity2(Mobile typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
 		{
 		}
 

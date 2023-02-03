@@ -12,7 +12,7 @@ namespace TsRandomizer.LevelObjects.Other
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Cutscene.CutsceneCavesPast5")]
 	class CutsceneCavesPast5 : LevelObject
 	{
-		public CutsceneCavesPast5(Mobile typedObject) : base(typedObject)
+		public CutsceneCavesPast5(Mobile typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
 		{
 		}
 
@@ -34,7 +34,7 @@ namespace TsRandomizer.LevelObjects.Other
 			((Queue<ScriptAction>)LevelReflected._waitingScripts).Clear();
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 		}
 	}

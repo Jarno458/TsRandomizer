@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using TsRandomizer.Archipelago;
 using TsRandomizer.Screens;
+using TsRandomizer.Screens.Console;
 
 namespace TsRandomizer.Commands
 {

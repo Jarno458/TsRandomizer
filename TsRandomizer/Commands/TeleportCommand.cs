@@ -1,6 +1,7 @@
 ﻿using System;
 using Timespinner.GameAbstractions.Gameplay;
 using TsRandomizer.Screens;
+using TsRandomizer.Screens.Console;
 
 namespace TsRandomizer.Commands
 {

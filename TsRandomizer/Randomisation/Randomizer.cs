@@ -2,39 +2,41 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Timespinner.GameAbstractions.Saving;
+using TsRandomizer.Archipelago;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.Randomisation.ItemPlacers;
+using TsRandomizer.Screens;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.Randomisation
 {
 	class Randomizer
 	{
-		public static ItemLocationMap Randomize(Seed seed, FillingMethod fillingMethod, GameSave saveGame, bool progressionOnly = false)
+		public static ItemLocationMap Randomize(
+			Seed seed, SettingCollection settings, FillingMethod fillingMethod, GameSave saveGame, bool progressionOnly = false)
 		{
-			var unlockingMap = new ItemUnlockingMap(seed);
-			var itemInfoProvider = new ItemInfoProvider(seed.Options, unlockingMap);
-
-			ItemLocationRandomizer randomizer;
+			CustomItem.Initialize();
 
 			switch (fillingMethod)
 			{
-				case FillingMethod.Forward:
-					randomizer = new ForwardFillingItemLocationRandomizer(seed, itemInfoProvider, unlockingMap);
-					break;
-
 				case FillingMethod.Random:
-					randomizer = new FullRandomItemLocationRandomizer(seed, itemInfoProvider, unlockingMap);
-					break;
+					var defaultUnlockingMap = new DefaultItemUnlockingMap(seed);
+					var progressiveItemInfoProvider = new ProgressiveItemProvider(seed.Options, defaultUnlockingMap);
+
+					return new FullRandomItemLocationRandomizer(seed, settings, progressiveItemInfoProvider, defaultUnlockingMap)
+						.GenerateItemLocationMap(progressionOnly);
 
 				case FillingMethod.Archipelago:
-					randomizer = new ArchipelagoItemLocationRandomizer(seed, itemInfoProvider, unlockingMap, saveGame);
-					break;
+					var archipelagoUnlockingMap = new ArchipelagoUnlockingMap(seed, saveGame);
+					var itemInfoProvider = new ItemInfoProvider(seed.Options, archipelagoUnlockingMap);
+
+					return new ArchipelagoItemLocationRandomizer(seed, itemInfoProvider, archipelagoUnlockingMap, saveGame)
+						.GenerateItemLocationMap(progressionOnly);
 
 				default:
 					throw new NotImplementedException($"filling method {fillingMethod} is not implemented");
 			}
-
-			return randomizer.GenerateItemLocationMap(progressionOnly);
 		}
 
 		public static GenerationResult Generate(FillingMethod fillingMethod, SeedOptions options)
@@ -42,6 +44,7 @@ namespace TsRandomizer.Randomisation
 			var random = new Random();
 
 			Seed seed;
+			var settings = new SettingCollection();
 			var itterations = 0;
 
 			var stopwatch = new Stopwatch();
@@ -51,11 +54,11 @@ namespace TsRandomizer.Randomisation
 			{
 				itterations++;
 				seed = Seed.GenerateRandom(options, random);
-			} while (!IsBeatable(seed, fillingMethod));
+			} while (!IsBeatable(seed, settings, fillingMethod));
 
 			stopwatch.Stop();
 
-			Console.Out.WriteLine($"Spend {itterations} itterations to generate seed {seed}, in {stopwatch.Elapsed}");
+			ScreenManager.Console.AddLine($"Spend {itterations} itterations to generate seed {seed}, in {stopwatch.Elapsed}");
 
 			return new GenerationResult
 			{
@@ -65,8 +68,8 @@ namespace TsRandomizer.Randomisation
 			};
 		}
 
-		public static bool IsBeatable(Seed seed, FillingMethod fillingMethod) =>
-			Randomize(seed, fillingMethod, null, true).IsBeatable();
+		public static bool IsBeatable(Seed seed, SettingCollection settings, FillingMethod fillingMethod) =>
+			Randomize(seed, settings, fillingMethod, null, true).IsBeatable();
 	}
 
 	class GenerationResult : IEqualityComparer<GenerationResult>

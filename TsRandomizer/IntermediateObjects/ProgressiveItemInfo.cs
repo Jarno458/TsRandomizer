@@ -4,12 +4,13 @@ using System.Linq;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Screens;
 
 namespace TsRandomizer.IntermediateObjects
 {
 	class ProgressiveItemInfo : ItemInfo
 	{
-		ItemInfo[] Items { get; }
+		public ItemInfo[] Items { get; }
 
 		int index;
 		ItemInfo CurrentItem => index < Items.Length ? Items[index] : Items.Last();
@@ -19,7 +20,7 @@ namespace TsRandomizer.IntermediateObjects
 		public override int AnimationIndex => CurrentItem.AnimationIndex;
 		public override BestiaryItemDropSpecification BestiaryItemDropSpecification => CurrentItem.BestiaryItemDropSpecification;
 		internal override Requirement Unlocks => CurrentItem.Unlocks;
-		public override void OnPickup(Level level) => CurrentItem.OnPickup(level);
+		internal override void OnPickup(Level level, GameplayScreen gameplayScreen) => CurrentItem.OnPickup(level, gameplayScreen);
 
 		public ProgressiveItemInfo(params ItemInfo[] items) : this(items, 0)
 		{
@@ -31,10 +32,7 @@ namespace TsRandomizer.IntermediateObjects
 			index = i;
 		}
 
-		public ProgressiveItemInfo Clone()
-		{
-			return new ProgressiveItemInfo(Items, index);
-		}
+		public ProgressiveItemInfo Clone() => new ProgressiveItemInfo(Items, index);
 
 		public void Reset() => index = 0;
 
@@ -50,9 +48,6 @@ namespace TsRandomizer.IntermediateObjects
 				yield return Items[i];
 		}
 
-		public override string ToString()
-		{
-			return string.Join(@" -> ", Items.Select(i => i.ToString()));
-		}
+		public override string ToString() => string.Join(@" -> ", Items.Select(i => i.ToString()));
 	}
 }

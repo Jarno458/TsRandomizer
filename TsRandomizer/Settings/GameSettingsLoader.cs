@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using TsRandomizer.Extensions;
 using TsRandomizer.Randomisation;
 
 namespace TsRandomizer.Settings
 {
 	public static class GameSettingsLoader
 	{
-		const string SaveFileSettingKey = "TSRandomizerGameSettings";
-
 		const string SettingSubFolderName = "settings";
 
 		public static SettingCollection LoadSettingsFromFile()
@@ -59,8 +59,6 @@ namespace TsRandomizer.Settings
 				var filename = GetSettingsFilePath();
 
 				File.WriteAllText(filename, jsonSettings);
-
-				Console.WriteLine($"Writing settings as: {jsonSettings}");
 			}
 			catch (Exception e)
 			{
@@ -163,8 +161,7 @@ namespace TsRandomizer.Settings
 			if (settings.DamageRando.Value == "Manual"
 					  && slotData.TryGetValue("DamageRandoOverrides", out var damageRandoOverrides))
 			{
-				var overrides = new Dictionary<string, OrbDamageOdds>();
-				JsonConvert.PopulateObject(damageRandoOverrides.ToString(), overrides);
+				var overrides = ((JObject)damageRandoOverrides).ToObject<Dictionary<string, OrbDamageOdds>>();
 				settings.DamageRandoOverrides.Value = FixOrbNames(overrides);
 			}
 
@@ -241,27 +238,23 @@ namespace TsRandomizer.Settings
 			}
 			if (slotData.TryGetValue("ShowBestiary", out var showBestiary))
 				settings.ShowBestiary.Value = IsTrue(showBestiary);
-
-			if (slotData.TryGetValue("SparrowTrap", out var sparrowTrap))
-				settings.SparrowTrap.Value = IsTrue(sparrowTrap);
-
-			if (slotData.TryGetValue("NeurotoxinTrap", out var neurotoxinTrap))
-				settings.NeurotoxinTrap.Value = IsTrue(neurotoxinTrap);
-
-			if (slotData.TryGetValue("ChaosTrap", out var chaosTrap))
-				settings.ChaosTrap.Value = IsTrue(chaosTrap);
-
-			if (slotData.TryGetValue("PoisonTrap", out var poisonTrap))
-				settings.PoisonTrap.Value = IsTrue(poisonTrap);
-
 			if (slotData.TryGetValue("HpCap", out var hpCap))
 				settings.HpCap.Value = ToInt(hpCap, 999);
-
 			if (slotData.TryGetValue("ShowDrops", out var showDrops))
 				settings.ShowDrops.Value = IsTrue(showDrops);
-
 			if (slotData.TryGetValue("DeathLink", out var deathLink))
 				settings.DeathLink.Value = IsTrue(deathLink);
+
+			if (slotData.TryGetValue("Traps", out var trapsJObject))
+			{
+				var traps = ((JArray)trapsJObject).ToObject<string[]>().ToHashSet();
+
+				settings.SparrowTrap.Value = traps.Contains("Meteor Sparrow Trap");
+				settings.PoisonTrap.Value = traps.Contains("Poison Trap");
+				settings.ChaosTrap.Value = traps.Contains("Chaos Trap");
+				settings.NeurotoxinTrap.Value = traps.Contains("Neurotoxin Trap");
+				settings.BeeTrap.Value = traps.Contains("Bee Trap");
+			}
 
 			ExceptionLogger.SetSettingsContext(settings);
 
@@ -314,12 +307,12 @@ namespace TsRandomizer.Settings
 		internal static string ToJson(SettingCollection settings, bool intended) =>
 			JsonConvert.SerializeObject(settings, intended ? Formatting.Indented : Formatting.None);
 
-		static bool IsTrue(object o)
+		static bool IsTrue(object value)
 		{
-			if (o is bool b) return b;
-			if (o is string s) return bool.Parse(s);
-			if (o is int i) return i > 0;
-			if (o is long l) return l > 0;
+			if (value is bool b) return b;
+			if (value is string s) return bool.Parse(s);
+			if (value is int i) return i > 0;
+			if (value is long l) return l > 0;
 
 			return false;
 		}

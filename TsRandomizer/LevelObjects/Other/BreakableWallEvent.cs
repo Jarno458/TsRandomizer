@@ -11,7 +11,7 @@ namespace TsRandomizer.LevelObjects.Other
 	{
 		SeedOptions options;
 
-		public BreakableWallEvent(Mobile typedObject) : base(typedObject)
+		public BreakableWallEvent(Mobile typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
 		{
 		}
 
@@ -29,7 +29,7 @@ namespace TsRandomizer.LevelObjects.Other
 				Dynamic.IsUnderwater = false;
 		}
 
-		protected override void OnUpdate(GameplayScreen gameplayScreen)
+		protected override void OnUpdate()
 		{
 			if (!options.EyeSpy)
 				return;

@@ -5,16 +5,19 @@ namespace TsRandomizer
 {
 	class RisingTides
 	{
-		public bool BasementHigh { get; }
-		public bool Basement { get; }
-		public bool Xarion { get; }
-		public bool Maw { get; }
-		public bool PyramidShaft { get; }
-		public bool BackPyramid { get; }
-		public bool CastleMoat { get; }
-		public bool CastleCourtyard { get; }
-		public bool LakeDesolation { get; }
-		public bool DryLakeSerene { get; }
+		public bool BasementHigh { get; set; }
+		public bool Basement { get; set; }
+		public bool Xarion { get; set; }
+		public bool Maw { get; set; }
+		public bool PyramidShaft { get; set; }
+		public bool BackPyramid { get; set; }
+		public bool CastleMoat { get; set; }
+		public bool CastleCourtyard { get; set; }
+		public bool LakeDesolation { get; set; }
+		public bool DryLakeSerene { get; set; }
+
+		// used for deserialization
+		public RisingTides(){}
 
 		public RisingTides(uint seedId, SeedOptions options)
 		{

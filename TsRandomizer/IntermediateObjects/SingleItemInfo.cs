@@ -2,10 +2,11 @@
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Screens;
 
 namespace TsRandomizer.IntermediateObjects
 {
-	public class SingleItemInfo : ItemInfo
+	class SingleItemInfo : ItemInfo
 	{
 		public override ItemIdentifier Identifier { get; }
 		internal override Requirement Unlocks { get; }
@@ -16,19 +17,14 @@ namespace TsRandomizer.IntermediateObjects
 
 		Action<Level> PickupAction { get; }
 
-		public SingleItemInfo(ItemIdentifier identifier)
-		{
-			Identifier = identifier;
-		}
-
 		internal SingleItemInfo(ItemUnlockingMap unlockingMap, ItemIdentifier identifier)
 		{
 			Identifier = identifier;
 			Unlocks = unlockingMap.GetAllUnlock(identifier);
-			PickupAction = unlockingMap.GetPickupAction(identifier);
+			PickupAction = unlockingMap?.GetPickupAction(identifier);
 		}
 
-		public override void OnPickup(Level level)
+		internal override void OnPickup(Level level, GameplayScreen gameplayScreen)
 		{
 			PickupAction?.Invoke(level);
 		}
