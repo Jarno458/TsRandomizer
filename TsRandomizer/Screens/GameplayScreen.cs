@@ -88,6 +88,7 @@ namespace TsRandomizer.Screens
 			if (settings.DamageRando.Value != "Off")
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave, settings.DamageRando.Value, settings.DamageRandoOverrides.Value);
 
+			SpriteManager.ReloadCustomSprites(Level);
 			BestiaryManager.UpdateBestiary(Level, settings);
 			if (!saveFile.GetSaveBool("IsFightingBoss"))
 				BestiaryManager.RefreshBossSaveFlags(Level);

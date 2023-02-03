@@ -78,8 +78,6 @@ namespace TsRandomizer.RoomTriggers
 		{
 			var roomKey = new Roomkey(levelId, roomId);
 
-			SpriteManager.ReloadCustomSprites(level);
-
 			if (RoomTriggers.TryGetValue(roomKey, out var triggersForRoom))
 			{
 				var roomState = new RoomState {
