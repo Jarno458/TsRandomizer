@@ -31,8 +31,9 @@ namespace TsRandomizer.Randomisation
 		public static void UpdateHitRegistry(Protagonist lunais)
 		{
 			var hitEnemyRegistryProperty = LunaisOrbAbility.GetProperty("HitEnemyRegistry", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
-			var orbManager = lunais.AsDynamic()._orbManager;
-			var spellManager = lunais.AsDynamic()._spellManager;
+			var lunaisReflected = lunais.AsDynamic();
+			var orbManager = lunaisReflected._orbManager;
+			var spellManager = lunaisReflected._spellManager;
 			var mainOrb = mainOrbProperty.GetValue(orbManager, null);
 			if (mainOrb != null)
 				MainOrbDamagedEnemies.UnionWith(hitEnemyRegistryProperty.GetValue(mainOrb, null));
