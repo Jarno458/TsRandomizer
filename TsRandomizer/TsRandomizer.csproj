@@ -328,6 +328,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Custom Sprites\Crow\" />
+    <Folder Include="Custom Sprites\Demon\" />
+    <Folder Include="Custom Sprites\FamiliarSprite\" />
+    <Folder Include="Custom Sprites\Griffin\" />
+    <Folder Include="Custom Sprites\Kobo\" />
     <Folder Include="Custom Sprites\Meyef\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

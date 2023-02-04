@@ -79,6 +79,14 @@ namespace TsRandomizer.Settings.GameSettingObjects
 					return "Merchant Crow";
 				case "FamiliarAltCrow":
 					return "Greed Brooch";
+				case "FamiliarGriffin":
+					return "Griffin";
+				case "FamiliarKobo":
+					return "Kobo";
+				case "FamiliarDemon":
+					return "Demon";
+				case "FamiliarSprite":
+					return "Sprite";
 				default:
 					return sprite;
 			}

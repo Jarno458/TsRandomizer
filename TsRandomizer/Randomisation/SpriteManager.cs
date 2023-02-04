@@ -15,8 +15,14 @@ namespace TsRandomizer.Randomisation
 			level.GCM.SpFamiliarMeyef = LoadCustomSprite(level, "Sprites/Heroes/FamiliarMeyef", level.GameSave.GetSettings().MeyefSprite.Value);
 			level.GCM.SpFamiliarAltMeyef = LoadCustomSprite(level, "Sprites/Heroes/FamiliarAltMeyef", level.GameSave.GetSettings().MeyefWyrmSprite.Value);
 
-			level.GCM.SpFamiliarCrow = LoadCustomSprite(level, "Sprites/Heroes/FamiliarMeyef", level.GameSave.GetSettings().MerchantCrowSprite.Value);
+			level.GCM.SpFamiliarCrow = LoadCustomSprite(level, "Sprites/Heroes/FamiliarCrow", level.GameSave.GetSettings().MerchantCrowSprite.Value);
 			level.GCM.SpFamiliarAltCrow = LoadCustomSprite(level, "Sprites/Heroes/FamiliarAltCrow", level.GameSave.GetSettings().MerchantCrowGreedSprite.Value);
+
+			level.GCM.SpFamiliarKobo = LoadCustomSprite(level, "Sprites/Heroes/FamiliarKobo", level.GameSave.GetSettings().KoboSprite.Value);
+			level.GCM.SpFamiliarDemon = LoadCustomSprite(level, "Sprites/Heroes/FamiliarDemon", level.GameSave.GetSettings().DemonSprite.Value);
+			level.GCM.SpFamiliarGriffin = LoadCustomSprite(level, "Sprites/Heroes/FamiliarGriffin", level.GameSave.GetSettings().GriffinSprite.Value);
+			level.GCM.SpFamiliarSprite = LoadCustomSprite(level, "Sprites/Heroes/FamiliarSprite", level.GameSave.GetSettings().SpriteFamiliarSprite.Value);
+
 			ReloadLunaisSprite(level);
 		}
 
