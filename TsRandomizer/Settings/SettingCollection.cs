@@ -9,7 +9,7 @@ namespace TsRandomizer.Settings
 		public static readonly GameSettingCategoryInfo[] Categories = {
 			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.BossRando, s => s.BossScaling, s => s.DamageRando, s => s.HpCap, s => s.BossHealing, s => s.ExtraEarringsXP
+					s => s.BossRando, s => s.BossScaling, s => s.DamageRando, s => s.HpCap, s => s.BossHealing, s => s.LevelCap, s => s.ExtraEarringsXP
 				}},
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -159,6 +159,10 @@ namespace TsRandomizer.Settings
 
 		public ColorGameSetting FinalBossMinimapColor = new ColorGameSetting("Final Boss color",
 			"Sets the color for room of the final boss", "#EEEEEE", true);
+
+		public SpecificValuesGameSetting LevelCap = new SpecificValuesGameSetting("Level Cap",
+			"Sets the max level Lunais can achieve.",
+			new List<string> { "1", "5", "10", "15", "20", "25", "30", "99" }, "99", false);
 
 		public OnOffGameSetting DeathLink = new OnOffGameSetting("DeathLink",
 			"Sets whether DeathLink is on or off", false, true);
