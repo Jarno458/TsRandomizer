@@ -28,6 +28,14 @@ namespace TsRandomizer.Randomisation
 		private static readonly PropertyInfo orbColorProperty = LunaisOrb.GetProperty("OrbColor", BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
 		private static readonly PropertyInfo spellTypeProperty = LunaisSpell.GetProperty("SpellType", BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
 
+		private static List<string> OrbXpBlacklist = new List<string> {
+			"Enemy_XarionBoss_1", "Enemy_IncubusBoss_1", "Enemy_IncubusBoss_2", "Enemy_IncubusBoss_3", "Enemy_IncubusBoss_4"
+		};
+
+		private static bool ShouldGiveOrbXp(Monster monster) =>
+			!OrbXpBlacklist.Contains(monster.CharacterSpecification.Name) && !monster.AsDynamic().IsABoss;
+
+
 		public static void UpdateHitRegistry(Protagonist lunais)
 		{
 			var hitEnemyRegistryProperty = LunaisOrbAbility.GetProperty("HitEnemyRegistry", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
@@ -73,33 +81,37 @@ namespace TsRandomizer.Randomisation
 
 			foreach (Monster deadMonster in deadMonsters)
 			{
-				if (MainOrbDamagedEnemies.Contains(deadMonster.ID))
+				if (ShouldGiveOrbXp(deadMonster))
 				{
-					var mainOrb = mainOrbProperty.GetValue(orbManager, null);
-					EInventoryOrbType orbColor = orbColorProperty.GetValue(mainOrb, null);
-					var mainOrbInv = inventory.OrbInventory.GetItem((int)orbColor);
-					mainOrbInv.Experience += extraXpToAdd;
-					inventory.OrbInventory.GiveOrbExperience(orbColor, false);
-					MainOrbDamagedEnemies.RemoveWhere(x => x == deadMonster.ID);
+					if (MainOrbDamagedEnemies.Contains(deadMonster.ID))
+					{
+						var mainOrb = mainOrbProperty.GetValue(orbManager, null);
+						EInventoryOrbType orbColor = orbColorProperty.GetValue(mainOrb, null);
+						var mainOrbInv = inventory.OrbInventory.GetItem((int)orbColor);
+						mainOrbInv.Experience += extraXpToAdd;
+						inventory.OrbInventory.GiveOrbExperience(orbColor, false);
+						MainOrbDamagedEnemies.RemoveWhere(x => x == deadMonster.ID);
+					}
+					if (SubOrbDamagedEnemies.Contains(deadMonster.ID))
+					{
+						var subOrb = subOrbProperty.GetValue(orbManager, null);
+						EInventoryOrbType orbColor = orbColorProperty.GetValue(subOrb, null);
+						var subOrbInv = inventory.OrbInventory.GetItem((int)orbColor);
+						subOrbInv.Experience += extraXpToAdd;
+						inventory.OrbInventory.GiveOrbExperience(orbColor, false);
+						SubOrbDamagedEnemies.RemoveWhere(x => x == deadMonster.ID);
+					}
+					if (SpellDamagedEnemies.Contains(deadMonster.ID))
+					{
+						var spell = spellProperty.GetValue(spellManager, null);
+						EInventoryOrbType spellType = spellTypeProperty.GetValue(spell, null);
+						var spellOrb = inventory.OrbInventory.GetItem((int)spellType);
+						spellOrb.Experience += extraXpToAdd;
+						inventory.OrbInventory.GiveOrbExperience(spellType, false);
+						SpellDamagedEnemies.RemoveWhere(x => x == deadMonster.ID);
+					}
 				}
-				if (SubOrbDamagedEnemies.Contains(deadMonster.ID))
-				{
-					var subOrb = subOrbProperty.GetValue(orbManager, null);
-					EInventoryOrbType orbColor = orbColorProperty.GetValue(subOrb, null);
-					var subOrbInv = inventory.OrbInventory.GetItem((int)orbColor);
-					subOrbInv.Experience += extraXpToAdd;
-					inventory.OrbInventory.GiveOrbExperience(orbColor, false);
-					SubOrbDamagedEnemies.RemoveWhere(x => x == deadMonster.ID);
-				}
-				if (SpellDamagedEnemies.Contains(deadMonster.ID))
-				{
-					var spell = spellProperty.GetValue(spellManager, null);
-					EInventoryOrbType spellType = spellTypeProperty.GetValue(spell, null);
-					var spellOrb = inventory.OrbInventory.GetItem((int)spellType);
-					spellOrb.Experience += extraXpToAdd;
-					inventory.OrbInventory.GiveOrbExperience(spellType, false);
-					SpellDamagedEnemies.RemoveWhere(x => x == deadMonster.ID);
-				}
+
 
 			}
 		}
