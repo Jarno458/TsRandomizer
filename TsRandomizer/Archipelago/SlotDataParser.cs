@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using Archipelago.MultiClient.Net;
 using Newtonsoft.Json.Linq;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Settings;
@@ -14,11 +15,11 @@ namespace TsRandomizer.Archipelago
 		readonly string seedString;
 		readonly uint slotId;
 
-		public SlotDataParser(Dictionary<string, object> slotData, string seedString, int slotId)
+		public SlotDataParser(LoginSuccessful login)
 		{
-			this.slotData = slotData;
-			this.seedString = seedString;
-			this.slotId = (uint)slotId;
+			slotData = login.SlotData;
+			seedString = Client.SeedString;
+			slotId = (uint)login.Slot;
 		}
 
 		public Requirement GetPyramidKeysGate() =>

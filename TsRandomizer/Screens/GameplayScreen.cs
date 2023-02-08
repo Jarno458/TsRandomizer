@@ -73,7 +73,7 @@ namespace TsRandomizer.Screens
 			{
 				ItemLocations = Randomizer.Randomize(Seed, Settings, fillingMethod, Level.GameSave);
 			}
-			catch (ConnectionFailedException e)
+			catch (Exception e)
 			{
 				SendBackToMainMenu(e.Message);
 				return;
