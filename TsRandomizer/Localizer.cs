@@ -12,23 +12,9 @@ namespace TsRandomizer
 	{
 		static readonly Type Type = TimeSpinnerType.Get("Timespinner.Core.Localization.Loc");
 		static readonly Type ELanguageLocale = TimeSpinnerType.Get("Timespinner.Core.Localization.ELanguageLocale");
+		static readonly MethodInfo GetMethod = Type.GetMethod("Get", BindingFlags.Static | BindingFlags.NonPublic);
 
-		public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
-		{
-			try
-			{
-				result = Type
-					 .GetMethod(binder.Name, BindingFlags.Static | BindingFlags.NonPublic)
-					 .Invoke(null, args);
-
-				return true;
-			}
-			catch
-			{
-				result = null;
-				return false;
-			}
-		}
+		public string Get(string key) => (string)GetMethod.Invoke(null, new object[]{ key });
 
 		public void OverrideKey(string key, string value, string speaker = null)
 		{
@@ -39,8 +25,18 @@ namespace TsRandomizer
 					.GetValue(null);
 
 				var stringInstances = (Dictionary<string, StringInstance>)stringLibrary.AsDynamic()._stringInstances;
-				stringInstances[key] = new StringInstance { Key = key, Text = value, Speaker = speaker };
 
+				if (stringInstances.ContainsKey(key))
+				{
+					stringInstances[key].Text = value;
+
+					if(speaker != null)
+						stringInstances[key].Speaker = speaker;
+				}
+				else
+				{
+					stringInstances[key] = new StringInstance { Key = key, Text = value, Speaker = speaker };
+				}
 			}
 			catch(Exception ex)
 			{

@@ -72,7 +72,7 @@ namespace TsRandomizer.Screens.Menu
 		public static MenuEntry Create(string text, Action<PlayerIndex> handler, bool enabled = true) 
 			=> Create(text, (o, args) => handler(args.AsDynamic().PlayerIndex), enabled);
 
-		static MenuEntry Create(string text, Action<object, EventArgs> handler, bool enabled)
+		public static MenuEntry Create(string text, Action<object, EventArgs> handler, bool enabled = true)
 		{
 			var handlerDelegate = 
 				Delegate.CreateDelegate(MainMenuSelectedEventType, handler.Target, handler.Method);

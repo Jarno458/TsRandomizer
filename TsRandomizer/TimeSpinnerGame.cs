@@ -9,7 +9,7 @@ namespace TsRandomizer
 		readonly PlatformHelper platformHelper;
 
 		public static dynamic Constants => new Constants();
-		public static dynamic Localizer => new Localizer();
+		public static Localizer Localizer => new Localizer();
 
 		public TimeSpinnerGame(PlatformHelper platformHelper) : base(platformHelper)
 		{
