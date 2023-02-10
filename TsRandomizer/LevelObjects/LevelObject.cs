@@ -37,7 +37,8 @@ namespace TsRandomizer.LevelObjects
 
 		static readonly Dictionary<Type, Type> RegisteredTypes = new Dictionary<Type, Type>(); //ObjectType, EventHandler
 		static readonly Dictionary<EEventTileType, AlwaysSpawnAttribute> AlwaysSpawningEventTypes = new Dictionary<EEventTileType, AlwaysSpawnAttribute>(); //EEventTileType, SpawnerMethod
-		static readonly List<int> KnownItemIds = new List<int>();
+
+		static readonly Dictionary<Type, List<int>> KnownIds = new Dictionary<Type, List<int>>();
 
 		public readonly dynamic Dynamic;
 		public readonly Mobile TypedObject;
@@ -97,16 +98,6 @@ namespace TsRandomizer.LevelObjects
 			GameplayScreen = gameplayScreen;
 		}
 
-		public static void AwardFirstFrameItem(Dictionary<int, Item> itemDictionary, Protagonist lunais)
-		{
-			//sometimes lunais picks up an item because she's intersecting with it as the screen loads, or right as it drops.
-			//that doesn't give the replacer enough time to replace the item. But she deserves it. You deserve it.
-			foreach (var item in itemDictionary)
-			{
-				if (item.Value.Bbox.Intersects(lunais.Bbox)) item.Value.GetItem(lunais);
-			}
-		}
-
 		static void OnCollisionDetection()
 		{
 		}
@@ -127,38 +118,25 @@ namespace TsRandomizer.LevelObjects
 				.ToArray();
 
 			if (newNonItemObjects.Any())
-			{
 				GenerateShadowObjects(itemLocations, newNonItemObjects, seed, gameplayScreen);
 
-				SetMonsterHpTo1(newNonItemObjects.OfType<Alive>());
-			}
-
-			var itemsDictionary = (Dictionary<int, Item>)levelReflected._items;
-			var currentItemIds = itemsDictionary.Keys;
-			var newItems = currentItemIds
-				.Except(KnownItemIds)
-				.Select(i => itemsDictionary[i])
-				.ToArray();
-			if (newItems.Any())
-				GenerateShadowObjects(itemLocations, newItems, seed, gameplayScreen);
-
-			KnownItemIds.Clear();
-			KnownItemIds.AddRange(currentItemIds);
+			GenerateShadowObjectsForNewObjects<Monster>(levelReflected._enemies, itemLocations, seed, gameplayScreen);
+			var hasNewItems = 
+				GenerateShadowObjectsForNewObjects<Item>(levelReflected._items, itemLocations, seed, gameplayScreen);
 
 			foreach (var obj in Objects)
 				obj.OnUpdate();
 
-			var lunais = level.MainHero;
-			if (roomChanged || newItems.Any()) AwardFirstFrameItem(itemsDictionary, lunais);
+			if (roomChanged || hasNewItems) AwardFirstFrameItem(levelReflected._items.Values, level.MainHero);
+		}
 
-			int hpCap = Convert.ToInt32(gameSettings.HpCap.Value);
-			lunais.MaxHP = hpCap > lunais.MaxHP ? lunais.MaxHP : hpCap;
-
-			if (gameSettings.DamageRando.Value != "Off")
-				OrbDamageManager.UpdateOrbDamage(level.GameSave, level.MainHero);
-
-			if (lunais.CurrentState == EAFSM.Skydashing && lunais.Velocity.Y == 0 && lunais.AsDynamic()._isHittingHeadOnCeiling)
-				level.GameSave.AddConcussion();
+		public static void AwardFirstFrameItem(IEnumerable<Item> itemDictionary, Protagonist lunais)
+		{
+			//sometimes lunais picks up an item because she's intersecting with it as the screen loads, or right as it drops.
+			//that doesn't give the replacer enough time to replace the item. But she deserves it. You deserve it.
+			foreach (var item in itemDictionary)
+				if (item.Bbox.Intersects(lunais.Bbox))
+					item.GetItem(lunais);
 		}
 
 		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, Seed seed,
@@ -173,7 +151,9 @@ namespace TsRandomizer.LevelObjects
 			var levelReflected = level.AsDynamic();
 
 			Objects.Clear();
-			KnownItemIds.Clear();
+			//KnownItemIds.Clear();
+			foreach (var knownIds in KnownIds.Values)
+				knownIds.Clear();
 
 			IEnumerable<GameEvent> eventObjects = levelReflected._levelEvents.Values;
 			IEnumerable<Animate> npcs = levelReflected.NPCs.Values;
@@ -184,7 +164,7 @@ namespace TsRandomizer.LevelObjects
 			var objects = eventObjects
 				.Concat(npcs)
 				.Concat(enemies)
-				.ToList();
+				.ToArray();
 
 			RoomTrigger.OnChangeRoom(
 				level, seed, gameSettings, itemLocations, screenManager,
@@ -198,8 +178,32 @@ namespace TsRandomizer.LevelObjects
 			level.AddEvent(new CollisionDetectionEvent(level, OnCollisionDetection));
 		}
 
+		static bool GenerateShadowObjectsForNewObjects<T>(IDictionary<int, T> dictionary,
+			ItemLocationMap itemLocations, Seed seed, GameplayScreen gameplayScreen) where T : Mobile
+		{
+			if (!KnownIds.TryGetValue(typeof(T), out var knownIds))
+			{
+				knownIds = new List<int>();
+
+				KnownIds[typeof(T)] = knownIds;
+			}
+
+			var ids = dictionary.Keys;
+			var newObjects = ids
+				.Except(knownIds)
+				.Select(i => dictionary[i])
+				.ToArray();
+			if (newObjects.Any())
+				GenerateShadowObjects(itemLocations, newObjects, seed, gameplayScreen);
+
+			knownIds.Clear();
+			knownIds.AddRange(ids);
+
+			return newObjects.Any();
+		}
+
 		public static void GenerateShadowObjects(
-			ItemLocationMap itemLocations, IEnumerable<Mobile> objects, Seed seed, GameplayScreen gameplayScreen)
+			ItemLocationMap itemLocations, Mobile[] objects, Seed seed, GameplayScreen gameplayScreen)
 		{
 			var objectsPerTypes = objects.GroupBy(o => o.GetType());
 
@@ -223,6 +227,8 @@ namespace TsRandomizer.LevelObjects
 					levelObject.Initialize(seed);
 				}
 			}
+
+			SetMonsterHpTo1(objects.OfType<Alive>());
 		}
 
 		static void SpawnMissingObjects(Level level, dynamic levelPrivate, ItemLocationMap itemLocations, GameplayScreen gameplayScreen)

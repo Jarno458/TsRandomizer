@@ -126,6 +126,7 @@
     <Compile Include="IntermediateObjects\ProgressiveItemProvider.cs" />
     <Compile Include="LevelObjects\CollisionDetectionEvent.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
+    <Compile Include="LevelObjects\Other\Bee.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast4.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCity2.cs" />

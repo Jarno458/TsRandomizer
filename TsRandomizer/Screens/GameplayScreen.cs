@@ -9,6 +9,7 @@ using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
+using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Archipelago;
 using TsRandomizer.Commands;
@@ -47,6 +48,8 @@ namespace TsRandomizer.Screens
 
 		public DeathLinker deathLinkService;
 
+		int hpCap;
+
 		public GameplayScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
 		}
@@ -68,6 +71,7 @@ namespace TsRandomizer.Screens
 			ScreenManager.Console.AddLine($"Loading Seed: {Seed}");
 
 			Settings = settings;
+			hpCap = Convert.ToInt32(Settings.HpCap.Value);
 
 			try
 			{
@@ -133,9 +137,25 @@ namespace TsRandomizer.Screens
 
 			deathLinkService?.Update(Level, ScreenManager);
 
+			UpdateGenericScripts(Level);
+
 #if DEBUG
 			TimespinnerAfterDark(input);
 #endif
+		}
+
+		void UpdateGenericScripts(Level level)
+		{
+			if (hpCap <= level.MainHero.MaxHP)
+				level.MainHero.MaxHP = hpCap;
+
+			if (Settings.DamageRando.Value != "Off")
+				OrbDamageManager.UpdateOrbDamage(level.GameSave, level.MainHero);
+
+			if (level.MainHero.CurrentState == EAFSM.Skydashing
+			    && level.MainHero.Velocity.Y == 0
+			    && level.MainHero.AsDynamic()._isHittingHeadOnCeiling)
+				level.GameSave.AddConcussion();
 		}
 
 #if DEBUG
