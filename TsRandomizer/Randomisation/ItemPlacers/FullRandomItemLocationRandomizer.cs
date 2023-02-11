@@ -285,7 +285,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				throw new Exception($"Not enough locations to place all items, locations {freeLocations.Count}, items: {itemlist.Count}");
 
 			//item pool
-			/*do
+			do
 			{
 				var location = freeLocations.PopRandom(random);
 				var item = itemlist.PopRandom(random);
@@ -306,13 +306,13 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 						PutItemAtLocation(item, location);
 					}
-			}*/
+			}
 
 			//filler
 			do
 			{
 				var location = freeLocations.PopRandom(random);
-				var item = ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.BeeTrap));//  genericItems.SelectRandom(random);
+				var item = genericItems.SelectRandom(random);
 
 				PutItemAtLocation(item, location);
 			} while (freeLocations.Count > 0);

@@ -70,6 +70,8 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 			return items;
 		}
 
+		public override int AnimationIndex => 28; //purple star, default for custom items, otherwise they be invisible (-1)
+
 		static string GetName(CustomItemType itemType) => string.Join(" ", Regex.Split(itemType.ToString(), @"(?<!^)(?=[A-Z])"));
 		
 		protected readonly CustomItemType ItemType;
