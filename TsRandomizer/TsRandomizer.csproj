@@ -134,6 +134,7 @@
     <Compile Include="LevelObjects\Other\CutsceneForest0.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
     <Compile Include="Archipelago\ArchipelagoUnlockingMap.cs" />
+    <Compile Include="LevelObjects\Other\MajorUgly.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />
