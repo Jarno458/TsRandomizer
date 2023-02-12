@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Timespinner.Core;
@@ -135,9 +136,11 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			else
 			{
 				Appendage orbAppendage = (Appendage)Dynamic._orbAppendage;
+				var dynamicAppendage = ((object)Dynamic._orbAppendage).AsDynamic();
+
+				Debug.Assert(orbAppendage != null, nameof(orbAppendage) + " != null");
 				orbAppendage.AnchorOffset = new Point(-4, -36); //TODO fix glow position
 
-				var dynamicAppendage = ((object)Dynamic._orbAppendage).AsDynamic();
 				dynamicAppendage._sprite = menuIcons;
 				dynamicAppendage._frameSource = menuIcons.GetFrameSource(ItemInfo.AnimationIndex);
 			}

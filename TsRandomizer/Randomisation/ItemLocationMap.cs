@@ -109,6 +109,8 @@ namespace TsRandomizer.Randomisation
 
 			if (SeedOptions.UnchainedKeys)
 				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.PyramidsKey)));
+
+			this[new ItemKey(7, 9, 584, 189)].SetItem(ItemProvider.Get(EInventoryRelicType.TimespinnerGear1));
 		}
 
 		void SetupGates()
