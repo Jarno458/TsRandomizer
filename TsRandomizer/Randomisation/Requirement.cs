@@ -8,8 +8,6 @@ namespace TsRandomizer.Randomisation
 {
 	struct Requirement : IEquatable<Requirement>
 	{
-		public static Requirement TeleportationGates { get; }
-
 		static readonly Dictionary<Requirement, string> Flags;
 
 		public static readonly Requirement None = 0UL;
@@ -57,7 +55,6 @@ namespace TsRandomizer.Randomisation
 		public static readonly Requirement GateLeftPyramid = 1UL << 59;
 		public static readonly Requirement GateRightPyramid = 1UL << 60;
 
-
 		readonly ulong flags;
 
 		static Requirement()
@@ -66,11 +63,6 @@ namespace TsRandomizer.Randomisation
 				.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
 				.Where(f => f.Name != nameof(None))
 				.ToDictionary(f => (Requirement)f.GetValue(null), f => f.Name);
-
-			TeleportationGates = Flags
-				.Where(f => f.Value.StartsWith("Gate"))
-				.Select(f => f.Key)
-				.Aggregate((a, b) => a | b);
 		}
 
 		Requirement(ulong flags)

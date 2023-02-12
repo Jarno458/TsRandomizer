@@ -14,12 +14,7 @@ namespace TsRandomizer
 		public bool CastleMoat { get; set; }
 		public bool CastleCourtyard { get; set; }
 		public bool LakeDesolation { get; set; }
-		//public bool DryLakeSerene { get; set; }
-		public bool DryLakeSerene {
-			get => true;
-			set {
-			}
-		}
+		public bool DryLakeSerene { get; set; }
 
 		// used for deserialization
 		public RisingTides(){}
