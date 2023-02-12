@@ -341,7 +341,8 @@ namespace TsRandomizer.Screens
 
 				var progressionItems = itemLocations.Where(l => l.ItemInfo.Unlocks != Requirement.None);
 				var otherItems = itemLocations.Where(l => l.ItemInfo.Unlocks == Requirement.None);
-
+				var warps = itemLocations.Where(l => Requirement.TeleportationGates.Contains(l.ItemInfo.Unlocks));
+				WriteWarps(file, warps, (TsRandomizer.Seed)seed);
 				var progressionChainLocations = new List<ItemLocation>();
 			
 				WriteProgressionChain(file, itemLocations, progressionChainLocations);
@@ -387,6 +388,19 @@ namespace TsRandomizer.Screens
 
 			foreach (var itemLocation in itemLocations)
 				file.WriteLine(prefix + itemLocation);
+		}
+
+		static void WriteWarps(StreamWriter file, IEnumerable<ItemLocation> itemLocations, Seed seed)
+		{
+			var defaultUnlockingMap = new DefaultItemUnlockingMap(seed);
+			file.WriteLine();
+			file.WriteLine("Warps:");
+
+			foreach (var itemLocation in itemLocations)
+			{
+				var warp = defaultUnlockingMap.GetWarpName(itemLocation.ItemInfo.Identifier);
+				file.WriteLine($"{itemLocation} - {warp}");
+			}	
 		}
 
 		static string GetFileName(Seed seed)
