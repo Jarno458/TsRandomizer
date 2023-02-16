@@ -127,6 +127,12 @@ namespace TsRandomizer.LevelObjects
 			foreach (var obj in Objects)
 				obj.OnUpdate();
 
+			if (gameSettings.ExtraEarringsXP.Value > 0)
+			{
+				OrbExperienceManager.UpdateHitRegistry(lunais);
+				OrbExperienceManager.UpdateOrbXp(level, lunais, gameSettings.ExtraEarringsXP.Value);
+			}
+
 			if (roomChanged || hasNewItems) AwardFirstFrameItem(levelReflected._items.Values, level.MainHero);
 		}
 
@@ -175,6 +181,10 @@ namespace TsRandomizer.LevelObjects
 			GenerateShadowObjects(itemLocations, objects, seed, gameplayScreen);
 			SpawnMissingObjects(level, levelReflected, itemLocations, gameplayScreen);
 
+			if (gameSettings.ExtraEarringsXP.Value > 0)
+			{
+				OrbExperienceManager.ResetHitRegistry();
+			}
 			level.AddEvent(new CollisionDetectionEvent(level, OnCollisionDetection));
 		}
 

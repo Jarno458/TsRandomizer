@@ -30,6 +30,10 @@ namespace TsRandomizer.Screens
 			.Get("Timespinner.GameStateManagement.Screens.BaseClasses.LoadingScreen")
 			.GetPublicStaticMethod("Load");
 
+		static readonly MethodInfo RefreshBaseStatsMethod = TimeSpinnerType
+			.Get("Timespinner.GameAbstractions.Saving.CharacterStats")
+			.GetMethod("RefreshBaseStats", BindingFlags.NonPublic | BindingFlags.Instance);
+
 		static readonly Type TitleBackgroundScreenType = TimeSpinnerType
 			.Get("Timespinner.GameStateManagement.Screens.MainMenu.TitleBackgroundScreen");
 
@@ -92,7 +96,17 @@ namespace TsRandomizer.Screens
 			if (settings.DamageRando.Value != "Off")
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave, settings.DamageRando.Value, settings.DamageRandoOverrides.Value);
 
+			int levelCap = Convert.ToInt32(settings.LevelCap.Value) - 1; //the levels are 0-indexed. who knew?
+			var stats = saveFile.CharacterStats.AsDynamic();
+			stats.MaxLevel = levelCap;
+			if (stats.Level > levelCap)
+			{
+				stats.Level = levelCap;
+				RefreshBaseStatsMethod.Invoke(saveFile.CharacterStats, null);
+			}
+
 			SpriteManager.ReloadCustomSprites(Level);
+
 			BestiaryManager.UpdateBestiary(Level, settings);
 			if (!saveFile.GetSaveBool("IsFightingBoss"))
 				BestiaryManager.RefreshBossSaveFlags(Level);
