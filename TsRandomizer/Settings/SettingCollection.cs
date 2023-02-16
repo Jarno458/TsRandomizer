@@ -27,6 +27,13 @@ namespace TsRandomizer.Settings
 					s => s.SaveStatueMinimapColor, s => s.PresentTransitionMinimapColor, s => s.PastTransitionMinimapColor,
 					s => s.HintedMinimapColor, s => s.FinalBossMinimapColor
 				}},
+			new GameSettingCategoryInfo { Name = "Sprites", Description = "Changes custom sprites",
+				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
+					s => s.LunaisSprite, s => s.LunaisEternalSprite, s => s.LunaisGoddessSprite,
+					s => s.MeyefSprite, s => s.MeyefWyrmSprite,
+					s => s.MerchantCrowSprite, s => s.MerchantCrowGreedSprite,
+					s => s.KoboSprite, s => s.GriffinSprite, s => s.DemonSprite, s => s.SpriteFamiliarSprite
+				}},
 			new GameSettingCategoryInfo { Name = "Archipelago", Description = "Settings related to games with the Archipelago multiworld.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.NumberOfOnScreenLogLines, s => s.OnScreenLogLineScreenTime, s => s.ShowSendItemsFromMe, s => s.ShowReceivedItemsFromMe,
@@ -100,8 +107,31 @@ namespace TsRandomizer.Settings
 		public OnOffGameSetting PoisonTrap = new OnOffGameSetting("Poison",
 			"Traps can inflict poison.", true);
 
-		public OnOffGameSetting BeeTrap = new OnOffGameSetting("Bee's",
+		public OnOffGameSetting BeeTrap = new OnOffGameSetting("Bees",
 			"Beeeeeeeeeeeeeeeeeeeeeeeeees!", true);
+
+		public SpriteGameSetting LunaisSprite = new SpriteGameSetting("Lunais",
+			"Sets the default Lunais sprite.", "Lunais", "Content\\Sprites\\Heroes\\LunaisSprite.xnb", false);
+		public SpriteGameSetting LunaisEternalSprite = new SpriteGameSetting("Eternal",
+			"Sets the Lunais sprite used by the eternal brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite.xnb", false);
+		public SpriteGameSetting LunaisGoddessSprite = new SpriteGameSetting("Goddess",
+			"Sets the Lunais sprite used by the goddess brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite2.xnb", false);
+		public SpriteGameSetting MeyefSprite = new SpriteGameSetting("Meyef",
+			"Sets the default Meyef sprite.", "Meyef", "Content\\Sprites\\Heroes\\FamiliarMeyef.xnb", true);
+		public SpriteGameSetting MeyefWyrmSprite = new SpriteGameSetting("Wyrm",
+			"Sets the Meyef Sprite used by the wyrm brooch.", "Meyef", "Content\\Sprites\\Heroes\\FamiliarAltMeyef.xnb", true);
+		public SpriteGameSetting MerchantCrowSprite = new SpriteGameSetting("Merchant Crow",
+			"Sets the default Merchant Crow sprite.", "Crow", "Content\\Sprites\\Heroes\\FamiliarCrow.xnb", true);
+		public SpriteGameSetting MerchantCrowGreedSprite = new SpriteGameSetting("Greed",
+			"Sets the Merchant Crow sprite used by the greed brooch.", "Crow", "Content\\Sprites\\Heroes\\FamiliarAltCrow.xnb", true);
+		public SpriteGameSetting GriffinSprite = new SpriteGameSetting("Griffin",
+			"Sets the Griffin sprite.", "Griffin", "Content\\Sprites\\Heroes\\FamiliarGriffin.xnb", true);
+		public SpriteGameSetting DemonSprite = new SpriteGameSetting("Demon",
+			"Sets the Demon familiar sprite.", "Demon", "Content\\Sprites\\Heroes\\FamiliarDemon.xnb", true);
+		public SpriteGameSetting KoboSprite = new SpriteGameSetting("Kobo",
+			"Sets the Kobo sprite.", "Kobo", "Content\\Sprites\\Heroes\\FamiliarKobo.xnb", true);
+		public SpriteGameSetting SpriteFamiliarSprite = new SpriteGameSetting("Sprite",
+			"Sets the sprite for the Sprite familiar", "FamiliarSprite", "Content\\Sprites\\Heroes\\FamiliarSprite.xnb", true);
 
 		public NumberGameSetting NumberOfOnScreenLogLines = new NumberGameSetting("Log Number of Lines",
 			"Max number of messages to show at the bottom left of the screen, 0 to turn onscreen log off", 0, 25, 1, 3, true);

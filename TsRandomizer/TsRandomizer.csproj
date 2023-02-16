@@ -134,6 +134,7 @@
     <Compile Include="LevelObjects\Other\CutsceneForest0.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
     <Compile Include="Archipelago\ArchipelagoUnlockingMap.cs" />
+    <Compile Include="Randomisation\SpriteManager.cs" />
     <Compile Include="LevelObjects\Other\MajorUgly.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
@@ -297,6 +298,7 @@
     <Compile Include="Settings\GameSettingObjects\GameSetting.cs" />
     <Compile Include="Settings\JsonSettingsContractResolver.cs" />
     <Compile Include="Settings\SettingCollection.cs" />
+    <Compile Include="Settings\GameSettingObjects\SpriteGameSetting.cs" />
     <Compile Include="TimeSpinnerGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -320,8 +322,19 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="app.config" />
+    <None Include="Custom Sprites\Lunais\Demon Twins.xnb" />
+    <None Include="Custom Sprites\Lunais\Neliste.xnb" />
+    <None Include="Custom Sprites\Lunais\Pano.xnb" />
+    <None Include="Custom Sprites\Lunais\Selen.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Custom Sprites\Crow\" />
+    <Folder Include="Custom Sprites\Demon\" />
+    <Folder Include="Custom Sprites\FamiliarSprite\" />
+    <Folder Include="Custom Sprites\Griffin\" />
+    <Folder Include="Custom Sprites\Kobo\" />
+    <Folder Include="Custom Sprites\Meyef\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
