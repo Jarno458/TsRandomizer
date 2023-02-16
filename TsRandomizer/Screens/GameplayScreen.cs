@@ -38,6 +38,8 @@ namespace TsRandomizer.Screens
 			.Get("Timespinner.GameStateManagement.Screens.MainMenu.TitleBackgroundScreen");
 
 		RoomSpecification currentRoom;
+		int hpCap;
+		DeathLinker deathLinkService;
 
 		public Seed Seed { get; private set; }
 		public SettingCollection Settings { get; private set; }
@@ -49,10 +51,6 @@ namespace TsRandomizer.Screens
 		public ItemLocationMap ItemLocations { get; private set; }
 
 		public GCM GameContentManager { get; private set; }
-
-		public DeathLinker deathLinkService;
-
-		int hpCap;
 
 		public GameplayScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
@@ -96,14 +94,7 @@ namespace TsRandomizer.Screens
 			if (settings.DamageRando.Value != "Off")
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave, settings.DamageRando.Value, settings.DamageRandoOverrides.Value);
 
-			int levelCap = Convert.ToInt32(settings.LevelCap.Value) - 1; //the levels are 0-indexed. who knew?
-			var stats = saveFile.CharacterStats.AsDynamic();
-			stats.MaxLevel = levelCap;
-			if (stats.Level > levelCap)
-			{
-				stats.Level = levelCap;
-				RefreshBaseStatsMethod.Invoke(saveFile.CharacterStats, null);
-			}
+			HandleLevelCap(settings, saveFile);
 
 			SpriteManager.ReloadCustomSprites(Level);
 
@@ -111,14 +102,14 @@ namespace TsRandomizer.Screens
 			if (!saveFile.GetSaveBool("IsFightingBoss"))
 				BestiaryManager.RefreshBossSaveFlags(Level);
 
-			if (Seed.Options.Archipelago)
+			if (settings.ExtraEarringsXP.Value > 0)
 			{
-				Client.SetStatus(ArchipelagoClientState.ClientPlaying);
-
-				var service = Client.GetDeathLinkService();
-				deathLinkService = new DeathLinker(settings, service);
-				ScreenManager.Console.AddCommand(new ToggleDeathLinkCommand(service, () => Level));
+				OrbExperienceManager.UpdateHitRegistry(Level.MainHero);
+				OrbExperienceManager.UpdateOrbXp(Level, Level.MainHero, settings.ExtraEarringsXP.Value);
 			}
+
+			if (Seed.Options.Archipelago)
+				HandleArchipelago(settings);
 
 #if DEBUG
 			ScreenManager.Console.AddCommand(new TeleportCommand(() => Level));
@@ -126,6 +117,32 @@ namespace TsRandomizer.Screens
 			ScreenManager.Console.AddCommand(new GiveOrbCommand(() => Level));
 			ScreenManager.Console.AddCommand(new GiveFamiliarCommand(() => Level));
 #endif
+		}
+
+		static void HandleLevelCap(SettingCollection settings, GameSave saveFile)
+		{
+			int levelCap = Convert.ToInt32(settings.LevelCap.Value) - 1; //the levels are 0-indexed. who knew?
+
+			var stats = saveFile.CharacterStats.AsDynamic();
+
+			stats.MaxLevel = levelCap;
+
+			if (stats.Level > levelCap)
+			{
+				stats.Level = levelCap;
+				RefreshBaseStatsMethod.Invoke(saveFile.CharacterStats, null);
+			}
+		}
+
+		void HandleArchipelago(SettingCollection settings)
+		{
+			Client.SetStatus(ArchipelagoClientState.ClientPlaying);
+
+			var service = Client.GetDeathLinkService();
+
+			deathLinkService = new DeathLinker(settings, service);
+
+			ScreenManager.Console.AddCommand(new ToggleDeathLinkCommand(service, () => Level));
 		}
 
 		void SendBackToMainMenu(string message)
