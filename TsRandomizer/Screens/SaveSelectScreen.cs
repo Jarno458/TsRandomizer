@@ -34,6 +34,7 @@ namespace TsRandomizer.Screens
 		public SaveSelectScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
 			var saveFileEntries = (IList)((object)Dynamic._saveFileCollection).AsDynamic().Entries;
+
 			TimeSpinnerGame.Localizer.OverrideKey("inv_use_PlaceHolderItem1", "Nothing");
 
 			foreach (var entry in saveFileEntries)

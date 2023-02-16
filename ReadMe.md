@@ -94,6 +94,16 @@ There are several settings for randomization of how much damage orbs, spells, an
   * The first time you launch Timespinner Randomizer, a path and a settings.json file will be added to your game folder.
   * The section "DamageRandoOverrides" in settings.json can be manually edited to weight the odds of each orb. You can set a specific odds to 0 in order to remove its possibility entirely.
 
+# Sprite Selection
+The sprites for all three of Lunais' skins (and any other sprites added to settings) can be customized in the 'Sprites' menu under settings.
+
+The sprites for each setting will pull from XNB files both in the vanilla location of `Content/Sprites/Heroes` and the custom location of `Custom Sprites/<Character Name>`. The Custom Sprites folder comes preloaded with a few example sprites.
+If additional sprites are copied to the appropriate character subfolder within the custom sprites folder, they can be selected in settings.
+
+There exist several programs that can extract XNB files into an editable image format, and can then repackage them for use as XNB files.
+
+Note that at this time Lunais' sprites are not able to be changed mid-run, but this may change in the future.
+
 # Known Bugs
 ##### I am aware of these issues, but I found them small enough not to fix at this moment
 * Having the Varndagrath collected away will cause the door to close and softlock the player
@@ -104,7 +114,7 @@ There are several settings for randomization of how much damage orbs, spells, an
 
 # TODO
 ##### Things I plan on doing in the future
-* Implement skin selection
+* ???
 
 # Ideas
 ##### Ideas that may never happen but I think will be fun when they are implemented:

@@ -175,11 +175,9 @@ namespace TsRandomizer.Screens
 				{
 					var connected = (LoginSuccessful)result;
 
-					var slotDataParser = new SlotDataParser(connected.SlotData, Client.SeedString, connected.Slot);
+					var slotDataParser = new SlotDataParser(connected);
 
-					var seed = slotDataParser.GetSeed();
-
-					difficultyMenu.SetSeedAndFillingMethod(seed, FillingMethod.Archipelago,
+					difficultyMenu.SetSeedAndFillingMethod(slotDataParser.GetSeed(), FillingMethod.Archipelago,
 						slotDataParser.GetSettings());
 					difficultyMenu.HookOnDifficultySelected(saveGame => {
 						saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = values[ServerIndex];

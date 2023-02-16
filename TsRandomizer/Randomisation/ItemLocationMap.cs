@@ -88,8 +88,6 @@ namespace TsRandomizer.Randomisation
 
 			SetupGates();
 
-			var x = ItemProvider.Get(EInventoryRelicType.TimespinnerGear3);
-
 			AddPresentItemLocations();
 			AddPastItemLocations();
 			AddPyramidItemLocations();
@@ -111,6 +109,8 @@ namespace TsRandomizer.Randomisation
 
 			if (SeedOptions.UnchainedKeys)
 				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.PyramidsKey)));
+
+			this[new ItemKey(7, 9, 584, 189)].SetItem(ItemProvider.Get(EInventoryRelicType.TimespinnerGear1));
 		}
 
 		void SetupGates()
@@ -404,12 +404,12 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(4, 11, 344, 192), "Castle Ramparts: Knight and archer guarded room", ItemProvider.Get(EInventoryUseItemType.HiPotion), CastleRamparts);
 			Add(new ItemKey(4, 22, 104, 189), "Castle Ramparts: Pedestal", ItemProvider.Get(EInventoryOrbType.Iron, EOrbSlot.Melee), CastleRamparts);
 			areaName = "Castle Keep";
-			Add(new ItemKey(5, 9, 104, 189), "Castle Keep: Basement secret pedestal", ItemProvider.Get(EInventoryOrbType.Blood, EOrbSlot.Melee), CastleBasement & OculusRift);
-			Add(new ItemKey(5, 10, 104, 192), "Castle Keep: Clean the castle basement", ItemProvider.Get(EInventoryFamiliarType.Sprite), CastleBasement);
+			Add(new ItemKey(5, 9, 104, 189), "Castle Basement: Secret pedestal", ItemProvider.Get(EInventoryOrbType.Blood, EOrbSlot.Melee), CastleBasement & OculusRift);
+			Add(new ItemKey(5, 10, 104, 192), "Castle Basement: Clean the castle basement", ItemProvider.Get(EInventoryFamiliarType.Sprite), CastleBasement);
 			Add(new ItemKey(5, 14, 88, 208), "Castle Keep: Yas queen room", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), CastleKeep & R.PinkOrb & R.DoubleJump);
-			Add(new ItemKey(5, 44, 216, 192), "Castle Keep: Giantess guarded chest", ItemProvider.Get(EInventoryUseItemType.Potion), CastleBasement);
-			Add(new ItemKey(5, 45, 104, 192), "Castle Keep: Omelette chest", ItemProvider.Get(EItemType.MaxHP), CastleBasement);
-			Add(new ItemKey(5, 15, 296, 192), "Castle Keep: Just an egg", ItemProvider.Get(EItemType.MaxAura), CastleBasement);
+			Add(new ItemKey(5, 44, 216, 192), "Castle Basement: Giantess guarded chest", ItemProvider.Get(EInventoryUseItemType.Potion), CastleBasement);
+			Add(new ItemKey(5, 45, 104, 192), "Castle Basement: Omelette chest", ItemProvider.Get(EItemType.MaxHP), CastleBasement);
+			Add(new ItemKey(5, 15, 296, 192), "Castle Basement: Just an egg", ItemProvider.Get(EItemType.MaxAura), CastleBasement);
 			Add(new ItemKey(5, 41, 72, 160), "Castle Keep: Under the twins", ItemProvider.Get(EInventoryEquipmentType.BuckleHat), CastleKeep);
 			Add(new ItemKey(5, 20, 504, 48), "Castle Keep: Advisor jump", null, CastleKeep & R.TimeStop);
 			Add(new RoomItemKey(5, 5), "Castle Keep: Twins", ItemProvider.Get(EInventoryRelicType.DoubleJump), CastleKeep & R.TimeStop);
@@ -509,7 +509,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(4, 11, 360, 161), "Castle Ramparts: Journal - Archer + Knight (Declaration of Independence)", null, CastleRamparts);
 			areaName = "Castle Keep";
 			Add(new ItemKey(5, 41, 184, 177), "Castle Keep: Journal - Under the Twins (Letter of Reference)", null, CastleKeep);
-			Add(new ItemKey(5, 44, 264, 161), "Castle Keep: Journal - Castle Loop Giantess (Political Advice)", null, CastleBasement);
+			Add(new ItemKey(5, 44, 264, 161), "Castle Basement: Journal - Castle Loop Giantess (Political Advice)", null, CastleBasement);
 			Add(new ItemKey(5, 14, 568, 177), "Royal Towers: Journal - Aelana\'s Room (Diplomatic Missive)", null, CastleKeep & R.PinkOrb & R.DoubleJump);
 			areaName = "Royal Towers";
 			Add(new ItemKey(6, 17, 344, 433), "Royal Towers: Journal - Top Struggle Juggle Base (War of the Sisters)", null, UpperRoyalTower);

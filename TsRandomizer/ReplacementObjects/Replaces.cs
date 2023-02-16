@@ -50,7 +50,7 @@ namespace TsRandomizer.ReplacementObjects
 			}
 		}
 
-		public static void ReplaceObjects(Level level, List<Animate> objects)
+		public static void ReplaceObjects(Level level, Animate[] objects)
 		{
 			var levelReflected = level.AsDynamic();
 			var objectsPerTypes = objects.GroupBy(o => o.GetType());

@@ -7,8 +7,6 @@ using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
-using TsRandomizer.Randomisation.ItemPlacers;
-using TsRandomizer.Screens;
 using TsRandomizer.Screens.Console;
 using TsRandomizer.Settings;
 using ScreenManager = TsRandomizer.Screens.ScreenManager;
@@ -95,8 +93,8 @@ namespace TsRandomizer.Commands
 			console.AddLine("Connected!");
 
 			var connected = (LoginSuccessful)connectionResult;
-			var slotDataParser = new SlotDataParser(connected.SlotData, Client.SeedString, connected.Slot);
-
+			var slotDataParser = new SlotDataParser(connected);
+			
 			IsWaitingForDifficulty = true;
 			Seed = slotDataParser.GetSeed();
 			Settings = slotDataParser.GetSettings();

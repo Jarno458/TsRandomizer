@@ -191,9 +191,13 @@ namespace TsRandomizer.Screens
 			{
 				// Currently using quest layout for most, other layouts may be useful for other menus
 				// Leaving as switch to easily add new menus as Memories, Letters, Files, Quests, Bestiary, Feats
-				case "Sprite":
+				/*
+				// TODO: Sprites needs a functional way to write a FeatsMenuEntry before we can properly preview sprites
+				// and use this layout
+				case "Sprites":
 					collection = Dynamic._featsInventory;
 					break;
+				*/
 				default:
 					collection = Dynamic._questInventory;
 					break;

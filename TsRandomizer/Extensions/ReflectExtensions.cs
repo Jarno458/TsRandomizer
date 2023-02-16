@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Dynamic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 
 namespace TsRandomizer.Extensions
@@ -88,18 +87,6 @@ namespace TsRandomizer.Extensions
 
 			result = null;
 			return false;
-		}
-
-		public override bool TryUnaryOperation(UnaryOperationBinder binder, out object result)
-		{
-			switch (binder.Operation)
-			{
-				case ExpressionType.OnesComplement:
-					result = instance;
-					return true;
-				default:
-					return base.TryUnaryOperation(binder, out result);
-			}
 		}
 
 		static bool TryGetProperty(Type type, string propertyName, out PropertyInfo propertyInfo)
