@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TsRandomizer.Extensions;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Settings.GameSettingObjects;
 
 namespace TsRandomizer.Settings
 {
@@ -86,7 +87,7 @@ namespace TsRandomizer.Settings
 			if (slotData.TryGetValue("ShopWarpShards", out var shopWarpShards))
 				settings.ShopWarpShards.Value = IsTrue(shopWarpShards);
 			if (slotData.TryGetValue("ShopMultiplier", out var shopMultiplier))
-				settings.ShopMultiplier.Value = ToInt(shopMultiplier, 1);
+				SetNumberGameSetting(settings.ShopMultiplier, shopMultiplier);
 			if (slotData.TryGetValue("ShopFill", out var shopFill))
 			{
 				var value = ToInt(shopFill);
@@ -214,7 +215,7 @@ namespace TsRandomizer.Settings
 				settings.DropRateCategory.Value = enumValue;
 			}
 			if (slotData.TryGetValue("DropRate", out var dropRate))
-				settings.DropRate.Value = ToInt(dropRate, 5);
+				SetNumberGameSetting(settings.DropRate, dropRate);
 			if (slotData.TryGetValue("Loot Tier Distro", out var lootTierDistro))
 			{
 				var value = ToInt(lootTierDistro);
@@ -239,7 +240,12 @@ namespace TsRandomizer.Settings
 			if (slotData.TryGetValue("ShowBestiary", out var showBestiary))
 				settings.ShowBestiary.Value = IsTrue(showBestiary);
 			if (slotData.TryGetValue("HpCap", out var hpCap))
-				settings.HpCap.Value = ToInt(hpCap, 999);
+				SetNumberGameSetting(settings.HpCap, hpCap);
+			if (slotData.TryGetValue("LevelCap", out var levelCap))
+				SetNumberGameSetting(settings.LevelCap, levelCap);
+			if (slotData.TryGetValue("ExtraEarringsXP", out var extraEarringsXP))
+				SetNumberGameSetting(settings.ExtraEarringsXP, extraEarringsXP);
+
 			if (slotData.TryGetValue("ShowDrops", out var showDrops))
 				settings.ShowDrops.Value = IsTrue(showDrops);
 			if (slotData.TryGetValue("DeathLink", out var deathLink))
@@ -317,7 +323,10 @@ namespace TsRandomizer.Settings
 			return false;
 		}
 
-		static int ToInt(object o, int fallback = 0)
+		static void SetNumberGameSetting(GameSetting<double> setting, object value) 
+			=> setting.Value = ToInt(value, setting.Default);
+
+		static double ToInt(object o, double fallback = 0)
 		{
 			if (o is int i) return i;
 			if (o is long l) return (int)l;

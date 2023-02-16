@@ -287,11 +287,11 @@
     <Compile Include="Screens\SeedSelection\SeedOptionsMenuScreen.cs" />
     <Compile Include="Screens\GameSettingsScreen.cs" />
     <Compile Include="Settings\GameSettingObjects\DamageRandoOverridesSetting.cs" />
+    <Compile Include="Settings\GameSettingObjects\NumberGameWithFixedSteps.cs" />
     <Compile Include="Settings\GameSettingObjects\NumberGameSetting.cs" />
     <Compile Include="Settings\GameSettingObjects\OnOffGameSetting.cs" />
     <Compile Include="Settings\GameSettingObjects\ColorGameSetting.cs" />
     <Compile Include="Settings\GameSettingObjects\SpecificValuesGameSetting.cs" />
-    <Compile Include="Settings\GameSettingObjects\StringGameSetting.cs" />
     <Compile Include="Settings\GameSettingCategoryInfo.cs" />
     <Compile Include="Seed.cs" />
     <Compile Include="SeedOptions.cs" />

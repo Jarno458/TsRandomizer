@@ -9,7 +9,7 @@ using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Settings.GameSettingObjects
 {
-	public class ColorGameSetting : StringGameSetting
+	public class ColorGameSetting : GameSetting<string>
 	{
 		static readonly string[] XnaColors = {
 			"AliceBlue",
@@ -164,7 +164,7 @@ namespace TsRandomizer.Settings.GameSettingObjects
 
 		public ColorGameSetting(string name, string description, 
 			string defaultValue, bool canBeChangedInGame = false) 
-				: base(name, description, defaultValue, 20, canBeChangedInGame)
+				: base(name, description, defaultValue, canBeChangedInGame)
 		{
 			AllowedValues = XnaColors.Concat("#html-hex-color").ToHashSet();
 		}

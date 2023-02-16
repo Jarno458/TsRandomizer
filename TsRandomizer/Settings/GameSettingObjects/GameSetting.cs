@@ -51,6 +51,9 @@ namespace TsRandomizer.Settings.GameSettingObjects
 			set { CurrentValue = value; }
 		}
 
+		[JsonIgnore]
+		public T Default => (T)DefaultValue;
+
 		protected GameSetting(string name, string description, T defaultValue, bool canBeChangedInGame)
 			: base(name, description, defaultValue, canBeChangedInGame)
 		{

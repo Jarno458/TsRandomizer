@@ -190,9 +190,9 @@ namespace TsRandomizer.Settings
 		public ColorGameSetting FinalBossMinimapColor = new ColorGameSetting("Final Boss color",
 			"Sets the color for room of the final boss", "#EEEEEE", true);
 
-		public SpecificValuesGameSetting LevelCap = new SpecificValuesGameSetting("Level Cap",
+		public NumberGameWithFixedSteps LevelCap = new NumberGameWithFixedSteps("Level Cap",
 			"Sets the max level Lunais can achieve.",
-			new List<string> { "1", "5", "10", "15", "20", "25", "30", "99" }, "99", false);
+			new double[]{ 1, 5, 10, 15, 20, 25, 30, 99 }, 99, false);
 
 		public OnOffGameSetting DeathLink = new OnOffGameSetting("DeathLink",
 			"Sets whether DeathLink is on or off", false, true);

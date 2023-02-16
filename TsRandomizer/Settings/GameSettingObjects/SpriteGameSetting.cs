@@ -7,7 +7,7 @@ using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Settings.GameSettingObjects
 {
-	public class SpriteGameSetting : StringGameSetting
+	public class SpriteGameSetting : GameSetting<string>
 	{
 		[JsonIgnoreDeserialize]
 		public List<string> AllowedValues { get; }
@@ -22,11 +22,27 @@ namespace TsRandomizer.Settings.GameSettingObjects
 
 		public SpriteGameSetting(string name, string description, string character,
 			string defaultValue, bool canBeChangedInGame = false)
-				: base(name, description, defaultValue, 20, canBeChangedInGame)
+				: base(name, description, defaultValue, canBeChangedInGame)
 		{
 			Character = character;
-			AllowedValues = Directory.GetFiles($"Custom Sprites\\{Character}\\", "*.xnb").ToList();
-			AllowedValues.AddRange(Directory.GetFiles($"Content\\Sprites\\Heroes\\", $"*{Character}*.xnb").ToList());
+
+			try
+			{
+				AllowedValues = GetFiles($"Custom Sprites\\{Character}\\", "*.xnb").ToList();
+				AllowedValues.AddRange(GetFiles($"Content\\Sprites\\Heroes\\", $"*{Character}*.xnb").ToList());
+			}
+			catch
+			{
+				AllowedValues = new List<string>(0);
+			}
+		}
+
+		static List<string> GetFiles(string directory, string pattern)
+		{
+			if (!Directory.Exists(directory))
+				return new List<string>();
+
+			return Directory.GetFiles(directory, pattern).ToList();
 		}
 
 		[JsonConstructor]
@@ -39,15 +55,18 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		{
 			try
 			{
+				if (AllowedValues.Count == 0)
+					Value = Default;
+
 				var currentIndex = AllowedValues.IndexOf(Value);
 				var newIndex = currentIndex + 1 >= AllowedValues.Count ? 0 : currentIndex + 1;
+
 				Value = AllowedValues[newIndex];
 			}
 			catch
 			{
-				Value = (string)DefaultValue;
+				Value = Default;
 			}
-
 		}
 
 		internal override void UpdateMenuEntry(MenuEntry menuEntry)

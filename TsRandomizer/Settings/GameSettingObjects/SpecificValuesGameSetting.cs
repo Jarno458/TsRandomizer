@@ -38,9 +38,8 @@ namespace TsRandomizer.Settings.GameSettingObjects
 			}
 			catch
 			{
-				Value = (string)DefaultValue;
+				Value = Default;
 			}
-
 		}
 	}
 }
