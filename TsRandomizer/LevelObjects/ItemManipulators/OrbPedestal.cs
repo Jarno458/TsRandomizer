@@ -120,7 +120,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		{
 			const int wierdOffset = 19;
 			if (Appendages.Count == 0)
-				((Animate)~Dynamic).ChangeAnimation((int)ItemInfo.Identifier.OrbType + wierdOffset);
+				((Animate)TypedObject).ChangeAnimation((int)ItemInfo.Identifier.OrbType + wierdOffset);
 			else
 				((Appendage)Dynamic._orbAppendage).ChangeAnimation((int)ItemInfo.Identifier.OrbType + wierdOffset);
 		}
@@ -130,14 +130,17 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			if (Appendages.Count == 0)
 			{
 				Dynamic._sprite = menuIcons;
-				((Animate)~Dynamic).ChangeAnimation(ItemInfo.AnimationIndex);
+				((Animate)TypedObject).ChangeAnimation(ItemInfo.AnimationIndex);
 			}
 			else
 			{
 				Appendage orbAppendage = (Appendage)Dynamic._orbAppendage;
-				orbAppendage.AnchorOffset = new Point(-4, -36); //TODO fix glow position
-				((Animate)Dynamic._orbAppendage).AsDynamic()._sprite = menuIcons;
-				((Animate)Dynamic._orbAppendage).ChangeAnimation(ItemInfo.AnimationIndex);
+				var dynamicAppendage = ((object)Dynamic._orbAppendage).AsDynamic();
+
+				orbAppendage.BboxOffset = new Point(4, 4);
+
+				dynamicAppendage._sprite = menuIcons;
+				dynamicAppendage._frameSource = menuIcons.GetFrameSource(ItemInfo.AnimationIndex);
 			}
 		}
 

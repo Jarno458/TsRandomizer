@@ -27,9 +27,9 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			var x = GameplayScreen;
 			var y = Level;
 
-			ShowItemAwardPopup();
-
 			AwardContainedItem();
+
+			ShowItemAwardPopup();
 
 			hasAwardedItem = true;
 		}

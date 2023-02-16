@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
+using TsRandomizer.LevelObjects.Other;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 
 namespace TsRandomizer.IntermediateObjects.CustomItems
 {
-	class BeeTrap : CustomItem
+	class BeeTrap : Trap
 	{
 		public BeeTrap(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.BeeTrap) {}
 
@@ -18,23 +19,24 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 			{
 				Category = EObjectTileCategory.Enemy,
 				Layer = ETileLayerType.Objects,
-				ObjectID = (int)EEnemyTileType.LakeFly
+				ObjectID = (int)EEnemyTileType.LakeFly,
+				Argument = Bee.Argument
 			};
 
 			var offsets = new []
 			{
-				new Tuple<int, int, bool>(-7, -1, false),
-				new Tuple<int, int, bool>(-4, -3, false),
-				new Tuple<int, int, bool>(0, -7, false),
-				new Tuple<int, int, bool>(4, -3, true),
-				new Tuple<int, int, bool>(7, -1, true),
+				new Point(-7, -1),
+				new Point(-4, -3),
+				new Point(0, -7),
+				new Point(4, -3),
+				new Point(7, -1)
 			};
 
 			foreach (var offset in offsets)
 			{
-				bee.X = offset.Item1 + (level.MainHero.LastPosition.X / 16);
-				bee.Y = offset.Item2 + (level.MainHero.LastPosition.Y / 16);
-				bee.IsFlippedHorizontally = offset.Item3;
+				bee.X = offset.X + (level.MainHero.LastPosition.X / 16);
+				bee.Y = offset.Y + (level.MainHero.LastPosition.Y / 16);
+				bee.IsFlippedHorizontally = offset.X > 0;
 
 				level.PlaceEvent(bee, false);
 			}

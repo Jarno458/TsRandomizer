@@ -13,7 +13,9 @@ namespace TsRandomizer.IntermediateObjects
 		public ItemInfo[] Items { get; }
 
 		int index;
-		ItemInfo CurrentItem => index < Items.Length ? Items[index] : Items.Last();
+
+		public ItemInfo PreviousItem => index > 0 ? Items[index - 1] : Items.First();
+		public ItemInfo CurrentItem => index < Items.Length ? Items[index] : Items.Last();
 
 		public override ItemIdentifier Identifier => CurrentItem.Identifier;
 		public override Enum TreasureLootType => CurrentItem.TreasureLootType;

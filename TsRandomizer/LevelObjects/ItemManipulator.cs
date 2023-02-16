@@ -79,6 +79,8 @@ namespace TsRandomizer.LevelObjects
 		{
 			if (ItemInfo is CustomItem customItem)
 				GameplayScreen.ShowItemPickupBar(customItem.Name);
+			else if (ItemInfo is ProgressiveItemInfo progressiveItem)
+				Level.ShowItemAwardPopup(progressiveItem.PreviousItem.Identifier); //since this script runs delayed, the item will already have updated
 			else
 				Level.ShowItemAwardPopup(ItemInfo.Identifier);
 		}

@@ -63,7 +63,8 @@ namespace TsRandomizer
 				//Archipelago, automaticly set above
 				{"DadPercent", 1U << 17},
 				{"RisingTides", 1U << 18},
-				{"UnchainedKeys", 1U << 19}
+				{"UnchainedKeys", 1U << 19},
+				{"TrappedChests", 1U << 20}
 			};
 
 			foreach (var kvp in stringToFlagMapping)

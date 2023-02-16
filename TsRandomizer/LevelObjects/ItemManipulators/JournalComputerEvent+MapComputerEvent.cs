@@ -43,9 +43,10 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		{
 			if (ItemInfo == null || hasAwardedItem || !Dynamic._isTriggered || !Dynamic._wasActivating)
 				return;
-			ShowItemAwardPopup();
-			AwardContainedItem();
 
+			AwardContainedItem();
+			ShowItemAwardPopup();
+			
 			hasAwardedItem = true;
 		}
 

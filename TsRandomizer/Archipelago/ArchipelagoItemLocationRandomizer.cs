@@ -1,4 +1,5 @@
-﻿using Archipelago.MultiClient.Net;
+﻿using System;
+using Archipelago.MultiClient.Net;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -46,6 +47,16 @@ namespace TsRandomizer.Archipelago
 
 			if (!result.Successful)
 				throw new ConnectionFailedException((LoginFailure)result, server, user, password);
+
+			var loginSuccessful = (LoginSuccessful)result;
+			var slotdataParser = new SlotDataParser(loginSuccessful);
+			var slotSeed = slotdataParser.GetSeed();
+
+			if (slotSeed.Id != Seed.Id || slotSeed.Options.Flags != Seed.Options.Flags)
+			{
+				Client.Disconnect();
+				throw new Exception("This save does not belong to the current multiworld hosted on the server");
+			}
 
 			itemLocations = new ArchipelagoItemLocationMap(ItemInfoProvider, UnlockingMap, Seed);
 

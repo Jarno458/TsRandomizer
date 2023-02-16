@@ -126,6 +126,7 @@
     <Compile Include="IntermediateObjects\ProgressiveItemProvider.cs" />
     <Compile Include="LevelObjects\CollisionDetectionEvent.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
+    <Compile Include="LevelObjects\Other\Bee.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast4.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCity2.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
     <Compile Include="Archipelago\ArchipelagoUnlockingMap.cs" />
     <Compile Include="Randomisation\SpriteManager.cs" />
+    <Compile Include="LevelObjects\Other\MajorUgly.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />

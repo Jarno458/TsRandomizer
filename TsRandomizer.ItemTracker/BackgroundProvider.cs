@@ -9,8 +9,6 @@ namespace TsRandomizerItemTracker
 {
 	class BackgroundRenderer
 	{
-		const int Zoom = 2;
-
 		int currentBackground;
 
 		readonly Background[] backgrounds;
