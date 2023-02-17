@@ -341,8 +341,11 @@ namespace TsRandomizer.Screens
 
 				var progressionItems = itemLocations.Where(l => l.ItemInfo.Unlocks != Requirement.None);
 				var otherItems = itemLocations.Where(l => l.ItemInfo.Unlocks == Requirement.None);
-				var warps = itemLocations.Where(l => Requirement.TeleportationGates.Contains(l.ItemInfo.Unlocks));
-				WriteWarps(file, warps, (TsRandomizer.Seed)seed);
+				var warpItems = itemLocations.Where(l => Requirement.AllGates.Contains(l.ItemInfo.Unlocks));
+
+				WriteWarps(file, warpItems);
+				WriteFloodedAreas(file, seed.Value);
+
 				var progressionChainLocations = new List<ItemLocation>();
 			
 				WriteProgressionChain(file, itemLocations, progressionChainLocations);
@@ -351,6 +354,44 @@ namespace TsRandomizer.Screens
 
 				WriteItemListSection(file, progressionItems.Where(p => !chainLocationKeys.Contains(p.Key)), "Other Progression Items (not in chain):");
 				WriteItemListSection(file, otherItems, "Other Locations:");
+			}
+		}
+
+		void WriteFloodedAreas(StreamWriter file, Seed seed)
+		{
+			file.WriteLine();
+			file.Write("Rising Tides: ");
+
+			if (!seed.Options.RisingTides)
+			{
+				file.WriteLine("Disabled");
+			}
+			else
+			{
+				var tides = seed.FloodFlags;
+
+				var strings = new List<string>();
+
+				if (tides.Basement)
+					strings.Add(tides.BasementHigh ? "Casle Basement (High)" : "Casle Basement");
+				if (tides.Xarion)
+					strings.Add("Xarion (boss)");
+				if (tides.Maw)
+					strings.Add("Maw (caves + boss)");
+				if (tides.PyramidShaft)
+					strings.Add("Ancient Pyramid Shaft");
+				if (tides.BackPyramid)
+					strings.Add("Sandman\\Nightmare (boss)");
+				if (tides.CastleMoat)
+					strings.Add("Castle Moat");
+				if (tides.CastleCourtyard)
+					strings.Add("Castle Courtyard");
+				if (tides.LakeDesolation)
+					strings.Add("Lake Desolation");
+				if (tides.DryLakeSerene)
+					strings.Add("Dry Lake Serene");
+
+				file.WriteLine(string.Join(", ", strings));
 			}
 		}
 
@@ -390,15 +431,14 @@ namespace TsRandomizer.Screens
 				file.WriteLine(prefix + itemLocation);
 		}
 
-		static void WriteWarps(StreamWriter file, IEnumerable<ItemLocation> itemLocations, Seed seed)
+		static void WriteWarps(StreamWriter file, IEnumerable<ItemLocation> itemLocations)
 		{
-			var defaultUnlockingMap = new DefaultItemUnlockingMap(seed);
 			file.WriteLine();
 			file.WriteLine("Warps:");
 
 			foreach (var itemLocation in itemLocations)
 			{
-				var warp = defaultUnlockingMap.GetWarpName(itemLocation.ItemInfo.Identifier);
+				var warp = WarpNames.Get(itemLocation.ItemInfo.Unlocks);
 				file.WriteLine($"{itemLocation} - {warp}");
 			}	
 		}

@@ -137,6 +137,7 @@
     <Compile Include="Archipelago\ArchipelagoUnlockingMap.cs" />
     <Compile Include="Randomisation\SpriteManager.cs" />
     <Compile Include="LevelObjects\Other\MajorUgly.cs" />
+    <Compile Include="Randomisation\WarpNames.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />

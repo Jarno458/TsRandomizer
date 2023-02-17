@@ -59,7 +59,7 @@ namespace TsRandomizer.Archipelago
 		{
 			var selectedGate = allGates.First(g => g.Gate == gateToUnlock);
 
-			CustomItem.SetDescription(type, $"You feel the twin pyramid key attune to: {selectedGate.Name}", "Twin Pyramid Key");
+			CustomItem.SetDescription(type, $"You feel the twin pyramid key attune to: {WarpNames.Get(selectedGate.Gate)}", "Twin Pyramid Key");
 
 			var unlockingSpecification = new UnlockingSpecification(CustomItem.GetIdentifier(type) , Requirement.None, Requirement.Teleport)
 			{

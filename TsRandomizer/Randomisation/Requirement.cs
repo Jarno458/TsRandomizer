@@ -10,6 +10,8 @@ namespace TsRandomizer.Randomisation
 	{
 		static readonly Dictionary<Requirement, string> Flags;
 
+		public static readonly Requirement AllGates;
+
 		public static readonly Requirement None = 0UL;
 		public static readonly Requirement TimeStop = 1UL << 0;
 		public static readonly Requirement ForwardDash = 1UL << 1;
@@ -63,6 +65,12 @@ namespace TsRandomizer.Randomisation
 				.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
 				.Where(f => f.Name != nameof(None))
 				.ToDictionary(f => (Requirement)f.GetValue(null), f => f.Name);
+
+			AllGates = typeof(Requirement)
+				.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+				.Where(f => f.Name.StartsWith("Gate"))
+				.Select(f => (Requirement)f.GetValue(null))
+				.Aggregate((a, b) => a | b);
 		}
 
 		Requirement(ulong flags)
