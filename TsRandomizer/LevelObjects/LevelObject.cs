@@ -151,7 +151,6 @@ namespace TsRandomizer.LevelObjects
 			var levelReflected = level.AsDynamic();
 
 			Objects.Clear();
-			//KnownItemIds.Clear();
 			foreach (var knownIds in KnownIds.Values)
 				knownIds.Clear();
 

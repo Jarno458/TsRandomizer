@@ -1,8 +1,7 @@
 ﻿using System.IO;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
-using TsRandomizer.Extensions;
+
 using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Settings.GameSettingObjects
@@ -18,18 +17,21 @@ namespace TsRandomizer.Settings.GameSettingObjects
 			set { CurrentValue = value; }
 		}
 
-		string Character;
+		readonly string character;
 
 		public SpriteGameSetting(string name, string description, string character,
 			string defaultValue, bool canBeChangedInGame = false)
 				: base(name, description, defaultValue, canBeChangedInGame)
 		{
-			Character = character;
+			this.character = character;
 
 			try
 			{
-				AllowedValues = GetFiles($"Custom Sprites\\{Character}\\", "*.xnb").ToList();
-				AllowedValues.AddRange(GetFiles($"Content\\Sprites\\Heroes\\", $"*{Character}*.xnb").ToList());
+				AllowedValues = new List<string>(0);
+
+				AllowedValues.AddRange(GetFiles(Path.Combine("Custom Sprites", character), "*.xnb"));
+				AllowedValues.AddRange(GetFiles(Path.Combine("Custom Sprites", character), "*.png"));
+				AllowedValues.AddRange(GetFiles("Content\\Sprites\\Heroes\\", $"*{character}*.xnb"));
 			}
 			catch
 			{
@@ -37,12 +39,12 @@ namespace TsRandomizer.Settings.GameSettingObjects
 			}
 		}
 
-		static List<string> GetFiles(string directory, string pattern)
+		static string[] GetFiles(string directory, string pattern)
 		{
 			if (!Directory.Exists(directory))
-				return new List<string>();
+				return new string[0];
 
-			return Directory.GetFiles(directory, pattern).ToList();
+			return Directory.GetFiles(directory, pattern);
 		}
 
 		[JsonConstructor]
@@ -72,12 +74,13 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		internal override void UpdateMenuEntry(MenuEntry menuEntry)
 		{
 			base.UpdateMenuEntry(menuEntry);
-			string ShortName = Value.Substring(Value.LastIndexOf("\\") + 1).Replace(".xnb", "");
-			if (ShortName.Contains(Character))
-			{
-				ShortName = GetSpriteName(ShortName);
-			}
-			menuEntry.Text = $"{Name} - {ShortName}";
+
+			var shortName = Path.GetFileNameWithoutExtension(Value);
+
+			if (shortName.Contains(character))
+				shortName = GetSpriteName(shortName);
+
+			menuEntry.Text = $"{Name} - {shortName}";
 		}
 
 		internal string GetSpriteName(string sprite)

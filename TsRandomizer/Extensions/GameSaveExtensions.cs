@@ -99,6 +99,9 @@ namespace TsRandomizer.Extensions
 		internal static bool HasRelic(this GameSave gameSave, EInventoryRelicType relic) => 
 			gameSave.Inventory.RelicInventory.Inventory.ContainsKey((int)relic);
 
+		internal static bool HasRelicEnabled(this GameSave gameSave, EInventoryRelicType relic) =>
+			HasRelic(gameSave, relic) && gameSave.Inventory.RelicInventory.Inventory[(int)relic].IsActive;
+
 		internal static bool HasOrb(this GameSave gameSave, EInventoryOrbType orbType) => 
 			gameSave.Inventory.OrbInventory.Inventory.ContainsKey((int) orbType);
 

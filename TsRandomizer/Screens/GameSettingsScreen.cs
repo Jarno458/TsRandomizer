@@ -56,7 +56,19 @@ namespace TsRandomizer.Screens
 			try
 			{
 				if (settings != null)
+				{
 					gcm.UpdateMinimapColors(settings);
+
+					if (IsInGame)
+                    {
+	                    var gameplayScreen = ScreenManager.FirstOrDefault<GameplayScreen>();
+	                    SpriteManager.ReloadCustomSprites(gameplayScreen.Level, gcm, settings);
+					}
+					else
+					{
+						SpriteManager.ReloadCustomSprites(null, gcm, settings);
+					}
+				}
 			}
 			catch
 			{
@@ -78,8 +90,11 @@ namespace TsRandomizer.Screens
 			{
 				var gameplayScreen = screenManager.FirstOrDefault<GameplayScreen>();
 
-				if(gameplayScreen != null && gameplayScreen.Settings != null)
+				if (gameplayScreen != null && gameplayScreen.Settings != null)
+				{
 					gcm.UpdateMinimapColors(gameplayScreen.Settings);
+					SpriteManager.ReloadCustomSprites(gameplayScreen.Level, gameplayScreen.GameContentManager, gameplayScreen.Settings);
+				}
 			}
 
 			gcm.LoadAllResources(screenManager.AsDynamic().GeneralContentManager, screenManager.GraphicsDevice);

@@ -1,49 +1,107 @@
 ﻿using Timespinner.Core;
+using Timespinner.Core.Specifications;
+using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Inventory;
+using Timespinner.GameObjects.Heroes.Familiars;
 using TsRandomizer.Extensions;
+using TsRandomizer.Settings;
+using TsRandomizer.Settings.GameSettingObjects;
 
 namespace TsRandomizer.Randomisation
 {
 	static class SpriteManager
 	{
-		public static void ReloadCustomSprites(Level level)
+		public static void ReloadCustomSprites(Level level, GCM gameContentManager, SettingCollection settings)
 		{
-			level.GCM.SpLunais = LoadCustomSprite(level, "Sprites/Heroes/LunaisSprite", level.GameSave.GetSettings().LunaisSprite.Value);
-			level.GCM.SpAltLunais = LoadCustomSprite(level, "Sprites/Heroes/LunaisAltSprite", level.GameSave.GetSettings().LunaisEternalSprite.Value);
-			level.GCM.SpAltLunais2 = LoadCustomSprite(level, "Sprites/Heroes/LunaisAltSprite2", level.GameSave.GetSettings().LunaisGoddessSprite.Value);
+			var gcm = gameContentManager.AsDynamic();
 
-			level.GCM.SpFamiliarMeyef = LoadCustomSprite(level, "Sprites/Heroes/FamiliarMeyef", level.GameSave.GetSettings().MeyefSprite.Value);
-			level.GCM.SpFamiliarAltMeyef = LoadCustomSprite(level, "Sprites/Heroes/FamiliarAltMeyef", level.GameSave.GetSettings().MeyefWyrmSprite.Value);
+			gcm.SpLunais = LoadCustomSprite(gcm, "Sprites/Heroes/LunaisSprite", settings.LunaisSprite);
+			gcm.SpAltLunais = LoadCustomSprite(gcm, "Sprites/Heroes/LunaisAltSprite", settings.LunaisEternalSprite);
+			gcm.SpAltLunais2 = LoadCustomSprite(gcm, "Sprites/Heroes/LunaisAltSprite2", settings.LunaisGoddessSprite);
 
-			level.GCM.SpFamiliarCrow = LoadCustomSprite(level, "Sprites/Heroes/FamiliarCrow", level.GameSave.GetSettings().MerchantCrowSprite.Value);
-			level.GCM.SpFamiliarAltCrow = LoadCustomSprite(level, "Sprites/Heroes/FamiliarAltCrow", level.GameSave.GetSettings().MerchantCrowGreedSprite.Value);
+			gcm.SpFamiliarMeyef = LoadCustomSprite(gcm, "Sprites/Heroes/FamiliarMeyef", settings.MeyefSprite);
+			gcm.SpFamiliarAltMeyef = LoadCustomSprite(gcm, "Sprites/Heroes/FamiliarAltMeyef", settings.MeyefWyrmSprite);
 
-			level.GCM.SpFamiliarKobo = LoadCustomSprite(level, "Sprites/Heroes/FamiliarKobo", level.GameSave.GetSettings().KoboSprite.Value);
-			level.GCM.SpFamiliarDemon = LoadCustomSprite(level, "Sprites/Heroes/FamiliarDemon", level.GameSave.GetSettings().DemonSprite.Value);
-			level.GCM.SpFamiliarGriffin = LoadCustomSprite(level, "Sprites/Heroes/FamiliarGriffin", level.GameSave.GetSettings().GriffinSprite.Value);
-			level.GCM.SpFamiliarSprite = LoadCustomSprite(level, "Sprites/Heroes/FamiliarSprite", level.GameSave.GetSettings().SpriteFamiliarSprite.Value);
+			gcm.SpFamiliarCrow = LoadCustomSprite(gcm, "Sprites/Heroes/FamiliarCrow", settings.MerchantCrowSprite);
+			gcm.SpFamiliarAltCrow = LoadCustomSprite(gcm, "Sprites/Heroes/FamiliarAltCrow", settings.MerchantCrowGreedSprite);
 
-			ReloadLunaisSprite(level);
+			gcm.SpFamiliarKobo = LoadCustomSprite(gcm, "Sprites/Heroes/FamiliarKobo", settings.KoboSprite);
+			gcm.SpFamiliarDemon = LoadCustomSprite(gcm, "Sprites/Heroes/FamiliarDemon", settings.DemonSprite);
+			gcm.SpFamiliarGriffin = LoadCustomSprite(gcm, "Sprites/Heroes/FamiliarGriffin", settings.GriffinSprite);
+			gcm.SpFamiliarSprite = LoadCustomSprite(gcm, "Sprites/Heroes/FamiliarSprite", settings.SpriteFamiliarSprite);
+
+			if (level != null)
+			{
+				ReloadLunaisSprite(level, gameContentManager);
+				ReloadFamiliarSprite(level, gameContentManager);
+			}
 		}
 
-		static SpriteSheet LoadCustomSprite(Level level, string spriteKey, string spritePath)
+		static SpriteSheet LoadCustomSprite(dynamic gcm, string spriteKey, SpriteGameSetting spriteSetting)
 		{
-			var atlas = level.GCM.AsDynamic()._textureAtlasDatabase;
-			atlas.TextureAtlasSpecifications[spriteKey].ContentPath = $"..//{spritePath}";
-			return level.GCM.AsDynamic().Get(spriteKey);
+			TextureAtlasDatabase atlas = gcm._textureAtlasDatabase;
+
+			atlas.TextureAtlasSpecifications[spriteKey].ContentPath = $"..//{spriteSetting.Value}";
+			
+			return gcm.Get(spriteKey);
 		}
 
-		public static void ReloadLunaisSprite(Level level)
+		static void ReloadLunaisSprite(Level level, GCM gameContentManager)
 		{
-			// Lunais is loaded before the GameplayScreen hook, and as such her `_sprite` needs to be reset or it will be the default
-			// Familiars are loaded after the hook and apply automatically
-			SpriteSheet lunaisSprite = level.GCM.SpLunais;
-			if (level.GameSave.HasRelic(Timespinner.GameAbstractions.Inventory.EInventoryRelicType.EternalBrooch))
-				lunaisSprite = level.GCM.SpAltLunais2;
-			else if (level.GameSave.HasRelic(Timespinner.GameAbstractions.Inventory.EInventoryRelicType.EmpireBrooch))
-				lunaisSprite = level.GCM.SpAltLunais;
+			var lunaisSprite = gameContentManager.SpLunais;
+
+			if (level.GameSave.HasRelicEnabled(EInventoryRelicType.EternalBrooch))
+				lunaisSprite = gameContentManager.SpAltLunais2;
+
+			else if (level.GameSave.HasRelicEnabled(EInventoryRelicType.EmpireBrooch))
+				lunaisSprite = gameContentManager.SpAltLunais;
 			
 			level.MainHero.AsDynamic()._sprite = lunaisSprite;
 		}
+
+		static void ReloadFamiliarSprite(Level level, GCM gameContentManager)
+		{
+			var luniasObject = level.MainHero.AsDynamic();
+			var familiar = (FamiliarBase)luniasObject.EquippedFamiliar;
+
+			if (familiar == null) 
+				return;
+
+			var dynamicFamiliar = familiar.AsDynamic();
+
+			SpriteSheet sprite;
+
+			switch (dynamicFamiliar.FamiliarType)
+			{
+				case EInventoryFamiliarType.Meyef:
+					sprite = level.GameSave.HasRelicEnabled(EInventoryRelicType.FamiliarAltMeyef)
+						? gameContentManager.SpFamiliarAltMeyef
+						: gameContentManager.SpFamiliarMeyef;
+					break;
+				case EInventoryFamiliarType.Griffin:
+					sprite = gameContentManager.SpFamiliarGriffin;
+					break;
+				case EInventoryFamiliarType.MerchantCrow:
+					sprite = level.GameSave.HasRelicEnabled(EInventoryRelicType.FamiliarAltCrow)
+						? gameContentManager.SpFamiliarAltCrow
+						: gameContentManager.SpFamiliarCrow;
+					break;
+				case EInventoryFamiliarType.Kobo:
+					sprite = gameContentManager.SpFamiliarKobo;
+					break;
+				case EInventoryFamiliarType.Sprite:
+					sprite = gameContentManager.SpFamiliarSprite;
+					break;
+				case EInventoryFamiliarType.Demon:
+					sprite = gameContentManager.SpFamiliarDemon;
+					break;
+				default:
+					return;
+			}
+
+			dynamicFamiliar._sprite = sprite;
+		}
+
 	}
 }

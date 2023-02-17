@@ -45,7 +45,7 @@ namespace TsRandomizer.Screens
 		public SettingCollection Settings { get; private set; }
 
 		public GameSave Save => (GameSave)Dynamic.SaveFile;
-		Level Level => (Level)Dynamic._level;
+		public Level Level => (Level)Dynamic._level;
 		dynamic LevelReflected => Level.AsDynamic();
 
 		public ItemLocationMap ItemLocations { get; private set; }
@@ -66,7 +66,9 @@ namespace TsRandomizer.Screens
 			var settings = saveFile.GetSettings();
 
 			ScreenManager.Log.SetSettings(settings);
+
 			gameContentManager.UpdateMinimapColors(settings);
+			SpriteManager.ReloadCustomSprites(Level, GameContentManager, settings);
 
 			Seed = saveFileSeed ?? Seed.Zero;
 
@@ -95,9 +97,7 @@ namespace TsRandomizer.Screens
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave, settings.DamageRando.Value, settings.DamageRandoOverrides.Value);
 
 			HandleLevelCap(settings, saveFile);
-
-			SpriteManager.ReloadCustomSprites(Level);
-
+			
 			BestiaryManager.UpdateBestiary(Level, settings);
 			if (!saveFile.GetSaveBool("IsFightingBoss"))
 				BestiaryManager.RefreshBossSaveFlags(Level);
