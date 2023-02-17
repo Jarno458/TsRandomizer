@@ -59,7 +59,7 @@ namespace TsRandomizer.Randomisation
 		}
 
 		public override string ToString() =>
-			$"{AreaName} {Name ?? Key.ToString()} [{ItemInfo}]";
+			$"{Name ?? Key.ToString()} [{ItemInfo}]";
 
 		public virtual void BaseOnGameSave(GameSave save)
 		{
