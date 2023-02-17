@@ -49,6 +49,7 @@ namespace TsRandomizer.Randomisation
 			};
 
 			pyramidUnlockingSpecification.Unlocks = selectedGate.Gate;
+			pyramidUnlockingSpecification.WarpName = selectedGate.Name;
 		}
 
 		void SetUnchainedKeyPickupActions(Seed seed)
@@ -77,6 +78,7 @@ namespace TsRandomizer.Randomisation
 			};
 
 			pyramidWarpUnlockingSpecification.Unlocks = pyramidGate.Gate;
+			pyramidWarpUnlockingSpecification.WarpName = pyramidGate.Name;
 
 			UnlockingSpecifications.Add(pyramidWarpUnlockingSpecification);
 		}
@@ -180,6 +182,11 @@ namespace TsRandomizer.Randomisation
 				? value.OnPickup
 				: null;
 
+		public string GetWarpName(ItemIdentifier identifier) =>
+			UnlockingSpecifications.TryGetValue(identifier, out var value)
+				? value.WarpName
+				: null;
+
 		protected static void UnlockRoom(Level level, int levelId, int roomId)
 		{
 			var minimapRoom = level.Minimap.Areas[levelId].Rooms[roomId];
@@ -198,6 +205,7 @@ namespace TsRandomizer.Randomisation
 			public R AdditionalUnlocks { get; internal set; }
 			public R AllUnlocks => Unlocks | AdditionalUnlocks;
 			public Action<Level> OnPickup { get; internal set; }
+			public string WarpName { get; internal set; }
 
 			public UnlockingSpecification(ItemIdentifier item, R unlocks, R? additionalUnlocks = null)
 			{
