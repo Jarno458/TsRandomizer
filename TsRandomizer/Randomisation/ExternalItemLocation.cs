@@ -8,7 +8,7 @@ namespace TsRandomizer.Randomisation
 	{
 		static int externalCounter;
 
-		public ExternalItemLocation() : base(new ItemKey(0, 0, 0, externalCounter++), "External", "", null)
+		public ExternalItemLocation() : base(new ItemKey(0, 0, 0, externalCounter++), "", "External", null)
 		{
 		}
 
