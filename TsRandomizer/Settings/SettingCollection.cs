@@ -9,7 +9,8 @@ namespace TsRandomizer.Settings
 		public static readonly GameSettingCategoryInfo[] Categories = {
 			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.BossRando, s => s.BossScaling, s => s.DamageRando, s => s.HpCap, s => s.BossHealing, s => s.LevelCap, s => s.ExtraEarringsXP
+					s => s.BossRando, s => s.BossScaling, s => s.DamageRando, s => s.HpCap,
+					s => s.LevelCap, s => s.ExtraEarringsXP, s => s.BossHealing
 				}},
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
