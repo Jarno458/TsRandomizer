@@ -129,6 +129,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		{
 			if (Appendages.Count == 0)
 			{
+				TypedObject.BboxOffset = new Point(4, 4);
+
 				Dynamic._sprite = menuIcons;
 				((Animate)TypedObject).ChangeAnimation(ItemInfo.AnimationIndex);
 			}
@@ -141,6 +143,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 				dynamicAppendage._sprite = menuIcons;
 				dynamicAppendage._frameSource = menuIcons.GetFrameSource(ItemInfo.AnimationIndex);
+				dynamicAppendage._animationType = EAnimationType.None;
 			}
 		}
 
