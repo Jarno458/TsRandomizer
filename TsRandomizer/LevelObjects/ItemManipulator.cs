@@ -68,7 +68,7 @@ namespace TsRandomizer.LevelObjects
 
 			if (itemLocation == null)
 			{
-				Console.Out.WriteLine($"UnmappedItem: {itemKey}");
+				//Console.Out.WriteLine($"UnmappedItem: {itemKey}");
 				return null;
 			}
 
