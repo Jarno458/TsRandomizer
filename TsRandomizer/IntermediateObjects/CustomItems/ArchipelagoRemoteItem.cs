@@ -6,9 +6,9 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 	{
 		public override int AnimationIndex => 198;
 
-		public ArchipelagoItem(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.Archipelago)
+		public ArchipelagoItem(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.ArchipelagoItem)
 		{
-			SetDescription("Item that belongs to a distant timeline somewhere in the Archipelago (cannot be sold)", "Archipelago");
+			SetDescription("Item that belongs to a distant timeline somewhere in the Archipelago", "Archipelago");
 		}
 	}
 }

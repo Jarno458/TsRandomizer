@@ -67,7 +67,7 @@ namespace TsRandomizer.Archipelago
 			{
 				itemLocation.SetItem(personalLocations.TryGetValue(itemLocation.Key, out var personalItemInfo)
 					? ItemInfoProvider.Get(personalItemInfo)
-					: ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.Archipelago)));
+					: ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.ArchipelagoItem)));
 
 				itemLocation.OnPickup = _ => Client.UpdateChecks(itemLocations);
 			}

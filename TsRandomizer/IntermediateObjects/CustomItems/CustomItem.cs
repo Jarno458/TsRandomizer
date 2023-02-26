@@ -12,7 +12,7 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 {
 	public enum CustomItemType 
 	{
-		Archipelago,
+		ArchipelagoItem,
 		MeteorSparrowTrap,
 		NeurotoxinTrap,
 		ChaosTrap,
