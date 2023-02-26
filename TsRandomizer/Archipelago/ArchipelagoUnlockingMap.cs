@@ -27,11 +27,11 @@ namespace TsRandomizer.Archipelago
 				var selectedGate = allTeleporterGates.First(g => g.Gate == gateToUnlock);
 
 				unlockingSpecification.OnPickup = level => {
-					UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
+					UnlockRoom(level, selectedGate);
 
 					if (seed.Options.EnterSandman)
 					{
-						UnlockFirstPyramidPortal(level);
+						UnlockRoom(level, PyramidTeleporterGates[1]);
 
 						unlockingSpecification.AdditionalUnlocks |= PyramidTeleporterGates[1].Gate;
 					}
@@ -64,7 +64,7 @@ namespace TsRandomizer.Archipelago
 			var unlockingSpecification = new UnlockingSpecification(CustomItem.GetIdentifier(type) , Requirement.None, Requirement.Teleport)
 			{
 				Unlocks = selectedGate.Gate,
-				OnPickup = level => UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId)
+				OnPickup = level => UnlockRoom(level, selectedGate)
 			};
 
 			UnlockingSpecifications.Add(unlockingSpecification);

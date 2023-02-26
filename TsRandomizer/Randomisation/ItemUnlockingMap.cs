@@ -39,11 +39,12 @@ namespace TsRandomizer.Randomisation
 			var pyramidUnlockingSpecification = UnlockingSpecifications[new ItemIdentifier(EInventoryRelicType.PyramidsKey)];
 
 			pyramidUnlockingSpecification.OnPickup = level => {
-				UnlockRoom(level, selectedGate.LevelId, selectedGate.RoomId);
+				UnlockRoom(level, selectedGate);
 
 				if (seed.Options.EnterSandman)
 				{
-					UnlockFirstPyramidPortal(level);
+					UnlockRoom(level, PyramidTeleporterGates[1]);
+
 					pyramidUnlockingSpecification.AdditionalUnlocks |= PyramidTeleporterGates[1].Gate;
 				}
 			};
@@ -73,7 +74,7 @@ namespace TsRandomizer.Randomisation
 			CustomItem.SetDescription(type, $"You feel the twin pyramid key attune to: {WarpNames.Get(pyramidGate.Gate)}", "Twin Pyramid Key");
 			
 			pyramidWarpUnlockingSpecification.OnPickup = level => {
-				UnlockRoom(level, pyramidGate.LevelId, pyramidGate.RoomId);
+				UnlockRoom(level, pyramidGate);
 			};
 
 			pyramidWarpUnlockingSpecification.Unlocks = pyramidGate.Gate;
@@ -180,16 +181,13 @@ namespace TsRandomizer.Randomisation
 				? value.OnPickup
 				: null;
 
-		protected static void UnlockRoom(Level level, int levelId, int roomId)
+		protected static void UnlockRoom(Level level, TeleporterGate gate)
 		{
-			var minimapRoom = level.Minimap.Areas[levelId].Rooms[roomId];
+			var minimapRoom = level.Minimap.Areas[gate.LevelId].Rooms[gate.RoomId];
 
 			minimapRoom.SetKnown(true);
 			minimapRoom.SetVisited(true);
 		}
-
-		protected static void UnlockFirstPyramidPortal(Level level) =>
-			UnlockRoom(level, 16, 12);
 
 		protected class UnlockingSpecification
 		{
