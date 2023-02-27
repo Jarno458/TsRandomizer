@@ -42,14 +42,13 @@ namespace TsRandomizer.Randomisation
 				UnlockRoom(level, selectedGate);
 
 				if (seed.Options.EnterSandman)
-				{
 					UnlockRoom(level, PyramidTeleporterGates[1]);
-
-					pyramidUnlockingSpecification.AdditionalUnlocks |= PyramidTeleporterGates[1].Gate;
-				}
 			};
 
 			pyramidUnlockingSpecification.Unlocks = selectedGate.Gate;
+
+			if (seed.Options.EnterSandman)
+				pyramidUnlockingSpecification.AdditionalUnlocks |= PyramidTeleporterGates[1].Gate;
 		}
 
 		void SetUnchainedKeyPickupActions(Seed seed)
@@ -68,18 +67,16 @@ namespace TsRandomizer.Randomisation
 
 		protected void SetUnchainedKeysUnlock(Random random, CustomItemType type, TeleporterGate[] gates)
 		{
-			var pyramidWarpUnlockingSpecification = new UnlockingSpecification(CustomItem.GetIdentifier(type), R.None);
 			var pyramidGate = gates.SelectRandom(random);
 
-			CustomItem.SetDescription(type, $"You feel the twin pyramid key attune to: {WarpNames.Get(pyramidGate.Gate)}", "Twin Pyramid Key");
-			
-			pyramidWarpUnlockingSpecification.OnPickup = level => {
-				UnlockRoom(level, pyramidGate);
+			var pyramidWarpUnlockingSpecification = new UnlockingSpecification(CustomItem.GetIdentifier(type), pyramidGate.Gate)
+			{
+				OnPickup = level => UnlockRoom(level, pyramidGate)
 			};
 
-			pyramidWarpUnlockingSpecification.Unlocks = pyramidGate.Gate;
-
 			UnlockingSpecifications.Add(pyramidWarpUnlockingSpecification);
+
+			CustomItem.SetDescription(type, $"You feel the twin pyramid key attune to: {WarpNames.Get(pyramidGate.Gate)}", "Twin Pyramid Key");
 		}
 	}
 

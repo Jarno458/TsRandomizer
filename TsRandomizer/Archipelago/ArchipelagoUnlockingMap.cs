@@ -30,14 +30,13 @@ namespace TsRandomizer.Archipelago
 					UnlockRoom(level, selectedGate);
 
 					if (seed.Options.EnterSandman)
-					{
 						UnlockRoom(level, PyramidTeleporterGates[1]);
-
-						unlockingSpecification.AdditionalUnlocks |= PyramidTeleporterGates[1].Gate;
-					}
 				};
 
 				unlockingSpecification.Unlocks = selectedGate.Gate;
+
+				if (seed.Options.EnterSandman)
+					unlockingSpecification.AdditionalUnlocks |= PyramidTeleporterGates[1].Gate;
 			}
 			else
 			{
@@ -61,9 +60,8 @@ namespace TsRandomizer.Archipelago
 
 			CustomItem.SetDescription(type, $"You feel the twin pyramid key attune to: {WarpNames.Get(selectedGate.Gate)}", "Twin Pyramid Key");
 
-			var unlockingSpecification = new UnlockingSpecification(CustomItem.GetIdentifier(type) , Requirement.None, Requirement.Teleport)
+			var unlockingSpecification = new UnlockingSpecification(CustomItem.GetIdentifier(type), selectedGate.Gate)
 			{
-				Unlocks = selectedGate.Gate,
 				OnPickup = level => UnlockRoom(level, selectedGate)
 			};
 
