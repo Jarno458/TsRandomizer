@@ -59,7 +59,7 @@ namespace TsRandomizer.Randomisation
 			public static bool CanBeOpenedWith(Requirement requirements, Requirement obtainedRequirements)
 				=> requirements == Requirement.Free || requirements.Contains(obtainedRequirements);
 
-			public override string ToString() => Requirements.ToString()
+			public override string ToString() => Requirements.ToString();
 		}
 
 		internal class AndGate : Gate
