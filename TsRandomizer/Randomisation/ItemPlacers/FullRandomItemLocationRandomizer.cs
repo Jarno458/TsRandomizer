@@ -205,7 +205,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		void PutStarterProgressionItemInReachableLocation(Random random, ItemInfo starterProgressionItem)
 		{
 			var starterLocations = itemLocations
-				.Where(l => l.Key.LevelId != 0 && l.Gate.Requires(R.None))
+				.Where(l => l.Key.LevelId != 0 && l.Gate.CanBeOpenedWith(R.None))
 				.ToArray();
 
 			var location = starterLocations.SelectRandom(random);

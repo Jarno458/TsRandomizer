@@ -35,6 +35,7 @@ namespace TsRandomizer.Randomisation
 			}
 
 			var selectedGate = teleporterGates.SelectRandom(Random);
+			selectedGate = PastTeleporterGates[6];
 
 			var pyramidUnlockingSpecification = UnlockingSpecifications[new ItemIdentifier(EInventoryRelicType.PyramidsKey)];
 
@@ -69,7 +70,7 @@ namespace TsRandomizer.Randomisation
 		{
 			var pyramidGate = gates.SelectRandom(random);
 
-			var pyramidWarpUnlockingSpecification = new UnlockingSpecification(CustomItem.GetIdentifier(type), pyramidGate.Gate)
+			var pyramidWarpUnlockingSpecification = new UnlockingSpecification(CustomItem.GetIdentifier(type), pyramidGate.Gate, R.Teleport)
 			{
 				OnPickup = level => UnlockRoom(level, pyramidGate)
 			};

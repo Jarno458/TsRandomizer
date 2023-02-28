@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TsRandomizer.Extensions;
 
@@ -8,18 +9,11 @@ namespace TsRandomizer.Randomisation
 	{
 		public abstract bool CanBeOpenedWith(Requirement obtainedRequirements);
 
-		public abstract bool Requires(Requirement requirementsToCheck);
-
-		public abstract Gate[] Gates { get; }
-
 		public static Gate operator &(Gate a, Gate b)
 		{
-			if (a is RequirementGate requirementGateA && requirementGateA.Requirements == Requirement.None)
-				return b is RequirementGate requirementGateB && requirementGateB.Requirements == Requirement.None
-					? (Gate)Requirement.None
-					: b;
-
-			if (b is RequirementGate rGateB && rGateB.Requirements == Requirement.None)
+			if (a is RequirementGate requirementGateA && requirementGateA.Requirements == Requirement.Free)
+				return b;
+			if (b is RequirementGate requirementGateB && requirementGateB.Requirements == Requirement.Free)
 				return a;
 
 			return new AndGate(a, b);
@@ -27,19 +21,11 @@ namespace TsRandomizer.Randomisation
 
 		public static Gate operator |(Gate a, Gate b)
 		{
-			if (a is RequirementGate rGateA)
-			{
-				if (rGateA.Requirements == Requirement.None)
-					return (Gate)Requirement.None;
-
-				if (b is RequirementGate rGateB)
-				{
-					if (rGateB.Requirements == Requirement.None)
-						return (Gate)Requirement.None;
-					
-					return new RequirementGate(rGateA.Requirements | rGateB.Requirements);
-				}
-			}
+			if (
+					(a is RequirementGate requirementGateA && requirementGateA.Requirements == Requirement.Free)
+					|| (b is RequirementGate requirementGateB && requirementGateB.Requirements == Requirement.Free)
+				)
+				return (Gate)Requirement.Free;
 
 			return new OrGate(a, b);
 		}
@@ -56,13 +42,11 @@ namespace TsRandomizer.Randomisation
 
 		public static Gate operator |(Requirement b, Gate a) => a | (Gate)b;
 
-		public static explicit operator Gate(Requirement requiredItems) => new RequirementGate(requiredItems);
+		public static implicit operator Gate(Requirement requiredItems) => new RequirementGate(requiredItems);
 
 		internal class RequirementGate : Gate
 		{
-			public readonly Requirement Requirements;
-
-			public override Gate[] Gates { get; }
+			internal Requirement Requirements { get; }
 
 			public RequirementGate(Requirement requirements)
 			{
@@ -70,62 +54,82 @@ namespace TsRandomizer.Randomisation
 			}
 
 			public override bool CanBeOpenedWith(Requirement obtainedRequirements) =>
-				Requirements == Requirement.None || Requirements.Contains(obtainedRequirements);
+				CanBeOpenedWith(Requirements, obtainedRequirements);
+			
+			public static bool CanBeOpenedWith(Requirement requirements, Requirement obtainedRequirements)
+				=> requirements == Requirement.Free || requirements.Contains(obtainedRequirements);
 
-			public override bool Requires(Requirement requirementsToCheck) =>
-				Requirements == Requirement.None || ((ulong)Requirements & (ulong)requirementsToCheck) > 0;
-
-			public override string ToString() => $"{Requirements}";
+			public override string ToString() => Requirements.ToString()
 		}
 
 		internal class AndGate : Gate
 		{
-			public override Gate[] Gates { get; }
+			Gate[] AllGates { get; }
 
 			internal AndGate(Gate a, Gate b)
 			{
 				if (a is AndGate andGateA && b is AndGate andGateB)
-					Gates = andGateA.Gates.Union(andGateB.Gates).ToArray();
+					AllGates = andGateA.AllGates.Union(andGateB.AllGates).ToArray();
 				else if (a is AndGate gateA)
-					Gates = gateA.Gates.Concat(b).ToArray();
+					AllGates = gateA.AllGates.Concat(b).ToArray();
 				else if (b is AndGate gateB)
-					Gates = gateB.Gates.Concat(a).ToArray();
+					AllGates = gateB.AllGates.Concat(a).ToArray();
 				else
-					Gates = new[] {a, b};
+					AllGates = new[] {a, b};
 			}
 
 			public override bool CanBeOpenedWith(Requirement obtainedRequirements) =>
-				Gates.All(g => g.CanBeOpenedWith(obtainedRequirements));
+				AllGates.All(g => g.CanBeOpenedWith(obtainedRequirements));
 
-			public override bool Requires(Requirement requirementsToCheck) =>
-				Gates.Any(g => g.Requires(requirementsToCheck));
-
-			public override string ToString() => $"AND({string.Join(",", Gates.Select(g => g.ToString()))})";
+			public override string ToString() => $" AND({string.Join(" && ", AllGates.Select(g => g.ToString()))}) ";
 		}
 
 		internal class OrGate : Gate
 		{
-			public override Gate[] Gates { get; }
+			Requirement OrRequirements { get; }
+			Gate[] AnyGates { get; }
 
 			internal OrGate(Gate a, Gate b)
 			{
-				if (a is OrGate orGateA && b is OrGate orGateB)
-					Gates = orGateA.Gates.Union(orGateB.Gates).ToArray();
-				else if (a is OrGate gateA)
-					Gates = gateA.Gates.Concat(b).ToArray();
-				else if (b is OrGate gateB)
-					Gates = gateB.Gates.Concat(a).ToArray();
-				else
-					Gates = new[] { a, b };
+				OrRequirements = Requirement.None;
+				var gates = new List<Gate>(2);
+
+				switch (a)
+				{
+					case OrGate orGateA:
+						OrRequirements |= orGateA.OrRequirements;
+						gates.AddRange(orGateA.AnyGates);
+						break;
+					case AndGate _:
+						gates.Add(a);
+						break;
+					case RequirementGate regGateA:
+						OrRequirements |= regGateA.Requirements;
+						break;
+				}
+
+				switch (b)
+				{
+					case OrGate orGateB:
+						OrRequirements |= orGateB.OrRequirements;
+						gates.AddRange(orGateB.AnyGates);
+						break;
+					case AndGate _:
+						gates.Add(b);
+						break;
+					case RequirementGate regGateB:
+						OrRequirements |= regGateB.Requirements;
+						break;
+				}
+
+				AnyGates = gates.ToArray();
 			}
 
 			public override bool CanBeOpenedWith(Requirement obtainedRequirements) =>
-				Gates.Any(g => g.CanBeOpenedWith(obtainedRequirements));
+				RequirementGate.CanBeOpenedWith(OrRequirements, obtainedRequirements)
+				|| AnyGates.Any(g => g.CanBeOpenedWith(obtainedRequirements));
 
-			public override bool Requires(Requirement requirementsToCheck) =>
-				Gates.All(g => g.Requires(requirementsToCheck));
-
-			public override string ToString() => $"OR({string.Join(",", Gates.Select(g => g.ToString()))})";
+			public override string ToString() => $" OR({string.Join(" || ", AnyGates.Concat((Gate)OrRequirements).Select(g => g.ToString()))}) ";
 		}
 	}
 }

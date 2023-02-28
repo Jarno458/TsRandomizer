@@ -339,8 +339,8 @@ namespace TsRandomizer.Screens
 
 				var itemLocations = Randomizer.Randomize(seed.Value, settings, fillingMethod, save);
 
-				var progressionItems = itemLocations.Where(l => l.ItemInfo.Unlocks != Requirement.None);
-				var otherItems = itemLocations.Where(l => l.ItemInfo.Unlocks == Requirement.None);
+				var progressionItems = itemLocations.Where(l => l.ItemInfo.IsProgression);
+				var otherItems = itemLocations.Where(l => !l.ItemInfo.IsProgression);
 				var warpItems = itemLocations.Where(l => Requirement.AllGates.Contains(l.ItemInfo.Unlocks));
 
 				WriteWarps(file, warpItems);

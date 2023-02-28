@@ -25,7 +25,7 @@ namespace TsRandomizer.Randomisation
 		public bool IsUsed => ItemInfo != null;
 		
 		public ItemLocation(ItemKey key, string areaName, string name, ItemInfo defaultItem) 
-			: this(key, areaName, name, defaultItem, Requirement.None)
+			: this(key, areaName, name, defaultItem, Requirement.Free)
 		{
 		}
 

@@ -57,6 +57,8 @@ namespace TsRandomizer.Randomisation
 		public static readonly Requirement GateLeftPyramid = 1UL << 59;
 		public static readonly Requirement GateRightPyramid = 1UL << 60;
 
+		public static readonly Requirement Free = 1UL << 63;
+
 		readonly ulong flags;
 
 		static Requirement()
@@ -85,23 +87,6 @@ namespace TsRandomizer.Randomisation
 		public bool IsSingleRequirement() => (flags & (flags - 1)) == 0;
 
 		[Pure]
-		public Requirement[] Split()
-		{
-			if (IsSingleRequirement())
-				return new[] { this };
-
-			List<Requirement> flaggedRequirements = new List<Requirement>();
-
-			foreach (var flag in Flags)
-			{
-				if (((ulong)flag.Key & flags) == (ulong)flag.Key)
-					flaggedRequirements.Add(flag.Key);
-			}
-
-			return flaggedRequirements.ToArray();
-		}
-
-		[Pure]
 		public override bool Equals(object obj)
 		{
 			if (obj is null) return false;
@@ -117,7 +102,14 @@ namespace TsRandomizer.Randomisation
 		public static implicit operator Requirement(ulong value) => new Requirement(value);
 		public static implicit operator ulong(Requirement value) => value.flags;
 
-		public static Requirement operator |(Requirement a, Requirement b) => a.flags | b.flags;
+		public static Requirement operator |(Requirement a, Requirement b)
+		{
+			if (a == Free || b == Free)
+				return Free;
+
+			return a.flags | b.flags;
+		}
+
 		public static Gate operator &(Requirement a, Requirement b) => (Gate)a & b;
 		public static bool operator ==(Requirement a, Requirement b) => a.Equals(b);
 		public static bool operator !=(Requirement a, Requirement b) => !(a == b);
@@ -127,6 +119,7 @@ namespace TsRandomizer.Randomisation
 		static string GetFlagNames(ulong flags)
 		{
 			if (flags == None) return "";
+			if (flags == Free) return "Free";
 
 			var flagNames = Flags
 				.Where(f => ((ulong)f.Key & flags) > 0)
