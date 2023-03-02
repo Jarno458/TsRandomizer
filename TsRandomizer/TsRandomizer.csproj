@@ -288,7 +288,7 @@
     <Compile Include="Screens\SeedSelection\SeedOptionsMenuScreen.cs" />
     <Compile Include="Screens\GameSettingsScreen.cs" />
     <Compile Include="Settings\GameSettingObjects\DamageRandoOverridesSetting.cs" />
-    <Compile Include="Settings\GameSettingObjects\NumberGameWithFixedSteps.cs" />
+    <Compile Include="Settings\GameSettingObjects\NumberGameSettingWithFixedSteps.cs" />
     <Compile Include="Settings\GameSettingObjects\NumberGameSetting.cs" />
     <Compile Include="Settings\GameSettingObjects\OnOffGameSetting.cs" />
     <Compile Include="Settings\GameSettingObjects\ColorGameSetting.cs" />
@@ -324,19 +324,8 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="app.config" />
-    <None Include="Custom Sprites\Lunais\Demon Twins.xnb" />
-    <None Include="Custom Sprites\Lunais\Neliste.xnb" />
-    <None Include="Custom Sprites\Lunais\Pano.xnb" />
-    <None Include="Custom Sprites\Lunais\Selen.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Custom Sprites\Crow\" />
-    <Folder Include="Custom Sprites\Demon\" />
-    <Folder Include="Custom Sprites\FamiliarSprite\" />
-    <Folder Include="Custom Sprites\Griffin\" />
-    <Folder Include="Custom Sprites\Kobo\" />
-    <Folder Include="Custom Sprites\Meyef\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-
 using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Settings.GameSettingObjects
@@ -51,8 +50,7 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		public SpriteGameSetting()
 		{
 		}
-
-
+		
 		public override void ToggleValue()
 		{
 			try

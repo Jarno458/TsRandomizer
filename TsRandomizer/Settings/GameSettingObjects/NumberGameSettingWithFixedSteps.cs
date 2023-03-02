@@ -3,12 +3,12 @@ using Newtonsoft.Json;
 
 namespace TsRandomizer.Settings.GameSettingObjects
 {
-	public class NumberGameWithFixedSteps : GameSetting<double>
+	public class NumberGameSettingWithFixedSteps : GameSetting<double>
 	{
 		[JsonIgnore]
 		public double[] Steps { get; set; }
 
-		public NumberGameWithFixedSteps(string name, string description, double[] steps,
+		public NumberGameSettingWithFixedSteps(string name, string description, double[] steps,
 			double defaultValue, bool canBeChangedInGame = false)
 			: base(name, description, defaultValue, canBeChangedInGame)
 		{
@@ -16,7 +16,7 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		}
 
 		[JsonConstructor]
-		public NumberGameWithFixedSteps() { }
+		public NumberGameSettingWithFixedSteps() { }
 
 		public override void ToggleValue()
 		{

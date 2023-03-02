@@ -132,7 +132,7 @@ namespace TsRandomizer.Settings
 		public SpriteGameSetting KoboSprite = new SpriteGameSetting("Kobo",
 			"Sets the Kobo sprite.", "Kobo", "Content\\Sprites\\Heroes\\FamiliarKobo.xnb", true);
 		public SpriteGameSetting SpriteFamiliarSprite = new SpriteGameSetting("Sprite",
-			"Sets the sprite for the Sprite familiar", "FamiliarSprite", "Content\\Sprites\\Heroes\\FamiliarSprite.xnb", true);
+			"Sets the sprite for the Sprite familiar", "Sprite", "Content\\Sprites\\Heroes\\FamiliarSprite.xnb", true);
 
 		public NumberGameSetting NumberOfOnScreenLogLines = new NumberGameSetting("Log Number of Lines",
 			"Max number of messages to show at the bottom left of the screen, 0 to turn onscreen log off", 0, 25, 1, 3, true);
@@ -191,7 +191,7 @@ namespace TsRandomizer.Settings
 		public ColorGameSetting FinalBossMinimapColor = new ColorGameSetting("Final Boss color",
 			"Sets the color for room of the final boss", "#EEEEEE", true);
 
-		public NumberGameWithFixedSteps LevelCap = new NumberGameWithFixedSteps("Level Cap",
+		public NumberGameSettingWithFixedSteps LevelCap = new NumberGameSettingWithFixedSteps("Level Cap",
 			"Sets the max level Lunais can achieve.",
 			new double[]{ 1, 5, 10, 15, 20, 25, 30, 69, 99 }, 99, false);
 
