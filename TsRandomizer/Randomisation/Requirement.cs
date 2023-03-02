@@ -15,7 +15,7 @@ namespace TsRandomizer.Randomisation
 		public static readonly Requirement None = 0UL;
 		public static readonly Requirement TimeStop = 1UL << 0;
 		public static readonly Requirement ForwardDash = 1UL << 1;
-		public static readonly Requirement AntiWeed = 1UL << 3;
+		public static readonly Requirement Fire = 1UL << 3;
 		public static readonly Requirement CardA = 1UL << 4;
 		public static readonly Requirement CardB = 1UL << 5;
 		public static readonly Requirement CardC = 1UL << 6;
@@ -135,7 +135,7 @@ namespace TsRandomizer.Randomisation
 				case "TimeStop": return "TS";
 				case "ForwardDash": return "FD";
 				case "Lightwall": return "LW";
-				case "AntiWeed": return "AW";
+				case "Fire": return "Fire";
 				case "CardA": return "cA";
 				case "CardB": return "cB";
 				case "CardC": return "cC";
