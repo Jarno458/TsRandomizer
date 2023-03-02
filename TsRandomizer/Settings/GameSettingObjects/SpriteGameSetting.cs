@@ -1,5 +1,7 @@
 ﻿using System.IO;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using TsRandomizer.Screens.Menu;
 
@@ -19,7 +21,7 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		readonly string character;
 
 		public SpriteGameSetting(string name, string description, string character,
-			string defaultValue, bool canBeChangedInGame = false)
+			string defaultValue, bool canBeChangedInGame = true, string contentExcludeRegex = null)
 				: base(name, description, defaultValue, canBeChangedInGame)
 		{
 			this.character = character;
@@ -30,7 +32,7 @@ namespace TsRandomizer.Settings.GameSettingObjects
 
 				AllowedValues.AddRange(GetFiles(Path.Combine("Custom Sprites", character), "*.xnb"));
 				AllowedValues.AddRange(GetFiles(Path.Combine("Custom Sprites", character), "*.png"));
-				AllowedValues.AddRange(GetFiles("Content\\Sprites\\Heroes\\", $"*{character}*.xnb"));
+				AllowedValues.AddRange(GetFiles("Content\\Sprites\\Heroes\\", $"*{character}*.xnb", contentExcludeRegex));
 			}
 			catch
 			{
@@ -38,12 +40,17 @@ namespace TsRandomizer.Settings.GameSettingObjects
 			}
 		}
 
-		static string[] GetFiles(string directory, string pattern)
+		static string[] GetFiles(string directory, string pattern, string excludeRegex = null)
 		{
 			if (!Directory.Exists(directory))
 				return new string[0];
 
-			return Directory.GetFiles(directory, pattern);
+			var files = Directory.GetFiles(directory, pattern);
+
+			if (excludeRegex == null)
+				return files;
+
+			return files.Where(f => !Regex.IsMatch(Path.GetFileName(f), excludeRegex)).ToArray();
 		}
 
 		[JsonConstructor]

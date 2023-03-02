@@ -112,27 +112,27 @@ namespace TsRandomizer.Settings
 			"Beeeeeeeeeeeeeeeeeeeeeeeeees!", true);
 
 		public SpriteGameSetting LunaisSprite = new SpriteGameSetting("Lunais",
-			"Sets the default Lunais sprite.", "Lunais", "Content\\Sprites\\Heroes\\LunaisSprite.xnb", true);
+			"Sets the default Lunais sprite.", "Lunais", "Content\\Sprites\\Heroes\\LunaisSprite.xnb");
 		public SpriteGameSetting LunaisEternalSprite = new SpriteGameSetting("Eternal",
-			"Sets the Lunais sprite used by the eternal brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite.xnb", true);
+			"Sets the Lunais sprite used by the eternal brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite.xnb");
 		public SpriteGameSetting LunaisGoddessSprite = new SpriteGameSetting("Goddess",
-			"Sets the Lunais sprite used by the goddess brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite2.xnb", true);
+			"Sets the Lunais sprite used by the goddess brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite2.xnb");
 		public SpriteGameSetting MeyefSprite = new SpriteGameSetting("Meyef",
-			"Sets the default Meyef sprite.", "Meyef", "Content\\Sprites\\Heroes\\FamiliarMeyef.xnb", true);
+			"Sets the default Meyef sprite.", "Meyef", "Content\\Sprites\\Heroes\\FamiliarMeyef.xnb");
 		public SpriteGameSetting MeyefWyrmSprite = new SpriteGameSetting("Wyrm",
-			"Sets the Meyef Sprite used by the wyrm brooch.", "Meyef", "Content\\Sprites\\Heroes\\FamiliarAltMeyef.xnb", true);
+			"Sets the Meyef Sprite used by the wyrm brooch.", "Meyef", "Content\\Sprites\\Heroes\\FamiliarAltMeyef.xnb");
 		public SpriteGameSetting MerchantCrowSprite = new SpriteGameSetting("Merchant Crow",
-			"Sets the default Merchant Crow sprite.", "Crow", "Content\\Sprites\\Heroes\\FamiliarCrow.xnb", true);
+			"Sets the default Merchant Crow sprite.", "Crow", "Content\\Sprites\\Heroes\\FamiliarCrow.xnb");
 		public SpriteGameSetting MerchantCrowGreedSprite = new SpriteGameSetting("Greed",
-			"Sets the Merchant Crow sprite used by the greed brooch.", "Crow", "Content\\Sprites\\Heroes\\FamiliarAltCrow.xnb", true);
+			"Sets the Merchant Crow sprite used by the greed brooch.", "Crow", "Content\\Sprites\\Heroes\\FamiliarAltCrow.xnb");
 		public SpriteGameSetting GriffinSprite = new SpriteGameSetting("Griffin",
-			"Sets the Griffin sprite.", "Griffin", "Content\\Sprites\\Heroes\\FamiliarGriffin.xnb", true);
+			"Sets the Griffin sprite.", "Griffin", "Content\\Sprites\\Heroes\\FamiliarGriffin.xnb");
 		public SpriteGameSetting DemonSprite = new SpriteGameSetting("Demon",
-			"Sets the Demon familiar sprite.", "Demon", "Content\\Sprites\\Heroes\\FamiliarDemon.xnb", true);
+			"Sets the Demon familiar sprite.", "Demon", "Content\\Sprites\\Heroes\\FamiliarDemon.xnb");
 		public SpriteGameSetting KoboSprite = new SpriteGameSetting("Kobo",
-			"Sets the Kobo sprite.", "Kobo", "Content\\Sprites\\Heroes\\FamiliarKobo.xnb", true);
+			"Sets the Kobo sprite.", "Kobo", "Content\\Sprites\\Heroes\\FamiliarKobo.xnb");
 		public SpriteGameSetting SpriteFamiliarSprite = new SpriteGameSetting("Sprite",
-			"Sets the sprite for the Sprite familiar", "Sprite", "Content\\Sprites\\Heroes\\FamiliarSprite.xnb", true);
+			"Sets the sprite for the Sprite familiar", "Sprite", "Content\\Sprites\\Heroes\\FamiliarSprite.xnb", contentExcludeRegex: "Lunais.*");
 
 		public NumberGameSetting NumberOfOnScreenLogLines = new NumberGameSetting("Log Number of Lines",
 			"Max number of messages to show at the bottom left of the screen, 0 to turn onscreen log off", 0, 25, 1, 3, true);
