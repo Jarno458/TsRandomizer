@@ -174,6 +174,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				starterProgressionItems.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.TimewornWarpBeacon)));
 				starterProgressionItems.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.TimewornWarpBeacon)));
 				starterProgressionItems.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon)));
+				starterProgressionItems.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon)));
 
 				if (SeedOptions.EnterSandman)
 				{
