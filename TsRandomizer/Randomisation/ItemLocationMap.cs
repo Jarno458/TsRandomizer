@@ -65,7 +65,7 @@ namespace TsRandomizer.Randomisation
 		//pyramid
 		internal Gate TemporalGyre;
 		internal Gate PyramidEntrance;
-		internal Gate LeftPyramid;
+		internal Gate MidPyramid;
 		internal Gate RightPyramid;
 		internal Gate Nightmare;
 
@@ -109,8 +109,6 @@ namespace TsRandomizer.Randomisation
 
 			if (SeedOptions.UnchainedKeys)
 				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.PyramidsKey)));
-
-			this[new ItemKey(1, 1, 1528, 144)].SetItem(ItemProvider.Get(EInventoryRelicType.PyramidsKey));
 		}
 
 		void SetupGates()
@@ -210,10 +208,10 @@ namespace TsRandomizer.Randomisation
 			var completeTimespinner = R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3 & R.TimespinnerSpindle & R.TimespinnerWheel;
 			TemporalGyre = MilitaryFortress & R.TimespinnerWheel;
 			PyramidEntrance = SeedOptions.EnterSandman 
-				? R.GateGyre | R.GateLeftPyramid | R.GateRightPyramid 
+				? R.GateGyre | R.GateLeftPyramid | (R.GateRightPyramid & R.DoubleJump)
 				: UpperLab & completeTimespinner;
-			LeftPyramid = PyramidEntrance & R.DoubleJump;
-			RightPyramid = LeftPyramid 
+			MidPyramid = PyramidEntrance & R.DoubleJump;
+			RightPyramid = MidPyramid 
 				& (FloodsFlags.PyramidShaft ? R.Free : R.UpwardDash) 
 				& NeedSwimming(FloodsFlags.BackPyramid) | R.GateRightPyramid;
 			Nightmare = RightPyramid & completeTimespinner;
@@ -440,9 +438,9 @@ namespace TsRandomizer.Randomisation
 		{
 			areaName = "Ancient Pyramid";
 			Add(new ItemKey(16, 14, 312, 192), "Ancient Pyramid: Why not it's right there", ItemProvider.Get(EItemType.MaxSand), PyramidEntrance);
-			Add(new ItemKey(16, 3, 88, 192), "Ancient Pyramid: Conviction guarded room", ItemProvider.Get(EItemType.MaxHP), LeftPyramid);
-			Add(new ItemKey(16, 22, 200, 192), "Ancient Pyramid: Pit secret room", ItemProvider.Get(EItemType.MaxAura), LeftPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft));
-			Add(new ItemKey(16, 16, 1512, 144), "Ancient Pyramid: Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), LeftPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft));
+			Add(new ItemKey(16, 3, 88, 192), "Ancient Pyramid: Conviction guarded room", ItemProvider.Get(EItemType.MaxHP), MidPyramid);
+			Add(new ItemKey(16, 22, 200, 192), "Ancient Pyramid: Pit secret room", ItemProvider.Get(EItemType.MaxAura), MidPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft));
+			Add(new ItemKey(16, 16, 1512, 144), "Ancient Pyramid: Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), MidPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft));
 			Add(new ItemKey(16, 5, 136, 192), "Ancient Pyramid: Nightmare Door chest", ItemProvider.Get(EInventoryEquipmentType.SelenBangle), RightPyramid);
 		}
 
