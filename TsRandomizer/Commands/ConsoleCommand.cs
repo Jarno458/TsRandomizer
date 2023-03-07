@@ -1,5 +1,4 @@
-﻿using TsRandomizer.Screens;
-using TsRandomizer.Screens.Console;
+﻿using TsRandomizer.Screens.Console;
 
 namespace TsRandomizer.Commands
 {

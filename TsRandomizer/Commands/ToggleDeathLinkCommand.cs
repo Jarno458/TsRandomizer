@@ -1,8 +1,6 @@
 ﻿using System;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameAbstractions.Inventory;
-using TsRandomizer.Screens;
 using TsRandomizer.Screens.Console;
 
 namespace TsRandomizer.Commands
