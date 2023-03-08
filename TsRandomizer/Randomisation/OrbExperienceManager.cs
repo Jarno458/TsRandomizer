@@ -34,7 +34,7 @@ namespace TsRandomizer.Randomisation
 		};
 
 		static bool ShouldGiveOrbXp(Monster monster) =>
-			!OrbXpBlacklist.Contains(monster.CharacterSpecification.Name) && !monster.AsDynamic().IsABoss;
+			!OrbXpBlacklist.Contains(monster.CharacterSpecification?.Name) && !monster.AsDynamic().IsABoss && monster.IsDead;
 
 
 		public static void UpdateHitRegistry(Protagonist lunais)

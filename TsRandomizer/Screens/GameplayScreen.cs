@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
@@ -52,6 +52,8 @@ namespace TsRandomizer.Screens
 
 		public GCM GameContentManager { get; private set; }
 
+		public double ExtraEarringsXP { get; private set; }
+
 		public GameplayScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
 		}
@@ -102,6 +104,7 @@ namespace TsRandomizer.Screens
 			if (!saveFile.GetSaveBool("IsFightingBoss"))
 				BestiaryManager.RefreshBossSaveFlags(Level);
 
+			ExtraEarringsXP = settings.ExtraEarringsXP.Value;
 			if (settings.ExtraEarringsXP.Value > 0)
 			{
 				OrbExperienceManager.UpdateHitRegistry(Level.MainHero);
@@ -174,6 +177,11 @@ namespace TsRandomizer.Screens
 #if DEBUG
 			TimespinnerAfterDark(input);
 #endif
+			if (ExtraEarringsXP > 0)
+			{
+				OrbExperienceManager.UpdateHitRegistry(Level.MainHero);
+				OrbExperienceManager.UpdateOrbXp(Level, Level.MainHero, ExtraEarringsXP);
+			}
 		}
 
 		void UpdateGenericScripts(Level level)
@@ -229,6 +237,7 @@ namespace TsRandomizer.Screens
 			currentRoom = LevelReflected.CurrentRoom;
 
 			ExceptionLogger.SetLevelContext(Level.ID, currentRoom.ID);
+			ExtraEarringsXP = Save.GetSettings().ExtraEarringsXP.Value;
 
 			return true;
 		}
