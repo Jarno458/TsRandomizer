@@ -37,7 +37,7 @@ namespace TsRandomizer.LevelObjects.Other
 			if (fillType == "Random")
 			{
 				var random = new Random((int)seed.Id);
-				for (var i = 0; i < 8; i++)
+				for (var i = 200; i < 208; i++)
 				{
 					var item = Helper.GetAllLoot().SelectRandom(random);
 					// Give half of the items to each era. Needs to be done after the random advances
