@@ -37,6 +37,9 @@ namespace TsRandomizer.LevelObjects.Other
 			if (fillType == "Random")
 			{
 				var random = new Random((int)seed.Id);
+				// Offset the selection by 200 to not collide with loot drop item selections
+				for (var i = 0; i < 200; i++)
+					Helper.GetAllLoot().SelectRandom(random);
 				for (var i = 0; i < 8; i++)
 				{
 					var item = Helper.GetAllLoot().SelectRandom(random);
