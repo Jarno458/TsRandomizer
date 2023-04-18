@@ -36,7 +36,7 @@ namespace TsRandomizer.LevelObjects.Other
 			}
 			if (fillType == "Random")
 			{
-				var random = new Random((int)seed.Id);
+				var random = new Random((int)seed.Id + 1);
 				for (var i = 0; i < 8; i++)
 				{
 					var item = Helper.GetAllLoot().SelectRandom(random);
