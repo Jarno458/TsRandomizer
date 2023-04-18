@@ -19,16 +19,12 @@ namespace TsRandomizer.Archipelago
 		TimeSpan fadeEnd;
 		TimeSpan fadeTime;
 
-		readonly GCM gcm;
-
 		readonly ConcurrentQueue<Message> lines = new ConcurrentQueue<Message>();
 		readonly ConcurrentQueue<Message> pendingImportantLines = new ConcurrentQueue<Message>();
 		readonly ConcurrentQueue<Message> pendingLines = new ConcurrentQueue<Message>();
 
-		public Log(GCM gcm)
+		public Log()
 		{
-			this.gcm = gcm;
-
 			SetSettings(GameSettingsLoader.LoadSettingsFromFile());
 
 			Add(this);
@@ -80,7 +76,7 @@ namespace TsRandomizer.Archipelago
 			}
 		}
 
-		public override void Update(GameTime gameTime, InputState input)
+		public override void Update(GameTime gameTime, InputState input, Jukebox jukebox)
 		{
 			while (lines.TryPeek(out var message) && message.OnScreenTime > fadeEnd)
 				lines.TryDequeue(out _);
@@ -114,7 +110,7 @@ namespace TsRandomizer.Archipelago
 			}
 		}
 
-		public override void Draw(SpriteBatch spriteBatch, Rectangle screenSize)
+		public override void Draw(SpriteBatch spriteBatch, Rectangle screenSize, GCM gcm)
 		{
 			if(ScreenManager.IsConsoleOpen)
 				return;
@@ -132,15 +128,15 @@ namespace TsRandomizer.Archipelago
 						? 1 - ((message.OnScreenTime - fadeStart).Ticks / (double)fadeTime.Ticks)
 						: 1;
 					
-					DrawBackdrop(spriteBatch, point, screenSize, (int)lineHeight, fade);
-					DrawMessage(spriteBatch, point, message, fade);
+					DrawBackdrop(spriteBatch, gcm, point, screenSize, (int)lineHeight, fade);
+					DrawMessage(spriteBatch, gcm, point, message, fade);
 
 					i++;
 				}
 			}
 		}
 
-		void DrawBackdrop(SpriteBatch spriteBatch, Point drawPoint, Rectangle screenSize, int lineHeight, double alpha)
+		void DrawBackdrop(SpriteBatch spriteBatch, GCM gcm, Point drawPoint, Rectangle screenSize, int lineHeight, double alpha)
 		{
 			var backdropColor = Color.Black;
 			backdropColor.A = (byte)(200 * alpha);
@@ -152,7 +148,7 @@ namespace TsRandomizer.Archipelago
 			spriteBatch.Draw(gcm.TxBlankSquare, backdropArea, null, backdropColor, 0, origin, SpriteEffects.None, 1);
 		}
 
-		void DrawMessage(SpriteBatch spriteBatch, Point drawPoint, Message message, double alpha)
+		void DrawMessage(SpriteBatch spriteBatch, GCM gcm, Point drawPoint, Message message, double alpha)
 		{
 			var font = gcm.LatinFont;
 

@@ -1,12 +1,10 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Timespinner.Core;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.Archipelago;
 using TsRandomizer.Extensions;
-using TsRandomizer.Randomisation.ItemPlacers;
 
 namespace TsRandomizer.Drawables
 {

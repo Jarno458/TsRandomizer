@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
+using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using TsRandomizer.Commands;
@@ -136,7 +135,11 @@ namespace TsRandomizer.Archipelago
 			switch (message)
 			{
 				case ItemSendLogMessage itemMessage:
-					ScreenManager.Log.Add(IsMe(itemMessage.SendingPlayerSlot), IsMe(itemMessage.ReceivingPlayerSlot), itemMessage.Item.Flags, parts);
+					ScreenManager.Log.Add(itemMessage.IsSenderTheActivePlayer, 
+						itemMessage.Receiver.IsSharingGroupWith(Team, Slot), itemMessage.Item.Flags, parts);
+					break;
+				case CountdownLogMessage countdown:
+					_ = new Countdown(countdown.RemainingSeconds);
 					break;
 				default:
 					if (!ScreenManager.IsConsoleOpen)
@@ -150,8 +153,6 @@ namespace TsRandomizer.Archipelago
 		static void SendPacket(ArchipelagoPacketBase packet) => session?.Socket?.SendPacket(packet);
 
 		public static void Say(string message) => SendPacket(new SayPacket { Text = message });
-
-		static bool IsMe(int slot) => slot == session.ConnectionInfo.Slot;
 
 		public static void UpdateChecks(ItemLocationMap itemLocationMap) => 
 			Task.Factory.StartNew(() => { UpdateChecksTask(itemLocationMap); });

@@ -18,7 +18,7 @@ namespace TsRandomizer.Screens.Console
 	{
 		const int LinesToRender = 28;
 		const int PageSize = 12;
-
+		
 		readonly ScreenManager screenManager;
 		readonly GCM gcm;
 

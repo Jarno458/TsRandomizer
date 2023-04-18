@@ -27,8 +27,9 @@ namespace TsRandomizer.Screens
 		ItemLocationMap itemLocationMap;
 
 		public readonly dynamic Dynamic;
-		public GCM GameContentManager => Dynamic.GCM;
 
+		public GCM GameContentManager => Dynamic.GCM;
+		
 		public static Log Log;
 		public static GameConsole Console;
 
@@ -45,7 +46,7 @@ namespace TsRandomizer.Screens
 
 			GameContentManager.LatinFont.DefaultCharacter = '?';
 
-			Log = new Log(GameContentManager);
+			Log = new Log();
 			Console = new GameConsole(this, GameContentManager);
 
 			Console.AddCommand(new ConnectCommand(this));
@@ -58,7 +59,7 @@ namespace TsRandomizer.Screens
 			DetectNewScreens();
 			UpdateScreens(gameTime, input);
 
-			Overlay.UpdateAll(gameTime, input);
+			Overlay.UpdateAll(gameTime, input, Jukebox);
 
 			if (input.IsNewKeyPress(Keys.OemTilde))
 				ToggleConsole();
@@ -82,7 +83,7 @@ namespace TsRandomizer.Screens
 
 			DrawGameplayScreens();
 
-			Overlay.DrawAll(SpriteBatch, new Rectangle(0, 0, ScreenSize.X, ScreenSize.Y));
+			Overlay.DrawAll(SpriteBatch, new Rectangle(0, 0, ScreenSize.X, ScreenSize.Y), GameContentManager);
 		}
 
 		void DetectNewScreens()
