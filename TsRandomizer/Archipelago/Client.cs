@@ -8,7 +8,6 @@ using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
-using TsRandomizer.Commands;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 using XnaColor = Microsoft.Xna.Framework.Color;
@@ -73,7 +72,7 @@ namespace TsRandomizer.Archipelago
 
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;
-
+	
 				if (result.Successful)
 				{
 #if DEBUG

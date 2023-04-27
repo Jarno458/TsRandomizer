@@ -38,14 +38,17 @@ namespace TsRandomizer.Commands
 		{
 			string user;
 			string password;
+			string server;
 
 			if (parameters.Length == 2)
 			{
+				server = parameters[0];
 				user = parameters[1];
 				password = null;
 			}
-			else if (parameters.Length == 2)
+			else if (parameters.Length == 3)
 			{
+				server = parameters[0];
 				user = parameters[1];
 				password = parameters[2];
 			}
@@ -60,29 +63,8 @@ namespace TsRandomizer.Commands
 				console.AddLine("No free save slots found", Color.Yellow);
 				return true;
 			}
-
-			string server;
-			string port;
-
-			var serverUriParts = parameters[0].Split(':');
-			if (serverUriParts.Length == 1)
-			{
-				server = serverUriParts[0];
-				port = "38281";
-			}
-			else if (serverUriParts.Length == 2)
-			{
-				server = serverUriParts[0];
-				port = serverUriParts[1];
-			}
-			else
-			{
-				return false;
-			}
-
-			var serverUri = new Uri($"ws://{server}:{port}");
-
-			var connectionResult = Client.Connect(serverUri.ToString(), user, password);
+			
+			var connectionResult = Client.Connect(server, user, password);
 
 			if (!connectionResult.Successful)
 			{
@@ -99,7 +81,7 @@ namespace TsRandomizer.Commands
 			Seed = slotDataParser.GetSeed();
 			Settings = slotDataParser.GetSettings();
 			OnDifficultySelectedHook = saveGame => {
-				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = serverUri.ToString();
+				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveServerKey] = server;
 				saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSaveUserKey] = user;
 				if (string.IsNullOrEmpty(password))
 					saveGame.DataKeyStrings[ArchipelagoItemLocationRandomizer.GameSavePasswordKey] = password;
