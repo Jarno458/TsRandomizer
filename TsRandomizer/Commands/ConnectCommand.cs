@@ -20,7 +20,7 @@ namespace TsRandomizer.Commands
 		static readonly Type GamePlayScreenType = TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.InGame.GameplayScreen");
 
 		public override string Command => "connect";
-		public override string ParameterUsage => "<server>:<port> <username> <password?>";
+		public override string ParameterUsage => "<server> <username> <password?>";
 
 		readonly ScreenManager screenManager;
 

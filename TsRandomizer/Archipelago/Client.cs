@@ -13,6 +13,10 @@ using TsRandomizer.Screens;
 using XnaColor = Microsoft.Xna.Framework.Color;
 using MessagePartColor = Archipelago.MultiClient.Net.Models.Color;
 
+#if DEBUG
+using TsRandomizer.Commands;
+#endif
+
 namespace TsRandomizer.Archipelago
 {
 	static class Client
