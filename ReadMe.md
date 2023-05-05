@@ -23,12 +23,16 @@ Extract the contents of the corresponding zip file to the same folder as Timespi
 * Windows Steam version 1.33 (latest)
 * Windows DRM Free version 1.33 (latest)
 * Linux Steam version 1.33 (latest)
+  * Steam-Deck is supported after a manuel change, see SteamDeck below
 * Linux DRM Free version 1.33 (latest)
 * Mac Steam version 1.33 (latest)
 * Mac DRM Free version 1.33 (latest)
 
 ##### Unsupported versions
 * Windows Store (not planned)
+
+### SteamDeck
+In order to use the randomizer on a steam deck, you will have to install the randomizer files manually in the desktop mode, and in order to get the steamdeck keybaord to work you will need to override the SDL2.dll inside your timespinner folder with [this one (yes this is a windows dll)](https://github.com/libsdl-org/SDL/releases/download/release-2.26.5/SDL2-2.26.5-win32-x86.zip)
 
 # Gameplay changes
 * Orb\Ring\Spell shop is no longer available, orbs\rings\spells are dropped from random item locations instead
