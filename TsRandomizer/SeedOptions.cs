@@ -31,6 +31,7 @@ namespace TsRandomizer
 		public bool RisingTides => (Flags & 1 << 18) > 0;
 		public bool UnchainedKeys => (Flags & 1 << 19) > 0;
 		public bool TrappedChests => (Flags & 1 << 20) > 0;
+		public bool PresentAccessWithWheelAndSpindle => (Flags & 1 << 21) > 0;
 
 		public SeedOptions(uint flags)
 		{
@@ -48,7 +49,6 @@ namespace TsRandomizer
 				{"ProgressiveKeycards", 1U << 2},
 				{"DownloadableItems", 1U << 3},
 				{"EyeSpy", 1U << 4},
-				{"FacebookMode", 1U << 4}, //backward compatibility
 				{"StartWithMeyef", 1U << 5},
 				{"QuickSeed", 1U << 6},
 				{"SpecificKeycards", 1U << 7},
@@ -64,7 +64,8 @@ namespace TsRandomizer
 				{"DadPercent", 1U << 17},
 				{"RisingTides", 1U << 18},
 				{"UnchainedKeys", 1U << 19},
-				{"TrappedChests", 1U << 20}
+				{"TrappedChests", 1U << 20},
+				{"PresentAccessWithWheelAndSpindle", 1U << 21},
 			};
 
 			foreach (var kvp in stringToFlagMapping)

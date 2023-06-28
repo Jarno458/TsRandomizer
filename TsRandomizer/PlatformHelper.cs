@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using Timespinner;
 using TsRandomizer.IntermediateObjects;
@@ -10,10 +11,37 @@ namespace TsRandomizer
 {
 	static class DummyPlatformHelper
 	{
-		public static PlatformHelper CreateSteamInstance()
+		static IEnumerable<Process> GetTimespinnerProcesses()
 		{
-			var platformHelper = (PlatformHelper)Activator.CreateInstance(TimeSpinnerType.Get("Timespinner.PlatformHelper"), true);
+			string[] processesToKill = {
+				"Timespinner",
+				"Timespinner.bin.x86",
+				"Timespinner.bin.x86_64",
+				"Timespinner.bin.osx"
+			};
 
+			foreach (var processName in processesToKill)
+				foreach (var process in Process.GetProcessesByName(processName))
+					yield return process;
+		}
+
+		public static PlatformHelper CreateInstance()
+		{
+			var type = TimeSpinnerType.Get("Timespinner.PlatformHelper");
+
+			var isStream = type.GetField("SteamAppID", BindingFlags.NonPublic | BindingFlags.DeclaredOnly | BindingFlags.Static) != null;
+			//var isGoG = type.GetField("GogClientID", BindingFlags.NonPublic | BindingFlags.DeclaredOnly | BindingFlags.Static) != null;
+
+			var helper = (PlatformHelper)Activator.CreateInstance(type, true);
+
+			if (isStream)
+				KillSteamVersion();
+
+			return helper;
+		}
+
+		public static void KillSteamVersion()
+		{
 			var startTime = DateTime.UtcNow;
 
 			try
@@ -37,25 +65,6 @@ namespace TsRandomizer
 			catch
 			{
 			}
-
-			return platformHelper;
-		}
-
-		public static PlatformHelper CreateDrmFreeInstance() => 
-			(PlatformHelper)Activator.CreateInstance(TimeSpinnerType.Get("Timespinner.PlatformHelper"), true);
-
-		static IEnumerable<Process> GetTimespinnerProcesses()
-		{
-			string[] processesToKill = {
-				"Timespinner",
-				"Timespinner.bin.x86",
-				"Timespinner.bin.x86_64",
-				"Timespinner.bin.osx"
-			};
-
-			foreach (var processName in processesToKill)
-				foreach (var process in Process.GetProcessesByName(processName))
-					yield return process;
 		}
 	}
 }
