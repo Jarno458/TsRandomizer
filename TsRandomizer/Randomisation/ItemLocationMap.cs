@@ -127,6 +127,7 @@ namespace TsRandomizer.Randomisation
 				| R.GateKittyBoss
 				| R.GateLeftLibrary
 				| R.GateSealedCaves
+				| R.GateXarion
 				| (R.GateSealedSirensCave & R.CardE)
 				| (R.GateMilitaryGate & (R.CardE | R.CardB));
 
@@ -169,7 +170,7 @@ namespace TsRandomizer.Randomisation
 
 			//past
 			LeftSideForestCaves =
-				(RefugeeCamp & (R.TimeStop | R.ForwardDash))
+				(RefugeeCamp & (FloodsFlags.LakeSereneBridge ? R.Free : (R.TimeStop | R.ForwardDash)))
 				| R.GateLakeSereneRight
 				| R.GateLakeSereneLeft
 				| R.GateCavesOfBanishment & NeedSwimming(!FloodsFlags.DryLakeSerene)
@@ -306,7 +307,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(9, 12, 280, 160), "Sealed Caves (Xarion): Secret room", ItemProvider.Get(EItemType.MaxHP), SealedCaves & OculusRift);
 			Add(new ItemKey(9, 48, 104, 160), "Sealed Caves (Xarion): Bottom left room", ItemProvider.Get(EInventoryUseItemType.FutureEther), SealedCaves);
 			Add(new ItemKey(9, 15, 248, 192), "Sealed Caves (Xarion): Last chance before Xarion", ItemProvider.Get(EInventoryUseItemType.FutureEther), SealedCaves & R.DoubleJump);
-			Add(new RoomItemKey(9, 13), "Sealed Caves (Xarion): Xarion", ItemProvider.Get(EInventoryRelicType.TimespinnerGear3), SealedCaves & (FloodsFlags.Xarion ? R.Swimming : R.DoubleJump | R.Teleport));
+			Add(new RoomItemKey(9, 13), "Sealed Caves (Xarion): Xarion", ItemProvider.Get(EInventoryRelicType.TimespinnerGear3), SealedCaves & (FloodsFlags.Xarion ? R.Swimming : R.Free));
 			areaName = "Sealed Caves (Sirens)";
 			Add(new ItemKey(9, 5, 88, 496), "Sealed Caves (Sirens): Water hook", ItemProvider.Get(EItemType.MaxSand), SealedCavesSirens & R.Swimming);
 			Add(new ItemKey(9, 3, 1848, 576), "Sealed Caves (Sirens): Siren room underwater right", ItemProvider.Get(EInventoryEquipmentType.BirdStatue), SealedCavesSirens & R.Swimming);

@@ -162,6 +162,7 @@
     <Compile Include="Randomisation\WarpNames.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
+    <Compile Include="RoomTriggers\SandmanSoftlockPrevention.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\Cantoran.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\BossRoomTrigger.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="RoomTriggers\Triggers\Bosses\Varndagroth.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\Maw.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\Ravenlord.cs" />
+    <Compile Include="RoomTriggers\Triggers\EelsInsteadOfRats.cs" />
     <Compile Include="RoomTriggers\Triggers\OneHpFix.cs" />
     <Compile Include="RoomTriggers\Triggers\RisingTides.cs" />
     <Compile Include="RoomTriggers\Triggers\DadsPedistal.cs" />
@@ -202,6 +204,7 @@
     <Compile Include="RoomTriggers\Triggers\PreGyreBosses.cs" />
     <Compile Include="RoomTriggers\Triggers\RefugeeCampNelisteSpawn.cs" />
     <Compile Include="RoomTriggers\Triggers\TimespinnerGears.cs" />
+    <Compile Include="RoomTriggers\Triggers\XarionSoftlockPrevention.cs" />
     <Compile Include="Screens\Console\ConsoleTextWriter.cs" />
     <Compile Include="Screens\Console\GameConsole.cs" />
     <Compile Include="Archipelago\DeathLinker.cs" />

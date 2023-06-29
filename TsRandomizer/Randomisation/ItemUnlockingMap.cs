@@ -88,7 +88,7 @@ namespace TsRandomizer.Randomisation
 			new TeleporterGate{Gate = R.GateLeftLibrary, LevelId = 2, RoomId = 54},
 			new TeleporterGate{Gate = R.GateMilitaryGate, LevelId = 10, RoomId = 12},
 			new TeleporterGate{Gate = R.GateSealedCaves, LevelId = 9, RoomId = 50},
-			//new TeleporterGate{Gate = R.GateXarion, LevelId = 9, RoomId = 49}, //dont want to spawn infront of xarion
+			new TeleporterGate{Gate = R.GateXarion, LevelId = 9, RoomId = 49},
 			new TeleporterGate{Gate = R.GateSealedSirensCave, LevelId = 9, RoomId = 51},
 			new TeleporterGate{Gate = R.GateLakeDesolation, LevelId = 1, RoomId = 25}
 		};

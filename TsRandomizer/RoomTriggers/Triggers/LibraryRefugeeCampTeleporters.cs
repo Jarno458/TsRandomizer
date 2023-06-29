@@ -22,7 +22,12 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (roomState.Seed.Options.Inverted 
+			if (
+				(roomState.Seed.Options.Inverted && !(
+					 roomState.Seed.Options.PresentAccessWithWheelAndSpindle 
+					 && roomState.Level.GameSave.HasRelic(EInventoryRelicType.TimespinnerWheel)
+					 && roomState.Level.GameSave.HasRelic(EInventoryRelicType.TimespinnerSpindle))
+				)
 			    || roomState.Level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)) 
 				return;
 			

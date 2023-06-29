@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using TsRandomizer.Extensions;
@@ -9,6 +10,8 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 {
 	class MeteorSparrowTrap : Trap
 	{
+		static readonly Type MeteorSparrowType = TimeSpinnerType.Get("Timespinner.GameObjects.Enemies.GyreMeteorSparrow");
+
 		public MeteorSparrowTrap(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.MeteorSparrowTrap) {}
 
 		internal override void OnPickup(Level level, GameplayScreen gameplayScreen)
@@ -23,13 +26,14 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 			var lunaisPos = level.MainHero.LastPosition;
 			var sprite = level.GCM.SpGyreMeteorSparrow;
-			var enemyType = TimeSpinnerType.Get("Timespinner.GameObjects.Enemies.GyreMeteorSparrow");
-			var enemy = enemyType.CreateInstance(false, new Point(lunaisPos.X + 100, lunaisPos.Y - 50), level, sprite, -1, enemyTile);
+			
+			var enemy = MeteorSparrowType.CreateInstance(false, new Point(lunaisPos.X + 100, lunaisPos.Y - 50), level, sprite, -1, enemyTile);
 
 			enemy.AsDynamic()._isAggroed = true;
 			level.AsDynamic().RequestAddObject(enemy);
 			
-			enemy = enemyType.CreateInstance(false, new Point(lunaisPos.X - 100, lunaisPos.Y - 50), level, sprite, -1, enemyTile);
+			enemy = MeteorSparrowType.CreateInstance(false, new Point(lunaisPos.X - 100, lunaisPos.Y - 50), level, sprite, -1, enemyTile);
+
 			enemy.AsDynamic()._isAggroed = true;
 			level.AsDynamic().RequestAddObject(enemy);
 		}

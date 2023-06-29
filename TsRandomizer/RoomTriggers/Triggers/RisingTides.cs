@@ -93,6 +93,9 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	[RoomTriggerTrigger(7, 10)]
 	[RoomTriggerTrigger(7, 11)]
 	[RoomTriggerTrigger(7, 29)]
+
+	//lake serene bridge
+	[RoomTriggerTrigger(3, 4)]
 	class RisingTides : RoomTrigger
 	{
 		public override void OnRoomLoad(RoomState state)
@@ -101,6 +104,9 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			{
 				case 1 when state.Seed.FloodFlags.LakeDesolation:
 					HandleLakeDesolationFlood(state);
+					break;
+				case 3 when state.Seed.FloodFlags.LakeSereneBridge:
+					HandleLakeSereneBridgeFlood(state);
 					break;
 				case 4 when state.Seed.FloodFlags.CastleMoat:
 					HandleCastleMoatFlood(state);
@@ -359,6 +365,16 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					break;
 				case 23:
 					RoomTriggerHelper.PlaceWater(state.Level, new Point(17, 7), state.Level.RoomSize16);
+					break;
+			}
+		}
+
+		static void HandleLakeSereneBridgeFlood(RoomState state)
+		{
+			switch (state.RoomKey.RoomId)
+			{
+				case 4:
+					RoomTriggerHelper.PlaceWater(state.Level, new Point(39, 16), new Point(91, state.Level.RoomSize16.Y));
 					break;
 			}
 		}
