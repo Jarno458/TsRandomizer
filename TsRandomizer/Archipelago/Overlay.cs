@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions;
@@ -9,24 +8,18 @@ namespace TsRandomizer.Archipelago
 {
 	abstract class Overlay
 	{
-		static readonly List<Overlay> Overlays = new List<Overlay>();
-		static readonly List<Overlay> OverlaysToDelete = new List<Overlay>();
+		static readonly ConcurrentDictionary<Overlay, bool> Overlays = new ConcurrentDictionary<Overlay, bool>();
 
 		static readonly object LockObj = new object();
 
-		protected static void Add(Overlay overlay) => Overlays.Add(overlay);
+		protected static void Add(Overlay overlay) => Overlays.TryAdd(overlay, false);
 
 		public static void UpdateAll(GameTime gameTime, InputState input, Jukebox jukebox)
 		{
 			lock (LockObj)
 			{
-				foreach (var overlay in Overlays)
+				foreach (var overlay in Overlays.Keys)
 					overlay.Update(gameTime, input, jukebox);
-
-				foreach (var overlay in OverlaysToDelete)
-					Overlays.Remove(overlay);
-
-				OverlaysToDelete.Clear();
 			}
 		}
 
@@ -36,7 +29,7 @@ namespace TsRandomizer.Archipelago
 
 		public static void DrawAll(SpriteBatch spriteBatch, Rectangle screenSize, GCM gcm)
 		{
-			foreach (var overlay in Overlays)
+			foreach (var overlay in Overlays.Keys)
 				overlay.Draw(spriteBatch, screenSize, gcm);
 		}
 
@@ -44,6 +37,6 @@ namespace TsRandomizer.Archipelago
 		{
 		}
 
-		protected void Delete() => OverlaysToDelete.Add(this);
+		protected void Delete() => Overlays.TryRemove(this, out _);
 	}
 }
