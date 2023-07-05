@@ -235,15 +235,17 @@ namespace TsRandomizer.Screens
 				if (selectedSaveFile == null)
 					return;
 
-				//if save is cleared, cancel newgame+ menu
+				//if save is cleared, cancel newgame+ popup
 				if (selectedSaveFile.IsGameCleared)
-					ScreenManager.RemoveScreen(ScreenManager.FirstOrDefaultTimespinnerOfType(MessageBoxScreenType));
+				{
+					var newGamePlusPopup = ScreenManager.FirstOrDefaultTimespinnerOfType(MessageBoxScreenType);
+					if (newGamePlusPopup != null)
+						ScreenManager.RemoveScreen(newGamePlusPopup);
+				}
 
 				var seed = selectedSaveFile.GetSeed();
 				if (seed.HasValue && seed.Value.Options.Archipelago)
-				{
 					ScreenManager.AddScreen(ArchipelagoSelectionScreen.Create(ScreenManager), null);
-				}
 			}
  		}
 

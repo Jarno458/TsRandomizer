@@ -96,6 +96,9 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 	//lake serene bridge
 	[RoomTriggerTrigger(3, 4)]
+
+	//lab
+	[RoomTriggerTrigger(10, 6)]
 	class RisingTides : RoomTrigger
 	{
 		public override void OnRoomLoad(RoomState state)
@@ -125,6 +128,9 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					break;
 				case 9 when state.Seed.FloodFlags.Xarion:
 					HandleXarionFlood(state);
+					break;
+				case 10 when state.Seed.FloodFlags.Lab:
+					HandleLabFlood(state);
 					break;
 				case 16:
 					if (state.Seed.FloodFlags.PyramidShaft)
@@ -342,8 +348,6 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					});
 					break;
 				case 19:
-					RoomTriggerHelper.FillRoomWithWater(state.Level);
-					break;
 				case 20:
 					RoomTriggerHelper.FillRoomWithWater(state.Level);
 					break;
@@ -487,6 +491,30 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					state.Level.PlaceEvent(specification1, false);
 					state.Level.PlaceEvent(specification2, false);
 
+					break;
+			}
+		}
+
+		static void HandleLabFlood(RoomState state)
+		{
+			switch (state.RoomKey.RoomId)
+			{
+				case 6:
+					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 13), state.Level.RoomSize16);
+					break;
+				case 18:
+					RoomTriggerHelper.RemoveWotah(state.Level);
+					RoomTriggerHelper.FillRoomWithWater(state.Level);
+
+					state.Level.Backgrounds.RemoveAll(bg => {
+						var textureType = bg.AsDynamic().TextureType;
+						return textureType == EBackgroundTextureType.Curtain_Backdrops1 ||
+						       textureType == EBackgroundTextureType.Forest_Rocks_Near;
+					});
+					break;
+				case 19:
+				case 20:
+					RoomTriggerHelper.FillRoomWithWater(state.Level);
 					break;
 			}
 		}

@@ -4,12 +4,6 @@ namespace TsRandomizer
 {
 	public static class Program
 	{
-		// ReSharper disable InconsistentNaming
-		/*;*/
-		// ReSharper restore InconsistentNaming
-
-		//public static bool IsSteam;
-
 		[STAThread]
 		public static int Main()
 		{

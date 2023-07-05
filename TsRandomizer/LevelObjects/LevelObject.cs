@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
-using Timespinner.Core;
 using Timespinner.Core.Specifications;
+using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Heroes;
@@ -104,15 +104,17 @@ namespace TsRandomizer.LevelObjects
 
 		public static void Update(
 			Level level, GameplayScreen gameplayScreen, ItemLocationMap itemLocations,
-			bool roomChanged, Seed seed, SettingCollection gameSettings,
+			Seed seed, SettingCollection gameSettings,
 			ScreenManager screenManager)
 		{
+			var levelReflected = level.AsDynamic();
+			var roomChanged = !IsRoomRandomized(levelReflected);
+
 			if (roomChanged)
-				OnChangeRoom(level, itemLocations, seed, gameSettings, screenManager, gameplayScreen);
+				OnChangeRoom(level, levelReflected, itemLocations, seed, gameSettings, screenManager, gameplayScreen);
 			else
 				itemLocations.Update(level, gameplayScreen);
-
-			var levelReflected = level.AsDynamic();
+			
 			var newNonItemObjects = ((List<Mobile>)levelReflected._newObjects)
 				.Where(o => o.BaseType != EGameObjectBaseType.Item)
 				.ToArray();
@@ -127,9 +129,13 @@ namespace TsRandomizer.LevelObjects
 			foreach (var obj in Objects)
 				obj.OnUpdate();
 
-			if (roomChanged || hasNewItems) AwardFirstFrameItem(levelReflected._items.Values, level.MainHero);
+			if (roomChanged || hasNewItems) 
+				AwardFirstFrameItem(levelReflected._items.Values, level.MainHero);
 		}
 
+		static bool IsRoomRandomized(dynamic levelReflected) =>
+			((Dictionary<int, GameEvent>)levelReflected._levelEvents).ContainsKey(RandomizerEvent.Id);
+		
 		public static void AwardFirstFrameItem(IEnumerable<Item> itemDictionary, Protagonist lunais)
 		{
 			//sometimes lunais picks up an item because she's intersecting with it as the screen loads, or right as it drops.
@@ -139,24 +145,24 @@ namespace TsRandomizer.LevelObjects
 					item.GetItem(lunais);
 		}
 
-		static void OnChangeRoom(Level level, ItemLocationMap itemLocations, Seed seed,
+		static void OnChangeRoom(Level level, dynamic levelReflected, ItemLocationMap itemLocations, Seed seed,
 			SettingCollection gameSettings, ScreenManager screenManager, GameplayScreen gameplayScreen)
 		{
+			Dictionary<int, GameEvent> events = levelReflected._levelEvents;
+
 #if DEBUG
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.EssenceOfSpace));
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.DoubleJump));
 #endif
-
-			var levelReflected = level.AsDynamic();
-
+			
 			Objects.Clear();
 			foreach (var knownIds in KnownIds.Values)
 				knownIds.Clear();
 
-			IEnumerable<GameEvent> eventObjects = levelReflected._levelEvents.Values;
+			IEnumerable<GameEvent> eventObjects = events.Values;
 			IEnumerable<Animate> npcs = levelReflected.NPCs.Values;
-			IEnumerable<Animate> enemies = levelReflected._enemies.Values;
+			IEnumerable<Monster> enemies = levelReflected._enemies.Values;
 
 			SetMonsterHpTo1(levelReflected._enemies.Values);
 
@@ -165,20 +171,23 @@ namespace TsRandomizer.LevelObjects
 				.Concat(enemies)
 				.ToArray();
 
-			RoomTrigger.OnChangeRoom(
-				level, seed, gameSettings, itemLocations, screenManager,
-				levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
-			TextReplacer.OnChangeRoom(level, seed.Options, itemLocations,
-				levelReflected._id, ((RoomSpecification)levelReflected.CurrentRoom).ID);
+			int levelId = levelReflected._id;
+			int roomId = ((RoomSpecification)levelReflected.CurrentRoom).ID;
+
+			RoomTrigger.OnChangeRoom(level, seed, gameSettings, itemLocations, screenManager, levelId, roomId);
+			TextReplacer.OnChangeRoom(level, seed.Options, itemLocations, levelId, roomId);
 			Replaces.ReplaceObjects(level, objects);
+
+			if (true)
+				Enemizer.RandomizeEnemies(level, levelReflected, levelId, roomId, enemies, seed);
+
 			GenerateShadowObjects(itemLocations, objects, seed, gameplayScreen);
 			SpawnMissingObjects(level, levelReflected, itemLocations, gameplayScreen);
-
+			
 			if (gameSettings.ExtraEarringsXP.Value > 0)
-			{
 				OrbExperienceManager.ResetHitRegistry();
-			}
-			level.AddEvent(new CollisionDetectionEvent(level, OnCollisionDetection));
+
+			_ = new RandomizerEvent(level, events, OnCollisionDetection);
 		}
 
 		static bool GenerateShadowObjectsForNewObjects<T>(IDictionary<int, T> dictionary,
@@ -299,11 +308,13 @@ namespace TsRandomizer.LevelObjects
 			var levelPrivate = level.AsDynamic();
 			var position = (Point)objectPrivate._position;
 			var currentRoom = (RoomSpecification)levelPrivate.CurrentRoom;
+
 			return new ItemKey(levelPrivate._id, currentRoom.ID, position.X, position.Y);
 		}
 
-		static void SetLevelTileSheet(dynamic levelReflected, SpriteSheet spriteSheet)
+		static void SetLevelTileSheet(dynamic levelReflected, ETilesetType tileSet)
 		{
+			var spriteSheet = ((GCM)levelReflected.GCM).GetTileset(tileSet);
 			levelReflected.CurrentTileset = spriteSheet;
 
 			foreach (Tile tile in levelReflected._solidTiles.Values)

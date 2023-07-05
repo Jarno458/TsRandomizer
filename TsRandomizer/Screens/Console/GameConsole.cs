@@ -192,6 +192,16 @@ namespace TsRandomizer.Screens.Console
 				lines.Add(new Message(new[] { new Part(m, color) }));
 		}
 
+		public void AddDebugLine(string message) 
+			=> AddDebugLine(message, Color.White);
+
+		public void AddDebugLine(string message, Color color)
+		{
+#if DEBUG
+			AddLine(message, color);
+#endif
+		}
+		
 		public void Add(params Part[] parts) 
 			=> websocketBuffer.Enqueue(new Message(parts));
 

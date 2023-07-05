@@ -37,7 +37,6 @@ namespace TsRandomizer.Screens
 		static readonly Type TitleBackgroundScreenType = TimeSpinnerType
 			.Get("Timespinner.GameStateManagement.Screens.MainMenu.TitleBackgroundScreen");
 
-		RoomSpecification currentRoom;
 		int hpCap;
 		DeathLinker deathLinkService;
 
@@ -163,7 +162,7 @@ namespace TsRandomizer.Screens
 			if (ItemLocations == null)
 				return;
 
-			LevelObject.Update(Level, this, ItemLocations, IsRoomChanged(), Seed, Settings, ScreenManager);
+			LevelObject.Update(Level, this, ItemLocations, Seed, Settings, ScreenManager);
 
 			FamiliarManager.Update(Level);
 
@@ -194,11 +193,13 @@ namespace TsRandomizer.Screens
 		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
 
-			if (ItemLocations == null || currentRoom == null)
+			if (ItemLocations == null)
 				return;
 
-			var levelId = LevelReflected._id;
-			var text = $"Level: {levelId}, Room ID: {currentRoom.ID}";
+			int levelId = LevelReflected._id;
+			int roomId = ((RoomSpecification)LevelReflected.CurrentRoom).ID;
+
+			var text = $"Level: {levelId}, Room ID: {roomId}";
 
 			var inGameZoom = (int)TimeSpinnerGame.Constants.InGameZoom;
 
@@ -209,7 +210,7 @@ namespace TsRandomizer.Screens
 
 		public void HideItemPickupBar() => ((object)Dynamic._itemGetBanner).AsDynamic()._displayTimer = 3f;
 
-		//public void ChangeItemPickupBar(string name) => ((object)Dynamic._itemGetBanner).AsDynamic()._itemName = name;
+		public void ChangeItemPickupBar(string name) => ((object)Dynamic._itemGetBanner).AsDynamic()._itemName = name;
 
 		public void ShowItemPickupBar(string name)
 		{
@@ -220,17 +221,6 @@ namespace TsRandomizer.Screens
 			itemBanner.ItemCategory = EInventoryCategoryType.UseItem;
 			itemBanner._itemName = name;
 			itemBanner._displayTimer = 0f;
-		}
-
-		bool IsRoomChanged()
-		{
-			if (currentRoom != null && LevelReflected.CurrentRoom == currentRoom) return false;
-
-			currentRoom = LevelReflected.CurrentRoom;
-
-			ExceptionLogger.SetLevelContext(Level.ID, currentRoom.ID);
-
-			return true;
 		}
 
 #if DEBUG
