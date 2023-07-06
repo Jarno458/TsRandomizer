@@ -41,9 +41,9 @@ namespace TsRandomizer.Archipelago
 			//TODO: remove when clients & server are update with correct value
 			if (pyramidKeysGate == "GateMilitairyGate")
 				return Requirement.GateMilitaryGate;
-			if (pyramidKeysGate == "GateLakeSirineLeft")
+			if (pyramidKeysGate == "GateLakeSereneLeft")
 				return Requirement.GateLakeSereneLeft;
-			if (pyramidKeysGate == "GateLakeSirineRight")
+			if (pyramidKeysGate == "GateLakeSereneRight")
 				return Requirement.GateLakeSereneRight;
 
 			var req = (Requirement?)typeof(Requirement)

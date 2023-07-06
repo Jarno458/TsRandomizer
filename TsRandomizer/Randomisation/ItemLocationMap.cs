@@ -30,8 +30,8 @@ namespace TsRandomizer.Randomisation
 
 		//past
 		internal Gate LeftSideForestCaves;
-		internal Gate UpperLakeSirine;
-		internal Gate LowerLakeSirine;
+		internal Gate UpperLakeSerene;
+		internal Gate LowerLakeSerene;
 		internal Gate CavesOfBanishment;
 		internal Gate CavesOfBanishmentFlooded;
 		internal Gate UpperCavesOfBanishment;
@@ -175,9 +175,9 @@ namespace TsRandomizer.Randomisation
 				| R.GateLakeSereneLeft
 				| R.GateCavesOfBanishment & NeedSwimming(!FloodsFlags.DryLakeSerene)
 				| R.GateMaw & R.DoubleJump & NeedSwimming(!FloodsFlags.DryLakeSerene);
-			UpperLakeSirine = (LeftSideForestCaves & (FloodsFlags.DryLakeSerene ? R.Free : (R.TimeStop | R.Swimming))) | R.GateLakeSereneLeft;
-			LowerLakeSirine = LeftSideForestCaves & NeedSwimming(!FloodsFlags.DryLakeSerene);
-			CavesOfBanishment = (LowerLakeSirine & (FloodsFlags.DryLakeSerene ? R.DoubleJump : R.Free)) | R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump);
+			UpperLakeSerene = (LeftSideForestCaves & (FloodsFlags.DryLakeSerene ? R.Free : (R.TimeStop | R.Swimming))) | R.GateLakeSereneLeft;
+			LowerLakeSerene = LeftSideForestCaves & NeedSwimming(!FloodsFlags.DryLakeSerene);
+			CavesOfBanishment = (LowerLakeSerene & (FloodsFlags.DryLakeSerene ? R.DoubleJump : R.Free)) | R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump);
 			CavesOfBanishmentFlooded = CavesOfBanishment & NeedSwimming(FloodsFlags.Maw);
 			UpperCavesOfBanishment = RefugeeCamp;
 			CastleRamparts = RefugeeCamp;
@@ -191,7 +191,7 @@ namespace TsRandomizer.Randomisation
 			var killAelana = UpperRoyalTower;
 
 			//future
-			UpperLakeDesolation = LakeDesolationLeft & UpperLakeSirine & R.Fire;
+			UpperLakeDesolation = LakeDesolationLeft & UpperLakeSerene & R.Fire;
 			LeftLibrary = UpperLakeDesolation | LakeDesolationRight;
 			MidLibrary = (LeftLibrary & R.CardD) | (R.GateSealedSirensCave & R.CardE) | (R.GateMilitaryGate & (R.CardB | R.CardE));
 			UpperLeftLibrary = LeftLibrary & (R.DoubleJump | R.ForwardDash);
@@ -371,22 +371,22 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(4, 20, 264, 160), "Castle Ramparts: In the moat", ItemProvider.Get(EItemType.MaxAura), RefugeeCamp & NeedSwimming(FloodsFlags.CastleMoat));
 			Add(new ItemKey(3, 29, 248, 192), "Forest: Before Serene single bat cave", ItemProvider.Get(EItemType.MaxHP), LeftSideForestCaves);
 			areaName = "Upper Lake Serene";
-			Add(new ItemKey(7, 16, 152, 96), "Lake Serene (Upper): Rat nest", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), UpperLakeSirine);
-			Add(new ItemKey(7, 19, 248, 96), "Lake Serene (Upper): Double jump cave platform", ItemProvider.Get(EItemType.MaxAura), UpperLakeSirine & R.DoubleJump);
-			Add(new ItemKey(7, 19, 168, 240), "Lake Serene (Upper): Double jump cave floor", ItemProvider.Get(EInventoryEquipmentType.TravelersCloak), UpperLakeSirine);
-			Add(new ItemKey(7, 27, 184, 144), "Lake Serene (Upper): Cave secret", ItemProvider.Get(EInventoryFamiliarType.Griffin), UpperLakeSirine & OculusRift);
-			Add(new RoomItemKey(7, 28), "Lake Serene: Before Big Bird", ItemProvider.Get(EInventoryUseItemType.AlchemistTools), UpperLakeSirine);
-			Add(new ItemKey(7, 13, 56, 176), "Lake Serene: Behind the vines", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperLakeSirine);
-			Add(new ItemKey(7, 30, 296, 176), "Lake Serene: Pyramid keys room", ItemProvider.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine);
-			Add(new ItemKey(7, 3, 120, 204), "Lake Serene (Upper): Chicken ledge", null, UpperLakeSirine);
+			Add(new ItemKey(7, 16, 152, 96), "Lake Serene (Upper): Rat nest", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), UpperLakeSerene);
+			Add(new ItemKey(7, 19, 248, 96), "Lake Serene (Upper): Double jump cave platform", ItemProvider.Get(EItemType.MaxAura), UpperLakeSerene & R.DoubleJump);
+			Add(new ItemKey(7, 19, 168, 240), "Lake Serene (Upper): Double jump cave floor", ItemProvider.Get(EInventoryEquipmentType.TravelersCloak), UpperLakeSerene);
+			Add(new ItemKey(7, 27, 184, 144), "Lake Serene (Upper): Cave secret", ItemProvider.Get(EInventoryFamiliarType.Griffin), UpperLakeSerene & OculusRift);
+			Add(new RoomItemKey(7, 28), "Lake Serene: Before Big Bird", ItemProvider.Get(EInventoryUseItemType.AlchemistTools), UpperLakeSerene);
+			Add(new ItemKey(7, 13, 56, 176), "Lake Serene: Behind the vines", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperLakeSerene);
+			Add(new ItemKey(7, 30, 296, 176), "Lake Serene: Pyramid keys room", ItemProvider.Get(EInventoryRelicType.PyramidsKey), UpperLakeSerene);
+			Add(new ItemKey(7, 3, 120, 204), "Lake Serene (Upper): Chicken ledge", null, UpperLakeSerene);
 			areaName = "Lower Lake Serene";
-			Add(new ItemKey(7, 3, 440, 1232), "Lake Serene (Lower): Deep dive", ItemProvider.Get(EInventoryUseItemType.Potion), LowerLakeSirine);
+			Add(new ItemKey(7, 3, 440, 1232), "Lake Serene (Lower): Deep dive", ItemProvider.Get(EInventoryUseItemType.Potion), LowerLakeSerene);
 			Add(new ItemKey(7, 7, 1432, 576), "Lake Serene (Lower): Under the eels", ItemProvider.Get(EInventoryUseItemType.MagicMarbles), LeftSideForestCaves & R.Swimming);
-			Add(new ItemKey(7, 6, 520, 496), "Lake Serene (Lower): Water spikes room", ItemProvider.Get(EInventoryUseItemType.Potion), LowerLakeSirine);
-			Add(new ItemKey(7, 11, 88, 240), "Lake Serene (Lower): Underwater secret", ItemProvider.Get(EItemType.MaxHP), LowerLakeSirine & OculusRift);
-			Add(new ItemKey(7, 2, 1016, 384), "Lake Serene (Lower): T chest", ItemProvider.Get(EInventoryUseItemType.Ether), LowerLakeSirine & (FloodsFlags.DryLakeSerene ? DoubleJumpOfNpc : R.Free));
+			Add(new ItemKey(7, 6, 520, 496), "Lake Serene (Lower): Water spikes room", ItemProvider.Get(EInventoryUseItemType.Potion), LowerLakeSerene);
+			Add(new ItemKey(7, 11, 88, 240), "Lake Serene (Lower): Underwater secret", ItemProvider.Get(EItemType.MaxHP), LowerLakeSerene & OculusRift);
+			Add(new ItemKey(7, 2, 1016, 384), "Lake Serene (Lower): T chest", ItemProvider.Get(EInventoryUseItemType.Ether), LowerLakeSerene & (FloodsFlags.DryLakeSerene ? DoubleJumpOfNpc : R.Free));
 			Add(new ItemKey(7, 20, 248, 96), "Lake Serene (Lower): Past the eels", ItemProvider.Get(EItemType.MaxSand), LeftSideForestCaves & R.Swimming);
-			Add(new ItemKey(7, 9, 584, 189), "Lake Serene (Lower): Underwater pedestal", ItemProvider.Get(EInventoryOrbType.Ice, EOrbSlot.Melee), LowerLakeSirine & (FloodsFlags.DryLakeSerene ? R.DoubleJump : R.Free));
+			Add(new ItemKey(7, 9, 584, 189), "Lake Serene (Lower): Underwater pedestal", ItemProvider.Get(EInventoryOrbType.Ice, EOrbSlot.Melee), LowerLakeSerene & (FloodsFlags.DryLakeSerene ? R.DoubleJump : R.Free));
 			areaName = "Caves of Banishment (Maw)";
 			Add(new ItemKey(8, 19, 664, 704), "Caves of Banishment (Maw): Shroom jump room", ItemProvider.Get(EInventoryUseItemType.SilverOre), CavesOfBanishment & (FloodsFlags.Maw ? R.Free : R.DoubleJump));
 			Add(new ItemKey(8, 12, 280, 160), "Caves of Banishment (Maw): Secret room", ItemProvider.Get(EItemType.MaxHP), CavesOfBanishmentFlooded & OculusRift);

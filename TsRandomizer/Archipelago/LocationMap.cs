@@ -130,14 +130,14 @@ namespace TsRandomizer.Archipelago
 				{1337096, new ItemKey(3, 2, 584, 368)},
 				{1337097, new ItemKey(4, 20, 264, 160)},
 				{1337098, new ItemKey(3, 29, 248, 192)},
-				// Upper Lake Sirine
+				// Upper Lake Serene
 				{1337099, new ItemKey(7, 16, 152, 96)},
 				{1337100, new ItemKey(7, 19, 248, 96)},
 				{1337101, new ItemKey(7, 19, 168, 240)},
 				{1337102, new ItemKey(7, 27, 184, 144)},
 				{1337103, new ItemKey(7, 13, 56, 176)},
 				{1337104, new ItemKey(7, 30, 296, 176)},
-				// Lower Lake Sirine
+				// Lower Lake Serene
 				{1337105, new ItemKey(7, 3, 440, 1232)},
 				{1337106, new ItemKey(7, 7, 1432, 576)},
 				{1337107, new ItemKey(7, 6, 520, 496)},
