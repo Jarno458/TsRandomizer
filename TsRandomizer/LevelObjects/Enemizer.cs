@@ -46,7 +46,6 @@ namespace TsRandomizer.LevelObjects
 			new EnemyInfo(EEnemyTileType.ForestRodent),
 			new EnemyInfo(EEnemyTileType.CastleEngineer),
 			new EnemyInfo(EEnemyTileType.KeepAristocrat, 0, "KeepAristocrat"),
-			new EnemyInfo(EEnemyTileType.LakeBirdEgg, "Timespinner.GameObjects"),
 			new EnemyInfo(EEnemyTileType.FortressKnight),
 			new EnemyInfo(EEnemyTileType.FortressGunner),
 			new EnemyInfo(EEnemyTileType.CavesSlime, 0, "CavesSlime"),
@@ -70,10 +69,8 @@ namespace TsRandomizer.LevelObjects
 			new EnemyInfo(EEnemyTileType.TowerRoyalGuard, 1, "EmpRoyalGuard"),
 			new EnemyInfo(EEnemyTileType.ForestMoth, 0, "ForestMoth"),
 			new EnemyInfo(EEnemyTileType.ForestMoth, 1, "CursedMoth"),
-			new EnemyInfo(EEnemyTileType.ForestPlantBat),
 			new EnemyInfo(EEnemyTileType.KeepDemon, 0, "KeepDemon"),
 			new EnemyInfo(EEnemyTileType.KeepDemon, 1, "EmpDemon"),
-			new EnemyInfo(EEnemyTileType.KeepAristocrat, 2, "EmpAristocrat"),
 			new EnemyInfo(EEnemyTileType.FlyingCheveux, s => s.SpCheveuxFlying),
 			new EnemyInfo(EEnemyTileType.KickstarterFoe, 2, "GyreKain"),
 			new EnemyInfo(EEnemyTileType.KickstarterFoe, 4, "GyreRyshia"),
@@ -84,6 +81,7 @@ namespace TsRandomizer.LevelObjects
 
 		static readonly EnemyInfo[] CeilingEnemies = {
 			new EnemyInfo(EEnemyTileType.CeilingStar),
+			new EnemyInfo(EEnemyTileType.ForestPlantBat),
 			new EnemyInfo(EEnemyTileType.CavesSporeVine, 0, "CavesSporeVine"),
 			new EnemyInfo(EEnemyTileType.CavesSporeVine, 1, "CursedSporeVine"),
 			new EnemyInfo(EEnemyTileType.CavesCopperWyvern, 0, "CavesCopperWyvern", s => s.SpCopperWyvern),
@@ -100,6 +98,7 @@ namespace TsRandomizer.LevelObjects
 			new EnemyInfo(EEnemyTileType.KickstarterFoe, 3, "GyreNethershade"), //timestop immunity
 			new EnemyInfo(EEnemyTileType.LabTurret), //timestop immunity
 			new EnemyInfo(EEnemyTileType.LabChild), //timestop immunity
+			new EnemyInfo(EEnemyTileType.KeepAristocrat, 2, "EmpAristocrat"), //hard to controll as he always knocks himzelf away from you
 		};
 
 		static readonly EnemyInfo[] Enemies = GroundedEnemies
@@ -131,12 +130,47 @@ namespace TsRandomizer.LevelObjects
 					})
 				),
 				new RoomSpecificEnemies(3, 4, 776, 112, FlyingEnemies), //forest green bridge jump
+				new RoomSpecificEnemies(4, 1, new []{ new Point(368, 160), new Point(432, 160) }), //castle boomers
+				new RoomSpecificEnemies(10, 3, new []{ new Point(352, 128), new Point(448, 128) }), //militairy fortress boomers
+				new RoomSpecificEnemies(7, 5, 128, 224), //fluffy bird pre cantoran
+				new RoomSpecificEnemies(3, 15, new []{ new Point(360, 338), new Point(920, 66) }, //double bat cave jump
+					FlyingEnemies.Concat(new [] {
+						new EnemyInfo(EEnemyTileType.ForestBabyCheveux),
+					})
+				), 
+				new RoomSpecificEnemies(4, 3, 192, 144, //castle scare the engineer
+					FlyingEnemies.Concat(new [] {
+						new EnemyInfo(EEnemyTileType.CheveuxTank), //actually jumping Cheveux
+						new EnemyInfo(EEnemyTileType.WormFlowerWalker, s => s.SpWormFlower),
+						new EnemyInfo(EEnemyTileType.DiscStatue, "Timespinner.GameAbstractions.GameObjects"), //Cat on roomba
+						new EnemyInfo(EEnemyTileType.ForestBabyCheveux),
+						new EnemyInfo(EEnemyTileType.CastleLargeSoldier, "Timespinner.GameObjects.Enemies._04_Ramparts"),
+						new EnemyInfo(EEnemyTileType.KeepAristocrat, 1, "TowerIceMage"),
+						new EnemyInfo(EEnemyTileType.LakeCheveux),
+						new EnemyInfo(EEnemyTileType.FortressLargeSoldier, "Timespinner.GameObjects.Enemies._10_Fortress"),
+						new EnemyInfo(EEnemyTileType.RedCheveux, s => s.SpCheveuxTank),
+						new EnemyInfo(EEnemyTileType.FortressEngineer),
+						new EnemyInfo(EEnemyTileType.CitySecurityGuard),
+						new EnemyInfo(EEnemyTileType.ForestRodent),
+						new EnemyInfo(EEnemyTileType.CastleEngineer),
+						new EnemyInfo(EEnemyTileType.KeepAristocrat, 0, "KeepAristocrat"),
+						new EnemyInfo(EEnemyTileType.CavesSlime, 0, "CavesSlime"),
+						new EnemyInfo(EEnemyTileType.CavesSlime, 1, "CursedSlime", s => s.SpCavesSlime),
+						new EnemyInfo(EEnemyTileType.FleshSpider, 0, "Timespinner.GameAbstractions.GameObjects", "FleshSpider")
+					})
+				),
+				new RoomSpecificEnemies(5, 20, 584, 192, GroundedEnemies.Concat(FlyingEnemies)), // fire mage before twins
+				new RoomSpecificEnemies(6, 2, 168, 496, // small demon in mid royal towers
+					FlyingEnemies.Concat(new [] {
+						new EnemyInfo(EEnemyTileType.ForestBabyCheveux),
+					})
+				),
 			};
 
 /*TODO
 Conviction uses wrong sprite
 Plantbat breaks on floor
-scyte guy missing face
+scyte guy missing face 7 5 128 224
 rysha missing face
 Lab turret faces wrong way
 */
@@ -144,29 +178,34 @@ Lab turret faces wrong way
 		public static void RandomizeEnemies(
 			Level level, dynamic levelReflected, int levelId, int roomId, IEnumerable<Monster> enemies, Seed seed)
 		{
-			if (levelId == 7 && roomId == 5)
-				return;
-
 			var random = new Random((int)(seed.Id + (levelId * 100) + roomId));
 
 			foreach (var enemy in enemies)
 			{
 				if (enemy.EnemyType == EEnemyTileType.JunkSpawner 
-				    || enemy.EnemyType == EEnemyTileType.CavesSnail
-					|| enemy.EnemyType == EEnemyTileType.LabAdult
-					| enemy.GetType().IsSubclassOf(BossType))
+				|| enemy.EnemyType == EEnemyTileType.LabAdult
+				|| enemy.GetType().IsSubclassOf(BossType))
 					continue;
 
 				var pos = enemy.Position;
-				enemy.SilentKill();
 
 				EnemyInfo newEnemyInfo;
-				if (HardcodedEnemies.TryGetValue(new Roomkey(levelId, roomId), out var hardcodedEnemy) && hardcodedEnemy.Position == pos)
+				if (HardcodedEnemies.TryGetValue(new Roomkey(levelId, roomId), out var hardcodedEnemy) 
+				    && hardcodedEnemy.Positions.Contains(pos))
+				{
+					if (hardcodedEnemy.Enemies.Length == 0)
+						continue;
+
 					newEnemyInfo = hardcodedEnemy.Enemies.SelectRandom(random);
+				}
 				else
+				{
 					newEnemyInfo = (enemy.IsInWater)
 						? UnderwaterEnemies.SelectRandom(random)
 						: Enemies.SelectRandom(random);
+				}
+
+				enemy.SilentKill();
 
 				ScreenManager.Console.AddDebugLine($"[LVL:{levelId},ROOM:{roomId}] Replacing {enemy.EnemyType} with {newEnemyInfo.ClassName}");
 
@@ -234,7 +273,7 @@ Lab turret faces wrong way
 	class RoomSpecificEnemies
 	{
 		public Roomkey RoomKey;
-		public Point Position;
+		public Point[] Positions;
 		public EnemyInfo[] Enemies;
 
 		public RoomSpecificEnemies(int levelId, int roomId, int x, int y, IEnumerable<EnemyInfo> validEnemies) 
@@ -242,10 +281,20 @@ Lab turret faces wrong way
 		{
 		}
 
+		public RoomSpecificEnemies(int levelId, int roomId, Point[] positions, IEnumerable<EnemyInfo> validEnemies)
+			: this(levelId, roomId, positions, validEnemies.ToArray())
+		{
+		}
+
 		public RoomSpecificEnemies(int levelId, int roomId, int x, int y, params EnemyInfo[] validEnemies)
+			: this(levelId, roomId, new[] { new Point(x, y) }, validEnemies)
+		{
+		}
+
+		public RoomSpecificEnemies(int levelId, int roomId, Point[] positions, params EnemyInfo[] validEnemies)
 		{
 			RoomKey = new Roomkey(levelId, roomId);
-			Position = new Point(x, y);
+			Positions = positions;
 			Enemies = validEnemies;
 		}
 	}

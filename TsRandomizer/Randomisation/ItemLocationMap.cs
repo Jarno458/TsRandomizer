@@ -135,7 +135,6 @@ namespace TsRandomizer.Randomisation
 				(LakeDesolationLeft & (FloodsFlags.LakeDesolation ? R.Free : R.TimeStop | R.ForwardDash))
 				| R.GateKittyBoss
 				| R.GateLeftLibrary
-				| R.GateSealedCaves
 				| (R.GateSealedSirensCave & R.CardE)
 				| (R.GateMilitaryGate & (R.CardE | R.CardB));
 
