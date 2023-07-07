@@ -98,7 +98,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	[RoomTriggerTrigger(3, 4)]
 
 	//lab
-	[RoomTriggerTrigger(10, 6)]
+	//[RoomTriggerTrigger(10, 6)]
 	class RisingTides : RoomTrigger
 	{
 		public override void OnRoomLoad(RoomState state)

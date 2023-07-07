@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Timespinner.Core;
 using Timespinner.Core.Specifications;
-using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
-using TsRandomizer.Screens;
+using E = TsRandomizer.LevelObjects.EnemyType;
 
 namespace TsRandomizer.LevelObjects
 {
@@ -18,189 +16,195 @@ namespace TsRandomizer.LevelObjects
 	{
 		static readonly Type BossType = TimeSpinnerType.Get("Timespinner.GameObjects.BaseClasses.BossClass");
 
-		static readonly EnemyInfo[] LargeGroundedEnemies = {
-			new EnemyInfo(EEnemyTileType.CheveuxTank), //actually jumping Cheveux
-			new EnemyInfo(EEnemyTileType.KickstarterFoe, 0, "GyreMajorUgly"),
-			new EnemyInfo(EEnemyTileType.WormFlower),
-			new EnemyInfo(EEnemyTileType.WormFlowerWalker, s => s.SpWormFlower),
-			new EnemyInfo(EEnemyTileType.DiscStatue, "Timespinner.GameAbstractions.GameObjects"), //Cat on roomba
-			new EnemyInfo(EEnemyTileType.ForestBabyCheveux),
-			new EnemyInfo(EEnemyTileType.ForestWormFlower),
-			new EnemyInfo(EEnemyTileType.CavesMushroomTower, 0, "CavesMushroomTower"),
-			new EnemyInfo(EEnemyTileType.CavesMushroomTower, 1, "CursedMushroomTower"),
-			new EnemyInfo(EEnemyTileType.CastleLargeSoldier, "Timespinner.GameObjects.Enemies._04_Ramparts"),
-			new EnemyInfo(EEnemyTileType.KeepWarCheveux),
-			new EnemyInfo(EEnemyTileType.KeepAristocrat, 1, "TowerIceMage"),
-			new EnemyInfo(EEnemyTileType.LakeCheveux),
-			new EnemyInfo(EEnemyTileType.FortressLargeSoldier, "Timespinner.GameObjects.Enemies._10_Fortress"),
+		static readonly E[] LargeGroundedEnemies = {
+			E.JumpingCheveuxTank,
+			E.SealDog,
+			E.WormFlower,
+			E.WormFlowerWalker,
+			E.RoombaCat,
+			E.ForestBabyCheveux,
+			E.ForestWormFlower,
+			E.PastMushroomTower,
+			E.PresentMushroomTower,
+			E.PastLargeSoldier,
+			E.PresentLargeSoldier,
+			E.ChargingCheveux,
+			E.IceMage,
+			E.LargeCheveux
 		};
 
-		static readonly EnemyInfo[] NormalGroundedEnemies = {
-			new EnemyInfo(EEnemyTileType.RedCheveux, s => s.SpCheveuxTank),
-			new EnemyInfo(EEnemyTileType.FortressEngineer),
-			new EnemyInfo(EEnemyTileType.CavesSiren, 0, "CavesSiren", s => s.SpSiren),
-			new EnemyInfo(EEnemyTileType.CavesSiren, 1, "CursedSiren"),
-			new EnemyInfo(EEnemyTileType.CastleShieldKnight, 0, "CastleShieldKnight"),
-			new EnemyInfo(EEnemyTileType.CastleArcher),
-			new EnemyInfo(EEnemyTileType.CitySecurityGuard),
-			new EnemyInfo(EEnemyTileType.ForestRodent),
-			new EnemyInfo(EEnemyTileType.CastleEngineer),
-			new EnemyInfo(EEnemyTileType.KeepAristocrat, 0, "KeepAristocrat"),
-			new EnemyInfo(EEnemyTileType.FortressKnight),
-			new EnemyInfo(EEnemyTileType.FortressGunner),
-			new EnemyInfo(EEnemyTileType.CavesSlime, 0, "CavesSlime"),
-			new EnemyInfo(EEnemyTileType.CavesSlime, 1, "CursedSlime", s => s.SpCavesSlime),
+		static readonly E[] NormalGroundedEnemies = {
+			E.CheveuxTank,
+			E.PastBomber,
+			E.PresentBomber,
+			E.PastSiren,
+			E.PresentSiren,
+			E.PastShieldKnight,
+			E.PresentShieldKnight,
+			E.PastArcher,
+			E.PresentArcher,
+			E.Granadier,
+			E.Rat,
+			E.FireMage,
+			E.PastSlime,
+			E.PresentSlime
 		};
 
-		static readonly EnemyInfo[] SmallGroundedEnemies = {
-			new EnemyInfo(EEnemyTileType.FleshSpider, 0, "Timespinner.GameAbstractions.GameObjects", "FleshSpider"),
-			new EnemyInfo(EEnemyTileType.LakeBirdEgg, "Timespinner.GameObjects"),
+		static readonly E[] SmallGroundedEnemies = {
+			E.Spider,
+			E.Egg
 		};
 
-		static readonly EnemyInfo[] GroundedEnemies = 
+		static readonly E[] GroundedEnemies = 
 			LargeGroundedEnemies
 			.Concat(NormalGroundedEnemies)
 			.Concat(SmallGroundedEnemies)
 			.ToArray();
 
-		static readonly EnemyInfo[] FlyingEnemies = {
-			new EnemyInfo(EEnemyTileType.LakeFly),
-			new EnemyInfo(EEnemyTileType.TowerRoyalGuard, 0, "TowerRoyalGuard", s => s.SpTowerDemonMage),
-			new EnemyInfo(EEnemyTileType.TowerRoyalGuard, 1, "EmpRoyalGuard"),
-			new EnemyInfo(EEnemyTileType.ForestMoth, 0, "ForestMoth"),
-			new EnemyInfo(EEnemyTileType.ForestMoth, 1, "CursedMoth"),
-			new EnemyInfo(EEnemyTileType.KeepDemon, 0, "KeepDemon"),
-			new EnemyInfo(EEnemyTileType.KeepDemon, 1, "EmpDemon"),
-			new EnemyInfo(EEnemyTileType.FlyingCheveux, s => s.SpCheveuxFlying),
-			new EnemyInfo(EEnemyTileType.KickstarterFoe, 2, "GyreKain"),
-			new EnemyInfo(EEnemyTileType.KickstarterFoe, 4, "GyreRyshia"),
-			new EnemyInfo(EEnemyTileType.KickstarterFoe, 5, "GyreZel"),
-			new EnemyInfo(EEnemyTileType.KickstarterFoe, 1, "GyreMeteorSparrow"),
-			new EnemyInfo(EEnemyTileType.TowerPlasmaPod)
+		static readonly E[] FlyingEnemies = {
+			E.Fly,
+			E.PastDemon,
+			E.PresentDemon,
+			E.PastLargeDemon,
+			E.PresentLargeDemon,
+			E.PastMoth,
+			E.PresentMoth,
+			E.HelicopterCheveux,
+			E.ScyteDemon,
+			E.Ryshia,
+			E.MeteorSparrow,
+			E.PlasmaPod
 		};
 
-		static readonly EnemyInfo[] CeilingEnemies = {
-			new EnemyInfo(EEnemyTileType.CeilingStar),
-			new EnemyInfo(EEnemyTileType.ForestPlantBat),
-			new EnemyInfo(EEnemyTileType.CavesSporeVine, 0, "CavesSporeVine"),
-			new EnemyInfo(EEnemyTileType.CavesSporeVine, 1, "CursedSporeVine"),
-			new EnemyInfo(EEnemyTileType.CavesCopperWyvern, 0, "CavesCopperWyvern", s => s.SpCopperWyvern),
-			new EnemyInfo(EEnemyTileType.CavesCopperWyvern, 1, "CursedCopperWyvern"),
+		static readonly E[] CeilingEnemies = {
+			E.CeilingStar,
+			E.Bat,
+			E.PastCeilingTentacle,
+			E.PresentCeilingTentacle,
+			E.PastWaterDrake,
+			E.PresentWaterDrake
 		};
 
-		static readonly EnemyInfo[] OtherEnemies = {
-			new EnemyInfo(EEnemyTileType.CavesSnail, 0, "CavesSnail"), //to large for timestop
-			new EnemyInfo(EEnemyTileType.CavesSnail, 1, "CursedSnail"), //to large for timestop
-			new EnemyInfo(EEnemyTileType.FleshSpider, 1, "Timespinner.GameAbstractions.GameObjects", "LabSpider"), //path blocking lazer
-			new EnemyInfo(EEnemyTileType.TempleFoe, 0, "Timespinner.GameObjects.Enemies._16_Temple", "TempleConviction"), //flying, vertically stationary
-			new EnemyInfo(EEnemyTileType.TempleFoe, 1, "Timespinner.GameObjects.Enemies._16_Temple", "TempleZeal", s => s.SpTempleConviction), //timestop immunity
-			new EnemyInfo(EEnemyTileType.TempleFoe, 2, "Timespinner.GameObjects.Enemies._16_Temple", "TempleJustice", s => s.SpTempleConviction), //timestop immunity
-			//new EnemyInfo(EEnemyTileType.KickstarterFoe, 3, "GyreNethershade"), //timestop immunity, not visable
-			new EnemyInfo(EEnemyTileType.LabTurret), //timestop immunity
-			new EnemyInfo(EEnemyTileType.LabChild), //timestop immunity
-			new EnemyInfo(EEnemyTileType.KeepAristocrat, 2, "EmpAristocrat"), //hard to controll as he always knocks himzelf away from you
+		static readonly E[] OtherEnemies = {
+			E.PastSnail, //to large for timestop
+			E.PresentSnail, //to large for timestop
+			E.HellSpider, //path blocking lazer, timestop immunity
+			E.Conviction, //timestop immunity
+			E.Zeal, //timestop immunity
+			E.Justice, //timestop immunity
+			//E.Nethershade, // invisable, timestop immunity
+			E.Turret, //timestop immunity
+			E.LabDemon, //timestop immunity
+			E.FlyingIceMage, // Flying buy to hard to controll 
+			E.TomeOrbGuy // Flying buy to hard to controll 
 		};
 
-		static readonly EnemyInfo[] Enemies = GroundedEnemies
+		static readonly E[] Enemies = GroundedEnemies
 			.Concat(FlyingEnemies)
 			.Concat(CeilingEnemies)
 			.Concat(OtherEnemies)
 			.ToArray();
 
-		static readonly EnemyInfo[] UnderwaterEnemies = Enemies.Concat(new[] {
-			new EnemyInfo(EEnemyTileType.LakeEel),
-			new EnemyInfo(EEnemyTileType.LakeAnemone),
-			new EnemyInfo(EEnemyTileType.CursedAnemone, s => s.SpCursedAnemone), //Flies to top of screen
+		static readonly E[] UnderwaterEnemies = Enemies.Concat(new[] {
+			E.Eel,
+			E.PastAnemone,  //Flies to top of screen
+			E.PresentAnemone  //Flies to top of screen
 		}).ToArray();
 
 		static readonly LookupDictionary<Roomkey, RoomSpecificEnemies> HardcodedEnemies
 			= new LookupDictionary<Roomkey, RoomSpecificEnemies>(k => k.RoomKey) {
-				new RoomSpecificEnemies(1, 10, 200, 240, GroundedEnemies.Concat(FlyingEnemies)), //lake desolation bridge
-				new RoomSpecificEnemies(9, 19, 608, 928, LargeGroundedEnemies.Concat(FlyingEnemies)), //Sealed caves mushroom tower jump
-                new RoomSpecificEnemies(1, 3, 312, 320, NormalGroundedEnemies.Concat(FlyingEnemies)), //lake desolation ledge near save
-				new RoomSpecificEnemies(7, 3, 312, 320, NormalGroundedEnemies.Concat(FlyingEnemies)), //lake serene ledge near save
-				new RoomSpecificEnemies(1, 2, 936, 656, //lake serene ledge near save
+				new RoomSpecificEnemies(1, 10, E.JumpingCheveuxTank, //lake desolation bridge
+					GroundedEnemies.Concat(FlyingEnemies)), 
+				new RoomSpecificEnemies(9, 19, 608, 928, E.PresentMushroomTower, //Sealed caves mushroom tower jump
+					LargeGroundedEnemies.Concat(FlyingEnemies)), 
+                new RoomSpecificEnemies(1, 3, 312, 320, E.CheveuxTank, //lake desolation ledge near save
+	                NormalGroundedEnemies.Concat(FlyingEnemies)), 
+				new RoomSpecificEnemies(7, 3, 312, 320, E.ForestBabyCheveux, //lake serene ledge near save
+					NormalGroundedEnemies.Concat(FlyingEnemies)), 
+				new RoomSpecificEnemies(1, 2, 936, 656, E.JumpingCheveuxTank, // lake desolation T chest
 					FlyingEnemies.Concat(new [] {
-						new EnemyInfo(EEnemyTileType.CheveuxTank), //actually jumping Cheveux
-						new EnemyInfo(EEnemyTileType.ForestBabyCheveux),
-						new EnemyInfo(EEnemyTileType.CastleLargeSoldier, "Timespinner.GameObjects.Enemies._04_Ramparts"),
-						new EnemyInfo(EEnemyTileType.KeepAristocrat, 1, "TowerIceMage"),
-						new EnemyInfo(EEnemyTileType.LakeCheveux),
-						new EnemyInfo(EEnemyTileType.FortressLargeSoldier, "Timespinner.GameObjects.Enemies._10_Fortress"),
-					})
-				),
-				new RoomSpecificEnemies(3, 4, 776, 112, FlyingEnemies), //forest green bridge jump
-				new RoomSpecificEnemies(4, 1, new []{ new Point(368, 160), new Point(432, 160) }), //castle boomers
-				new RoomSpecificEnemies(10, 3, new []{ new Point(352, 128), new Point(448, 128) }), //militairy fortress boomers
-				new RoomSpecificEnemies(7, 5, 128, 224), //fluffy bird pre cantoran
-				new RoomSpecificEnemies(3, 15, new []{ new Point(360, 338), new Point(920, 66) }, //double bat cave jump
+						E.JumpingCheveuxTank,
+						E.ForestBabyCheveux,
+						E.PastLargeSoldier,
+						E.PresentLargeSoldier,
+						E.LargeCheveux,
+						E.IceMage
+					})),
+				new RoomSpecificEnemies(3, 4, 776, 112, E.PastMoth, //forest green bridge jump
+					FlyingEnemies), 
+				new RoomSpecificEnemies(4, 1, new []{ new Point(368, 160), new Point(432, 160) }, E.PastBomber, //castle boomers
+					E.PastBomber), 
+				new RoomSpecificEnemies(10, 3, E.PresentBomber, //militairy fortress boomers
+					E.PresentBomber), 
+				new RoomSpecificEnemies(7, 5, E.ChargingCheveux, //fluffy bird pre cantoran
+					E.ChargingCheveux), 
+				new RoomSpecificEnemies(3, 15, E.Bat, //double bat cave jump
+					FlyingEnemies.Concat(E.ForestBabyCheveux)), 
+				new RoomSpecificEnemies(4, 3, 192, 144, E.PastBomber, //castle scare the engineer
 					FlyingEnemies.Concat(new [] {
-						new EnemyInfo(EEnemyTileType.ForestBabyCheveux),
-					})
-				), 
-				new RoomSpecificEnemies(4, 3, 192, 144, //castle scare the engineer
+						E.JumpingCheveuxTank,
+						E.WormFlowerWalker,
+						E.RoombaCat,
+						E.ForestBabyCheveux,
+						E.PastLargeSoldier,
+						E.PresentLargeSoldier,
+						E.IceMage,
+						E.FireMage,
+						E.LargeCheveux,
+						E.CheveuxTank,
+						E.PastBomber,
+						E.PresentBomber,
+						E.Granadier,
+						E.Rat,
+						E.PastSlime,
+						E.PresentSlime,
+						E.Spider
+					})),
+				new RoomSpecificEnemies(5, 20, 584, 192, E.FireMage, // fire mage before twins
+					GroundedEnemies.Concat(FlyingEnemies)),
+				new RoomSpecificEnemies(6, 2, E.PastDemon, // small demon in mid royal towers
+					FlyingEnemies.Concat(E.ForestBabyCheveux)),
+				new RoomSpecificEnemies(6, 1, E.IceMage, // ice mage courtyard jump
 					FlyingEnemies.Concat(new [] {
-						new EnemyInfo(EEnemyTileType.CheveuxTank), //actually jumping Cheveux
-						new EnemyInfo(EEnemyTileType.WormFlowerWalker, s => s.SpWormFlower),
-						new EnemyInfo(EEnemyTileType.DiscStatue, "Timespinner.GameAbstractions.GameObjects"), //Cat on roomba
-						new EnemyInfo(EEnemyTileType.ForestBabyCheveux),
-						new EnemyInfo(EEnemyTileType.CastleLargeSoldier, "Timespinner.GameObjects.Enemies._04_Ramparts"),
-						new EnemyInfo(EEnemyTileType.KeepAristocrat, 1, "TowerIceMage"),
-						new EnemyInfo(EEnemyTileType.LakeCheveux),
-						new EnemyInfo(EEnemyTileType.FortressLargeSoldier, "Timespinner.GameObjects.Enemies._10_Fortress"),
-						new EnemyInfo(EEnemyTileType.RedCheveux, s => s.SpCheveuxTank),
-						new EnemyInfo(EEnemyTileType.FortressEngineer),
-						new EnemyInfo(EEnemyTileType.CitySecurityGuard),
-						new EnemyInfo(EEnemyTileType.ForestRodent),
-						new EnemyInfo(EEnemyTileType.CastleEngineer),
-						new EnemyInfo(EEnemyTileType.KeepAristocrat, 0, "KeepAristocrat"),
-						new EnemyInfo(EEnemyTileType.CavesSlime, 0, "CavesSlime"),
-						new EnemyInfo(EEnemyTileType.CavesSlime, 1, "CursedSlime", s => s.SpCavesSlime),
-						new EnemyInfo(EEnemyTileType.FleshSpider, 0, "Timespinner.GameAbstractions.GameObjects", "FleshSpider")
-					})
-				),
-				new RoomSpecificEnemies(5, 20, 584, 192, GroundedEnemies.Concat(FlyingEnemies)), // fire mage before twins
-				new RoomSpecificEnemies(6, 2, 168, 496, // small demon in mid royal towers
-					FlyingEnemies.Concat(new [] {
-						new EnemyInfo(EEnemyTileType.ForestBabyCheveux),
-					})
-				),
-				new RoomSpecificEnemies(6, 1, 1544, 96, // ice mage courtyard jump
-					FlyingEnemies.Concat(new [] {
-						new EnemyInfo(EEnemyTileType.CheveuxTank), //actually jumping Cheveux
-						new EnemyInfo(EEnemyTileType.WormFlowerWalker, s => s.SpWormFlower),
-						new EnemyInfo(EEnemyTileType.DiscStatue, "Timespinner.GameAbstractions.GameObjects"), //Cat on roomba
-						new EnemyInfo(EEnemyTileType.ForestBabyCheveux),
-						new EnemyInfo(EEnemyTileType.CastleLargeSoldier, "Timespinner.GameObjects.Enemies._04_Ramparts"),
-						new EnemyInfo(EEnemyTileType.KeepAristocrat, 1, "TowerIceMage"),
-						new EnemyInfo(EEnemyTileType.LakeCheveux),
-						new EnemyInfo(EEnemyTileType.FortressLargeSoldier, "Timespinner.GameObjects.Enemies._10_Fortress"),
-						new EnemyInfo(EEnemyTileType.RedCheveux, s => s.SpCheveuxTank),
-						new EnemyInfo(EEnemyTileType.FortressEngineer),
-						new EnemyInfo(EEnemyTileType.CitySecurityGuard),
-						new EnemyInfo(EEnemyTileType.ForestRodent),
-						new EnemyInfo(EEnemyTileType.CastleEngineer),
-						new EnemyInfo(EEnemyTileType.KeepAristocrat, 0, "KeepAristocrat"),
-						new EnemyInfo(EEnemyTileType.CavesSlime, 0, "CavesSlime"),
-						new EnemyInfo(EEnemyTileType.CavesSlime, 1, "CursedSlime", s => s.SpCavesSlime),
-						new EnemyInfo(EEnemyTileType.FleshSpider, 0, "Timespinner.GameAbstractions.GameObjects", "FleshSpider")
-					})
-				),
-				new RoomSpecificEnemies(6, 17, 104, 448, FlyingEnemies), // top struggle juggle
-				new RoomSpecificEnemies(6, 10, 200, 288, // lower struggle juggle
-					FlyingEnemies.Concat(new [] {
-						new EnemyInfo(EEnemyTileType.ForestBabyCheveux),
-						new EnemyInfo(EEnemyTileType.KeepAristocrat, 1, "TowerIceMage"),
-					})
-				)
+						E.JumpingCheveuxTank,
+						E.WormFlowerWalker,
+						E.RoombaCat,
+						E.ForestBabyCheveux,
+						E.PastLargeSoldier,
+						E.PresentLargeSoldier,
+						E.IceMage,
+						E.FireMage,
+						E.LargeCheveux,
+						E.CheveuxTank,
+						E.Granadier,
+						E.Rat,
+						E.PastBomber,
+						E.PresentBomber,
+						E.PastSlime,
+						E.PresentSlime,
+						E.Spider
+					})),
+				new RoomSpecificEnemies(6, 17, E.PastLargeDemon, // top struggle juggle
+					FlyingEnemies), 
+				new RoomSpecificEnemies(6, 10, E.PastLargeDemon, // lower struggle juggle
+					FlyingEnemies.Concat(new [] { 
+						E.ForestBabyCheveux, 
+						E.IceMage,
+					})),
+				new RoomSpecificEnemies(12, 21, E.PresentDemon, // emperors left tower
+					FlyingEnemies),
+				new RoomSpecificEnemies(12, 9, new []{ new Point(280, 225), new Point(278, 223), new Point(278, 224) }, E.PresentDemon, // emperors lower right tower
+					FlyingEnemies),
+				new RoomSpecificEnemies(12, 17, E.PresentDemon, // emperors upper right tower
+					FlyingEnemies),
+				new RoomSpecificEnemies(10, 6, E.PresentBomber, //bombers before lab near gun-orb
+					E.PresentBomber),
+				new RoomSpecificEnemies(9, 7, E.XarionBossHand, //Xarions hand
+					E.XarionBossHand) 
 			};
 
-
 /*TODO
-Conviction uses wrong sprite
 Plantbat breaks on floor
-scyte guy missing face 7 5 128 224
-rysha missing face
 Lab turret faces wrong way
 */
 
@@ -211,119 +215,79 @@ Lab turret faces wrong way
 
 			foreach (var enemy in enemies)
 			{
-				if (enemy.EnemyType == EEnemyTileType.JunkSpawner 
-				|| enemy.EnemyType == EEnemyTileType.LabAdult
-				|| enemy.GetType().IsSubclassOf(BossType))
+				if (enemy.EnemyType == EEnemyTileType.JunkSpawner || enemy.EnemyType == EEnemyTileType.LabAdult)
+					continue;
+				
+				var type = enemy.GetType();
+
+				if (type.IsSubclassOf(BossType))
 					continue;
 
-				var pos = enemy.Position;
-
-				EnemyInfo newEnemyInfo;
+				E newEnemyType;
 				if (HardcodedEnemies.TryGetValue(new Roomkey(levelId, roomId), out var hardcodedEnemy) 
-				    && hardcodedEnemy.Positions.Contains(pos))
+					&& Enemy.Get[hardcodedEnemy.EnemyTypeToReplace].Class == type
+					&& (hardcodedEnemy.EnemyPositions == null || hardcodedEnemy.EnemyPositions.Contains(enemy.Position)))
 				{
-					if (hardcodedEnemy.Enemies.Length == 0)
+					if (hardcodedEnemy.Enemies.Length == 1 && hardcodedEnemy.EnemyTypeToReplace == hardcodedEnemy.Enemies[0])
 						continue;
 
-					newEnemyInfo = hardcodedEnemy.Enemies.SelectRandom(random);
+					newEnemyType = hardcodedEnemy.Enemies.SelectRandom(random);
 				}
 				else
 				{
-					newEnemyInfo = (enemy.IsInWater)
+					newEnemyType = (enemy.IsInWater)
 						? UnderwaterEnemies.SelectRandom(random)
 						: Enemies.SelectRandom(random);
 				}
 
-				enemy.SilentKill();
-
-				ScreenManager.Console.AddDebugLine($"[LVL:{levelId},ROOM:{roomId}] Replacing {enemy.EnemyType} with {newEnemyInfo.ClassName}");
-
-				var newEnemySpec = new ObjectTileSpecification
-				{
-					Category = EObjectTileCategory.Enemy,
-					Layer = ETileLayerType.Objects,
-					IsFlippedHorizontally = enemy.IsImageFacingLeft,
-					IsFlippedVertically = enemy.IsFlippedVertically,
-					ObjectID = (int)newEnemyInfo.Type
-				};
-
-				dynamic newEnemy;
-				if (newEnemyInfo.Type == EEnemyTileType.LakeBirdEgg)
-					newEnemy = newEnemyInfo.Class.CreateInstance(
-						false, pos, level, newEnemyInfo.SpriteSheet(level.GCM), -1, newEnemySpec, false);
-				else
-					newEnemy = newEnemyInfo.Class.CreateInstance(
-						false, pos, level, newEnemyInfo.SpriteSheet(level.GCM), -1, newEnemySpec);
-
-				newEnemy.InitializeMob();
+				var newEnemy = enemy.ReplaceWith(level, Enemy.Get[newEnemyType]);
 
 				levelReflected.RequestAddObject(newEnemy);
 			}
 		}
 	}
-
-	class EnemyInfo
-	{
-		public readonly EEnemyTileType Type;
-		public readonly int? Argument;
-		public readonly string ClassName;
-		public readonly Type Class;
-		public readonly Func<GCM, SpriteSheet> SpriteSheet;
-
-		public EnemyInfo(EEnemyTileType type, Func<GCM, SpriteSheet> spriteSheet = null) : this(type, 0, type.ToString(), spriteSheet)
-		{
-		}
-
-		public EnemyInfo(EEnemyTileType type, string classPath, Func<GCM, SpriteSheet> spriteSheet = null) 
-			: this(type, 0, classPath, type.ToString(), spriteSheet)
-		{
-		}
-
-		public EnemyInfo(EEnemyTileType type, int argument, string className, Func<GCM, SpriteSheet> spriteSheet = null)
-			: this(type, argument, "Timespinner.GameObjects.Enemies", className, spriteSheet)
-		{
-		}
-
-		public EnemyInfo(EEnemyTileType type, int argument, string classPath, string className, Func<GCM, SpriteSheet> spriteSheet = null)
-		{
-			Type = type;
-			Argument = argument;
-			ClassName = className;
-
-			if (spriteSheet != null)
-				SpriteSheet = spriteSheet;
-			else
-				SpriteSheet = gcm => (SpriteSheet)typeof(GCM).GetField("Sp" + className).GetValue(gcm);
-
-			Class = TimeSpinnerType.Get($"{classPath}.{className}");
-		}
-	}
-
+	
 	class RoomSpecificEnemies
 	{
 		public Roomkey RoomKey;
-		public Point[] Positions;
-		public EnemyInfo[] Enemies;
+		public E EnemyTypeToReplace;
+		public Point[] EnemyPositions;
+		public E[] Enemies;
 
-		public RoomSpecificEnemies(int levelId, int roomId, int x, int y, IEnumerable<EnemyInfo> validEnemies) 
-			: this(levelId, roomId, x, y, validEnemies.ToArray())
+		public RoomSpecificEnemies(int levelId, int roomId, E enemyType, IEnumerable<E> validEnemies)
+			: this(levelId, roomId, null, enemyType, validEnemies.ToArray())
 		{
 		}
 
-		public RoomSpecificEnemies(int levelId, int roomId, Point[] positions, IEnumerable<EnemyInfo> validEnemies)
-			: this(levelId, roomId, positions, validEnemies.ToArray())
+		public RoomSpecificEnemies(int levelId, int roomId, int x, int y, E enemyType, IEnumerable<E> validEnemies)
+			: this(levelId, roomId, new []{ new Point(x, y) }, enemyType, validEnemies.ToArray())
 		{
 		}
 
-		public RoomSpecificEnemies(int levelId, int roomId, int x, int y, params EnemyInfo[] validEnemies)
-			: this(levelId, roomId, new[] { new Point(x, y) }, validEnemies)
+		public RoomSpecificEnemies(int levelId, int roomId, Point[] positions, E enemyType, IEnumerable<E> validEnemies)
+			: this(levelId, roomId, positions, enemyType, validEnemies.ToArray())
 		{
 		}
 
-		public RoomSpecificEnemies(int levelId, int roomId, Point[] positions, params EnemyInfo[] validEnemies)
+		public RoomSpecificEnemies(int levelId, int roomId, E enemyType, params E[] validEnemies)
+			: this(levelId, roomId, null, enemyType, validEnemies)
 		{
+		}
+
+		public RoomSpecificEnemies(int levelId, int roomId, int x, int y, E enemyType, params E[] validEnemies)
+			: this(levelId, roomId, new[] { new Point(x, y) }, enemyType, validEnemies)
+		{
+		}
+
+		public RoomSpecificEnemies(int levelId, int roomId, Point[] positions, E enemyType, params E[] validEnemies)
+		{
+			if (validEnemies.Length == 0)
+				throw new InvalidOperationException(
+					$"RoomSpecificEnemies for level: {levelId}, room: {roomId}, for enemyType: {enemyType}, does not have any validEnemies specified");
+
 			RoomKey = new Roomkey(levelId, roomId);
-			Positions = positions;
+			EnemyTypeToReplace = enemyType;
+			EnemyPositions = positions;
 			Enemies = validEnemies;
 		}
 	}

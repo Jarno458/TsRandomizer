@@ -125,6 +125,7 @@
   <ItemGroup>
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
     <Compile Include="Archipelago\Countdown.cs" />
+    <Compile Include="Extensions\MonsterExtensions.cs" />
     <Compile Include="IntermediateObjects\CustomItems\ArchipelagoRemoteItem.cs" />
     <Compile Include="Archipelago\ConnectionFailedException.cs" />
     <Compile Include="Commands\ConnectCommand.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="IntermediateObjects\ProgressiveItemProvider.cs" />
     <Compile Include="LevelObjects\CollisionDetectionEvent.cs" />
     <Compile Include="LevelObjects\Enemizer.cs" />
+    <Compile Include="LevelObjects\Enemy.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Other\Bee.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />
