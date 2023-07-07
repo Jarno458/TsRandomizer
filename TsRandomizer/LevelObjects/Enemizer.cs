@@ -95,7 +95,7 @@ namespace TsRandomizer.LevelObjects
 			new EnemyInfo(EEnemyTileType.TempleFoe, 0, "Timespinner.GameObjects.Enemies._16_Temple", "TempleConviction"), //flying, vertically stationary
 			new EnemyInfo(EEnemyTileType.TempleFoe, 1, "Timespinner.GameObjects.Enemies._16_Temple", "TempleZeal", s => s.SpTempleConviction), //timestop immunity
 			new EnemyInfo(EEnemyTileType.TempleFoe, 2, "Timespinner.GameObjects.Enemies._16_Temple", "TempleJustice", s => s.SpTempleConviction), //timestop immunity
-			new EnemyInfo(EEnemyTileType.KickstarterFoe, 3, "GyreNethershade"), //timestop immunity
+			//new EnemyInfo(EEnemyTileType.KickstarterFoe, 3, "GyreNethershade"), //timestop immunity, not visable
 			new EnemyInfo(EEnemyTileType.LabTurret), //timestop immunity
 			new EnemyInfo(EEnemyTileType.LabChild), //timestop immunity
 			new EnemyInfo(EEnemyTileType.KeepAristocrat, 2, "EmpAristocrat"), //hard to controll as he always knocks himzelf away from you
@@ -165,7 +165,36 @@ namespace TsRandomizer.LevelObjects
 						new EnemyInfo(EEnemyTileType.ForestBabyCheveux),
 					})
 				),
+				new RoomSpecificEnemies(6, 1, 1544, 96, // ice mage courtyard jump
+					FlyingEnemies.Concat(new [] {
+						new EnemyInfo(EEnemyTileType.CheveuxTank), //actually jumping Cheveux
+						new EnemyInfo(EEnemyTileType.WormFlowerWalker, s => s.SpWormFlower),
+						new EnemyInfo(EEnemyTileType.DiscStatue, "Timespinner.GameAbstractions.GameObjects"), //Cat on roomba
+						new EnemyInfo(EEnemyTileType.ForestBabyCheveux),
+						new EnemyInfo(EEnemyTileType.CastleLargeSoldier, "Timespinner.GameObjects.Enemies._04_Ramparts"),
+						new EnemyInfo(EEnemyTileType.KeepAristocrat, 1, "TowerIceMage"),
+						new EnemyInfo(EEnemyTileType.LakeCheveux),
+						new EnemyInfo(EEnemyTileType.FortressLargeSoldier, "Timespinner.GameObjects.Enemies._10_Fortress"),
+						new EnemyInfo(EEnemyTileType.RedCheveux, s => s.SpCheveuxTank),
+						new EnemyInfo(EEnemyTileType.FortressEngineer),
+						new EnemyInfo(EEnemyTileType.CitySecurityGuard),
+						new EnemyInfo(EEnemyTileType.ForestRodent),
+						new EnemyInfo(EEnemyTileType.CastleEngineer),
+						new EnemyInfo(EEnemyTileType.KeepAristocrat, 0, "KeepAristocrat"),
+						new EnemyInfo(EEnemyTileType.CavesSlime, 0, "CavesSlime"),
+						new EnemyInfo(EEnemyTileType.CavesSlime, 1, "CursedSlime", s => s.SpCavesSlime),
+						new EnemyInfo(EEnemyTileType.FleshSpider, 0, "Timespinner.GameAbstractions.GameObjects", "FleshSpider")
+					})
+				),
+				new RoomSpecificEnemies(6, 17, 104, 448, FlyingEnemies), // top struggle juggle
+				new RoomSpecificEnemies(6, 10, 200, 288, // lower struggle juggle
+					FlyingEnemies.Concat(new [] {
+						new EnemyInfo(EEnemyTileType.ForestBabyCheveux),
+						new EnemyInfo(EEnemyTileType.KeepAristocrat, 1, "TowerIceMage"),
+					})
+				)
 			};
+
 
 /*TODO
 Conviction uses wrong sprite
