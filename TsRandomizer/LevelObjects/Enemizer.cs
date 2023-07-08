@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
@@ -8,6 +9,7 @@ using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Screens;
 using E = TsRandomizer.LevelObjects.EnemyType;
 
 namespace TsRandomizer.LevelObjects
@@ -209,11 +211,16 @@ Lab turret faces wrong way
 */
 
 		public static void RandomizeEnemies(
-			Level level, dynamic levelReflected, int levelId, int roomId, IEnumerable<Monster> enemies, Seed seed)
+			Level level, Roomkey roomKey, IEnumerable<Monster> enemies, Seed seed)
 		{
-			var random = new Random((int)(seed.Id + (levelId * 100) + roomId));
+			var x = new Stopwatch();
+			x.Start();
 
-			foreach (var enemy in enemies)
+			var random = new Random((int)(seed.Id + (roomKey.LevelId * 100) + roomKey.RoomId));
+
+			HardcodedEnemies.TryGetValue(roomKey, out var hardcodedEnemy);
+
+			foreach (var enemy in enemies.ToArray())
 			{
 				if (enemy.EnemyType == EEnemyTileType.JunkSpawner || enemy.EnemyType == EEnemyTileType.LabAdult)
 					continue;
@@ -224,8 +231,9 @@ Lab turret faces wrong way
 					continue;
 
 				E newEnemyType;
-				if (HardcodedEnemies.TryGetValue(new Roomkey(levelId, roomId), out var hardcodedEnemy) 
-					&& Enemy.Get[hardcodedEnemy.EnemyTypeToReplace].Class == type
+				if (hardcodedEnemy != null
+				    && EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].ClassName == type.FullName
+				    //&& EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].Argument == enemy.AsDynamic()._argument
 					&& (hardcodedEnemy.EnemyPositions == null || hardcodedEnemy.EnemyPositions.Contains(enemy.Position)))
 				{
 					if (hardcodedEnemy.Enemies.Length == 1 && hardcodedEnemy.EnemyTypeToReplace == hardcodedEnemy.Enemies[0])
@@ -240,10 +248,15 @@ Lab turret faces wrong way
 						: Enemies.SelectRandom(random);
 				}
 
-				var newEnemy = enemy.ReplaceWith(level, Enemy.Get[newEnemyType]);
+				var newEnemy = enemy.ReplaceWith(level, EnemyInfo.Get[newEnemyType]);
 
-				levelReflected.RequestAddObject(newEnemy);
+
+
 			}
+
+			x.Stop();
+			ScreenManager.Console.AddDebugLine($"Randomizing room {roomKey} enemies took: {x.ElapsedMilliseconds}ms");
+
 		}
 	}
 	

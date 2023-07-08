@@ -456,13 +456,14 @@ namespace TsRandomizer.LevelObjects
 
 			int levelId = levelReflected._id;
 			int roomId = ((RoomSpecification)levelReflected.CurrentRoom).ID;
+			var roomKey = new Roomkey(levelId, roomId);
 
-			RoomTrigger.OnChangeRoom(level, seed, gameSettings, itemLocations, screenManager, levelId, roomId);
+			RoomTrigger.OnChangeRoom(level, seed, gameSettings, itemLocations, screenManager, roomKey);
 			TextReplacer.OnChangeRoom(level, seed.Options, itemLocations, levelId, roomId);
 			Replaces.ReplaceObjects(level, objects);
 
 			if (true)
-				Enemizer.RandomizeEnemies(level, levelReflected, levelId, roomId, enemies, seed);
+				Enemizer.RandomizeEnemies(level, roomKey, enemies, seed);
 
 			GenerateShadowObjects(itemLocations, objects, seed, gameplayScreen);
 			SpawnMissingObjects(level, levelReflected, itemLocations, gameplayScreen);

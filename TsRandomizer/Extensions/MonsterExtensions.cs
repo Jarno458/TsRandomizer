@@ -16,24 +16,14 @@ namespace TsRandomizer.Extensions
 				IsFlippedHorizontally = enemy.IsImageFacingLeft,
 				IsFlippedVertically = enemy.IsFlippedVertically,
 				ObjectID = (int)newEnemyInfo.Type,
-				Argument = (int)newEnemyInfo.Argument
+				Argument = newEnemyInfo.Argument,
+				X = (enemy.Position.X - 8) / 16,
+				Y = (enemy.Position.Y - 16) / 16
 			};
-
-			var pos = enemy.Position;
 
 			enemy.SilentKill();
 
-			dynamic newEnemy;
-			if (newEnemyInfo.Type == EEnemyTileType.LakeBirdEgg)
-				newEnemy = newEnemyInfo.Class.CreateInstance(
-					false, pos, level, newEnemyInfo.SpriteSheet(level.GCM), -1, newEnemySpec, false);
-			else
-				newEnemy = newEnemyInfo.Class.CreateInstance(
-					false, pos, level, newEnemyInfo.SpriteSheet(level.GCM), -1, newEnemySpec);
-
-			newEnemy.InitializeMob();
-
-			return newEnemy;
+			return (Monster)level.PlaceEvent(newEnemySpec, true);
 		}
 	}
 }

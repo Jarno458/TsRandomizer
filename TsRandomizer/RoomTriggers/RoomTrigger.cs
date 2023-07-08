@@ -74,10 +74,8 @@ namespace TsRandomizer.RoomTriggers
 		
 		public static void OnChangeRoom(
 			Level level, Seed seed, SettingCollection gameSettings, ItemLocationMap itemLocations, ScreenManager screenManager,
-			int levelId, int roomId)
+			Roomkey roomKey)
 		{
-			var roomKey = new Roomkey(levelId, roomId);
-
 			if (RoomTriggers.TryGetValue(roomKey, out var triggersForRoom))
 			{
 				var roomState = new RoomState {
