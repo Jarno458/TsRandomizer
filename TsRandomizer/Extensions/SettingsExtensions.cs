@@ -6,8 +6,8 @@ namespace TsRandomizer.Extensions
 	{
 		public static void EnforceTournamentSettings(this SettingCollection settings)
 		{
-			settings.BossRando.Value = true;
-			settings.BossScaling.Value = true;
+			settings.BossRando.Value = "Scaled";
+			settings.EnemyRando.Value = "Off";
 
 			settings.DamageRando.Value = "Balanced";
 			settings.DamageRandoOverrides.SetDefault();

@@ -19,7 +19,7 @@ namespace TsRandomizer.LevelObjects.Other
 		protected override void Initialize(Seed seed)
 		{
 			// Spindle cutscene, to be removed during boss rando
-			bool isRandomized = Level.GameSave.GetSettings().BossRando.Value;
+			bool isRandomized = Level.GameSave.GetSettings().BossRando.Value != "Off";
 			if (!isRandomized || !Level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 

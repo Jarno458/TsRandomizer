@@ -22,7 +22,7 @@ namespace TsRandomizer.Screens
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
-			AddSettingButton(MenuEntry.Create("Settings", OpenSettingsMenu));
+			AddSettingButton(MenuEntry.Create("Randomizer Settings", OpenSettingsMenu));
 		}
 
 		void AddSettingButton(MenuEntry settingButton)

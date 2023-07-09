@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
@@ -9,7 +8,7 @@ using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
-using TsRandomizer.Screens;
+using TsRandomizer.Settings;
 using E = TsRandomizer.LevelObjects.EnemyType;
 
 namespace TsRandomizer.LevelObjects
@@ -49,7 +48,9 @@ namespace TsRandomizer.LevelObjects
 			E.Rat,
 			E.FireMage,
 			E.PastSlime,
-			E.PresentSlime
+			E.PresentSlime,
+			E.PastWaterDrake,
+			E.PresentWaterDrake
 		};
 
 		static readonly E[] SmallGroundedEnemies = {
@@ -83,18 +84,16 @@ namespace TsRandomizer.LevelObjects
 			E.Bat,
 			E.PastCeilingTentacle,
 			E.PresentCeilingTentacle,
-			E.PastWaterDrake,
-			E.PresentWaterDrake
 		};
 
 		static readonly E[] OtherEnemies = {
-			E.PastSnail, //to large for timestop
-			E.PresentSnail, //to large for timestop
+			//E.PastSnail, //to large for timestop, cause issues if facing wrong way
+			//E.PresentSnail, //to large for timestop, cause issues if facing wrong way
 			E.HellSpider, //path blocking lazer, timestop immunity
 			E.Conviction, //timestop immunity
 			E.Zeal, //timestop immunity
 			E.Justice, //timestop immunity
-			//E.Nethershade, // invisable, timestop immunity
+			E.Nethershade, // invisable, timestop immunity
 			E.Turret, //timestop immunity
 			E.LabDemon, //timestop immunity
 			E.FlyingIceMage, // Flying buy to hard to controll 
@@ -205,17 +204,9 @@ namespace TsRandomizer.LevelObjects
 					E.XarionBossHand) 
 			};
 
-/*TODO
-Plantbat breaks on floor
-Lab turret faces wrong way
-*/
-
 		public static void RandomizeEnemies(
-			Level level, Roomkey roomKey, IEnumerable<Monster> enemies, Seed seed)
+			Level level, Roomkey roomKey, SettingCollection gameSettings, IEnumerable<Monster> enemies, Seed seed)
 		{
-			var x = new Stopwatch();
-			x.Start();
-
 			var random = new Random((int)(seed.Id + (roomKey.LevelId * 100) + roomKey.RoomId));
 
 			HardcodedEnemies.TryGetValue(roomKey, out var hardcodedEnemy);
@@ -232,7 +223,7 @@ Lab turret faces wrong way
 
 				E newEnemyType;
 				if (hardcodedEnemy != null
-				    && EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].ClassName == type.FullName
+				    && EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].ClassName == type.FullName //faster than Argument reflection
 				    //&& EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].Argument == enemy.AsDynamic()._argument
 					&& (hardcodedEnemy.EnemyPositions == null || hardcodedEnemy.EnemyPositions.Contains(enemy.Position)))
 				{
@@ -250,13 +241,13 @@ Lab turret faces wrong way
 
 				var newEnemy = enemy.ReplaceWith(level, EnemyInfo.Get[newEnemyType]);
 
-
-
+				if (gameSettings.EnemyRando.Value == "Scaled")
+				{
+					newEnemy.AsDynamic()._damageCaused = enemy.Damage;
+					newEnemy.MaxHP = enemy.MaxHP;
+					newEnemy.HP = enemy.HP;
+				}
 			}
-
-			x.Stop();
-			ScreenManager.Console.AddDebugLine($"Randomizing room {roomKey} enemies took: {x.ElapsedMilliseconds}ms");
-
 		}
 	}
 	

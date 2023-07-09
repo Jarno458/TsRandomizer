@@ -56,7 +56,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(Seed seed)
 		{
-			isRandomized = Level.GameSave.GetSettings().BossRando.Value;
+			isRandomized = Level.GameSave.GetSettings().BossRando.Value != "Off"; ;
 			isDadFinalBoss = seed.Options.DadPercent;
 			int argument = 0;
 			if (TypedObject.EnemyType == EEnemyTileType.EmperorBoss)
@@ -92,7 +92,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 		public BossEnemy(Monster typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
 		{
-			isRandomized = Level.GameSave.GetSettings().BossRando.Value;
+			isRandomized = Level.GameSave.GetSettings().BossRando.Value != "Off";
 			if (!isRandomized || !Level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 

@@ -517,10 +517,9 @@ namespace TsRandomizer.Randomisation
 
 		public static BossAttributes GetReplacedBoss(Level level, int vanillaBossId)
 		{
-			if (!level.GameSave.GetSettings().BossRando.Value)
-			{
+			if (level.GameSave.GetSettings().BossRando.Value == "Off")
 				return GetBossAttributes(level, vanillaBossId);
-			}
+
 			int[] validBosses = GetValidBosses(level);
 
 			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
@@ -591,7 +590,7 @@ namespace TsRandomizer.Randomisation
 			level.GameSave.SetValue("IsLabTSReady", !labTSUsed && level.GameSave.GetSaveBool("TSRando_IsLabTSReady"));
 
 			// Clear the following save flags for vanilla boss seeds
-			if (!level.GameSave.GetSettings().BossRando.Value)
+			if (level.GameSave.GetSettings().BossRando.Value == "Off")
 			{
 				level.GameSave.SetValue("IsBossDead_Emperor", false);
 				level.GameSave.SetValue("IsBossDead_Sandman", false);
@@ -608,10 +607,9 @@ namespace TsRandomizer.Randomisation
 
 		public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
 		{
-			if (!level.GameSave.GetSettings().BossRando.Value)
-			{
+			if (level.GameSave.GetSettings().BossRando.Value == "Off")
 				return GetBossAttributes(level, replacedBossId);
-			}
+
 			int[] validBosses = GetValidBosses(level);
 
 			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
@@ -642,12 +640,12 @@ namespace TsRandomizer.Randomisation
 				{
 					level.GameSave.SetValue(string.Format(bestiaryEntry.Key.Replace("Enemy_", "KILL_")), 1);
 				}
-				if (gameSettings.BossRando.Value && validBosses.Contains(bestiaryEntry.Index))
+				if (gameSettings.BossRando.Value != "Off" && validBosses.Contains(bestiaryEntry.Index))
 				{
 					BossAttributes replacedBossInfo = GetBossAttributes(level, bestiaryEntry.Index);
 					BossAttributes vanillaBossInfo = GetVanillaBoss(level, bestiaryEntry.Index);
 					bestiaryEntry.VisibleName = $"{replacedBossInfo.VisibleName} as {vanillaBossInfo.VisibleName}";
-					if (gameSettings.BossScaling.Value)
+					if (gameSettings.BossRando.Value == "Scaled")
 					{
 						bestiaryEntry.HP = vanillaBossInfo.HP;
 						bestiaryEntry.TouchDamage = vanillaBossInfo.TouchDamage;

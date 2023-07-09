@@ -20,7 +20,7 @@ namespace TsRandomizer.LevelObjects.Other
 			bool hasTimespinnerPieces = AreTriggerConditionsMet();
 			Level.GameSave.SetValue("TSRando_IsLabTSReady", hasTimespinnerPieces);
 
-			if ((Level.GameSave.GetSettings().BossRando.Value && Level.GameSave.GetSaveBool("IsFightingBoss")) || !hasTimespinnerPieces)
+			if ((Level.GameSave.GetSettings().BossRando.Value != "Off" && Level.GameSave.GetSaveBool("IsFightingBoss")) || !hasTimespinnerPieces)
 				Dynamic.SilentKill();
 		}
 

@@ -10,7 +10,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (roomState.Settings.BossRando.Value || roomState.Seed.Options.DadPercent)
+			if (roomState.Settings.BossRando.Value != "Off" || roomState.Seed.Options.DadPercent)
 				RoomTriggerHelper.CreateAndCallCutScene(roomState, "Temple2_End");
 
 			roomState.Level.JukeBox.StopSong();

@@ -114,10 +114,51 @@ namespace TsRandomizer.Settings
 
 				settings.ShopFill.Value = enumValue;
 			}
+
 			if (slotData.TryGetValue("BossRando", out var bossRando))
-				settings.BossRando.Value = IsTrue(bossRando);
-			if (slotData.TryGetValue("BossScaling", out var bossScaling))
-				settings.BossScaling.Value = IsTrue(bossScaling);
+			{
+				var value = ToInt(bossRando);
+				string enumValue;
+
+				switch (value)
+				{
+					case 1:
+						enumValue = "On";
+						break;
+
+					case 2:
+						enumValue = "Scaled";
+						break;
+					default:
+						enumValue = "Off";
+						break;
+				}
+
+				settings.BossRando.Value = enumValue;
+			}
+
+			if (slotData.TryGetValue("EnemyRando", out var enemyRando))
+			{
+				var value = ToInt(enemyRando);
+				string enumValue;
+
+				switch (value)
+				{
+					case 1:
+						enumValue = "On";
+						break;
+
+					case 2:
+						enumValue = "Scaled";
+						break;
+					default:
+						enumValue = "Off";
+						break;
+				}
+
+				settings.EnemyRando.Value = enumValue;
+			}
+
 			if (slotData.TryGetValue("BossHealing", out var bossHealing))
 				settings.BossHealing.Value = IsTrue(bossHealing);
 

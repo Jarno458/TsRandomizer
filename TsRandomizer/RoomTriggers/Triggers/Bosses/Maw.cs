@@ -8,7 +8,7 @@
 			if (roomState.Level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 
-			if (roomState.Seed.Options.GasMaw && !roomState.Settings.BossRando.Value)
+			if (roomState.Seed.Options.GasMaw && roomState.Settings.BossRando.Value == "Off")
 				RoomTriggerHelper.FillRoomWithGas(roomState.Level);
 		}
 	}

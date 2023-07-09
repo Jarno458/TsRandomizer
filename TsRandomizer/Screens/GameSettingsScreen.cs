@@ -191,7 +191,7 @@ namespace TsRandomizer.Screens
 			foreach (var settingFunc in category.SettingsPerCategory)
 				submenu.Add(CreateMenuForSetting(settingFunc(settings)).AsTimeSpinnerMenuEntry());
 
-			submenu.Add(CreateDefaultsMenu(new GameSettingCategoryInfo[] { category }, true));
+			submenu.Add(CreateDefaultsMenu(new [] { category }, true));
 			Dynamic.ChangeMenuCollection(collection, true);
 
 			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);

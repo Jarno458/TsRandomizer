@@ -61,8 +61,8 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 
 			SpawnWaterOrGassIfNeeded(state, vanillaBossId == -1 ? (int)GetVanillaBoss(state.RoomKey) : vanillaBossId);
 
-			if (!level.GameSave.GetSettings().BossRando.Value
-			    || TargetBossId == -1
+			if (level.GameSave.GetSettings().BossRando.Value == "Off"
+				|| TargetBossId == -1
 			    || !level.GameSave.GetSaveBool("IsFightingBoss"))
 					return;
 			
@@ -106,7 +106,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 
 		protected static void CreateBossWarp(Level level, int vanillaBossId)
 		{
-			if (!level.GameSave.GetSettings().BossRando.Value)
+			if (level.GameSave.GetSettings().BossRando.Value == "Off")
 				return;
 
 			BestiaryManager.RefreshBossSaveFlags(level);

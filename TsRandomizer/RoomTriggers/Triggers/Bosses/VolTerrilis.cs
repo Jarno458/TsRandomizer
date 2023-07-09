@@ -7,7 +7,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (roomState.Level.GameSave.GetSettings().BossRando.Value)
+			if (roomState.Level.GameSave.GetSettings().BossRando.Value != "Off")
 				RoomTriggerHelper.CreateAndCallCutScene(roomState, "Alt1_Vol");
 
 			base.OnRoomLoad(roomState);

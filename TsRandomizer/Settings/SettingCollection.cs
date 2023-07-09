@@ -9,7 +9,8 @@ namespace TsRandomizer.Settings
 		public static readonly GameSettingCategoryInfo[] Categories = {
 			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.BossRando, s => s.BossScaling, s => s.DamageRando, s => s.HpCap,
+					s => s.BossRando, 
+					s => s.EnemyRando, s => s.DamageRando, s => s.HpCap,
 					s => s.LevelCap, s => s.ExtraEarringsXP, s => s.BossHealing
 				}},
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
@@ -46,11 +47,13 @@ namespace TsRandomizer.Settings
 					s => s.ShowBestiary, s => s.ShowDrops, s => s.NoSaveStatues
 				}}
 		};
-		public OnOffGameSetting BossRando = new OnOffGameSetting("Boss Randomization",
-			"All boss locations are shuffled.", false, false);
+		public SpecificValuesGameSetting BossRando = new SpecificValuesGameSetting("Boss Randomization",
+			"Sets wheter all boss locations are shuffled, and if thier damage/hp should be scaled.",
+			new List<string> { "Off", "On", "Scaled" }, "Off", true);
 
-		public OnOffGameSetting BossScaling = new OnOffGameSetting("Random Boss Scaling",
-			"Random bosses inherit the HP, ATK, and XP of their location (Recommended).", true, true);
+		public SpecificValuesGameSetting EnemyRando = new SpecificValuesGameSetting("Enemy Randomization",
+			"Sets wheter enemies will be randomized, and if thier damage/hp should be scaled.",
+			new List<string> { "Off", "On", "Scaled" }, "Off", true);
 
 		public SpecificValuesGameSetting DamageRando = new SpecificValuesGameSetting("Damage Randomizer",
 			"Randomly nerfs and buffs orbs, spells, and some rings. \"Manual\" requires editing the randomizer settings file.",

@@ -18,12 +18,33 @@ namespace TsRandomizer.Extensions
 				ObjectID = (int)newEnemyInfo.Type,
 				Argument = newEnemyInfo.Argument,
 				X = (enemy.Position.X - 8) / 16,
-				Y = (enemy.Position.Y - 16) / 16
+				Y = GetYPoint(enemy, level, newEnemyInfo)
 			};
+
+			if (newEnemyInfo.IsCeilingEnemy)
+			{
+				var ceiling = level.FindFirstSolidTileInDirection(enemy.Bbox.Center, EDirection.North);
+
+				if (ceiling == null)
+					newEnemySpec.Y = 0;
+			}
 
 			enemy.SilentKill();
 
 			return (Monster)level.PlaceEvent(newEnemySpec, true);
+		}
+
+		static int GetYPoint(Monster enemy, Level level, EnemyInfo newEnemyInfo)
+		{
+			if (!newEnemyInfo.IsCeilingEnemy)
+				return (enemy.Position.Y - 16) / 16;
+
+			var ceiling = level.FindFirstSolidTileInDirection(enemy.Bbox.Center, EDirection.North);
+
+			if (ceiling == null)
+				return 0;
+
+			return ceiling.Bbox.Bottom / 16;
 		}
 	}
 }

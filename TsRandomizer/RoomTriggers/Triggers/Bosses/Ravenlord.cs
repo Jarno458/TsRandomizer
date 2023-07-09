@@ -8,7 +8,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 		{ 
 			base.OnRoomLoad(roomState);
 
-			if (roomState.Settings.BossRando.Value)
+			if (roomState.Settings.BossRando.Value != "Off")
 			{
 				RoomTriggerHelper.SpawnMovingPlatform(roomState.Level, 185, 520);
 				RoomTriggerHelper.SpawnMovingPlatform(roomState.Level, 615, 520);

@@ -18,7 +18,7 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 			// Remove all exits during fights in boss rando
 			Level level = (Level)Dynamic._level;
-			bool isRandomized = level.GameSave.GetSettings().BossRando.Value;
+			bool isRandomized = level.GameSave.GetSettings().BossRando.Value != "Off";
 			if (!isRandomized || !level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 

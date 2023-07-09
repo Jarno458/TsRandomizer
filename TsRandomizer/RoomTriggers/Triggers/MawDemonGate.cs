@@ -12,7 +12,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 			roomState.Level.GameSave.SetValue("TSRando_IsVileteSaved", true);
 
-			if (roomState.Settings.BossRando.Value && !roomState.Level.GameSave.GetSaveBool("IsVileteSaved"))
+			if (roomState.Settings.BossRando.Value != "Off" && !roomState.Level.GameSave.GetSaveBool("IsVileteSaved"))
 				RoomTriggerHelper.CreateAndCallCutScene(roomState, "CavesPast6_MawBoom");
 
 			BestiaryManager.RefreshBossSaveFlags(roomState.Level);

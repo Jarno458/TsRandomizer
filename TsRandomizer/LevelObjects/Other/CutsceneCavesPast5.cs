@@ -18,7 +18,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(Seed seed)
 		{
-			bool isRandomized = Level.GameSave.GetSettings().BossRando.Value;
+			bool isRandomized = Level.GameSave.GetSettings().BossRando.Value != "Off";
 			if (!isRandomized)
 				return;
 

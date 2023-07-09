@@ -118,10 +118,10 @@ namespace TsRandomizer.LevelObjects
 			{ EnemyType.Ryshia, new EnemyInfo(EEnemyTileType.KickstarterFoe, 4, "GyreRyshia") },
 			{ EnemyType.TomeOrbGuy, new EnemyInfo(EEnemyTileType.KickstarterFoe, 5, "GyreZel") },
 			{ EnemyType.PlasmaPod, new EnemyInfo(EEnemyTileType.TowerPlasmaPod) },
-			{ EnemyType.CeilingStar, new EnemyInfo(EEnemyTileType.CeilingStar) },
-			{ EnemyType.Bat, new EnemyInfo(EEnemyTileType.ForestPlantBat) },
-			{ EnemyType.PastCeilingTentacle, new EnemyInfo(EEnemyTileType.CavesSporeVine, 0, "CavesSporeVine") },
-			{ EnemyType.PresentCeilingTentacle, new EnemyInfo(EEnemyTileType.CavesSporeVine, 1, "CursedSporeVine") },
+			{ EnemyType.CeilingStar, new EnemyInfo(EEnemyTileType.CeilingStar, true) },
+			{ EnemyType.Bat, new EnemyInfo(EEnemyTileType.ForestPlantBat, true) },
+			{ EnemyType.PastCeilingTentacle, new EnemyInfo(EEnemyTileType.CavesSporeVine, 0, "CavesSporeVine", true) },
+			{ EnemyType.PresentCeilingTentacle, new EnemyInfo(EEnemyTileType.CavesSporeVine, 1, "CursedSporeVine", true) },
 			{ EnemyType.PastWaterDrake, new EnemyInfo(EEnemyTileType.CavesCopperWyvern, 0, "CavesCopperWyvern") },
 			{ EnemyType.PresentWaterDrake, new EnemyInfo(EEnemyTileType.CavesCopperWyvern, 1, "CursedCopperWyvern") },
 			{ EnemyType.PastSnail, new EnemyInfo(EEnemyTileType.CavesSnail, 0, "CavesSnail") },
@@ -141,26 +141,29 @@ namespace TsRandomizer.LevelObjects
 		public readonly EEnemyTileType Type;
 		public readonly int Argument;
 		public readonly string ClassName;
+		public readonly bool IsCeilingEnemy;
 
-		public EnemyInfo(EEnemyTileType type) : this(type, 0, type.ToString())
+		public EnemyInfo(EEnemyTileType type, bool isCeilingEnemy = false) 
+			: this(type, 0, type.ToString(), isCeilingEnemy)
 		{
 		}
 
-		public EnemyInfo(EEnemyTileType type, string classPath)
-			: this(type, 0, classPath, type.ToString())
+		public EnemyInfo(EEnemyTileType type, string classPath, bool isCeilingEnemy = false)
+			: this(type, 0, classPath, type.ToString(), isCeilingEnemy)
 		{
 		}
 
-		public EnemyInfo(EEnemyTileType type, int argument, string className)
-			: this(type, argument, "Timespinner.GameObjects.Enemies", className)
+		public EnemyInfo(EEnemyTileType type, int argument, string className, bool isCeilingEnemy = false)
+			: this(type, argument, "Timespinner.GameObjects.Enemies", className, isCeilingEnemy)
 		{
 		}
 
-		public EnemyInfo(EEnemyTileType type, int argument, string classPath, string className)
+		public EnemyInfo(EEnemyTileType type, int argument, string classPath, string className, bool isCeilingEnemy = false)
 		{
 			Type = type;
 			Argument = argument;
 			ClassName = $"{classPath}.{className}";
+			IsCeilingEnemy = isCeilingEnemy;
 		}
 	}
 }
