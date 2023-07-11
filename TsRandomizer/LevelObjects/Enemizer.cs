@@ -31,7 +31,9 @@ namespace TsRandomizer.LevelObjects
 			E.PresentLargeSoldier,
 			E.ChargingCheveux,
 			E.IceMage,
-			E.LargeCheveux
+			E.LargeCheveux,
+			E.PastAnemone,
+			E.PresentAnemone
 		};
 
 		static readonly E[] NormalGroundedEnemies = {
@@ -107,9 +109,7 @@ namespace TsRandomizer.LevelObjects
 			.ToArray();
 
 		static readonly E[] UnderwaterEnemies = Enemies.Concat(new[] {
-			E.Eel,
-			E.PastAnemone,  //Flies to top of screen
-			E.PresentAnemone  //Flies to top of screen
+			E.Eel
 		}).ToArray();
 
 		static readonly LookupDictionary<Roomkey, RoomSpecificEnemies> HardcodedEnemies

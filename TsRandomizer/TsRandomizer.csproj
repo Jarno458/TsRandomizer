@@ -177,6 +177,7 @@
     <Compile Include="RoomTriggers\Triggers\Bosses\Maw.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\Ravenlord.cs" />
     <Compile Include="RoomTriggers\Triggers\EelsInsteadOfRats.cs" />
+    <Compile Include="RoomTriggers\Triggers\FixLabFloorTiles.cs" />
     <Compile Include="RoomTriggers\Triggers\OneHpFix.cs" />
     <Compile Include="RoomTriggers\Triggers\RisingTides.cs" />
     <Compile Include="RoomTriggers\Triggers\DadsPedistal.cs" />

@@ -98,7 +98,25 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	[RoomTriggerTrigger(3, 4)]
 
 	//lab
-	//[RoomTriggerTrigger(10, 6)]
+	[RoomTriggerTrigger(10, 2)]
+	[RoomTriggerTrigger(10, 6)]
+	[RoomTriggerTrigger(10, 7)]
+	[RoomTriggerTrigger(11, 0)]
+	[RoomTriggerTrigger(11, 2)]
+	[RoomTriggerTrigger(11, 3)]
+	[RoomTriggerTrigger(11, 15)]
+	[RoomTriggerTrigger(11, 23)]
+	[RoomTriggerTrigger(11, 24)]
+	[RoomTriggerTrigger(11, 25)]
+	[RoomTriggerTrigger(11, 26)]
+	[RoomTriggerTrigger(11, 28)]
+	[RoomTriggerTrigger(11, 30)]
+	[RoomTriggerTrigger(11, 33)]
+	[RoomTriggerTrigger(11, 35)]
+	[RoomTriggerTrigger(11, 36)]
+	[RoomTriggerTrigger(11, 37)]
+	[RoomTriggerTrigger(11, 38)]
+	[RoomTriggerTrigger(11, 40)]
 	class RisingTides : RoomTrigger
 	{
 		public override void OnRoomLoad(RoomState state)
@@ -130,6 +148,9 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					HandleXarionFlood(state);
 					break;
 				case 10 when state.Seed.FloodFlags.Lab:
+					HandleRightMilitairyHangerFlood(state);
+					break;
+				case 11 when state.Seed.FloodFlags.Lab:
 					HandleLabFlood(state);
 					break;
 				case 16:
@@ -495,31 +516,57 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			}
 		}
 
-		static void HandleLabFlood(RoomState state)
+		static void HandleRightMilitairyHangerFlood(RoomState state)
 		{
 			switch (state.RoomKey.RoomId)
 			{
 				case 6:
 					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 13), state.Level.RoomSize16);
 					break;
-				case 18:
-					RoomTriggerHelper.RemoveWotah(state.Level);
-					RoomTriggerHelper.FillRoomWithWater(state.Level);
-
-					state.Level.Backgrounds.RemoveAll(bg => {
-						var textureType = bg.AsDynamic().TextureType;
-						return textureType == EBackgroundTextureType.Curtain_Backdrops1 ||
-						       textureType == EBackgroundTextureType.Forest_Rocks_Near;
-					});
-					break;
-				case 19:
-				case 20:
+				case 2:
+				case 7:
 					RoomTriggerHelper.FillRoomWithWater(state.Level);
 					break;
 			}
 		}
 
-		void PlaceLakeSereneUnderwaterPlatforms(RoomState state)
+		static void HandleLabFlood(RoomState state)
+		{
+			switch (state.RoomKey.RoomId)
+			{
+				case 2:
+					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 73), state.Level.RoomSize16);
+					break;
+				case 3:
+					RoomTriggerHelper.RemoveWotah(state.Level);
+					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 13), state.Level.RoomSize16);
+
+					foreach (var tile in state.Level.SolidTiles.Values)
+						if (tile.Special == ETileSpecialType.VerticalSpike)
+							tile.AsDynamic()._specialType = ETileSpecialType.None;
+					break;
+				case 35:
+					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 33), state.Level.RoomSize16);
+					break;
+				case 0:
+				case 15:
+				case 23:
+				case 24:
+				case 25:
+				case 26:
+				case 28:
+				case 30:
+				case 33:
+				case 36:
+				case 37:
+				case 38:
+				case 40:
+					RoomTriggerHelper.FillRoomWithWater(state.Level);
+					break;
+			}
+		}
+
+		static void PlaceLakeSereneUnderwaterPlatforms(RoomState state)
 		{
 			var tileSpecifications = new[] {
 				new TileSpecification { Layer = ETileLayerType.Middle, ID = 109, X = 7, Y = 35 },

@@ -67,6 +67,8 @@ namespace TsRandomizer.LevelObjects
 		Eel,
 		PastAnemone,
 		PresentAnemone,
+		PastAnemoneFloating,
+		PresentAnemoneFloating,
 		XarionBossHand
 	}
 
@@ -133,8 +135,10 @@ namespace TsRandomizer.LevelObjects
 			{ EnemyType.Turret, new EnemyInfo(EEnemyTileType.LabTurret) },
 			{ EnemyType.LabDemon, new EnemyInfo(EEnemyTileType.LabChild) },
 			{ EnemyType.Eel, new EnemyInfo(EEnemyTileType.LakeEel) },
-			{ EnemyType.PastAnemone, new EnemyInfo(EEnemyTileType.LakeAnemone) },
-			{ EnemyType.PresentAnemone, new EnemyInfo(EEnemyTileType.CursedAnemone) },
+			{ EnemyType.PastAnemone, new EnemyInfo(EEnemyTileType.LakeAnemone, 1) },
+			{ EnemyType.PresentAnemone, new EnemyInfo(EEnemyTileType.CursedAnemone, 1) },
+			{ EnemyType.PastAnemoneFloating, new EnemyInfo(EEnemyTileType.LakeAnemone, 0) },
+			{ EnemyType.PresentAnemoneFloating, new EnemyInfo(EEnemyTileType.CursedAnemone, 0) },
 			{ EnemyType.XarionBossHand, new EnemyInfo(EEnemyTileType.XarionBoss, 0, "Timespinner.GameObjects.Bosses.Z_Xarion", "XarionBossHand") },
 		};
 
@@ -144,7 +148,12 @@ namespace TsRandomizer.LevelObjects
 		public readonly bool IsCeilingEnemy;
 
 		public EnemyInfo(EEnemyTileType type, bool isCeilingEnemy = false) 
-			: this(type, 0, type.ToString(), isCeilingEnemy)
+			: this(type, 0, isCeilingEnemy)
+		{
+		}
+
+		public EnemyInfo(EEnemyTileType type, int argument, bool isCeilingEnemy = false)
+			: this(type, argument, type.ToString(), isCeilingEnemy)
 		{
 		}
 

@@ -31,6 +31,13 @@ namespace TsRandomizer.Extensions
 
 			enemy.SilentKill();
 
+			if (enemy.EnemyType == EEnemyTileType.FleshSpider)
+			{ 
+				var dynamicOldEnemy = enemy.AsDynamic();
+				if (dynamicOldEnemy._argument != 0)
+					((object)dynamicOldEnemy._lazer).AsDynamic().OnParentDeath();
+			}
+
 			return (Monster)level.PlaceEvent(newEnemySpec, true);
 		}
 
