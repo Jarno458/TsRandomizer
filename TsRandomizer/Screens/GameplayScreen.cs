@@ -101,12 +101,6 @@ namespace TsRandomizer.Screens
 			if (!saveFile.GetSaveBool("IsFightingBoss"))
 				BestiaryManager.RefreshBossSaveFlags(Level);
 
-			if (settings.ExtraEarringsXP.Value > 0)
-			{
-				OrbExperienceManager.UpdateHitRegistry(Level.MainHero);
-				OrbExperienceManager.UpdateOrbXp(Level, Level.MainHero, settings.ExtraEarringsXP.Value);
-			}
-
 			if (Seed.Options.Archipelago)
 				HandleArchipelago(settings);
 
@@ -167,6 +161,12 @@ namespace TsRandomizer.Screens
 			FamiliarManager.Update(Level);
 
 			deathLinkService?.Update(Level, ScreenManager);
+
+			if (Settings.ExtraEarringsXP.Value > 0)
+			{
+				OrbExperienceManager.UpdateHitRegistry(Level.MainHero);
+				OrbExperienceManager.UpdateOrbXp(Level, Level.MainHero, Settings.ExtraEarringsXP.Value);
+			}
 
 			UpdateGenericScripts(Level);
 

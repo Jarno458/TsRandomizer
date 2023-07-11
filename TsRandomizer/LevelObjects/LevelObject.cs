@@ -186,7 +186,7 @@ namespace TsRandomizer.LevelObjects
 
 			GenerateShadowObjects(itemLocations, objects, seed, gameplayScreen);
 			SpawnMissingObjects(level, levelReflected, itemLocations, gameplayScreen);
-			
+
 			if (gameSettings.ExtraEarringsXP.Value > 0)
 				OrbExperienceManager.ResetHitRegistry();
 

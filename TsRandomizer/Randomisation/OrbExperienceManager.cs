@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
@@ -13,54 +12,68 @@ namespace TsRandomizer.Randomisation
 {
 	static class OrbExperienceManager
 	{
-		public static HashSet<int> MainOrbDamagedEnemies = new HashSet<int>();
-		public static HashSet<int> SubOrbDamagedEnemies = new HashSet<int>();
-		public static HashSet<int> SpellDamagedEnemies = new HashSet<int>();
+		enum XpAwardingOrb
+		{
+			Main,
+			Sub,
+			Spell
+		}
 
+		static readonly Dictionary<XpAwardingOrb, HashSet<int>> DamagedEnemies = new Dictionary<XpAwardingOrb, HashSet<int>>(3) {
+			{ XpAwardingOrb.Main, new HashSet<int>() },
+			{ XpAwardingOrb.Sub, new HashSet<int>() },
+			{ XpAwardingOrb.Spell, new HashSet<int>() },
+		};
+
+		static readonly HashSet<int> KilledEnemies = new HashSet<int>();
+		
 		static readonly Type LunaisOrbManager = TimeSpinnerType.Get("Timespinner.GameObjects.Heroes.Orbs.LunaisOrbManager");
 		static readonly Type LunaisOrb = TimeSpinnerType.Get("Timespinner.GameObjects.Heroes.Orbs.LunaisOrb");
 		static readonly Type LunaisSpell = TimeSpinnerType.Get("Timespinner.GameObjects.Heroes.Spells.LunaisSpell");
 		static readonly Type LunaisOrbAbility = TimeSpinnerType.Get("Timespinner.GameObjects.Heroes.Lunais.BaseClasses.LunaisOrbAbility");
 		static readonly Type LunaisSpellManager = TimeSpinnerType.Get("Timespinner.GameObjects.Heroes.Spells.LunaisSpellManager");
-		static readonly PropertyInfo mainOrbProperty = LunaisOrbManager.GetProperty("MainOrb", BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-		static readonly PropertyInfo subOrbProperty = LunaisOrbManager.GetProperty("SubOrb", BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-		static readonly PropertyInfo spellProperty = LunaisSpellManager.GetProperty("EquippedSpell", BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-		static readonly PropertyInfo orbColorProperty = LunaisOrb.GetProperty("OrbColor", BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-		static readonly PropertyInfo spellTypeProperty = LunaisSpell.GetProperty("SpellType", BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-		static readonly PropertyInfo hitEnemyRegistryProperty = LunaisOrbAbility.GetProperty("HitEnemyRegistry", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
 
-		static List<string> OrbXpBlacklist = new List<string> {
-			"Enemy_XarionBoss_1", "Enemy_IncubusBoss_1", "Enemy_IncubusBoss_2", "Enemy_IncubusBoss_3", "Enemy_IncubusBoss_4"
+		static readonly FieldInfo MainOrbProperty = LunaisOrbManager.GetField("_mainOrb", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+		static readonly FieldInfo SubOrbProperty = LunaisOrbManager.GetField("_subOrb", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+		static readonly FieldInfo SpellProperty = LunaisSpellManager.GetField("_equippedSpell", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+		
+		static readonly FieldInfo HitEnemyRegistryProperty = LunaisOrbAbility.GetField("_hitEnemyRegistry", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+
+		static readonly FieldInfo OrbColorProperty = LunaisOrb.GetField("_color", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+		static readonly PropertyInfo SpellTypeProperty = LunaisSpell.GetProperty("SpellType", BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+
+		static readonly HashSet<string> OrbXpBlacklist = new HashSet<string> {
+			"Enemy_XarionBoss_1", 
+			"Enemy_IncubusBoss_1", 
+			"Enemy_IncubusBoss_2", 
+			"Enemy_IncubusBoss_3", 
+			"Enemy_IncubusBoss_4"
 		};
-
-		static bool ShouldGiveOrbXp(Monster monster) =>
-			!OrbXpBlacklist.Contains(monster.CharacterSpecification.Name) && !monster.AsDynamic().IsABoss;
-
-
+	
 		public static void UpdateHitRegistry(Protagonist lunais)
 		{
-			var lunaisReflected = lunais.AsDynamic();
-			var orbManager = lunaisReflected._orbManager;
-			var spellManager = lunaisReflected._spellManager;
+			UpdateHitRegistry(lunais, XpAwardingOrb.Main);
+			UpdateHitRegistry(lunais, XpAwardingOrb.Sub);
+			UpdateHitRegistry(lunais, XpAwardingOrb.Spell);
+		}
 
-			var mainOrb = mainOrbProperty.GetValue(orbManager, null);
-			if (mainOrb != null)
-				MainOrbDamagedEnemies.UnionWith(hitEnemyRegistryProperty.GetValue(mainOrb, null));
+		static void UpdateHitRegistry(Protagonist lunais, XpAwardingOrb orbType)
+		{
+			var orb = GetOrb(lunais, orbType);
 
-			var subOrb = subOrbProperty.GetValue(orbManager, null);
-			if (subOrb != null)
-				SubOrbDamagedEnemies.UnionWith(hitEnemyRegistryProperty.GetValue(subOrb, null));
+			if (orb == null) 
+				return;
 
-			var spell = spellProperty.GetValue(spellManager, null);
-			if (spell != null)
-				SpellDamagedEnemies.UnionWith(hitEnemyRegistryProperty.GetValue(spell, null));
+			var enemiesHitByOrb = (HashSet<int>)HitEnemyRegistryProperty.GetValue(orb);
+			DamagedEnemies[orbType].UnionWith(enemiesHitByOrb);
 		}
 
 		public static void ResetHitRegistry()
 		{
-			MainOrbDamagedEnemies.Clear();
-			SubOrbDamagedEnemies.Clear();
-			SpellDamagedEnemies.Clear();
+			foreach (var damagedEnemiesSet in DamagedEnemies.Values)
+				damagedEnemiesSet.Clear();
+
+			KilledEnemies.Clear();
 		}
 
 		public static void UpdateOrbXp(Level level, Protagonist lunais, double extraXp)
@@ -73,46 +86,76 @@ namespace TsRandomizer.Randomisation
 				return;
 
 			// minus the xp from the base game, minus the xp from the call to GiveOrbExperience to run the level up logic
-			int extraXpToAdd = (int)(extraXp - 2);
-			var levelReflected = level.AsDynamic();
-			var lunaisReflected = lunais.AsDynamic();
-			dynamic orbManager = lunaisReflected._orbManager;
-			var spellManager = lunaisReflected._spellManager;
-			Dictionary<int, Monster> enemies = levelReflected._enemies;
-			var deadMonsters = enemies.Where(e => e.Value.HP <= 0).Select(e => e.Value);
+			var extraXpToAdd = (int)(extraXp - 2);
 
-			foreach (Monster deadMonster in deadMonsters)
+			Dictionary<int, Monster> enemies = level.AsDynamic()._enemies;
+			foreach (var monster in enemies)
 			{
-				if (ShouldGiveOrbXp(deadMonster))
-				{
-					if (MainOrbDamagedEnemies.Contains(deadMonster.ID))
-					{
-						var mainOrb = mainOrbProperty.GetValue(orbManager, null);
-						EInventoryOrbType orbColor = orbColorProperty.GetValue(mainOrb, null);
-						var mainOrbInv = inventory.OrbInventory.GetItem((int)orbColor);
-						mainOrbInv.Experience += extraXpToAdd;
-						inventory.OrbInventory.GiveOrbExperience(orbColor, false);
-						MainOrbDamagedEnemies.RemoveWhere(x => x == deadMonster.ID);
-					}
-					if (SubOrbDamagedEnemies.Contains(deadMonster.ID))
-					{
-						var subOrb = subOrbProperty.GetValue(orbManager, null);
-						EInventoryOrbType orbColor = orbColorProperty.GetValue(subOrb, null);
-						var subOrbInv = inventory.OrbInventory.GetItem((int)orbColor);
-						subOrbInv.Experience += extraXpToAdd;
-						inventory.OrbInventory.GiveOrbExperience(orbColor, false);
-						SubOrbDamagedEnemies.RemoveWhere(x => x == deadMonster.ID);
-					}
-					if (SpellDamagedEnemies.Contains(deadMonster.ID))
-					{
-						var spell = spellProperty.GetValue(spellManager, null);
-						EInventoryOrbType spellType = spellTypeProperty.GetValue(spell, null);
-						var spellOrb = inventory.OrbInventory.GetItem((int)spellType);
-						spellOrb.Experience += extraXpToAdd;
-						inventory.OrbInventory.GiveOrbExperience(spellType, false);
-						SpellDamagedEnemies.RemoveWhere(x => x == deadMonster.ID);
-					}
-				}
+				if(monster.Value.HP > 0 || KilledEnemies.Contains(monster.Key))
+					continue;
+
+				KilledEnemies.Add(monster.Key);
+
+				var spec = monster.Value.CharacterSpecification;
+				if (
+					monster.Value.HP > 0
+					|| (spec != null && OrbXpBlacklist.Contains(spec.Name)) 
+				    || monster.Value.AsDynamic().IsABoss)
+					continue;
+
+				AwardOrbXpIfEnemyWasHitByOrb(level, lunais, XpAwardingOrb.Main, monster.Key, extraXpToAdd);
+				AwardOrbXpIfEnemyWasHitByOrb(level, lunais, XpAwardingOrb.Sub, monster.Key, extraXpToAdd);
+				AwardOrbXpIfEnemyWasHitByOrb(level, lunais, XpAwardingOrb.Spell, monster.Key, extraXpToAdd);
+			}
+		}
+
+		static void AwardOrbXpIfEnemyWasHitByOrb(Level level, Protagonist lunais, XpAwardingOrb orbType, int enemyId, int xpToAdd)
+		{
+			if (!DamagedEnemies[orbType].Contains(enemyId)) 
+				return;
+
+			AwardOrbXp(level, lunais, orbType, xpToAdd);
+
+			DamagedEnemies[orbType].Remove(enemyId);
+		}
+
+		static void AwardOrbXp(Level level, Protagonist lunais, XpAwardingOrb orbType, int xpToAdd)
+		{
+			var orbColor = GetOrbColor(orbType, GetOrb(lunais, orbType));
+			
+			var inventoryOrb = level.GameSave.Inventory.OrbInventory.GetItem((int)orbColor);
+
+			inventoryOrb.Experience += xpToAdd;
+
+			level.GameSave.Inventory.OrbInventory.GiveOrbExperience(orbColor, false);
+		}
+
+		static object GetOrb(Protagonist lunais, XpAwardingOrb orb)
+		{
+			switch (orb)
+			{
+				case XpAwardingOrb.Main:
+					return MainOrbProperty.GetValue(lunais.AsDynamic()._orbManager);
+				case XpAwardingOrb.Sub:
+					return SubOrbProperty.GetValue(lunais.AsDynamic()._orbManager);
+				case XpAwardingOrb.Spell:
+					return SpellProperty.GetValue(lunais.AsDynamic()._spellManager);
+				default:
+					throw new ArgumentOutOfRangeException(nameof(orb), orb, null);
+			}
+		}
+
+		static EInventoryOrbType GetOrbColor(XpAwardingOrb orbType, object orb)
+		{
+			switch (orbType)
+			{
+				case XpAwardingOrb.Main:
+				case XpAwardingOrb.Sub:
+					return (EInventoryOrbType)OrbColorProperty.GetValue(orb);
+				case XpAwardingOrb.Spell:
+					return (EInventoryOrbType)SpellTypeProperty.GetValue(orb, null);
+				default:
+					throw new ArgumentOutOfRangeException(nameof(orb), orb, null);
 			}
 		}
 	}
