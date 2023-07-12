@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Heroes;
 using TsRandomizer.Extensions;
@@ -120,11 +121,11 @@ namespace TsRandomizer.LevelObjects
 				.ToArray();
 
 			if (newNonItemObjects.Any())
-				GenerateShadowObjects(itemLocations, newNonItemObjects, seed, gameplayScreen);
+				GenerateShadowObjects(level.GameSave, itemLocations, newNonItemObjects, seed, gameplayScreen);
 
-			GenerateShadowObjectsForNewObjects<Monster>(levelReflected._enemies, itemLocations, seed, gameplayScreen);
+			GenerateShadowObjectsForNewObjects<Monster>(level.GameSave, levelReflected._enemies, itemLocations, seed, gameplayScreen);
 			var hasNewItems = 
-				GenerateShadowObjectsForNewObjects<Item>(levelReflected._items, itemLocations, seed, gameplayScreen);
+				GenerateShadowObjectsForNewObjects<Item>(level.GameSave, levelReflected._items, itemLocations, seed, gameplayScreen);
 
 			foreach (var obj in Objects)
 				obj.OnUpdate();
@@ -165,7 +166,7 @@ namespace TsRandomizer.LevelObjects
 			IEnumerable<GameEvent> eventObjects = events.Values;
 			IEnumerable<Animate> npcs = levelReflected.NPCs.Values;
 
-			SetMonsterHpTo1(levelReflected._enemies.Values);
+			SetMonsterHpTo1(level.GameSave, levelReflected._enemies.Values);
 
 			var objects = eventObjects
 				.Concat(npcs)
@@ -183,7 +184,7 @@ namespace TsRandomizer.LevelObjects
 			if (gameSettings.EnemyRando.Value != "Off")
 				Enemizer.RandomizeEnemies(level, roomKey, gameSettings, levelReflected._enemies.Values, seed);
 
-			GenerateShadowObjects(itemLocations, objects, seed, gameplayScreen);
+			GenerateShadowObjects(level.GameSave, itemLocations, objects, seed, gameplayScreen);
 			SpawnMissingObjects(level, levelReflected, itemLocations, gameplayScreen);
 
 			if (gameSettings.ExtraEarringsXP.Value > 0)
@@ -192,7 +193,8 @@ namespace TsRandomizer.LevelObjects
 			_ = new RandomizerEvent(level, events, OnCollisionDetection);
 		}
 
-		static bool GenerateShadowObjectsForNewObjects<T>(IDictionary<int, T> dictionary,
+		static bool GenerateShadowObjectsForNewObjects<T>(
+			GameSave save, IDictionary<int, T> dictionary,
 			ItemLocationMap itemLocations, Seed seed, GameplayScreen gameplayScreen) where T : Mobile
 		{
 			if (!KnownIds.TryGetValue(typeof(T), out var knownIds))
@@ -208,7 +210,7 @@ namespace TsRandomizer.LevelObjects
 				.Select(i => dictionary[i])
 				.ToArray();
 			if (newObjects.Any())
-				GenerateShadowObjects(itemLocations, newObjects, seed, gameplayScreen);
+				GenerateShadowObjects(save, itemLocations, newObjects, seed, gameplayScreen);
 
 			knownIds.Clear();
 			knownIds.AddRange(ids);
@@ -216,8 +218,9 @@ namespace TsRandomizer.LevelObjects
 			return newObjects.Any();
 		}
 
+
 		public static void GenerateShadowObjects(
-			ItemLocationMap itemLocations, Mobile[] objects, Seed seed, GameplayScreen gameplayScreen)
+			GameSave save, ItemLocationMap itemLocations, Mobile[] objects, Seed seed, GameplayScreen gameplayScreen)
 		{
 			var objectsPerTypes = objects.GroupBy(o => o.GetType());
 
@@ -241,8 +244,9 @@ namespace TsRandomizer.LevelObjects
 					levelObject.Initialize(seed);
 				}
 			}
-
-			SetMonsterHpTo1(objects.OfType<Alive>());
+#if DEBUG
+			SetMonsterHpTo1(save, objects.OfType<Alive>());
+#endif
 		}
 
 		static void SpawnMissingObjects(Level level, dynamic levelPrivate, ItemLocationMap itemLocations, GameplayScreen gameplayScreen)
@@ -295,9 +299,12 @@ namespace TsRandomizer.LevelObjects
 				levelPrivate.RequestAddObject(gameEvent);
 		}
 
-		static void SetMonsterHpTo1(IEnumerable<Alive> monsters)
+		static void SetMonsterHpTo1(GameSave save, IEnumerable<Alive> monsters)
 		{
 #if DEBUG
+			if (!save.GetSaveBool("TS_INSTAGIB"))
+				return;
+			
 			foreach (var monster in monsters)
 				monster.MaxHP = 1;
 #endif

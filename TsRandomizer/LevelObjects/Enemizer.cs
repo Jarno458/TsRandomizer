@@ -78,7 +78,7 @@ namespace TsRandomizer.LevelObjects
 			E.ScyteDemon,
 			E.Ryshia,
 			E.MeteorSparrow,
-			E.PlasmaPod
+			E.PlasmaPod,
 		};
 
 		static readonly E[] CeilingEnemies = {
@@ -86,6 +86,10 @@ namespace TsRandomizer.LevelObjects
 			E.Bat,
 			E.PastCeilingTentacle,
 			E.PresentCeilingTentacle,
+			E.CeilingSpider,
+			E.CeilingHellSpider,
+			E.PastCeilingAnemone,
+			E.PresentCeilingAnemone,
 		};
 
 		static readonly E[] OtherEnemies = {
@@ -236,7 +240,7 @@ namespace TsRandomizer.LevelObjects
 						: Enemies.SelectRandom(random);
 				}
 
-				newEnemyType = EnemyType.Spider;
+				newEnemyType = E.PresentLargeSoldier;
 
 				var newEnemy = enemy.ReplaceWith(level, EnemyInfo.Get[newEnemyType]);
 

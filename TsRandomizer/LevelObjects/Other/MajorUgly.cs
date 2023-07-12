@@ -15,6 +15,6 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 			if (Level.ID != 14)
 				TypedObject.HP /= 2;
-		}  
+		}
 	}
 }

@@ -17,7 +17,7 @@ namespace TsRandomizer.Extensions
 				Category = EObjectTileCategory.Enemy,
 				Layer = ETileLayerType.Objects,
 				IsFlippedHorizontally = enemy.IsImageFacingLeft,
-				IsFlippedVertically = enemy.IsFlippedVertically,
+				IsFlippedVertically = newEnemyInfo.IsCeilingEnemy,
 				ObjectID = (int)newEnemyInfo.Type,
 				Argument = newEnemyInfo.Argument,
 				X = (enemy.Position.X - 8) / 16,

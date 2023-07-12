@@ -125,6 +125,7 @@
   <ItemGroup>
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
     <Compile Include="Archipelago\Countdown.cs" />
+    <Compile Include="Commands\InstaGibCommand.cs" />
     <Compile Include="Extensions\MonsterExtensions.cs" />
     <Compile Include="IntermediateObjects\CustomItems\ArchipelagoRemoteItem.cs" />
     <Compile Include="Archipelago\ConnectionFailedException.cs" />
@@ -157,9 +158,14 @@
     <Compile Include="LevelObjects\Other\CutsceneCity2.cs" />
     <Compile Include="LevelObjects\Other\DoorTeleportEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneForest0.cs" />
+    <Compile Include="LevelObjects\Other\FortressLargeSoldier.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
+    <Compile Include="LevelObjects\Other\GyreKain.cs" />
+    <Compile Include="LevelObjects\Other\GyreMajorUgly.cs" />
     <Compile Include="LevelObjects\Other\GyreSpawnerEvent.cs" />
     <Compile Include="LevelObjects\Other\MushroomTower.cs" />
+    <Compile Include="LevelObjects\Other\Siren.cs" />
+    <Compile Include="LevelObjects\Other\Snail.cs" />
     <Compile Include="Randomisation\OrbExperienceManager.cs" />
     <Compile Include="Archipelago\ArchipelagoUnlockingMap.cs" />
     <Compile Include="Randomisation\SpriteManager.cs" />

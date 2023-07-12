@@ -36,6 +36,8 @@ namespace TsRandomizer.LevelObjects
 		PresentSlime,
 		Spider,
 		HellSpider,
+		CeilingSpider,
+		CeilingHellSpider,
 		Egg,
 		Fly,
 		PastLargeDemon,
@@ -67,8 +69,10 @@ namespace TsRandomizer.LevelObjects
 		Eel,
 		PastAnemone,
 		PresentAnemone,
-		PastAnemoneFloating,
-		PresentAnemoneFloating,
+		PastFloatingAnemone,
+		PresentFloatingAnemone,
+		PastCeilingAnemone,
+		PresentCeilingAnemone,
 		XarionBossHand
 	}
 
@@ -106,6 +110,8 @@ namespace TsRandomizer.LevelObjects
 			{ EnemyType.PresentSlime, new EnemyInfo(EEnemyTileType.CavesSlime, 1, "CursedSlime") },
 			{ EnemyType.Spider, new EnemyInfo(EEnemyTileType.FleshSpider, 0, "Timespinner.GameAbstractions.GameObjects", "FleshSpider") },
 			{ EnemyType.HellSpider, new EnemyInfo(EEnemyTileType.FleshSpider, 1, "Timespinner.GameAbstractions.GameObjects", "LabSpider") },
+			{ EnemyType.CeilingSpider, new EnemyInfo(EEnemyTileType.FleshSpider, 0, "Timespinner.GameAbstractions.GameObjects", "FleshSpider", true) },
+			{ EnemyType.CeilingHellSpider, new EnemyInfo(EEnemyTileType.FleshSpider, 1, "Timespinner.GameAbstractions.GameObjects", "LabSpider", true) },
 			{ EnemyType.Egg, new EnemyInfo(EEnemyTileType.LakeBirdEgg, "Timespinner.GameObjects") },
 			{ EnemyType.Fly, new EnemyInfo(EEnemyTileType.LakeFly) },
 			{ EnemyType.PastLargeDemon, new EnemyInfo(EEnemyTileType.TowerRoyalGuard, 0, "TowerRoyalGuard") },
@@ -137,8 +143,10 @@ namespace TsRandomizer.LevelObjects
 			{ EnemyType.Eel, new EnemyInfo(EEnemyTileType.LakeEel) },
 			{ EnemyType.PastAnemone, new EnemyInfo(EEnemyTileType.LakeAnemone, 1) },
 			{ EnemyType.PresentAnemone, new EnemyInfo(EEnemyTileType.CursedAnemone, 1) },
-			{ EnemyType.PastAnemoneFloating, new EnemyInfo(EEnemyTileType.LakeAnemone, 0) },
-			{ EnemyType.PresentAnemoneFloating, new EnemyInfo(EEnemyTileType.CursedAnemone, 0) },
+			{ EnemyType.PastFloatingAnemone, new EnemyInfo(EEnemyTileType.LakeAnemone, 0) },
+			{ EnemyType.PresentFloatingAnemone, new EnemyInfo(EEnemyTileType.CursedAnemone, 0) },
+			{ EnemyType.PastCeilingAnemone, new EnemyInfo(EEnemyTileType.LakeAnemone, 0, true) },
+			{ EnemyType.PresentCeilingAnemone, new EnemyInfo(EEnemyTileType.CursedAnemone, 0, true) },
 			{ EnemyType.XarionBossHand, new EnemyInfo(EEnemyTileType.XarionBoss, 0, "Timespinner.GameObjects.Bosses.Z_Xarion", "XarionBossHand") },
 		};
 

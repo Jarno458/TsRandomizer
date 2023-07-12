@@ -116,13 +116,8 @@ Note that at this time Lunais' sprites are not able to be changed mid-run, but t
 * Entering a door backwards with a higher level keycard will permanently open it even when specific keycards are on
 * When Progressive Vertical Movement is enabled, collecting Hairpin/Lightwall/Sash may show a popup with the wrong item
 
-# TODO
-##### Things I plan on doing in the future
-* ???
-
 # Ideas
 ##### Ideas that may never happen but I think will be fun when they are implemented:
 * Randomize quest items
-* Randomize enemies
 * Timesanity (entrance randomizer)
 * Make warpshard optionally a progression item that unlocks all softlocks
