@@ -13,10 +13,8 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(Seed seed)
 		{
-			if (Level.ID != 7)
-				return;
-
-			TypedObject.HP /= 2;
+			if (Level.ID != 14)
+				TypedObject.HP /= 2;
 		}  
 	}
 }

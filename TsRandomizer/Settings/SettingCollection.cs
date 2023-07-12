@@ -9,9 +9,8 @@ namespace TsRandomizer.Settings
 		public static readonly GameSettingCategoryInfo[] Categories = {
 			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.BossRando, 
-					s => s.EnemyRando, s => s.DamageRando, s => s.HpCap,
-					s => s.LevelCap, s => s.ExtraEarringsXP, s => s.BossHealing
+					s => s.BossRando, s => s.EnemyRando, s => s.DamageRando, 
+					s => s.HpCap, s => s.LevelCap, s => s.ExtraEarringsXP, s => s.BossHealing
 				}},
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -48,12 +47,12 @@ namespace TsRandomizer.Settings
 				}}
 		};
 		public SpecificValuesGameSetting BossRando = new SpecificValuesGameSetting("Boss Randomization",
-			"Sets wheter all boss locations are shuffled, and if thier damage/hp should be scaled.",
-			new List<string> { "Off", "On", "Scaled" }, "Off", true);
+			"Sets wheter all boss locations are shuffled, and if their damage/hp should be scaled.",
+			new List<string> { "Off", "Scaled", "UnScaled" }, "Off", true);
 
 		public SpecificValuesGameSetting EnemyRando = new SpecificValuesGameSetting("Enemy Randomization",
-			"Sets wheter enemies will be randomized, and if thier damage/hp should be scaled.",
-			new List<string> { "Off", "On", "Scaled" }, "Off", true);
+			"Sets wheter enemies will be randomized, and if their damage/hp should be scaled.",
+			new List<string> { "Off", "Scaled", "UnScaled" }, "Off", true);
 
 		public SpecificValuesGameSetting DamageRando = new SpecificValuesGameSetting("Damage Randomizer",
 			"Randomly nerfs and buffs orbs, spells, and some rings. \"Manual\" requires editing the randomizer settings file.",
@@ -66,13 +65,13 @@ namespace TsRandomizer.Settings
 			"Sets the maximum HP Lunais is allowed to have", 1, 999, 64, 999);
 
 		public OnOffGameSetting BossHealing = new OnOffGameSetting("Heal After Bosses",
-			"When disabled, bosses will not provide healing. NOTE: currently only applicable for Boss Rando", true, false);
+			"When disabled, bosses will not provide healing. NOTE: currently only applicable for Boss Rando", true);
 
 		public OnOffGameSetting ShowBestiary = new OnOffGameSetting("Show Bestiary",
-			"All bestiary entries in the journal are visible by default.", false, false);
+			"All bestiary entries in the journal are visible by default.", false);
 
 		public OnOffGameSetting ShowDrops = new OnOffGameSetting("Show Enemy Drops",
-			"All item drops in the bestiary are visible by default.", false, false);
+			"All item drops in the bestiary are visible by default.", false);
 
 		public SpecificValuesGameSetting LootPool = new SpecificValuesGameSetting("Loot Pool",
 			"Sets which items enemies will drop: [Vanilla, Random, Empty]",
@@ -196,7 +195,7 @@ namespace TsRandomizer.Settings
 
 		public NumberGameSettingWithFixedSteps LevelCap = new NumberGameSettingWithFixedSteps("Level Cap",
 			"Sets the max level Lunais can achieve.",
-			new double[]{ 1, 5, 10, 15, 20, 25, 30, 69, 99 }, 99, false);
+			new double[]{ 1, 5, 10, 15, 20, 25, 30, 69, 99 }, 99);
 
 		public OnOffGameSetting DeathLink = new OnOffGameSetting("DeathLink",
 			"Sets whether DeathLink is on or off", false, true);

@@ -9,6 +9,9 @@ namespace TsRandomizer.Extensions
 	{
 		public static Monster ReplaceWith(this Monster enemy, Level level, EnemyInfo newEnemyInfo)
 		{
+			if (enemy.GetType().FullName == newEnemyInfo.ClassName)
+				return enemy;
+
 			var newEnemySpec = new ObjectTileSpecification
 			{
 				Category = EObjectTileCategory.Enemy,

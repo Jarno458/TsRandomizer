@@ -164,13 +164,12 @@ namespace TsRandomizer.LevelObjects
 
 			IEnumerable<GameEvent> eventObjects = events.Values;
 			IEnumerable<Animate> npcs = levelReflected.NPCs.Values;
-			IEnumerable<Monster> enemies = levelReflected._enemies.Values;
 
 			SetMonsterHpTo1(levelReflected._enemies.Values);
 
 			var objects = eventObjects
 				.Concat(npcs)
-				.Concat(enemies)
+				//.Concat(enemies) //enemies/item/newObjects are handled in on update
 				.ToArray();
 
 			int levelId = levelReflected._id;
@@ -182,7 +181,7 @@ namespace TsRandomizer.LevelObjects
 			Replaces.ReplaceObjects(level, objects);
 
 			if (gameSettings.EnemyRando.Value != "Off")
-				Enemizer.RandomizeEnemies(level, roomKey, gameSettings, enemies, seed);
+				Enemizer.RandomizeEnemies(level, roomKey, gameSettings, levelReflected._enemies.Values, seed);
 
 			GenerateShadowObjects(itemLocations, objects, seed, gameplayScreen);
 			SpawnMissingObjects(level, levelReflected, itemLocations, gameplayScreen);

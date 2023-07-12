@@ -123,11 +123,11 @@ namespace TsRandomizer.Settings
 				switch (value)
 				{
 					case 1:
-						enumValue = "On";
+						enumValue = "Scaled";
 						break;
 
 					case 2:
-						enumValue = "Scaled";
+						enumValue = "UnScaled";
 						break;
 					default:
 						enumValue = "Off";
@@ -137,6 +137,11 @@ namespace TsRandomizer.Settings
 				settings.BossRando.Value = enumValue;
 			}
 
+			if (settings.BossRando.Value != "Off"
+			    && slotData.TryGetValue("BossScaling", out var bossScaling)
+			    && IsTrue(bossScaling))
+					settings.BossRando.Value = "Scaled";
+					
 			if (slotData.TryGetValue("EnemyRando", out var enemyRando))
 			{
 				var value = ToInt(enemyRando);
@@ -145,11 +150,11 @@ namespace TsRandomizer.Settings
 				switch (value)
 				{
 					case 1:
-						enumValue = "On";
+						enumValue = "Scaled";
 						break;
 
 					case 2:
-						enumValue = "Scaled";
+						enumValue = "UnScaled";
 						break;
 					default:
 						enumValue = "Off";

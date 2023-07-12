@@ -227,9 +227,6 @@ namespace TsRandomizer.LevelObjects
 				    //&& EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].Argument == enemy.AsDynamic()._argument
 					&& (hardcodedEnemy.EnemyPositions == null || hardcodedEnemy.EnemyPositions.Contains(enemy.Position)))
 				{
-					if (hardcodedEnemy.Enemies.Length == 1 && hardcodedEnemy.EnemyTypeToReplace == hardcodedEnemy.Enemies[0])
-						continue;
-
 					newEnemyType = hardcodedEnemy.Enemies.SelectRandom(random);
 				}
 				else
@@ -239,13 +236,18 @@ namespace TsRandomizer.LevelObjects
 						: Enemies.SelectRandom(random);
 				}
 
+				newEnemyType = EnemyType.Spider;
+
 				var newEnemy = enemy.ReplaceWith(level, EnemyInfo.Get[newEnemyType]);
 
 				if (gameSettings.EnemyRando.Value == "Scaled")
 				{
-					newEnemy.AsDynamic()._damageCaused = enemy.Damage;
+					var dynamicNewEnemy = newEnemy.AsDynamic();
+
+					dynamicNewEnemy._damageCaused = enemy.Damage;
 					newEnemy.MaxHP = enemy.MaxHP;
 					newEnemy.HP = enemy.HP;
+					dynamicNewEnemy._experienceGiven = enemy.ExperienceGiven;
 				}
 			}
 		}

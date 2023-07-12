@@ -15,7 +15,6 @@ namespace TsRandomizer
 		public bool CastleCourtyard { get; set; }
 		public bool LakeDesolation { get; set; }
 		public bool DryLakeSerene { get; set; }
-
 		public bool Lab { get; set; }
 		public bool LakeSereneBridge { get; set; }
 
@@ -39,10 +38,6 @@ namespace TsRandomizer
 			CastleCourtyard = random.Next() % 3 == 0;
 			LakeDesolation = random.Next() % 3 == 0;
 			DryLakeSerene = random.Next() % 3 == 0;
-
-			Lab = true;
-			LakeSereneBridge = true;
-			DryLakeSerene = true;
 		}
 
 		public RisingTides(Dictionary<string, object> slotData)

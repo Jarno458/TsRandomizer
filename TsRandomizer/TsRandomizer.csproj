@@ -158,6 +158,8 @@
     <Compile Include="LevelObjects\Other\DoorTeleportEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneForest0.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
+    <Compile Include="LevelObjects\Other\GyreSpawnerEvent.cs" />
+    <Compile Include="LevelObjects\Other\MushroomTower.cs" />
     <Compile Include="Randomisation\OrbExperienceManager.cs" />
     <Compile Include="Archipelago\ArchipelagoUnlockingMap.cs" />
     <Compile Include="Randomisation\SpriteManager.cs" />

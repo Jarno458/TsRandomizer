@@ -39,7 +39,7 @@ namespace TsRandomizer.Screens
 			if (!IsUsedAsGameSettingsMenu)
 				return;
 
-			Dynamic._menuTitle = "Game Settings";
+			Dynamic._menuTitle = "Randomizer Settings";
 
 			var gameplayScreen = ScreenManager.FirstOrDefault<GameplayScreen>();
 			save = gameplayScreen?.Save;
