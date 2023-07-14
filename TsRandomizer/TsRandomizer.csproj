@@ -161,8 +161,10 @@
     <Compile Include="LevelObjects\Other\FortressLargeSoldier.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
     <Compile Include="LevelObjects\Other\GyreKain.cs" />
-    <Compile Include="LevelObjects\Other\GyreMajorUgly.cs" />
+    <Compile Include="LevelObjects\Other\GyreRyshia.cs" />
     <Compile Include="LevelObjects\Other\GyreSpawnerEvent.cs" />
+    <Compile Include="LevelObjects\Other\GyreZel.cs" />
+    <Compile Include="LevelObjects\Other\LabSpider.cs" />
     <Compile Include="LevelObjects\Other\MushroomTower.cs" />
     <Compile Include="LevelObjects\Other\Siren.cs" />
     <Compile Include="LevelObjects\Other\Snail.cs" />

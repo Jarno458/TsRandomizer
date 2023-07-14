@@ -1,6 +1,7 @@
 ﻿using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.LevelObjects.Other
 {
@@ -11,9 +12,9 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 		}
 
-		protected override void Initialize(Seed seed)
+		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
-			if (Level.ID != 14)
+			if (Level.ID != 14 && TypedObject.HP > 1)
 				TypedObject.HP /= 2;
 		}
 	}

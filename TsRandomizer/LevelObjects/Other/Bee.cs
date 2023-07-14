@@ -5,6 +5,7 @@ using Timespinner.Core.Specifications;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.LevelObjects.Other
 {
@@ -20,7 +21,7 @@ namespace TsRandomizer.LevelObjects.Other
 			beeSpriteSheet = beeSpriteSheet ?? GenerateBeeTextureAtlas((TextureAtlas)gameplayScreen.GameContentManager.SpLakeFly);
 		}
 
-		protected override void Initialize(Seed seed)
+		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
 			//LakeFly's dont use Argument therefor they just load the normal LakeFly and its normal LakeFly BestiaryEntrySpecification
 			if (Dynamic._argument != Argument)

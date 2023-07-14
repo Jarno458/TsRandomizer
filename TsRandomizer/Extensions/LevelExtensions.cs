@@ -53,5 +53,13 @@ namespace TsRandomizer.Extensions
 					throw new ArgumentOutOfRangeException();
 			}
 		}
+
+		internal static void MarkRoomAsVisited(this Level level, int levelId, int roomId)
+		{
+			var minimapRoom = level.Minimap.Areas[levelId].Rooms[roomId];
+
+			minimapRoom.SetKnown(true);
+			minimapRoom.SetVisited(true);
 		}
+	}
 }

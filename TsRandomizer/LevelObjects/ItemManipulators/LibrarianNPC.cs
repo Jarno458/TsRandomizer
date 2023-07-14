@@ -3,6 +3,7 @@ using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.LevelObjects.ItemManipulators
 {
@@ -18,7 +19,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		{
 		}
 
-		protected override void Initialize(Seed seed)
+		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
 			initialProgress = Dynamic.PrimaryProgress;
 		}

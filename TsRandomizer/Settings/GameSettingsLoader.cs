@@ -152,9 +152,11 @@ namespace TsRandomizer.Settings
 					case 1:
 						enumValue = "Scaled";
 						break;
-
 					case 2:
 						enumValue = "UnScaled";
+						break;
+					case 3:
+						enumValue = "Ryshia";
 						break;
 					default:
 						enumValue = "Off";
@@ -344,6 +346,14 @@ namespace TsRandomizer.Settings
 					ContractResolver = new JsonSettingsContractResolver()
 				});
 
+				//backwards compatibility
+				if (settings.BossRando.CurrentValue is bool boolean)
+				{
+					settings.BossRando.Value = boolean
+						? settings.BossRando.Value = "Scaled"
+						: settings.BossRando.Value = "Off";
+				}
+
 				ExceptionLogger.SetSettingsContext(settings);
 
 				return settings;
@@ -351,7 +361,9 @@ namespace TsRandomizer.Settings
 			catch
 			{
 				Console.WriteLine("Error loading settings from " + json);
+
 				BackupMalformedSettingsFile();
+
 				return new SettingCollection();
 			}
 		}

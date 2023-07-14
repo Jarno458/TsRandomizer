@@ -46,13 +46,14 @@ namespace TsRandomizer.Settings
 					s => s.ShowBestiary, s => s.ShowDrops, s => s.NoSaveStatues
 				}}
 		};
+
 		public SpecificValuesGameSetting BossRando = new SpecificValuesGameSetting("Boss Randomization",
 			"Sets wheter all boss locations are shuffled, and if their damage/hp should be scaled.",
 			new List<string> { "Off", "Scaled", "UnScaled" }, "Off", true);
 
 		public SpecificValuesGameSetting EnemyRando = new SpecificValuesGameSetting("Enemy Randomization",
 			"Sets wheter enemies will be randomized, and if their damage/hp should be scaled.",
-			new List<string> { "Off", "Scaled", "UnScaled" }, "Off", true);
+			new List<string> { "Off", "Scaled", "UnScaled", "Ryshia" }, "Off", true);
 
 		public SpecificValuesGameSetting DamageRando = new SpecificValuesGameSetting("Damage Randomizer",
 			"Randomly nerfs and buffs orbs, spells, and some rings. \"Manual\" requires editing the randomizer settings file.",

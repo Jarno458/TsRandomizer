@@ -22,7 +22,12 @@ namespace TsRandomizer.Randomisation
 
 		void SetTeleporterPickupAction(Seed seed)
 		{
-			IEnumerable<TeleporterGate> teleporterGates = PresentTeleporterGates;
+			IEnumerable<TeleporterGate> presentTeleporterGates = PresentTeleporterGates;
+
+			if (seed.FloodFlags.Xarion)
+				presentTeleporterGates = presentTeleporterGates.Where(g => g.Gate != R.GateXarion);
+
+			var teleporterGates = presentTeleporterGates;
 
 			if (!seed.Options.Inverted)
 			{
@@ -39,10 +44,10 @@ namespace TsRandomizer.Randomisation
 			var pyramidUnlockingSpecification = UnlockingSpecifications[new ItemIdentifier(EInventoryRelicType.PyramidsKey)];
 
 			pyramidUnlockingSpecification.OnPickup = level => {
-				UnlockRoom(level, selectedGate);
+				level.MarkRoomAsVisited(selectedGate.LevelId, selectedGate.RoomId);
 
 				if (seed.Options.EnterSandman)
-					UnlockRoom(level, PyramidTeleporterGates[1]);
+					level.MarkRoomAsVisited(PyramidTeleporterGates[1].LevelId, PyramidTeleporterGates[1].RoomId);
 			};
 
 			pyramidUnlockingSpecification.Unlocks = selectedGate.Gate;
@@ -54,12 +59,15 @@ namespace TsRandomizer.Randomisation
 		void SetUnchainedKeyPickupActions(Seed seed)
 		{
 			IEnumerable<TeleporterGate> pastTeleporterGates = PastTeleporterGates;
+			IEnumerable<TeleporterGate> presentTeleporterGates = PresentTeleporterGates;
 
 			if (seed.FloodFlags.Maw)
 				pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
+			if (seed.FloodFlags.Xarion)
+				presentTeleporterGates = presentTeleporterGates.Where(g => g.Gate != R.GateXarion);
 
 			SetUnchainedKeysUnlock(Random, CustomItemType.TimewornWarpBeacon, pastTeleporterGates.ToArray());
-			SetUnchainedKeysUnlock(Random, CustomItemType.ModernWarpBeacon, PresentTeleporterGates);
+			SetUnchainedKeysUnlock(Random, CustomItemType.ModernWarpBeacon, presentTeleporterGates.ToArray());
 
 			if (seed.Options.EnterSandman)
 				SetUnchainedKeysUnlock(Random, CustomItemType.MysteriousWarpBeacon, PyramidTeleporterGates);
@@ -71,7 +79,7 @@ namespace TsRandomizer.Randomisation
 
 			var pyramidWarpUnlockingSpecification = new UnlockingSpecification(CustomItem.GetIdentifier(type), pyramidGate.Gate, R.Teleport)
 			{
-				OnPickup = level => UnlockRoom(level, pyramidGate)
+				OnPickup = level => level.MarkRoomAsVisited(pyramidGate.LevelId, pyramidGate.RoomId)
 			};
 
 			UnlockingSpecifications.Add(pyramidWarpUnlockingSpecification);
@@ -98,7 +106,7 @@ namespace TsRandomizer.Randomisation
 			//new TeleporterGate{Gate = Requirement.GateLakeSereneLeft, LevelId = 7, RoomId = 30}, //you dont want to spawn with a boss in your face
 			new TeleporterGate{Gate = R.GateLakeSereneRight, LevelId = 7, RoomId = 31},
 			new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51},
-			//new TeleporterGate{Gate = Requirement.GateAccessToPast, LevelId = 3, RoomId = 6}, //Refugee Camp, Somehow doesnt work ¯\_(ツ)_/¯
+			//new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 3, RoomId = 6}, //Refugee Camp, Unlocking this room doesnt work somehow
 			new TeleporterGate{Gate = R.GateCastleRamparts, LevelId = 4, RoomId = 23},
 			new TeleporterGate{Gate = R.GateCastleKeep, LevelId = 5, RoomId = 24},
 			new TeleporterGate{Gate = R.GateRoyalTowers, LevelId = 6, RoomId = 0},
@@ -177,14 +185,6 @@ namespace TsRandomizer.Randomisation
 			UnlockingSpecifications.TryGetValue(identifier, out var value)
 				? value.OnPickup
 				: null;
-
-		protected static void UnlockRoom(Level level, TeleporterGate gate)
-		{
-			var minimapRoom = level.Minimap.Areas[gate.LevelId].Rooms[gate.RoomId];
-
-			minimapRoom.SetKnown(true);
-			minimapRoom.SetVisited(true);
-		}
 
 		protected class UnlockingSpecification
 		{

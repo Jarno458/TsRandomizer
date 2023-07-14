@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
+using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.Randomisation;
@@ -25,12 +26,13 @@ namespace TsRandomizer.Archipelago
 				var unlockingSpecification = UnlockingSpecifications[new ItemIdentifier(EInventoryRelicType.PyramidsKey)];
 
 				var selectedGate = allTeleporterGates.First(g => g.Gate == gateToUnlock);
+				selectedGate = PastTeleporterGates.First();
 
 				unlockingSpecification.OnPickup = level => {
-					UnlockRoom(level, selectedGate);
+					level.MarkRoomAsVisited(selectedGate.LevelId, selectedGate.LevelId);
 
 					if (seed.Options.EnterSandman)
-						UnlockRoom(level, PyramidTeleporterGates[1]);
+						level.MarkRoomAsVisited(PyramidTeleporterGates[1].LevelId, PyramidTeleporterGates[1].LevelId);
 				};
 
 				unlockingSpecification.Unlocks = selectedGate.Gate;
@@ -62,7 +64,7 @@ namespace TsRandomizer.Archipelago
 
 			var unlockingSpecification = new UnlockingSpecification(CustomItem.GetIdentifier(type), selectedGate.Gate)
 			{
-				OnPickup = level => UnlockRoom(level, selectedGate)
+				OnPickup = level => level.MarkRoomAsVisited(selectedGate.LevelId, selectedGate.RoomId)
 			};
 
 			UnlockingSpecifications.Add(unlockingSpecification);

@@ -89,14 +89,14 @@ namespace TsRandomizer.LevelObjects
 			E.CeilingSpider,
 			E.CeilingHellSpider,
 			E.PastCeilingAnemone,
-			E.PresentCeilingAnemone,
+			E.PresentCeilingAnemone
 		};
 
 		static readonly E[] OtherEnemies = {
 			//E.PastSnail, //to large for timestop, cause issues if facing wrong way
 			//E.PresentSnail, //to large for timestop, cause issues if facing wrong way
 			E.HellSpider, //path blocking lazer, timestop immunity
-			E.Conviction, //timestop immunity
+			//E.Conviction, //timestop immunity //Falls through floor
 			E.Zeal, //timestop immunity
 			E.Justice, //timestop immunity
 			E.Nethershade, // invisable, timestop immunity
@@ -205,7 +205,17 @@ namespace TsRandomizer.LevelObjects
 				new RoomSpecificEnemies(10, 6, E.PresentBomber, //bombers before lab near gun-orb
 					E.PresentBomber),
 				new RoomSpecificEnemies(9, 7, E.XarionBossHand, //Xarions hand
-					E.XarionBossHand) 
+					E.XarionBossHand),
+				new RoomSpecificEnemies(8, 43, E.PastSnail, //Maw first snail
+					E.PastSnail),
+				new RoomSpecificEnemies(9, 43, E.PresentSnail, //Maw first snail
+					E.PresentSnail),
+				new RoomSpecificEnemies(8, 14, E.PastSnail, //Maw second snail
+					E.PastSnail),
+				new RoomSpecificEnemies(9, 14, E.PresentSnail, //Maw second snail
+					E.PresentSnail),
+				new RoomSpecificEnemies(14, 5, E.TomeOrbGuy, //Zel before Ifrid
+					E.TomeOrbGuy)
 			};
 
 		public static void RandomizeEnemies(
@@ -227,34 +237,34 @@ namespace TsRandomizer.LevelObjects
 
 				E newEnemyType;
 				if (hardcodedEnemy != null
-				    && EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].ClassName == type.FullName //faster than Argument reflection
-				    //&& EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].Argument == enemy.AsDynamic()._argument
-					&& (hardcodedEnemy.EnemyPositions == null || hardcodedEnemy.EnemyPositions.Contains(enemy.Position)))
-				{
+					    && EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].ClassName == type.FullName //faster than Argument reflection
+					    //&& EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].Argument == enemy.AsDynamic()._argument
+						&& (hardcodedEnemy.EnemyPositions == null || hardcodedEnemy.EnemyPositions.Contains(enemy.Position)))
 					newEnemyType = hardcodedEnemy.Enemies.SelectRandom(random);
-				}
 				else
-				{
-					newEnemyType = (enemy.IsInWater)
-						? UnderwaterEnemies.SelectRandom(random)
-						: Enemies.SelectRandom(random);
-				}
+					newEnemyType = GetRandomEnemy(gameSettings, random, enemy);
 
-				newEnemyType = E.PresentLargeSoldier;
+				//newEnemyType = E.Zeal;
 
 				var newEnemy = enemy.ReplaceWith(level, EnemyInfo.Get[newEnemyType]);
 
-				if (gameSettings.EnemyRando.Value == "Scaled")
-				{
-					var dynamicNewEnemy = newEnemy.AsDynamic();
-
-					dynamicNewEnemy._damageCaused = enemy.Damage;
-					newEnemy.MaxHP = enemy.MaxHP;
-					newEnemy.HP = enemy.HP;
-					dynamicNewEnemy._experienceGiven = enemy.ExperienceGiven;
-				}
+				if (gameSettings.EnemyRando.Value == "Scaled" || gameSettings.EnemyRando.Value == "Ryshia")
+					newEnemy.ScaleTo(enemy);
 			}
 		}
+
+		static E GetRandomEnemy(SettingCollection settings, Random random, Monster enemy)
+		{
+			if (settings.EnemyRando.Value == "Ryshia")
+				return E.Ryshia;
+			if (enemy.IsOnCeiling())
+				return CeilingEnemies.SelectRandom(random);
+			if (enemy.IsInWater)
+				return UnderwaterEnemies.SelectRandom(random);
+			
+			return Enemies.SelectRandom(random);
+		}
+
 	}
 	
 	class RoomSpecificEnemies

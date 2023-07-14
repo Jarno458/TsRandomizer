@@ -2,6 +2,7 @@
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.LevelObjects.Other
 {
@@ -13,7 +14,7 @@ namespace TsRandomizer.LevelObjects.Other
 		}
 
 		//fix for enemizer to scale muschroom cloud with the mushroom tower its damage
-		protected override void Initialize(Seed seed)
+		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
 			var scythe = (DamageArea)Dynamic._scythe;
 

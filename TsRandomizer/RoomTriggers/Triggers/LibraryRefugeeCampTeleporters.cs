@@ -8,12 +8,21 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (roomState.Seed.Options.Inverted
-			    || roomState.Level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)
-			    || !roomState.Level.GameSave.DataKeyBools.ContainsKey("HasUsedCityTS")) 
+			if (roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.PyramidsKey))
 				return;
 
-			RoomTriggerHelper.CreateSimpleOneWayWarp(roomState.Level, 3, 6);
+			if (roomState.Level.GameSave.DataKeyBools.ContainsKey("HasUsedCityTS") 
+			    && (
+					!roomState.Seed.Options.Inverted
+					|| (
+						roomState.Seed.Options.PresentAccessWithWheelAndSpindle
+					    && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerWheel)
+						&& roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerSpindle)
+					))
+				)
+				RoomTriggerHelper.CreateSimpleOneWayWarp(roomState.Level, 3, 6);
+
+				
 		}
 	}
 
@@ -22,16 +31,24 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (
-				(roomState.Seed.Options.Inverted && !(
-					 roomState.Seed.Options.PresentAccessWithWheelAndSpindle 
-					 && roomState.Level.GameSave.HasRelic(EInventoryRelicType.TimespinnerWheel)
-					 && roomState.Level.GameSave.HasRelic(EInventoryRelicType.TimespinnerSpindle))
-				)
-			    || roomState.Level.GameSave.HasRelic(EInventoryRelicType.PyramidsKey)) 
+			if (roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.PyramidsKey))
+			{
+				if (roomState.Seed.Options.Inverted
+				    && roomState.Seed.Options.PresentAccessWithWheelAndSpindle
+				    && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerWheel)
+				    && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerSpindle))
+						roomState.Level.MarkRoomAsVisited(2, 54);
+				
 				return;
-			
-			RoomTriggerHelper.CreateSimpleOneWayWarp(roomState.Level, 2, 54);
+			}
+
+			if (!roomState.Seed.Options.Inverted
+			    || (roomState.Seed.Options.PresentAccessWithWheelAndSpindle
+			        && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerWheel)
+			        && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerSpindle)))
+
+
+				RoomTriggerHelper.CreateSimpleOneWayWarp(roomState.Level, 2, 54);
 		}
 	}
 }

@@ -145,8 +145,8 @@ namespace TsRandomizer.LevelObjects
 			{ EnemyType.PresentAnemone, new EnemyInfo(EEnemyTileType.CursedAnemone, 1) },
 			{ EnemyType.PastFloatingAnemone, new EnemyInfo(EEnemyTileType.LakeAnemone, 0) },
 			{ EnemyType.PresentFloatingAnemone, new EnemyInfo(EEnemyTileType.CursedAnemone, 0) },
-			{ EnemyType.PastCeilingAnemone, new EnemyInfo(EEnemyTileType.LakeAnemone, 0, true) },
-			{ EnemyType.PresentCeilingAnemone, new EnemyInfo(EEnemyTileType.CursedAnemone, 0, true) },
+			{ EnemyType.PastCeilingAnemone, new EnemyInfo(EEnemyTileType.LakeAnemone, 1, true) },
+			{ EnemyType.PresentCeilingAnemone, new EnemyInfo(EEnemyTileType.CursedAnemone, 1, true) },
 			{ EnemyType.XarionBossHand, new EnemyInfo(EEnemyTileType.XarionBoss, 0, "Timespinner.GameObjects.Bosses.Z_Xarion", "XarionBossHand") },
 		};
 

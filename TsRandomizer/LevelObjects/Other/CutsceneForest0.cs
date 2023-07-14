@@ -2,6 +2,7 @@
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens;
+using TsRandomizer.Settings;
 
 
 namespace TsRandomizer.LevelObjects.Other
@@ -14,7 +15,7 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 		}
 
-		protected override void Initialize(Seed seed)
+		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
 			Scripts.MakeEventsSkippable();
 		}

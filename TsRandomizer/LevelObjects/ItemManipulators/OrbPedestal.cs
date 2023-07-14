@@ -13,6 +13,7 @@ using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.LevelObjects.ItemManipulators
 {
@@ -38,7 +39,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				menuIcons = Level.GCM.SpMenuIcons;
 		}
 		
-		protected override void Initialize(Seed seed)
+		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
 			if (ItemInfo == null)
 				return;

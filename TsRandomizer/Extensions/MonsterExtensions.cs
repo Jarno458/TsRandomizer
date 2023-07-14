@@ -1,4 +1,6 @@
-﻿using Timespinner.Core.Specifications;
+﻿using System;
+using Microsoft.Xna.Framework;
+using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.LevelObjects;
@@ -24,37 +26,87 @@ namespace TsRandomizer.Extensions
 				Y = GetYPoint(enemy, level, newEnemyInfo)
 			};
 
-			if (newEnemyInfo.IsCeilingEnemy)
-			{
-				var ceiling = level.FindFirstSolidTileInDirection(enemy.Bbox.Center, EDirection.North);
-
-				if (ceiling == null)
-					newEnemySpec.Y = 0;
-			}
-
-			enemy.SilentKill();
-
-			if (enemy.EnemyType == EEnemyTileType.FleshSpider)
-			{ 
-				var dynamicOldEnemy = enemy.AsDynamic();
-				if (dynamicOldEnemy._argument != 0)
-					((object)dynamicOldEnemy._lazer).AsDynamic().OnParentDeath();
-			}
+			enemy.Yeet();
 
 			return (Monster)level.PlaceEvent(newEnemySpec, true);
 		}
 
+		public static void Yeet(this Monster enemy)
+		{
+			enemy.SilentKill();
+
+			switch (enemy.EnemyType)
+			{
+				case EEnemyTileType.FleshSpider:
+					var dynamicOldEnemy1 = enemy.AsDynamic();
+					if (dynamicOldEnemy1._argument != 0)
+						((object)dynamicOldEnemy1._lazer).AsDynamic().OnParentDeath();
+					break;
+				case EEnemyTileType.KickstarterFoe:
+					var dynamicOldEnemy2 = enemy.AsDynamic();
+					if (dynamicOldEnemy2._argument == 2)
+						((object)dynamicOldEnemy2._scythe).AsDynamic().KillScythe();
+					break;
+			}
+		}
+
+		public static bool IsOnCeiling(this Monster enemy)
+		{
+			switch (enemy.EnemyType)
+			{
+				case EEnemyTileType.CeilingStar:
+				case EEnemyTileType.ForestPlantBat:
+					return true;
+				case EEnemyTileType.FleshSpider:
+				case EEnemyTileType.LakeAnemone:
+				case EEnemyTileType.CursedAnemone:
+				case EEnemyTileType.CavesSporeVine:
+					return enemy.IsFlippedVertically;
+				default:
+					return false;
+			}
+		}
+
 		static int GetYPoint(Monster enemy, Level level, EnemyInfo newEnemyInfo)
 		{
-			if (!newEnemyInfo.IsCeilingEnemy)
-				return (enemy.Position.Y - 16) / 16;
+			int tileY;
 
-			var ceiling = level.FindFirstSolidTileInDirection(enemy.Bbox.Center, EDirection.North);
+			if (newEnemyInfo.IsCeilingEnemy || enemy.IsOnCeiling())
+			{
+				var ceiling = level.FindFirstSolidTileInDirection(new Point(enemy.Bbox.Center.X, enemy.Bbox.Bottom), EDirection.North);
 
-			if (ceiling == null)
-				return 0;
+				if (ceiling == null)
+					return level.RoomSize16.Y - 1;
 
-			return ceiling.Bbox.Bottom / 16;
+				tileY = ceiling.DictKey.Y + 1;
+			}
+			else
+			{
+				var floor = level.FindFirstSolidTileInDirection(new Point(enemy.Bbox.Center.X, enemy.Bbox.Top), EDirection.South);
+
+				if (floor == null)
+					return level.RoomSize16.Y - 1;
+
+				tileY = floor.DictKey.Y - 1;
+			}
+
+			var enenyY = enemy.Bbox.Y / 16;
+
+			return newEnemyInfo.IsCeilingEnemy
+				? tileY
+				: enemy.IsOnCeiling()
+					? Math.Max(tileY, enenyY) 
+					: Math.Min(tileY, enenyY);
+		}
+
+		public static void ScaleTo(this Monster newEnemy, Monster enemy)
+		{
+			var dynamicNewEnemy = newEnemy.AsDynamic();
+
+			dynamicNewEnemy._damageCaused = enemy.Damage;
+			newEnemy.MaxHP = enemy.MaxHP;
+			newEnemy.HP = enemy.HP;
+			dynamicNewEnemy._experienceGiven = enemy.ExperienceGiven;
 		}
 	}
 }

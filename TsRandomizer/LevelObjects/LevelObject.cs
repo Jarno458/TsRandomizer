@@ -121,11 +121,15 @@ namespace TsRandomizer.LevelObjects
 				.ToArray();
 
 			if (newNonItemObjects.Any())
-				GenerateShadowObjects(level.GameSave, itemLocations, newNonItemObjects, seed, gameplayScreen);
+				GenerateShadowObjects(level.GameSave, itemLocations, newNonItemObjects, seed, gameplayScreen, gameSettings);
 
-			GenerateShadowObjectsForNewObjects<Monster>(level.GameSave, levelReflected._enemies, itemLocations, seed, gameplayScreen);
-			var hasNewItems = 
-				GenerateShadowObjectsForNewObjects<Item>(level.GameSave, levelReflected._items, itemLocations, seed, gameplayScreen);
+			GenerateShadowObjectsForNewObjects<Monster>(
+				level.GameSave, levelReflected._enemies, 
+				itemLocations, seed, gameplayScreen, gameSettings);
+
+			var hasNewItems = GenerateShadowObjectsForNewObjects<Item>(
+					level.GameSave, levelReflected._items, 
+					itemLocations, seed, gameplayScreen, gameSettings);
 
 			foreach (var obj in Objects)
 				obj.OnUpdate();
@@ -155,8 +159,6 @@ namespace TsRandomizer.LevelObjects
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.Dash));
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.EssenceOfSpace));
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.DoubleJump));
-
-			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryEquipmentType.NelisteEarring));
 #endif
 
 			Objects.Clear();
@@ -184,7 +186,7 @@ namespace TsRandomizer.LevelObjects
 			if (gameSettings.EnemyRando.Value != "Off")
 				Enemizer.RandomizeEnemies(level, roomKey, gameSettings, levelReflected._enemies.Values, seed);
 
-			GenerateShadowObjects(level.GameSave, itemLocations, objects, seed, gameplayScreen);
+			GenerateShadowObjects(level.GameSave, itemLocations, objects, seed, gameplayScreen, gameSettings);
 			SpawnMissingObjects(level, levelReflected, itemLocations, gameplayScreen);
 
 			if (gameSettings.ExtraEarringsXP.Value > 0)
@@ -195,7 +197,8 @@ namespace TsRandomizer.LevelObjects
 
 		static bool GenerateShadowObjectsForNewObjects<T>(
 			GameSave save, IDictionary<int, T> dictionary,
-			ItemLocationMap itemLocations, Seed seed, GameplayScreen gameplayScreen) where T : Mobile
+			ItemLocationMap itemLocations, Seed seed,
+			GameplayScreen gameplayScreen, SettingCollection settings) where T : Mobile
 		{
 			if (!KnownIds.TryGetValue(typeof(T), out var knownIds))
 			{
@@ -210,7 +213,7 @@ namespace TsRandomizer.LevelObjects
 				.Select(i => dictionary[i])
 				.ToArray();
 			if (newObjects.Any())
-				GenerateShadowObjects(save, itemLocations, newObjects, seed, gameplayScreen);
+				GenerateShadowObjects(save, itemLocations, newObjects, seed, gameplayScreen, settings);
 
 			knownIds.Clear();
 			knownIds.AddRange(ids);
@@ -220,7 +223,8 @@ namespace TsRandomizer.LevelObjects
 
 
 		public static void GenerateShadowObjects(
-			GameSave save, ItemLocationMap itemLocations, Mobile[] objects, Seed seed, GameplayScreen gameplayScreen)
+			GameSave save, ItemLocationMap itemLocations, Mobile[] objects, Seed seed, 
+			GameplayScreen gameplayScreen, SettingCollection settings)
 		{
 			var objectsPerTypes = objects.GroupBy(o => o.GetType());
 
@@ -241,7 +245,7 @@ namespace TsRandomizer.LevelObjects
 						continue;
 
 					Objects.Add(levelObject);
-					levelObject.Initialize(seed);
+					levelObject.Initialize(seed, settings);
 				}
 			}
 #if DEBUG
@@ -336,7 +340,7 @@ namespace TsRandomizer.LevelObjects
 			}
 		}
 
-		protected virtual void Initialize(Seed seed)
+		protected virtual void Initialize(Seed seed, SettingCollection settings)
 		{
 		}
 
