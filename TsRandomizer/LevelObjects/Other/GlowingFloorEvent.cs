@@ -25,7 +25,7 @@ namespace TsRandomizer.LevelObjects.Other
 				return;
 			}
 
-			if (Dynamic.Level.ID == 11 && Level.GameSave.GetSettings().BossRando.Value)
+			if (Dynamic.Level.ID == 11 && Level.GameSave.GetSettings().BossRando.Value != "Off")
 			{
 				int bossId = Dynamic.PrefabType.ToString() == "L11_SwitchWinderia" ? (int)EBossID.Prince : (int)EBossID.Vol;
 
