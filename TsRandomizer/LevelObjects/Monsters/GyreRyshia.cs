@@ -6,7 +6,7 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
 
-namespace TsRandomizer.LevelObjects.Other
+namespace TsRandomizer.LevelObjects.Monsters
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Enemies.GyreRyshia")]
 	class GyreRyshia : LevelObject<Monster>
@@ -15,6 +15,11 @@ namespace TsRandomizer.LevelObjects.Other
 
 		bool shouldScale;
 
+		readonly int damage;
+		readonly int maxHP;
+		readonly int hp;
+		readonly int experience;
+
 		Dictionary<int, Monster> enemies;
 		readonly HashSet<Monster> scaledEnemyIds = new HashSet<Monster>();
 
@@ -22,6 +27,11 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 			summonZone = ((GameEvent)Dynamic._summoningZone).AsDynamic();
 			enemies = (Dictionary<int, Monster>)LevelReflected._enemies;
+
+			damage = TypedObject.Damage;
+			maxHP = typedObject.MaxHP;
+			hp = typedObject.HP;
+			experience = typedObject.ExperienceGiven;
 		}
 
 		protected override void Initialize(Seed seed, SettingCollection settings)
@@ -51,7 +61,7 @@ namespace TsRandomizer.LevelObjects.Other
 					if (scaledEnemyIds.Contains(enemy))
 						continue;
 
-					enemy.ScaleTo(TypedObject);
+					enemy.ScaleTo(damage, maxHP, hp, experience);
 
 					scaledEnemyIds.Add(enemy);
 				}

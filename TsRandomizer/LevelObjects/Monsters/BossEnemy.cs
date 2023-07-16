@@ -5,8 +5,8 @@ using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
-using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions;
+using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.HUD;
 using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameObjects.Events.Cutscene;
@@ -17,7 +17,7 @@ using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
 
-namespace TsRandomizer.LevelObjects.Other
+namespace TsRandomizer.LevelObjects.Monsters
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.RoboKitty.RoboKittyBoss")]
 	[TimeSpinnerType("Timespinner.GameObjects.Bosses.Varndagroth.VarndagrothBoss")]

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Timespinner.Core.Specifications;
 using Timespinner.GameAbstractions.Gameplay;
+using TsRandomizer.LevelObjects.Monsters;
 using TsRandomizer.LevelObjects.Other;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;

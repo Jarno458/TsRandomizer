@@ -244,7 +244,7 @@ namespace TsRandomizer.LevelObjects
 				else
 					newEnemyType = GetRandomEnemy(gameSettings, random, enemy);
 
-				//newEnemyType = E.Zeal;
+				//newEnemyType = E.PresentLargeDemon;
 
 				var newEnemy = enemy.ReplaceWith(level, EnemyInfo.Get[newEnemyType]);
 
@@ -257,8 +257,8 @@ namespace TsRandomizer.LevelObjects
 		{
 			if (settings.EnemyRando.Value == "Ryshia")
 				return E.Ryshia;
-			if (enemy.IsOnCeiling())
-				return CeilingEnemies.SelectRandom(random);
+			//if (enemy.IsOnCeiling())
+			//	return CeilingEnemies.SelectRandom(random);
 			if (enemy.IsInWater)
 				return UnderwaterEnemies.SelectRandom(random);
 			

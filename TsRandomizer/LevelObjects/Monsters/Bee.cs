@@ -7,7 +7,7 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
 
-namespace TsRandomizer.LevelObjects.Other
+namespace TsRandomizer.LevelObjects.Monsters
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Enemies.LakeFly")]
 	class Bee : LevelObject<Monster>

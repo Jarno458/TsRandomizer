@@ -26,9 +26,14 @@ namespace TsRandomizer.Extensions
 				Y = GetYPoint(enemy, level, newEnemyInfo)
 			};
 
+			var newEnemy = level.PlaceEvent(newEnemySpec, true);
+
+			if (enemy.IsFrozen)
+				newEnemy.Freeze();
+
 			enemy.Yeet();
 
-			return (Monster)level.PlaceEvent(newEnemySpec, true);
+			return (Monster)newEnemy;
 		}
 
 		public static void Yeet(this Monster enemy)
@@ -76,7 +81,7 @@ namespace TsRandomizer.Extensions
 				var ceiling = level.FindFirstSolidTileInDirection(new Point(enemy.Bbox.Center.X, enemy.Bbox.Bottom), EDirection.North);
 
 				if (ceiling == null)
-					return level.RoomSize16.Y - 1;
+					return 0;
 
 				tileY = ceiling.DictKey.Y + 1;
 			}
@@ -99,14 +104,24 @@ namespace TsRandomizer.Extensions
 					: Math.Min(tileY, enenyY);
 		}
 
-		public static void ScaleTo(this Monster newEnemy, Monster enemy)
+		public static void ScaleTo(this Monster newEnemy, Monster enemy) =>
+			newEnemy.ScaleTo(enemy.Damage, enemy.MaxHP, enemy.HP, enemy.ExperienceGiven);
+
+		public static void ScaleTo(this Monster newEnemy, int damage, int maxHp, int hp, int xp)
 		{
 			var dynamicNewEnemy = newEnemy.AsDynamic();
 
-			dynamicNewEnemy._damageCaused = enemy.Damage;
-			newEnemy.MaxHP = enemy.MaxHP;
-			newEnemy.HP = enemy.HP;
-			dynamicNewEnemy._experienceGiven = enemy.ExperienceGiven;
+			dynamicNewEnemy._damageCaused = damage;
+			newEnemy.MaxHP = maxHp;
+			newEnemy.HP = hp;
+			dynamicNewEnemy._experienceGiven = xp;
+
+			if (newEnemy.EnemyType == EEnemyTileType.KickstarterFoe &&
+			    newEnemy.GetType().FullName == EnemyInfo.Get[EnemyType.Nethershade].ClassName)
+			{
+				dynamicNewEnemy._baseDamage = damage;
+				dynamicNewEnemy.ToggleTimeState(false);
+			}
 		}
 	}
 }

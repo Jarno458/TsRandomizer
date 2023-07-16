@@ -2,7 +2,7 @@
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens;
 
-namespace TsRandomizer.LevelObjects.Other
+namespace TsRandomizer.LevelObjects.Monsters
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Doors.GyrePortalEvent")]
 	// ReSharper disable once UnusedMember.Global

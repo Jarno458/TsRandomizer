@@ -72,7 +72,7 @@ namespace TsRandomizer.Archipelago
 				session.Socket.SocketClosed += Socket_SocketClosed;
 
 				var result = session.TryConnectAndLogin("Timespinner", userName, 
-					ItemsHandlingFlags.IncludeStartingInventory, password: password);
+					ItemsHandlingFlags.IncludeStartingInventory, password: password, version: new Version(0,4,2));
 
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;

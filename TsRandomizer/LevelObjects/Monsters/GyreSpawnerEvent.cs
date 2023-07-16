@@ -4,7 +4,7 @@ using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens;
 
-namespace TsRandomizer.LevelObjects.Other
+namespace TsRandomizer.LevelObjects.Monsters
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Misc.GyreSpawnerEvent")]
 	class GyreSpawnerEvent : LevelObject
