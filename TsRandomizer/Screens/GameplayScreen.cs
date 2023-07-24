@@ -108,9 +108,9 @@ namespace TsRandomizer.Screens
 			saveFile.DataKeyBools["TS_INSTAGIB"] = true;
 
 			ScreenManager.Console.AddCommand(new TeleportCommand(() => Level));
-			ScreenManager.Console.AddCommand(new GiveRelicCommand(() => Level));
-			ScreenManager.Console.AddCommand(new GiveOrbCommand(() => Level));
-			ScreenManager.Console.AddCommand(new GiveFamiliarCommand(() => Level));
+			ScreenManager.Console.AddCommand(new GiveRelicCommand(() => Level, () => ItemLocations));
+			ScreenManager.Console.AddCommand(new GiveOrbCommand(() => Level, () => ItemLocations));
+			ScreenManager.Console.AddCommand(new GiveFamiliarCommand(() => Level, () => ItemLocations));
 			ScreenManager.Console.AddCommand(new InstaGibCommand(() => Level));
 #endif
 		}

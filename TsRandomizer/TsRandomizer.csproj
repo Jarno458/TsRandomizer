@@ -154,13 +154,15 @@
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Monsters\Bee.cs" />
     <Compile Include="LevelObjects\Monsters\Demon.cs" />
+    <Compile Include="LevelObjects\Monsters\CastleLargeSoldier.cs" />
+    <Compile Include="LevelObjects\Monsters\LabTurret.cs" />
     <Compile Include="LevelObjects\Monsters\TowerPlasmaPod.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast4.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCity2.cs" />
     <Compile Include="LevelObjects\Other\DoorTeleportEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneForest0.cs" />
-    <Compile Include="LevelObjects\Other\FortressLargeSoldier.cs" />
+    <Compile Include="LevelObjects\Monsters\FortressLargeSoldier.cs" />
     <Compile Include="LevelObjects\Other\GlowingFloorEvent.cs" />
     <Compile Include="LevelObjects\Monsters\GyreKain.cs" />
     <Compile Include="LevelObjects\Monsters\GyreRyshia.cs" />
@@ -268,7 +270,7 @@
     <Compile Include="LevelObjects\Other\EnvPrefabLabPedestal.cs" />
     <Compile Include="LevelObjects\Other\KeycardDoorEvent.cs" />
     <Compile Include="LevelObjects\Other\SaveStatue.cs" />
-    <Compile Include="LevelObjects\Monsters\GyrePortalEvent.cs" />
+    <Compile Include="LevelObjects\Other\GyrePortalEvent.cs" />
     <Compile Include="LevelObjects\Other\CutsceneLab2.cs" />
     <Compile Include="LevelObjects\Other\CutsceneLab0+CutsceneCity5.cs" />
     <Compile Include="LevelObjects\Other\EnvPrefabCurtainWinch.cs" />

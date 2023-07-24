@@ -39,6 +39,7 @@ namespace TsRandomizer.LevelObjects
 		static readonly E[] NormalGroundedEnemies = {
 			E.CheveuxTank,
 			E.PastBomber,
+			E.PastLogThrower,
 			E.PresentBomber,
 			E.PastSiren,
 			E.PresentSiren,
@@ -158,6 +159,7 @@ namespace TsRandomizer.LevelObjects
 						E.LargeCheveux,
 						E.CheveuxTank,
 						E.PastBomber,
+						E.PastLogThrower,
 						E.PresentBomber,
 						E.Granadier,
 						E.Rat,
@@ -244,7 +246,7 @@ namespace TsRandomizer.LevelObjects
 				else
 					newEnemyType = GetRandomEnemy(gameSettings, random, enemy);
 
-				//newEnemyType = E.PresentLargeDemon;
+				//newEnemyType = E.PastLogThrower;
 
 				var newEnemy = enemy.ReplaceWith(level, EnemyInfo.Get[newEnemyType]);
 

@@ -743,11 +743,14 @@ namespace TsRandomizer.Randomisation
 				itemLocation.BaseOnGameSave(gameSave);
 		}
 
-		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem)
-			=> Add(new ItemLocation(itemKey, areaName, name, defaultItem));
+		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem) => 
+			Add(new ItemLocation(itemKey, areaName, name, defaultItem));
 
-		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem, Gate gate)
-			=> Add(new ItemLocation(itemKey, areaName, name, defaultItem, gate));
+		protected void Add(ItemKey itemKey, string name, ItemInfo defaultItem, Gate gate) => 
+			Add(new ItemLocation(itemKey, areaName, name, defaultItem, gate));
+
+		public void AddCollected(ItemIdentifier item) => 
+			Add(new ExternalItemLocation(ItemProvider.Get(item)));
 	}
 
 	class ProgressionChain

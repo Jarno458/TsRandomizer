@@ -5,7 +5,7 @@ using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
 
-namespace TsRandomizer.LevelObjects.Other
+namespace TsRandomizer.LevelObjects.Monsters
 {
 	[TimeSpinnerType("Timespinner.GameObjects.Enemies._10_Fortress.FortressLargeSoldier")]
 	class FortressLargeSoldier : LevelObject<Monster>
@@ -17,6 +17,12 @@ namespace TsRandomizer.LevelObjects.Other
 		//fix for enemizer to scale muschroom cloud with the mushroom tower its damage
 		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
+			var hammerDamage = (int)Math.Ceiling(TypedObject.Damage * 1.25);
+
+			Dynamic._hammerDamage = hammerDamage;
+
+			((DamageArea)Dynamic._hammerDamageArea).Power = hammerDamage;
+
 			for (var index = 0; index < 10; ++index)
 			{
 				var spikeDamage = (int)Math.Ceiling(TypedObject.Damage * 1.10000002384186);

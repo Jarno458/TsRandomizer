@@ -18,7 +18,7 @@ namespace TsRandomizer.Extensions
 			{
 				Category = EObjectTileCategory.Enemy,
 				Layer = ETileLayerType.Objects,
-				IsFlippedHorizontally = enemy.IsImageFacingLeft,
+				IsFlippedHorizontally = ShouldFlipHorizontally(enemy, level, newEnemyInfo),
 				IsFlippedVertically = newEnemyInfo.IsCeilingEnemy,
 				ObjectID = (int)newEnemyInfo.Type,
 				Argument = newEnemyInfo.Argument,
@@ -34,6 +34,17 @@ namespace TsRandomizer.Extensions
 			enemy.Yeet();
 
 			return (Monster)newEnemy;
+		}
+
+		static bool ShouldFlipHorizontally(Monster enemy, Level level, EnemyInfo newEnemyInfo)
+		{
+			switch (newEnemyInfo.Type)
+			{
+				case EEnemyTileType.LabTurret:
+					return level.MainHero.Position.X > enemy.Position.X;
+				default: 
+					return enemy.IsImageFacingLeft;
+			}
 		}
 
 		public static void Yeet(this Monster enemy)
