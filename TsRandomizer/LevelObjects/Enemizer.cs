@@ -24,12 +24,14 @@ namespace TsRandomizer.LevelObjects
 			E.WormFlowerWalker,
 			E.RoombaCat,
 			E.ForestBabyCheveux,
+			E.WildCheveux,
 			E.ForestWormFlower,
 			E.PastMushroomTower,
 			E.PresentMushroomTower,
 			E.PastLargeSoldier,
 			E.PresentLargeSoldier,
 			E.ChargingCheveux,
+			E.WildCheveux,
 			E.IceMage,
 			E.LargeCheveux,
 			E.PastAnemone,
@@ -131,6 +133,7 @@ namespace TsRandomizer.LevelObjects
 					FlyingEnemies.Concat(new [] {
 						E.JumpingCheveuxTank,
 						E.ForestBabyCheveux,
+						E.WildCheveux,
 						E.PastLargeSoldier,
 						E.PresentLargeSoldier,
 						E.LargeCheveux,
@@ -152,6 +155,7 @@ namespace TsRandomizer.LevelObjects
 						E.WormFlowerWalker,
 						E.RoombaCat,
 						E.ForestBabyCheveux,
+						E.WildCheveux,
 						E.PastLargeSoldier,
 						E.PresentLargeSoldier,
 						E.IceMage,
@@ -177,6 +181,7 @@ namespace TsRandomizer.LevelObjects
 						E.WormFlowerWalker,
 						E.RoombaCat,
 						E.ForestBabyCheveux,
+						E.WildCheveux,
 						E.PastLargeSoldier,
 						E.PresentLargeSoldier,
 						E.IceMage,
@@ -196,6 +201,7 @@ namespace TsRandomizer.LevelObjects
 				new RoomSpecificEnemies(6, 10, E.PastLargeDemon, // lower struggle juggle
 					FlyingEnemies.Concat(new [] { 
 						E.ForestBabyCheveux, 
+						E.WildCheveux,
 						E.IceMage,
 					})),
 				new RoomSpecificEnemies(12, 21, E.PresentDemon, // emperors left tower
@@ -246,7 +252,7 @@ namespace TsRandomizer.LevelObjects
 				else
 					newEnemyType = GetRandomEnemy(gameSettings, random, enemy);
 
-				//newEnemyType = E.PastLogThrower;
+				//newEnemyType = E.WildCheveux;
 
 				var newEnemy = enemy.ReplaceWith(level, EnemyInfo.Get[newEnemyType]);
 

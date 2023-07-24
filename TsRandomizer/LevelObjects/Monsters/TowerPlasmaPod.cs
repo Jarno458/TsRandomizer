@@ -1,6 +1,5 @@
 ﻿using System;
 using Timespinner.GameObjects.BaseClasses;
-using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
@@ -15,6 +14,6 @@ namespace TsRandomizer.LevelObjects.Monsters
 		}
 
 		protected override void Initialize(Seed seed, SettingCollection settings) =>
-			((GameEvent)Dynamic._zapDamage).AsDynamic()._baseDamage = Math.Ceiling(TypedObject.Damage * 1.25);
+			Dynamic._zapDamage = (int)Math.Ceiling(TypedObject.Damage * 1.25);
 	}
 }
