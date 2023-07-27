@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Timespinner.Core.Specifications;
+using TsRandomizer.LevelObjects;
 
 namespace TsRandomizer.LevelObjects
 {
@@ -23,8 +24,10 @@ namespace TsRandomizer.LevelObjects
 		FlyingIceMage,
 		LargeCheveux,
 		PresentLargeSoldier,
+		PastEngineer,
 		PastBomber,
 		PastLogThrower,
+		PresentEngineer,
 		PresentBomber,
 		PastSiren,
 		PresentSiren,
@@ -80,108 +83,112 @@ namespace TsRandomizer.LevelObjects
 
 	class EnemyInfo
 	{
-		public static Dictionary<EnemyType, EnemyInfo> Get = new Dictionary<EnemyType, EnemyInfo> {
-			{ EnemyType.JumpingCheveuxTank, new EnemyInfo(EEnemyTileType.CheveuxTank) },
-			{ EnemyType.CheveuxTank, new EnemyInfo(EEnemyTileType.RedCheveux) },
-			{ EnemyType.HelicopterCheveux, new EnemyInfo(EEnemyTileType.FlyingCheveux) },
-			{ EnemyType.WormFlower, new EnemyInfo(EEnemyTileType.WormFlower) },
-			{ EnemyType.WormFlowerWalker, new EnemyInfo(EEnemyTileType.WormFlowerWalker) },
-			{ EnemyType.RoombaCat, new EnemyInfo(EEnemyTileType.DiscStatue, "Timespinner.GameAbstractions.GameObjects") },
-			{ EnemyType.ForestBabyCheveux, new EnemyInfo(EEnemyTileType.ForestBabyCheveux) },
-			{ EnemyType.ForestWormFlower, new EnemyInfo(EEnemyTileType.ForestWormFlower) },
-			{ EnemyType.PastMushroomTower, new EnemyInfo(EEnemyTileType.CavesMushroomTower, 0, "CavesMushroomTower") },
-			{ EnemyType.PresentMushroomTower, new EnemyInfo(EEnemyTileType.CavesMushroomTower, 1, "CursedMushroomTower") },
-			{ EnemyType.PastLargeSoldier, new EnemyInfo(EEnemyTileType.CastleLargeSoldier, "Timespinner.GameObjects.Enemies._04_Ramparts") },
-			{ EnemyType.PresentLargeSoldier, new EnemyInfo(EEnemyTileType.FortressLargeSoldier, "Timespinner.GameObjects.Enemies._10_Fortress") },
-			{ EnemyType.ChargingCheveux, new EnemyInfo(EEnemyTileType.KeepWarCheveux, 0) },
-			{ EnemyType.WildCheveux, new EnemyInfo(EEnemyTileType.KeepWarCheveux, 1) },
-			{ EnemyType.FireMage, new EnemyInfo(EEnemyTileType.KeepAristocrat, 0, "KeepAristocrat") },
-			{ EnemyType.IceMage, new EnemyInfo(EEnemyTileType.KeepAristocrat, 1, "TowerIceMage") },
-			{ EnemyType.FlyingIceMage, new EnemyInfo(EEnemyTileType.KeepAristocrat, 2, "EmpAristocrat") },
-			{ EnemyType.LargeCheveux, new EnemyInfo(EEnemyTileType.LakeCheveux) },
-			{ EnemyType.PresentBomber, new EnemyInfo(EEnemyTileType.FortressEngineer, 1) },
-			{ EnemyType.PastBomber, new EnemyInfo(EEnemyTileType.CastleEngineer, 1) },
-			{ EnemyType.PastLogThrower, new EnemyInfo(EEnemyTileType.CastleEngineer, 2) },
-			{ EnemyType.PastSiren, new EnemyInfo(EEnemyTileType.CavesSiren, 0, "CavesSiren") },
-			{ EnemyType.PresentSiren, new EnemyInfo(EEnemyTileType.CavesSiren, 1, "CursedSiren") },
-			{ EnemyType.PastShieldKnight, new EnemyInfo(EEnemyTileType.CastleShieldKnight) },
-			{ EnemyType.PresentShieldKnight, new EnemyInfo(EEnemyTileType.FortressKnight) },
-			{ EnemyType.PastArcher, new EnemyInfo(EEnemyTileType.CastleArcher) },
-			{ EnemyType.PresentArcher, new EnemyInfo(EEnemyTileType.FortressGunner) },
-			{ EnemyType.Granadier, new EnemyInfo(EEnemyTileType.CitySecurityGuard) },
-			{ EnemyType.Rat, new EnemyInfo(EEnemyTileType.ForestRodent) },
-			{ EnemyType.PastSlime, new EnemyInfo(EEnemyTileType.CavesSlime, 0, "CavesSlime") },
-			{ EnemyType.PresentSlime, new EnemyInfo(EEnemyTileType.CavesSlime, 1, "CursedSlime") },
-			{ EnemyType.Spider, new EnemyInfo(EEnemyTileType.FleshSpider, 0, "Timespinner.GameAbstractions.GameObjects", "FleshSpider") },
-			{ EnemyType.HellSpider, new EnemyInfo(EEnemyTileType.FleshSpider, 1, "Timespinner.GameAbstractions.GameObjects", "LabSpider") },
-			{ EnemyType.CeilingSpider, new EnemyInfo(EEnemyTileType.FleshSpider, 0, "Timespinner.GameAbstractions.GameObjects", "FleshSpider", true) },
-			{ EnemyType.CeilingHellSpider, new EnemyInfo(EEnemyTileType.FleshSpider, 1, "Timespinner.GameAbstractions.GameObjects", "LabSpider", true) },
-			{ EnemyType.Egg, new EnemyInfo(EEnemyTileType.LakeBirdEgg, "Timespinner.GameObjects") },
-			{ EnemyType.Fly, new EnemyInfo(EEnemyTileType.LakeFly) },
-			{ EnemyType.PastLargeDemon, new EnemyInfo(EEnemyTileType.TowerRoyalGuard, 0, "TowerRoyalGuard") },
-			{ EnemyType.PresentLargeDemon, new EnemyInfo(EEnemyTileType.TowerRoyalGuard, 1, "EmpRoyalGuard") },
-			{ EnemyType.PastMoth, new EnemyInfo(EEnemyTileType.ForestMoth, 0, "ForestMoth") },
-			{ EnemyType.PresentMoth, new EnemyInfo(EEnemyTileType.ForestMoth, 1, "CursedMoth") },
-			{ EnemyType.PastDemon, new EnemyInfo(EEnemyTileType.KeepDemon, 0, "KeepDemon") },
-			{ EnemyType.PresentDemon, new EnemyInfo(EEnemyTileType.KeepDemon, 1, "EmpDemon") },
-			{ EnemyType.SealDog, new EnemyInfo(EEnemyTileType.KickstarterFoe, 0, "GyreMajorUgly") },
-			{ EnemyType.MeteorSparrow, new EnemyInfo(EEnemyTileType.KickstarterFoe, 1, "GyreMeteorSparrow") },
-			{ EnemyType.ScyteDemon, new EnemyInfo(EEnemyTileType.KickstarterFoe, 2, "GyreKain") },
-			{ EnemyType.Ryshia, new EnemyInfo(EEnemyTileType.KickstarterFoe, 4, "GyreRyshia") },
-			{ EnemyType.TomeOrbGuy, new EnemyInfo(EEnemyTileType.KickstarterFoe, 5, "GyreZel") },
-			{ EnemyType.PlasmaPod, new EnemyInfo(EEnemyTileType.TowerPlasmaPod) },
-			{ EnemyType.CeilingStar, new EnemyInfo(EEnemyTileType.CeilingStar, true) },
-			{ EnemyType.Bat, new EnemyInfo(EEnemyTileType.ForestPlantBat, true) },
-			{ EnemyType.PastCeilingTentacle, new EnemyInfo(EEnemyTileType.CavesSporeVine, 0, "CavesSporeVine", true) },
-			{ EnemyType.PresentCeilingTentacle, new EnemyInfo(EEnemyTileType.CavesSporeVine, 1, "CursedSporeVine", true) },
-			{ EnemyType.PastWaterDrake, new EnemyInfo(EEnemyTileType.CavesCopperWyvern, 0, "CavesCopperWyvern") },
-			{ EnemyType.PresentWaterDrake, new EnemyInfo(EEnemyTileType.CavesCopperWyvern, 1, "CursedCopperWyvern") },
-			{ EnemyType.PastSnail, new EnemyInfo(EEnemyTileType.CavesSnail, 0, "CavesSnail") },
-			{ EnemyType.PresentSnail, new EnemyInfo(EEnemyTileType.CavesSnail, 1, "CursedSnail") },
-			{ EnemyType.Conviction, new EnemyInfo(EEnemyTileType.TempleFoe, 0, "Timespinner.GameObjects.Enemies._16_Temple", "TempleConviction") },
-			{ EnemyType.Zeal, new EnemyInfo(EEnemyTileType.TempleFoe, 1, "Timespinner.GameObjects.Enemies._16_Temple", "TempleZeal") },
-			{ EnemyType.Justice, new EnemyInfo(EEnemyTileType.TempleFoe, 2, "Timespinner.GameObjects.Enemies._16_Temple", "TempleJustice") },
-			{ EnemyType.Nethershade, new EnemyInfo(EEnemyTileType.KickstarterFoe, 3, "GyreNethershade") },
-			{ EnemyType.Turret, new EnemyInfo(EEnemyTileType.LabTurret) },
-			{ EnemyType.LabDemon, new EnemyInfo(EEnemyTileType.LabChild) },
-			{ EnemyType.Eel, new EnemyInfo(EEnemyTileType.LakeEel) },
-			{ EnemyType.PastAnemone, new EnemyInfo(EEnemyTileType.LakeAnemone, 1) },
-			{ EnemyType.PresentAnemone, new EnemyInfo(EEnemyTileType.CursedAnemone, 1) },
-			{ EnemyType.PastFloatingAnemone, new EnemyInfo(EEnemyTileType.LakeAnemone, 0) },
-			{ EnemyType.PresentFloatingAnemone, new EnemyInfo(EEnemyTileType.CursedAnemone, 0) },
-			{ EnemyType.PastCeilingAnemone, new EnemyInfo(EEnemyTileType.LakeAnemone, 1, true) },
-			{ EnemyType.PresentCeilingAnemone, new EnemyInfo(EEnemyTileType.CursedAnemone, 1, true) },
-			{ EnemyType.XarionBossHand, new EnemyInfo(EEnemyTileType.XarionBoss, 0, "Timespinner.GameObjects.Bosses.Z_Xarion", "XarionBossHand") },
+		public static LookupDictionary<EnemyType, EnemyInfo> Get = new LookupDictionary<EnemyType, EnemyInfo>(e => e.Type) {
+			new EnemyInfo(EnemyType.JumpingCheveuxTank, EEnemyTileType.CheveuxTank),
+			new EnemyInfo(EnemyType.CheveuxTank, EEnemyTileType.RedCheveux),
+			new EnemyInfo(EnemyType.HelicopterCheveux, EEnemyTileType.FlyingCheveux),
+			new EnemyInfo(EnemyType.WormFlower, EEnemyTileType.WormFlower),
+			new EnemyInfo(EnemyType.WormFlowerWalker, EEnemyTileType.WormFlowerWalker),
+			new EnemyInfo(EnemyType.RoombaCat, EEnemyTileType.DiscStatue, "Timespinner.GameAbstractions.GameObjects"),
+			new EnemyInfo(EnemyType.ForestBabyCheveux, EEnemyTileType.ForestBabyCheveux),
+			new EnemyInfo(EnemyType.ForestWormFlower, EEnemyTileType.ForestWormFlower),
+			new EnemyInfo(EnemyType.PastMushroomTower, EEnemyTileType.CavesMushroomTower, 0, "CavesMushroomTower"),
+			new EnemyInfo(EnemyType.PresentMushroomTower, EEnemyTileType.CavesMushroomTower, 1, "CursedMushroomTower"),
+			new EnemyInfo(EnemyType.PastLargeSoldier, EEnemyTileType.CastleLargeSoldier, "Timespinner.GameObjects.Enemies._04_Ramparts"),
+			new EnemyInfo(EnemyType.PresentLargeSoldier, EEnemyTileType.FortressLargeSoldier, "Timespinner.GameObjects.Enemies._10_Fortress"),
+			new EnemyInfo(EnemyType.ChargingCheveux, EEnemyTileType.KeepWarCheveux, 0),
+			new EnemyInfo(EnemyType.WildCheveux, EEnemyTileType.KeepWarCheveux, 1),
+			new EnemyInfo(EnemyType.FireMage, EEnemyTileType.KeepAristocrat, 0, "KeepAristocrat"),
+			new EnemyInfo(EnemyType.IceMage, EEnemyTileType.KeepAristocrat, 1, "TowerIceMage"),
+			new EnemyInfo(EnemyType.FlyingIceMage, EEnemyTileType.KeepAristocrat, 2, "EmpAristocrat"),
+			new EnemyInfo(EnemyType.LargeCheveux, EEnemyTileType.LakeCheveux),
+			new EnemyInfo(EnemyType.PresentEngineer, EEnemyTileType.FortressEngineer, 0),
+			new EnemyInfo(EnemyType.PresentBomber, EEnemyTileType.FortressEngineer, 1),
+			new EnemyInfo(EnemyType.PastEngineer, EEnemyTileType.CastleEngineer, 0),
+			new EnemyInfo(EnemyType.PastBomber, EEnemyTileType.CastleEngineer, 1),
+			new EnemyInfo(EnemyType.PastLogThrower, EEnemyTileType.CastleEngineer, 2),
+			new EnemyInfo(EnemyType.PastSiren, EEnemyTileType.CavesSiren, 0, "CavesSiren"),
+			new EnemyInfo(EnemyType.PresentSiren, EEnemyTileType.CavesSiren, 1, "CursedSiren"),
+			new EnemyInfo(EnemyType.PastShieldKnight, EEnemyTileType.CastleShieldKnight),
+			new EnemyInfo(EnemyType.PresentShieldKnight, EEnemyTileType.FortressKnight),
+			new EnemyInfo(EnemyType.PastArcher, EEnemyTileType.CastleArcher),
+			new EnemyInfo(EnemyType.PresentArcher, EEnemyTileType.FortressGunner),
+			new EnemyInfo(EnemyType.Granadier, EEnemyTileType.CitySecurityGuard),
+			new EnemyInfo(EnemyType.Rat, EEnemyTileType.ForestRodent),
+			new EnemyInfo(EnemyType.PastSlime, EEnemyTileType.CavesSlime, 0, "CavesSlime"),
+			new EnemyInfo(EnemyType.PresentSlime, EEnemyTileType.CavesSlime, 1, "CursedSlime"),
+			new EnemyInfo(EnemyType.Spider, EEnemyTileType.FleshSpider, 0, "Timespinner.GameAbstractions.GameObjects", "FleshSpider"),
+			new EnemyInfo(EnemyType.HellSpider, EEnemyTileType.FleshSpider, 1, "Timespinner.GameAbstractions.GameObjects", "LabSpider"),
+			new EnemyInfo(EnemyType.CeilingSpider, EEnemyTileType.FleshSpider, 0, "Timespinner.GameAbstractions.GameObjects", "FleshSpider", true),
+			new EnemyInfo(EnemyType.CeilingHellSpider, EEnemyTileType.FleshSpider, 1, "Timespinner.GameAbstractions.GameObjects", "LabSpider", true),
+			new EnemyInfo(EnemyType.Egg, EEnemyTileType.LakeBirdEgg, "Timespinner.GameObjects"),
+			new EnemyInfo(EnemyType.Fly, EEnemyTileType.LakeFly),
+			new EnemyInfo(EnemyType.PastLargeDemon, EEnemyTileType.TowerRoyalGuard, 0, "TowerRoyalGuard"),
+			new EnemyInfo(EnemyType.PresentLargeDemon, EEnemyTileType.TowerRoyalGuard, 1, "EmpRoyalGuard"),
+			new EnemyInfo(EnemyType.PastMoth, EEnemyTileType.ForestMoth, 0, "ForestMoth"),
+			new EnemyInfo(EnemyType.PresentMoth, EEnemyTileType.ForestMoth, 1, "CursedMoth"),
+			new EnemyInfo(EnemyType.PastDemon, EEnemyTileType.KeepDemon, 0, "KeepDemon"),
+			new EnemyInfo(EnemyType.PresentDemon, EEnemyTileType.KeepDemon, 1, "EmpDemon"),
+			new EnemyInfo(EnemyType.SealDog, EEnemyTileType.KickstarterFoe, 0, "GyreMajorUgly"),
+			new EnemyInfo(EnemyType.MeteorSparrow, EEnemyTileType.KickstarterFoe, 1, "GyreMeteorSparrow"),
+			new EnemyInfo(EnemyType.ScyteDemon, EEnemyTileType.KickstarterFoe, 2, "GyreKain"),
+			new EnemyInfo(EnemyType.Ryshia, EEnemyTileType.KickstarterFoe, 4, "GyreRyshia"),
+			new EnemyInfo(EnemyType.TomeOrbGuy, EEnemyTileType.KickstarterFoe, 5, "GyreZel"),
+			new EnemyInfo(EnemyType.PlasmaPod, EEnemyTileType.TowerPlasmaPod),
+			new EnemyInfo(EnemyType.CeilingStar, EEnemyTileType.CeilingStar, true),
+			new EnemyInfo(EnemyType.Bat, EEnemyTileType.ForestPlantBat, true),
+			new EnemyInfo(EnemyType.PastCeilingTentacle, EEnemyTileType.CavesSporeVine, 0, "CavesSporeVine", true),
+			new EnemyInfo(EnemyType.PresentCeilingTentacle, EEnemyTileType.CavesSporeVine, 1, "CursedSporeVine", true),
+			new EnemyInfo(EnemyType.PastWaterDrake, EEnemyTileType.CavesCopperWyvern, 0, "CavesCopperWyvern"),
+			new EnemyInfo(EnemyType.PresentWaterDrake, EEnemyTileType.CavesCopperWyvern, 1, "CursedCopperWyvern"),
+			new EnemyInfo(EnemyType.PastSnail, EEnemyTileType.CavesSnail, 0, "CavesSnail"),
+			new EnemyInfo(EnemyType.PresentSnail, EEnemyTileType.CavesSnail, 1, "CursedSnail"),
+			new EnemyInfo(EnemyType.Conviction, EEnemyTileType.TempleFoe, 0, "Timespinner.GameObjects.Enemies._16_Temple", "TempleConviction"),
+			new EnemyInfo(EnemyType.Zeal, EEnemyTileType.TempleFoe, 1, "Timespinner.GameObjects.Enemies._16_Temple", "TempleZeal"),
+			new EnemyInfo(EnemyType.Justice, EEnemyTileType.TempleFoe, 2, "Timespinner.GameObjects.Enemies._16_Temple", "TempleJustice"),
+			new EnemyInfo(EnemyType.Nethershade, EEnemyTileType.KickstarterFoe, 3, "GyreNethershade"),
+			new EnemyInfo(EnemyType.Turret, EEnemyTileType.LabTurret),
+			new EnemyInfo(EnemyType.LabDemon, EEnemyTileType.LabChild),
+			new EnemyInfo(EnemyType.Eel, EEnemyTileType.LakeEel),
+			new EnemyInfo(EnemyType.PastAnemone, EEnemyTileType.LakeAnemone, 1),
+			new EnemyInfo(EnemyType.PresentAnemone, EEnemyTileType.CursedAnemone, 1),
+			new EnemyInfo(EnemyType.PastFloatingAnemone, EEnemyTileType.LakeAnemone, 0),
+			new EnemyInfo(EnemyType.PresentFloatingAnemone, EEnemyTileType.CursedAnemone, 0),
+			new EnemyInfo(EnemyType.PastCeilingAnemone, EEnemyTileType.LakeAnemone, 1, true),
+			new EnemyInfo(EnemyType.PresentCeilingAnemone, EEnemyTileType.CursedAnemone, 1, true),
+			new EnemyInfo(EnemyType.XarionBossHand, EEnemyTileType.XarionBoss, 0, "Timespinner.GameObjects.Bosses.Z_Xarion", "XarionBossHand"),
 		};
 
-		public readonly EEnemyTileType Type;
+		public readonly EnemyType Type;
+		public readonly EEnemyTileType TileType;
 		public readonly int Argument;
 		public readonly string ClassName;
 		public readonly bool IsCeilingEnemy;
 
-		public EnemyInfo(EEnemyTileType type, bool isCeilingEnemy = false) 
-			: this(type, 0, isCeilingEnemy)
+		public EnemyInfo(EnemyType type, EEnemyTileType tileType, bool isCeilingEnemy = false) 
+			: this(type, tileType, 0, isCeilingEnemy)
 		{
 		}
 
-		public EnemyInfo(EEnemyTileType type, int argument, bool isCeilingEnemy = false)
-			: this(type, argument, type.ToString(), isCeilingEnemy)
+		public EnemyInfo(EnemyType type, EEnemyTileType tileType, int argument, bool isCeilingEnemy = false)
+			: this(type, tileType, argument, tileType.ToString(), isCeilingEnemy)
 		{
 		}
 
-		public EnemyInfo(EEnemyTileType type, string classPath, bool isCeilingEnemy = false)
-			: this(type, 0, classPath, type.ToString(), isCeilingEnemy)
+		public EnemyInfo(EnemyType type, EEnemyTileType tileType, string classPath, bool isCeilingEnemy = false)
+			: this(type, tileType, 0, classPath, tileType.ToString(), isCeilingEnemy)
 		{
 		}
 
-		public EnemyInfo(EEnemyTileType type, int argument, string className, bool isCeilingEnemy = false)
-			: this(type, argument, "Timespinner.GameObjects.Enemies", className, isCeilingEnemy)
+		public EnemyInfo(EnemyType type, EEnemyTileType tileType, int argument, string className, bool isCeilingEnemy = false)
+			: this(type, tileType, argument, "Timespinner.GameObjects.Enemies", className, isCeilingEnemy)
 		{
 		}
 
-		public EnemyInfo(EEnemyTileType type, int argument, string classPath, string className, bool isCeilingEnemy = false)
+		public EnemyInfo(EnemyType type, EEnemyTileType tileType, int argument, string classPath, string className, bool isCeilingEnemy = false)
 		{
 			Type = type;
+			TileType = tileType;
 			Argument = argument;
 			ClassName = $"{classPath}.{className}";
 			IsCeilingEnemy = isCeilingEnemy;

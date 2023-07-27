@@ -26,7 +26,6 @@ namespace TsRandomizer.Archipelago
 				var unlockingSpecification = UnlockingSpecifications[new ItemIdentifier(EInventoryRelicType.PyramidsKey)];
 
 				var selectedGate = allTeleporterGates.First(g => g.Gate == gateToUnlock);
-				selectedGate = PastTeleporterGates.First();
 
 				unlockingSpecification.OnPickup = level => {
 					level.MarkRoomAsVisited(selectedGate.LevelId, selectedGate.LevelId);

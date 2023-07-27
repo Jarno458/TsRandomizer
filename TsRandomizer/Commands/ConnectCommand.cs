@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
@@ -58,6 +59,9 @@ namespace TsRandomizer.Commands
 			}
 
 			var saveFileManager = ((object)screenManager.AsDynamic().SaveFileManager).AsDynamic();
+			saveFileManager.ReloadAllSaves(); 
+			((Task)saveFileManager._loadThread).Wait();
+
 			if (saveFileManager.AreSaveFilesFull())
 			{
 				console.AddLine("No free save slots found", Color.Yellow);
@@ -65,7 +69,6 @@ namespace TsRandomizer.Commands
 			}
 			
 			var connectionResult = Client.Connect(server, user, password);
-
 			if (!connectionResult.Successful)
 			{
 				console.AddLine($"Connection Failed: {string.Join(", ", ((LoginFailure)connectionResult).Errors)}", Color.Yellow);

@@ -40,9 +40,9 @@ namespace TsRandomizer.LevelObjects
 
 		static readonly E[] NormalGroundedEnemies = {
 			E.CheveuxTank,
-			E.PastBomber,
+			E.PastEngineer,
 			E.PastLogThrower,
-			E.PresentBomber,
+			E.PresentEngineer,
 			E.PastSiren,
 			E.PresentSiren,
 			E.PastShieldKnight,
@@ -96,8 +96,8 @@ namespace TsRandomizer.LevelObjects
 		};
 
 		static readonly E[] OtherEnemies = {
-			//E.PastSnail, //to large for timestop, cause issues if facing wrong way
-			//E.PresentSnail, //to large for timestop, cause issues if facing wrong way
+			//E.PastSnail, //cause issues if facing wrong way
+			//E.PresentSnail, //cause issues if facing wrong way
 			E.HellSpider, //path blocking lazer, timestop immunity
 			//E.Conviction, //timestop immunity //Falls through floor
 			E.Zeal, //timestop immunity
@@ -106,7 +106,9 @@ namespace TsRandomizer.LevelObjects
 			E.Turret, //timestop immunity
 			E.LabDemon, //timestop immunity
 			E.FlyingIceMage, // Flying buy to hard to controll 
-			E.TomeOrbGuy // Flying buy to hard to controll 
+			E.TomeOrbGuy, // Flying buy to hard to controll,
+			E.PastBomber, // Instagibs themself
+			E.PresentBomber // Instagibs themself
 		};
 
 		static readonly E[] Enemies = GroundedEnemies
@@ -145,11 +147,11 @@ namespace TsRandomizer.LevelObjects
 					E.PastBomber), 
 				new RoomSpecificEnemies(10, 3, E.PresentBomber, //militairy fortress boomers
 					E.PresentBomber), 
-				new RoomSpecificEnemies(7, 5, E.ChargingCheveux, //fluffy bird pre cantoran
-					E.ChargingCheveux), 
+				new RoomSpecificEnemies(7, 5, E.WildCheveux, //fluffy bird pre cantoran
+					E.WildCheveux), 
 				new RoomSpecificEnemies(3, 15, E.Bat, //double bat cave jump
 					FlyingEnemies.Concat(E.ForestBabyCheveux)), 
-				new RoomSpecificEnemies(4, 3, 192, 144, E.PastBomber, //castle scare the engineer
+				new RoomSpecificEnemies(4, 3, 192, 144, E.PastEngineer, //castle scare the engineer
 					FlyingEnemies.Concat(new [] {
 						E.JumpingCheveuxTank,
 						E.WormFlowerWalker,
@@ -162,9 +164,9 @@ namespace TsRandomizer.LevelObjects
 						E.FireMage,
 						E.LargeCheveux,
 						E.CheveuxTank,
-						E.PastBomber,
+						E.PastEngineer,
 						E.PastLogThrower,
-						E.PresentBomber,
+						E.PresentEngineer,
 						E.Granadier,
 						E.Rat,
 						E.PastSlime,
@@ -190,8 +192,8 @@ namespace TsRandomizer.LevelObjects
 						E.CheveuxTank,
 						E.Granadier,
 						E.Rat,
-						E.PastBomber,
-						E.PresentBomber,
+						E.PastEngineer,
+						E.PresentEngineer,
 						E.PastSlime,
 						E.PresentSlime,
 						E.Spider
@@ -231,7 +233,7 @@ namespace TsRandomizer.LevelObjects
 		{
 			var random = new Random((int)(seed.Id + (roomKey.LevelId * 100) + roomKey.RoomId));
 
-			HardcodedEnemies.TryGetValue(roomKey, out var hardcodedEnemy);
+			HardcodedEnemies.TryGetValue(roomKey, out var roomSpecificEnemies);
 
 			foreach (var enemy in enemies.ToArray())
 			{
@@ -239,20 +241,11 @@ namespace TsRandomizer.LevelObjects
 					continue;
 				
 				var type = enemy.GetType();
-
 				if (type.IsSubclassOf(BossType))
 					continue;
 
-				E newEnemyType;
-				if (hardcodedEnemy != null
-					    && EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].ClassName == type.FullName //faster than Argument reflection
-					    //&& EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].Argument == enemy.AsDynamic()._argument
-						&& (hardcodedEnemy.EnemyPositions == null || hardcodedEnemy.EnemyPositions.Contains(enemy.Position)))
-					newEnemyType = hardcodedEnemy.Enemies.SelectRandom(random);
-				else
-					newEnemyType = GetRandomEnemy(gameSettings, random, enemy);
-
-				//newEnemyType = E.WildCheveux;
+				var newEnemyType = GetRandomEnemy(gameSettings, random, enemy, type, roomSpecificEnemies);
+				newEnemyType = E.PastLogThrower;
 
 				var newEnemy = enemy.ReplaceWith(level, EnemyInfo.Get[newEnemyType]);
 
@@ -261,8 +254,13 @@ namespace TsRandomizer.LevelObjects
 			}
 		}
 
-		static E GetRandomEnemy(SettingCollection settings, Random random, Monster enemy)
+		static E GetRandomEnemy(SettingCollection settings, Random random, Monster enemy, Type enemyType, RoomSpecificEnemies roomSpecificEnemies)
 		{
+			if (roomSpecificEnemies != null
+					&& EnemyInfo.Get[roomSpecificEnemies.EnemyTypeToReplace].ClassName == enemyType.FullName //faster than Argument reflection
+					//&& EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].Argument == enemy.AsDynamic()._argument
+					&& (roomSpecificEnemies.EnemyPositions == null || roomSpecificEnemies.EnemyPositions.Contains(enemy.Position)))
+				return roomSpecificEnemies.Enemies.SelectRandom(random);
 			if (settings.EnemyRando.Value == "Ryshia")
 				return E.Ryshia;
 			//if (enemy.IsOnCeiling())

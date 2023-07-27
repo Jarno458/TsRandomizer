@@ -11,7 +11,7 @@ namespace TsRandomizer.Extensions
 	{
 		public static Monster ReplaceWith(this Monster enemy, Level level, EnemyInfo newEnemyInfo)
 		{
-			if (enemy.GetType().FullName == newEnemyInfo.ClassName)
+			if (enemy.GetType().FullName == newEnemyInfo.ClassName && enemy.AsDynamic()._argument == newEnemyInfo.Argument)
 				return enemy;
 
 			var newEnemySpec = new ObjectTileSpecification
@@ -20,13 +20,17 @@ namespace TsRandomizer.Extensions
 				Layer = ETileLayerType.Objects,
 				IsFlippedHorizontally = ShouldFlipHorizontally(enemy, level, newEnemyInfo),
 				IsFlippedVertically = newEnemyInfo.IsCeilingEnemy,
-				ObjectID = (int)newEnemyInfo.Type,
+				ObjectID = (int)newEnemyInfo.TileType,
 				Argument = newEnemyInfo.Argument,
 				X = (enemy.Position.X - 8) / 16,
 				Y = GetYPoint(enemy, level, newEnemyInfo)
 			};
 
 			var newEnemy = level.PlaceEvent(newEnemySpec, true);
+
+			//newEnemy.Scale = 2f;
+			//newEnemy.AsDynamic()._doesDrawAggroBbox = true;
+			//newEnemy.AsDynamic().DoesDrawBoundingBox = true;
 
 			if (enemy.IsFrozen)
 				newEnemy.Freeze();
@@ -40,8 +44,10 @@ namespace TsRandomizer.Extensions
 		{
 			switch (newEnemyInfo.Type)
 			{
-				case EEnemyTileType.LabTurret:
+				case EnemyType.Turret:
 					return level.MainHero.Position.X > enemy.Position.X;
+				case EnemyType.PastLogThrower:
+					return false;
 				default: 
 					return enemy.IsImageFacingLeft;
 			}
