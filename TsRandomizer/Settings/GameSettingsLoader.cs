@@ -310,6 +310,9 @@ namespace TsRandomizer.Settings
 				settings.BeeTrap.Value = traps.Contains("Bee Trap");
 			}
 
+			if (slotData.TryGetValue("EnableMapFromStart", out var enableMapFromStart))
+				settings.EnableMapFromStart.Value = IsTrue(enableMapFromStart);
+
 			ExceptionLogger.SetSettingsContext(settings);
 
 			return settings;

@@ -43,7 +43,7 @@ namespace TsRandomizer.Settings
 				}},
 			new GameSettingCategoryInfo { Name = "Other", Description = "Miscellaneous settings",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.ShowBestiary, s => s.ShowDrops, s => s.NoSaveStatues
+					s => s.ShowBestiary, s => s.ShowDrops, s => s.NoSaveStatues, s => s.EnableMapFromStart
 				}}
 		};
 
@@ -207,5 +207,7 @@ namespace TsRandomizer.Settings
 		public OnOffGameSetting NoSaveStatues = new OnOffGameSetting("No Save Statues",
 			"Breaks all the save statues", false, true);
 
+		public OnOffGameSetting EnableMapFromStart = new OnOffGameSetting("Enable map from start",
+			"Marks all the rooms on minimap as known", false);
 	}
 }
