@@ -78,7 +78,8 @@ namespace TsRandomizer.LevelObjects
 		PresentFloatingAnemone,
 		PastCeilingAnemone,
 		PresentCeilingAnemone,
-		XarionBossHand
+		XarionBossHand,
+		TrashSpawner
 	}
 
 	class EnemyInfo
@@ -157,6 +158,7 @@ namespace TsRandomizer.LevelObjects
 			new EnemyInfo(EnemyType.PastCeilingAnemone, EEnemyTileType.LakeAnemone, 1, true),
 			new EnemyInfo(EnemyType.PresentCeilingAnemone, EEnemyTileType.CursedAnemone, 1, true),
 			new EnemyInfo(EnemyType.XarionBossHand, EEnemyTileType.XarionBoss, 0, "Timespinner.GameObjects.Bosses.Z_Xarion", "XarionBossHand"),
+			//new EnemyInfo(EnemyType.TrashSpawner, EEnemyTileType.JunkSpawner, 0, "Timespinner.GameObjects.Events", "JunkSpawnerEvent") //not properly scaled
 		};
 
 		public readonly EnemyType Type;

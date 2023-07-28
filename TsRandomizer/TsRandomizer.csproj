@@ -155,6 +155,7 @@
     <Compile Include="LevelObjects\Monsters\Bee.cs" />
     <Compile Include="LevelObjects\Monsters\Demon.cs" />
     <Compile Include="LevelObjects\Monsters\CastleLargeSoldier.cs" />
+    <Compile Include="LevelObjects\Monsters\LabTrashSpawner.cs" />
     <Compile Include="LevelObjects\Monsters\LabTurret.cs" />
     <Compile Include="LevelObjects\Monsters\TowerPlasmaPod.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />

@@ -37,7 +37,7 @@ namespace TsRandomizer.Extensions
 
 			enemy.Yeet();
 
-			return (Monster)newEnemy;
+			return newEnemy as Monster;
 		}
 
 		static bool ShouldFlipHorizontally(Monster enemy, Level level, EnemyInfo newEnemyInfo)

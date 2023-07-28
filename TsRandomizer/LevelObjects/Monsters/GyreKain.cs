@@ -18,7 +18,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 		{
 			var scythe = (DamageArea)Dynamic._scythe;
 
-			scythe.Power = TypedObject.Damage;
+			//scythe.Power = TypedObject.Damage; //is toggled between _baseDamage and 0 when throwing
 			scythe.AsDynamic()._baseDamage = TypedObject.Damage;
 		}
 	}

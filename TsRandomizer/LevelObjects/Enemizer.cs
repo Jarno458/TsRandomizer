@@ -193,6 +193,7 @@ namespace TsRandomizer.LevelObjects
 						E.Granadier,
 						E.Rat,
 						E.PastEngineer,
+						E.PastLogThrower,
 						E.PresentEngineer,
 						E.PastSlime,
 						E.PresentSlime,
@@ -245,9 +246,13 @@ namespace TsRandomizer.LevelObjects
 					continue;
 
 				var newEnemyType = GetRandomEnemy(gameSettings, random, enemy, type, roomSpecificEnemies);
-				newEnemyType = E.PastLogThrower;
+#if DEBUG
+				//newEnemyType = E.ScyteDemon;
+#endif
 
 				var newEnemy = enemy.ReplaceWith(level, EnemyInfo.Get[newEnemyType]);
+				if (newEnemy == null)
+					continue;
 
 				if (gameSettings.EnemyRando.Value == "Scaled" || gameSettings.EnemyRando.Value == "Ryshia")
 					newEnemy.ScaleTo(enemy);
