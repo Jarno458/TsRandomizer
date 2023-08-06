@@ -80,6 +80,7 @@ namespace TsRandomizer.Archipelago
 				if (result.Successful)
 				{
 #if DEBUG
+					ScreenManager.Console.AddCommand(new CheckCommand());
 					ScreenManager.Console.AddCommand(new ScoutCommand());
 					ScreenManager.Console.AddCommand(new GetKeyCommand());
 #endif

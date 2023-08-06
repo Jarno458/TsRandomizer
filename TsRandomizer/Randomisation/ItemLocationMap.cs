@@ -213,13 +213,16 @@ namespace TsRandomizer.Randomisation
 			//pyramid
 			var completeTimespinner = R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3 & R.TimespinnerSpindle & R.TimespinnerWheel;
 			TemporalGyre = MilitaryFortress & R.TimespinnerWheel;
-			PyramidEntrance = SeedOptions.EnterSandman 
-				? R.GateGyre | R.GateLeftPyramid | (R.GateRightPyramid & R.DoubleJump)
-				: UpperLab & completeTimespinner;
+			PyramidEntrance =
+				UpperLab & completeTimespinner
+				& (SeedOptions.EnterSandman 
+					? R.GateGyre | R.GateLeftPyramid | (R.GateRightPyramid & R.DoubleJump)
+					: R.Free);
 			MidPyramid = PyramidEntrance & R.DoubleJump;
 			RightPyramid = MidPyramid 
 				& (FloodsFlags.PyramidShaft ? R.Free : R.UpwardDash) 
-				& NeedSwimming(FloodsFlags.BackPyramid) | R.GateRightPyramid;
+				& NeedSwimming(FloodsFlags.BackPyramid) 
+				| R.GateRightPyramid;
 			Nightmare = RightPyramid & completeTimespinner;
 		}
 

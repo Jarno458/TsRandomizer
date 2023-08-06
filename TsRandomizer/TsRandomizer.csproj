@@ -126,6 +126,7 @@
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
     <Compile Include="Archipelago\Countdown.cs" />
     <Compile Include="Commands\InstaGibCommand.cs" />
+    <Compile Include="Commands\CheckCommand.cs" />
     <Compile Include="Extensions\MonsterExtensions.cs" />
     <Compile Include="IntermediateObjects\CustomItems\ArchipelagoRemoteItem.cs" />
     <Compile Include="Archipelago\ConnectionFailedException.cs" />
