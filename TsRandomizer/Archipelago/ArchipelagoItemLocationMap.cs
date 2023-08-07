@@ -119,11 +119,6 @@ namespace TsRandomizer.Archipelago
 
 			var item = ItemProvider.Get(itemIdentifier);
 
-			if (itemIdentifier == new ItemIdentifier(EInventoryRelicType.PyramidsKey))
-			{
-				var x = 10;
-			}
-
 			location.SetItem(item);
 
 			location.IsPickedUp = true;
