@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -38,6 +39,7 @@ namespace TsRandomizer.Screens
 			.Get("Timespinner.GameStateManagement.Screens.MainMenu.TitleBackgroundScreen");
 
 		int hpCap;
+		int levelCap;
 		DeathLinker deathLinkService;
 
 		public Seed Seed { get; private set; }
@@ -75,6 +77,7 @@ namespace TsRandomizer.Screens
 
 			Settings = settings;
 			hpCap = Convert.ToInt32(Settings.HpCap.Value);
+			levelCap = Convert.ToInt32(settings.LevelCap.Value) - 1;
 
 			try
 			{
@@ -95,8 +98,6 @@ namespace TsRandomizer.Screens
 			if (settings.DamageRando.Value != "Off")
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave, settings.DamageRando.Value, settings.DamageRandoOverrides.Value);
 
-			HandleLevelCap(settings, saveFile);
-			
 			BestiaryManager.UpdateBestiary(Level, settings);
 			if (!saveFile.GetSaveBool("IsFightingBoss"))
 				BestiaryManager.RefreshBossSaveFlags(Level);
@@ -115,10 +116,8 @@ namespace TsRandomizer.Screens
 #endif
 		}
 
-		static void HandleLevelCap(SettingCollection settings, GameSave saveFile)
+		void HandleLevelCap(GameSave saveFile)
 		{
-			int levelCap = Convert.ToInt32(settings.LevelCap.Value) - 1; //the levels are 0-indexed. who knew?
-
 			var stats = saveFile.CharacterStats.AsDynamic();
 
 			stats.MaxLevel = levelCap;
@@ -170,6 +169,8 @@ namespace TsRandomizer.Screens
 				OrbExperienceManager.UpdateHitRegistry(Level.MainHero);
 				OrbExperienceManager.UpdateOrbXp(Level, Level.MainHero, Settings.ExtraEarringsXP.Value);
 			}
+
+			HandleLevelCap(Save);
 
 			UpdateGenericScripts(Level);
 

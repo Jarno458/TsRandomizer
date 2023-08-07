@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Archipelago.MultiClient.Net.Models;
 using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -117,6 +118,11 @@ namespace TsRandomizer.Archipelago
 				return;
 
 			var item = ItemProvider.Get(itemIdentifier);
+
+			if (itemIdentifier == new ItemIdentifier(EInventoryRelicType.PyramidsKey))
+			{
+				var x = 10;
+			}
 
 			location.SetItem(item);
 

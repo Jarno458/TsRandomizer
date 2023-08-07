@@ -28,10 +28,10 @@ namespace TsRandomizer.Archipelago
 				var selectedGate = allTeleporterGates.First(g => g.Gate == gateToUnlock);
 
 				unlockingSpecification.OnPickup = level => {
-					level.MarkRoomAsVisited(selectedGate.LevelId, selectedGate.LevelId);
+					level.MarkRoomAsVisited(selectedGate.LevelId, selectedGate.RoomId);
 
 					if (seed.Options.EnterSandman)
-						level.MarkRoomAsVisited(PyramidTeleporterGates[1].LevelId, PyramidTeleporterGates[1].LevelId);
+						level.MarkRoomAsVisited(PyramidTeleporterGates[1].LevelId, PyramidTeleporterGates[1].RoomId);
 				};
 
 				unlockingSpecification.Unlocks = selectedGate.Gate;
