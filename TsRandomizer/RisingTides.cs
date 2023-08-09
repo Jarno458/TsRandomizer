@@ -66,7 +66,7 @@ namespace TsRandomizer
 			if (slotData.TryGetValue("Lab", out var lab))
 				LakeDesolation = IsTrue(lab);
 			if (slotData.TryGetValue("LakeSereneBridge", out var lakeSereneBridge))
-				DryLakeSerene = IsTrue(lakeSereneBridge);
+				LakeSereneBridge = IsTrue(lakeSereneBridge);
 		}
 
 		static bool IsTrue(object o)
