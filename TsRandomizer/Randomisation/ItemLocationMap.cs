@@ -198,8 +198,8 @@ namespace TsRandomizer.Randomisation
 			UpperRightSideLibrary = (MidLibrary & (R.CardC | (R.CardB & R.CardE))) | ((R.GateMilitaryGate | R.GateSealedSirensCave) & R.CardE);
 			RightSideLibraryElevator = R.CardE & ((MidLibrary & (R.CardC | R.CardB)) | R.GateMilitaryGate | R.GateSealedSirensCave);
 			LowerRightSideLibrary = (MidLibrary & R.CardB) | RightSideLibraryElevator | R.GateMilitaryGate | (R.GateSealedSirensCave & R.CardE);
-			SealedCavesSkeleton = (LakeDesolationLeft & (FloodsFlags.LakeDesolation ? R.Free : R.DoubleJump)) | R.GateSealedCaves;
-			SealedCaves = SealedCavesSkeleton & R.CardA;
+			SealedCavesSkeleton = (LakeDesolationLeft & (FloodsFlags.LakeDesolation ? R.Free : R.DoubleJump)) | R.GateSealedCaves | R.GateXarion;
+			SealedCaves = (SealedCavesSkeleton & R.CardA) | R.GateXarion;
 			SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
 			MilitaryFortress = LowerRightSideLibrary & KillMaw & killTwins & killAelana;
 			MilitaryFortressHangar = MilitaryFortress; //& R.TimeStop; implied by killAelana
@@ -214,10 +214,8 @@ namespace TsRandomizer.Randomisation
 			var completeTimespinner = R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3 & R.TimespinnerSpindle & R.TimespinnerWheel;
 			TemporalGyre = MilitaryFortress & R.TimespinnerWheel;
 			PyramidEntrance =
-				UpperLab & completeTimespinner
-				& (SeedOptions.EnterSandman 
-					? R.GateGyre | R.GateLeftPyramid | (R.GateRightPyramid & R.DoubleJump)
-					: R.Free);
+				(UpperLab & completeTimespinner)
+				| R.GateGyre | R.GateLeftPyramid | (R.GateRightPyramid & R.DoubleJump);
 			MidPyramid = PyramidEntrance & R.DoubleJump;
 			RightPyramid = MidPyramid 
 				& (FloodsFlags.PyramidShaft ? R.Free : R.UpwardDash) 
