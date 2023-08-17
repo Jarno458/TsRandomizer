@@ -38,6 +38,8 @@ namespace TsRandomizer
 			CastleCourtyard = random.Next() % 3 == 0;
 			LakeDesolation = random.Next() % 3 == 0;
 			DryLakeSerene = random.Next() % 3 == 0;
+			Lab = false;
+			LakeSereneBridge = false;
 		}
 
 		public RisingTides(Dictionary<string, object> slotData)
@@ -64,7 +66,7 @@ namespace TsRandomizer
 			if (slotData.TryGetValue("DryLakeSerene", out var dryLakeSerene))
 				DryLakeSerene = IsTrue(dryLakeSerene);
 			if (slotData.TryGetValue("Lab", out var lab))
-				LakeDesolation = IsTrue(lab);
+				Lab = IsTrue(lab);
 			if (slotData.TryGetValue("LakeSereneBridge", out var lakeSereneBridge))
 				LakeSereneBridge = IsTrue(lakeSereneBridge);
 		}

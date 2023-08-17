@@ -217,10 +217,12 @@ namespace TsRandomizer.Randomisation
 				(UpperLab & completeTimespinner)
 				| R.GateGyre | R.GateLeftPyramid | (R.GateRightPyramid & R.DoubleJump);
 			MidPyramid = PyramidEntrance & R.DoubleJump;
-			RightPyramid = MidPyramid 
-				& (FloodsFlags.PyramidShaft ? R.Free : R.UpwardDash) 
-				& NeedSwimming(FloodsFlags.BackPyramid) 
-				| R.GateRightPyramid;
+			RightPyramid = 
+				(
+					(MidPyramid & (FloodsFlags.PyramidShaft ? R.Free : R.UpwardDash)) 
+					| R.GateRightPyramid
+				)
+				& NeedSwimming(FloodsFlags.BackPyramid);
 			Nightmare = RightPyramid & completeTimespinner;
 		}
 
