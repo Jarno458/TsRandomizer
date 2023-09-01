@@ -20,6 +20,9 @@ namespace TsRandomizer
 		{
 			try
 			{
+				Type.GetMethod("DoesExist", BindingFlags.Static | BindingFlags.NonPublic)
+					.Invoke(null, new object[] { "FakeKeyToLoadLibIfNotYetLoaded" });
+
 				var stringLibrary = (StringLibrary) Type
 					.GetField("_currentLibrary", BindingFlags.Static | BindingFlags.NonPublic)
 					.GetValue(null);
