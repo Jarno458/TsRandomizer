@@ -69,7 +69,11 @@ namespace TsRandomizer.Screens.SeedSelection
 				MenuEntry.Create("New", OnGenerateSelected),
 				MenuEntry.Create("Flags", OnOptionsSelected),
 				MenuEntry.Create("", () => { }, false),
-				MenuEntry.Create("Settings", OnSettingsSelected)
+				MenuEntry.Create("Settings", OnSettingsSelected),
+				MenuEntry.Create("", () => { }, false),
+				MenuEntry.Create("Copy", OnCopySelected),
+				MenuEntry.Create("", () => { }, false),
+				MenuEntry.Create("Paste", OnPasteSelected)
 			);
 		}
 
@@ -85,9 +89,9 @@ namespace TsRandomizer.Screens.SeedSelection
 			if (input.IsControllHold())
 			{
 				if (input.IsKeyHold(Keys.V) && SDL.SDL_HasClipboardText() == SDL.SDL_bool.SDL_TRUE)
-					GetClipboardSeed();
+					PasteClipboardSeed();
 				else if (input.IsKeyHold(Keys.C))
-					SDL.SDL_SetClipboardText(GetHexString());
+					CopyClipboardSeed();
 			}
 
 			var selectedMenuEntryIndex = Dynamic.SelectedIndex;
@@ -100,7 +104,12 @@ namespace TsRandomizer.Screens.SeedSelection
 			}
 		}
 
-		void GetClipboardSeed()
+		void CopyClipboardSeed()
+		{
+			SDL.SDL_SetClipboardText(GetHexString());
+		}
+
+		void PasteClipboardSeed()
 		{
 			var text = SDL.SDL_GetClipboardText().Trim();
 
@@ -188,6 +197,10 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			ScreenManager.AddScreen(gameSettingsMenu, playerIndex);
 		}
+
+		void OnCopySelected(PlayerIndex playerIndex) => CopyClipboardSeed();
+
+		void OnPasteSelected(PlayerIndex playerIndex) => PasteClipboardSeed();
 
 		internal void OnSeedOptionsUpdated(SeedOptionsCollection options)
 		{
