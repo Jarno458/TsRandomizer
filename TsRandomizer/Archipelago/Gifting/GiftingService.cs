@@ -16,7 +16,14 @@ namespace TsRandomizer.Archipelago.Gifting
 	{
 		readonly IGiftingServiceSync service;
 
-		public int NumberOfGifts { get; private set;  }
+		public int NumberOfGifts {
+			get;
+#if DEBUG
+			set;
+#else
+			private set;
+#endif
+		}
 
 		public GiftingService(ArchipelagoSession session)
 		{

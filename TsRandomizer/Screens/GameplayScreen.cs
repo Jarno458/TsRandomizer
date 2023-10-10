@@ -41,6 +41,7 @@ namespace TsRandomizer.Screens
 		int hpCap;
 		int levelCap;
 		DeathLinker deathLinkService;
+		int numberOfGifts;
 
 		public Seed Seed { get; private set; }
 		public SettingCollection Settings { get; private set; }
@@ -177,6 +178,7 @@ namespace TsRandomizer.Screens
 #if DEBUG
 			TimespinnerAfterDark(input);
 #endif
+			HandleCurrentGifts();
 		}
 
 		void UpdateGenericScripts(Level level)
@@ -193,7 +195,17 @@ namespace TsRandomizer.Screens
 				level.GameSave.AddConcussion();
 		}
 
+		void HandleCurrentGifts()
+		{
+			if (!Seed.Options.Archipelago)
+				return;
 
+			var currentNumberOfGifts = Client.GetGiftingService().NumberOfGifts;
+			if (currentNumberOfGifts > numberOfGifts)
+				ScreenManager.Jukebox.PlayCue(ESFX.CrowCaw);
+			numberOfGifts = currentNumberOfGifts;
+		}
+		
 		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
 			using (spriteBatch.BeginUsing())
@@ -205,14 +217,21 @@ namespace TsRandomizer.Screens
 
 		void DrawRecievedGifts(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
-			if(!Seed.Options.Archipelago)
+			if(!Seed.Options.Archipelago || numberOfGifts == 0)
 				return;
 
+			var zoom = (int)TimeSpinnerGame.Constants.InGameZoom;
 			var PauseMenuTexture = GameContentManager.SpPauseMenu;
 			var exclaimationMarkSourceRetangle = new Rectangle(227, 33, 8, 8);
-			var position = new Vector2(200, 200);
 
-			spriteBatch.Draw(PauseMenuTexture.Texture, position, exclaimationMarkSourceRetangle, Color.Red, 0f, Vector2.Zero, new Vector2(3,3), SpriteEffects.None, 0);
+			var gameplayScreenSize = ScreenManager.SmallScreenRect;
+			var buttomRight = new Vector2(gameplayScreenSize.X + gameplayScreenSize.Width, gameplayScreenSize.Y + gameplayScreenSize.Height);
+			var position = new Vector2(buttomRight.X - (zoom * 20), buttomRight.Y - (zoom * 20));
+			var textPosition = new Vector2(position.X + (numberOfGifts < 10 ? 5 * zoom : 3 * zoom), position.Y + (2 * zoom));
+			var scale = new Vector2(zoom, zoom);
+
+			spriteBatch.Draw(PauseMenuTexture.Texture, position, exclaimationMarkSourceRetangle, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0);
+			spriteBatch.DrawString(menuFont, numberOfGifts.ToString(), textPosition, Color.White, 0f, Vector2.Zero, scale / 1.5f, SpriteEffects.None, 1);
 		}
 		
 		void DrawRoomId(SpriteBatch spriteBatch, SpriteFont menuFont)

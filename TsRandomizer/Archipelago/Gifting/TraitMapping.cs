@@ -57,6 +57,7 @@ namespace TsRandomizer.Archipelago.Gifting
 			{ EInventoryEquipmentType.CaptainsJacket, new Dictionary<Trait, float> {{ Trait.Armor, 2.125f } } }, //17
 			{ EInventoryEquipmentType.LabCoat, new Dictionary<Trait, float> {{ Trait.Armor, 2.125f } } }, //17
 			{ EInventoryEquipmentType.MilitaryArmor, new Dictionary<Trait, float> {{ Trait.Armor, 2f } } }, //16
+			{ EInventoryEquipmentType.LabGlasses, new Dictionary<Trait, float> {{ Trait.Armor, 1.875f } } }, //15
 			{ EInventoryEquipmentType.VileteCrown, new Dictionary<Trait, float> {{ Trait.Armor, 1.875f } } }, //15
 			{ EInventoryEquipmentType.LibrarianRobe, new Dictionary<Trait, float> {{ Trait.Armor, 1.75f } } }, //14
 			{ EInventoryEquipmentType.LibrarianHat, new Dictionary<Trait, float> {{ Trait.Armor, 1.5f } } }, //12

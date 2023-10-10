@@ -141,6 +141,15 @@ namespace TsRandomizer.Screens
 			subMenuCollections.Add(~confirmMenuCollection);
 		}
 
+		/*
+		if (itemEntry.ItemType == EInventoryCategoryType.Equipment && this.GetAvailableQuantityByItem(itemEntry.Item) - this.SaveFile.Inventory.GetEquipmentEquippedCount(itemEntry.Item.Key) < itemEntry.QuanityToBuy)
+        {
+          flag = false;
+          this.PlayErrorSound();
+          this.ChangeDescription(Loc.Get("shop_buy_already_wearing"), EInventoryItemIcon.None);
+        }
+		*/
+
 		object CreateMenuUseItemInventory(AcceptedTraits acceptedTraits)
 		{
 			bool OnUseItemSelected(InventoryItem item)
@@ -156,21 +165,25 @@ namespace TsRandomizer.Screens
 			}
 
 			var collection = new GiftingInventoryCollection(OnUseItemSelected);
-			foreach (var item in save.Inventory.UseItemInventory.Inventory)
+			foreach (var item in save.Inventory.UseItemInventory.Inventory.Values)
 			{
-				if (!TraitMapping.ValuesPerItem.TryGetValue((EInventoryUseItemType)item.Key, out var traits))
+				if (!TraitMapping.ValuesPerItem.TryGetValue(item.UseItemType, out var traits))
 					continue;
 
 				if (acceptedTraits.AcceptsAnyTrait || acceptedTraits.DesiredTraits.Any(t => traits.ContainsKey(t)))
-					collection.AddItem(item.Value.UseItemType, item.Value.Count);
+					collection.AddItem(item.UseItemType, item.Count);
 			}
-			foreach (var item in save.Inventory.EquipmentInventory.Inventory)
+			foreach (var item in save.Inventory.EquipmentInventory.Inventory.Values)
 			{
-				if (!TraitMapping.ValuesPerItem.TryGetValue((EInventoryEquipmentType)item.Key, out var traits))
+				if (!TraitMapping.ValuesPerItem.TryGetValue(item.EquipmentType, out var traits))
 					continue;
 
 				if (acceptedTraits.AcceptsAnyTrait || acceptedTraits.DesiredTraits.Any(t => traits.ContainsKey(t)))
-					collection.AddItem(item.Value.EquipmentType, item.Value.Count);
+				{
+					var count = item.Count - save.Inventory.AsDynamic().GetEquipmentEquippedCount(item.Key);
+					if (count > 0)
+						collection.AddItem(item.EquipmentType, count);
+				}
 			}
 
 			collection.RefreshItemNameAndDescriptions();
@@ -237,6 +250,8 @@ namespace TsRandomizer.Screens
 			});
 
 			PopulatePlayerMenus();
+
+			giftingService.NumberOfGifts += 1;
 		}
 #endif
 
