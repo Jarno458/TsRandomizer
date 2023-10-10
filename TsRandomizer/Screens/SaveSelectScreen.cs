@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SDL2;
+using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Drawables;
@@ -190,7 +191,7 @@ namespace TsRandomizer.Screens
 		{
 			if (!GameScreen.IsActive) return;
 
-			if (input.IsButtonHold(Buttons.LeftTrigger))
+			if (input.AsDynamic().IsMenuPress(ButtonMapping.EDestinationType.PageLeft, PlayerIndex.One))
 			{
 				UpdateDescription(true);
 
@@ -198,7 +199,7 @@ namespace TsRandomizer.Screens
 
 				DisplayArchipelagoInfo();
 
-				if (input.IsNewButtonPress(Buttons.X))
+				if (input.IsNewPressSecondary(null))
 				{
 					Dynamic._isDeleting = false;
 
@@ -210,7 +211,7 @@ namespace TsRandomizer.Screens
 				UpdateDescription(false);
 			}
 
-			if (input.IsNewButtonPress(Buttons.RightTrigger))
+			if (input.IsNewPressPageRight(null))
 			{
 				var selectedSaveFile = CurrentSelectedSave;
 				if(selectedSaveFile == null)

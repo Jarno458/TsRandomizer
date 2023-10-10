@@ -38,8 +38,8 @@ namespace TsRandomizer
 			CastleCourtyard = random.Next() % 3 == 0;
 			LakeDesolation = random.Next() % 3 == 0;
 			DryLakeSerene = random.Next() % 3 == 0;
-			Lab = false;
-			LakeSereneBridge = false;
+			Lab = random.Next() % 3 == 0;
+			LakeSereneBridge = random.Next() % 3 == 0;
 		}
 
 		public RisingTides(Dictionary<string, object> slotData)

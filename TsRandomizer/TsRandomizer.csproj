@@ -98,6 +98,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Archipelago.Gifting.Net">
+      <HintPath>..\lib\Archipelago.Gifting.Net.dll</HintPath>
+    </Reference>
     <Reference Include="Archipelago.MultiClient.Net, Version=5.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Archipelago.MultiClient.Net.5.0.5\lib\net40\Archipelago.MultiClient.Net.dll</HintPath>
     </Reference>
@@ -125,8 +128,10 @@
   <ItemGroup>
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
     <Compile Include="Archipelago\Countdown.cs" />
+    <Compile Include="Archipelago\Gifting\GiftingService.cs" />
     <Compile Include="Commands\InstaGibCommand.cs" />
     <Compile Include="Commands\CheckCommand.cs" />
+    <Compile Include="Extensions\InventoryItemExtensions.cs" />
     <Compile Include="Extensions\MonsterExtensions.cs" />
     <Compile Include="IntermediateObjects\CustomItems\ArchipelagoRemoteItem.cs" />
     <Compile Include="Archipelago\ConnectionFailedException.cs" />
@@ -299,6 +304,11 @@
     <Compile Include="IntermediateObjects\TriggerAfterLootDrop.cs" />
     <Compile Include="FamiliarManager.cs" />
     <Compile Include="Screens\ArchipelagoSelectionScreen.cs" />
+    <Compile Include="Archipelago\Gifting\AcceptedTraits.cs" />
+    <Compile Include="Archipelago\Gifting\GiftBox.cs" />
+    <Compile Include="Screens\EquipmentMenuScreen.cs" />
+    <Compile Include="Archipelago\Gifting\Trait.cs" />
+    <Compile Include="Archipelago\Gifting\TraitMapping.cs" />
     <Compile Include="Screens\OptionsMenuScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
@@ -306,6 +316,7 @@
     <Compile Include="Screens\MinimapScreen.cs" />
     <Compile Include="Screens\CreditsScreen.cs" />
     <Compile Include="Screens\FamiliarMenuScreen.cs" />
+    <Compile Include="Screens\PauseMenuScreen.cs" />
     <Compile Include="Screens\ShopMenuScreen.cs" />
     <Compile Include="Screens\OrbShopMenuScreen.cs" />
     <Compile Include="Screens\OrbMenuScreen.cs" />

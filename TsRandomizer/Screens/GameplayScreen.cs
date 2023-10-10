@@ -193,10 +193,31 @@ namespace TsRandomizer.Screens
 				level.GameSave.AddConcussion();
 		}
 
-#if DEBUG
+
 		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
+			using (spriteBatch.BeginUsing())
+			{
+				DrawRecievedGifts(spriteBatch, menuFont);
+				DrawRoomId(spriteBatch, menuFont);
+			}
+		}
 
+		void DrawRecievedGifts(SpriteBatch spriteBatch, SpriteFont menuFont)
+		{
+			if(!Seed.Options.Archipelago)
+				return;
+
+			var PauseMenuTexture = GameContentManager.SpPauseMenu;
+			var exclaimationMarkSourceRetangle = new Rectangle(227, 33, 8, 8);
+			var position = new Vector2(200, 200);
+
+			spriteBatch.Draw(PauseMenuTexture.Texture, position, exclaimationMarkSourceRetangle, Color.Red, 0f, Vector2.Zero, new Vector2(3,3), SpriteEffects.None, 0);
+		}
+		
+		void DrawRoomId(SpriteBatch spriteBatch, SpriteFont menuFont)
+		{
+#if DEBUG
 			if (ItemLocations == null)
 				return;
 
@@ -207,10 +228,10 @@ namespace TsRandomizer.Screens
 
 			var inGameZoom = (int)TimeSpinnerGame.Constants.InGameZoom;
 
-			using (spriteBatch.BeginUsing())
-				spriteBatch.DrawString(menuFont, text, new Vector2(30, 130), Color.Red, inGameZoom);
-		}
+			spriteBatch.DrawString(menuFont, text, new Vector2(30, 130), Color.Red, inGameZoom);
 #endif
+		}
+
 
 		public void HideItemPickupBar() => ((object)Dynamic._itemGetBanner).AsDynamic()._displayTimer = 3f;
 

@@ -8,8 +8,10 @@ using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
+using TsRandomizer.Archipelago.Gifting;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
+
 using XnaColor = Microsoft.Xna.Framework.Color;
 using MessagePartColor = Archipelago.MultiClient.Net.Models.Color;
 
@@ -42,9 +44,14 @@ namespace TsRandomizer.Archipelago
 
 		public static string GetCurrentPlayerName() => session.Players.GetPlayerAliasAndName(session.ConnectionInfo.Slot);
 
+		static GiftingService giftingService;
+		public static GiftingService GetGiftingService() => giftingService;
+
 		public static LocationCheckHelper LocationCheckHelper => session.Locations;
 
 		public static DataStorageHelper DataStorage => session.DataStorage;
+
+		public static PlayerHelper Players => session.Players;
 
 		public static int Slot => session.ConnectionInfo.Slot;
 		public static int Team => session.ConnectionInfo.Team;
@@ -72,13 +79,14 @@ namespace TsRandomizer.Archipelago
 				session.Socket.SocketClosed += Socket_SocketClosed;
 
 				var result = session.TryConnectAndLogin("Timespinner", userName, 
-					ItemsHandlingFlags.IncludeStartingInventory, password: password, version: new Version(0,4,2));
+					ItemsHandlingFlags.IncludeStartingInventory, password: password, version: new Version(0,4,3));
 
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;
 	
 				if (result.Successful)
 				{
+					giftingService = new GiftingService(session);
 #if DEBUG
 					ScreenManager.Console.AddCommand(new CheckCommand());
 					ScreenManager.Console.AddCommand(new ScoutCommand());
@@ -121,6 +129,8 @@ namespace TsRandomizer.Archipelago
 			session = null;
 
 			cachedConnectionResult = null;
+
+			giftingService = null;
 		}
 
 		public static NetworkItem? GetNextItem(int currentIndex) =>

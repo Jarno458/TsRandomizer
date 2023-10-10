@@ -86,7 +86,7 @@ namespace TsRandomizer.Screens
 		{
 			GCM gcm = screenManager.AsDynamic().GCM;
 
-			void Noop()
+			void OnExit()
 			{
 				var gameplayScreen = screenManager.FirstOrDefault<GameplayScreen>();
 
@@ -99,7 +99,7 @@ namespace TsRandomizer.Screens
 
 			gcm.LoadAllResources(screenManager.AsDynamic().GeneralContentManager, screenManager.GraphicsDevice);
 
-			return (GameScreen)Activator.CreateInstance(JournalMenuType, GameSave.DemoSave, gcm, (Action)Noop);
+			return (GameScreen)Activator.CreateInstance(JournalMenuType, GameSave.DemoSave, gcm, (Action)OnExit);
 		}
 
 		object CreateDefaultsMenu(GameSettingCategoryInfo[] menusToClear, bool isSubmenu)

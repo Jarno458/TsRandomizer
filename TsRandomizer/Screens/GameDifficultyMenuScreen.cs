@@ -213,16 +213,10 @@ namespace TsRandomizer.Screens
 			{
 				SetSelectedMenuItemByIndex(0);
 
-				if (input.IsNewButtonPress(Buttons.LeftThumbstickLeft)
-				    || input.IsNewButtonPress(Buttons.LeftThumbstickRight)
-				    || input.IsNewButtonPress(Buttons.RightThumbstickLeft)
-				    || input.IsNewButtonPress(Buttons.RightThumbstickRight)
-				    || input.IsNewButtonPress(Buttons.DPadLeft)
-				    || input.IsNewButtonPress(Buttons.DPadRight)
-				    || input.IsNewButtonPress(Buttons.LeftTrigger)
-				    || input.IsNewButtonPress(Buttons.RightTrigger)
-				    || input.IsNewKeyPress(Keys.Left)
-				    || input.IsNewKeyPress(Keys.Right))
+				if (input.IsNewPressMenuLeft(null)
+				    || input.IsNewPressMenuRight(null)
+				    || input.IsNewPressPageLeft(null)
+				    || input.IsNewPressPageRight(null))
 				{
 					if (fillingMethod == FillingMethod.Archipelago)
 						fillingMethod = FillingMethod.Random;
