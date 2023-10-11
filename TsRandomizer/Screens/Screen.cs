@@ -36,7 +36,8 @@ namespace TsRandomizer.Screens
 			var dirievedTypes = screen.Assembly.GetTypes()
 				.Where(t => screen.IsAssignableFrom(t)
 				            && !t.IsGenericType
-				            && t != screen);
+				            && t != screen
+				            && t.GetCustomAttributes(typeof(TimeSpinnerType), true).Any());
 
 			foreach (var dirivedType in dirievedTypes)
 			{

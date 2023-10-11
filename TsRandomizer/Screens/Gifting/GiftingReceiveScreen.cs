@@ -2,13 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Inventory;
-using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
-using TsRandomizer.Archipelago;
 using TsRandomizer.Archipelago.Gifting;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -17,38 +15,22 @@ using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Screens.Gifting
 {
-	class GiftingReceiveScreen : Screen
+	class GiftingReceiveScreen : GiftingScreen
 	{
 		const int DummyTeam = -999;
 		const int NumberOfTraitsToDisplay = 7;
 
-		static readonly Type EquipmentMenuScreenType =
-			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.PauseMenu.EquipmentMenuScreen");
-		static readonly Type StatCollectionType =
-			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.StatCollection");
 		static readonly Type StatEntryType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.StatEntry");
 		static readonly Type StatEntryDisplayEnumType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.StatEntry+EStatDisplayType");
 		static readonly Type MenuUseItemInventoryType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.MenuUseItemInventory");
-		static readonly Type ConfirmationMenuEntryCollectionType =
-			TimeSpinnerType.Get("Timespinner.GameStateManagement.ConfirmationMenuEntryCollection");
 
-		static readonly Color StatEntryColor = new Color(240, 240, 208);
-
-		readonly bool isUsedAsGiftingMenu;
-		GCM gameContentManager;
-		GameSave save;
-
-		GiftingService giftingService;
 		List<AcceptedTraits> acceptedTraitsPerSlot = new List<AcceptedTraits>();
 
 		InventoryItem selectedItem;
 		AcceptedTraits selectedPlayer;
-		dynamic confirmMenuCollection;
-
-		dynamic playerInfoCollection;
 
 		public GiftingReceiveScreen(ScreenManager screenManager, GameScreen gameScreen) : base(screenManager, gameScreen)
 		{
@@ -56,34 +38,15 @@ namespace TsRandomizer.Screens.Gifting
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gcm)
 		{
-			gameContentManager = gcm;
-			save = Dynamic._saveFile;
+			base.Initialize(itemLocationMap, gcm);
 
 			Dynamic._menuTitle = "Gifting - Sending";
-			Dynamic.DoesDrawScrollbarWidget = true;
 
-			giftingService = Client.GetGiftingService();
-			acceptedTraitsPerSlot = giftingService.GetAcceptedTraits();
-
-			var menuCollection = ((object)Dynamic._primaryMenuCollection).AsDynamic();
-
-			menuCollection.DoesMenuAllowScrolling = true;
-			menuCollection.ScrollRowHeight = 4;
-			menuCollection.SetIsCenterAligned(false);
-
-			confirmMenuCollection = ConfirmationMenuEntryCollectionType
-				.CreateInstance(false, TimeSpinnerGame.Localizer.Get("use_item_yes"),
-					TimeSpinnerGame.Localizer.Get("use_item_no"), "Gift item to player?",
-					new Action<object, EventArgs>(OnGiftItemAccept), new Action<object, EventArgs>(OnGiftItemCancel)).AsDynamic();
-			confirmMenuCollection.Font = gameContentManager.ActiveFont;
-
-			playerInfoCollection = StatCollectionType.CreateInstance().AsDynamic();
-			((IList)Dynamic.StatCollections).Add(~playerInfoCollection);
+			acceptedTraitsPerSlot = GiftingService.GetAcceptedTraits();
 
 			PopulatePlayerMenus();
-		};
-
-
+		}
+		
 		void PopulatePlayerMenus()
 		{
 			var menuEntries = (IList)Dynamic.MenuEntries;
@@ -118,10 +81,52 @@ namespace TsRandomizer.Screens.Gifting
 				}
 			}
 
-			subMenuCollections.Add(~confirmMenuCollection);
+			subMenuCollections.Add(~ConfirmMenuCollection);
 		}
 
+		object CreateMenuUseItemInventory(AcceptedTraits acceptedTraits)
+		{
+			bool OnUseItemSelected(InventoryItem item)
+			{
+				selectedItem = item;
+				selectedPlayer = acceptedTraits;
 
+				ConfirmMenuCollection.SetDescription($"Yeet a '{item.Name}' to {acceptedTraits.Name}?");
+
+				Dynamic.ChangeMenuCollection(~ConfirmMenuCollection, true);
+
+				return true;
+			}
+
+			var collection = new GiftingInventoryCollection(OnUseItemSelected);
+			foreach (var item in Save.Inventory.UseItemInventory.Inventory.Values)
+			{
+				if (!TraitMapping.ValuesPerItem.TryGetValue(item.UseItemType, out var traits))
+					continue;
+
+				if (acceptedTraits.AcceptsAnyTrait || acceptedTraits.DesiredTraits.Any(t => traits.ContainsKey(t)))
+					collection.AddItem(item.UseItemType, item.Count);
+			}
+			foreach (var item in Save.Inventory.EquipmentInventory.Inventory.Values)
+			{
+				if (!TraitMapping.ValuesPerItem.TryGetValue(item.EquipmentType, out var traits))
+					continue;
+
+				if (acceptedTraits.AcceptsAnyTrait || acceptedTraits.DesiredTraits.Any(t => traits.ContainsKey(t)))
+				{
+					var count = item.Count - Save.Inventory.AsDynamic().GetEquipmentEquippedCount(item.Key);
+					if (count > 0)
+						collection.AddItem(item.EquipmentType, count);
+				}
+			}
+
+			collection.RefreshItemNameAndDescriptions();
+
+			var inventoryMenu = MenuUseItemInventoryType.CreateInstance(false, collection, (Func<InventoryUseItem, bool>)collection.OnUseItemSelected).AsDynamic();
+			inventoryMenu.Font = GameContentManager.ActiveFont;
+
+			return ~inventoryMenu;
+		}
 
 #if DEBUG
 		void LoadAcceptedTraitsDummyData()
@@ -180,30 +185,35 @@ namespace TsRandomizer.Screens.Gifting
 
 			PopulatePlayerMenus();
 
-			giftingService.NumberOfGifts += 1;
+			GiftingService.NumberOfGifts += 1;
 		}
 #endif
 
-		void OnGiftItemAccept(object obj, EventArgs args)
+		protected override void OnGiftItemAccept(object obj, EventArgs args)
 		{
-			if (selectedPlayer.Team == DummyTeam || giftingService.Send(selectedItem, selectedPlayer))
+			if (selectedPlayer.Team == DummyTeam || GiftingService.Send(selectedItem, selectedPlayer))
 			{
-				confirmMenuCollection.IsVisible = false;
+				ConfirmMenuCollection.IsVisible = false;
 				Dynamic.GoToPreviousMenuCollection();
 
+				InventoryUseItem useItemToRemove;
 				switch (selectedItem)
 				{
 					case InventoryUseItem useItem:
-						save.Inventory.UseItemInventory.RemoveItem((int)useItem.UseItemType);
-						((object)Dynamic._selectedMenuCollection).AsDynamic().RemoveItem(useItem);
+						Save.Inventory.UseItemInventory.RemoveItem((int)useItem.UseItemType);
+						useItemToRemove = useItem;
 						break;
 					case InventoryEquipment equipment:
-						save.Inventory.EquipmentInventory.RemoveItem((int)equipment.EquipmentType);
-						((object)Dynamic._selectedMenuCollection).AsDynamic().RemoveItem(equipment.ToInventoryUseItem());
+						Save.Inventory.EquipmentInventory.RemoveItem((int)equipment.EquipmentType);
+						useItemToRemove = equipment.ToInventoryUseItem();
 						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(selectedItem), "paramter should be either UseItem or Equipment");
 				}
+
+				foreach (var collection in Dynamic._subMenuCollections)
+					if (collection.GetType() == MenuUseItemInventoryType)
+						((object)collection).AsDynamic().RemoveItem(useItemToRemove);
 
 				ScreenManager.Jukebox.PlayCue(ESFX.MenuSell);
 			}
@@ -213,38 +223,96 @@ namespace TsRandomizer.Screens.Gifting
 			}
 		}
 
-		void OnGiftItemCancel(object obj, EventArgs args) => Dynamic.OnCancel(obj, args);
+		protected override void OnGiftItemCancel(object obj, EventArgs args) => Dynamic.OnCancel(obj, args);
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
+			base.Update(gameTime, input);
+
 #if DEBUG
 			if (input.IsNewPressTertiary(null))
 				LoadAcceptedTraitsDummyData();
 #endif
 
-			var subMenuCollection = (IList)Dynamic._subMenuCollections;
-			foreach (var subMenu in subMenuCollection)
+			RefreshPlayerGiftboxInfo(GameContentManager.ActiveFont);
+		}
+
+		void RefreshPlayerGiftboxInfo(SpriteFont menuFont)
+		{
+			var selectedIndex = ((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex;
+			if (selectedIndex >= acceptedTraitsPerSlot.Count)
+				return;
+
+			AcceptedTraits selectedPlayerTraits = acceptedTraitsPerSlot[selectedIndex];
+
+			var entries = (IList)PlayerInfoCollection.Entries;
+			entries.Clear();
+
+			var gameEntry = StatEntryType.CreateInstance().AsDynamic();
+			gameEntry.Type = StatEntryDisplayEnumType.GetEnumValue("ColoredText");
+			gameEntry.Title = "Game:";
+			gameEntry.Text = selectedPlayerTraits.Game;
+			gameEntry.TextColor = StatEntryColor;
+			gameEntry.Initialize(menuFont);
+			gameEntry._drawStringWidth = (int)(menuFont.MeasureString(gameEntry._drawString).X - 24);
+			gameEntry._titleTextWidthReduction = gameEntry._drawStringWidth + 2;
+
+			entries.Add(~gameEntry);
+
+			if (selectedPlayerTraits.AcceptsAnyTrait)
 			{
-				var dynamicSubMenu = subMenu.AsDynamic();
-				dynamicSubMenu.DrawPosition = Dynamic.ListTextDrawPosition;
-				dynamicSubMenu.SetColumnWidth(Dynamic.ListColumnWidth, Dynamic.Zoom);
+				var allTraitsEntry = StatEntryType.CreateInstance().AsDynamic();
+				allTraitsEntry.Type = StatEntryDisplayEnumType.GetEnumValue("ColoredText");
+				allTraitsEntry.Title = "Wants:";
+				allTraitsEntry.Text = "All";
+				allTraitsEntry.TextColor = StatEntryColor;
+				allTraitsEntry.Initialize(menuFont);
+				allTraitsEntry._drawStringWidth = (int)(menuFont.MeasureString(allTraitsEntry._drawString).X - 24);
+				allTraitsEntry._titleTextWidthReduction = allTraitsEntry._drawStringWidth + 2;
+
+				entries.Add(~allTraitsEntry);
 			}
+			else
+			{
+				var traits = new List<string>(NumberOfTraitsToDisplay + 1) {
+					"Wants:"
+				};
 
-			var menuCollection = ((object)Dynamic._primaryMenuCollection).AsDynamic();
-			menuCollection.DrawPosition = new Vector2(0.05f * (float)Dynamic._screenWidth + (float)Dynamic._screenLeft, menuCollection.DrawPosition.Y);
+				for (var i = 0; i < NumberOfTraitsToDisplay; i++)
+				{
+					if (i == NumberOfTraitsToDisplay - 1)
+					{
+						if (selectedPlayerTraits.DesiredTraits.Length == NumberOfTraitsToDisplay)
+							traits.Add(selectedPlayerTraits.DesiredTraits[i - 1].ToString());
+						else if (selectedPlayerTraits.DesiredTraits.Length < NumberOfTraitsToDisplay)
+							traits.Add("");
+						else
+							traits.Add("More...");
 
-			playerInfoCollection.Location = new Vector2(0.55f * (float)Dynamic._screenWidth + (float)Dynamic._screenLeft, (float)Dynamic._screenTop + 5f / 32f * (float)Dynamic._topSectionHeight + (float)Dynamic.Zoom);
-			playerInfoCollection.Width = (int)(0.3f * (float)Dynamic._screenWidth);
+					}
+					else
+					{
+						if (i < selectedPlayerTraits.DesiredTraits.Length)
+							traits.Add(selectedPlayerTraits.DesiredTraits[i].ToString());
+						else
+							traits.Add("");
+					}
+				}
 
-			((object)Dynamic._selectedItemStats).AsDynamic().Location = new Vector2(-10000, 10000); //yeet lunais stats display
-			Dynamic._iconDisplayFramePosition = new Vector2(-10000, 10000); //yeet enquipment icons
+				for (var i = 0; i < NumberOfTraitsToDisplay; i += 2)
+				{
+					var statEntry = StatEntryType.CreateInstance().AsDynamic();
+					statEntry.Type = StatEntryDisplayEnumType.GetEnumValue("ColoredText");
+					statEntry.Title = traits[i];
+					statEntry.Text = traits[i + 1];
+					statEntry.TextColor = StatEntryColor;
+					statEntry.Initialize(menuFont);
+					statEntry._drawStringWidth = (int)(menuFont.MeasureString(statEntry._drawString).X - 24);
+					statEntry._titleTextWidthReduction = statEntry._drawStringWidth + 2;
 
-			confirmMenuCollection.DrawPosition = new Vector2(
-				(float)Dynamic.DescriptionDrawPosition.X + (float)Dynamic._screenWidth * 0.125f,
-				(float)Dynamic.DescriptionDrawPosition.Y + (float)Dynamic._bottomSectionHeight * 0.5f);
-			confirmMenuCollection.SetColumnWidth(Dynamic.ListColumnWidth, Dynamic.Zoom);
-
-			RefreshPlayerGiftboxInfo(gameContentManager.ActiveFont);
-		};
+					entries.Add(~statEntry);
+				}
+			}
+		}
 	}
 }

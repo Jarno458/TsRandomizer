@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions;
@@ -19,8 +18,7 @@ namespace TsRandomizer.Screens
 
 		bool isArchipelagoSeed;
 
-		public bool IsOpeningGiftingSendMenu;
-		public bool IsOpeningGiftingReceiveMenu;
+		public GiftingMenuType GiftingMenuType = GiftingMenuType.None;
 		public Vector2 GiftingHintPosition;
 
 		dynamic giftingInfoLine;
@@ -56,7 +54,7 @@ namespace TsRandomizer.Screens
 
 			if (input.IsNewPressSecondary(null))
 			{
-				IsOpeningGiftingReceiveMenu = true;
+				GiftingMenuType = GiftingMenuType.Receive;
 
 				var giftingMenuScreen = EquipmentMenuScreen.Create(ScreenManager, Dynamic._saveFile);
 
@@ -64,7 +62,7 @@ namespace TsRandomizer.Screens
 			} 
 			else if (input.IsNewPressTertiary(null))
 			{
-				IsOpeningGiftingSendMenu = true;
+				GiftingMenuType = GiftingMenuType.Send;
 
 				var giftingMenuScreen = EquipmentMenuScreen.Create(ScreenManager, Dynamic._saveFile);
 
