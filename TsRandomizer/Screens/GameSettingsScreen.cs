@@ -214,15 +214,17 @@ namespace TsRandomizer.Screens
 					break;
 				*/
 				default:
-					collection = Dynamic._questInventory;
+					collection = ((object)Dynamic._questInventory).AsDynamic();
 					break;
 			}
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
 
-			((object)collection).AsDynamic()._entries = menuEntryList;
+			collection._entries = menuEntryList;
+			collection.DoesMenuAllowScrolling = true;
+			collection.ScrollRowHeight = 9;
 
-			return (object)collection;
+			return ~collection;
 		}
 
 		MenuEntry CreateMenuForSetting(GameSetting setting)

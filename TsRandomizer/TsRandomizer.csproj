@@ -306,9 +306,10 @@
     <Compile Include="Screens\ArchipelagoSelectionScreen.cs" />
     <Compile Include="Archipelago\Gifting\AcceptedTraits.cs" />
     <Compile Include="Archipelago\Gifting\GiftBox.cs" />
-    <Compile Include="Screens\EquipmentMenuScreen.cs" />
+    <Compile Include="Screens\Gifting\EquipmentMenuScreen.cs" />
     <Compile Include="Archipelago\Gifting\Trait.cs" />
     <Compile Include="Archipelago\Gifting\TraitMapping.cs" />
+    <Compile Include="Screens\Gifting\GiftingReceiveScreen.cs" />
     <Compile Include="Screens\OptionsMenuScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />

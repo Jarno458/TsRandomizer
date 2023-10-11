@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions;
@@ -7,6 +8,7 @@ using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
+using TsRandomizer.Screens.Gifting;
 
 namespace TsRandomizer.Screens
 {
@@ -19,6 +21,7 @@ namespace TsRandomizer.Screens
 
 		public bool IsOpeningGiftingSendMenu;
 		public bool IsOpeningGiftingReceiveMenu;
+		public Vector2 GiftingHintPosition;
 
 		dynamic giftingInfoLine;
 
@@ -39,7 +42,7 @@ namespace TsRandomizer.Screens
 				return;
 
 			giftingInfoLine = DialogueLineType.CreateInstance(true,
-				"Press $X to send gifts, Press $Y to receive gifts",
+				"Press $X to send gifts, Press $Y to receive gifts ",
 				gameContentManager.ActiveFont,
 				gameContentManager.SpUIButtons,
 				(int)Dynamic.Zoom,
@@ -58,7 +61,8 @@ namespace TsRandomizer.Screens
 				var giftingMenuScreen = EquipmentMenuScreen.Create(ScreenManager, Dynamic._saveFile);
 
 				ScreenManager.AddScreen(giftingMenuScreen, null);
-			} else if (input.IsNewPressTertiary(null))
+			} 
+			else if (input.IsNewPressTertiary(null))
 			{
 				IsOpeningGiftingSendMenu = true;
 
@@ -78,8 +82,11 @@ namespace TsRandomizer.Screens
 			var titleBaseColor = new Color(240, 240, 208);
 			var titleShadowColor = new Color(60, 60, 24);
 
+			var zoom = Math.Max((int)(Dynamic.Zoom * 0.8f), 1);
+			GiftingHintPosition = new Vector2(position.X + (giftingInfoLine.Width * zoom), position.Y);
+
 			using (spriteBatch.BeginUsing())
-				giftingInfoLine.Draw(spriteBatch, position, titleBaseColor, titleShadowColor, Math.Max((int)(Dynamic.Zoom * 0.8f), 1), 1f);
+				giftingInfoLine.Draw(spriteBatch, position, titleBaseColor, titleShadowColor, zoom, 1f);
 		}
 	}
 }

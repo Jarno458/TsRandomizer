@@ -41,7 +41,9 @@ namespace TsRandomizer.Screens
 		int hpCap;
 		int levelCap;
 		DeathLinker deathLinkService;
+
 		int numberOfGifts;
+		DateTime lastBlinkTime = DateTime.Now;
 
 		public Seed Seed { get; private set; }
 		public SettingCollection Settings { get; private set; }
@@ -202,7 +204,13 @@ namespace TsRandomizer.Screens
 
 			var currentNumberOfGifts = Client.GetGiftingService().NumberOfGifts;
 			if (currentNumberOfGifts > numberOfGifts)
+			{
+				if (numberOfGifts == 0)
+					lastBlinkTime = DateTime.Now;
+
 				ScreenManager.Jukebox.PlayCue(ESFX.CrowCaw);
+			}
+
 			numberOfGifts = currentNumberOfGifts;
 		}
 		
@@ -210,14 +218,18 @@ namespace TsRandomizer.Screens
 		{
 			using (spriteBatch.BeginUsing())
 			{
-				DrawRecievedGifts(spriteBatch, menuFont);
+				DrawReceivedGifts(spriteBatch, menuFont);
 				DrawRoomId(spriteBatch, menuFont);
 			}
 		}
 
-		void DrawRecievedGifts(SpriteBatch spriteBatch, SpriteFont menuFont)
+		void DrawReceivedGifts(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
 			if(!Seed.Options.Archipelago || numberOfGifts == 0)
+				return;
+
+			var pauseMenuScreen = ScreenManager.FirstOrDefault<PauseMenuScreen>();
+			if (!GameScreen.IsActive && (pauseMenuScreen == null || !pauseMenuScreen.GameScreen.IsActive))
 				return;
 
 			var zoom = (int)TimeSpinnerGame.Constants.InGameZoom;
@@ -226,12 +238,23 @@ namespace TsRandomizer.Screens
 
 			var gameplayScreenSize = ScreenManager.SmallScreenRect;
 			var buttomRight = new Vector2(gameplayScreenSize.X + gameplayScreenSize.Width, gameplayScreenSize.Y + gameplayScreenSize.Height);
-			var position = new Vector2(buttomRight.X - (zoom * 20), buttomRight.Y - (zoom * 20));
+			var position = (pauseMenuScreen != null)
+				? pauseMenuScreen.GiftingHintPosition
+				: new Vector2(buttomRight.X - (zoom * 20), buttomRight.Y - (zoom * 20));
 			var textPosition = new Vector2(position.X + (numberOfGifts < 10 ? 5 * zoom : 3 * zoom), position.Y + (2 * zoom));
 			var scale = new Vector2(zoom, zoom);
+			var iconColor = Color.White;
 
-			spriteBatch.Draw(PauseMenuTexture.Texture, position, exclaimationMarkSourceRetangle, Color.Red, 0f, Vector2.Zero, scale, SpriteEffects.None, 0);
-			spriteBatch.DrawString(menuFont, numberOfGifts.ToString(), textPosition, Color.White, 0f, Vector2.Zero, scale / 1.5f, SpriteEffects.None, 1);
+			var blinkInterval = (int)Settings.GiftingReminderInterval.Value;
+			if (blinkInterval != 0 && (DateTime.Now - lastBlinkTime).Seconds >= blinkInterval)
+			{
+				lastBlinkTime = DateTime.Now;
+				iconColor = Color.DarkGray;
+				ScreenManager.Jukebox.PlayCue(ESFX.MeyefMeow);
+			}
+
+			spriteBatch.Draw(PauseMenuTexture.Texture, position, exclaimationMarkSourceRetangle, iconColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0);
+			spriteBatch.DrawString(menuFont, numberOfGifts.ToString(), textPosition, new Color(240, 240, 208), 0f, Vector2.Zero, scale / 1.5f, SpriteEffects.None, 1);
 		}
 		
 		void DrawRoomId(SpriteBatch spriteBatch, SpriteFont menuFont)
