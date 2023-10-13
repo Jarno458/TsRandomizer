@@ -31,6 +31,6 @@ namespace TsRandomizer.Extensions
 
 		internal static T SelectRandom<T>(this IEnumerable<T> items, Random r) => items.ToArray().SelectRandom(r);
 
-		internal static HashSet<T> ToHashSet<T>(this IEnumerable<T> items) => new HashSet<T>(items);
+		//internal static HashSet<T> ToHashSet<T>(this IEnumerable<T> items) => new HashSet<T>(items);
 	}
 }
