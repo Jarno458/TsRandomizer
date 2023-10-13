@@ -15,7 +15,7 @@ using TsRandomizer.Screens.Menu;
 
 namespace TsRandomizer.Screens.Gifting
 {
-	class GiftingReceiveScreen : GiftingScreen
+	class GiftingSendScreen : GiftingScreen
 	{
 		const int DummyTeam = -999;
 		const int NumberOfTraitsToDisplay = 7;
@@ -32,7 +32,7 @@ namespace TsRandomizer.Screens.Gifting
 		InventoryItem selectedItem;
 		AcceptedTraits selectedPlayer;
 
-		public GiftingReceiveScreen(ScreenManager screenManager, GameScreen gameScreen) : base(screenManager, gameScreen)
+		public GiftingSendScreen(ScreenManager screenManager, GameScreen gameScreen) : base(screenManager, gameScreen)
 		{
 		}
 
@@ -40,14 +40,14 @@ namespace TsRandomizer.Screens.Gifting
 		{
 			base.Initialize(itemLocationMap, gcm);
 
-			Dynamic._menuTitle = "Gifting - Receive";
+			Dynamic._menuTitle = "Gifting - Sending";
 
 			acceptedTraitsPerSlot = GiftingService.GetAcceptedTraits();
 
-			PopulateMenus();
+			PopulatePlayerMenus();
 		}
 		
-		void PopulateMenus()
+		void PopulatePlayerMenus()
 		{
 			var menuEntries = (IList)Dynamic.MenuEntries;
 			menuEntries.Clear();
@@ -55,17 +55,31 @@ namespace TsRandomizer.Screens.Gifting
 			var subMenuCollections = (IList)Dynamic._subMenuCollections;
 			subMenuCollections.Clear();
 
-			var selectTraitsMenu = MenuEntry.Create("Choose wanted types", () => { });
-			selectTraitsMenu.IsCenterAligned = false;
-			selectTraitsMenu.DoesDrawLargeShadow = false;
-			selectTraitsMenu.ColumnWidth = 144;
-			menuEntries.Add(selectTraitsMenu.AsTimeSpinnerMenuEntry());
+			if (!acceptedTraitsPerSlot.Any())
+			{
+				var mainMenuEntry = MenuEntry.Create("No Available Players", () => { });
+				mainMenuEntry.IsCenterAligned = false;
+				mainMenuEntry.DoesDrawLargeShadow = false;
+				mainMenuEntry.ColumnWidth = 144;
+				menuEntries.Add(mainMenuEntry.AsTimeSpinnerMenuEntry());
+			}
+			else
+			{
+				foreach (var acceptedTraits in acceptedTraitsPerSlot)
+				{
+					var inventoryMenu = CreateMenuUseItemInventory(acceptedTraits);
+					if (inventoryMenu == null)
+						continue;
 
-			var giftReceiveMenu = MenuEntry.Create("Open Gifts", () => { });
-			giftReceiveMenu.IsCenterAligned = false;
-			giftReceiveMenu.DoesDrawLargeShadow = false;
-			giftReceiveMenu.ColumnWidth = 144;
-			menuEntries.Add(giftReceiveMenu.AsTimeSpinnerMenuEntry());
+					subMenuCollections.Add(inventoryMenu);
+
+					var mainMenuEntry = MenuEntry.Create(acceptedTraits.Name, () => { Dynamic.ChangeMenuCollection(inventoryMenu, true); });
+					mainMenuEntry.IsCenterAligned = false;
+					mainMenuEntry.DoesDrawLargeShadow = false;
+					mainMenuEntry.ColumnWidth = 144;
+					menuEntries.Add(mainMenuEntry.AsTimeSpinnerMenuEntry());
+				}
+			}
 
 			subMenuCollections.Add(~ConfirmMenuCollection);
 		}
@@ -169,7 +183,7 @@ namespace TsRandomizer.Screens.Gifting
 				DesiredTraits = new[] { Trait.Consumable, Trait.Flower, Trait.Heal, Trait.Food, Trait.Cure, Trait.Drink, Trait.Vegetable, Trait.Fruit }
 			});
 
-			PopulateMenus();
+			PopulatePlayerMenus();
 
 			GiftingService.NumberOfGifts += 1;
 		}

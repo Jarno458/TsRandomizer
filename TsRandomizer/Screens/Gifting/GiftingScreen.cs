@@ -52,7 +52,7 @@ namespace TsRandomizer.Screens.Gifting
 				new Action<object, EventArgs>(OnGiftItemCancel)).AsDynamic();
 
 			ConfirmMenuCollection.Font = GameContentManager.ActiveFont;
-
+			
 			PlayerInfoCollection = StatCollectionType.CreateInstance().AsDynamic();
 			((IList)Dynamic.StatCollections).Add(~PlayerInfoCollection);
 		}

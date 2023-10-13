@@ -27,7 +27,7 @@ namespace TsRandomizer.Screens.Gifting
 				case GiftingMenuType.None:
 					return;
 				case GiftingMenuType.Send:
-					subScreen = new GiftingReceiveScreen(screenManager, gameScreen);
+					subScreen = new GiftingSendScreen(screenManager, gameScreen);
 					break;
 				case GiftingMenuType.Receive:
 					subScreen = new GiftingReceiveScreen(screenManager, gameScreen);

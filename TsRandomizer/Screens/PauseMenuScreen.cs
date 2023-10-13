@@ -54,7 +54,7 @@ namespace TsRandomizer.Screens
 
 			if (input.IsNewPressSecondary(null))
 			{
-				GiftingMenuType = GiftingMenuType.Receive;
+				GiftingMenuType = GiftingMenuType.Send;
 
 				var giftingMenuScreen = EquipmentMenuScreen.Create(ScreenManager, Dynamic._saveFile);
 
@@ -62,7 +62,7 @@ namespace TsRandomizer.Screens
 			} 
 			else if (input.IsNewPressTertiary(null))
 			{
-				GiftingMenuType = GiftingMenuType.Send;
+				GiftingMenuType = GiftingMenuType.Receive;
 
 				var giftingMenuScreen = EquipmentMenuScreen.Create(ScreenManager, Dynamic._saveFile);
 
