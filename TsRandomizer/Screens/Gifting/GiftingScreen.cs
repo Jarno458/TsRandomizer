@@ -55,7 +55,24 @@ namespace TsRandomizer.Screens.Gifting
 			
 			PlayerInfoCollection = StatCollectionType.CreateInstance().AsDynamic();
 			((IList)Dynamic.StatCollections).Add(~PlayerInfoCollection);
+
+			PopulateMainMenu();
 		}
+
+		protected void PopulateMainMenu()
+		{
+			var menuEntries = (IList)Dynamic.MenuEntries;
+			menuEntries.Clear();
+
+			var subMenuCollections = (IList)Dynamic._subMenuCollections;
+			subMenuCollections.Clear();
+
+			PopulateMainMenu(menuEntries, subMenuCollections);
+
+			subMenuCollections.Add(~ConfirmMenuCollection);
+		}
+
+		protected abstract void PopulateMainMenu(IList menuEntriesList, IList subMenuCollections);
 
 		protected abstract void OnGiftItemAccept(object obj, EventArgs args);
 		protected abstract void OnGiftItemCancel(object obj, EventArgs args);

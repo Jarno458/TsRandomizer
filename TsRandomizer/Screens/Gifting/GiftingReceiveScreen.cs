@@ -43,34 +43,24 @@ namespace TsRandomizer.Screens.Gifting
 			Dynamic._menuTitle = "Gifting - Receive";
 
 			acceptedTraitsPerSlot = GiftingService.GetAcceptedTraits();
-
-			PopulateMenus();
 		}
-		
-		void PopulateMenus()
+
+		protected override void PopulateMainMenu(IList menuEntriesList, IList subMenuCollections)
 		{
-			var menuEntries = (IList)Dynamic.MenuEntries;
-			menuEntries.Clear();
-
-			var subMenuCollections = (IList)Dynamic._subMenuCollections;
-			subMenuCollections.Clear();
-
 			var selectTraitsMenu = MenuEntry.Create("Choose wanted types", () => { });
 			selectTraitsMenu.IsCenterAligned = false;
 			selectTraitsMenu.DoesDrawLargeShadow = false;
 			selectTraitsMenu.ColumnWidth = 144;
-			menuEntries.Add(selectTraitsMenu.AsTimeSpinnerMenuEntry());
+			menuEntriesList.Add(selectTraitsMenu.AsTimeSpinnerMenuEntry());
 
 			var giftReceiveMenu = MenuEntry.Create("Open Gifts", () => { });
 			giftReceiveMenu.IsCenterAligned = false;
 			giftReceiveMenu.DoesDrawLargeShadow = false;
 			giftReceiveMenu.ColumnWidth = 144;
-			menuEntries.Add(giftReceiveMenu.AsTimeSpinnerMenuEntry());
-
-			subMenuCollections.Add(~ConfirmMenuCollection);
+			menuEntriesList.Add(giftReceiveMenu.AsTimeSpinnerMenuEntry());
 		}
 
-		object CreateMenuUseItemInventory(AcceptedTraits acceptedTraits)
+		object CreateGiftList(AcceptedTraits acceptedTraits)
 		{
 			bool OnUseItemSelected(InventoryItem item)
 			{
@@ -114,67 +104,6 @@ namespace TsRandomizer.Screens.Gifting
 			return ~inventoryMenu;
 		}
 
-#if DEBUG
-		void LoadAcceptedTraitsDummyData()
-		{
-			acceptedTraitsPerSlot.Clear();
-
-			acceptedTraitsPerSlot.Add(new AcceptedTraits
-			{
-				Team = DummyTeam,
-				Slot = 1,
-				Game = "Timespinner",
-				Name = "HealMe",
-				AcceptsAnyTrait = false,
-				DesiredTraits = new[] { Trait.Heal }
-			});
-
-			acceptedTraitsPerSlot.Add(new AcceptedTraits
-			{
-				Team = DummyTeam,
-				Slot = 2,
-				Game = "Satisfactory",
-				Name = "JarnoSF",
-				AcceptsAnyTrait = true,
-				DesiredTraits = new Trait[0]
-			});
-
-			acceptedTraitsPerSlot.Add(new AcceptedTraits
-			{
-				Team = DummyTeam,
-				Slot = 3,
-				Game = "SomeGame",
-				Name = "I Need Mana",
-				AcceptsAnyTrait = false,
-				DesiredTraits = new[] { Trait.Mana }
-			});
-
-			acceptedTraitsPerSlot.Add(new AcceptedTraits
-			{
-				Team = DummyTeam,
-				Slot = 4,
-				Game = "Yolo",
-				Name = "Fishy",
-				AcceptsAnyTrait = false,
-				DesiredTraits = new[] { Trait.Fish }
-			});
-
-			acceptedTraitsPerSlot.Add(new AcceptedTraits
-			{
-				Team = DummyTeam,
-				Slot = 5,
-				Game = "Yolo2",
-				Name = "Some really rather long name",
-				AcceptsAnyTrait = false,
-				DesiredTraits = new[] { Trait.Consumable, Trait.Flower, Trait.Heal, Trait.Food, Trait.Cure, Trait.Drink, Trait.Vegetable, Trait.Fruit }
-			});
-
-			PopulateMenus();
-
-			GiftingService.NumberOfGifts += 1;
-		}
-#endif
-
 		protected override void OnGiftItemAccept(object obj, EventArgs args)
 		{
 			if (selectedPlayer.Team == DummyTeam || GiftingService.Send(selectedItem, selectedPlayer))
@@ -214,11 +143,6 @@ namespace TsRandomizer.Screens.Gifting
 		public override void Update(GameTime gameTime, InputState input)
 		{
 			base.Update(gameTime, input);
-
-#if DEBUG
-			if (input.IsNewPressTertiary(null))
-				LoadAcceptedTraitsDummyData();
-#endif
 
 			RefreshPlayerGiftboxInfo(GameContentManager.ActiveFont);
 		}

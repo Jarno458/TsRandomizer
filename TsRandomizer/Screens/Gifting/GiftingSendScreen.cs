@@ -43,25 +43,17 @@ namespace TsRandomizer.Screens.Gifting
 			Dynamic._menuTitle = "Gifting - Sending";
 
 			acceptedTraitsPerSlot = GiftingService.GetAcceptedTraits();
-
-			PopulatePlayerMenus();
 		}
-		
-		void PopulatePlayerMenus()
+
+		protected override void PopulateMainMenu(IList menuEntriesList, IList subMenuCollections)
 		{
-			var menuEntries = (IList)Dynamic.MenuEntries;
-			menuEntries.Clear();
-
-			var subMenuCollections = (IList)Dynamic._subMenuCollections;
-			subMenuCollections.Clear();
-
 			if (!acceptedTraitsPerSlot.Any())
 			{
 				var mainMenuEntry = MenuEntry.Create("No Available Players", () => { });
 				mainMenuEntry.IsCenterAligned = false;
 				mainMenuEntry.DoesDrawLargeShadow = false;
 				mainMenuEntry.ColumnWidth = 144;
-				menuEntries.Add(mainMenuEntry.AsTimeSpinnerMenuEntry());
+				menuEntriesList.Add(mainMenuEntry.AsTimeSpinnerMenuEntry());
 			}
 			else
 			{
@@ -77,11 +69,9 @@ namespace TsRandomizer.Screens.Gifting
 					mainMenuEntry.IsCenterAligned = false;
 					mainMenuEntry.DoesDrawLargeShadow = false;
 					mainMenuEntry.ColumnWidth = 144;
-					menuEntries.Add(mainMenuEntry.AsTimeSpinnerMenuEntry());
+					menuEntriesList.Add(mainMenuEntry.AsTimeSpinnerMenuEntry());
 				}
 			}
-
-			subMenuCollections.Add(~ConfirmMenuCollection);
 		}
 
 		object CreateMenuUseItemInventory(AcceptedTraits acceptedTraits)
@@ -183,7 +173,7 @@ namespace TsRandomizer.Screens.Gifting
 				DesiredTraits = new[] { Trait.Consumable, Trait.Flower, Trait.Heal, Trait.Food, Trait.Cure, Trait.Drink, Trait.Vegetable, Trait.Fruit }
 			});
 
-			PopulatePlayerMenus();
+			base.PopulateMainMenu();
 
 			GiftingService.NumberOfGifts += 1;
 		}
