@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -36,7 +37,22 @@ namespace TsRandomizer.Screens.Console
 		readonly ConcurrentQueue<Message> websocketBuffer = new ConcurrentQueue<Message>();
 		readonly List<Message> lines = new List<Message>();
 
-		readonly LookupDictionary<string, ConsoleCommand> commands = new LookupDictionary<string, ConsoleCommand>(c => c.Command);
+		public string GetText()
+		{
+			var builder = new StringBuilder();
+
+			foreach (var line in lines)
+			{
+				foreach (var parts in line.Parts)
+					builder.Append(parts.Text);
+
+				builder.Append("\n");
+			}
+
+			return builder.ToString();
+		}
+
+		public readonly LookupDictionary<string, ConsoleCommand> Commands = new LookupDictionary<string, ConsoleCommand>(c => c.Command);
 
 		public GameConsole(ScreenManager screenManager, GCM gcm)
 		{
@@ -47,9 +63,12 @@ namespace TsRandomizer.Screens.Console
 			System.Console.SetError(new ConsoleTextWriter(this, Color.DarkRed));
 
 			AddCommand(new HelpCommand());
+			AddCommand(new ConnectionTestApCommand());
+			AddCommand(new ConnectionTestRawCommand());
+			AddCommand(new WriteToFileCommand());
 		}
 
-		public void AddCommand(ConsoleCommand command) => commands.AddOrUpdate(command);
+		public void AddCommand(ConsoleCommand command) => Commands.AddOrUpdate(command);
 
 		public override void Update(GameTime gameTime, bool doesOtherScreenHasFocus, bool isCoveredByOtherScreen)
 		{
@@ -152,7 +171,7 @@ namespace TsRandomizer.Screens.Console
 			var slashRemoved = commandText.Substring(1);
 			var parts = slashRemoved.Split(' ');
 
-			if (commands.TryGetValue(parts[0], out var command))
+			if (Commands.TryGetValue(parts[0], out var command))
 			{
 				var handled = command.Handle(this, parts.Skip(1).ToArray());
 
@@ -365,19 +384,6 @@ namespace TsRandomizer.Screens.Console
 			spriteBatch.DrawString(font, text, position, color, inGameZoom * 0.5f);
 		}
 
-		class HelpCommand : ConsoleCommand
-		{
-			public override string Command => "help";
 
-			public override bool Handle(GameConsole console, string[] parameters)
-			{
-				console.AddLine("Available commands:");
-				foreach (var command in console.commands)
-					console.AddLine(command.Usage);
-				console.AddLine("More commands available server side under !help");
-
-				return true;
-			}
-		}
 	}
 }
