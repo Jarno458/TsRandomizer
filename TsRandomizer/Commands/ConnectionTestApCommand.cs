@@ -42,7 +42,7 @@ namespace TsRandomizer.Commands
 				return false;
 			}
 
-			var task = Task.Run(() => AttemptToConnect(server, user, password));
+			var task = Task.Factory.StartNew(() => AttemptToConnect(server, user, password));
 			task.Wait(TimeSpan.FromSeconds(15));
 			
 			return true;

@@ -1,60 +1,35 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Net;
+using System.Collections.Generic;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
-using Archipelago.MultiClient.Net.Enums;
-using Archipelago.MultiClient.Net.Packets;
-using TsRandomizer.Screens.Console;
-using System.Threading;
-using System.Text;
-using Archipelago.MultiClient.Net.Exceptions;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 using Archipelago.MultiClient.Net.Converters;
+using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
+using Archipelago.MultiClient.Net.Packets;
+using Newtonsoft.Json;
+using TsRandomizer.Screens.Console;
+using WebSocketSharp;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace TsRandomizer.Commands
 {
 	class ConnectionTestRawCommand : ConsoleCommand
 	{
-		const int ReceiveChunkSize = 1024;
-		const int SendChunkSize = 1024;
-
 		static ArchipelagoPacketConverter converter = new ArchipelagoPacketConverter();
 
 		public override string Command => "test-connect-raw";
 		public override string ParameterUsage => "<server> <username> <password?>";
 
-		BlockingCollection<Tuple<ArchipelagoPacketBase, TaskCompletionSource<bool>>> sendQueue;
-
 		GameConsole console;
 
-		ClientWebSocket webSocket;
-		Task pollTask;
-		Task sendTask;
 		ArchipelagoPacketBase loginResult;
-
+		
 		void Reset()
 		{
-			if(pollTask != null)
-				pollTask.Dispose();
-
-			if (sendTask != null)
-				sendTask.Dispose();
-
-			pollTask = null;
-			sendTask = null;
-
-			sendQueue = new BlockingCollection<Tuple<ArchipelagoPacketBase, TaskCompletionSource<bool>>>();
-
-			webSocket = null;
 			loginResult = null;
 		}
-		
+
 		public override bool Handle(GameConsole gameConsole, string[] parameters)
 		{
 			console = gameConsole;
@@ -82,71 +57,53 @@ namespace TsRandomizer.Commands
 				return false;
 			}
 
-			var task = Task.Run(() => AttemptToConnect(server, user, password));
+			var task = Task.Factory.StartNew(() => AttemptToConnect(server, user, password));
 			task.Wait(TimeSpan.FromSeconds(15));
 
 			return true;
 		}
 
-		async void AttemptToConnect(string server, string user, string password)
+		void AttemptToConnect(string server, string user, string password)
 		{
-			//var uri = new UriBuilder(server) { Scheme = "wss" }.Uri;
 			var uri = new Uri($"wss://{server}");
-    		webSocket = new ClientWebSocket();
 
-			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | (SecurityProtocolType)12288;
+			console.AddLine($"Connecting to '{server}' using AP client:", Color.Yellow);
+			
+			var socket = new WebSocket(uri.ToString());
+			if (socket.IsSecure)
+				socket.SslConfiguration.EnabledSslProtocols = (SslProtocols)3072 | (SslProtocols)12288;
 
-			console.AddLine($"Connecting to '{server}' using raw websocket client:", Color.Yellow);
-			console.AddLine($"Calculated URI to {uri}", Color.White);
+			console.AddLine($"Calculated URI to {socket.Url}", Color.White);
+	
+			//socket.
+			
+			socket.OnError += Socket_ErrorReceived;
+			socket.OnOpen += Socket_SocketOpened;
+			socket.OnClose += Socket_SocketClosed;
+			socket.OnMessage += Socket_OnMessage;
 
 			try
 			{
-				console.AddLine("Attempting connection to server", Color.White);
+				console.AddLine("Attempting connection to server, with timeout of 5 seconds", Color.White);
+				socket.ConnectAsync();
 
-				await webSocket.ConnectAsync(uri, CancellationToken.None);
-			}
-			catch (AggregateException ae)
-			{
-				console.AddLine($"Websocket status: {webSocket.State}, CloseStatus? '{webSocket.CloseStatus}', CloseReason: '{webSocket.CloseStatusDescription}'", Color.Brown);
-
-				console.AddLine($"connection task failed with AggregateException[{ae.InnerExceptions.Count}]:", Color.Red);
-
-				foreach (var e in ae.InnerExceptions)
+				var connectStartTime = DateTime.Now;
+				while ((DateTime.Now - connectStartTime).Seconds < 5)
 				{
-					console.AddLine($"  Exception: [{e.GetType().FullName}]: {e.Message}", Color.Red);
-					console.AddLine($"  Stacktrace: {e.StackTrace}", Color.Red);
+					if(socket.ReadyState == WebSocketState.Open)
+						break;
 				}
-			}
-			catch (Exception e)
-			{
-				console.AddLine($"Websocket status: {webSocket.State}, CloseStatus? '{webSocket.CloseStatus}', CloseReason: '{webSocket.CloseStatusDescription}'", Color.Brown);
+				
+				if (socket.ReadyState == WebSocketState.Open)
+					console.AddLine("connection to server was established", Color.White);
+				else
+					console.AddLine("connection to server failed", Color.Orange);
 
-				console.AddLine($"connection task Exception: [{e.GetType().FullName}]: {e.Message}", Color.Red);
-				console.AddLine($"  Stacktrace: {e.StackTrace}", Color.Red);
-			}
-
-			console.AddLine($"Websocket status: {webSocket.State}, CloseStatus? {webSocket.CloseStatus}, CloseReason: {webSocket.CloseStatusDescription}", Color.White);
-
-			_ = Task.Run(PollingLoop);
-			_ = Task.Run(SendLoop);
-
-			try
-			{
-				await SendMultiplePacketsAsync(new ConnectPacket
-				{
-					Game = "Timespinner",
-					ItemsHandling = ItemsHandlingFlags.NoItems,
-					Name = user,
-					Password = password,
-					RequestSlotData = false,
-					Tags = Array.Empty<string>(),
-					Uuid = Guid.Empty.ToString(),
-					Version = new NetworkVersion(0, 4, 1)
-				});
+				console.AddLine($"connection to server with status: {socket.ReadyState}, Alive: {socket.IsAlive}", Color.White);
 			}
 			catch (AggregateException ae)
 			{
-				console.AddLine($"Send connect task AggregateException[{ae.InnerExceptions}]:", Color.Red);
+				console.AddLine($"connection task failed with AggregateException[{ae.InnerExceptions.Count}]:", Color.Red);
 
 				foreach (var e in ae.InnerExceptions)
 				{
@@ -157,7 +114,49 @@ namespace TsRandomizer.Commands
 			}
 			catch (Exception e)
 			{
-				console.AddLine($"send connect task Exception: [{e.GetType().FullName}]{e.Message}", Color.Red);
+				console.AddLine($"connection to server Exception: [{e.GetType().FullName}]: {e.Message}", Color.Red);
+				console.AddLine($"  Stacktrace: {e.StackTrace}", Color.Red);
+			}
+
+			if (socket.ReadyState != WebSocketState.Open)
+				console.AddLine("Connection failed, aborting login", Color.Orange);
+			else
+				console.AddLine("Attemting login to server, with timeout of 5 seconds", Color.White);
+
+			var packets = new List<ArchipelagoPacketBase> {
+				new ConnectPacket {
+					Game = "Timespinner",
+					ItemsHandling = ItemsHandlingFlags.NoItems,
+					Name = user,
+					Password = password,
+					RequestSlotData = false,
+					Tags = new string[0],
+					Uuid = Guid.Empty.ToString(),
+					Version = new NetworkVersion(0, 4, 1)
+				}
+			};
+			var packetAsJson = JsonConvert.SerializeObject(packets);
+
+			try
+			{
+				socket.SendAsync(packetAsJson, success => {
+					console.AddLine($"Sending ConnectPacket result: {success}", Color.White);
+				});
+			}
+			catch (AggregateException ae)
+			{
+				console.AddLine($"login packet send failed with AggregateException[{ae.InnerExceptions.Count}]:", Color.Red);
+
+				foreach (var e in ae.InnerExceptions)
+				{
+					console.AddLine($"  Exception: [{e.GetType().FullName}]{e.Message}", Color.Red);
+					console.AddLine($"  Stacktrace: {e.StackTrace}", Color.Red);
+
+				}
+			}
+			catch (Exception e)
+			{
+				console.AddLine($"login packet send Exception: [{e.GetType().FullName}]: {e.Message}", Color.Red);
 				console.AddLine($"  Stacktrace: {e.StackTrace}", Color.Red);
 			}
 
@@ -167,9 +166,9 @@ namespace TsRandomizer.Commands
 
 			while ((DateTime.Now - started).Seconds < 15)
 			{
-				if(loginResult == null)
+				if (loginResult == null)
 					continue;
-				
+
 				if (loginResult.PacketType == ArchipelagoPacketType.Connected)
 					console.AddLine("Successfully logged in", Color.Green);
 				if (loginResult.PacketType == ArchipelagoPacketType.ConnectionRefused)
@@ -185,183 +184,41 @@ namespace TsRandomizer.Commands
 			console.AddLine("Login timed out", Color.Red);
 		}
 
-		async Task PollingLoop()
+		void Socket_OnMessage(object sender, MessageEventArgs e)
 		{
-			var buffer = new byte[ReceiveChunkSize];
+			if (e.IsPing)
+				console.AddLine($"Ping Received", Color.Gray);
+			if (e.IsBinary)
+				console.AddLine($"Binary Received {Convert.ToBase64String(e.RawData)}", Color.Gray);
+			if (e.IsText)
+				console.AddLine($"Json Received: {e.Data}", Color.DarkGray);
 
-			while (webSocket != null && webSocket.State == WebSocketState.Open)
+			var packets = JsonConvert.DeserializeObject<List<ArchipelagoPacketBase>>(e.Data, converter);
+			if (packets == null)
 			{
-				string message = null;
-
-				try
+				console.AddLine("Json to packet conversion yielded empty list", Color.Orange);
+			}
+			else
+			{
+				foreach (var packet in packets)
 				{
-					message = await ReadMessageAsync(buffer);
-				}
-				catch (AggregateException ae)
-				{
-					console.AddLine($"PollingLoop: AggregateException[{ae.InnerExceptions}]:", Color.Red);
+					console.AddLine($"Data Received: {packet.ToJObject()}", Color.Gray);
 
-					foreach (var e in ae.InnerExceptions)
-					{
-						console.AddLine($"  Exception: [{e.GetType().FullName}]{e.Message}", Color.Red);
-						console.AddLine($"  Stacktrace: {e.StackTrace}", Color.Red);
-
-					}
-
-					continue;
-				}
-				catch (Exception e)
-				{
-					console.AddLine($"PollingLoop: Socket Exception: [{e.GetType().FullName}]: {e.Message}", Color.Red);
-					console.AddLine($"  Stacktrace: {e.StackTrace}", Color.Red);
-
-					continue;
-				}
-
-				console.AddLine($"Json Received: {message}", Color.DarkGray);
-
-				var packets = JsonConvert.DeserializeObject<List<ArchipelagoPacketBase>>(message, converter);
-				if (packets == null)
-				{
-					console.AddLine("Json to packet conversion yielded empty list", Color.Orange);
-				}
-				else
-				{
-					foreach (var packet in packets)
-					{
-						console.AddLine($"Data Received: {packet.ToJObject()}", Color.Gray);
-
-						if (packet.PacketType == ArchipelagoPacketType.Connected || packet.PacketType == ArchipelagoPacketType.ConnectionRefused)
-							loginResult = packet;
-					}
+					if (packet.PacketType == ArchipelagoPacketType.Connected || packet.PacketType == ArchipelagoPacketType.ConnectionRefused)
+						loginResult = packet;
 				}
 			}
 		}
 
-		async Task SendLoop()
+		void Socket_SocketClosed(object sender, CloseEventArgs e) =>
+			console.AddLine($"Socket Closed: Code: {e.Code}, Reason: {e.Reason}, Clean: {e.WasClean}", Color.Red);
+		void Socket_SocketOpened(object sender, EventArgs e) =>
+			console.AddLine("Socket Opened", Color.Green);
+		void Socket_ErrorReceived(object sender, ErrorEventArgs e)
 		{
-			while (webSocket != null && webSocket.State == WebSocketState.Open)
-			{
-				try
-				{
-					await HandleSendBuffer();
-				}
-				catch (AggregateException ae)
-				{
-					console.AddLine($"SendLoop: AggregateException[{ae.InnerExceptions}]:", Color.Red);
-
-					foreach (var e in ae.InnerExceptions)
-					{
-						console.AddLine($"SendLoop Exception: [{e.GetType().FullName}]{e.Message}", Color.Red);
-						console.AddLine($"  Stacktrace: {e.StackTrace}", Color.Red);
-
-					}
-				}
-				catch (Exception e)
-				{
-					console.AddLine($"SendLoop Exception: [{e.GetType().FullName}]{e.Message}", Color.Red);
-					console.AddLine($"  Stacktrace: {e.StackTrace}", Color.Red);
-				}
-			}
-		}
-
-		async Task<string> ReadMessageAsync(byte[] buffer)
-		{
-			var stringResult = new StringBuilder();
-
-			WebSocketReceiveResult result;
-			do
-			{
-				result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-
-				if (result.MessageType == WebSocketMessageType.Close)
-				{
-					try
-					{
-						await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
-					}
-					catch (AggregateException ae)
-					{
-						console.AddLine($"ReadMessageAsync (Close): AggregateException[{ae.InnerExceptions}]:", Color.Red);
-
-						foreach (var e in ae.InnerExceptions)
-						{
-							console.AddLine($"  Exception: [{e.GetType().FullName}]{e.Message}", Color.Red);
-							console.AddLine($"  Stacktrace: {e.StackTrace}", Color.Red);
-
-						}
-					}
-					catch (Exception e)
-					{
-						console.AddLine($"ReadMessageAsync (Close): Socket Exception: [{e.GetType().FullName}]: {e.Message}", Color.Red);
-						console.AddLine($"  Stacktrace: {e.StackTrace}", Color.Red);
-					}
-
-					console.AddLine("Socket Closed", Color.Red);
-				}
-				else
-				{
-					stringResult.Append(Encoding.UTF8.GetString(buffer, 0, result.Count));
-				}
-			} while (!result.EndOfMessage);
-
-			return stringResult.ToString();
-		}
-
-		async Task HandleSendBuffer()
-		{
-			var packetList = new List<ArchipelagoPacketBase>();
-			var tasks = new List<TaskCompletionSource<bool>>();
-
-			var firstPacketTuple = sendQueue.Take();
-			packetList.Add(firstPacketTuple.Item1);
-			tasks.Add(firstPacketTuple.Item2);
-			while (sendQueue.TryTake(out var packetTuple))
-			{
-				packetList.Add(packetTuple.Item1);
-				tasks.Add(packetTuple.Item2);
-			}
-
-			if (!packetList.Any())
-				return;
-
-			if (webSocket.State != WebSocketState.Open)
-				throw new ArchipelagoSocketClosedException();
-
-			var packets = packetList.ToArray();
-
-			var packetAsJson = JsonConvert.SerializeObject(packets);
-			var messageBuffer = Encoding.UTF8.GetBytes(packetAsJson);
-			var messagesCount = (int)Math.Ceiling((double)messageBuffer.Length / SendChunkSize);
-
-			for (var i = 0; i < messagesCount; i++)
-			{
-				var offset = (SendChunkSize * i);
-				var count = SendChunkSize;
-				var lastMessage = ((i + 1) == messagesCount);
-
-				if ((count * (i + 1)) > messageBuffer.Length)
-					count = messageBuffer.Length - offset;
-
-				await webSocket.SendAsync(new ArraySegment<byte>(messageBuffer, offset, count),
-					WebSocketMessageType.Text, lastMessage, CancellationToken.None);
-			}
-
-			foreach (var task in tasks)
-				task.TrySetResult(true);
-
-			foreach (var packet in packets)
-				console.AddLine($"Data Send: {packet.PacketType}", Color.Gray);
-		}
-
-		public Task SendMultiplePacketsAsync(params ArchipelagoPacketBase[] packets)
-		{ 
-			var task = new TaskCompletionSource<bool>();
-
-			foreach (var packet in packets)
-				sendQueue.Add(new Tuple<ArchipelagoPacketBase, TaskCompletionSource<bool>>(packet, task));
-
-			return task.Task;
+			console.AddLine($"Socket Error: {e.Message}", Color.Red);
+			console.AddLine($"Socket Exception: [{e.Exception.GetType().FullName}]: {e.Exception}", Color.Red);
+			console.AddLine($"  Stacktrace: {e.Exception.StackTrace}", Color.Red);
 		}
 	}
 }
