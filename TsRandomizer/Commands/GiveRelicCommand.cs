@@ -12,6 +12,7 @@ namespace TsRandomizer.Commands
 	{
 		readonly Func<Level> level;
 		readonly Func<ItemLocationMap> itemLocationMap;
+
 		public override string Command => "giverelic";
 
 		public override string ParameterUsage => "<relicName>";

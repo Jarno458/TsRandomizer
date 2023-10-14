@@ -126,6 +126,10 @@
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
     <Compile Include="Archipelago\Countdown.cs" />
     <Compile Include="Archipelago\Gifting\GiftingService.cs" />
+    <Compile Include="Commands\ConnectionTestRawCommand.cs" />
+    <Compile Include="Commands\ConnectionTestApCommand.cs" />
+    <Compile Include="Commands\WriteToFileCommand.cs" />
+    <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Commands\InstaGibCommand.cs" />
     <Compile Include="Commands\CheckCommand.cs" />
     <Compile Include="Extensions\InventoryItemExtensions.cs" />
