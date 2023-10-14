@@ -309,7 +309,6 @@
     <Compile Include="Screens\Gifting\EquipmentMenuScreen.cs" />
     <Compile Include="Archipelago\Gifting\Trait.cs" />
     <Compile Include="Archipelago\Gifting\TraitMapping.cs" />
-    <Compile Include="Screens\Gifting\GiftingInventoryCollection.cs" />
     <Compile Include="Screens\Gifting\GiftingMenuType.cs" />
     <Compile Include="Screens\Gifting\GiftingSendScreen.cs" />
     <Compile Include="Screens\Gifting\GiftingReceiveScreen.cs" />

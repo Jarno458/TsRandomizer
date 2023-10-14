@@ -22,8 +22,10 @@ namespace TsRandomizer.Screens.Gifting
 
 		static readonly Type StatEntryType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.StatEntry");
+
 		static readonly Type StatEntryDisplayEnumType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.StatEntry+EStatDisplayType");
+
 		static readonly Type MenuUseItemInventoryType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.MenuUseItemInventory");
 
@@ -65,7 +67,8 @@ namespace TsRandomizer.Screens.Gifting
 
 					subMenuCollections.Add(inventoryMenu);
 
-					var mainMenuEntry = MenuEntry.Create(acceptedTraits.Name, () => { Dynamic.ChangeMenuCollection(inventoryMenu, true); });
+					var mainMenuEntry = MenuEntry.Create(acceptedTraits.Name,
+						() => { Dynamic.ChangeMenuCollection(inventoryMenu, true); });
 					mainMenuEntry.IsCenterAligned = false;
 					mainMenuEntry.DoesDrawLargeShadow = false;
 					mainMenuEntry.ColumnWidth = 144;
@@ -97,6 +100,7 @@ namespace TsRandomizer.Screens.Gifting
 				if (acceptedTraits.AcceptsAnyTrait || acceptedTraits.DesiredTraits.Any(t => traits.ContainsKey(t)))
 					collection.AddItem(item.UseItemType, item.Count);
 			}
+
 			foreach (var item in Save.Inventory.EquipmentInventory.Inventory.Values)
 			{
 				if (!TraitMapping.ValuesPerItem.TryGetValue(item.EquipmentType, out var traits))
@@ -112,7 +116,9 @@ namespace TsRandomizer.Screens.Gifting
 
 			collection.RefreshItemNameAndDescriptions();
 
-			var inventoryMenu = MenuUseItemInventoryType.CreateInstance(false, collection, (Func<InventoryUseItem, bool>)collection.OnUseItemSelected).AsDynamic();
+			var inventoryMenu = MenuUseItemInventoryType
+				.CreateInstance(false, collection, (Func<InventoryUseItem, bool>)collection.OnUseItemSelected)
+				.AsDynamic();
 			inventoryMenu.Font = GameContentManager.ActiveFont;
 
 			return ~inventoryMenu;
@@ -123,8 +129,7 @@ namespace TsRandomizer.Screens.Gifting
 		{
 			acceptedTraitsPerSlot.Clear();
 
-			acceptedTraitsPerSlot.Add(new AcceptedTraits
-			{
+			acceptedTraitsPerSlot.Add(new AcceptedTraits {
 				Team = DummyTeam,
 				Slot = 1,
 				Game = "Timespinner",
@@ -133,8 +138,7 @@ namespace TsRandomizer.Screens.Gifting
 				DesiredTraits = new[] { Trait.Heal }
 			});
 
-			acceptedTraitsPerSlot.Add(new AcceptedTraits
-			{
+			acceptedTraitsPerSlot.Add(new AcceptedTraits {
 				Team = DummyTeam,
 				Slot = 2,
 				Game = "Satisfactory",
@@ -143,8 +147,7 @@ namespace TsRandomizer.Screens.Gifting
 				DesiredTraits = new Trait[0]
 			});
 
-			acceptedTraitsPerSlot.Add(new AcceptedTraits
-			{
+			acceptedTraitsPerSlot.Add(new AcceptedTraits {
 				Team = DummyTeam,
 				Slot = 3,
 				Game = "SomeGame",
@@ -153,8 +156,7 @@ namespace TsRandomizer.Screens.Gifting
 				DesiredTraits = new[] { Trait.Mana }
 			});
 
-			acceptedTraitsPerSlot.Add(new AcceptedTraits
-			{
+			acceptedTraitsPerSlot.Add(new AcceptedTraits {
 				Team = DummyTeam,
 				Slot = 4,
 				Game = "Yolo",
@@ -163,14 +165,16 @@ namespace TsRandomizer.Screens.Gifting
 				DesiredTraits = new[] { Trait.Fish }
 			});
 
-			acceptedTraitsPerSlot.Add(new AcceptedTraits
-			{
+			acceptedTraitsPerSlot.Add(new AcceptedTraits {
 				Team = DummyTeam,
 				Slot = 5,
 				Game = "Yolo2",
 				Name = "Some really rather long name",
 				AcceptsAnyTrait = false,
-				DesiredTraits = new[] { Trait.Consumable, Trait.Flower, Trait.Heal, Trait.Food, Trait.Cure, Trait.Drink, Trait.Vegetable, Trait.Fruit }
+				DesiredTraits = new[] {
+					Trait.Consumable, Trait.Flower, Trait.Heal, Trait.Food, Trait.Cure, Trait.Drink, Trait.Vegetable,
+					Trait.Fruit
+				}
 			});
 
 			base.PopulateMainMenu();
@@ -198,7 +202,8 @@ namespace TsRandomizer.Screens.Gifting
 						useItemToRemove = equipment.ToInventoryUseItem();
 						break;
 					default:
-						throw new ArgumentOutOfRangeException(nameof(selectedItem), "paramter should be either UseItem or Equipment");
+						throw new ArgumentOutOfRangeException(nameof(selectedItem),
+							"paramter should be either UseItem or Equipment");
 				}
 
 				foreach (var collection in Dynamic._subMenuCollections)
@@ -304,5 +309,44 @@ namespace TsRandomizer.Screens.Gifting
 				}
 			}
 		}
+	}
+
+	class GiftingInventoryCollection : InventoryUseItemCollection
+	{
+		readonly Func<InventoryItem, bool> onItemSelected;
+
+		public GiftingInventoryCollection(Func<InventoryItem, bool> onItemSelected)
+		{
+			this.onItemSelected = onItemSelected;
+		}
+
+		public void AddItem(EInventoryUseItemType item) => AddItem(item, 1);
+		public void AddItem(EInventoryUseItemType item, int count) => AddItem((int)item, count);
+		public void AddItem(EInventoryEquipmentType item) => AddItem(item, 1);
+
+		public void AddItem(EInventoryEquipmentType item, int count) =>
+			AddItem((int)item.ToEInventoryUseItemType(), count);
+
+		public override void RefreshItemNameAndDescriptions()
+		{
+			// ReSharper disable once SuggestVarOrType_SimpleTypes
+			foreach (InventoryUseItem useItem in Inventory.Values)
+			{
+				if (!useItem.IsEquipment())
+					continue;
+
+				var equipment = useItem.ToInventoryEquipment();
+				var dynamicInventoryItem = useItem.AsDynamic();
+				dynamicInventoryItem.NameKey = equipment.NameKey;
+				dynamicInventoryItem.DescriptionKey = equipment.DescriptionKey;
+			}
+
+			base.RefreshItemNameAndDescriptions();
+		}
+
+		public bool OnUseItemSelected(InventoryUseItem useItem) =>
+			!useItem.IsEquipment()
+				? onItemSelected(useItem)
+				: onItemSelected(useItem.ToInventoryEquipment());
 	}
 }
