@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
+using TsRandomizer.Extensions;
 
 namespace TsRandomizer.Archipelago.Gifting
 {
@@ -100,5 +102,130 @@ namespace TsRandomizer.Archipelago.Gifting
 
 		public bool TryGetValue(EInventoryUseItemType item, out Dictionary<Trait, float> traits) => ValuesPerUseItem.TryGetValue(item, out traits);
 		public bool TryGetValue(EInventoryEquipmentType item, out Dictionary<Trait, float> traits) => ValuesPerEquipmentItem.TryGetValue(item, out traits);
+
+		public static InventoryItem ParseItem(string name, Dictionary<Trait, float> traits, int amount)
+		{
+			if(Enum.IsDefined(typeof(EInventoryUseItemType), name))
+			{
+				var useItemType = (EInventoryUseItemType)typeof(EInventoryUseItemType).GetEnumValue(name);
+
+				if (ValuesPerUseItem.ContainsKey(useItemType))
+					return new InventoryUseItem(useItemType) { Count = amount };
+			}
+
+			if (Enum.IsDefined(typeof(EInventoryEquipmentType), name))
+			{
+				var armorType = (EInventoryEquipmentType)typeof(EInventoryEquipmentType).GetEnumValue(name);
+
+				if (ValuesPerEquipmentItem.ContainsKey(armorType))
+					return new InventoryEquipment(armorType) { Count = amount };
+			}
+
+			if (traits.ContainsKey(Trait.Speed))
+				return new InventoryUseItem(EInventoryUseItemType.WarpCard) { Count = amount };
+			if (traits.ContainsKey(Trait.Flower))
+				return new InventoryUseItem(EInventoryUseItemType.ChaosHeal) { Count = amount };
+			if (traits.ContainsKey(Trait.Cure))
+				return new InventoryUseItem(EInventoryUseItemType.Antidote) { Count = amount };
+			if (traits.ContainsKey(Trait.Fish))
+				return new InventoryUseItem(EInventoryUseItemType.UnagiRoll) { Count = amount };
+			if (traits.ContainsKey(Trait.Egg))
+				return new InventoryEquipment(EInventoryEquipmentType.FamiliarEgg) { Count = amount };
+			if (traits.ContainsKey(Trait.Armor))
+				return new InventoryEquipment(FindClosesMathForArmorTrait(Trait.Armor, traits)) { Count = amount };
+			if (traits.ContainsKey(Trait.Mana))
+				return new InventoryUseItem(FindClosesMathForTrait(Trait.Mana, traits)) { Count = amount };
+			if (traits.ContainsKey(Trait.Mana))
+				return new InventoryUseItem(FindClosesMathForTrait(Trait.Mana, traits)) { Count = amount };
+			if (traits.ContainsKey(Trait.Heal))
+				return new InventoryUseItem(FindClosesMathForTrait(Trait.Heal, traits)) { Count = amount };
+			if (traits.ContainsKey(Trait.Resource))
+				return new InventoryUseItem(FindClosesMathForTrait(Trait.Resource, traits)) { Count = amount };
+			if (traits.ContainsKey(Trait.Fruit) && traits.ContainsKey(Trait.Drink))
+				return new InventoryUseItem(EInventoryUseItemType.OrangeJuice) { Count = amount };
+
+			return new InventoryUseItem(FindClosesMath(traits)) { Count = amount };
+		}
+
+		static EInventoryUseItemType FindClosesMath(Dictionary<Trait, float> traits)
+		{
+			var itemTypesWithMatchCount = new Dictionary<int, EInventoryUseItemType>();
+			var mostMatches = 0;
+
+			foreach (var useItemTraitMapping in ValuesPerUseItem)
+			{
+				var matches = 0;
+
+				foreach (var trait in traits.Keys)
+					if (useItemTraitMapping.Value.ContainsKey(trait))
+						matches++;
+
+				if (matches >= mostMatches)
+					itemTypesWithMatchCount.Add(matches, useItemTraitMapping.Key);
+			}
+
+			var mostMatchedItemTypes = itemTypesWithMatchCount
+				.Where(kvp => kvp.Key == mostMatches)
+				.Select(kvp => kvp.Value);
+
+			var closestMatch = 0f;
+			var closestItemType = EInventoryUseItemType.None;
+			
+			foreach (var itemType in mostMatchedItemTypes)
+			{
+				var diff = 0f;
+				foreach (var trait in traits)
+					if (ValuesPerUseItem[itemType].ContainsKey(trait.Key))
+						diff += Math.Abs(trait.Value - ValuesPerUseItem[itemType][trait.Key]);
+
+				if (closestItemType == EInventoryUseItemType.None || diff < closestMatch)
+				{
+					closestMatch = diff;
+					closestItemType = itemType;
+				}
+			}
+
+			return closestItemType;
+		}
+
+		static EInventoryUseItemType FindClosesMathForTrait(Trait trait, Dictionary<Trait, float> traits)
+		{
+			var itemValue = traits[trait];
+			var closestMatch = 0f; 
+			var closestItemType = EInventoryUseItemType.None;
+
+			foreach (var useItemTraitMapping in ValuesPerUseItem.Where(i => i.Value.ContainsKey(trait)))
+			{
+				var diff = Math.Abs(itemValue - useItemTraitMapping.Value[trait]);
+
+				if (closestItemType == EInventoryUseItemType.None || diff < closestMatch)
+				{
+					closestMatch = diff;
+					closestItemType = useItemTraitMapping.Key;
+				}
+			}
+
+			return closestItemType;
+		}
+
+		static EInventoryEquipmentType FindClosesMathForArmorTrait(Trait trait, Dictionary<Trait, float> traits)
+		{
+			var itemValue = traits[trait];
+			var closestMatch = 0f;
+			var closestItemType = EInventoryEquipmentType.None;
+
+			foreach (var useItemTraitMapping in ValuesPerEquipmentItem.Where(i => i.Value.ContainsKey(trait)))
+			{
+				var diff = Math.Abs(itemValue - useItemTraitMapping.Value[trait]);
+
+				if (closestItemType == EInventoryEquipmentType.None || diff < closestMatch)
+				{
+					closestMatch = diff;
+					closestItemType = useItemTraitMapping.Key;
+				}
+			}
+
+			return closestItemType;
+		}
 	}
 }

@@ -140,6 +140,18 @@ namespace TsRandomizer.Archipelago
 
 		public static void SetStatus(ArchipelagoClientState status) => SendPacket(new StatusUpdatePacket { Status = status });
 
+		public static PlayerInfo GetPlayerInfo(int team, int slot)
+		{
+			if (team < 0 || slot < 0)
+				return null;
+
+			if (!Players.Players.TryGetValue(team, out var playerPerTeam)
+			    || slot >= playerPerTeam.Count)
+				return null;
+
+			return playerPerTeam[slot];
+		}
+
 		static void OnMessageReceived(LogMessage message)
 		{
 			var parts = message.Parts.Select(p => new Part(p.Text, FromDrawingColor(p.Color))).ToArray();

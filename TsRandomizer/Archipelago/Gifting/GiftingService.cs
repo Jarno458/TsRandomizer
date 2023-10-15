@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using TsRandomizer.Extensions;
+using System.Collections.Generic;
 using Archipelago.Gifting.Net.Gifts;
 using Archipelago.Gifting.Net.Gifts.Versions.Current;
 using Archipelago.Gifting.Net.Service;
 using Archipelago.Gifting.Net.Traits;
 using Archipelago.MultiClient.Net;
 using Timespinner.GameAbstractions.Inventory;
-using TsRandomizer.Extensions;
+using TsRandomizer.Screens;
 using APGiftingService = Archipelago.Gifting.Net.Service.GiftingService;
 
 namespace TsRandomizer.Archipelago.Gifting
@@ -33,59 +34,141 @@ namespace TsRandomizer.Archipelago.Gifting
 			service.SubscribeToNewGifts(OnGiftsChanged);
 		}
 
-		void OnGiftsChanged(Dictionary<string, Gift> gifts) => 
+		void OnGiftsChanged(Dictionary<string, Gift> gifts) =>
 			NumberOfGifts = gifts.Count;
 
 		public List<AcceptedTraits> GetAcceptedTraits()
 		{
-			var acceptTraitsPerPlayer = service.GetAcceptedTraitsByPlayer(Client.Team, KnownTraits);
-			var acceptedTraitsPerSlot = new List<AcceptedTraits>(acceptTraitsPerPlayer.Count);
-			
-			foreach (var acceptTraitsForPlayer in acceptTraitsPerPlayer)
+			try
 			{
-				var team = Client.Team;
-				var slot = acceptTraitsForPlayer.Key;
+				var acceptTraitsPerPlayer = service.GetAcceptedTraitsByPlayer(Client.Team, KnownTraits);
+				var acceptedTraitsPerSlot = new List<AcceptedTraits>(acceptTraitsPerPlayer.Count);
 
-				var playerInfo = Client.Players.Players[team][slot];
+				foreach (var acceptTraitsForPlayer in acceptTraitsPerPlayer)
+				{
+					var team = Client.Team;
+					var slot = acceptTraitsForPlayer.Key;
 
-				var acceptedTraits = new AcceptedTraits {
-					Team = team,
-					Slot = slot,
-					Name = playerInfo.Alias,
-					Game = playerInfo.Game,
-					AcceptsAnyTrait = acceptTraitsForPlayer.Value.Count() == KnownTraits.Length,
-					DesiredTraits = acceptTraitsForPlayer.Value
-						.Select(t => (Trait)Enum.Parse(typeof(Trait), t))
-						.ToArray()
-				};
+					var playerInfo = Client.GetPlayerInfo(team, slot);
+					var playerGame = playerInfo?.Game ?? "Unknown Game";
+					var playerAlias = playerInfo?.Alias ?? $"Unknown Player {slot}";
 
-				acceptedTraitsPerSlot.Add(acceptedTraits);
+					var acceptedTraits = new AcceptedTraits
+					{
+						Team = team,
+						Slot = slot,
+						Name = playerAlias,
+						Game = playerGame,
+						AcceptsAnyTrait = acceptTraitsForPlayer.Value.Count() == KnownTraits.Length,
+						DesiredTraits = acceptTraitsForPlayer.Value
+							.Select(t => (Trait)Enum.Parse(typeof(Trait), t))
+							.ToArray()
+					};
+
+					acceptedTraitsPerSlot.Add(acceptedTraits);
+				}
+
+				return acceptedTraitsPerSlot;
 			}
+			catch (Exception e)
+			{
+				ScreenManager.Console.AddException(e, "GiftingService.GetAcceptedTraits() Failed");
 
-			return acceptedTraitsPerSlot;
+				return new List<AcceptedTraits>();
+			}
 		}
-		
+
 		public bool Send(InventoryItem item, AcceptedTraits playerInfo)
 		{
-			var giftItem = new GiftItem(item.Name, item.GetAmount(), 0);
-			var traits = TraitMapping.ValuesPerItem[item]
-				.Select(t => new GiftTrait(t.Key.ToString(), 1, t.Value))
-				.ToArray();
+			try
+			{
+				var giftItem = new GiftItem(item.Name, item.GetAmount(), 0);
+				var traits = TraitMapping.ValuesPerItem[item]
+					.Select(t => new GiftTrait(t.Key.ToString(), 1, t.Value))
+					.ToArray();
 
-			return service.SendGift(giftItem, traits, playerInfo.Name, playerInfo.Team);
+				return service.SendGift(giftItem, traits, playerInfo.Name, playerInfo.Team);
+			}
+			catch (Exception e)
+			{
+				ScreenManager.Console.AddException(e, "GiftingService.Send() Failed");
+			}
+
+			return false;
+		}
+
+		public void AcceptGift(Gift gift)
+		{
+			try
+			{
+				service.RemoveGiftFromGiftBox(gift.ID);
+			}
+			catch (Exception e)
+			{
+				ScreenManager.Console.AddException(e, "GiftingService.AcceptGift() Failed");
+			}
+		}
+
+		public void RejectGift(Gift gift)
+		{
+			try
+			{
+				service.RefundGift(gift);
+			}
+			catch (Exception e)
+			{
+				ScreenManager.Console.AddException(e, "GiftingService.RejectGift() Failed");
+			}
+		}
+
+		public IEnumerable<Gift> GetGifts()
+		{
+			try
+			{
+				return service.CheckGiftBox().Values;
+			}
+			catch (Exception e)
+			{
+				ScreenManager.Console.AddException(e, "GiftingService.GetGifts() Failed");
+
+				return new Gift[0];
+			}
 		}
 
 		public void SetAcceptedGifts(Trait[] traits)
 		{
-			if (!traits.Any())
-				service.CloseGiftBox();
-			else
-				service.OpenGiftBox(false, traits.Select(t => t.ToString()).ToArray());
+			try
+			{
+				if (!traits.Any())
+					service.CloseGiftBox();
+				else
+					service.OpenGiftBox(false, traits.Select(t => t.ToString()).ToArray());
+			}
+			catch (Exception e)
+			{
+				ScreenManager.Console.AddException(e, "GiftingService.SetAcceptedGifts() Failed");
+			}
 		}
 
 		public Trait[] EnabledTraits()
 		{
+			try
+			{
+				var giftMotherBoxes = Client.DataStorage[$"GiftBoxes;{Client.Team}"].To<Dictionary<int, GiftBox>>();
 
+				if (!giftMotherBoxes.TryGetValue(Client.Slot, out var giftBox))
+					return new Trait[0];
+
+				return giftBox.DesiredTraits
+					.Select(t => (Trait)typeof(Trait).GetEnumValue(t))
+					.ToArray();
+			}
+			catch (Exception e)
+			{
+				ScreenManager.Console.AddException(e, "GiftingService.EnabledTraits() Failed");
+
+				return new Trait[0];
+			}
 		}
 	}
 }

@@ -33,13 +33,13 @@ namespace TsRandomizer.Screens.Gifting
 
 		protected GiftingScreen(ScreenManager screenManager, GameScreen gameScreen) : base(screenManager, gameScreen)
 		{
+			GiftingService = Client.GetGiftingService();
 		}
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gcm)
 		{
 			GameContentManager = gcm;
 			Save = Dynamic._saveFile;
-			GiftingService = Client.GetGiftingService();
 
 			Dynamic.DoesDrawScrollbarWidget = true;
 

@@ -40,11 +40,11 @@ namespace TsRandomizer.Screens.Gifting
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gcm)
 		{
-			base.Initialize(itemLocationMap, gcm);
-
 			Dynamic._menuTitle = "Gifting - Sending";
 
 			acceptedTraitsPerSlot = GiftingService.GetAcceptedTraits();
+
+			base.Initialize(itemLocationMap, gcm);
 		}
 
 		protected override void PopulateMainMenu(IList menuEntriesList, IList subMenuCollections)
@@ -309,44 +309,44 @@ namespace TsRandomizer.Screens.Gifting
 				}
 			}
 		}
-	}
 
-	class GiftingInventoryCollection : InventoryUseItemCollection
-	{
-		readonly Func<InventoryItem, bool> onItemSelected;
-
-		public GiftingInventoryCollection(Func<InventoryItem, bool> onItemSelected)
+		class GiftingInventoryCollection : InventoryUseItemCollection
 		{
-			this.onItemSelected = onItemSelected;
-		}
+			readonly Func<InventoryItem, bool> onItemSelected;
 
-		public void AddItem(EInventoryUseItemType item) => AddItem(item, 1);
-		public void AddItem(EInventoryUseItemType item, int count) => AddItem((int)item, count);
-		public void AddItem(EInventoryEquipmentType item) => AddItem(item, 1);
-
-		public void AddItem(EInventoryEquipmentType item, int count) =>
-			AddItem((int)item.ToEInventoryUseItemType(), count);
-
-		public override void RefreshItemNameAndDescriptions()
-		{
-			// ReSharper disable once SuggestVarOrType_SimpleTypes
-			foreach (InventoryUseItem useItem in Inventory.Values)
+			public GiftingInventoryCollection(Func<InventoryItem, bool> onItemSelected)
 			{
-				if (!useItem.IsEquipment())
-					continue;
-
-				var equipment = useItem.ToInventoryEquipment();
-				var dynamicInventoryItem = useItem.AsDynamic();
-				dynamicInventoryItem.NameKey = equipment.NameKey;
-				dynamicInventoryItem.DescriptionKey = equipment.DescriptionKey;
+				this.onItemSelected = onItemSelected;
 			}
 
-			base.RefreshItemNameAndDescriptions();
-		}
+			public void AddItem(EInventoryUseItemType item) => AddItem(item, 1);
+			public void AddItem(EInventoryUseItemType item, int count) => AddItem((int)item, count);
+			public void AddItem(EInventoryEquipmentType item) => AddItem(item, 1);
 
-		public bool OnUseItemSelected(InventoryUseItem useItem) =>
-			!useItem.IsEquipment()
-				? onItemSelected(useItem)
-				: onItemSelected(useItem.ToInventoryEquipment());
+			public void AddItem(EInventoryEquipmentType item, int count) =>
+				AddItem((int)item.ToEInventoryUseItemType(), count);
+
+			public override void RefreshItemNameAndDescriptions()
+			{
+				// ReSharper disable once SuggestVarOrType_SimpleTypes
+				foreach (InventoryUseItem useItem in Inventory.Values)
+				{
+					if (!useItem.IsEquipment())
+						continue;
+
+					var equipment = useItem.ToInventoryEquipment();
+					var dynamicInventoryItem = useItem.AsDynamic();
+					dynamicInventoryItem.NameKey = equipment.NameKey;
+					dynamicInventoryItem.DescriptionKey = equipment.DescriptionKey;
+				}
+
+				base.RefreshItemNameAndDescriptions();
+			}
+
+			public bool OnUseItemSelected(InventoryUseItem useItem) =>
+				!useItem.IsEquipment()
+					? onItemSelected(useItem)
+					: onItemSelected(useItem.ToInventoryEquipment());
+		}
 	}
 }

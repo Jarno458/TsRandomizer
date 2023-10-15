@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Archipelago.Gifting.Net.Gifts.Versions.Current;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameStateManagement.ScreenManager;
+using TsRandomizer.Archipelago;
 using TsRandomizer.Archipelago.Gifting;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -17,14 +19,15 @@ namespace TsRandomizer.Screens.Gifting
 {
 	class GiftingReceiveScreen : GiftingScreen
 	{
-		const int NumberOfTraitsToDisplay = 7;
-
 		static readonly Type StatEntryType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.StatEntry");
+
 		static readonly Type StatEntryDisplayEnumType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.StatEntry+EStatDisplayType");
+
 		static readonly Type MenuUseItemInventoryType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.MenuUseItemInventory");
+
 		static readonly Type MenuRelicInventoryType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.MenuRelicInventory");
 
@@ -47,7 +50,7 @@ namespace TsRandomizer.Screens.Gifting
 		};
 
 		static readonly Dictionary<Trait, object> Icons = new Dictionary<Trait, object> {
-			{ Trait.Armor,  EInventoryItemIconType.GetEnumValue("AdvisorRobe") },
+			{ Trait.Armor, EInventoryItemIconType.GetEnumValue("AdvisorRobe") },
 			{ Trait.Egg, EInventoryItemIconType.GetEnumValue("FamiliarEgg") },
 			{ Trait.Flower, EInventoryItemIconType.GetEnumValue("ChaosHeal") },
 			{ Trait.Drink, EInventoryItemIconType.GetEnumValue("FiligreeTea") },
@@ -72,10 +75,18 @@ namespace TsRandomizer.Screens.Gifting
 
 		bool shouldUpdateMotherbox;
 
+		Gift selectedGift;
+		int selectedHash;
+
 		static string GetTraitNameKey(Trait trait) => $"TSR_trait_{trait}";
 		static string GetTraitDescriptionKey(Trait trait) => GetTraitNameKey(trait) + "_desc";
 
 		static GiftingReceiveScreen()
+		{
+			Initialize();
+		}
+
+		public static void Initialize()
 		{
 			foreach (var trait in (Trait[])Enum.GetValues(typeof(Trait)))
 			{
@@ -84,7 +95,8 @@ namespace TsRandomizer.Screens.Gifting
 			}
 		}
 
-		public GiftingReceiveScreen(ScreenManager screenManager, GameScreen gameScreen) : base(screenManager, gameScreen)
+		public GiftingReceiveScreen(ScreenManager screenManager, GameScreen gameScreen) : base(screenManager,
+			gameScreen)
 		{
 		}
 
@@ -93,8 +105,6 @@ namespace TsRandomizer.Screens.Gifting
 			base.Initialize(itemLocationMap, gcm);
 
 			Dynamic._menuTitle = "Gifting - Receive";
-
-			//acceptedTraitsPerSlot = GiftingService.GetAcceptedTraits();
 		}
 
 		protected override void PopulateMainMenu(IList menuEntriesList, IList subMenuCollections)
@@ -104,18 +114,35 @@ namespace TsRandomizer.Screens.Gifting
 			{
 				subMenuCollections.Add(traitSelectionMenu);
 
-				var selectTraitsMenu = MenuEntry.Create("Choose wanted types", () => { Dynamic.ChangeMenuCollection(traitSelectionMenu, true); });
+				var selectTraitsMenu = MenuEntry.Create("Choose wanted types",
+					() => {
+						traitSelectionMenu.AsDynamic().IsVisible = true;
+						Dynamic.ChangeMenuCollection(traitSelectionMenu, true);
+					});
 				selectTraitsMenu.IsCenterAligned = false;
 				selectTraitsMenu.DoesDrawLargeShadow = false;
 				selectTraitsMenu.ColumnWidth = 144;
 				menuEntriesList.Add(selectTraitsMenu.AsTimeSpinnerMenuEntry());
+
+				traitSelectionMenu.AsDynamic().IsVisible = false;
 			}
-			
-			var giftReceiveMenu = MenuEntry.Create("Open Gifts", () => { });
-			giftReceiveMenu.IsCenterAligned = false;
-			giftReceiveMenu.DoesDrawLargeShadow = false;
-			giftReceiveMenu.ColumnWidth = 144;
-			menuEntriesList.Add(giftReceiveMenu.AsTimeSpinnerMenuEntry());
+
+			var giftsSelectionMenu = CreateMenuForGifts();
+			if (giftsSelectionMenu != null)
+			{
+				subMenuCollections.Add(giftsSelectionMenu);
+
+				var giftReceiveMenu = MenuEntry.Create("Open Gifts",
+					() => {
+						traitSelectionMenu.AsDynamic().IsVisible = false;
+						Dynamic.ChangeMenuCollection(giftsSelectionMenu, true);
+					});
+
+				giftReceiveMenu.IsCenterAligned = false;
+				giftReceiveMenu.DoesDrawLargeShadow = false;
+				giftReceiveMenu.ColumnWidth = 144;
+				menuEntriesList.Add(giftReceiveMenu.AsTimeSpinnerMenuEntry());
+			}
 		}
 
 		object CreateMenuForTraits()
@@ -127,6 +154,7 @@ namespace TsRandomizer.Screens.Gifting
 				shouldUpdateMotherbox = true;
 			}
 
+			var enabledTraits = GiftingService.EnabledTraits();
 			traitsCollection = new TraitsInventoryCollection(OnTraitSelected);
 
 			foreach (var trait in (Trait[])Enum.GetValues(typeof(Trait)))
@@ -135,22 +163,73 @@ namespace TsRandomizer.Screens.Gifting
 
 				var inventoryRelic = traitsCollection.Inventory[traitsCollection.Inventory.Count - 1];
 
-				inventoryRelic.IsActive = false;
+				inventoryRelic.IsActive = enabledTraits.Contains(trait);
 			}
 
 			traitsCollection.RefreshItemNameAndDescriptions();
 
-			var inventoryMenu = MenuRelicInventoryType.CreateInstance(false, traitsCollection, 
+			var inventoryMenu = MenuRelicInventoryType.CreateInstance(false, traitsCollection,
 				(Action<InventoryRelic>)traitsCollection.OnRelicSelected, GameContentManager.SpPauseMenu).AsDynamic();
 			inventoryMenu.Font = GameContentManager.ActiveFont;
 
 			return ~inventoryMenu;
 		}
 
-		
+		object CreateMenuForGifts()
+		{
+			void OnGiftSelected(int hash, Gift gift)
+			{
+				var sendingPlayer = Client.GetPlayerInfo(gift.SenderTeam, gift.SenderSlot);
+				var sendingPlayerAlias = sendingPlayer?.Alias ?? $"Unknown Player {gift.SenderSlot}";
+
+				selectedHash = hash;
+				selectedGift = gift;
+
+				ConfirmMenuCollection.SetDescription($"Accept gift of {gift.ItemName} from {sendingPlayerAlias}");
+
+				Dynamic.ChangeMenuCollection(~ConfirmMenuCollection, true);
+			}
+
+			var gifts = GiftingService.GetGifts();
+			var giftsCollection = new GiftingsInventoryCollection(OnGiftSelected);
+
+			foreach (var gift in gifts)
+				giftsCollection.AddItem(gift);
+
+			giftsCollection.RefreshItemNameAndDescriptions();
+
+			var inventoryMenu = MenuUseItemInventoryType
+				.CreateInstance(false, giftsCollection, (Func<InventoryUseItem, bool>)giftsCollection.OnUseItemSelected)
+				.AsDynamic();
+			inventoryMenu.Font = GameContentManager.ActiveFont;
+
+			return ~inventoryMenu;
+		}
+
 		protected override void OnGiftItemAccept(object obj, EventArgs args)
 		{
-			
+			ConfirmMenuCollection.IsVisible = false;
+			Dynamic.GoToPreviousMenuCollection();
+
+			GiftingService.AcceptGift(selectedGift);
+
+			//TODO map to real item, prob before menu is created
+			//TODO calculate how much of the gift to accept
+
+			var useItem = new InventoryUseItem((EInventoryUseItemType)selectedHash) { Count = selectedGift.Amount };
+
+			Save.Inventory.UseItemInventory.RemoveItem((int)useItem.UseItemType);
+			//or
+			Save.Inventory.EquipmentInventory.RemoveItem((int)useItem.UseItemType);
+
+			foreach (var collection in Dynamic._subMenuCollections)
+				if (collection.GetType() == MenuUseItemInventoryType)
+					((object)collection).AsDynamic().RemoveItem(useItem);
+
+
+			//ScreenManager.Jukebox.PlayCue(ESFX.MenuSell);
+			//ScreenManager.Jukebox.PlayCue(ESFX.MenuError);
+
 		}
 
 		protected override void OnGiftItemCancel(object obj, EventArgs args) => Dynamic.OnCancel(obj, args);
@@ -187,6 +266,11 @@ namespace TsRandomizer.Screens.Gifting
 
 		void RefreshGiftInfo(SpriteFont menuFont)
 		{
+			// Player: 
+			// Game:
+			// Item: 
+
+
 			/*var selectedIndex = ((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex;
 			if (selectedIndex >= acceptedTraitsPerSlot.Count)
 				return;
@@ -308,6 +392,69 @@ namespace TsRandomizer.Screens.Gifting
 
 			public void OnRelicSelected(InventoryRelic relic) =>
 				onTraitSelected((Trait)relic.Key, relic);
+		}
+
+		class GiftingsInventoryCollection : InventoryUseItemCollection
+		{
+			public static readonly Dictionary<int, Gift> GiftMapping = new Dictionary<int, Gift>();
+
+			readonly Action<int, Gift> onGiftSelected;
+
+			public GiftingsInventoryCollection(Action<int, Gift> onGiftSelected)
+			{
+				this.onGiftSelected = onGiftSelected;
+			}
+
+			public void AddItem(Gift gift) => AddItem(gift, gift.Amount);
+
+			public void AddItem(Gift gift, int count)
+			{
+				int hash;
+				foreach (var giftMap in GiftMapping)
+				{
+					if (giftMap.Value.ID != gift.ID)
+						continue;
+
+					AddItem(giftMap.Key, count);
+
+					return;
+				}
+
+				var random = new Random(gift.GetHashCode());
+				while (true)
+				{
+					hash = random.Next();
+					if (hash > 1000 && !GiftMapping.ContainsKey(hash))
+					{
+						GiftMapping.Add(hash, gift);
+
+						AddItem(hash, count);
+
+						return;
+					}
+				}
+			}
+
+			public override void RefreshItemNameAndDescriptions()
+			{
+				// ReSharper disable once SuggestVarOrType_SimpleTypes
+				foreach (InventoryUseItem useItem in Inventory.Values)
+				{
+					var gift = GiftMapping[useItem.Key];
+
+					var dynamicInventoryItem = useItem.AsDynamic();
+					TimeSpinnerGame.Localizer.OverrideKey(dynamicInventoryItem.NameKey, gift.ItemName);
+					TimeSpinnerGame.Localizer.OverrideKey(dynamicInventoryItem.DescriptionKey, "TODO Add description");
+				}
+
+				base.RefreshItemNameAndDescriptions();
+			}
+
+			public bool OnUseItemSelected(InventoryUseItem useItem)
+			{
+				onGiftSelected(useItem.Key, GiftMapping[useItem.Key]);
+				return true;
+			}
 		}
 	}
 }

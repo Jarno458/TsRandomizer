@@ -53,5 +53,7 @@ namespace TsRandomizer.Screens.Gifting
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gcm) => subScreen?.Initialize(itemLocationMap, gcm);
 
 		public override void Update(GameTime gameTime, InputState input) => subScreen?.Update(gameTime, input);
+
+		public override void Unload() => subScreen?.Unload();
 	}
 }
