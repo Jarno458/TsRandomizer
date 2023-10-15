@@ -32,7 +32,7 @@ namespace TsRandomizer.Screens.Gifting
 
 		static readonly Dictionary<Trait, string> Descriptions = new Dictionary<Trait, string> {
 			{ Trait.Armor, "A piece of armor (body or hat)" },
-			{ Trait.Egg, "" },
+			{ Trait.Egg, "The Merchant Crow's most coveted possession. Increases Familiar experience gained." },
 			{ Trait.Flower, "" },
 			{ Trait.Drink, "" },
 			{ Trait.Food, "" },
@@ -50,7 +50,7 @@ namespace TsRandomizer.Screens.Gifting
 
 		static readonly Dictionary<Trait, string> Names = new Dictionary<Trait, string> {
 			{ Trait.Armor, "Armor" },
-			{ Trait.Egg, "" },
+			{ Trait.Egg, "Gilded Egg" },
 			{ Trait.Flower, "" },
 			{ Trait.Drink, "" },
 			{ Trait.Food, "" },
