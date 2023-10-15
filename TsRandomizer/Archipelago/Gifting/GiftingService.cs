@@ -75,15 +75,17 @@ namespace TsRandomizer.Archipelago.Gifting
 			return service.SendGift(giftItem, traits, playerInfo.Name, playerInfo.Team);
 		}
 
-		/// <returns></returns>
-		public string Send(InventoryItem item, AcceptedTraits playerInfo, int team)
+		public void SetAcceptedGifts(Trait[] traits)
 		{
-			var giftItem = new GiftItem(item.Name, item.GetAmount(), 0);
-			var traits = TraitMapping.ValuesPerItem[item]
-				.Select(t => new GiftTrait(t.Key.ToString(), 1, t.Value))
-				.ToArray();
+			if (!traits.Any())
+				service.CloseGiftBox();
+			else
+				service.OpenGiftBox(false, traits.Select(t => t.ToString()).ToArray());
+		}
 
-			return "";
+		public Trait[] EnabledTraits()
+		{
+
 		}
 	}
 }

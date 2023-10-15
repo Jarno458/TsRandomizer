@@ -2,12 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Archipelago.Gifting.Net.Service.TraitAcceptance;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Inventory;
-using Timespinner.GameObjects.BaseClasses;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Archipelago.Gifting;
 using TsRandomizer.Extensions;
@@ -48,10 +46,31 @@ namespace TsRandomizer.Screens.Gifting
 			{ Trait.Resource, "Sand bottles" },
 		};
 
+		static readonly Dictionary<Trait, object> Icons = new Dictionary<Trait, object> {
+			{ Trait.Armor,  EInventoryItemIconType.GetEnumValue("AdvisorRobe") },
+			{ Trait.Egg, EInventoryItemIconType.GetEnumValue("FamiliarEgg") },
+			{ Trait.Flower, EInventoryItemIconType.GetEnumValue("ChaosHeal") },
+			{ Trait.Drink, EInventoryItemIconType.GetEnumValue("FiligreeTea") },
+			{ Trait.Food, EInventoryItemIconType.GetEnumValue("Spaghetti") },
+			{ Trait.Fruit, EInventoryItemIconType.GetEnumValue("LachiemiSun") },
+			{ Trait.Vegetable, EInventoryItemIconType.GetEnumValue("Casserole") },
+			{ Trait.Meat, EInventoryItemIconType.GetEnumValue("FriedCheveux") },
+			{ Trait.Fish, EInventoryItemIconType.GetEnumValue("UnagiRoll") },
+			{ Trait.Heal, EInventoryItemIconType.GetEnumValue("Potion") },
+			{ Trait.Mana, EInventoryItemIconType.GetEnumValue("Ether") },
+			{ Trait.Cure, EInventoryItemIconType.GetEnumValue("Antidote") },
+			{ Trait.Speed, EInventoryItemIconType.GetEnumValue("WarpCard") },
+			{ Trait.Consumable, EInventoryItemIconType.GetEnumValue("FuturePotion") },
+			{ Trait.Resource, EInventoryItemIconType.GetEnumValue("SandBottle") },
+		};
+
 		//InventoryItem selectedItem;
 		//AcceptedTraits selectedPlayer;
 
 		object traitSelectionMenu;
+		TraitsInventoryCollection traitsCollection;
+
+		bool shouldUpdateMotherbox;
 
 		static string GetTraitNameKey(Trait trait) => $"TSR_trait_{trait}";
 		static string GetTraitDescriptionKey(Trait trait) => GetTraitNameKey(trait) + "_desc";
@@ -103,27 +122,26 @@ namespace TsRandomizer.Screens.Gifting
 		{
 			void OnTraitSelected(Trait trait, InventoryRelic relicMenuItem)
 			{
-				//ConfirmMenuCollection.SetDescription($"Might be toggle and not need a description");
-				//Dynamic.ChangeMenuCollection(~ConfirmMenuCollection, true);
-
 				relicMenuItem.IsActive = !relicMenuItem.IsActive;
+
+				shouldUpdateMotherbox = true;
 			}
 
-			var collection = new TraitsInventoryCollection(OnTraitSelected);
+			traitsCollection = new TraitsInventoryCollection(OnTraitSelected);
 
 			foreach (var trait in (Trait[])Enum.GetValues(typeof(Trait)))
 			{
-				collection.AddItem(trait);
+				traitsCollection.AddItem(trait);
 
-				var inventoryRelic = collection.Inventory[collection.Inventory.Count - 1];
+				var inventoryRelic = traitsCollection.Inventory[traitsCollection.Inventory.Count - 1];
 
 				inventoryRelic.IsActive = false;
 			}
 
-			collection.RefreshItemNameAndDescriptions();
+			traitsCollection.RefreshItemNameAndDescriptions();
 
-			var inventoryMenu = MenuRelicInventoryType.CreateInstance(false, collection, 
-				(Action<InventoryRelic>)collection.OnRelicSelected, GameContentManager.SpPauseMenu).AsDynamic();
+			var inventoryMenu = MenuRelicInventoryType.CreateInstance(false, traitsCollection, 
+				(Action<InventoryRelic>)traitsCollection.OnRelicSelected, GameContentManager.SpPauseMenu).AsDynamic();
 			inventoryMenu.Font = GameContentManager.ActiveFont;
 
 			return ~inventoryMenu;
@@ -147,13 +165,22 @@ namespace TsRandomizer.Screens.Gifting
 
 			if (Dynamic._selectedMenuCollection == traitSelectionMenu)
 			{
-				var highlightedTrait = Trait.Egg;
-				Dynamic.ChangeDescription(Descriptions[highlightedTrait], EInventoryItemIcon icon)
+				var menuCollection = traitSelectionMenu.AsDynamic();
+				var entries = (IList)menuCollection.Entries;
+				var entryIndex = (int)menuCollection.SelectedIndex;
+
+				if (entryIndex < entries.Count)
+				{
+					var traitName = (string)entries[entryIndex].AsDynamic().Text;
+
+					var highlightedTrait = (Trait)typeof(Trait).GetEnumValue(traitName);
+					Dynamic.ChangeDescription(Descriptions[highlightedTrait], Icons[highlightedTrait]);
+				}
 			}
-
-				//
-
-
+			else
+			{
+				UpdateMotherbox();
+			}
 
 			RefreshGiftInfo(GameContentManager.ActiveFont);
 		}
@@ -234,6 +261,23 @@ namespace TsRandomizer.Screens.Gifting
 					entries.Add(~statEntry);
 				}
 			}*/
+		}
+
+		public override void Unload() => UpdateMotherbox();
+
+		void UpdateMotherbox()
+		{
+			if (!shouldUpdateMotherbox || traitsCollection == null)
+				return;
+
+			shouldUpdateMotherbox = false;
+
+			var enabledTraits = traitsCollection.Inventory.Values
+				.Where(r => r.IsActive)
+				.Select(r => (Trait)r.Key)
+				.ToArray();
+
+			GiftingService.SetAcceptedGifts(enabledTraits);
 		}
 
 		class TraitsInventoryCollection : InventoryRelicCollection

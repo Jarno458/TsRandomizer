@@ -19,7 +19,7 @@ namespace TsRandomizer.Screens.Gifting
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.ConfirmationMenuEntryCollection");
 		static readonly Type StatCollectionType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.StatCollection");
-		static readonly Type EInventoryItemIconType =
+		protected static readonly Type EInventoryItemIconType =
 			TimeSpinnerType.Get("Timespinner.GameAbstractions.Inventory.EInventoryItemIcon");
 
 		protected readonly Color StatEntryColor = new Color(240, 240, 208);

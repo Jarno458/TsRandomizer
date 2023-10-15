@@ -16,7 +16,7 @@ namespace TsRandomizer.Screens.Gifting
 		static readonly Type EquipmentMenuScreenType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.PauseMenu.EquipmentMenuScreen");
 
-		readonly Screen subScreen;
+		readonly GiftingScreen subScreen;
 
 		public EquipmentMenuScreen(ScreenManager screenManager, GameScreen gameScreen) : base(screenManager, gameScreen)
 		{
