@@ -16,19 +16,16 @@ namespace TsRandomizer.Commands
 {
 	class ConnectionTestRawCommand : ConsoleCommand
 	{
-		static ArchipelagoPacketConverter converter = new ArchipelagoPacketConverter();
+		static readonly ArchipelagoPacketConverter Converter = new ArchipelagoPacketConverter();
 
 		public override string Command => "test-connect-raw";
-		public override string ParameterUsage => "<server> <username> <password?>";
+		public override string ParameterUsage => "<full-server-uri> <username> <password?>";
 
 		GameConsole console;
 
 		ArchipelagoPacketBase loginResult;
 		
-		void Reset()
-		{
-			loginResult = null;
-		}
+		void Reset() => loginResult = null;
 
 		public override bool Handle(GameConsole gameConsole, string[] parameters)
 		{
@@ -57,6 +54,12 @@ namespace TsRandomizer.Commands
 				return false;
 			}
 
+			if (!server.StartsWith("ws") || server.IndexOf(':', 6) < 1)
+			{
+				console.AddLine($"Server uri '{server}' is invalid, Please specify the full server url as: 'protocol://adress-or-ip:port'", Color.Yellow);
+				return true;
+			}
+
 			var task = Task.Factory.StartNew(() => AttemptToConnect(server, user, password));
 			task.Wait(TimeSpan.FromSeconds(15));
 
@@ -65,7 +68,7 @@ namespace TsRandomizer.Commands
 
 		void AttemptToConnect(string server, string user, string password)
 		{
-			var uri = new Uri($"wss://{server}");
+			var uri = new Uri(server);
 
 			console.AddLine($"Connecting to '{server}' using AP client:", Color.Yellow);
 			
@@ -75,8 +78,6 @@ namespace TsRandomizer.Commands
 
 			console.AddLine($"Calculated URI to {socket.Url}", Color.White);
 	
-			//socket.
-			
 			socket.OnError += Socket_ErrorReceived;
 			socket.OnOpen += Socket_SocketOpened;
 			socket.OnClose += Socket_SocketClosed;
@@ -193,7 +194,7 @@ namespace TsRandomizer.Commands
 			if (e.IsText)
 				console.AddLine($"Json Received: {e.Data}", Color.DarkGray);
 
-			var packets = JsonConvert.DeserializeObject<List<ArchipelagoPacketBase>>(e.Data, converter);
+			var packets = JsonConvert.DeserializeObject<List<ArchipelagoPacketBase>>(e.Data, Converter);
 			if (packets == null)
 			{
 				console.AddLine("Json to packet conversion yielded empty list", Color.Orange);
