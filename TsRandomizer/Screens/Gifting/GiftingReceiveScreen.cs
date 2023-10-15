@@ -32,42 +32,26 @@ namespace TsRandomizer.Screens.Gifting
 
 		static readonly Dictionary<Trait, string> Descriptions = new Dictionary<Trait, string> {
 			{ Trait.Armor, "A piece of armor (body or hat)" },
-			{ Trait.Egg, "The Merchant Crow's most coveted possession. Increases Familiar experience gained." },
-			{ Trait.Flower, "" },
-			{ Trait.Drink, "" },
-			{ Trait.Food, "" },
-			{ Trait.Fruit, "" },
-			{ Trait.Vegetable, "" },
-			{ Trait.Meat, "" },
-			{ Trait.Fish, "" },
-			{ Trait.Heal, "" },
-			{ Trait.Mana, "" },
-			{ Trait.Cure, "" },
-			{ Trait.Speed, "Warpsharts" },
-			{ Trait.Consumable, "" },
-			{ Trait.Resource, "" },
-		};
-
-		static readonly Dictionary<Trait, string> Names = new Dictionary<Trait, string> {
-			{ Trait.Armor, "Armor" },
-			{ Trait.Egg, "Gilded Egg" },
-			{ Trait.Flower, "" },
-			{ Trait.Drink, "" },
-			{ Trait.Food, "" },
-			{ Trait.Fruit, "" },
-			{ Trait.Vegetable, "" },
-			{ Trait.Meat, "" },
-			{ Trait.Fish, "" },
-			{ Trait.Heal, "" },
-			{ Trait.Mana, "" },
-			{ Trait.Cure, "" },
-			{ Trait.Speed, "Warpsharts" },
-			{ Trait.Consumable, "" },
-			{ Trait.Resource, "" },
+			{ Trait.Egg, "Gilded Egg's" },
+			{ Trait.Flower, "Chaos status's" },
+			{ Trait.Drink, "Potions" },
+			{ Trait.Food, "Solid food that restores health" },
+			{ Trait.Fruit, "Healthy fruit that restores health or mana" },
+			{ Trait.Vegetable, "Solid food that restores health containing vegetables" },
+			{ Trait.Meat, "Solid food that restores health containing meat" },
+			{ Trait.Fish, "Solid food that restores health containing fish" },
+			{ Trait.Heal, "Healing items" },
+			{ Trait.Mana, "Mana items" },
+			{ Trait.Cure, "Items that cure status ailments" },
+			{ Trait.Speed, "Warp Shards" },
+			{ Trait.Consumable, "Use items" },
+			{ Trait.Resource, "Sand bottles" },
 		};
 
 		//InventoryItem selectedItem;
 		//AcceptedTraits selectedPlayer;
+
+		object traitSelectionMenu;
 
 		static string GetTraitNameKey(Trait trait) => $"TSR_trait_{trait}";
 		static string GetTraitDescriptionKey(Trait trait) => GetTraitNameKey(trait) + "_desc";
@@ -96,12 +80,12 @@ namespace TsRandomizer.Screens.Gifting
 
 		protected override void PopulateMainMenu(IList menuEntriesList, IList subMenuCollections)
 		{
-			var inventoryMenu = CreateMenuUseItemInventoryForTraits();
-			if (inventoryMenu != null)
+			traitSelectionMenu = CreateMenuForTraits();
+			if (traitSelectionMenu != null)
 			{
-				subMenuCollections.Add(inventoryMenu);
+				subMenuCollections.Add(traitSelectionMenu);
 
-				var selectTraitsMenu = MenuEntry.Create("Choose wanted types", () => { Dynamic.ChangeMenuCollection(inventoryMenu, true); });
+				var selectTraitsMenu = MenuEntry.Create("Choose wanted types", () => { Dynamic.ChangeMenuCollection(traitSelectionMenu, true); });
 				selectTraitsMenu.IsCenterAligned = false;
 				selectTraitsMenu.DoesDrawLargeShadow = false;
 				selectTraitsMenu.ColumnWidth = 144;
@@ -115,7 +99,7 @@ namespace TsRandomizer.Screens.Gifting
 			menuEntriesList.Add(giftReceiveMenu.AsTimeSpinnerMenuEntry());
 		}
 
-		object CreateMenuUseItemInventoryForTraits()
+		object CreateMenuForTraits()
 		{
 			void OnTraitSelected(Trait trait, InventoryRelic relicMenuItem)
 			{
@@ -128,7 +112,13 @@ namespace TsRandomizer.Screens.Gifting
 			var collection = new TraitsInventoryCollection(OnTraitSelected);
 
 			foreach (var trait in (Trait[])Enum.GetValues(typeof(Trait)))
+			{
 				collection.AddItem(trait);
+
+				var inventoryRelic = collection.Inventory[collection.Inventory.Count - 1];
+
+				inventoryRelic.IsActive = false;
+			}
 
 			collection.RefreshItemNameAndDescriptions();
 
@@ -151,10 +141,24 @@ namespace TsRandomizer.Screens.Gifting
 		{
 			base.Update(gameTime, input);
 
-			RefreshPlayerGiftboxInfo(GameContentManager.ActiveFont);
+			var selectedIndex = ((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex;
+			if (selectedIndex != 0)
+				return;
+
+			if (Dynamic._selectedMenuCollection == traitSelectionMenu)
+			{
+				var highlightedTrait = Trait.Egg;
+				Dynamic.ChangeDescription(Descriptions[highlightedTrait], EInventoryItemIcon icon)
+			}
+
+				//
+
+
+
+			RefreshGiftInfo(GameContentManager.ActiveFont);
 		}
 
-		void RefreshPlayerGiftboxInfo(SpriteFont menuFont)
+		void RefreshGiftInfo(SpriteFont menuFont)
 		{
 			/*var selectedIndex = ((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex;
 			if (selectedIndex >= acceptedTraitsPerSlot.Count)
