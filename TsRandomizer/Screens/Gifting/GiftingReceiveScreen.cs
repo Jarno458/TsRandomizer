@@ -48,6 +48,24 @@ namespace TsRandomizer.Screens.Gifting
 			{ Trait.Resource, "" },
 		};
 
+		static readonly Dictionary<Trait, string> Names = new Dictionary<Trait, string> {
+			{ Trait.Armor, "Armor" },
+			{ Trait.Egg, "" },
+			{ Trait.Flower, "" },
+			{ Trait.Drink, "" },
+			{ Trait.Food, "" },
+			{ Trait.Fruit, "" },
+			{ Trait.Vegetable, "" },
+			{ Trait.Meat, "" },
+			{ Trait.Fish, "" },
+			{ Trait.Heal, "" },
+			{ Trait.Mana, "" },
+			{ Trait.Cure, "" },
+			{ Trait.Speed, "Warpsharts" },
+			{ Trait.Consumable, "" },
+			{ Trait.Resource, "" },
+		};
+
 		//InventoryItem selectedItem;
 		//AcceptedTraits selectedPlayer;
 
