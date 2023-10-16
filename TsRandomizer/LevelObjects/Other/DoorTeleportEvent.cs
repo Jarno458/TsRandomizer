@@ -23,7 +23,9 @@ namespace TsRandomizer.LevelObjects.Other
 			if (!isRandomized || !level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 
+#if !DEBUG
 			Dynamic.SilentKill();
+#endif
 		}
 	}
 }
