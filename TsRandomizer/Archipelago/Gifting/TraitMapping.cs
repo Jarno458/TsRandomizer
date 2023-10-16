@@ -41,8 +41,9 @@ namespace TsRandomizer.Archipelago.Gifting
 			{ EInventoryUseItemType.Antidote,       new Dictionary<Trait, float> {{ Trait.Cure, 1f   }, { Trait.Consumable, 1f }, { Trait.Drink, 1f } } },
 			{ EInventoryUseItemType.ChaosHeal,      new Dictionary<Trait, float> {{ Trait.Cure, 0.9f }, { Trait.Consumable, 1f }, { Trait.Flower, 1f } } },
 			//Others
-			{ EInventoryUseItemType.WarpCard,       new Dictionary<Trait, float> {{ Trait.Consumable, 1f }, { Trait.Speed, 1f }} },
+			{ EInventoryUseItemType.WarpCard,       new Dictionary<Trait, float> {{ Trait.Consumable, 1f }, { Trait.Speed, 1f } } },
 			{ EInventoryUseItemType.FamiliarTreat,  new Dictionary<Trait, float> {{ Trait.Consumable, 1f }, { Trait.Food, 0.1f } } },
+			{ EInventoryUseItemType.Herb,           new Dictionary<Trait, float> {{ Trait.Fiber, 0.1f } } },
 		};
 
 		static readonly Dictionary<EInventoryEquipmentType, Dictionary<Trait, float>> ValuesPerEquipmentItem = new Dictionary<EInventoryEquipmentType, Dictionary<Trait, float>> {
@@ -93,7 +94,7 @@ namespace TsRandomizer.Archipelago.Gifting
 					case InventoryEquipment equipment:
 						return this[equipment.EquipmentType];
 					default:
-						throw new ArgumentOutOfRangeException(nameof(item), "paramter should be either UseItem or Equipment");
+						throw new ArgumentOutOfRangeException(nameof(item), "parameter should be either UseItem or Equipment");
 				}
 			}
 		}
@@ -131,6 +132,8 @@ namespace TsRandomizer.Archipelago.Gifting
 				return new InventoryUseItem(EInventoryUseItemType.UnagiRoll) { Count = amount };
 			if (traits.ContainsKey(Trait.Egg))
 				return new InventoryEquipment(EInventoryEquipmentType.FamiliarEgg) { Count = amount };
+			if (traits.ContainsKey(Trait.Fiber))
+				return new InventoryUseItem(EInventoryUseItemType.Herb) { Count = amount };
 			if (traits.ContainsKey(Trait.Armor))
 				return new InventoryEquipment(FindClosesMathForArmorTrait(Trait.Armor, traits)) { Count = amount };
 			if (traits.ContainsKey(Trait.Mana))

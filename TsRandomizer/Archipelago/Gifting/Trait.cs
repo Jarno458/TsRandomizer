@@ -17,5 +17,6 @@
 		Speed,
 		Consumable,
 		Resource,
+		Fiber,
 	}
 }

@@ -98,7 +98,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Archipelago.Gifting.Net">
+    <Reference Include="Archipelago.Gifting.Net, Version=0.2.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Archipelago.Gifting.Net.dll</HintPath>
     </Reference>
     <Reference Include="Archipelago.MultiClient.Net, Version=5.0.5.0, Culture=neutral, processorArchitecture=MSIL">

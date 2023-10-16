@@ -7,6 +7,7 @@ using Archipelago.Gifting.Net.Gifts.Versions.Current;
 using Archipelago.Gifting.Net.Service;
 using Archipelago.Gifting.Net.Traits;
 using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net.Models;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Screens;
 using APGiftingService = Archipelago.Gifting.Net.Service.GiftingService;
@@ -46,8 +47,8 @@ namespace TsRandomizer.Archipelago.Gifting
 
 				foreach (var acceptTraitsForPlayer in acceptTraitsPerPlayer)
 				{
-					var team = Client.Team;
-					var slot = acceptTraitsForPlayer.Key;
+					var team = acceptTraitsForPlayer.Value.Team;
+					var slot = acceptTraitsForPlayer.Value.Player;
 
 					var playerInfo = Client.GetPlayerInfo(team, slot);
 					var playerGame = playerInfo?.Game ?? "Unknown Game";
@@ -58,9 +59,9 @@ namespace TsRandomizer.Archipelago.Gifting
 						Team = team,
 						Slot = slot,
 						Name = playerAlias,
-						Game = playerGame,
-						AcceptsAnyTrait = acceptTraitsForPlayer.Value.Count() == KnownTraits.Length,
-						DesiredTraits = acceptTraitsForPlayer.Value
+						Game = playerGame, 
+						AcceptsAnyTrait = acceptTraitsForPlayer.Value.Traits.Length == KnownTraits.Length,
+						DesiredTraits = acceptTraitsForPlayer.Value.Traits
 							.Select(t => (Trait)Enum.Parse(typeof(Trait), t))
 							.ToArray()
 					};
@@ -78,11 +79,11 @@ namespace TsRandomizer.Archipelago.Gifting
 			}
 		}
 
-		public bool Send(InventoryItem item, AcceptedTraits playerInfo)
+		public bool Send(InventoryItem item, AcceptedTraits playerInfo, int amount)
 		{
 			try
 			{
-				var giftItem = new GiftItem(item.Name, item.GetAmount(), 0);
+				var giftItem = new GiftItem(item.Name, amount, 0);
 				var traits = TraitMapping.ValuesPerItem[item]
 					.Select(t => new GiftTrait(t.Key.ToString(), 1, t.Value))
 					.ToArray();
@@ -97,11 +98,20 @@ namespace TsRandomizer.Archipelago.Gifting
 			return false;
 		}
 
-		public void AcceptGift(Gift gift)
+		public void AcceptGift(Gift gift, int acceptedAmount)
 		{
 			try
 			{
-				service.RemoveGiftFromGiftBox(gift.ID);
+				if (acceptedAmount >= gift.Amount)
+					service.RemoveGiftFromGiftBox(gift.ID);
+				else
+				{
+					gift.Amount -= acceptedAmount;
+
+					var updatedGift = new Dictionary<string, Gift>(1);
+
+					Client.DataStorage[$"GiftBox;{Client.Team};{Client.Slot}"] += Operation.Update(updatedGift);
+				}
 			}
 			catch (Exception e)
 			{
@@ -154,12 +164,11 @@ namespace TsRandomizer.Archipelago.Gifting
 		{
 			try
 			{
-				var giftMotherBoxes = Client.DataStorage[$"GiftBoxes;{Client.Team}"].To<Dictionary<int, GiftBox>>();
-
-				if (!giftMotherBoxes.TryGetValue(Client.Slot, out var giftBox))
+				var box = service.GetCurrentGiftboxState();
+				if (box == null)
 					return new Trait[0];
 
-				return giftBox.DesiredTraits
+				return box.DesiredTraits
 					.Select(t => (Trait)typeof(Trait).GetEnumValue(t))
 					.ToArray();
 			}

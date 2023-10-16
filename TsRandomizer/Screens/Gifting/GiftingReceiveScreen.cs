@@ -47,6 +47,7 @@ namespace TsRandomizer.Screens.Gifting
 			{ Trait.Speed, "Warp Shards" },
 			{ Trait.Consumable, "Use items" },
 			{ Trait.Resource, "Sand bottles" },
+			{ Trait.Fiber, "Herbs" },
 		};
 
 		static readonly Dictionary<Trait, object> Icons = new Dictionary<Trait, object> {
@@ -65,10 +66,8 @@ namespace TsRandomizer.Screens.Gifting
 			{ Trait.Speed, EInventoryItemIconType.GetEnumValue("WarpCard") },
 			{ Trait.Consumable, EInventoryItemIconType.GetEnumValue("FuturePotion") },
 			{ Trait.Resource, EInventoryItemIconType.GetEnumValue("SandBottle") },
+			{ Trait.Fiber, EInventoryItemIconType.GetEnumValue("Herb") },
 		};
-
-		//InventoryItem selectedItem;
-		//AcceptedTraits selectedPlayer;
 
 		object traitSelectionMenu;
 		TraitsInventoryCollection traitsCollection;
@@ -77,6 +76,7 @@ namespace TsRandomizer.Screens.Gifting
 
 		Gift selectedGift;
 		int selectedHash;
+		InventoryItem selectedItem;
 
 		static string GetTraitNameKey(Trait trait) => $"TSR_trait_{trait}";
 		static string GetTraitDescriptionKey(Trait trait) => GetTraitNameKey(trait) + "_desc";
@@ -177,12 +177,13 @@ namespace TsRandomizer.Screens.Gifting
 
 		object CreateMenuForGifts()
 		{
-			void OnGiftSelected(int hash, Gift gift)
+			void OnGiftSelected(int hash, Gift gift, InventoryItem item)
 			{
 				var sendingPlayer = Client.GetPlayerInfo(gift.SenderTeam, gift.SenderSlot);
 				var sendingPlayerAlias = sendingPlayer?.Alias ?? $"Unknown Player {gift.SenderSlot}";
 
 				selectedHash = hash;
+				selectedItem = item;
 				selectedGift = gift;
 
 				ConfirmMenuCollection.SetDescription($"Accept gift of {gift.ItemName} from {sendingPlayerAlias}");
@@ -211,28 +212,87 @@ namespace TsRandomizer.Screens.Gifting
 			ConfirmMenuCollection.IsVisible = false;
 			Dynamic.GoToPreviousMenuCollection();
 
-			GiftingService.AcceptGift(selectedGift);
+			var acceptedAmount = 0;
+			switch (selectedItem)
+			{
+				case InventoryUseItem giftedUseItem:
+				{
+					acceptedAmount = CalculateAmountToAccept(giftedUseItem);
+					if (acceptedAmount == 0)
+					{
+						ScreenManager.Jukebox.PlayCue(ESFX.MenuError);
+						Dynamic.ChangeDescription("Inventory full, cant accept gift");
+						return;
+					}
 
-			//TODO map to real item, prob before menu is created
-			//TODO calculate how much of the gift to accept
+					Save.Inventory.UseItemInventory.AddItem(giftedUseItem.Key, acceptedAmount);
+					break;
+				}
+				case InventoryEquipment equipment:
+				{
+					acceptedAmount = CalculateAmountToAccept(equipment);
+					if (acceptedAmount == 0)
+					{
+						ScreenManager.Jukebox.PlayCue(ESFX.MenuError);
+						Dynamic.ChangeDescription("Inventory full, cant accept gift");
+						return;
+					}
 
-			var useItem = new InventoryUseItem((EInventoryUseItemType)selectedHash) { Count = selectedGift.Amount };
+					Save.Inventory.EquipmentInventory.AddItem(equipment.Key, acceptedAmount);
+					break;
+				}
+			}
 
-			Save.Inventory.UseItemInventory.RemoveItem((int)useItem.UseItemType);
-			//or
-			Save.Inventory.EquipmentInventory.RemoveItem((int)useItem.UseItemType);
+			GiftingService.AcceptGift(selectedGift, acceptedAmount);
 
+			//remove from menu
+			var menuItem = new InventoryUseItem((EInventoryUseItemType)selectedHash);
 			foreach (var collection in Dynamic._subMenuCollections)
 				if (collection.GetType() == MenuUseItemInventoryType)
-					((object)collection).AsDynamic().RemoveItem(useItem);
+					for (var i = 0; i < acceptedAmount; i++)
+						((object)collection).AsDynamic().RemoveItem(menuItem);
 
-
-			//ScreenManager.Jukebox.PlayCue(ESFX.MenuSell);
-			//ScreenManager.Jukebox.PlayCue(ESFX.MenuError);
-
+			ScreenManager.Jukebox.PlayCue(ESFX.MenuSell);
 		}
 
-		protected override void OnGiftItemCancel(object obj, EventArgs args) => Dynamic.OnCancel(obj, args);
+		int CalculateAmountToAccept(InventoryUseItem giftedUseItem)
+		{
+			if (!Save.Inventory.UseItemInventory.Inventory.TryGetValue(giftedUseItem.Key, out var inventoryItem))
+				return giftedUseItem.Count <= giftedUseItem.StackCap
+					? giftedUseItem.Count
+					: giftedUseItem.StackCap;
+
+			if (inventoryItem.Count == inventoryItem.StackCap)
+				return 0;
+
+			var amountToAccept = inventoryItem.StackCap - inventoryItem.Count;
+			return giftedUseItem.Count <= amountToAccept
+				? giftedUseItem.Count
+				: amountToAccept;
+		}
+
+		int CalculateAmountToAccept(InventoryEquipment giftEquipment)
+		{
+			if (!Save.Inventory.EquipmentInventory.Inventory.TryGetValue(giftEquipment.Key, out var inventoryItem))
+				return giftEquipment.Count <= giftEquipment.StackCap
+					? giftEquipment.Count
+					: giftEquipment.StackCap;
+
+			if (inventoryItem.Count == inventoryItem.StackCap)
+				return 0;
+
+			var amountToAccept = inventoryItem.StackCap - inventoryItem.Count;
+			return giftEquipment.Count <= amountToAccept
+				? giftEquipment.Count
+				: amountToAccept;
+		}
+
+		protected override void OnGiftItemCancel(object obj, EventArgs args)
+		{
+
+
+			Dynamic.OnCancel(obj, args);
+		}
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
@@ -269,6 +329,8 @@ namespace TsRandomizer.Screens.Gifting
 			// Player: 
 			// Game:
 			// Item: 
+			// Traits A 
+			// B      C
 
 
 			/*var selectedIndex = ((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex;
@@ -397,10 +459,11 @@ namespace TsRandomizer.Screens.Gifting
 		class GiftingsInventoryCollection : InventoryUseItemCollection
 		{
 			public static readonly Dictionary<int, Gift> GiftMapping = new Dictionary<int, Gift>();
+			public static readonly Dictionary<int, InventoryItem> ItemMapping = new Dictionary<int, InventoryItem>();
 
-			readonly Action<int, Gift> onGiftSelected;
+			readonly Action<int, Gift, InventoryItem> onGiftSelected;
 
-			public GiftingsInventoryCollection(Action<int, Gift> onGiftSelected)
+			public GiftingsInventoryCollection(Action<int, Gift, InventoryItem> onGiftSelected)
 			{
 				this.onGiftSelected = onGiftSelected;
 			}
@@ -426,7 +489,10 @@ namespace TsRandomizer.Screens.Gifting
 					hash = random.Next();
 					if (hash > 1000 && !GiftMapping.ContainsKey(hash))
 					{
+						var simplifiedTraits = gift.Traits.ToDictionary(t => (Trait)typeof(Trait).GetEnumValue(t.Trait), t => (float)t.Quality);
+
 						GiftMapping.Add(hash, gift);
+						ItemMapping.Add(hash, TraitMapping.ParseItem(gift.ItemName, simplifiedTraits, gift.Amount));
 
 						AddItem(hash, count);
 
@@ -440,11 +506,11 @@ namespace TsRandomizer.Screens.Gifting
 				// ReSharper disable once SuggestVarOrType_SimpleTypes
 				foreach (InventoryUseItem useItem in Inventory.Values)
 				{
-					var gift = GiftMapping[useItem.Key];
+					var item = ItemMapping[useItem.Key];
 
 					var dynamicInventoryItem = useItem.AsDynamic();
-					TimeSpinnerGame.Localizer.OverrideKey(dynamicInventoryItem.NameKey, gift.ItemName);
-					TimeSpinnerGame.Localizer.OverrideKey(dynamicInventoryItem.DescriptionKey, "TODO Add description");
+					dynamicInventoryItem.NameKey = item.NameKey;
+					dynamicInventoryItem.DescriptionKey = item.DescriptionKey;
 				}
 
 				base.RefreshItemNameAndDescriptions();
@@ -452,7 +518,7 @@ namespace TsRandomizer.Screens.Gifting
 
 			public bool OnUseItemSelected(InventoryUseItem useItem)
 			{
-				onGiftSelected(useItem.Key, GiftMapping[useItem.Key]);
+				onGiftSelected(useItem.Key, GiftMapping[useItem.Key], ItemMapping[useItem.Key]);
 				return true;
 			}
 		}

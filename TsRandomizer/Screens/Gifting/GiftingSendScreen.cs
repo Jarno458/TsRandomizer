@@ -185,7 +185,7 @@ namespace TsRandomizer.Screens.Gifting
 
 		protected override void OnGiftItemAccept(object obj, EventArgs args)
 		{
-			if (selectedPlayer.Team == DummyTeam || GiftingService.Send(selectedItem, selectedPlayer))
+			if (selectedPlayer.Team == DummyTeam || GiftingService.Send(selectedItem, selectedPlayer, 1))
 			{
 				ConfirmMenuCollection.IsVisible = false;
 				Dynamic.GoToPreviousMenuCollection();
@@ -319,10 +319,7 @@ namespace TsRandomizer.Screens.Gifting
 				this.onItemSelected = onItemSelected;
 			}
 
-			public void AddItem(EInventoryUseItemType item) => AddItem(item, 1);
 			public void AddItem(EInventoryUseItemType item, int count) => AddItem((int)item, count);
-			public void AddItem(EInventoryEquipmentType item) => AddItem(item, 1);
-
 			public void AddItem(EInventoryEquipmentType item, int count) =>
 				AddItem((int)item.ToEInventoryUseItemType(), count);
 
