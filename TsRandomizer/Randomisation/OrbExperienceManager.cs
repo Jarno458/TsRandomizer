@@ -122,6 +122,9 @@ namespace TsRandomizer.Randomisation
 		static void AwardOrbXp(Level level, Protagonist lunais, XpAwardingOrb orbType, int xpToAdd)
 		{
 			var orbColor = GetOrbColor(orbType, GetOrb(lunais, orbType));
+
+			if (orbColor == EInventoryOrbType.None)
+				return;
 			
 			var inventoryOrb = level.GameSave.Inventory.OrbInventory.GetItem((int)orbColor);
 
@@ -147,6 +150,9 @@ namespace TsRandomizer.Randomisation
 
 		static EInventoryOrbType GetOrbColor(XpAwardingOrb orbType, object orb)
 		{
+			if (orb == null)
+				return EInventoryOrbType.None;
+
 			switch (orbType)
 			{
 				case XpAwardingOrb.Main:

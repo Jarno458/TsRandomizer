@@ -186,6 +186,21 @@ namespace TsRandomizer.Screens.Console
 		public void AddLine(string message) 
 			=> AddLine(message, Color.White);
 
+		public void AddException(Exception e, string message)
+		{
+			AddLine(message ?? "", Color.Red);
+
+			if (e == null)
+				return;
+
+			AddLine($"Exception: [{e.GetType().FullName}]: {e.Message}", Color.Red);
+
+			if (e.StackTrace == null)
+				return;
+
+			AddLine($"    {e.StackTrace}", Color.Red);
+		}
+		
 		public void AddLine(string message, Color color)
 		{
 			foreach (var m in message.Split('\n'))

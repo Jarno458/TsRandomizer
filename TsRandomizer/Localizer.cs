@@ -5,6 +5,8 @@ using System.Reflection;
 using Timespinner.Core.Localization;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
+using TsRandomizer.Screens.Gifting;
 
 namespace TsRandomizer
 {
@@ -20,6 +22,9 @@ namespace TsRandomizer
 		{
 			try
 			{
+				Type.GetMethod("DoesExist", BindingFlags.Static | BindingFlags.NonPublic)
+					.Invoke(null, new object[] { "FakeKeyToLoadLibIfNotYetLoaded" });
+
 				var stringLibrary = (StringLibrary) Type
 					.GetField("_currentLibrary", BindingFlags.Static | BindingFlags.NonPublic)
 					.GetValue(null);
@@ -59,6 +64,9 @@ namespace TsRandomizer
 			var newLibrary = constructor.Invoke(new [] { currentLocale });
 
 			currentLibrary.SetValue(null, newLibrary);
+
+			CustomItem.Initialize();
+			GiftingReceiveScreen.Initialize();
 		}
 	}
 }

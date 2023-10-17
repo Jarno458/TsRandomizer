@@ -9,10 +9,7 @@ namespace TsRandomizer
 {
 	static class FamiliarManager
 	{
-		public static void Update(Level level)
-		{
-			OverwriteSwitchFamiliarFunction(level);
-		}
+		public static void Update(Level level) => OverwriteSwitchFamiliarFunction(level);
 
 		static void OverwriteSwitchFamiliarFunction(Level level)
 		{

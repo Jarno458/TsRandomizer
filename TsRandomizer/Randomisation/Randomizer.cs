@@ -58,8 +58,6 @@ namespace TsRandomizer.Randomisation
 
 			stopwatch.Stop();
 
-			ScreenManager.Console.AddLine($"Spend {itterations} itterations to generate seed {seed}, in {stopwatch.Elapsed}");
-
 			return new GenerationResult
 			{
 				Seed = seed,

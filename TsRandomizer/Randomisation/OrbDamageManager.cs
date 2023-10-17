@@ -186,8 +186,6 @@ namespace TsRandomizer.Randomisation
 
 		public static void OverrideOrbNames(EInventoryOrbType orbType, string suffix)
 		{
-			var Localizer = TimeSpinnerGame.Localizer;
-
 			string locKey = $"inv_orb_{orbType}";
 			string spellLocKey = $"{locKey}_spell";
 			string ringLocKey = $"{locKey}_passive";
@@ -195,12 +193,9 @@ namespace TsRandomizer.Randomisation
 			string actualSpellName = new InventoryOrb(orbType).AsDynamic().SpellName;
 			string actualRingName = new InventoryOrb(orbType).AsDynamic().PassiveName;
 
-			if (!actualOrbName.EndsWith(suffix))
-				Localizer.OverrideKey(locKey, $"{actualOrbName} {suffix}");
-			if (!actualSpellName.EndsWith(suffix))
-				Localizer.OverrideKey(spellLocKey, $"{actualSpellName} {suffix}");
-			if (!actualRingName.EndsWith(suffix))
-				Localizer.OverrideKey(ringLocKey, $"{actualRingName} {suffix}");
+			TimeSpinnerGame.Localizer.OverrideKey(locKey, $"{actualOrbName} {suffix}");
+			TimeSpinnerGame.Localizer.OverrideKey(spellLocKey, $"{actualSpellName} {suffix}");
+			TimeSpinnerGame.Localizer.OverrideKey(ringLocKey, $"{actualRingName} {suffix}");
 		}
 
 		public static void PopulateOrbLookups(GameSave save, string setting, Dictionary<string, OrbDamageOdds> overrides)

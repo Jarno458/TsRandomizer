@@ -86,7 +86,7 @@ namespace TsRandomizer.Screens
 		{
 			GCM gcm = screenManager.AsDynamic().GCM;
 
-			void Noop()
+			void OnExit()
 			{
 				var gameplayScreen = screenManager.FirstOrDefault<GameplayScreen>();
 
@@ -99,7 +99,7 @@ namespace TsRandomizer.Screens
 
 			gcm.LoadAllResources(screenManager.AsDynamic().GeneralContentManager, screenManager.GraphicsDevice);
 
-			return (GameScreen)Activator.CreateInstance(JournalMenuType, GameSave.DemoSave, gcm, (Action)Noop);
+			return (GameScreen)Activator.CreateInstance(JournalMenuType, GameSave.DemoSave, gcm, (Action)OnExit);
 		}
 
 		object CreateDefaultsMenu(GameSettingCategoryInfo[] menusToClear, bool isSubmenu)
@@ -214,15 +214,17 @@ namespace TsRandomizer.Screens
 					break;
 				*/
 				default:
-					collection = Dynamic._questInventory;
+					collection = ((object)Dynamic._questInventory).AsDynamic();
 					break;
 			}
 
 			var menuEntryList = new object[0].ToList(MenuEntryType);
 
-			((object)collection).AsDynamic()._entries = menuEntryList;
+			collection._entries = menuEntryList;
+			collection.DoesMenuAllowScrolling = true;
+			collection.ScrollRowHeight = 9;
 
-			return (object)collection;
+			return ~collection;
 		}
 
 		MenuEntry CreateMenuForSetting(GameSetting setting)

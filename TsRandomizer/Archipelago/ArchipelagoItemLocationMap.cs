@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Archipelago.MultiClient.Net.Models;
 using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;

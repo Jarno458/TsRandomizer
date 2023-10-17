@@ -14,6 +14,7 @@ using TsRandomizer.Screens.Menu;
 using SDL2;
 using TsRandomizer.Settings;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
+using System.Diagnostics;
 
 namespace TsRandomizer.Screens.SeedSelection
 {
@@ -202,9 +203,11 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		void OnGenerateSelected()
 		{
-			var seed = Randomizer.Generate(FillingMethod.Random, GetCurrentOptions()).Seed;
+			var seed = Randomizer.Generate(FillingMethod.Random, GetCurrentOptions());
 
-			SetSeed(seed.ToString());
+			ScreenManager.Console.AddLine($"Spend {seed.Itterations} itterations to generate seed {seed.Seed}, in {seed.Elapsed}");
+
+			SetSeed(seed.Seed.ToString());
 		}
 
 		internal SeedOptionsCollection GetCurrentOptions()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -38,7 +39,11 @@ namespace TsRandomizer.Screens
 			.Get("Timespinner.GameStateManagement.Screens.MainMenu.TitleBackgroundScreen");
 
 		int hpCap;
+		int levelCap;
 		DeathLinker deathLinkService;
+
+		int numberOfGifts;
+		DateTime lastBlinkTime = DateTime.Now;
 
 		public Seed Seed { get; private set; }
 		public SettingCollection Settings { get; private set; }
@@ -75,6 +80,7 @@ namespace TsRandomizer.Screens
 
 			Settings = settings;
 			hpCap = Convert.ToInt32(Settings.HpCap.Value);
+			levelCap = Convert.ToInt32(settings.LevelCap.Value) - 1;
 
 			try
 			{
@@ -95,8 +101,6 @@ namespace TsRandomizer.Screens
 			if (settings.DamageRando.Value != "Off")
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave, settings.DamageRando.Value, settings.DamageRandoOverrides.Value);
 
-			HandleLevelCap(settings, saveFile);
-			
 			BestiaryManager.UpdateBestiary(Level, settings);
 			if (!saveFile.GetSaveBool("IsFightingBoss"))
 				BestiaryManager.RefreshBossSaveFlags(Level);
@@ -115,10 +119,8 @@ namespace TsRandomizer.Screens
 #endif
 		}
 
-		static void HandleLevelCap(SettingCollection settings, GameSave saveFile)
+		void HandleLevelCap(GameSave saveFile)
 		{
-			int levelCap = Convert.ToInt32(settings.LevelCap.Value) - 1; //the levels are 0-indexed. who knew?
-
 			var stats = saveFile.CharacterStats.AsDynamic();
 
 			stats.MaxLevel = levelCap;
@@ -173,11 +175,14 @@ namespace TsRandomizer.Screens
 				OrbExperienceManager.UpdateOrbXp(Level, Level.MainHero, Settings.ExtraEarringsXP.Value);
 			}
 
+			HandleLevelCap(Save);
+
 			UpdateGenericScripts(Level);
 
 #if DEBUG
 			TimespinnerAfterDark(input);
 #endif
+			HandleCurrentGifts();
 		}
 
 		void UpdateGenericScripts(Level level)
@@ -194,10 +199,69 @@ namespace TsRandomizer.Screens
 				level.GameSave.AddConcussion();
 		}
 
-#if DEBUG
+		void HandleCurrentGifts()
+		{
+			if (!Seed.Options.Archipelago)
+				return;
+
+			var currentNumberOfGifts = Client.GetGiftingService().NumberOfGifts;
+			if (currentNumberOfGifts > numberOfGifts)
+			{
+				if (numberOfGifts == 0)
+					lastBlinkTime = DateTime.Now;
+
+				ScreenManager.Jukebox.PlayCue(ESFX.CrowCaw);
+			}
+
+			numberOfGifts = currentNumberOfGifts;
+		}
+		
 		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
+			using (spriteBatch.BeginUsing())
+			{
+				DrawReceivedGifts(spriteBatch, menuFont);
+				DrawRoomId(spriteBatch, menuFont);
+			}
+		}
 
+		void DrawReceivedGifts(SpriteBatch spriteBatch, SpriteFont menuFont)
+		{
+			if(!Seed.Options.Archipelago || numberOfGifts == 0)
+				return;
+
+			var pauseMenuScreen = ScreenManager.FirstOrDefault<PauseMenuScreen>();
+			if (!GameScreen.IsActive && (pauseMenuScreen == null || !pauseMenuScreen.GameScreen.IsActive))
+				return;
+
+			var zoom = (int)TimeSpinnerGame.Constants.InGameZoom;
+			var PauseMenuTexture = GameContentManager.SpPauseMenu;
+			var exclaimationMarkSourceRetangle = new Rectangle(227, 33, 8, 8);
+
+			var gameplayScreenSize = ScreenManager.SmallScreenRect;
+			var buttomRight = new Vector2(gameplayScreenSize.X + gameplayScreenSize.Width, gameplayScreenSize.Y + gameplayScreenSize.Height);
+			var position = (pauseMenuScreen != null)
+				? pauseMenuScreen.GiftingHintPosition
+				: new Vector2(buttomRight.X - (zoom * 20), buttomRight.Y - (zoom * 20));
+			var textPosition = new Vector2(position.X + (numberOfGifts < 10 ? 5 * zoom : 3 * zoom), position.Y + (2 * zoom));
+			var scale = new Vector2(zoom, zoom);
+			var iconColor = Color.White;
+
+			var blinkInterval = (int)Settings.GiftingReminderInterval.Value;
+			if (blinkInterval != 0 && (DateTime.Now - lastBlinkTime).Seconds >= blinkInterval)
+			{
+				lastBlinkTime = DateTime.Now;
+				iconColor = Color.DarkGray;
+				ScreenManager.Jukebox.PlayCue(ESFX.MeyefMeow);
+			}
+
+			spriteBatch.Draw(PauseMenuTexture.Texture, position, exclaimationMarkSourceRetangle, iconColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0);
+			spriteBatch.DrawString(menuFont, numberOfGifts.ToString(), textPosition, new Color(240, 240, 208), 0f, Vector2.Zero, scale / 1.5f, SpriteEffects.None, 1);
+		}
+		
+		void DrawRoomId(SpriteBatch spriteBatch, SpriteFont menuFont)
+		{
+#if DEBUG
 			if (ItemLocations == null)
 				return;
 
@@ -208,10 +272,10 @@ namespace TsRandomizer.Screens
 
 			var inGameZoom = (int)TimeSpinnerGame.Constants.InGameZoom;
 
-			using (spriteBatch.BeginUsing())
-				spriteBatch.DrawString(menuFont, text, new Vector2(30, 130), Color.Red, inGameZoom);
-		}
+			spriteBatch.DrawString(menuFont, text, new Vector2(30, 130), Color.Red, inGameZoom);
 #endif
+		}
+
 
 		public void HideItemPickupBar() => ((object)Dynamic._itemGetBanner).AsDynamic()._displayTimer = 3f;
 

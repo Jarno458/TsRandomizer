@@ -100,7 +100,7 @@ namespace TsRandomizer.LevelObjects
 			//E.PresentSnail, //cause issues if facing wrong way
 			E.HellSpider, //path blocking lazer, timestop immunity
 			//E.Conviction, //timestop immunity //Falls through floor
-			E.Zeal, //timestop immunity
+			//E.Zeal, //timestop immunity //Attack can go off the map and crash the game
 			E.Justice, //timestop immunity
 			E.Nethershade, // invisable, timestop immunity
 			E.Turret, //timestop immunity

@@ -22,6 +22,9 @@ namespace TsRandomizer.Screens.Menu
 		public static readonly Color UnAvailableColor = (Color)MainMenuEntryType
 			.GetField("UnavailableColor", BindingFlags.Static | BindingFlags.Public)
 			.GetValue(null);
+		public static readonly Color UnselectedColor = (Color)MainMenuEntryType
+			.GetField("UnselectedColor", BindingFlags.Static | BindingFlags.Public)
+			.GetValue(null);
 		// ReSharper restore PossibleNullReferenceException
 
 		readonly object entry;
@@ -55,6 +58,12 @@ namespace TsRandomizer.Screens.Menu
 		{
 			get => reflected.BaseDrawColor;
 			set => reflected.BaseDrawColor = value;
+		}
+
+		public int ColumnWidth
+		{
+			get => reflected.ColumnWidth;
+			set => reflected.ColumnWidth = value;
 		}
 
 		internal MenuEntry(object entry)

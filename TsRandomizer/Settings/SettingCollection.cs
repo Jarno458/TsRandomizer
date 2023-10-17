@@ -39,7 +39,7 @@ namespace TsRandomizer.Settings
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.NumberOfOnScreenLogLines, s => s.OnScreenLogLineScreenTime, s => s.ShowSendItemsFromMe, s => s.ShowReceivedItemsFromMe,
 					s => s.ShowSendGenericItems, s => s.ShowSendImportantItems, s => s.ShowSendProgressionItems, s => s.ShowSendTrapItems,
-					s => s.ShowSystemMessages, s => s.DeathLink
+					s => s.ShowSystemMessages, s => s.DeathLink, s => s.GiftingReminderInterval
 				}},
 			new GameSettingCategoryInfo { Name = "Other", Description = "Miscellaneous settings",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -209,5 +209,8 @@ namespace TsRandomizer.Settings
 
 		public OnOffGameSetting EnableMapFromStart = new OnOffGameSetting("Enable map from start",
 			"Marks all the rooms on minimap as known", false);
+
+		public NumberGameSettingWithFixedSteps GiftingReminderInterval = new NumberGameSettingWithFixedSteps("Received gifts reminder",
+			"The interval in seconds to remind the user about pending received gifts.", new double[] { 0, 1, 5, 10, 30, 60, 300 }, 1, true);
 	}
 }
