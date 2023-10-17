@@ -33,6 +33,7 @@ namespace TsRandomizer.Archipelago.Gifting
 		{
 			service = new APGiftingService(session);
 			service.SubscribeToNewGifts(OnGiftsChanged);
+			service.CheckGiftBox();
 		}
 
 		void OnGiftsChanged(Dictionary<string, Gift> gifts) =>

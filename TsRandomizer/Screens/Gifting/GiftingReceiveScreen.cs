@@ -227,7 +227,7 @@ namespace TsRandomizer.Screens.Gifting
 					if (acceptedAmount == 0)
 					{
 						ScreenManager.Jukebox.PlayCue(ESFX.MenuError);
-						Dynamic.ChangeDescription("Inventory full, cant accept gift");
+						Dynamic.ChangeDescription("Inventory full, cant accept gift", EInventoryItemIconType.GetEnumValue("None"));
 						return;
 					}
 
@@ -314,10 +314,11 @@ namespace TsRandomizer.Screens.Gifting
 			base.Update(gameTime, input);
 
 			var selectedMenuCollection = Dynamic._selectedMenuCollection;
-
+			var dynamicTraitsMenu = traitSelectionMenu.AsDynamic();
+			
 			if (selectedMenuCollection == traitSelectionMenu)
 			{
-				var menuCollection = traitSelectionMenu.AsDynamic();
+				var menuCollection = dynamicTraitsMenu;
 				var entries = (IList)menuCollection.Entries;
 				var entryIndex = (int)menuCollection.SelectedIndex;
 
@@ -331,10 +332,15 @@ namespace TsRandomizer.Screens.Gifting
 			}
 			else if (selectedMenuCollection == giftsSelectionMenu)
 			{
+				dynamicTraitsMenu.DrawPosition = new Vector2(-1000, 1000);
+
 				RefreshGiftInfo(GameContentManager.ActiveFont);
 			} 
 			else if (selectedMenuCollection == Dynamic._primaryMenuCollection)
 			{
+				if ((int)((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex != 0)
+					dynamicTraitsMenu.DrawPosition = new Vector2(-1000, 1000);
+
 				if (shouldUpdateMotherbox)
 					UpdateMotherbox();
 			}
