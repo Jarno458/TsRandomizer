@@ -43,7 +43,7 @@ namespace TsRandomizer.Settings
 				}},
 			new GameSettingCategoryInfo { Name = "Other", Description = "Miscellaneous settings",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.ShowBestiary, s => s.ShowDrops, s => s.NoSaveStatues
+					s => s.ShowBestiary, s => s.ShowDrops, s => s.NoSaveStatues, s => s.EnableMapFromStart
 				}}
 		};
 
@@ -207,8 +207,10 @@ namespace TsRandomizer.Settings
 		public OnOffGameSetting NoSaveStatues = new OnOffGameSetting("No Save Statues",
 			"Breaks all the save statues", false, true);
 
+		public OnOffGameSetting EnableMapFromStart = new OnOffGameSetting("Enable map from start",
+			"Marks all the rooms on minimap as known", false);
+
 		public NumberGameSettingWithFixedSteps GiftingReminderInterval = new NumberGameSettingWithFixedSteps("Received gifts reminder",
 			"The interval in seconds to remind the user about pending received gifts.", new double[] { 0, 1, 5, 10, 30, 60, 300 }, 1, true);
-
 	}
 }

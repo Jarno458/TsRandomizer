@@ -161,6 +161,8 @@ namespace TsRandomizer.Screens
 			if (ItemLocations == null)
 				return;
 
+			if (Settings.EnableMapFromStart.Value)
+				Level.Minimap.SetAllKnown(true);
 			LevelObject.Update(Level, this, ItemLocations, Seed, Settings, ScreenManager);
 
 			FamiliarManager.Update(Level);
