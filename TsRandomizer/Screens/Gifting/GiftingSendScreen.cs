@@ -177,7 +177,7 @@ namespace TsRandomizer.Screens.Gifting
 				}
 			});
 
-			base.PopulateMainMenu();
+			PopulateMainMenu();
 
 			GiftingService.NumberOfGifts += 1;
 		}

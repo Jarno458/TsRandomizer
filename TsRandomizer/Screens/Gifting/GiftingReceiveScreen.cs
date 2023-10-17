@@ -19,6 +19,8 @@ namespace TsRandomizer.Screens.Gifting
 {
 	class GiftingReceiveScreen : GiftingScreen
 	{
+		const int NumberOfTraitsToDisplay = 3;
+
 		static readonly Type StatEntryType =
 			TimeSpinnerType.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.StatEntry");
 
@@ -74,9 +76,13 @@ namespace TsRandomizer.Screens.Gifting
 
 		bool shouldUpdateMotherbox;
 
+		object giftsSelectionMenu;
 		Gift selectedGift;
 		int selectedHash;
 		InventoryItem selectedItem;
+
+		public static readonly Dictionary<int, Gift> GiftMapping = new Dictionary<int, Gift>();
+		public static readonly Dictionary<int, InventoryItem> ItemMapping = new Dictionary<int, InventoryItem>();
 
 		static string GetTraitNameKey(Trait trait) => $"TSR_trait_{trait}";
 		static string GetTraitDescriptionKey(Trait trait) => GetTraitNameKey(trait) + "_desc";
@@ -127,7 +133,7 @@ namespace TsRandomizer.Screens.Gifting
 				traitSelectionMenu.AsDynamic().IsVisible = false;
 			}
 
-			var giftsSelectionMenu = CreateMenuForGifts();
+			giftsSelectionMenu = CreateMenuForGifts();
 			if (giftsSelectionMenu != null)
 			{
 				subMenuCollections.Add(giftsSelectionMenu);
@@ -289,20 +295,27 @@ namespace TsRandomizer.Screens.Gifting
 
 		protected override void OnGiftItemCancel(object obj, EventArgs args)
 		{
-
-
 			Dynamic.OnCancel(obj, args);
+
+			GiftingService.RejectGift(selectedGift);
+
+			//remove from menu
+			var menuItem = new InventoryUseItem((EInventoryUseItemType)selectedHash);
+			foreach (var collection in Dynamic._subMenuCollections)
+				if (collection.GetType() == MenuUseItemInventoryType)
+					for (var i = 0; i < selectedGift.Amount; i++)
+						((object)collection).AsDynamic().RemoveItem(menuItem);
+
+			ScreenManager.Jukebox.PlayCue(ESFX.MenuSelect);
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
 		{
 			base.Update(gameTime, input);
 
-			var selectedIndex = ((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex;
-			if (selectedIndex != 0)
-				return;
+			var selectedMenuCollection = Dynamic._selectedMenuCollection;
 
-			if (Dynamic._selectedMenuCollection == traitSelectionMenu)
+			if (selectedMenuCollection == traitSelectionMenu)
 			{
 				var menuCollection = traitSelectionMenu.AsDynamic();
 				var entries = (IList)menuCollection.Entries;
@@ -316,12 +329,15 @@ namespace TsRandomizer.Screens.Gifting
 					Dynamic.ChangeDescription(Descriptions[highlightedTrait], Icons[highlightedTrait]);
 				}
 			}
-			else
+			else if (selectedMenuCollection == giftsSelectionMenu)
 			{
-				UpdateMotherbox();
+				RefreshGiftInfo(GameContentManager.ActiveFont);
+			} 
+			else if (selectedMenuCollection == Dynamic._primaryMenuCollection)
+			{
+				if (shouldUpdateMotherbox)
+					UpdateMotherbox();
 			}
-
-			RefreshGiftInfo(GameContentManager.ActiveFont);
 		}
 
 		void RefreshGiftInfo(SpriteFont menuFont)
@@ -332,20 +348,31 @@ namespace TsRandomizer.Screens.Gifting
 			// Traits A 
 			// B      C
 
-
-			/*var selectedIndex = ((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex;
-			if (selectedIndex >= acceptedTraitsPerSlot.Count)
+			var selectedMenuItem = (InventoryUseItem)giftsSelectionMenu.AsDynamic().GetSelected();
+			if (selectedMenuItem == null)
 				return;
 
-			AcceptedTraits selectedPlayerTraits = acceptedTraitsPerSlot[selectedIndex];
+			var gift = GiftMapping[selectedMenuItem.Key];
+			var sendingPlayer = Client.GetPlayerInfo(gift.SenderTeam, gift.SenderSlot);
+			if (sendingPlayer == null)
+				return;
 
 			var entries = (IList)PlayerInfoCollection.Entries;
 			entries.Clear();
 
+			var playerEntry = StatEntryType.CreateInstance().AsDynamic();
+			playerEntry.Type = StatEntryDisplayEnumType.GetEnumValue("ColoredText");
+			playerEntry.Title = "Player:";
+			playerEntry.Text = sendingPlayer.Alias;
+			playerEntry.TextColor = StatEntryColor;
+			playerEntry.Initialize(menuFont);
+			playerEntry._drawStringWidth = (int)(menuFont.MeasureString(playerEntry._drawString).X - 24);
+			playerEntry._titleTextWidthReduction = playerEntry._drawStringWidth + 2;
+
 			var gameEntry = StatEntryType.CreateInstance().AsDynamic();
 			gameEntry.Type = StatEntryDisplayEnumType.GetEnumValue("ColoredText");
 			gameEntry.Title = "Game:";
-			gameEntry.Text = selectedPlayerTraits.Game;
+			gameEntry.Text = sendingPlayer.Game;
 			gameEntry.TextColor = StatEntryColor;
 			gameEntry.Initialize(menuFont);
 			gameEntry._drawStringWidth = (int)(menuFont.MeasureString(gameEntry._drawString).X - 24);
@@ -353,60 +380,58 @@ namespace TsRandomizer.Screens.Gifting
 
 			entries.Add(~gameEntry);
 
-			if (selectedPlayerTraits.AcceptsAnyTrait)
-			{
-				var allTraitsEntry = StatEntryType.CreateInstance().AsDynamic();
-				allTraitsEntry.Type = StatEntryDisplayEnumType.GetEnumValue("ColoredText");
-				allTraitsEntry.Title = "Wants:";
-				allTraitsEntry.Text = "All";
-				allTraitsEntry.TextColor = StatEntryColor;
-				allTraitsEntry.Initialize(menuFont);
-				allTraitsEntry._drawStringWidth = (int)(menuFont.MeasureString(allTraitsEntry._drawString).X - 24);
-				allTraitsEntry._titleTextWidthReduction = allTraitsEntry._drawStringWidth + 2;
+			var originalItemEntry = StatEntryType.CreateInstance().AsDynamic();
+			originalItemEntry.Type = StatEntryDisplayEnumType.GetEnumValue("ColoredText");
+			originalItemEntry.Title = (gift.IsRefund) ? "Refund:" : "Gift";
+			originalItemEntry.Text = gift.ItemName;
+			originalItemEntry.TextColor = StatEntryColor;
+			originalItemEntry.Initialize(menuFont);
+			originalItemEntry._drawStringWidth = (int)(menuFont.MeasureString(originalItemEntry._drawString).X - 24);
+			originalItemEntry._titleTextWidthReduction = originalItemEntry._drawStringWidth + 2;
 
-				entries.Add(~allTraitsEntry);
-			}
-			else
-			{
-				var traits = new List<string>(NumberOfTraitsToDisplay + 1) {
-					"Wants:"
-				};
+			entries.Add(~originalItemEntry);
 
-				for (var i = 0; i < NumberOfTraitsToDisplay; i++)
+			var traitNames = gift.Traits.Select(kvp => (Trait)typeof(Trait).GetEnumValue(kvp.Trait)).ToArray();
+
+			var traits = new List<string>(NumberOfTraitsToDisplay + 1) {
+				"Types:"
+			};
+
+			for (var i = 0; i < NumberOfTraitsToDisplay; i++)
+			{
+				if (i == NumberOfTraitsToDisplay - 1)
 				{
-					if (i == NumberOfTraitsToDisplay - 1)
-					{
-						if (selectedPlayerTraits.DesiredTraits.Length == NumberOfTraitsToDisplay)
-							traits.Add(selectedPlayerTraits.DesiredTraits[i - 1].ToString());
-						else if (selectedPlayerTraits.DesiredTraits.Length < NumberOfTraitsToDisplay)
-							traits.Add("");
-						else
-							traits.Add("More...");
-
-					}
+					if (traitNames.Length == NumberOfTraitsToDisplay)
+						traits.Add(traitNames[i - 1].ToString());
+					else if (traitNames.Length < NumberOfTraitsToDisplay)
+						traits.Add("");
 					else
-					{
-						if (i < selectedPlayerTraits.DesiredTraits.Length)
-							traits.Add(selectedPlayerTraits.DesiredTraits[i].ToString());
-						else
-							traits.Add("");
-					}
-				}
+						traits.Add("More...");
 
-				for (var i = 0; i < NumberOfTraitsToDisplay; i += 2)
+				}
+				else
 				{
-					var statEntry = StatEntryType.CreateInstance().AsDynamic();
-					statEntry.Type = StatEntryDisplayEnumType.GetEnumValue("ColoredText");
-					statEntry.Title = traits[i];
-					statEntry.Text = traits[i + 1];
-					statEntry.TextColor = StatEntryColor;
-					statEntry.Initialize(menuFont);
-					statEntry._drawStringWidth = (int)(menuFont.MeasureString(statEntry._drawString).X - 24);
-					statEntry._titleTextWidthReduction = statEntry._drawStringWidth + 2;
-
-					entries.Add(~statEntry);
+					if (i < traitNames.Length)
+						traits.Add(traitNames[i].ToString());
+					else
+						traits.Add("");
 				}
-			}*/
+			}
+
+			for (var i = 0; i < NumberOfTraitsToDisplay; i += 2)
+			{
+				var statEntry = StatEntryType.CreateInstance().AsDynamic();
+				statEntry.Type = StatEntryDisplayEnumType.GetEnumValue("ColoredText");
+				statEntry.Title = traits[i];
+				statEntry.Text = traits[i + 1];
+				statEntry.TextColor = StatEntryColor;
+				statEntry.Initialize(menuFont);
+				statEntry._drawStringWidth = (int)(menuFont.MeasureString(statEntry._drawString).X - 24);
+				statEntry._titleTextWidthReduction = statEntry._drawStringWidth + 2;
+
+				entries.Add(~statEntry);
+			}
+			
 		}
 
 		public override void Unload() => UpdateMotherbox();
@@ -458,9 +483,6 @@ namespace TsRandomizer.Screens.Gifting
 
 		class GiftingsInventoryCollection : InventoryUseItemCollection
 		{
-			public static readonly Dictionary<int, Gift> GiftMapping = new Dictionary<int, Gift>();
-			public static readonly Dictionary<int, InventoryItem> ItemMapping = new Dictionary<int, InventoryItem>();
-
 			readonly Action<int, Gift, InventoryItem> onGiftSelected;
 
 			public GiftingsInventoryCollection(Action<int, Gift, InventoryItem> onGiftSelected)
