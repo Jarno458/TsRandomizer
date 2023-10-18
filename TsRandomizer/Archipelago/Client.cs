@@ -84,9 +84,9 @@ namespace TsRandomizer.Archipelago
 				IsConnected = result.Successful;
 				cachedConnectionResult = result;
 	
-				if (result.Successful)
+				if (result is LoginSuccessful successful)
 				{
-					giftingService = new GiftingService(session);
+					giftingService = new GiftingService(session, successful.Team, successful.Slot);
 #if DEBUG
 					ScreenManager.Console.AddCommand(new CheckCommand());
 					ScreenManager.Console.AddCommand(new ScoutCommand());

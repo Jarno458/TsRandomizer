@@ -354,7 +354,15 @@ namespace TsRandomizer.Screens.Gifting
 			// Traits A 
 			// B      C
 
-			var selectedMenuItem = (InventoryUseItem)giftsSelectionMenu.AsDynamic().GetSelected();
+			InventoryUseItem selectedMenuItem = null;
+			try
+			{
+				//can throw
+				selectedMenuItem = (InventoryUseItem)giftsSelectionMenu.AsDynamic().GetSelected();
+			}
+			catch
+			{
+			}
 			if (selectedMenuItem == null)
 				return;
 
@@ -374,6 +382,8 @@ namespace TsRandomizer.Screens.Gifting
 			playerEntry.Initialize(menuFont);
 			playerEntry._drawStringWidth = (int)(menuFont.MeasureString(playerEntry._drawString).X - 24);
 			playerEntry._titleTextWidthReduction = playerEntry._drawStringWidth + 2;
+
+			entries.Add(~playerEntry);
 
 			var gameEntry = StatEntryType.CreateInstance().AsDynamic();
 			gameEntry.Type = StatEntryDisplayEnumType.GetEnumValue("ColoredText");

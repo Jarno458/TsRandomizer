@@ -94,6 +94,9 @@ namespace TsRandomizer.Screens
 
 			ItemLocations.Initialize(Level.GameSave);
 
+			if (Settings.EnableMapFromStart.Value)
+				Level.Minimap.SetAllKnown(true);
+
 			ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(ItemLocations));
 
 			ItemManipulator.Initialize(ItemLocations);
@@ -161,8 +164,6 @@ namespace TsRandomizer.Screens
 			if (ItemLocations == null)
 				return;
 
-			if (Settings.EnableMapFromStart.Value)
-				Level.Minimap.SetAllKnown(true);
 			LevelObject.Update(Level, this, ItemLocations, Seed, Settings, ScreenManager);
 
 			FamiliarManager.Update(Level);

@@ -8,6 +8,7 @@ using Archipelago.Gifting.Net.Service;
 using Archipelago.Gifting.Net.Traits;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Models;
+using Newtonsoft.Json.Linq;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Screens;
 using APGiftingService = Archipelago.Gifting.Net.Service.GiftingService;
@@ -29,11 +30,26 @@ namespace TsRandomizer.Archipelago.Gifting
 #endif
 		}
 
-		public GiftingService(ArchipelagoSession session)
+		public GiftingService(ArchipelagoSession session, int team, int slot)
 		{
 			service = new APGiftingService(session);
-			service.SubscribeToNewGifts(OnGiftsChanged);
+
+			//service.SubscribeToNewGifts(OnGiftsChanged);
+			Client.DataStorage[$"GiftBox;{team};{slot}"].OnValueChanged += OnOnValueChanged;
+
 			service.CheckGiftBox();
+		}
+
+		void OnOnValueChanged(JToken originalvalue, JToken newvalue)
+		{
+			try
+			{
+				NumberOfGifts = newvalue.ToObject<Dictionary<string, JToken>>().Count;
+			}
+			catch (Exception e)
+			{
+				ScreenManager.Console.AddException(e, "GiftingService.OnOnValueChanged() Failed");
+			}
 		}
 
 		void OnGiftsChanged(Dictionary<string, Gift> gifts) =>

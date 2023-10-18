@@ -181,6 +181,7 @@
     <Compile Include="LevelObjects\Monsters\Siren.cs" />
     <Compile Include="LevelObjects\Monsters\Snail.cs" />
     <Compile Include="LevelObjects\Monsters\SporeVein.cs" />
+    <Compile Include="Extensions\MinimapSpecificationExtensions.cs" />
     <Compile Include="Randomisation\OrbExperienceManager.cs" />
     <Compile Include="Archipelago\ArchipelagoUnlockingMap.cs" />
     <Compile Include="Randomisation\SpriteManager.cs" />
