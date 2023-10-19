@@ -13,6 +13,7 @@ namespace TsRandomizer
 				new TimeSpinnerGame(platformHelper).Run();
 			});
 
+			Environment.Exit(0);
 			return 0;
 		}
 

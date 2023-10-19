@@ -314,11 +314,9 @@ namespace TsRandomizer.Screens.Gifting
 			base.Update(gameTime, input);
 
 			var selectedMenuCollection = Dynamic._selectedMenuCollection;
-			var dynamicTraitsMenu = traitSelectionMenu.AsDynamic();
-			
 			if (selectedMenuCollection == traitSelectionMenu)
 			{
-				var menuCollection = dynamicTraitsMenu;
+				var menuCollection = traitSelectionMenu.AsDynamic();
 				var entries = (IList)menuCollection.Entries;
 				var entryIndex = (int)menuCollection.SelectedIndex;
 
@@ -329,23 +327,38 @@ namespace TsRandomizer.Screens.Gifting
 					var highlightedTrait = (Trait)typeof(Trait).GetEnumValue(traitName);
 					Dynamic.ChangeDescription(Descriptions[highlightedTrait], Icons[highlightedTrait]);
 				}
+
+				ClearPlayerGiftInfo();
 			}
 			else if (selectedMenuCollection == giftsSelectionMenu)
 			{
-				dynamicTraitsMenu.DrawPosition = new Vector2(-1000, 1000);
-
+				HideRelicsMenu();
 				RefreshGiftInfo(GameContentManager.ActiveFont);
 			} 
 			else if (selectedMenuCollection == Dynamic._primaryMenuCollection)
 			{
+				ClearPlayerGiftInfo();
+
 				if ((int)((object)Dynamic._primaryMenuCollection).AsDynamic().SelectedIndex != 0)
-					dynamicTraitsMenu.DrawPosition = new Vector2(-1000, 1000);
+					HideRelicsMenu();
 
 				if (shouldUpdateMotherbox)
 					UpdateMotherbox();
 			}
+			else if (selectedMenuCollection == ~ConfirmMenuCollection)
+			{
+				HideRelicsMenu();
+			}
 		}
 
+		void HideRelicsMenu() => traitSelectionMenu.AsDynamic().DrawPosition = new Vector2(-1000, 1000);
+
+		void ClearPlayerGiftInfo()
+		{
+			var entries = (IList)PlayerInfoCollection.Entries;
+			entries.Clear();
+		}
+ 
 		void RefreshGiftInfo(SpriteFont menuFont)
 		{
 			// Player: 
