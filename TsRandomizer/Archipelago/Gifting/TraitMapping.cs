@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Timespinner.GameAbstractions.Inventory;
-using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
 
 namespace TsRandomizer.Archipelago.Gifting
 {
@@ -141,23 +141,15 @@ namespace TsRandomizer.Archipelago.Gifting
 		public bool TryGetValue(EInventoryUseItemType item, out Dictionary<Trait, float> traits) => ValuesPerUseItem.TryGetValue(item, out traits);
 		public bool TryGetValue(EInventoryEquipmentType item, out Dictionary<Trait, float> traits) => ValuesPerEquipmentItem.TryGetValue(item, out traits);
 
+		static readonly Dictionary<string, InventoryItem> ItemNameToInventoryItemCache = new Dictionary<string, InventoryItem>();
+
 		public static InventoryItem ParseItem(string name, Dictionary<Trait, float> traits, int amount)
 		{
-			if(Enum.IsDefined(typeof(EInventoryUseItemType), name))
-			{
-				var useItemType = (EInventoryUseItemType)typeof(EInventoryUseItemType).GetEnumValue(name);
+			if (!ItemNameToInventoryItemCache.Any())
+				InitializeItemNameToInventoryItemCache();
 
-				if (ValuesPerUseItem.ContainsKey(useItemType))
-					return new InventoryUseItem(useItemType) { Count = amount };
-			}
-
-			if (Enum.IsDefined(typeof(EInventoryEquipmentType), name))
-			{
-				var armorType = (EInventoryEquipmentType)typeof(EInventoryEquipmentType).GetEnumValue(name);
-
-				if (ValuesPerEquipmentItem.ContainsKey(armorType))
-					return new InventoryEquipment(armorType) { Count = amount };
-			}
+			if (ItemNameToInventoryItemCache.TryGetValue(name, out var item))
+				return AddAmountToItem(item, amount);
 
 			if (traits.ContainsKey(Trait.Speed))
 				return new InventoryUseItem(EInventoryUseItemType.WarpCard) { Count = amount };
@@ -186,10 +178,44 @@ namespace TsRandomizer.Archipelago.Gifting
 
 			return new InventoryUseItem(FindClosestMatch(traits)) { Count = amount };
 		}
+		
+		static void InitializeItemNameToInventoryItemCache()
+		{
+			foreach (var itemType in ValuesPerUseItem.Keys)
+			{
+				var identifier = new ItemIdentifier(itemType);
+				var name = Client.ItemsHelper.GetItemName(ItemMap.GetItemId(identifier));
 
+				ItemNameToInventoryItemCache.Add(name, new InventoryUseItem(identifier.UseItem));
+			}
+
+			foreach (var itemType in ValuesPerEquipmentItem.Keys)
+			{
+				var identifier = new ItemIdentifier(itemType);
+				var name = Client.ItemsHelper.GetItemName(ItemMap.GetItemId(identifier));
+
+				ItemNameToInventoryItemCache.Add(name, new InventoryEquipment(identifier.Equipment));
+			}
+		}
+
+		static InventoryItem AddAmountToItem(InventoryItem item, int amount)
+		{
+			switch (item)
+			{
+				case InventoryUseItem useItem:
+					useItem.Count = amount;
+					return useItem;
+				case InventoryEquipment equipment:
+					equipment.Count = amount;
+					return equipment;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(item), "parameter should be either UseItem or Equipment");
+			}
+		}
+		
 		static EInventoryUseItemType FindClosestMatch(Dictionary<Trait, float> traits)
 		{
-			var itemTypesWithMatchCount = new Dictionary<int, EInventoryUseItemType>();
+			var itemTypesWithMatchCount = new Dictionary<EInventoryUseItemType, int>();
 			var mostMatches = 0;
 
 			foreach (var useItemTraitMapping in ValuesPerUseItem)
@@ -201,12 +227,12 @@ namespace TsRandomizer.Archipelago.Gifting
 						matches++;
 
 				if (matches >= mostMatches)
-					itemTypesWithMatchCount.Add(matches, useItemTraitMapping.Key);
+					itemTypesWithMatchCount.Add(useItemTraitMapping.Key, matches);
 			}
 
 			var mostMatchedItemTypes = itemTypesWithMatchCount
-				.Where(kvp => kvp.Key == mostMatches)
-				.Select(kvp => kvp.Value);
+				.Where(kvp => kvp.Value == mostMatches)
+				.Select(kvp => kvp.Key);
 
 			var closestMatch = 0f;
 			var closestItemType = EInventoryUseItemType.None;

@@ -10,6 +10,7 @@ using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Models;
 using Newtonsoft.Json.Linq;
 using Timespinner.GameAbstractions.Inventory;
+using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Screens;
 using APGiftingService = Archipelago.Gifting.Net.Service.GiftingService;
 
@@ -44,7 +45,7 @@ namespace TsRandomizer.Archipelago.Gifting
 		{
 			try
 			{
-				NumberOfGifts = newvalue.ToObject<Dictionary<string, JToken>>().Count;
+				NumberOfGifts = newvalue.ToObject<Dictionary<string, JToken>>()?.Count ?? 0;
 			}
 			catch (Exception e)
 			{
@@ -100,7 +101,7 @@ namespace TsRandomizer.Archipelago.Gifting
 		{
 			try
 			{
-				var giftItem = new GiftItem(item.Name, amount, 0);
+				var giftItem = new GiftItem(GetItemName(item), amount, 0);
 				var traits = TraitMapping.ValuesPerItem[item]
 					.Select(t => new GiftTrait(t.Key.ToString(), 1, t.Value))
 					.ToArray();
@@ -113,6 +114,25 @@ namespace TsRandomizer.Archipelago.Gifting
 			}
 
 			return false;
+		}
+
+		string GetItemName(InventoryItem item)
+		{
+			ItemIdentifier identifier;
+
+			switch (item)
+			{
+				case InventoryUseItem useItem:
+					identifier = new ItemIdentifier(useItem.UseItemType);
+					break;
+				case InventoryEquipment equipment:
+					identifier = new ItemIdentifier(equipment.EquipmentType);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(item), "parameter should be either UseItem or Equipment");
+			}
+
+			return Client.ItemsHelper.GetItemName(ItemMap.GetItemId(identifier)) ?? item.Name;
 		}
 
 		public void AcceptGift(Gift gift, int acceptedAmount)

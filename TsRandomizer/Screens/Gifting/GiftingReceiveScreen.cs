@@ -431,7 +431,7 @@ namespace TsRandomizer.Screens.Gifting
 				if (i == NumberOfTraitsToDisplay - 1)
 				{
 					if (traitNames.Length == NumberOfTraitsToDisplay)
-						traits.Add(traitNames[i - 1].ToString());
+						traits.Add(traitNames[i].ToString());
 					else if (traitNames.Length < NumberOfTraitsToDisplay)
 						traits.Add("");
 					else

@@ -49,6 +49,8 @@ namespace TsRandomizer.Archipelago
 
 		public static LocationCheckHelper LocationCheckHelper => session.Locations;
 
+		public static ReceivedItemsHelper ItemsHelper => session.Items;
+
 		public static DataStorageHelper DataStorage => session.DataStorage;
 
 		public static PlayerHelper Players => session.Players;
