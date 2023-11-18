@@ -204,7 +204,7 @@ namespace TsRandomizer.Randomisation
 			MilitaryFortress = LowerRightSideLibrary & KillMaw & killTwins & killAelana;
 			MilitaryFortressHangar = MilitaryFortress; //& R.TimeStop; implied by killAelana
 			RightSideMilitaryFortressHangar = MilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : R.DoubleJump);
-			TheLab = MilitaryFortressHangar & R.CardB;
+			TheLab = RightSideMilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab);
 			TheLabPoweredOff = TheLab & DoubleJumpOfNpc;
 			UpperLab = TheLabPoweredOff & ForwardDashDoubleJump;
 			RavenlordsLair = UpperLab & R.MerchantCrow;
@@ -322,8 +322,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(10, 4, 1064, 176), "Military Fortress: Soldiers bridge", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), MilitaryFortressHangar);
 			Add(new ItemKey(10, 10, 104, 192), "Military Fortress: Giantess room", ItemProvider.Get(EInventoryRelicType.AirMask), MilitaryFortressHangar);
 			Add(new ItemKey(10, 8, 1080, 176), "Military Fortress: Giantess bridge", ItemProvider.Get(EInventoryEquipmentType.LabGlasses), MilitaryFortressHangar);
-			Add(new ItemKey(10, 7, 104, 192), "Military Fortress: B door chest 2", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), RightSideMilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab));
-			Add(new ItemKey(10, 7, 152, 192), "Military Fortress: B door chest 1", ItemProvider.Get(EItemType.MaxSand), RightSideMilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab));
+			Add(new ItemKey(10, 7, 104, 192), "Military Fortress: B door chest 2", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), MilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab));
+			Add(new ItemKey(10, 7, 152, 192), "Military Fortress: B door chest 1", ItemProvider.Get(EItemType.MaxSand), MilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab));
 			Add(new ItemKey(10, 18, 280, 189), "Military Fortress: Pedestal", ItemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), RightSideMilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : DoubleJumpOfNpc | ForwardDashDoubleJump));
 			areaName = "The Lab";
 			Add(new ItemKey(11, 36, 312, 192), "Lab: Coffee break", ItemProvider.Get(EInventoryUseItemType.FoodSynth), TheLab);

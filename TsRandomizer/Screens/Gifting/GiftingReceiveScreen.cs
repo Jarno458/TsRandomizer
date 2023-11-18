@@ -420,7 +420,10 @@ namespace TsRandomizer.Screens.Gifting
 
 			entries.Add(~originalItemEntry);
 
-			var traitNames = gift.Traits.Select(kvp => (Trait)typeof(Trait).GetEnumValue(kvp.Trait)).ToArray();
+			var traitNames = gift.Traits
+				.Where(kvp => Enum.IsDefined(typeof(Trait), kvp.Trait))
+				.Select(kvp => (Trait)typeof(Trait).GetEnumValue(kvp.Trait))
+				.ToArray();
 
 			var traits = new List<string>(NumberOfTraitsToDisplay + 1) {
 				"Types:"
@@ -540,7 +543,9 @@ namespace TsRandomizer.Screens.Gifting
 					hash = random.Next();
 					if (hash > 1000 && !GiftMapping.ContainsKey(hash))
 					{
-						var simplifiedTraits = gift.Traits.ToDictionary(t => (Trait)typeof(Trait).GetEnumValue(t.Trait), t => (float)t.Quality);
+						var simplifiedTraits = gift.Traits
+							.Where(t => Enum.IsDefined(typeof(Trait), t.Trait))
+							.ToDictionary(t => (Trait)typeof(Trait).GetEnumValue(t.Trait), t => (float)t.Quality);
 
 						GiftMapping.Add(hash, gift);
 						ItemMapping.Add(hash, TraitMapping.ParseItem(gift.ItemName, simplifiedTraits, gift.Amount));
