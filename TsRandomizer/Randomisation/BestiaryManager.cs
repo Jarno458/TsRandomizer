@@ -646,50 +646,6 @@ namespace TsRandomizer.Randomisation
 			}
 		}
 
-		//public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
-		//{
-		//	if (level.GameSave.GetSettings().BossRando.Value == "Off")
-		//		return GetBossAttributes(level, replacedBossId);
-
-		//	int[] validBosses = GetValidBosses(level);
-			
-		//	string bossRandoType = level.GameSave.GetSettings().BossRandoType.Value;
-
-		//	Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
-		//	int[] replacedBosses;
-		//	switch (bossRandoType)
-		//	{
-		//		case "Chaos":
-		//			{
-		//				replacedBosses = new int[validBosses.Length];
-		//				for (int i = 0; i < replacedBosses.Length; ++i)
-		//				{
-		//					replacedBosses[i] = validBosses[random.Next(0, validBosses.Length)];
-		//				}
-		//				break;
-		//			}
-		//		case "Singularity":
-		//			{
-		//				replacedBosses = Enumerable.Repeat(validBosses.OrderBy(x => random.Next()).First(), validBosses.Length).ToArray();
-		//				break;
-		//			}
-		//		default:
-		//			{
-		//				replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
-		//				break;
-		//			}
-		//	}
-
-		//	int bossIndex = Array.IndexOf(replacedBosses, replacedBossId, 0);
-		//	if (bossIndex == -1)
-		//		return GetBossAttributes(level, replacedBossId);
-
-		//	int vanillaBossId = validBosses[bossIndex];
-		//	BossAttributes vanillaBossInfo = GetBossAttributes(level, vanillaBossId);
-
-		//	return vanillaBossInfo;
-		//}
-
 		public static void UpdateBestiary(Level level, SettingCollection gameSettings)
 		{
 			TimeSpinnerGame.Localizer.OverrideKey("inv_use_PlaceHolderItem1", "Nothing");
