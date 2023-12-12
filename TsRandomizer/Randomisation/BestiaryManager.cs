@@ -556,7 +556,7 @@ namespace TsRandomizer.Randomisation
 					}
 				case "Singularity":
 					{
-						replacedBosses = Enumerable.Repeat(validBosses.OrderBy(x => random.Next()).First(), validBosses.Length).ToArray();
+						replacedBosses = Enumerable.Repeat(validBosses[random.Next(0, validBosses.Length)], validBosses.Length).ToArray();
 						break;
 					}
 				default:
