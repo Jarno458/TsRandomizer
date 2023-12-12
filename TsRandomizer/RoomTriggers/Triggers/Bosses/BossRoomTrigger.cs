@@ -119,12 +119,14 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 
 			TargetBossId = vanillaBossId;
 
+
 			level.JukeBox.StopSong();
 
 			var bossArena = replacedBossInfo.BossRoom;
 
 			BestiaryManager.ClearBossSaveFlags(level, replacedBossInfo.ShouldSpawn);
 
+			level.GameSave.SetValue("VanillaBossId", vanillaBossId);
 			level.GameSave.SetValue("IsFightingBoss", true);
 
 			var facing = replacedBossInfo.IsFacingLeft ? EDirection.West : EDirection.East;

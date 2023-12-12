@@ -141,7 +141,29 @@ namespace TsRandomizer.Settings
 			    && slotData.TryGetValue("BossScaling", out var bossScaling)
 			    && IsTrue(bossScaling))
 					settings.BossRando.Value = "Scaled";
-					
+
+			if (slotData.TryGetValue("BossRandoType", out var bossRandoType))
+			{
+				var value = ToInt(bossRandoType);
+				string enumValue;
+
+				switch (value)
+				{
+					case 1:
+						enumValue = "Normal";
+						break;
+
+					case 2:
+						enumValue = "Chaos";
+						break;
+					default:
+						enumValue = "Singularity";
+						break;
+				}
+
+				settings.BossRandoType.Value = enumValue;
+			}
+
 			if (slotData.TryGetValue("EnemyRando", out var enemyRando))
 			{
 				var value = ToInt(enemyRando);

@@ -30,6 +30,7 @@ namespace TsRandomizer.Randomisation
 		public bool IsFacingLeft;
 		public bool ShouldSpawn;
 		public int TileId;
+		public string BestiaryKey;
 	}
 
 	struct MinionAttributes
@@ -111,7 +112,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = true,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.RoboKittyBoss
+						TileId = (int)EEnemyTileType.RoboKittyBoss,
+						BestiaryKey = "Enemy_RoboKittyBoss"
 					};
 				case (int)EBossID.Varndagroth:
 					return new BossAttributes
@@ -132,7 +134,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = true,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.VarndagrothBoss
+						TileId = (int)EEnemyTileType.VarndagrothBoss,
+						BestiaryKey = "Enemy_VarndagrothBoss"
 					};
 				case (int)EBossID.AzureQueen:
 					return new BossAttributes
@@ -153,7 +156,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = false,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.BirdBoss
+						TileId = (int)EEnemyTileType.BirdBoss,
+						BestiaryKey = "Enemy_BirdBoss"
 					};
 				case (int)EBossID.GoldenIdol:
 					return new BossAttributes
@@ -174,7 +178,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = true,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.IncubusBoss
+						TileId = (int)EEnemyTileType.IncubusBoss,
+						BestiaryKey = "Enemy_IncubusBoss"
 					};
 				case (int)EBossID.Aelana:
 					return new BossAttributes
@@ -195,7 +200,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = false,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.AelanaBoss
+						TileId = (int)EEnemyTileType.AelanaBoss,
+						BestiaryKey = "Enemy_AelanaBoss"
 					};
 				case (int)EBossID.Maw:
 					return new BossAttributes
@@ -216,7 +222,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = false,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.MawBoss
+						TileId = (int)EEnemyTileType.MawBoss,
+						BestiaryKey = "Enemy_MawBoss"
 					};
 				case (int)EBossID.Cantoran:
 					return new BossAttributes
@@ -237,7 +244,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = true,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.CantoranBoss
+						TileId = (int)EEnemyTileType.CantoranBoss,
+						BestiaryKey = "Enemy_CantoranBoss"
 					};
 				case (int)EBossID.Genza:
 					return new BossAttributes
@@ -258,7 +266,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = false,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.ShapeshiftBoss
+						TileId = (int)EEnemyTileType.ShapeshiftBoss,
+						BestiaryKey = "Enemy_ShapeshiftBoss"
 					};
 				case (int)EBossID.Nuvius:
 					return new BossAttributes
@@ -279,7 +288,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = true,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.EmperorBoss
+						TileId = (int)EEnemyTileType.EmperorBoss,
+						BestiaryKey = "Enemy_EmperorBoss"
 					};
 				case (int)EBossID.Vol:
 					return new BossAttributes
@@ -300,7 +310,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 1,
 						IsFacingLeft = true,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.EmperorBoss
+						TileId = (int)EEnemyTileType.EmperorBoss,
+						BestiaryKey = "Enemy_EmperorBoss_1"
 					};
 				case (int)EBossID.Prince:
 					return new BossAttributes
@@ -321,7 +332,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 2,
 						IsFacingLeft = true,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.EmperorBoss
+						TileId = (int)EEnemyTileType.EmperorBoss,
+						BestiaryKey = "Enemy_EmperorBoss_2"
 					};
 				case (int)EBossID.Xarion:
 					return new BossAttributes
@@ -342,7 +354,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = true,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.XarionBoss
+						TileId = (int)EEnemyTileType.XarionBoss,
+						BestiaryKey = "Enemy_XarionBoss"
 					};
 				case (int)EBossID.Ravenlord:
 					return new BossAttributes
@@ -363,7 +376,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = true,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.RavenBoss
+						TileId = (int)EEnemyTileType.RavenBoss,
+						BestiaryKey = "Enemy_RavenBoss"
 					};
 				case (int)EBossID.Ifrit:
 					return new BossAttributes
@@ -384,7 +398,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = true,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.ZelBoss
+						TileId = (int)EEnemyTileType.ZelBoss,
+						BestiaryKey = "Enemy_ZelBoss"
 					};
 				case (int)EBossID.Sandman:
 					return new BossAttributes
@@ -405,7 +420,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = true,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.SandmanBoss
+						TileId = (int)EEnemyTileType.SandmanBoss,
+						BestiaryKey = "Enemy_SandmanBoss"
 					};
 				case (int)EBossID.Nightmare:
 					return new BossAttributes
@@ -426,7 +442,8 @@ namespace TsRandomizer.Randomisation
 						Argument = 0,
 						IsFacingLeft = true,
 						ShouldSpawn = false,
-						TileId = (int)EEnemyTileType.NightmareBoss
+						TileId = (int)EEnemyTileType.NightmareBoss,
+						BestiaryKey = "Enemy_NightmareBoss"
 					};
 				default:
 					return new BossAttributes
@@ -522,8 +539,32 @@ namespace TsRandomizer.Randomisation
 
 			int[] validBosses = GetValidBosses(level);
 
+			string bossRandoType = level.GameSave.GetSettings().BossRandoType.Value;
+
 			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
-			int[] replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
+			int[] replacedBosses;
+			switch (bossRandoType)
+			{
+				case "Chaos":
+					{
+						replacedBosses = new int[validBosses.Length];
+						for (int i = 0; i < replacedBosses.Length; ++i)
+						{
+							replacedBosses[i] = validBosses[random.Next(0, validBosses.Length)];
+						}
+						break;
+					}
+				case "Singularity":
+					{
+						replacedBosses = Enumerable.Repeat(validBosses.OrderBy(x => random.Next()).First(), validBosses.Length).ToArray();
+						break;
+					}
+				default:
+					{
+						replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
+						break;
+					}
+			}
 
 			int bossIndex = Array.IndexOf(validBosses, vanillaBossId, 0);
 			if (bossIndex == -1)
@@ -605,25 +646,49 @@ namespace TsRandomizer.Randomisation
 			}
 		}
 
-		public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
-		{
-			if (level.GameSave.GetSettings().BossRando.Value == "Off")
-				return GetBossAttributes(level, replacedBossId);
+		//public static BossAttributes GetVanillaBoss(Level level, int replacedBossId)
+		//{
+		//	if (level.GameSave.GetSettings().BossRando.Value == "Off")
+		//		return GetBossAttributes(level, replacedBossId);
 
-			int[] validBosses = GetValidBosses(level);
+		//	int[] validBosses = GetValidBosses(level);
+			
+		//	string bossRandoType = level.GameSave.GetSettings().BossRandoType.Value;
 
-			Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
-			int[] replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
+		//	Random random = new Random((int)level.GameSave.GetSeed().Value.Id);
+		//	int[] replacedBosses;
+		//	switch (bossRandoType)
+		//	{
+		//		case "Chaos":
+		//			{
+		//				replacedBosses = new int[validBosses.Length];
+		//				for (int i = 0; i < replacedBosses.Length; ++i)
+		//				{
+		//					replacedBosses[i] = validBosses[random.Next(0, validBosses.Length)];
+		//				}
+		//				break;
+		//			}
+		//		case "Singularity":
+		//			{
+		//				replacedBosses = Enumerable.Repeat(validBosses.OrderBy(x => random.Next()).First(), validBosses.Length).ToArray();
+		//				break;
+		//			}
+		//		default:
+		//			{
+		//				replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
+		//				break;
+		//			}
+		//	}
 
-			int bossIndex = Array.IndexOf(replacedBosses, replacedBossId, 0);
-			if (bossIndex == -1)
-				return GetBossAttributes(level, replacedBossId);
+		//	int bossIndex = Array.IndexOf(replacedBosses, replacedBossId, 0);
+		//	if (bossIndex == -1)
+		//		return GetBossAttributes(level, replacedBossId);
 
-			int vanillaBossId = validBosses[bossIndex];
-			BossAttributes vanillaBossInfo = GetBossAttributes(level, vanillaBossId);
+		//	int vanillaBossId = validBosses[bossIndex];
+		//	BossAttributes vanillaBossInfo = GetBossAttributes(level, vanillaBossId);
 
-			return vanillaBossInfo;
-		}
+		//	return vanillaBossInfo;
+		//}
 
 		public static void UpdateBestiary(Level level, SettingCollection gameSettings)
 		{
@@ -642,8 +707,8 @@ namespace TsRandomizer.Randomisation
 				}
 				if (gameSettings.BossRando.Value != "Off" && validBosses.Contains(bestiaryEntry.Index))
 				{
-					BossAttributes replacedBossInfo = GetBossAttributes(level, bestiaryEntry.Index);
-					BossAttributes vanillaBossInfo = GetVanillaBoss(level, bestiaryEntry.Index);
+					BossAttributes replacedBossInfo = GetReplacedBoss(level, bestiaryEntry.Index);
+					BossAttributes vanillaBossInfo = GetBossAttributes(level, bestiaryEntry.Index);
 					bestiaryEntry.VisibleName = $"{replacedBossInfo.VisibleName} as {vanillaBossInfo.VisibleName}";
 					if (gameSettings.BossRando.Value == "Scaled")
 					{
