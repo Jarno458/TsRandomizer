@@ -646,6 +646,33 @@ namespace TsRandomizer.Randomisation
 			}
 		}
 
+		public static void UpdateCurrentBossScaling(Level level, SettingCollection gameSettings, int vanillaBossId, int replacedBossId)
+		{
+			int[] validBosses = GetValidBosses(level);
+			if (gameSettings.BossRando.Value != "Scaled" || !validBosses.Contains(replacedBossId))
+				return;
+
+			BossAttributes replacedBossInfo = GetBossAttributes(level, replacedBossId);
+			BossAttributes vanillaBossInfo = GetBossAttributes(level, vanillaBossId);
+
+			var bestiary = level.GCM.Bestiary;
+			var bestiaryEntry = bestiary.BestiaryEntries.SingleOrDefault(e => e.Index == replacedBossId);
+			if (bestiaryEntry == null)
+				return;
+			bestiaryEntry.HP = vanillaBossInfo.HP;
+			bestiaryEntry.TouchDamage = vanillaBossInfo.TouchDamage;
+			bestiaryEntry.Exp = vanillaBossInfo.XP;
+			if (replacedBossInfo.Minions.Length > 0)
+				foreach (int minionId in replacedBossInfo.Minions)
+				{
+					MinionAttributes minionInfo = GetMinionAttributes(level, minionId);
+					var minionEntry = bestiary.BestiaryEntries[minionId];
+					minionEntry.VisibleName = minionInfo.VisibleName;
+					minionEntry.HP = (int)((float)vanillaBossInfo.HP / replacedBossInfo.HP * minionInfo.HP);
+					minionEntry.TouchDamage = (int)((float)vanillaBossInfo.TouchDamage / replacedBossInfo.TouchDamage * minionInfo.TouchDamage);
+				}
+		}
+
 		public static void UpdateBestiary(Level level, SettingCollection gameSettings)
 		{
 			TimeSpinnerGame.Localizer.OverrideKey("inv_use_PlaceHolderItem1", "Nothing");

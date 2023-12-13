@@ -129,6 +129,8 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 			level.GameSave.SetValue("VanillaBossId", vanillaBossId);
 			level.GameSave.SetValue("IsFightingBoss", true);
 
+			BestiaryManager.UpdateCurrentBossScaling(level, level.GameSave.GetSettings(), vanillaBossId, replacedBossInfo.Index);
+
 			var facing = replacedBossInfo.IsFacingLeft ? EDirection.West : EDirection.East;
 
 			level.RequestChangeLevel(new LevelChangeRequest
