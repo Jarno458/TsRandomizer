@@ -649,7 +649,7 @@ namespace TsRandomizer.Randomisation
 		public static void UpdateCurrentBossScaling(Level level, SettingCollection gameSettings, int vanillaBossId, int replacedBossId)
 		{
 			int[] validBosses = GetValidBosses(level);
-			if (gameSettings.BossRando.Value != "Scaled" || !validBosses.Contains(replacedBossId))
+			if (!validBosses.Contains(replacedBossId))
 				return;
 
 			BossAttributes replacedBossInfo = GetBossAttributes(level, replacedBossId);
@@ -658,6 +658,9 @@ namespace TsRandomizer.Randomisation
 			var bestiary = level.GCM.Bestiary;
 			var bestiaryEntry = bestiary.BestiaryEntries.SingleOrDefault(e => e.Index == replacedBossId);
 			if (bestiaryEntry == null)
+				return;
+			bestiaryEntry.VisibleName = $"{replacedBossInfo.VisibleName} as {vanillaBossInfo.VisibleName}";
+			if (gameSettings.BossRando.Value != "Scaled")
 				return;
 			bestiaryEntry.HP = vanillaBossInfo.HP;
 			bestiaryEntry.TouchDamage = vanillaBossInfo.TouchDamage;
