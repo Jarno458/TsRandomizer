@@ -174,7 +174,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 				saveHasRun = true;
 			}
 			
-			if (!isRandomized && vanillaBoss.Index != (int)(EBossID.Cantoran))
+			if (!isRandomized)
 			{
 				// Trigger teleport during Dad Percent to ensure "!" cutscene at game completion
 				if (isDadFinalBoss && (vanillaBoss.Index == (int)EBossID.Nuvius || vanillaBoss.Index == (int)EBossID.Nightmare))
