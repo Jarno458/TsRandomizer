@@ -107,6 +107,15 @@ namespace TsRandomizer.LevelObjects.Monsters
 					var dialogScript = Scripts.FirstOrDefault(s => s.AsDynamic().ScriptType == EScriptType.Dialogue);
 					if (dialogScript == null)
 						Dynamic.InitializeMob();
+					// Adjust movement anchors to keep him off the floor
+					Dynamic._destinationNodes = new Point[5]
+					{
+						new Point(72, 180),
+						new Point(328, 180),
+						new Point(200, 96),
+						new Point(200, 144),
+						new Point(200, 180)
+					};
 					break;
 				case EEnemyTileType.VarndagrothBoss:
 					Level.MainHero.TeleportToPoint(new Point(200, 200));

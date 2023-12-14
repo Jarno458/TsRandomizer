@@ -226,7 +226,7 @@ namespace TsRandomizer.Randomisation
 						SaveName = "IsBossDead_Cantoran",
 						BossRoom = new RoomItemKey(17, 8),
 						ReturnRoom = new RoomItemKey(7, 5),
-						Position = new Point(200, 50),
+						Position = new Point(200, 125),
 						HP = 2250,
 						XP = 300,
 						TouchDamage = 54,
