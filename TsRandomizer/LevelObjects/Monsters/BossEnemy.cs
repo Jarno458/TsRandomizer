@@ -110,11 +110,11 @@ namespace TsRandomizer.LevelObjects.Monsters
 					// Adjust movement anchors to keep him off the floor
 					Dynamic._destinationNodes = new Point[5]
 					{
-						new Point(72, 180),
-						new Point(328, 180),
-						new Point(200, 96),
-						new Point(200, 144),
-						new Point(200, 180)
+						new Point(72, 184),
+						new Point(328, 184),
+						new Point(200, 80),
+						new Point(200, 128),
+						new Point(200, 184)
 					};
 					break;
 				case EEnemyTileType.VarndagrothBoss:
