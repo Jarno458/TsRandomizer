@@ -150,14 +150,14 @@ namespace TsRandomizer.Settings
 				switch (value)
 				{
 					case 1:
-						enumValue = "Normal";
+						enumValue = "Chaos";
 						break;
 
 					case 2:
-						enumValue = "Chaos";
+						enumValue = "Singularity";
 						break;
 					default:
-						enumValue = "Singularity";
+						enumValue = "Normal";
 						break;
 				}
 
