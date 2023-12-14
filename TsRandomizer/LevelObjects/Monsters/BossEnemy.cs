@@ -37,7 +37,6 @@ namespace TsRandomizer.LevelObjects.Monsters
 	class BossEnemy: LevelObject<Monster>
 	{
 		bool songHasRun;
-		bool bossInitialized;
 		bool clearedHasRun;
 		bool saveHasRun;
 		bool warpHasRun;
@@ -60,7 +59,6 @@ namespace TsRandomizer.LevelObjects.Monsters
 		{
 			isRandomized = Level.GameSave.GetSettings().BossRando.Value != "Off" || Level.ID == 17;
 			isDadFinalBoss = seed.Options.DadPercent;
-			bossInitialized = false;
 			int argument = 0;
 			if (TypedObject.EnemyType == EEnemyTileType.EmperorBoss)
 			{
@@ -106,7 +104,9 @@ namespace TsRandomizer.LevelObjects.Monsters
 					Dynamic.EndBossIntroCutscene();
 					break;
 				case EEnemyTileType.CantoranBoss:
-					Dynamic.InitializeMob();
+					var dialogScript = Scripts.FirstOrDefault(s => s.AsDynamic().ScriptType == EScriptType.Dialogue);
+					if (dialogScript == null)
+						Dynamic.InitializeMob();
 					break;
 				case EEnemyTileType.VarndagrothBoss:
 					Level.MainHero.TeleportToPoint(new Point(200, 200));

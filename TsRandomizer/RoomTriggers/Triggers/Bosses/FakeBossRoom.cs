@@ -14,7 +14,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 			}
 			else
 			{
-				TimeSpinnerGame.Localizer.OverrideKey("q_har_4_can_1",
+				TimeSpinnerGame.Localizer.OverrideKey("q_har_4_can_0",
 					"You won't stop Aelana, I'll best you in combat!");
 			}
 			if (TargetBossId == -1)
