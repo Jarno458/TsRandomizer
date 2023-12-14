@@ -37,6 +37,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 	class BossEnemy: LevelObject<Monster>
 	{
 		bool songHasRun;
+		bool bossInitialized;
 		bool clearedHasRun;
 		bool saveHasRun;
 		bool warpHasRun;
@@ -57,8 +58,9 @@ namespace TsRandomizer.LevelObjects.Monsters
 
 		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
-			isRandomized = Level.GameSave.GetSettings().BossRando.Value != "Off"; ;
+			isRandomized = Level.GameSave.GetSettings().BossRando.Value != "Off" || Level.ID == 17;
 			isDadFinalBoss = seed.Options.DadPercent;
+			bossInitialized = false;
 			int argument = 0;
 			if (TypedObject.EnemyType == EEnemyTileType.EmperorBoss)
 			{
@@ -89,13 +91,6 @@ namespace TsRandomizer.LevelObjects.Monsters
 
 			Level.JukeBox.StopSong();
 			Level.JukeBox.PlaySong(vanillaBoss.Song);
-		}
-
-		public BossEnemy(Monster typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
-		{
-			isRandomized = Level.GameSave.GetSettings().BossRando.Value != "Off";
-			if (!isRandomized || !Level.GameSave.GetSaveBool("IsFightingBoss"))
-				return;
 
 			switch (TypedObject.EnemyType)
 			{
@@ -110,6 +105,9 @@ namespace TsRandomizer.LevelObjects.Monsters
 					Dynamic.InitializeMob();
 					Dynamic.EndBossIntroCutscene();
 					break;
+				case EEnemyTileType.CantoranBoss:
+					Dynamic.InitializeMob();
+					break;
 				case EEnemyTileType.VarndagrothBoss:
 					Level.MainHero.TeleportToPoint(new Point(200, 200));
 					Dynamic._spindleItem.SilentKill();
@@ -117,6 +115,10 @@ namespace TsRandomizer.LevelObjects.Monsters
 					Dynamic.StartBattle();
 					break;
 			}
+		}
+
+		public BossEnemy(Monster typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
+		{	
 		}
 
 		void TeleportPlayer()
@@ -172,7 +174,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 				saveHasRun = true;
 			}
 			
-			if (!isRandomized)
+			if (!isRandomized && vanillaBoss.Index != (int)(EBossID.Cantoran))
 			{
 				// Trigger teleport during Dad Percent to ensure "!" cutscene at game completion
 				if (isDadFinalBoss && (vanillaBoss.Index == (int)EBossID.Nuvius || vanillaBoss.Index == (int)EBossID.Nightmare))

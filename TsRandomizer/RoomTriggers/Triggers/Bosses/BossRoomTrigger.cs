@@ -51,6 +51,9 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 				return EBossID.Sandman;
 			if (roomKey.LevelId == 16 && roomKey.RoomId == 26)
 				return EBossID.Nightmare;
+			// Use this placeholder room for other bosses in the future
+			if (roomKey.LevelId == 17 && roomKey.RoomId == 8)
+				return EBossID.Cantoran;
 
 			return (EBossID)(-1);
 		}
@@ -61,9 +64,10 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 
 			SpawnWaterOrGassIfNeeded(state, vanillaBossId == -1 ? (int)GetVanillaBoss(state.RoomKey) : vanillaBossId);
 
-			if (level.GameSave.GetSettings().BossRando.Value == "Off"
+			if ((level.GameSave.GetSettings().BossRando.Value == "Off"
 				|| TargetBossId == -1
-			    || !level.GameSave.GetSaveBool("IsFightingBoss"))
+				|| !level.GameSave.GetSaveBool("IsFightingBoss"))
+				&& level.ID != 17)
 					return;
 			
 			var vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
@@ -105,7 +109,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 		}
 
 		protected static void CreateBossWarp(Level level, int vanillaBossId)
-		{
+		{ 
 			if (level.GameSave.GetSettings().BossRando.Value == "Off")
 				return;
 
