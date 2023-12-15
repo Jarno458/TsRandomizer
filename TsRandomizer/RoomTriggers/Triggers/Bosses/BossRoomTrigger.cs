@@ -109,7 +109,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 		}
 
 		protected static void CreateBossWarp(Level level, int vanillaBossId)
-		{ 
+		{
 			if (level.GameSave.GetSettings().BossRando.Value == "Off")
 				return;
 

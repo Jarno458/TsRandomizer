@@ -19,7 +19,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 8, new SeedOptionInfo { Name = "Inverted", Description = "Start in the past." } },
 			{ 1 << 9, new SeedOptionInfo { Name = "Stinky Maw", Description = "Require Gas Mask for Maw." } },
 			{ 1 << 10, new SeedOptionInfo { Name = "Gyre Archives", Description = "Temporal Gyre locations are in logic. New warps are gated by Merchant Crow and Kobo." } },
-			{ 1 << 11, new SeedOptionInfo { Name = "Cantoran", Description = "Cantoran's fight and reward are available." } },
+			{ 1 << 11, new SeedOptionInfo { Name = "Cantoran", Description = "Cantoran's fight and check are available upon revisiting his room." } },
 			{ 1 << 12, new SeedOptionInfo { Name = "Lore Checks", Description = "Memories in the present and letters in the past contain items." } },
 			{ 1 << 13, new SeedOptionInfo { Name = "Tournament", Description = "Forces your settings to be the predefined tournament settings." } },
 			{ 1 << 15, new SeedOptionInfo { Name = "Enter Sandman", Description = "Ancient Pyramid is unlocked by the Twin Pyramid Key, but the final boss door opens if you have all 5 Timespinner pieces." } },
