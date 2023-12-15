@@ -169,6 +169,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 				// Set AP goal state if this was the final boss
 				if (isFinalBoss)
 				{
+					Level.GameSave.SetValue("CreditsActive", true);
 					var fillingMethod = Level.GameSave.GetFillingMethod();
 
 					if (fillingMethod == FillingMethod.Archipelago)

@@ -7,6 +7,8 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
+			if (roomState.Level.GameSave.GetSaveBool("CreditsActive"))
+				return;
 			if (roomState.Level.GameSave.GetSaveBool("TSRando_IsBossDead_Sorceress"))
 			{
 				TimeSpinnerGame.Localizer.OverrideKey("q_har_4_can_0",
@@ -20,7 +22,6 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 			if (TargetBossId == -1)
 				TargetBossId = (int)EBossID.Cantoran;
 			base.OnRoomLoad(roomState);
-			return;
 		}
 	}
 }

@@ -557,6 +557,7 @@ namespace TsRandomizer.Randomisation
 			level.GameSave.SetValue("IsCantoranActive", true);
 			level.GameSave.SetValue("IsEndingABCleared", false);
 			level.GameSave.SetValue("IsLabTSReady", false);
+			level.GameSave.SetValue("CreditsActive", false);
 		}
 
 		public static void RefreshBossSaveFlags(Level level)
