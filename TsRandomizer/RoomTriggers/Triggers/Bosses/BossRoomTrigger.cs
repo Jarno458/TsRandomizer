@@ -62,7 +62,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 		{
 			var level = state.Level;
 
-			SpawnWaterOrGassIfNeeded(state, vanillaBossId == -1 ? (int)GetVanillaBoss(state.RoomKey) : vanillaBossId);
+			SpawnWaterOrGasIfNeeded(state, vanillaBossId == -1 ? (int)GetVanillaBoss(state.RoomKey) : vanillaBossId);
 
 			if ((level.GameSave.GetSettings().BossRando.Value == "Off"
 				|| TargetBossId == -1
@@ -96,7 +96,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 			TargetBossId = -1;
 		}
 
-		static void SpawnWaterOrGassIfNeeded(RoomState state, int vanillaBossId)
+		static void SpawnWaterOrGasIfNeeded(RoomState state, int vanillaBossId)
 		{
 			if ((state.Seed.Options.GasMaw && vanillaBossId == (int)EBossID.Maw)
 			    || (vanillaBossId == (int)EBossID.FelineSentry && state.Level.GameSave.GetSaveBool("TSRando_IsVileteSaved")))
