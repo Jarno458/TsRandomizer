@@ -51,7 +51,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 				return EBossID.Sandman;
 			if (roomKey.LevelId == 16 && roomKey.RoomId == 26)
 				return EBossID.Nightmare;
-			// Use this placeholder room for other bosses in the future
+			// Generic room - could support other bosses in the future
 			if (roomKey.LevelId == 17 && roomKey.RoomId == 8)
 				return EBossID.Cantoran;
 

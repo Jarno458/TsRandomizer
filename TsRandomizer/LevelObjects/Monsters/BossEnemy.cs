@@ -78,7 +78,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 				? BestiaryManager.GetVanillaBoss(Level, bossId) 
 				: currentBoss;
 
-			isFinalBoss = ((isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nuvius) || (!isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nightmare));
+			isFinalBoss = (isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nuvius) || (!isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nightmare);
 
 			if (!isRandomized)
 				return;
