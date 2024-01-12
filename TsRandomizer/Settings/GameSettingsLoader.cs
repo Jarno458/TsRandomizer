@@ -156,12 +156,22 @@ namespace TsRandomizer.Settings
 					case 2:
 						enumValue = "Singularity";
 						break;
+					case 3:
+						enumValue = "Manual";
+						break;
 					default:
-						enumValue = "Normal";
+						enumValue = "Shuffle";
 						break;
 				}
 
 				settings.BossRandoType.Value = enumValue;
+			}
+
+			if (settings.BossRandoType.Value == "Manual"
+					  && slotData.TryGetValue("BossRandoOverrides", out var bossRandoOverrides))
+			{
+				var overrides = ((JObject)bossRandoOverrides).ToObject<Dictionary<string, string>>();
+				settings.BossRandoOverrides.Value = overrides;
 			}
 
 			if (slotData.TryGetValue("EnemyRando", out var enemyRando))

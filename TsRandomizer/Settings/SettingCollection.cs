@@ -53,7 +53,10 @@ namespace TsRandomizer.Settings
 
 		public SpecificValuesGameSetting BossRandoType = new SpecificValuesGameSetting("Boss Randomization Type",
 			"Sets what type of boss shuffling occurs.",
-			new List<string> { "Normal", "Chaos", "Singularity" }, "Normal", true);
+			new List<string> { "Shuffle", "Chaos", "Singularity", "Manual" }, "Shuffle", true);
+
+		public BossRandoOverridesSetting BossRandoOverrides = new BossRandoOverridesSetting("Boss Randomizer Overrides",
+			"Overrides the shuffling for each boss. Only editable from the file, so you shouldn't even be seeing this text.");
 
 		public SpecificValuesGameSetting EnemyRando = new SpecificValuesGameSetting("Enemy Randomization",
 			"Sets wheter enemies will be randomized, and if their damage/hp should be scaled.",

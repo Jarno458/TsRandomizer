@@ -593,6 +593,18 @@ namespace TsRandomizer.Randomisation
 						replacedBosses = Enumerable.Repeat(validBosses[random.Next(0, validBosses.Length)], validBosses.Length).ToArray();
 						break;
 					}
+				case "Manual":
+					{
+						var bossMappings = level.GameSave.GetSettings().BossRandoOverrides.Value;
+						var vanillaBossName = Enum.GetName(typeof(EBossID), vanillaBossId);
+						if (!bossMappings.ContainsKey(vanillaBossName))
+							return GetBossAttributes(level, vanillaBossId);
+						var replacedBoss = bossMappings[vanillaBossName];
+						var parsed = Enum.TryParse<EBossID>(replacedBoss, out var rBossId);
+						if (!parsed)
+							return GetBossAttributes(level, vanillaBossId);
+						return GetBossAttributes(level, (int)rBossId);
+					}
 				default:
 					{
 						replacedBosses = validBosses.OrderBy(x => random.Next()).ToArray();
