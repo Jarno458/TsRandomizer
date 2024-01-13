@@ -148,7 +148,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					HandleXarionFlood(state);
 					break;
 				case 10 when state.Seed.FloodFlags.Lab:
-					HandleRightMilitairyHangerFlood(state);
+					HandleRightMilitaryHangarFlood(state);
 					break;
 				case 11 when state.Seed.FloodFlags.Lab:
 					HandleLabFlood(state);
@@ -516,7 +516,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			}
 		}
 
-		static void HandleRightMilitairyHangerFlood(RoomState state)
+		static void HandleRightMilitaryHangarFlood(RoomState state)
 		{
 			switch (state.RoomKey.RoomId)
 			{

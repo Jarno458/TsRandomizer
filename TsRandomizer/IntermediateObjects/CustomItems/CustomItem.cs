@@ -20,7 +20,10 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		BeeTrap,
 		TimewornWarpBeacon,
 		ModernWarpBeacon,
-		MysteriousWarpBeacon
+		MysteriousWarpBeacon,
+		LaserAccessA,
+		LaserAccessI,
+		LaserAccessM
 	}
 
 	// consider beacons as starting items

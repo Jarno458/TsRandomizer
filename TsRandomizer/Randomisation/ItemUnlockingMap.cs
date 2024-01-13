@@ -131,7 +131,7 @@ namespace TsRandomizer.Randomisation
 		{
 			Random = new Random((int)seed.Id);
 
-			UnlockingSpecifications = new LookupDictionary<ItemIdentifier, UnlockingSpecification>(29, s => s.Item)
+			UnlockingSpecifications = new LookupDictionary<ItemIdentifier, UnlockingSpecification>(32, s => s.Item)
 			{
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.TimespinnerWheel), R.TimespinnerWheel, R.TimeStop),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.DoubleJump), R.DoubleJump, R.TimeStop),
@@ -161,8 +161,11 @@ namespace TsRandomizer.Randomisation
 				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive), R.OculusRift),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.Kobo), R.Kobo),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.MerchantCrow), R.MerchantCrow),
-				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.None, R.Teleport) //actual gate is decided later
-			};
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.None, R.Teleport), //actual gate is decided later,
+				new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LaserAccessA), R.LaserA),
+				new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LaserAccessI), R.LaserI),
+				new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LaserAccessM), R.LaserM)
+		};
 
 			if (seed.Options.SpecificKeys)
 				MakeKeyCardUnlocksCardSpecific();
