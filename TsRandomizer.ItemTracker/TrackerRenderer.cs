@@ -86,6 +86,7 @@ namespace TsRandomizerItemTracker
 				DrawItem(spriteBatch, state.MerchantCrow, new ItemIdentifier(EInventoryFamiliarType.MerchantCrow));
 				DrawFireSource(spriteBatch, state);
 				DrawPinkSource(spriteBatch, state);
+				DrawLaserAccess(spriteBatch, state);
 			}
 		}
 
@@ -100,6 +101,14 @@ namespace TsRandomizerItemTracker
             DrawSubItem(spriteBatch, state.PresentWarp, new ItemIdentifier(EInventoryRelicType.PyramidsKey), 2, new Point(1, 1), Color.Fuchsia);
             DrawSubItem(spriteBatch, state.PyramidWarp, new ItemIdentifier(EInventoryRelicType.PyramidsKey), 2, new Point(1, 0), Color.LimeGreen);
         }
+
+		void DrawLaserAccess(SpriteBatch spriteBatch, ItemTrackerState state)
+		{
+			DrawItem(spriteBatch, state.LaserA && state.LaserI && state.LaserM, new ItemIdentifier(EInventoryUseItemType.None), Color.MistyRose);
+			DrawSubItem(spriteBatch, state.LaserA, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(0, 0), Color.HotPink);
+			DrawSubItem(spriteBatch, state.LaserI, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(1, 0), Color.LightSalmon);
+			DrawSubItem(spriteBatch, state.LaserM, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(0, 1), Color.Crimson);
+		}
 
 		void DrawFireSource(SpriteBatch spriteBatch, ItemTrackerState state)
 		{
@@ -183,6 +192,9 @@ namespace TsRandomizerItemTracker
 				return index;
 
 			var animationIndex = itemInfo.GetAnimationIndex();
+			// Handle None item
+			if (animationIndex < 0)
+				animationIndex = 27;
 
 			AnimationIndexes.Add(itemInfo, animationIndex);
 
