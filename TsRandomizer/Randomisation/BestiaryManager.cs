@@ -587,10 +587,12 @@ namespace TsRandomizer.Randomisation
 				bool laserI = level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LaserAccessI));
 				bool laserM = level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LaserAccessM));
 				// Only override the individual lasers if in the hangar
-				bool inHangar = level.ID == 10;
-				level.GameSave.SetValue("IsBossDead_Sorceress",inHangar && laserA);
-				level.GameSave.SetValue("IsBossDead_Demon", inHangar && laserI);
-				level.GameSave.SetValue("IsBossDead_Maw", inHangar && laserM);
+				if(level.ID == 10)
+				{
+					level.GameSave.SetValue("IsBossDead_Sorceress", laserA);
+					level.GameSave.SetValue("IsBossDead_Demon", laserI);
+					level.GameSave.SetValue("IsBossDead_Maw", laserM);
+				}
 				// Set past cleared flag regardless of current room
 				level.GameSave.SetValue("IsPastCleared", laserA && laserI && laserM);
 			}
