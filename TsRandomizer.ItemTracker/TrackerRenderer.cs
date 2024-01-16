@@ -34,11 +34,13 @@ namespace TsRandomizerItemTracker
 			var numberOfFireSourcesCombined = 4;
 			var numberOfPinkSourcesCombined = 3;
             var numberOfPyramidKeysSourcesCombined = 4;
+			var numberOfLasersCombined = 3;
 
 			numberOfItems = ItemTrackerState.NumberOfItems 
                             - (numberOfFireSourcesCombined-1) 
                             - (numberOfPinkSourcesCombined-1)
-                            - (numberOfPyramidKeysSourcesCombined-1);
+                            - (numberOfPyramidKeysSourcesCombined-1)
+			    - (numberOfLasersCombined-1);
 		}
 
 		public void SetWidth(int clientBoundsWidth)
