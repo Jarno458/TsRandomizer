@@ -103,14 +103,14 @@ namespace TsRandomizer.Randomisation
 
 		protected static readonly TeleporterGate[] PastTeleporterGates =
 		{
-			new TeleporterGate{Gate = R.GateRefugeeCamp, LevelId = 3, RoomId = 6}/*,
+			new TeleporterGate{Gate = R.GateRefugeeCamp, LevelId = 3, RoomId = 6},
 			new TeleporterGate{Gate = R.GateLakeSereneRight, LevelId = 7, RoomId = 31},
 			new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51},
 			new TeleporterGate{Gate = R.GateCastleRamparts, LevelId = 4, RoomId = 23},
 			new TeleporterGate{Gate = R.GateCastleKeep, LevelId = 5, RoomId = 24},
 			new TeleporterGate{Gate = R.GateRoyalTowers, LevelId = 6, RoomId = 0},
 			new TeleporterGate{Gate = R.GateMaw, LevelId = 8, RoomId = 49},
-			new TeleporterGate{Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50}*/
+			new TeleporterGate{Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50}
 		};
 
 		protected static readonly TeleporterGate[] PyramidTeleporterGates =
