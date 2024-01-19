@@ -103,15 +103,14 @@ namespace TsRandomizer.Randomisation
 
 		protected static readonly TeleporterGate[] PastTeleporterGates =
 		{
-			//new TeleporterGate{Gate = Requirement.GateLakeSereneLeft, LevelId = 7, RoomId = 30}, //you dont want to spawn with a boss in your face
+			new TeleporterGate{Gate = R.GateRefugeeCamp, LevelId = 3, RoomId = 6}/*,
 			new TeleporterGate{Gate = R.GateLakeSereneRight, LevelId = 7, RoomId = 31},
 			new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51},
-			//new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 3, RoomId = 6}, //Refugee Camp, Unlocking this room doesnt work somehow
 			new TeleporterGate{Gate = R.GateCastleRamparts, LevelId = 4, RoomId = 23},
 			new TeleporterGate{Gate = R.GateCastleKeep, LevelId = 5, RoomId = 24},
 			new TeleporterGate{Gate = R.GateRoyalTowers, LevelId = 6, RoomId = 0},
 			new TeleporterGate{Gate = R.GateMaw, LevelId = 8, RoomId = 49},
-			new TeleporterGate{Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50}
+			new TeleporterGate{Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50}*/
 		};
 
 		protected static readonly TeleporterGate[] PyramidTeleporterGates =
@@ -120,6 +119,15 @@ namespace TsRandomizer.Randomisation
 			new TeleporterGate{Gate = R.GateLeftPyramid, LevelId = 16, RoomId = 12},
 			new TeleporterGate{Gate = R.GateRightPyramid, LevelId = 16, RoomId = 19}
 		};
+
+		// Not enabled at this time
+		/*
+		protected static readonly TeleporterGate[] RiskyTeleporterGates =
+		{
+			new TeleporterGate{Gate = R.GateLakeSereneLeft, LevelId = 7, RoomId = 30}, // Azure Queen Boss
+			new TeleporterGate{Gate = R. , LevelId = 11, RoomId = 33}, // The Lab
+			new TeleporterGate{Gate = R. , LevelId = 12, RoomId = 0}, // Emperor's Tower
+		};*/
 
 		protected readonly LookupDictionary<ItemIdentifier, UnlockingSpecification> UnlockingSpecifications;
 

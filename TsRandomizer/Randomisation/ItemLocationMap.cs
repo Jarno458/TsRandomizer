@@ -20,15 +20,13 @@ namespace TsRandomizer.Randomisation
 		internal R OculusRift;
 		internal R MawGasMask;
 
-		internal Gate RefugeeCamp;
-		internal Gate LakeDesolationLeft;
-
 		internal Gate MultipleSmallJumpsOfNpc;
 		internal Gate DoubleJumpOfNpc;
 		internal Gate ForwardDashDoubleJump;
 		internal Gate LakeDesolationRight;
 
 		//past
+		internal Gate RefugeeCamp;
 		internal Gate LeftSideForestCaves;
 		internal Gate UpperLakeSirine;
 		internal Gate LowerLakeSirine;
@@ -43,6 +41,7 @@ namespace TsRandomizer.Randomisation
 		internal Gate UpperRoyalTower;
 		internal Gate KillMaw;
 		//future
+		internal Gate LakeDesolationLeft;
 		internal Gate UpperLakeDesolation;
 		internal Gate LeftLibrary;
 		internal Gate UpperLeftLibrary;
@@ -154,6 +153,7 @@ namespace TsRandomizer.Randomisation
 						| (R.GateMilitaryGate & (R.CardB | R.CardE))
 					)
 				) //libraryTimespinner
+				| R.GateRefugeeCamp
 				| R.GateLakeSereneLeft
 				| R.GateAccessToPast
 				| R.GateLakeSereneRight
