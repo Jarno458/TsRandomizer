@@ -21,6 +21,8 @@ namespace TsRandomizer.Screens.Gifting
 		public EquipmentMenuScreen(ScreenManager screenManager, GameScreen gameScreen) : base(screenManager, gameScreen)
 		{
 			var pauseMenuScreen = screenManager.FirstOrDefault<PauseMenuScreen>();
+			if (pauseMenuScreen == null)
+				throw new InvalidOperationException("PauseMenuScreen not found");
 
 			switch (pauseMenuScreen.GiftingMenuType)
 			{
@@ -44,7 +46,8 @@ namespace TsRandomizer.Screens.Gifting
 			void ResetPauseMenuOpenOverride()
 			{
 				var pauseMenuScreen = screenManager.FirstOrDefault<PauseMenuScreen>();
-				pauseMenuScreen.GiftingMenuType = GiftingMenuType.None;
+				if (pauseMenuScreen != null)
+					pauseMenuScreen.GiftingMenuType = GiftingMenuType.None;
 			}
 
 			return (GameScreen)Activator.CreateInstance(EquipmentMenuScreenType, save, gcm, (Action)ResetPauseMenuOpenOverride, (Action)ResetPauseMenuOpenOverride);
