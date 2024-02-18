@@ -6,8 +6,7 @@ namespace TsRandomizer.ItemTracker
 {
 	public static class ItemTrackerUplink
 	{
-		const int SerializerOverheadSize = 500;
-		const int FileSize = sizeof(bool) * ItemTrackerState.NumberOfItems + SerializerOverheadSize;
+		const int FileSize = 1000;
 
 		static readonly string StateFilePath = Path.GetTempPath() + "TsRandomizerItemTrackerState";
 
