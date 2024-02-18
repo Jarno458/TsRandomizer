@@ -56,7 +56,7 @@ namespace TsRandomizer.Extensions
 
 		internal static void MarkRoomAsVisited(this Level level, int levelId, int roomId)
 		{
-			var minimapRoom = level.Minimap.Areas[levelId].Rooms[roomId];
+			var minimapRoom = level.Minimap.Areas[levelId].Rooms.Find(x => x.RoomID == roomId);
 
 			minimapRoom.SetKnown(true);
 			minimapRoom.SetVisited(true);

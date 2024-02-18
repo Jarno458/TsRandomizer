@@ -23,14 +23,14 @@ namespace TsRandomizer.Randomisation
 				return "Lake Desolation";
 
 			//past
+			if (gate.Contains(Requirement.GateRefugeeCamp))
+				return "Refugee Camp";
 			if (gate.Contains(Requirement.GateLakeSereneLeft))
 				return "Azure Queen";
 			if (gate.Contains(Requirement.GateAccessToPast))
 				return "Upper Caves of Banishment";
 			if (gate.Contains(Requirement.GateLakeSereneRight))
 				return "East Lake Serene";
-			//if (gate.Contains(R.))
-			//	return "Refugee Camp";
 			if (gate.Contains(Requirement.GateCastleRamparts))
 				return "Castle Ramparts";
 			if (gate.Contains(Requirement.GateCastleKeep))

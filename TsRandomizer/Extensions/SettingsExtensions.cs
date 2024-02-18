@@ -32,6 +32,8 @@ namespace TsRandomizer.Extensions
 
 			settings.ShowDrops.Value = true;
 
+			settings.MeleeAutofire.Value = false;
+
 			settings.SparrowTrap.Value = true;
 			settings.BeeTrap.Value = true;
 			settings.PoisonTrap.Value = true;

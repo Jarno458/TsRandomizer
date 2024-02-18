@@ -7,6 +7,7 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.Settings;
 
 namespace TsRandomizer.Randomisation
@@ -245,9 +246,9 @@ namespace TsRandomizer.Randomisation
 						Index = bossId,
 						VisibleName = "Cantoran",
 						SaveName = "IsBossDead_Cantoran",
-						BossRoom = new RoomItemKey(7, 5),
+						BossRoom = new RoomItemKey(17, 8),
 						ReturnRoom = new RoomItemKey(7, 5),
-						Position = new Point(184, 224),
+						Position = new Point(200, 125),
 						HP = 2250,
 						XP = 300,
 						TouchDamage = 54,
@@ -257,7 +258,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.CantoranBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
-						ShouldSpawn = false,
+						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.CantoranBoss,
 						BestiaryKey = "Enemy_CantoranBoss",
 						BestiaryCameraX = 0,
@@ -644,14 +645,16 @@ namespace TsRandomizer.Randomisation
 			level.GameSave.SetValue("IsCantoranActive", true);
 			level.GameSave.SetValue("IsEndingABCleared", false);
 			level.GameSave.SetValue("IsLabTSReady", false);
+			level.GameSave.SetValue("CreditsActive", false);
 		}
 
 		public static void RefreshBossSaveFlags(Level level)
 		{
+			bool labTSUsed = false;
+
 			// Iterate through all bosses and set their kill flag to reflect boss location, not actual boss
 			int[] validBosses = GetValidBosses(level);
 			int pastBossesKilled = 0;
-			bool labTSUsed = false;
 			foreach (int bossIndex in validBosses)
 			{
 				BossAttributes bossInfo = GetBossAttributes(level, bossIndex);
@@ -665,13 +668,33 @@ namespace TsRandomizer.Randomisation
 				if (isBossDead && (bossIndex == (int)EBossID.Vol || bossIndex == (int)EBossID.Prince))
 					labTSUsed = true;
 			}
-			level.GameSave.SetValue("IsPastCleared", pastBossesKilled == 3);
+			
+			if (level.GameSave.GetSeed().Value.Options.PrismBreak)
+			{
+				bool laserA = level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LaserAccessA));
+				bool laserI = level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LaserAccessI));
+				bool laserM = level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LaserAccessM));
+				// Only override the individual lasers if in the hangar
+				if(level.ID == 10)
+				{
+					level.GameSave.SetValue("IsBossDead_Sorceress", laserA);
+					level.GameSave.SetValue("IsBossDead_Demon", laserI);
+					level.GameSave.SetValue("IsBossDead_Maw", laserM);
+				}
+				// Set past cleared flag regardless of current room
+				level.GameSave.SetValue("IsPastCleared", laserA && laserI && laserM);
+			}
+			else
+			{
+				level.GameSave.SetValue("IsPastCleared", pastBossesKilled == 3);
+			}
+				
+			
 			level.GameSave.SetValue("IsVileteSaved", level.GameSave.GetSaveBool("TSRando_IsVileteSaved"));
 
 			bool isPinkBirdDead = level.GameSave.GetSaveBool("TSRando_IsPinkBirdDead");
-			bool isCantoranDead = level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran") || !level.GameSave.GetSeed().Value.Options.Cantoran;
 			level.GameSave.SetCutsceneTriggered("LakeSerene0_Seykis", isPinkBirdDead);
-			level.GameSave.SetValue("IsCantoranActive", isPinkBirdDead && !isCantoranDead);
+			level.GameSave.SetValue("IsCantoranActive", false);
 
 			level.GameSave.SetValue("IsEndingABCleared", level.GameSave.GetSaveBool("TSRando_IsBossDead_Emperor"));
 			level.GameSave.SetValue("IsLabTSReady", !labTSUsed && level.GameSave.GetSaveBool("TSRando_IsLabTSReady"));

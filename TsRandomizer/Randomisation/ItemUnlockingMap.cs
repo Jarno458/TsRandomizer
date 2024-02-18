@@ -103,10 +103,9 @@ namespace TsRandomizer.Randomisation
 
 		protected static readonly TeleporterGate[] PastTeleporterGates =
 		{
-			//new TeleporterGate{Gate = Requirement.GateLakeSereneLeft, LevelId = 7, RoomId = 30}, //you dont want to spawn with a boss in your face
+			new TeleporterGate{Gate = R.GateRefugeeCamp, LevelId = 3, RoomId = 6},
 			new TeleporterGate{Gate = R.GateLakeSereneRight, LevelId = 7, RoomId = 31},
 			new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51},
-			//new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 3, RoomId = 6}, //Refugee Camp, Unlocking this room doesnt work somehow
 			new TeleporterGate{Gate = R.GateCastleRamparts, LevelId = 4, RoomId = 23},
 			new TeleporterGate{Gate = R.GateCastleKeep, LevelId = 5, RoomId = 24},
 			new TeleporterGate{Gate = R.GateRoyalTowers, LevelId = 6, RoomId = 0},
@@ -121,6 +120,15 @@ namespace TsRandomizer.Randomisation
 			new TeleporterGate{Gate = R.GateRightPyramid, LevelId = 16, RoomId = 19}
 		};
 
+		// Not enabled at this time
+		/*
+		protected static readonly TeleporterGate[] RiskyTeleporterGates =
+		{
+			new TeleporterGate{Gate = R.GateLakeSereneLeft, LevelId = 7, RoomId = 30}, // Azure Queen Boss
+			new TeleporterGate{Gate = R. , LevelId = 11, RoomId = 33}, // The Lab
+			new TeleporterGate{Gate = R. , LevelId = 12, RoomId = 0}, // Emperor's Tower
+		};*/
+
 		protected readonly LookupDictionary<ItemIdentifier, UnlockingSpecification> UnlockingSpecifications;
 
 		public IEnumerable<ItemIdentifier> AllProgressionItems => UnlockingSpecifications.Select(us => us.Item);
@@ -131,7 +139,7 @@ namespace TsRandomizer.Randomisation
 		{
 			Random = new Random((int)seed.Id);
 
-			UnlockingSpecifications = new LookupDictionary<ItemIdentifier, UnlockingSpecification>(29, s => s.Item)
+			UnlockingSpecifications = new LookupDictionary<ItemIdentifier, UnlockingSpecification>(32, s => s.Item)
 			{
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.TimespinnerWheel), R.TimespinnerWheel, R.TimeStop),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.DoubleJump), R.DoubleJump, R.TimeStop),
@@ -161,8 +169,11 @@ namespace TsRandomizer.Randomisation
 				new UnlockingSpecification(new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive), R.OculusRift),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.Kobo), R.Kobo),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.MerchantCrow), R.MerchantCrow),
-				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.None, R.Teleport) //actual gate is decided later
-			};
+				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.None, R.Teleport), //actual gate is decided later,
+				new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LaserAccessA), R.LaserA),
+				new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LaserAccessI), R.LaserI),
+				new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LaserAccessM), R.LaserM)
+		};
 
 			if (seed.Options.SpecificKeys)
 				MakeKeyCardUnlocksCardSpecific();

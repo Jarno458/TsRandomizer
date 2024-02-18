@@ -18,9 +18,9 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			// Reset boss save flags cleared by Gyre portal
 			BestiaryManager.RefreshBossSaveFlags(roomState.Level); 
 
-			 // Set last warp room visited to military hangar warp (instead of crash site)
-			 roomState.Level.GameSave.LastWarpLevel = 10;
-			 roomState.Level.GameSave.LastWarpRoom = 12;
+			// Set last warp room visited to military hangar warp (instead of crash site)
+			roomState.Level.GameSave.LastWarpLevel = 10;
+			roomState.Level.GameSave.LastWarpRoom = 12;
 		}
 	}
 }

@@ -251,16 +251,11 @@ namespace TsRandomizer.Screens.Gifting
 
 			GiftingService.AcceptGift(selectedGift, acceptedAmount);
 
-			//remove from menu
-			var menuItem = new InventoryUseItem((EInventoryUseItemType)selectedHash);
-			foreach (var collection in Dynamic._subMenuCollections)
-				if (collection.GetType() == MenuUseItemInventoryType)
-					for (var i = 0; i < acceptedAmount; i++)
-						((object)collection).AsDynamic().RemoveItem(menuItem);
+			RemoveFromMenu(selectedHash, acceptedAmount);
 
 			ScreenManager.Jukebox.PlayCue(ESFX.MenuSell);
 		}
-
+		
 		int CalculateAmountToAccept(InventoryUseItem giftedUseItem)
 		{
 			if (!Save.Inventory.UseItemInventory.Inventory.TryGetValue(giftedUseItem.Key, out var inventoryItem))
@@ -299,14 +294,18 @@ namespace TsRandomizer.Screens.Gifting
 
 			GiftingService.RejectGift(selectedGift);
 
-			//remove from menu
-			var menuItem = new InventoryUseItem((EInventoryUseItemType)selectedHash);
-			foreach (var collection in Dynamic._subMenuCollections)
-				if (collection.GetType() == MenuUseItemInventoryType)
-					for (var i = 0; i < selectedGift.Amount; i++)
-						((object)collection).AsDynamic().RemoveItem(menuItem);
+			RemoveFromMenu(selectedHash, selectedGift.Amount);
 
 			ScreenManager.Jukebox.PlayCue(ESFX.MenuSelect);
+		}
+
+		void RemoveFromMenu(int hash, int amount)
+		{
+			var menuItem = new InventoryUseItem((EInventoryUseItemType)hash);
+			foreach (var collection in Dynamic._subMenuCollections)
+				if (collection.GetType() == MenuUseItemInventoryType)
+					for (var i = 0; i < amount; i++)
+						((object)collection).AsDynamic().RemoveItem(menuItem);
 		}
 
 		public override void Update(GameTime gameTime, InputState input)

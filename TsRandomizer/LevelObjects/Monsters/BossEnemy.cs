@@ -57,7 +57,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 
 		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
-			isRandomized = Level.GameSave.GetSettings().BossRando.Value != "Off"; ;
+			isRandomized = Level.GameSave.GetSettings().BossRando.Value != "Off" || Level.ID == 17;
 			isDadFinalBoss = seed.Options.DadPercent;
 			int argument = 0;
 			if (TypedObject.EnemyType == EEnemyTileType.EmperorBoss)
@@ -78,7 +78,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 				? BestiaryManager.GetBossAttributes(Level, Level.GameSave.GetSaveInt("VanillaBossId")) 
 				: currentBoss;
 
-			isFinalBoss = ((isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nuvius) || (!isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nightmare));
+			isFinalBoss = (isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nuvius) || (!isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nightmare);
 
 			if (!isRandomized)
 				return;
@@ -89,13 +89,6 @@ namespace TsRandomizer.LevelObjects.Monsters
 
 			Level.JukeBox.StopSong();
 			Level.JukeBox.PlaySong(vanillaBoss.Song);
-		}
-
-		public BossEnemy(Monster typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
-		{
-			isRandomized = Level.GameSave.GetSettings().BossRando.Value != "Off";
-			if (!isRandomized || !Level.GameSave.GetSaveBool("IsFightingBoss"))
-				return;
 
 			switch (TypedObject.EnemyType)
 			{
@@ -110,6 +103,20 @@ namespace TsRandomizer.LevelObjects.Monsters
 					Dynamic.InitializeMob();
 					Dynamic.EndBossIntroCutscene();
 					break;
+				case EEnemyTileType.CantoranBoss:
+					var dialogScript = Scripts.FirstOrDefault(s => s.AsDynamic().ScriptType == EScriptType.Dialogue);
+					if (dialogScript == null)
+						Dynamic.InitializeMob();
+					// Adjust movement anchors to keep him off the floor
+					Dynamic._destinationNodes = new Point[5]
+					{
+						new Point(72, 184),
+						new Point(328, 184),
+						new Point(200, 80),
+						new Point(200, 128),
+						new Point(200, 184)
+					};
+					break;
 				case EEnemyTileType.VarndagrothBoss:
 					Level.MainHero.TeleportToPoint(new Point(200, 200));
 					Dynamic._spindleItem.SilentKill();
@@ -117,6 +124,10 @@ namespace TsRandomizer.LevelObjects.Monsters
 					Dynamic.StartBattle();
 					break;
 			}
+		}
+
+		public BossEnemy(Monster typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
+		{	
 		}
 
 		void TeleportPlayer()
@@ -158,6 +169,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 				// Set AP goal state if this was the final boss
 				if (isFinalBoss)
 				{
+					Level.GameSave.SetValue("CreditsActive", true);
 					var fillingMethod = Level.GameSave.GetFillingMethod();
 
 					if (fillingMethod == FillingMethod.Archipelago)
