@@ -224,9 +224,9 @@ namespace TsRandomizer.Randomisation
 						Index = bossId,
 						VisibleName = "Cantoran",
 						SaveName = "IsBossDead_Cantoran",
-						BossRoom = new RoomItemKey(7, 5),
+						BossRoom = new RoomItemKey(17, 8),
 						ReturnRoom = new RoomItemKey(7, 5),
-						Position = new Point(184, 224),
+						Position = new Point(200, 125),
 						HP = 2250,
 						XP = 300,
 						TouchDamage = 54,
@@ -236,7 +236,7 @@ namespace TsRandomizer.Randomisation
 						BossType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.CantoranBoss"),
 						Argument = 0,
 						IsFacingLeft = true,
-						ShouldSpawn = false,
+						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.CantoranBoss
 					};
 				case (int)EBossID.Genza:
@@ -557,6 +557,7 @@ namespace TsRandomizer.Randomisation
 			level.GameSave.SetValue("IsCantoranActive", true);
 			level.GameSave.SetValue("IsEndingABCleared", false);
 			level.GameSave.SetValue("IsLabTSReady", false);
+			level.GameSave.SetValue("CreditsActive", false);
 		}
 
 		public static void RefreshBossSaveFlags(Level level)
@@ -582,9 +583,8 @@ namespace TsRandomizer.Randomisation
 			level.GameSave.SetValue("IsVileteSaved", level.GameSave.GetSaveBool("TSRando_IsVileteSaved"));
 
 			bool isPinkBirdDead = level.GameSave.GetSaveBool("TSRando_IsPinkBirdDead");
-			bool isCantoranDead = level.GameSave.GetSaveBool("TSRando_IsBossDead_Cantoran") || !level.GameSave.GetSeed().Value.Options.Cantoran;
 			level.GameSave.SetCutsceneTriggered("LakeSerene0_Seykis", isPinkBirdDead);
-			level.GameSave.SetValue("IsCantoranActive", isPinkBirdDead && !isCantoranDead);
+			level.GameSave.SetValue("IsCantoranActive", false);
 
 			level.GameSave.SetValue("IsEndingABCleared", level.GameSave.GetSaveBool("TSRando_IsBossDead_Emperor"));
 			level.GameSave.SetValue("IsLabTSReady", !labTSUsed && level.GameSave.GetSaveBool("TSRando_IsLabTSReady"));
