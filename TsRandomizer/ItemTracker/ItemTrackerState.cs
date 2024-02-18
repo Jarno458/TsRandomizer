@@ -13,7 +13,7 @@ namespace TsRandomizer.ItemTracker
 	[Serializable]
 	public class ItemTrackerState
 	{
-		public const int NumberOfItems = 32;
+		public const int NumberOfItems = 35;
 
 		public bool Timestop;
 		public bool TimeSpindle;
@@ -47,6 +47,9 @@ namespace TsRandomizer.ItemTracker
 		public bool PastWarp;
 		public bool PresentWarp;
 		public bool PyramidWarp;
+		public bool LaserA;
+		public bool LaserI;
+		public bool LaserM;
 
 		internal static ItemTrackerState FromItemLocationMap(IEnumerable<ItemLocation> itemLocations)
 		{
@@ -108,6 +111,9 @@ namespace TsRandomizer.ItemTracker
 			{CustomItem.GetIdentifier(CustomItemType.TimewornWarpBeacon), s => s.PastWarp},
 			{CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon), s => s.PresentWarp},
 			{CustomItem.GetIdentifier(CustomItemType.MysteriousWarpBeacon), s => s.PyramidWarp},
+			{CustomItem.GetIdentifier(CustomItemType.LaserAccessA), s => s.LaserA},
+			{CustomItem.GetIdentifier(CustomItemType.LaserAccessI), s => s.LaserI},
+			{CustomItem.GetIdentifier(CustomItemType.LaserAccessM), s => s.LaserM},
 		};
 
 		static void SetMemberForItem(ItemTrackerState trackerState, ItemIdentifier itemInfo)

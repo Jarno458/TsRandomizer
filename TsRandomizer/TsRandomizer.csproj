@@ -153,6 +153,7 @@
     <Compile Include="IntermediateObjects\CustomItems\MeteorSparrowTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\StatusTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\Trap.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\LaserAccessKey.cs" />
     <Compile Include="IntermediateObjects\CustomItems\UnchainedKey.cs" />
     <Compile Include="IntermediateObjects\ProgressiveItemProvider.cs" />
     <Compile Include="LevelObjects\CollisionDetectionEvent.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Randomisation\WarpNames.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
+    <Compile Include="RoomTriggers\Triggers\MilitaryHangarGyreWarp.cs" />
     <Compile Include="RoomTriggers\SandmanSoftlockPrevention.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\Cantoran.cs" />
@@ -202,6 +204,7 @@
     <Compile Include="RoomTriggers\Triggers\Bosses\Ravenlord.cs" />
     <Compile Include="RoomTriggers\Triggers\EelsInsteadOfRats.cs" />
     <Compile Include="RoomTriggers\Triggers\FixLabFloorTiles.cs" />
+    <Compile Include="RoomTriggers\Triggers\MilitaryHangarWarpRoom.cs" />
     <Compile Include="RoomTriggers\Triggers\OneHpFix.cs" />
     <Compile Include="RoomTriggers\Triggers\RisingTides.cs" />
     <Compile Include="RoomTriggers\Triggers\DadsPedistal.cs" />

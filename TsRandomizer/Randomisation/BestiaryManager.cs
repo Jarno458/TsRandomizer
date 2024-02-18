@@ -7,6 +7,7 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.Settings;
 
 namespace TsRandomizer.Randomisation
@@ -562,10 +563,11 @@ namespace TsRandomizer.Randomisation
 
 		public static void RefreshBossSaveFlags(Level level)
 		{
+			bool labTSUsed = false;
+
 			// Iterate through all bosses and set their kill flag to reflect boss location, not actual boss
 			int[] validBosses = GetValidBosses(level);
 			int pastBossesKilled = 0;
-			bool labTSUsed = false;
 			foreach (int bossIndex in validBosses)
 			{
 				BossAttributes bossInfo = GetBossAttributes(level, bossIndex);
@@ -579,7 +581,28 @@ namespace TsRandomizer.Randomisation
 				if (isBossDead && (bossIndex == (int)EBossID.Vol || bossIndex == (int)EBossID.Prince))
 					labTSUsed = true;
 			}
-			level.GameSave.SetValue("IsPastCleared", pastBossesKilled == 3);
+			
+			if (level.GameSave.GetSeed().Value.Options.PrismBreak)
+			{
+				bool laserA = level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LaserAccessA));
+				bool laserI = level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LaserAccessI));
+				bool laserM = level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LaserAccessM));
+				// Only override the individual lasers if in the hangar
+				if(level.ID == 10)
+				{
+					level.GameSave.SetValue("IsBossDead_Sorceress", laserA);
+					level.GameSave.SetValue("IsBossDead_Demon", laserI);
+					level.GameSave.SetValue("IsBossDead_Maw", laserM);
+				}
+				// Set past cleared flag regardless of current room
+				level.GameSave.SetValue("IsPastCleared", laserA && laserI && laserM);
+			}
+			else
+			{
+				level.GameSave.SetValue("IsPastCleared", pastBossesKilled == 3);
+			}
+				
+			
 			level.GameSave.SetValue("IsVileteSaved", level.GameSave.GetSaveBool("TSRando_IsVileteSaved"));
 
 			bool isPinkBirdDead = level.GameSave.GetSaveBool("TSRando_IsPinkBirdDead");

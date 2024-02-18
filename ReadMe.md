@@ -61,6 +61,7 @@ In order to use the randomizer on a steam deck, you will have to install the ran
 * To prevent players from getting stuck in the past when items are still available in the present, the transition room next to the refugee camp can now be used to freely travel back and forth between past and present
 * When you obtain the twin pyramid key, a random transition room is unlocked that could open new routing opportunities. In the "Unchained Keys" flag, these bonus warps are found as items.
 * When using the "Gyre Archives" flag, locations from the Temporal Gyre are accessible from the present. The main loop can be reached in the Military Hangar after clearing the past, Ifrit can be reached by aquiring Kobo and proceeding to the portrait room in the Library, while Ravenlord can be reached by aquiring Merchant Crow and proceeding to the room in Amadeus' Laboratory containing the Historical Archives
+* When using the "Prism Break" flag, lasers protecting the Military Hangar are disabled by collecting items, rather than by killing the 3 relevant bosses.
 
 # Safety Checks
 Certain considerations were taken as anti-frustration changes in the seed routing. Sometimes this means certain items cannot appear in certain locations, other times it means while a difficult and/or tedious check may potentially be possible, the game will not consider it "in logic" until another requirement is reached.

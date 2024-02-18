@@ -20,6 +20,10 @@ namespace TsRandomizer.Randomisation
 		internal R OculusRift;
 		internal R MawGasMask;
 
+		internal R LaserA;
+		internal R LaserI;
+		internal R LaserM;
+
 		internal Gate RefugeeCamp;
 		internal Gate LakeDesolationLeft;
 
@@ -188,6 +192,9 @@ namespace TsRandomizer.Randomisation
 			KillMaw = CavesOfBanishmentFlooded & MawGasMask;
 			var killTwins = CastleKeep & R.TimeStop;
 			var killAelana = UpperRoyalTower;
+			var pastCleared  = (SeedOptions.PrismBreak)
+				? R.LaserA & R.LaserI & R.LaserM
+				: killTwins & killAelana & KillMaw;
 
 			//future
 			UpperLakeDesolation = LakeDesolationLeft & UpperLakeSirine & R.Fire;
@@ -201,8 +208,8 @@ namespace TsRandomizer.Randomisation
 			SealedCavesSkeleton = (LakeDesolationLeft & (FloodsFlags.LakeDesolation ? R.Free : R.DoubleJump)) | R.GateSealedCaves | R.GateXarion;
 			SealedCaves = (SealedCavesSkeleton & R.CardA) | R.GateXarion;
 			SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
-			MilitaryFortress = LowerRightSideLibrary & KillMaw & killTwins & killAelana;
-			MilitaryFortressHangar = MilitaryFortress; //& R.TimeStop; implied by killAelana
+			MilitaryFortress = LowerRightSideLibrary & pastCleared;
+			MilitaryFortressHangar = MilitaryFortress & R.TimeStop;
 			RightSideMilitaryFortressHangar = MilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : R.DoubleJump);
 			TheLab = RightSideMilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab);
 			TheLabPoweredOff = TheLab & DoubleJumpOfNpc;

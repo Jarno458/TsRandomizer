@@ -110,10 +110,9 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 
 		protected static void CreateBossWarp(Level level, int vanillaBossId)
 		{
+			BestiaryManager.RefreshBossSaveFlags(level);
 			if (level.GameSave.GetSettings().BossRando.Value == "Off")
 				return;
-
-			BestiaryManager.RefreshBossSaveFlags(level);
 
 			var vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
 			var replacedBossInfo = BestiaryManager.GetReplacedBoss(level, vanillaBossId);
