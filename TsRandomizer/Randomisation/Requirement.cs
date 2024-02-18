@@ -41,6 +41,7 @@ namespace TsRandomizer.Randomisation
 		public static readonly Requirement LaserI = 1UL << 32;
 		public static readonly Requirement LaserM = 1UL << 33;
 
+		public static readonly Requirement GateRefugeeCamp = 1UL << 42;
 		public static readonly Requirement GateSealedCaves = 1UL << 43;
 		public static readonly Requirement GateMaw = 1UL << 44;
 		public static readonly Requirement GateCavesOfBanishment = 1UL << 45;
