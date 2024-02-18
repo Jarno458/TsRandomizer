@@ -23,7 +23,7 @@ namespace TsRandomizer.LevelObjects.Other
 			if (!isRandomized)
 				return;
 
-			BossAttributes vanillaBoss = BestiaryManager.GetVanillaBoss(Level, (int)EBossID.Maw);
+			BossAttributes vanillaBoss = BestiaryManager.GetBossAttributes(Level, Level.GameSave.GetSaveInt("VanillaBossId"));
 			if (vanillaBoss.Index != (int)EBossID.Prince && vanillaBoss.Index != (int)EBossID.Vol)
 				return;
 

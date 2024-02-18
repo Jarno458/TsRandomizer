@@ -141,7 +141,39 @@ namespace TsRandomizer.Settings
 			    && slotData.TryGetValue("BossScaling", out var bossScaling)
 			    && IsTrue(bossScaling))
 					settings.BossRando.Value = "Scaled";
-					
+
+			if (slotData.TryGetValue("BossRandoType", out var bossRandoType))
+			{
+				var value = ToInt(bossRandoType);
+				string enumValue;
+
+				switch (value)
+				{
+					case 1:
+						enumValue = "Chaos";
+						break;
+
+					case 2:
+						enumValue = "Singularity";
+						break;
+					case 3:
+						enumValue = "Manual";
+						break;
+					default:
+						enumValue = "Shuffle";
+						break;
+				}
+
+				settings.BossRandoType.Value = enumValue;
+			}
+
+			if (settings.BossRandoType.Value == "Manual"
+					  && slotData.TryGetValue("BossRandoOverrides", out var bossRandoOverrides))
+			{
+				var overrides = ((JObject)bossRandoOverrides).ToObject<Dictionary<string, string>>();
+				settings.BossRandoOverrides.Value = overrides;
+			}
+
 			if (slotData.TryGetValue("EnemyRando", out var enemyRando))
 			{
 				var value = ToInt(enemyRando);

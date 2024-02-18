@@ -9,7 +9,7 @@ namespace TsRandomizer.Settings
 		public static readonly GameSettingCategoryInfo[] Categories = {
 			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.BossRando, s => s.EnemyRando, s => s.DamageRando, 
+					s => s.BossRando, s => s.BossRandoType, s => s.EnemyRando, s => s.DamageRando, 
 					s => s.HpCap, s => s.LevelCap, s => s.ExtraEarringsXP, s => s.BossHealing
 				}},
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
@@ -50,6 +50,13 @@ namespace TsRandomizer.Settings
 		public SpecificValuesGameSetting BossRando = new SpecificValuesGameSetting("Boss Randomization",
 			"Sets wheter all boss locations are shuffled, and if their damage/hp should be scaled.",
 			new List<string> { "Off", "Scaled", "UnScaled" }, "Off", true);
+
+		public SpecificValuesGameSetting BossRandoType = new SpecificValuesGameSetting("Boss Randomization Type",
+			"Sets what type of boss shuffling occurs.",
+			new List<string> { "Shuffle", "Chaos", "Singularity", "Manual" }, "Shuffle", true);
+
+		public BossRandoOverridesSetting BossRandoOverrides = new BossRandoOverridesSetting("Boss Randomizer Overrides",
+			"Overrides the shuffling for each boss. Only editable from the file, so you shouldn't even be seeing this text.");
 
 		public SpecificValuesGameSetting EnemyRando = new SpecificValuesGameSetting("Enemy Randomization",
 			"Sets wheter enemies will be randomized, and if their damage/hp should be scaled.",

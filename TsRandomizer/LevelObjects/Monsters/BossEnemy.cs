@@ -75,7 +75,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 
 			currentBoss = BestiaryManager.GetBossAttributes(Level, bossId);
 			vanillaBoss = isRandomized 
-				? BestiaryManager.GetVanillaBoss(Level, bossId) 
+				? BestiaryManager.GetBossAttributes(Level, Level.GameSave.GetSaveInt("VanillaBossId")) 
 				: currentBoss;
 
 			isFinalBoss = (isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nuvius) || (!isDadFinalBoss && vanillaBoss.Index == (int)EBossID.Nightmare);
@@ -180,6 +180,15 @@ namespace TsRandomizer.LevelObjects.Monsters
 
 			if (!saveHasRun)
 			{
+				SettingCollection settings = Level.GameSave.GetSettings();
+				if (!settings.ShowBestiary.Value)
+				{
+					// update bestiary to say we killed the vanilla boss instead of the replaced boss
+					Level.GameSave.SetValue(currentBoss.BestiaryKey.Replace("Enemy_", "KILL_"), 0);
+					Level.GameSave.SetValue(vanillaBoss.BestiaryKey.Replace("Enemy_", "KILL_"), 1);
+				}
+				// reset the scaling back so the bestiary entry looks correct
+				BestiaryManager.UpdateCurrentBossScaling(Level, settings, currentBoss.Index, currentBoss.Index);
 				BestiaryManager.SetBossKillSave(Level, vanillaBoss.Index);
 				saveHasRun = true;
 			}
