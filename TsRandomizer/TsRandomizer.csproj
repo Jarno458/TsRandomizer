@@ -353,6 +353,7 @@
     <Compile Include="Screens\SeedSelection\SeedOptionsCollection.cs" />
     <Compile Include="Screens\SeedSelection\SeedOptionsMenuScreen.cs" />
     <Compile Include="Screens\GameSettingsScreen.cs" />
+    <Compile Include="Settings\GameSettingObjects\BossRandoOverridesSetting.cs" />
     <Compile Include="Settings\GameSettingObjects\DamageRandoOverridesSetting.cs" />
     <Compile Include="Settings\GameSettingObjects\NumberGameSettingWithFixedSteps.cs" />
     <Compile Include="Settings\GameSettingObjects\NumberGameSetting.cs" />
