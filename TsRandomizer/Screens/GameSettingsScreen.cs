@@ -62,7 +62,8 @@ namespace TsRandomizer.Screens
 					if (IsInGame)
                     {
 	                    var gameplayScreen = ScreenManager.FirstOrDefault<GameplayScreen>();
-	                    SpriteManager.ReloadCustomSprites(gameplayScreen.Level, gcm, settings);
+						if (gameplayScreen != null)
+							SpriteManager.ReloadCustomSprites(gameplayScreen.Level, gcm, settings);
 					}
 					else
 					{

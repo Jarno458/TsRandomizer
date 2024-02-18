@@ -51,6 +51,9 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 				return EBossID.Sandman;
 			if (roomKey.LevelId == 16 && roomKey.RoomId == 26)
 				return EBossID.Nightmare;
+			// Generic room - could support other bosses in the future
+			if (roomKey.LevelId == 17 && roomKey.RoomId == 8)
+				return EBossID.Cantoran;
 
 			return (EBossID)(-1);
 		}
@@ -59,11 +62,12 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 		{
 			var level = state.Level;
 
-			SpawnWaterOrGassIfNeeded(state, vanillaBossId == -1 ? (int)GetVanillaBoss(state.RoomKey) : vanillaBossId);
+			SpawnWaterOrGasIfNeeded(state, vanillaBossId == -1 ? (int)GetVanillaBoss(state.RoomKey) : vanillaBossId);
 
-			if (level.GameSave.GetSettings().BossRando.Value == "Off"
+			if ((level.GameSave.GetSettings().BossRando.Value == "Off"
 				|| TargetBossId == -1
-			    || !level.GameSave.GetSaveBool("IsFightingBoss"))
+				|| !level.GameSave.GetSaveBool("IsFightingBoss"))
+				&& level.ID != 17)
 					return;
 			
 			var vanillaBossInfo = BestiaryManager.GetBossAttributes(level, vanillaBossId);
@@ -92,7 +96,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 			TargetBossId = -1;
 		}
 
-		static void SpawnWaterOrGassIfNeeded(RoomState state, int vanillaBossId)
+		static void SpawnWaterOrGasIfNeeded(RoomState state, int vanillaBossId)
 		{
 			if ((state.Seed.Options.GasMaw && vanillaBossId == (int)EBossID.Maw)
 			    || (vanillaBossId == (int)EBossID.FelineSentry && state.Level.GameSave.GetSaveBool("TSRando_IsVileteSaved")))

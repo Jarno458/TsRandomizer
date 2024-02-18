@@ -223,7 +223,8 @@
     <Compile Include="RoomTriggers\Triggers\PyramidKeysRoom.cs" />
     <Compile Include="RoomTriggers\Triggers\LibraryIfritWarp.cs" />
     <Compile Include="RoomTriggers\Triggers\MawDemonGate.cs" />
-    <Compile Include="RoomTriggers\Triggers\MawGassArea.cs" />
+    <Compile Include="RoomTriggers\Triggers\MawGasArea.cs" />
+    <Compile Include="RoomTriggers\Triggers\MilitairyHangerGyreWarp.cs" />
     <Compile Include="RoomTriggers\Triggers\PlasmaCrystal.cs" />
     <Compile Include="RoomTriggers\Triggers\PostIfritWarp.cs" />
     <Compile Include="RoomTriggers\Triggers\PostNightmareChest.cs" />

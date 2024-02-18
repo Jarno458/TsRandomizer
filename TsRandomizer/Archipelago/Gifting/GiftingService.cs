@@ -7,6 +7,7 @@ using Archipelago.Gifting.Net.Gifts.Versions.Current;
 using Archipelago.Gifting.Net.Service;
 using Archipelago.Gifting.Net.Traits;
 using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Newtonsoft.Json.Linq;
 using Timespinner.GameAbstractions.Inventory;
@@ -21,6 +22,7 @@ namespace TsRandomizer.Archipelago.Gifting
 		static readonly string[] KnownTraits = Enum.GetNames(typeof(Trait));
 
 		readonly IGiftingServiceSync service;
+		readonly IPlayerHelper players;
 
 		public int NumberOfGifts {
 			get;
@@ -34,6 +36,7 @@ namespace TsRandomizer.Archipelago.Gifting
 		public GiftingService(ArchipelagoSession session, int team, int slot)
 		{
 			service = new APGiftingService(session);
+			players = session.Players;
 
 			//service.SubscribeToNewGifts(OnGiftsChanged);
 			Client.DataStorage[$"GiftBox;{team};{slot}"].OnValueChanged += OnOnValueChanged;
@@ -106,7 +109,7 @@ namespace TsRandomizer.Archipelago.Gifting
 					.Select(t => new GiftTrait(t.Key.ToString(), 1, t.Value))
 					.ToArray();
 
-				return service.SendGift(giftItem, traits, playerInfo.Name, playerInfo.Team);
+				return service.SendGift(giftItem, traits, players.GetPlayerName(playerInfo.Slot), playerInfo.Team);
 			}
 			catch (Exception e)
 			{
@@ -161,6 +164,7 @@ namespace TsRandomizer.Archipelago.Gifting
 			try
 			{
 				service.RefundGift(gift);
+				service.RemoveGiftFromGiftBox(gift.ID);
 			}
 			catch (Exception e)
 			{
