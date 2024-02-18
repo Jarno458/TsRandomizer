@@ -4,7 +4,7 @@
 	[RoomTriggerTrigger(8, 13)]
 	[RoomTriggerTrigger(8, 21)]
 	[RoomTriggerTrigger(8, 33)]
-	class MawGassArea : RoomTrigger
+	class MawGasArea : RoomTrigger
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{

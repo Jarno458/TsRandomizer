@@ -32,6 +32,7 @@ namespace TsRandomizer
 		public bool UnchainedKeys => (Flags & 1 << 19) > 0;
 		public bool TrappedChests => (Flags & 1 << 20) > 0;
 		public bool PresentAccessWithWheelAndSpindle => (Flags & 1 << 21) > 0;
+		public bool PrismBreak => (Flags & 1 << 22) > 0;
 
 		public SeedOptions(uint flags)
 		{
@@ -66,6 +67,7 @@ namespace TsRandomizer
 				{"UnchainedKeys", 1U << 19},
 				{"TrappedChests", 1U << 20},
 				{"PresentAccessWithWheelAndSpindle", 1U << 21},
+				{"PrismBreak", 1U << 22}
 			};
 
 			foreach (var kvp in stringToFlagMapping)
