@@ -293,6 +293,8 @@ namespace TsRandomizer.Settings
 				SetNumberGameSetting(settings.LevelCap, levelCap);
 			if (slotData.TryGetValue("ExtraEarringsXP", out var extraEarringsXP))
 				SetNumberGameSetting(settings.ExtraEarringsXP, extraEarringsXP);
+			if (slotData.TryGetValue("MeleeAutofire", out var meleeAutofire))
+				settings.MeleeAutofire.Value = IsTrue(meleeAutofire);
 
 			if (slotData.TryGetValue("ShowDrops", out var showDrops))
 				settings.ShowDrops.Value = IsTrue(showDrops);

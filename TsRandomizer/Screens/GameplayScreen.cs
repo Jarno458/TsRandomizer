@@ -38,6 +38,8 @@ namespace TsRandomizer.Screens
 		static readonly Type TitleBackgroundScreenType = TimeSpinnerType
 			.Get("Timespinner.GameStateManagement.Screens.MainMenu.TitleBackgroundScreen");
 
+		static readonly Type GamePadWrapper = TimeSpinnerType.Get("Timespinner.GameAbstractions.GamePadWrapper");
+
 		int hpCap;
 		int levelCap;
 		DeathLinker deathLinkService;
@@ -169,6 +171,9 @@ namespace TsRandomizer.Screens
 			FamiliarManager.Update(Level);
 
 			deathLinkService?.Update(Level, ScreenManager);
+
+			if (Settings.MeleeAutofire.Value)
+				GamePadWrapper.GetProperty("IsMeleeDown").SetValue(Level.MainHero.AsDynamic()._gamePadWrapper, false, null);
 
 			if (Settings.ExtraEarringsXP.Value > 0)
 			{
