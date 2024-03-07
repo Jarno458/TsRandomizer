@@ -31,6 +31,8 @@ namespace TsRandomizer.Randomisation
 		public bool IsFacingLeft;
 		public bool ShouldSpawn;
 		public int TileId;
+		public int EnemyArgument;
+		public ulong Weaknesses;
 		public string BestiaryKey;
 		public int BestiaryCameraX;
 		public int BestiaryCameraY;
@@ -116,6 +118,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.RoboKittyBoss,
+						EnemyArgument = 0,
+						Weaknesses = 282574488338689,
 						BestiaryKey = "Enemy_RoboKittyBoss",
 						BestiaryCameraX = -48,
 						BestiaryCameraY = 6
@@ -140,6 +144,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.VarndagrothBoss,
+						EnemyArgument = 0,
+						Weaknesses = 2207613190657,
 						BestiaryKey = "Enemy_VarndagrothBoss",
 						BestiaryCameraX = -1,
 						BestiaryCameraY = 5
@@ -164,6 +170,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = false,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.BirdBoss,
+						EnemyArgument = 0,
+						Weaknesses = 8623554818,
 						BestiaryKey = "Enemy_BirdBoss",
 						BestiaryCameraX = -32,
 						BestiaryCameraY = -72
@@ -188,6 +196,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.IncubusBoss,
+						EnemyArgument = 0,
+						Weaknesses = 144396663052567041,
 						BestiaryKey = "Enemy_IncubusBoss",
 						BestiaryCameraX = 0,
 						BestiaryCameraY = -32
@@ -212,6 +222,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = false,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.AelanaBoss,
+						EnemyArgument = 0,
+						Weaknesses = 16908290,
 						BestiaryKey = "Enemy_AelanaBoss",
 						BestiaryCameraX = 0,
 						BestiaryCameraY = 0
@@ -236,6 +248,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = false,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.MawBoss,
+						EnemyArgument = 0,
+						Weaknesses = 1108118340097,
 						BestiaryKey = "Enemy_MawBoss",
 						BestiaryCameraX = 4,
 						BestiaryCameraY = -32
@@ -260,6 +274,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.CantoranBoss,
+						EnemyArgument = 0,
+						Weaknesses = 16908546,
 						BestiaryKey = "Enemy_CantoranBoss",
 						BestiaryCameraX = 0,
 						BestiaryCameraY = 0
@@ -284,6 +300,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = false,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.ShapeshiftBoss,
+						EnemyArgument = 0,
+						Weaknesses = 72622747309572096,
 						BestiaryKey = "Enemy_ShapeshiftBoss",
 						BestiaryCameraX = 0,
 						BestiaryCameraY = 0
@@ -308,6 +326,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.EmperorBoss,
+						EnemyArgument = 0,
+						Weaknesses = 33619968,
 						BestiaryKey = "Enemy_EmperorBoss",
 						BestiaryCameraX = 2,
 						BestiaryCameraY = 6
@@ -332,6 +352,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.EmperorBoss,
+						EnemyArgument = 1,
+						Weaknesses = 16908288,
 						BestiaryKey = "Enemy_EmperorBoss_1",
 						BestiaryCameraX = 2,
 						BestiaryCameraY = 6
@@ -356,6 +378,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.EmperorBoss,
+						EnemyArgument = 2,
+						Weaknesses = 33619968,
 						BestiaryKey = "Enemy_EmperorBoss_2",
 						BestiaryCameraX = 2,
 						BestiaryCameraY = 6
@@ -380,6 +404,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.XarionBoss,
+						EnemyArgument = 0,
+						Weaknesses = 144398866370789889,
 						BestiaryKey = "Enemy_XarionBoss",
 						BestiaryCameraX = -32,
 						BestiaryCameraY = -96
@@ -404,6 +430,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.RavenBoss,
+						EnemyArgument = 0,
+						Weaknesses = 565148976677377,
 						BestiaryKey = "Enemy_RavenBoss",
 						BestiaryCameraX = 0,
 						BestiaryCameraY = -16
@@ -428,6 +456,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.ZelBoss,
+						EnemyArgument = 0,
+						Weaknesses = 1108101562881,
 						BestiaryKey = "Enemy_ZelBoss",
 						BestiaryCameraX = -1,
 						BestiaryCameraY = -8
@@ -452,6 +482,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.SandmanBoss,
+						EnemyArgument = 0,
+						Weaknesses = 2207613190402,
 						BestiaryKey = "Enemy_SandmanBoss",
 						BestiaryCameraX = 6,
 						BestiaryCameraY = -34
@@ -476,6 +508,8 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.NightmareBoss,
+						EnemyArgument = 0,
+						Weaknesses = 513,
 						BestiaryKey = "Enemy_NightmareBoss",
 						BestiaryCameraX = -104,
 						BestiaryCameraY = -40
@@ -729,6 +763,7 @@ namespace TsRandomizer.Randomisation
 			if (bestiaryEntry == null)
 				return;
 			bestiaryEntry.VisibleName = $"{replacedBossInfo.VisibleName} as {vanillaBossInfo.VisibleName}";
+			bestiaryEntry.DemuxElementalWeaknesses(replacedBossInfo.Weaknesses);
 			if (gameSettings.BossRando.Value != "Scaled")
 				return;
 			bestiaryEntry.HP = vanillaBossInfo.HP;
@@ -742,6 +777,37 @@ namespace TsRandomizer.Randomisation
 					minionEntry.VisibleName = minionInfo.VisibleName;
 					minionEntry.HP = (int)((float)vanillaBossInfo.HP / replacedBossInfo.HP * minionInfo.HP);
 					minionEntry.TouchDamage = (int)((float)vanillaBossInfo.TouchDamage / replacedBossInfo.TouchDamage * minionInfo.TouchDamage);
+				}
+		}
+
+		public static void ResetBossScaling(Level level, SettingCollection gameSettings, int bossId)
+		{
+			int[] validBosses = GetValidBosses(level);
+			if (!validBosses.Contains(bossId))
+				return;
+
+			BossAttributes replacedBossInfo = GetReplacedBoss(level, bossId);
+			BossAttributes bossInfo = GetBossAttributes(level, bossId);
+
+			var bestiary = level.GCM.Bestiary;
+			var bestiaryEntry = bestiary.BestiaryEntries.SingleOrDefault(e => e.Index == bossId);
+			if (bestiaryEntry == null)
+				return;
+			bestiaryEntry.VisibleName = $"{replacedBossInfo.VisibleName} as {bossInfo.VisibleName}";
+			bestiaryEntry.DemuxElementalWeaknesses(replacedBossInfo.Weaknesses);
+			if (gameSettings.BossRando.Value != "Scaled")
+				return;
+			bestiaryEntry.HP = bossInfo.HP;
+			bestiaryEntry.TouchDamage = bossInfo.TouchDamage;
+			bestiaryEntry.Exp = bossInfo.XP;
+			if (replacedBossInfo.Minions.Length > 0)
+				foreach (int minionId in replacedBossInfo.Minions)
+				{
+					MinionAttributes minionInfo = GetMinionAttributes(level, minionId);
+					var minionEntry = bestiary.BestiaryEntries[minionId];
+					minionEntry.VisibleName = minionInfo.VisibleName;
+					minionEntry.HP = (int)((float)bossInfo.HP / replacedBossInfo.HP * minionInfo.HP);
+					minionEntry.TouchDamage = (int)((float)bossInfo.TouchDamage / replacedBossInfo.TouchDamage * minionInfo.TouchDamage);
 				}
 		}
 
@@ -766,8 +832,11 @@ namespace TsRandomizer.Randomisation
 					BossAttributes vanillaBossInfo = GetBossAttributes(level, bestiaryEntry.Index);
 					bestiaryEntry.VisibleName = $"{replacedBossInfo.VisibleName} as {vanillaBossInfo.VisibleName}";
 					bestiaryEntry.EnemyTypeInt = replacedBossInfo.TileId;
+					bestiaryEntry.EnemyArgument = replacedBossInfo.EnemyArgument;
 					bestiaryEntry.CameraOffsetX = replacedBossInfo.BestiaryCameraX;
 					bestiaryEntry.CameraOffsetY = replacedBossInfo.BestiaryCameraY;
+					bestiaryEntry.DemuxElementalWeaknesses(replacedBossInfo.Weaknesses);
+					
 					if (gameSettings.BossRando.Value == "Scaled")
 					{
 						bestiaryEntry.HP = vanillaBossInfo.HP;
