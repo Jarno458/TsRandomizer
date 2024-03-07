@@ -187,8 +187,11 @@ namespace TsRandomizer.LevelObjects.Monsters
 					Level.GameSave.SetValue(currentBoss.BestiaryKey.Replace("Enemy_", "KILL_"), 0);
 					Level.GameSave.SetValue(vanillaBoss.BestiaryKey.Replace("Enemy_", "KILL_"), 1);
 				}
-				// reset the scaling back so the bestiary entry looks correct
-				BestiaryManager.ResetBossScaling(Level, settings, currentBoss.Index);
+				if (settings.BossRando.Value != "Off")
+				{
+					// reset the scaling back so the bestiary entry looks correct
+					BestiaryManager.ResetBossScaling(Level, settings, currentBoss.Index);
+				}
 				BestiaryManager.SetBossKillSave(Level, vanillaBoss.Index);
 				saveHasRun = true;
 			}
