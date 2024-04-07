@@ -60,7 +60,7 @@ namespace TsRandomizer.Randomisation
 		internal Gate MilitaryFortress;
 		internal Gate RavenlordsLair;
 		internal Gate MilitaryFortressHangar;
-		internal Gate RightSideMilitaryFortressHangar;
+		internal Gate BeforeTheLab;
 		internal Gate TheLab;
 		internal Gate TheLabPoweredOff;
 		internal Gate UpperLab;
@@ -210,8 +210,8 @@ namespace TsRandomizer.Randomisation
 			SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
 			MilitaryFortress = LowerRightSideLibrary & pastCleared;
 			MilitaryFortressHangar = MilitaryFortress & R.TimeStop;
-			RightSideMilitaryFortressHangar = MilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : R.DoubleJump);
-			TheLab = RightSideMilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab);
+			BeforeTheLab = MilitaryFortressHangar & (FloodsFlags.Lab ? R.Swimming : (R.DoubleJump | R.Teleport & (R.TimespinnerWheel | R.ForwardDash) | R.TimespinnerWheel & R.ForwardDash));
+			TheLab = BeforeTheLab & R.CardB;
 			TheLabPoweredOff = TheLab & DoubleJumpOfNpc;
 			UpperLab = TheLabPoweredOff & ForwardDashDoubleJump;
 			RavenlordsLair = UpperLab & R.MerchantCrow;
@@ -253,7 +253,7 @@ namespace TsRandomizer.Randomisation
 			return capacity;
 		}
 
-		void AddPresentItemLocations()
+		async void AddPresentItemLocations()
 		{
 			areaName = "Tutorial";
 			Add(ItemKey.TutorialMeleeOrb, "Tutorial: Yo Momma 1", ItemProvider.Get(EInventoryOrbType.Blue, EOrbSlot.Melee));
@@ -324,20 +324,20 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(9, 2, 184, 176), "Sealed Caves (Sirens): Cave after sirens chest 1", ItemProvider.Get(EInventoryUseItemType.WarpCard), SealedCavesSirens);
 			Add(new ItemKey(9, 2, 104, 160), "Sealed Caves (Sirens): Cave after sirens chest 2", ItemProvider.Get(EInventoryRelicType.WaterMask), SealedCavesSirens);
 			areaName = "Military Fortress";
-			Add(new ItemKey(10, 3, 264, 128), "Military Fortress: Bomber chest", ItemProvider.Get(EItemType.MaxSand), MilitaryFortress & DoubleJumpOfNpc & R.TimespinnerWheel); //can be reached with just upward dash but not with lightwall unless you got timestop
+			Add(new ItemKey(10, 3, 264, 128), "Military Fortress: Bomber chest", ItemProvider.Get(EItemType.MaxSand), MilitaryFortress & R.DoubleJump & R.TimespinnerWheel); //can be reached with just upward dash but not with lightwall unless you got timestop
 			Add(new ItemKey(10, 11, 296, 192), "Military Fortress: Close combat room", ItemProvider.Get(EItemType.MaxAura), MilitaryFortress);
 			Add(new ItemKey(10, 4, 1064, 176), "Military Fortress: Soldiers bridge", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), MilitaryFortressHangar);
-			Add(new ItemKey(10, 10, 104, 192), "Military Fortress: Giantess room", ItemProvider.Get(EInventoryRelicType.AirMask), MilitaryFortressHangar);
+			Add(new ItemKey(10, 10, 104, 192), "Military Fortress: Giantess room", ItemProvider.Get(EInventoryRelicType.AirMask), MilitaryFortressHangar & R.TimeStop);
 			Add(new ItemKey(10, 8, 1080, 176), "Military Fortress: Giantess bridge", ItemProvider.Get(EInventoryEquipmentType.LabGlasses), MilitaryFortressHangar);
-			Add(new ItemKey(10, 7, 104, 192), "Military Fortress: B door chest 2", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), MilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab));
-			Add(new ItemKey(10, 7, 152, 192), "Military Fortress: B door chest 1", ItemProvider.Get(EItemType.MaxSand), MilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab));
-			Add(new ItemKey(10, 18, 280, 189), "Military Fortress: Pedestal", ItemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), RightSideMilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : DoubleJumpOfNpc | ForwardDashDoubleJump));
+			Add(new ItemKey(10, 7, 104, 192), "Military Fortress: B door chest 2", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), BeforeTheLab & R.CardB);
+			Add(new ItemKey(10, 7, 152, 192), "Military Fortress: B door chest 1", ItemProvider.Get(EItemType.MaxSand), BeforeTheLab & R.CardB);
+			Add(new ItemKey(10, 18, 280, 189), "Military Fortress: Pedestal", ItemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), MilitaryFortress & (FloodsFlags.Lab ? R.Free : DoubleJumpOfNpc | ForwardDashDoubleJump | R.ForwardDash & R.TimespinnerWheel));
 			areaName = "The Lab";
 			Add(new ItemKey(11, 36, 312, 192), "Lab: Coffee break", ItemProvider.Get(EInventoryUseItemType.FoodSynth), TheLab);
-			Add(new ItemKey(11, 3, 1528, 192), "Lab: Lower trash right", ItemProvider.Get(EItemType.MaxHP), TheLab & R.DoubleJump);
-			Add(new ItemKey(11, 3, 72, 192), "Lab: Lower trash left", ItemProvider.Get(EInventoryUseItemType.FuturePotion), TheLab & R.UpwardDash); //when lab power is on, it only requires DoubleJumpOfNpc, but we cant code for the power state
+			Add(new ItemKey(11, 3, 1528, 192), "Lab: Lower trash right", ItemProvider.Get(EItemType.MaxHP), TheLab & (FloodsFlags.Lab ? R.Free : (R.DoubleJump | R.TimespinnerWheel & R.ForwardDash)));
+			Add(new ItemKey(11, 3, 72, 192), "Lab: Lower trash left", ItemProvider.Get(EInventoryUseItemType.FuturePotion), TheLab & (FloodsFlags.Lab ? R.Free : R.UpwardDash)); //when lab power is on, it only requires DoubleJumpOfNpc, but we cant code for the power state
 			Add(new ItemKey(11, 25, 104, 192), "Lab: Below lab entrance", ItemProvider.Get(EItemType.MaxAura), TheLab & R.DoubleJump);
-			Add(new ItemKey(11, 18, 824, 128), "Lab: Trash jump room", ItemProvider.Get(EInventoryUseItemType.ChaosHeal), TheLabPoweredOff);
+			Add(new ItemKey(11, 18, 824, 128), "Lab: Trash jump room", ItemProvider.Get(EInventoryUseItemType.ChaosHeal), TheLabPoweredOff & R.UpwardDash); //when lab power is on, it only requires DoubleJumpOfNpc, but we cant code for the power state
 			Add(new RoomItemKey(11, 39), "Lab: Dynamo Works", ItemProvider.Get(EInventoryOrbType.Eye, EOrbSlot.Melee), TheLabPoweredOff);
 			Add(new RoomItemKey(11, 21), "Lab: Genza (Blob Mom)", ItemProvider.Get(EInventoryRelicType.ScienceKeycardA), UpperLab);
 			Add(new RoomItemKey(11, 1), "Lab: Experiment #13", ItemProvider.Get(EInventoryRelicType.Dash), TheLabPoweredOff);
