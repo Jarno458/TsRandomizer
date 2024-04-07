@@ -253,7 +253,7 @@ namespace TsRandomizer.Randomisation
 			return capacity;
 		}
 
-		async void AddPresentItemLocations()
+		void AddPresentItemLocations()
 		{
 			areaName = "Tutorial";
 			Add(ItemKey.TutorialMeleeOrb, "Tutorial: Yo Momma 1", ItemProvider.Get(EInventoryOrbType.Blue, EOrbSlot.Melee));
@@ -331,7 +331,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(10, 8, 1080, 176), "Military Fortress: Giantess bridge", ItemProvider.Get(EInventoryEquipmentType.LabGlasses), MilitaryFortressHangar);
 			Add(new ItemKey(10, 7, 104, 192), "Military Fortress: B door chest 2", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), BeforeTheLab & R.CardB);
 			Add(new ItemKey(10, 7, 152, 192), "Military Fortress: B door chest 1", ItemProvider.Get(EItemType.MaxSand), BeforeTheLab & R.CardB);
-			Add(new ItemKey(10, 18, 280, 189), "Military Fortress: Pedestal", ItemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), MilitaryFortress & (FloodsFlags.Lab ? R.Free : DoubleJumpOfNpc | ForwardDashDoubleJump | R.ForwardDash & R.TimespinnerWheel));
+			Add(new ItemKey(10, 18, 280, 189), "Military Fortress: Pedestal", ItemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), MilitaryFortress & (FloodsFlags.Lab ? R.Free : (DoubleJumpOfNpc | ForwardDashDoubleJump | R.ForwardDash & R.TimespinnerWheel)));
 			areaName = "The Lab";
 			Add(new ItemKey(11, 36, 312, 192), "Lab: Coffee break", ItemProvider.Get(EInventoryUseItemType.FoodSynth), TheLab);
 			Add(new ItemKey(11, 3, 1528, 192), "Lab: Lower trash right", ItemProvider.Get(EItemType.MaxHP), TheLab & (FloodsFlags.Lab ? R.Free : (R.DoubleJump | R.TimespinnerWheel & R.ForwardDash)));
