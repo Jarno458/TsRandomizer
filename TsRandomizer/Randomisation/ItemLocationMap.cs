@@ -334,7 +334,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(10, 18, 280, 189), "Military Fortress: Pedestal", ItemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), MilitaryFortress & (FloodsFlags.Lab ? R.Free : (DoubleJumpOfNpc | ForwardDashDoubleJump | R.ForwardDash & R.TimespinnerWheel)));
 			areaName = "The Lab";
 			Add(new ItemKey(11, 36, 312, 192), "Lab: Coffee break", ItemProvider.Get(EInventoryUseItemType.FoodSynth), TheLab);
-			Add(new ItemKey(11, 3, 1528, 192), "Lab: Lower trash right", ItemProvider.Get(EItemType.MaxHP), TheLab & (FloodsFlags.Lab ? R.Free : (R.DoubleJump | R.TimespinnerWheel & R.ForwardDash)));
+			Add(new ItemKey(11, 3, 1528, 192), "Lab: Lower trash right", ItemProvider.Get(EItemType.MaxHP), TheLab & (FloodsFlags.Lab ? R.Free : R.DoubleJump));
 			Add(new ItemKey(11, 3, 72, 192), "Lab: Lower trash left", ItemProvider.Get(EInventoryUseItemType.FuturePotion), TheLab & (FloodsFlags.Lab ? R.Free : R.UpwardDash)); //when lab power is on, it only requires DoubleJumpOfNpc, but we cant code for the power state
 			Add(new ItemKey(11, 25, 104, 192), "Lab: Below lab entrance", ItemProvider.Get(EItemType.MaxAura), TheLab & (FloodsFlags.Lab ? R.Swimming : R.DoubleJump));
 			Add(new ItemKey(11, 18, 824, 128), "Lab: Trash jump room", ItemProvider.Get(EInventoryUseItemType.ChaosHeal), TheLabPoweredOff & R.UpwardDash); //when lab power is on, it only requires DoubleJumpOfNpc, but we cant code for the power state
