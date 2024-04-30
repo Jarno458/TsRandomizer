@@ -67,13 +67,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 					itemsToAddToGame.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.MysteriousWarpBeacon))); // Pyramid
 			}
 
-			if (SeedOptions.PrismBreak)
-			{
-				itemsToAddToGame.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.LaserAccessA)));
-				itemsToAddToGame.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.LaserAccessI)));
-				itemsToAddToGame.Add(ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.LaserAccessM)));
-			}
-
 			genericItems = new List<ItemInfo>
 			{
 				ItemInfoProvider.Get(EInventoryUseItemType.Potion),
