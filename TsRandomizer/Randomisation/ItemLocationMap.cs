@@ -20,10 +20,6 @@ namespace TsRandomizer.Randomisation
 		internal R OculusRift;
 		internal R MawGasMask;
 
-		internal R LaserA;
-		internal R LaserI;
-		internal R LaserM;
-
 		internal Gate MultipleSmallJumpsOfNpc;
 		internal Gate DoubleJumpOfNpc;
 		internal Gate ForwardDashDoubleJump;
