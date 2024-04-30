@@ -31,7 +31,6 @@ namespace TsRandomizer.Randomisation
 		public bool IsFacingLeft;
 		public bool ShouldSpawn;
 		public int TileId;
-		public int EnemyArgument;
 		public ulong Weaknesses;
 		public string BestiaryKey;
 		public int BestiaryCameraX;
@@ -94,6 +93,25 @@ namespace TsRandomizer.Randomisation
 			}
 			return validBosses.ToArray();
 		}
+		public static ulong CreateWeaknesses(
+			EElementalWeaknessState blunt = EElementalWeaknessState.None,
+			EElementalWeaknessState sharp = EElementalWeaknessState.None,
+			EElementalWeaknessState fire = EElementalWeaknessState.None,
+			EElementalWeaknessState ice = EElementalWeaknessState.None,
+			EElementalWeaknessState plasma = EElementalWeaknessState.None,
+			EElementalWeaknessState aura = EElementalWeaknessState.None,
+			EElementalWeaknessState light = EElementalWeaknessState.None,
+			EElementalWeaknessState dark = EElementalWeaknessState.None
+		) {
+			var weaknesses = new EElementalWeaknessState[] { blunt, sharp, fire, ice, plasma, aura, light, dark };
+			ulong weaknessFlags = 0;
+			for (var index = 0; index < 8; ++index)
+			{
+				ulong nextFlag = weaknessFlags << 8;
+				weaknessFlags = nextFlag | (ulong)weaknesses[index];
+			}
+			return weaknessFlags;
+		}
 		public static BossAttributes GetBossAttributes(Level level, int bossId)
 		{
 			switch (bossId)
@@ -118,8 +136,12 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.RoboKittyBoss,
-						EnemyArgument = 0,
-						Weaknesses = 282574488338689,
+						Weaknesses = CreateWeaknesses(
+							sharp: EElementalWeaknessState.Strong,
+							fire: EElementalWeaknessState.Strong,
+							light: EElementalWeaknessState.Strong,
+							dark: EElementalWeaknessState.Strong
+						),
 						BestiaryKey = "Enemy_RoboKittyBoss",
 						BestiaryCameraX = -48,
 						BestiaryCameraY = 6
@@ -144,8 +166,12 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.VarndagrothBoss,
-						EnemyArgument = 0,
-						Weaknesses = 2207613190657,
+						Weaknesses = CreateWeaknesses(
+							fire: EElementalWeaknessState.Weak,
+							ice: EElementalWeaknessState.Weak,
+							light: EElementalWeaknessState.Weak,
+							dark: EElementalWeaknessState.Strong
+						),
 						BestiaryKey = "Enemy_VarndagrothBoss",
 						BestiaryCameraX = -1,
 						BestiaryCameraY = 5
@@ -170,8 +196,13 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = false,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.BirdBoss,
-						EnemyArgument = 0,
-						Weaknesses = 8623554818,
+						Weaknesses = CreateWeaknesses(
+							ice: EElementalWeaknessState.Weak,
+							plasma: EElementalWeaknessState.Weak,
+							dark: EElementalWeaknessState.Weak,
+							aura: EElementalWeaknessState.Strong,
+							light: EElementalWeaknessState.Strong
+						),
 						BestiaryKey = "Enemy_BirdBoss",
 						BestiaryCameraX = -32,
 						BestiaryCameraY = -72
@@ -196,8 +227,12 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.IncubusBoss,
-						EnemyArgument = 0,
-						Weaknesses = 144396663052567041,
+						Weaknesses = CreateWeaknesses(
+							blunt: EElementalWeaknessState.Weak,
+							light: EElementalWeaknessState.Weak,
+							sharp: EElementalWeaknessState.Strong,
+							dark: EElementalWeaknessState.Strong
+						),
 						BestiaryKey = "Enemy_IncubusBoss",
 						BestiaryCameraX = 0,
 						BestiaryCameraY = -32
@@ -222,8 +257,11 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = false,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.AelanaBoss,
-						EnemyArgument = 0,
-						Weaknesses = 16908290,
+						Weaknesses = CreateWeaknesses(
+							aura: EElementalWeaknessState.Weak,
+							dark: EElementalWeaknessState.Weak,
+							plasma: EElementalWeaknessState.Strong
+						),
 						BestiaryKey = "Enemy_AelanaBoss",
 						BestiaryCameraX = 0,
 						BestiaryCameraY = 0
@@ -248,8 +286,13 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = false,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.MawBoss,
-						EnemyArgument = 0,
-						Weaknesses = 1108118340097,
+						Weaknesses = CreateWeaknesses(
+							ice: EElementalWeaknessState.Weak,
+							light: EElementalWeaknessState.Weak,
+							fire: EElementalWeaknessState.Strong,
+							plasma: EElementalWeaknessState.Strong,
+							dark: EElementalWeaknessState.Strong
+						),
 						BestiaryKey = "Enemy_MawBoss",
 						BestiaryCameraX = 4,
 						BestiaryCameraY = -32
@@ -274,8 +317,12 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = true,
 						TileId = (int)EEnemyTileType.CantoranBoss,
-						EnemyArgument = 0,
-						Weaknesses = 16908546,
+						Weaknesses = CreateWeaknesses(
+							aura: EElementalWeaknessState.Weak,
+							dark: EElementalWeaknessState.Weak,
+							plasma: EElementalWeaknessState.Strong,
+							light: EElementalWeaknessState.Strong
+						),
 						BestiaryKey = "Enemy_CantoranBoss",
 						BestiaryCameraX = 0,
 						BestiaryCameraY = 0
@@ -300,8 +347,12 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = false,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.ShapeshiftBoss,
-						EnemyArgument = 0,
-						Weaknesses = 72622747309572096,
+						Weaknesses = CreateWeaknesses(
+							sharp: EElementalWeaknessState.Weak,
+							fire: EElementalWeaknessState.Weak,
+							blunt: EElementalWeaknessState.Strong,
+							ice: EElementalWeaknessState.Strong
+						),
 						BestiaryKey = "Enemy_ShapeshiftBoss",
 						BestiaryCameraX = 0,
 						BestiaryCameraY = 0
@@ -326,8 +377,7 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.EmperorBoss,
-						EnemyArgument = 0,
-						Weaknesses = 33619968,
+						Weaknesses = CreateWeaknesses(plasma: EElementalWeaknessState.Weak, aura: EElementalWeaknessState.Strong),
 						BestiaryKey = "Enemy_EmperorBoss",
 						BestiaryCameraX = 2,
 						BestiaryCameraY = 6
@@ -352,8 +402,7 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.EmperorBoss,
-						EnemyArgument = 1,
-						Weaknesses = 16908288,
+						Weaknesses = CreateWeaknesses(aura: EElementalWeaknessState.Weak, plasma: EElementalWeaknessState.Strong),
 						BestiaryKey = "Enemy_EmperorBoss_1",
 						BestiaryCameraX = 2,
 						BestiaryCameraY = 6
@@ -378,8 +427,7 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.EmperorBoss,
-						EnemyArgument = 2,
-						Weaknesses = 33619968,
+						Weaknesses = CreateWeaknesses(plasma: EElementalWeaknessState.Weak, aura: EElementalWeaknessState.Strong),
 						BestiaryKey = "Enemy_EmperorBoss_2",
 						BestiaryCameraX = 2,
 						BestiaryCameraY = 6
@@ -404,8 +452,14 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.XarionBoss,
-						EnemyArgument = 0,
-						Weaknesses = 144398866370789889,
+						Weaknesses = CreateWeaknesses(
+							blunt: EElementalWeaknessState.Weak,
+							fire: EElementalWeaknessState.Weak,
+							light: EElementalWeaknessState.Weak,
+							sharp: EElementalWeaknessState.Strong,
+							ice: EElementalWeaknessState.Strong,
+							dark: EElementalWeaknessState.Strong
+						),
 						BestiaryKey = "Enemy_XarionBoss",
 						BestiaryCameraX = -32,
 						BestiaryCameraY = -96
@@ -430,8 +484,12 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.RavenBoss,
-						EnemyArgument = 0,
-						Weaknesses = 565148976677377,
+						Weaknesses = CreateWeaknesses(
+							sharp: EElementalWeaknessState.Weak,
+							fire: EElementalWeaknessState.Weak,
+							light: EElementalWeaknessState.Weak,
+							dark: EElementalWeaknessState.Strong
+						),
 						BestiaryKey = "Enemy_RavenBoss",
 						BestiaryCameraX = 0,
 						BestiaryCameraY = -16
@@ -456,8 +514,12 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.ZelBoss,
-						EnemyArgument = 0,
-						Weaknesses = 1108101562881,
+						Weaknesses = CreateWeaknesses(
+							ice: EElementalWeaknessState.Weak,
+							light: EElementalWeaknessState.Weak,
+							fire: EElementalWeaknessState.Strong,
+							dark: EElementalWeaknessState.Strong
+						),
 						BestiaryKey = "Enemy_ZelBoss",
 						BestiaryCameraX = -1,
 						BestiaryCameraY = -8
@@ -482,8 +544,12 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.SandmanBoss,
-						EnemyArgument = 0,
-						Weaknesses = 2207613190402,
+						Weaknesses = CreateWeaknesses(
+							fire: EElementalWeaknessState.Weak,
+							ice: EElementalWeaknessState.Weak,
+							dark: EElementalWeaknessState.Weak,
+							light: EElementalWeaknessState.Strong
+						),
 						BestiaryKey = "Enemy_SandmanBoss",
 						BestiaryCameraX = 6,
 						BestiaryCameraY = -34
@@ -508,8 +574,7 @@ namespace TsRandomizer.Randomisation
 						IsFacingLeft = true,
 						ShouldSpawn = false,
 						TileId = (int)EEnemyTileType.NightmareBoss,
-						EnemyArgument = 0,
-						Weaknesses = 513,
+						Weaknesses = CreateWeaknesses(light: EElementalWeaknessState.Weak, dark: EElementalWeaknessState.Strong),
 						BestiaryKey = "Enemy_NightmareBoss",
 						BestiaryCameraX = -104,
 						BestiaryCameraY = -40
@@ -832,7 +897,7 @@ namespace TsRandomizer.Randomisation
 					BossAttributes vanillaBossInfo = GetBossAttributes(level, bestiaryEntry.Index);
 					bestiaryEntry.VisibleName = $"{replacedBossInfo.VisibleName} as {vanillaBossInfo.VisibleName}";
 					bestiaryEntry.EnemyTypeInt = replacedBossInfo.TileId;
-					bestiaryEntry.EnemyArgument = replacedBossInfo.EnemyArgument;
+					bestiaryEntry.EnemyArgument = replacedBossInfo.Argument;
 					bestiaryEntry.CameraOffsetX = replacedBossInfo.BestiaryCameraX;
 					bestiaryEntry.CameraOffsetY = replacedBossInfo.BestiaryCameraY;
 					bestiaryEntry.DemuxElementalWeaknesses(replacedBossInfo.Weaknesses);
@@ -852,8 +917,15 @@ namespace TsRandomizer.Randomisation
 								minionEntry.TouchDamage = (int)((float)vanillaBossInfo.TouchDamage / replacedBossInfo.TouchDamage * minionInfo.TouchDamage);
 							}
 					}
+					if (gameSettings.BossRando.Value == "UnScaled")
+					{
+						bestiaryEntry.VisibleDescription = $"ATK - {replacedBossInfo.TouchDamage}";
+					}
 				}
-				bestiaryEntry.VisibleDescription = $"ATK - {bestiaryEntry.TouchDamage}";
+				if (gameSettings.BossRando.Value != "UnScaled")
+				{
+					bestiaryEntry.VisibleDescription = $"ATK - {bestiaryEntry.TouchDamage}";
+				}
 
 				int dropSlot = 0;
 				foreach (var loot in bestiaryEntry.LootTable)
