@@ -74,7 +74,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 			int bossId = bestiaryEntry.Index;
 
 			currentBoss = BestiaryManager.GetBossAttributes(Level, bossId);
-			vanillaBoss = isRandomized 
+			vanillaBoss = Level.GameSave.GetSettings().BossRando.Value != "Off"
 				? BestiaryManager.GetBossAttributes(Level, Level.GameSave.GetSaveInt("VanillaBossId")) 
 				: currentBoss;
 
