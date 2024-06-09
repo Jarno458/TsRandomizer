@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Runtime;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

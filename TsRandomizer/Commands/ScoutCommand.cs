@@ -1,5 +1,7 @@
-﻿using System.Linq;
-using Archipelago.MultiClient.Net.Packets;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Models;
 using TsRandomizer.Archipelago;
 using TsRandomizer.Screens.Console;
 
@@ -22,15 +24,15 @@ namespace TsRandomizer.Commands
 			if (parameters.Length != 1)
 				return false;
 
-			void OnLocationScouted(LocationInfoPacket locationInfo)
+			void OnLocationScouted(Dictionary<long, ScoutedItemInfo> locationInfo)
 			{
-				var l = locationInfo.Locations.First();
+				var l = locationInfo.First().Value;
 
-				console.AddLine($"Item {l.Item}, Player {l.Player}, Location {l.Location}, Flags {l.Flags}");
+				console.AddLine($"Item {l.ItemId}, Player {l.Player}, Location {l.LocationId}, Flags {l.Flags}");
 			}
 
 			Client.LocationCheckHelper
-				.ScoutLocationsAsync(long.Parse(parameters[0]))
+				.ScoutLocationsAsync(HintCreationPolicy.CreateAndAnnounce, long.Parse(parameters[0]))
 				.ContinueWith(t => OnLocationScouted(t.Result));
 
 			return true;

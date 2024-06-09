@@ -205,8 +205,11 @@ namespace TsRandomizer.Archipelago
 				{1337186, CustomItem.GetIdentifier(CustomItemType.ChaosTrap)},
 				{1337187, CustomItem.GetIdentifier(CustomItemType.NeurotoxinTrap)},
 				{1337188, CustomItem.GetIdentifier(CustomItemType.BeeTrap)},
+				{1337189, CustomItem.GetIdentifier(CustomItemType.LaserAccessA)},
+				{1337191, CustomItem.GetIdentifier(CustomItemType.LaserAccessI)},
+				{1337192, CustomItem.GetIdentifier(CustomItemType.LaserAccessM)},
 
-				// 1337189 - 1337248 Reserved
+				// 1337193 - 1337248 Reserved
 
 				{1337249, new ItemIdentifier(EItemType.MaxSand)}
 			};

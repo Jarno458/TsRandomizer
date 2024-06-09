@@ -170,10 +170,11 @@ namespace TsRandomizer.Randomisation
 				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.Kobo), R.Kobo),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryFamiliarType.MerchantCrow), R.MerchantCrow),
 				new UnlockingSpecification(new ItemIdentifier(EInventoryRelicType.PyramidsKey), R.None, R.Teleport) //actual gate is decided later,
-		};
+			};
 
 			if (seed.Options.SpecificKeys)
 				MakeKeyCardUnlocksCardSpecific();
+
 			if (seed.Options.PrismBreak)
 			{
 				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LaserAccessA), R.LaserA));

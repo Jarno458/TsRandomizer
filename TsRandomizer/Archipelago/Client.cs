@@ -47,13 +47,15 @@ namespace TsRandomizer.Archipelago
 		static GiftingService giftingService;
 		public static GiftingService GetGiftingService() => giftingService;
 
-		public static LocationCheckHelper LocationCheckHelper => session.Locations;
+		public static ILocationCheckHelper LocationCheckHelper => session.Locations;
 
-		public static ReceivedItemsHelper ItemsHelper => session.Items;
+		public static IReceivedItemsHelper ItemsHelper => session.Items;
 
-		public static DataStorageHelper DataStorage => session.DataStorage;
+		public static IDataStorageHelper DataStorage => session.DataStorage;
 
-		public static PlayerHelper Players => session.Players;
+		public static IPlayerHelper Players => session.Players;
+
+		public static IRoomStateHelper RoomState => session.RoomState;
 
 		public static int Slot => session.ConnectionInfo.Slot;
 		public static int Team => session.ConnectionInfo.Team;
@@ -94,6 +96,7 @@ namespace TsRandomizer.Archipelago
 					ScreenManager.Console.AddCommand(new ScoutCommand());
 					ScreenManager.Console.AddCommand(new GetKeyCommand());
 #endif
+					ScreenManager.Console.AddCommand(new HintPointsCommand());
 				}
 			}
 			catch (AggregateException e)
@@ -135,24 +138,12 @@ namespace TsRandomizer.Archipelago
 			giftingService = null;
 		}
 
-		public static NetworkItem? GetNextItem(int currentIndex) =>
+		public static ItemInfo GetNextItem(int currentIndex) =>
 			session.Items.AllItemsReceived.Count > currentIndex 
 				? session.Items.AllItemsReceived[currentIndex]
-				: default(NetworkItem?);
+				: default;
 
-		public static void SetStatus(ArchipelagoClientState status) => SendPacket(new StatusUpdatePacket { Status = status });
-
-		public static PlayerInfo GetPlayerInfo(int team, int slot)
-		{
-			if (team < 0 || slot < 0)
-				return null;
-
-			if (!Players.Players.TryGetValue(team, out var playerPerTeam)
-			    || slot >= playerPerTeam.Count)
-				return null;
-
-			return playerPerTeam[slot];
-		}
+		public static void SetStatus(ArchipelagoClientState status) => session.SetClientState(status);
 
 		static void OnMessageReceived(LogMessage message)
 		{
@@ -178,9 +169,7 @@ namespace TsRandomizer.Archipelago
 
 		static XnaColor FromDrawingColor(MessagePartColor drawingColor) => new XnaColor(drawingColor.R, drawingColor.G, drawingColor.B, 255);
 
-		static void SendPacket(ArchipelagoPacketBase packet) => session?.Socket?.SendPacket(packet);
-
-		public static void Say(string message) => SendPacket(new SayPacket { Text = message });
+		public static void Say(string message) => session.Say(message);
 
 		public static void UpdateChecks(ItemLocationMap itemLocationMap) => 
 			Task.Factory.StartNew(() => { UpdateChecksTask(itemLocationMap); });

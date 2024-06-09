@@ -185,7 +185,7 @@ namespace TsRandomizer.Screens.Gifting
 		{
 			void OnGiftSelected(int hash, Gift gift, InventoryItem item)
 			{
-				var sendingPlayer = Client.GetPlayerInfo(gift.SenderTeam, gift.SenderSlot);
+				var sendingPlayer = Client.Players.GetPlayerInfo(gift.SenderTeam, gift.SenderSlot);
 				var sendingPlayerAlias = sendingPlayer?.Alias ?? $"Unknown Player {gift.SenderSlot}";
 
 				selectedHash = hash;
@@ -379,7 +379,7 @@ namespace TsRandomizer.Screens.Gifting
 				return;
 
 			var gift = GiftMapping[selectedMenuItem.Key];
-			var sendingPlayer = Client.GetPlayerInfo(gift.SenderTeam, gift.SenderSlot);
+			var sendingPlayer = Client.Players.GetPlayerInfo(gift.SenderTeam, gift.SenderSlot);
 			if (sendingPlayer == null)
 				return;
 

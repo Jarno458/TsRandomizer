@@ -30,7 +30,6 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			if (roomState.Seed.Options.UnchainedKeys)
 			{
 				roomState.Level.AsDynamic().UnlockRelic(EInventoryRelicType.PyramidsKey);
-
 			}
 		}
 	}

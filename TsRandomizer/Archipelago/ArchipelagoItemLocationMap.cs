@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Archipelago.MultiClient.Net.Models;
 using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -12,6 +11,7 @@ using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.ItemTracker;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
+using ItemInfo = Archipelago.MultiClient.Net.Models.ItemInfo;
 
 namespace TsRandomizer.Archipelago
 {
@@ -52,9 +52,9 @@ namespace TsRandomizer.Archipelago
 
 			if (firstPass)
 			{
-				while (receivedItem.HasValue)
+				while (receivedItem != null)
 				{
-					ReceiveItem(receivedItem.Value, level, gameplayScreen);
+					ReceiveItem(receivedItem, level, gameplayScreen);
 					level.GameSave.DataKeyInts[GameItemIndex] = level.GameSave.GetSaveInt(GameItemIndex) + 1;
 
 					receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
@@ -65,10 +65,10 @@ namespace TsRandomizer.Archipelago
 				firstPass = false;
 			}
 
-			if(!receivedItem.HasValue)
+			if(receivedItem == null)
 				return;
 			
-			ReceiveItem(receivedItem.Value, level, gameplayScreen);
+			ReceiveItem(receivedItem, level, gameplayScreen);
 			level.GameSave.DataKeyInts[GameItemIndex] = level.GameSave.GetSaveInt(GameItemIndex) + 1;
 		}
 
@@ -99,7 +99,7 @@ namespace TsRandomizer.Archipelago
 		public override ProgressionChain GetProgressionChain() => 
 			throw new InvalidOperationException("Progression chains aren't supported for Archipelago seeds");
 
-		void ReceiveItem(NetworkItem networkItem, Level level, GameplayScreen gameplayScreen)
+		void ReceiveItem(ItemInfo networkItem, Level level, GameplayScreen gameplayScreen)
 		{
 			if (TryGetLocation(networkItem, out var location) && networkItem.Player == Client.Slot)
 			{
@@ -143,8 +143,8 @@ namespace TsRandomizer.Archipelago
 					location.IsHinted = true;
 		}
 
-		bool TryGetLocation(NetworkItem networkItem, out ItemLocation location) =>
-			TryGetLocation(networkItem.Location, out location);
+		bool TryGetLocation(ItemInfo networkItem, out ItemLocation location) =>
+			TryGetLocation(networkItem.LocationId, out location);
 
 		bool TryGetLocation(long locationId, out ItemLocation location)
 		{
@@ -160,11 +160,11 @@ namespace TsRandomizer.Archipelago
 			}
 		}
 
-		bool TryGetItemIdentifier(NetworkItem networkItem, out ItemIdentifier itemIdentifier)
+		bool TryGetItemIdentifier(ItemInfo networkItem, out ItemIdentifier itemIdentifier)
 		{
 			try
 			{
-				itemIdentifier = ItemMap.GetItemIdentifier(networkItem.Item);
+				itemIdentifier = ItemMap.GetItemIdentifier(networkItem.ItemId);
 				return true;
 			}
 			catch

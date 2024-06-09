@@ -44,7 +44,7 @@ namespace TsRandomizer.Archipelago.Gifting
 			service.CheckGiftBox();
 		}
 
-		void OnOnValueChanged(JToken originalvalue, JToken newvalue)
+		void OnOnValueChanged(JToken originalvalue, JToken newvalue, Dictionary<string, JToken> additionalArguments)
 		{
 			try
 			{
@@ -71,7 +71,7 @@ namespace TsRandomizer.Archipelago.Gifting
 					var team = acceptTraitsForPlayer.Value.Team;
 					var slot = acceptTraitsForPlayer.Value.Player;
 
-					var playerInfo = Client.GetPlayerInfo(team, slot);
+					var playerInfo = Client.Players.GetPlayerInfo(team, slot);
 					var playerGame = playerInfo?.Game ?? "Unknown Game";
 					var playerAlias = playerInfo?.Alias ?? $"Unknown Player {slot}";
 
