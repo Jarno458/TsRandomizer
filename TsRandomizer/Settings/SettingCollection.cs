@@ -74,7 +74,7 @@ namespace TsRandomizer.Settings
 
 		public NumberGameSettingWithFixedSteps AuraCap = new NumberGameSettingWithFixedSteps("Aura Cap",
 			"Sets the maximum Aura Lunais is allowed to have. Level 1 is 80. Djinn Inferno costs 45.",
-			new double[] { 45, 69, 80, 89, 90, 120, 150, 180, 210, 240, 270, 300, 999 }, 999);
+			new double[] { 45, 69, 80, 89, 90, 120, 150, 180, 210, 240, 270, 300, 420, 999 }, 999);
 
 		public OnOffGameSetting BossHealing = new OnOffGameSetting("Heal After Bosses",
 			"When disabled, bosses will not provide healing. NOTE: currently only applicable for Boss Rando", true);
