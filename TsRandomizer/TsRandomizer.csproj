@@ -108,7 +108,7 @@
     <Reference Include="FNA">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
       <HintPath>~/.local/share/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
-      <HintPath>..\..\TestVersions\DRMFreeVersion\FNA.dll</HintPath>
+      <HintPath>..\..\..\TestVersions\DRMFreeVersion\FNA.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -119,7 +119,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="Timespinner">
-      <HintPath>..\..\Timespinner\Timespinner.exe</HintPath>
+      <HintPath>..\..\..\TestVersions\DRMFreeVersion\Timespinner.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="websocket-sharp, Version=1.0.2.34775, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
@@ -151,6 +151,7 @@
     <Compile Include="Extensions\SettingsExtensions.cs" />
     <Compile Include="IntermediateObjects\CustomItems\CustomItem.cs" />
     <Compile Include="IntermediateObjects\CustomItems\BeeTrap.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\ThrowStunTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\MeteorSparrowTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\StatusTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\Trap.cs" />

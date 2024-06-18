@@ -22,7 +22,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		public FullRandomItemLocationRandomizer(
 			Seed seed,
 			SettingCollection settings,
-			ItemInfoProvider itemInfoProvider, 
+			ItemInfoProvider itemInfoProvider,
 			ItemUnlockingMap unlockingMap
 		) : base(seed, itemInfoProvider, unlockingMap)
 		{
@@ -83,7 +83,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle)
 			};
 
-			traps = new List<ItemInfo>(5);
+			traps = new List<ItemInfo>(6);
 
 			//i hate it, we should not be using settings in here
 			if (settings.SparrowTrap.Value)
@@ -96,6 +96,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.NeurotoxinTrap)));
 			if (settings.BeeTrap.Value)
 				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.BeeTrap)));
+			if (settings.ThrowStunTrap.Value)
+				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.ThrowStunTrap)));
 			if (!traps.Any())
 				traps.Add(itemInfoProvider.Get(EInventoryUseItemType.PlaceHolderItem1));
 		}
@@ -115,7 +117,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		{
 			PlaceStarterProgressionItems(random);
 
-			if(!SeedOptions.GasMaw)
+			if (!SeedOptions.GasMaw)
 				PlaceGasMaskInALegalSpot(random);
 
 			var alreadyAssingedItems = itemLocations
@@ -140,7 +142,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				PutItemAtLocation(item, location);
 			}
 
-			if(!isProgressionOnly)
+			if (!isProgressionOnly)
 				FillRemainingChests(random);
 		}
 
