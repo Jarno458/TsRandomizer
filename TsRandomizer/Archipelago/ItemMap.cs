@@ -211,7 +211,8 @@ namespace TsRandomizer.Archipelago
 
 				// 1337193 - 1337248 Reserved
 
-				{1337249, new ItemIdentifier(EItemType.MaxSand)}
+				{1337249, new ItemIdentifier(EItemType.MaxSand)},
+				{1337250, CustomItem.GetIdentifier(CustomItemType.ThrowStunTrap)},
 			};
 
 			MapItemIdentifierToItemId = new Dictionary<ItemIdentifier, long>(MapItemIdToItemItemIdentifier.Count);
