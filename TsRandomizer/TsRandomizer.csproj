@@ -116,7 +116,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="Timespinner">
       <HintPath>..\..\Timespinner\Timespinner.exe</HintPath>
       <Private>False</Private>
