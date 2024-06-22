@@ -7,17 +7,13 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
-using Archipelago.MultiClient.Net.Packets;
 using TsRandomizer.Archipelago.Gifting;
+using TsRandomizer.Commands;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 
 using XnaColor = Microsoft.Xna.Framework.Color;
 using MessagePartColor = Archipelago.MultiClient.Net.Models.Color;
-
-#if DEBUG
-using TsRandomizer.Commands;
-#endif
 
 namespace TsRandomizer.Archipelago
 {
