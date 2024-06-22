@@ -30,7 +30,5 @@ namespace TsRandomizer.Extensions
 		public static IEnumerable<T> NotOfType<T,T2>(this IEnumerable<T> items) => items.Where(i => i.GetType() != typeof(T2));
 
 		internal static T SelectRandom<T>(this IEnumerable<T> items, Random r) => items.ToArray().SelectRandom(r);
-
-		internal static HashSet<T> ToHashSet<T>(this IEnumerable<T> items) => new HashSet<T>(items);
 	}
 }
