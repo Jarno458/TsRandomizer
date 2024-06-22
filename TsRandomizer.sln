@@ -11,6 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsRandomizer.ItemTracker", "TsRandomizer.ItemTracker\TsRandomizer.ItemTracker.csproj", "{4D86B28B-95A2-4452-9BAA-C8E80F026101}"
+	ProjectSection(ProjectDependencies) = postProject
+		{694E46C5-FD46-4CC8-8B71-D381E154CCF7} = {694E46C5-FD46-4CC8-8B71-D381E154CCF7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsRandomizer.SeedGeneratah", "TsRandomizer.SeedGeneratah\TsRandomizer.SeedGeneratah.csproj", "{C30E617E-83DB-4C7C-9E45-0166C781A0A8}"
 	ProjectSection(ProjectDependencies) = postProject
