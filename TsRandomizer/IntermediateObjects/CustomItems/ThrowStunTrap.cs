@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.Heroes;
 using TsRandomizer.Extensions;
@@ -16,12 +15,15 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		public ThrowStunTrap(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.ThrowStunTrap) { }
 
 		delegate void checkForHit(Protagonist lunais, ScriptAction throwScript);
+
 		internal override void OnPickup(Level level, GameplayScreen gameplayScreen)
 		{
 			base.OnPickup(level, gameplayScreen);
+
 			int damage = 0; //the script seems to ignore this number anyway
-			ScriptAction grabScript = (ScriptAction)GrabScriptType.CreateInstance(false, level, damage, !level.MainHero.IsFacingLeft);
-			ScriptAction throwScript = (ScriptAction)ThrowScriptType.CreateInstance(false, level, damage, level.MainHero);
+			var grabScript = (ScriptAction)GrabScriptType.CreateInstance(false, level, damage, level.MainHero.IsFacingLeft);
+			var throwScript = (ScriptAction)ThrowScriptType.CreateInstance(false, level, damage, level.MainHero);
+
 			Yeet(level.MainHero, grabScript, throwScript);
 		}
 
@@ -29,17 +31,22 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		{
 			lunais.AddScriptAction(grabScript);
 			lunais.AddScriptAction(throwScript);
+
 			lunais.PlayCue(Timespinner.GameAbstractions.ESFX.BossBirdAuraPush);
-			checkForHit checkForHitTask = new checkForHit(DidWeHitSomething);
-			checkForHitTask.BeginInvoke(lunais, throwScript, new AsyncCallback(ClearTimer), new { throwScript, lunais });
+
+			checkForHit checkForHitTask = DidWeHitSomething;
+			checkForHitTask.BeginInvoke(lunais, throwScript, ClearTimer, new { throwScript, lunais });
 		}
 
 		internal void ClearTimer(dynamic parameters)
 		{
 			var script = (ScriptAction)parameters.AsyncState.throwScript;
 			var lunais = (Protagonist)parameters.AsyncState.lunais;
+
 			script.AsDynamic().ActionTimer = 0.0f;
+
 			lunais.ManageSubtleDamage(lunais.MaxHP / 10, true, Timespinner.Core.EElementalWeaknessState.None);
+
 			lunais.PlayCue(Timespinner.GameAbstractions.ESFX.LunaisTakeDamage);
 			lunais.PlayCue(Timespinner.GameAbstractions.ESFX.VO_Lun_TakeDamage);
 		}
@@ -48,8 +55,10 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		{
 			var dynamicScript = throwScript.AsDynamic();
 			float lastXPosition = lunais.FloatPosition.X;
+
 			bool throwCompleted = false;
 			float lastCheck = dynamicScript.ActionTimer;
+
 			/*didn't use velocity because the velocity just kept getting bigger and bigger even if lunais
 				was stopped on screen*/
 			while (!throwCompleted)
@@ -67,8 +76,6 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 					}
 				}
 			}
-
-			return;
 		}
 	}
 }

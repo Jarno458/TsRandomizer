@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
