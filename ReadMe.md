@@ -23,7 +23,7 @@ Extract the contents of the corresponding zip file to the same folder as Timespi
 * Windows Steam version 1.33 (latest)
 * Windows DRM Free version 1.33 (latest)
 * Linux Steam version 1.33 (latest)
-  * Steam-Deck is supported after a manuel change, see SteamDeck below
+  * Steam-Deck is supported after a manuel change, see (SteamDeck)[https://github.com/Jarno458/TsRandomizer/blob/master/ReadMe.md#steamdeck] below
 * Linux DRM Free version 1.33 (latest)
 * Mac Steam version 1.33 (latest)
 * Mac DRM Free version 1.33 (latest)
@@ -114,7 +114,6 @@ Note that at this time Lunais' sprites are not able to be changed mid-run, but t
 * Having the Varndagrath collected away will cause the door to close and softlock the player
 * Orb pedestal in the room before Emperor Nuvius always spawns even if you didn't kill him yet
 * If Timespinner is placed in the incorrect folder it will not display the FileNotFoundMessage as it needs SDL library to do that
-* Entering a door backwards with a higher level keycard will permanently open it even when specific keycards are on
 * When Progressive Vertical Movement is enabled, collecting Hairpin/Lightwall/Sash may show a popup with the wrong item
 
 # Ideas
