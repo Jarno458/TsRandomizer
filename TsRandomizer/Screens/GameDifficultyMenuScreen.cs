@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
@@ -31,9 +30,9 @@ namespace TsRandomizer.Screens
 		readonly MenuEntry seedMenuEntry;
 		readonly SeedRepresentation seedRepresentation;
 
-		Seed? seed;
+		public Seed? Seed { get; private set; }
 		FillingMethod fillingMethod;
-		SettingCollection settings;
+		public SettingCollection Settings { get; private set; }
 
 		Action<GameSave> onDifficultSelected;
 
@@ -145,7 +144,7 @@ namespace TsRandomizer.Screens
 
 			void NewOnDifficultySelectedMethod(GameSave.EGameDifficultyType difficulty)
 			{
-				if (!seed.HasValue)
+				if (!Seed.HasValue)
 					return;
 
 				originalOnDifficultyChosenMethod(difficulty);
@@ -168,24 +167,24 @@ namespace TsRandomizer.Screens
 
 		void AddSeedAndFillingMethodToSelectedSave(GameSave saveGame)
 		{
-			saveGame.SetSeed(seed.Value);
+			saveGame.SetSeed(Seed.Value);
 			saveGame.SetFillingMethod(fillingMethod);
-			saveGame.SetSettings(settings);
+			saveGame.SetSettings(Settings);
 
 			saveGame.DataKeyStrings["TsRandomizerVersion"] = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		}
 
 		public void SetSeedAndFillingMethod(Seed selectedSeed, FillingMethod choosenFillingMethod, SettingCollection selectedSettings)
 		{
-			seed = selectedSeed;
+			Seed = selectedSeed;
 			fillingMethod = choosenFillingMethod;
-			settings = selectedSettings;
+			Settings = selectedSettings;
 
 			if (selectedSeed.Options.Tournament)
-				settings.EnforceTournamentSettings();
+				Settings.EnforceTournamentSettings();
 
-			seedRepresentation.SetSeed(selectedSeed);
-
+			seedRepresentation.SetSeedAndSettings(selectedSeed, Settings);
+			
 			SetSelectedMenuItemByIndex(2);
 
 			EnableAllMenuItems();
@@ -209,7 +208,7 @@ namespace TsRandomizer.Screens
 		{
 			base.Update(gameTime, input);
 
-			if (seed == null)
+			if (Seed == null)
 			{
 				SetSelectedMenuItemByIndex(0);
 
@@ -230,7 +229,7 @@ namespace TsRandomizer.Screens
 				seedMenuEntry.Text = "<< Archipelago >>";
 				seedMenuEntry.Description = "Connect to an Archipelago Multiworld server";
 			}
-			else if (seed == null)
+			else if (Seed == null)
 			{
 				seedMenuEntry.Text = "<< Choose seed >>";
 				seedMenuEntry.Description = "Select the seed used to generate the randomness";
@@ -244,7 +243,7 @@ namespace TsRandomizer.Screens
 
 		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
-			if(GameScreen.IsActive && seed != null)
+			if(GameScreen.IsActive && Seed != null)
 				DrawSeedRepresentation(spriteBatch, menuFont);
 		}
 

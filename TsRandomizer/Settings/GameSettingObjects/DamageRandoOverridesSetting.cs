@@ -25,8 +25,8 @@ namespace TsRandomizer.Settings.GameSettingObjects
 			return defaultOdds;
 		}
 
-		public DamageRandoOverridesSetting(string name, string description, bool canBeChangedInGame = false)
-				: base(name, description, GetDefaultOrbOdds(), canBeChangedInGame)
+		public DamageRandoOverridesSetting(string name, string description)
+				: base(name, description, GetDefaultOrbOdds(), false)
 		{
 
 		}
@@ -36,9 +36,6 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		{
 		}
 
-		public override void ToggleValue()
-		{
-
-		}
+		public override void ToggleValue() => throw new NotImplementedException("This value cannot be edited ingame");
 	}
 }

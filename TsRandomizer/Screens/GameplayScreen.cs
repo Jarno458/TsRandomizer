@@ -40,6 +40,7 @@ namespace TsRandomizer.Screens
 		static readonly Type GamePadWrapper = TimeSpinnerType.Get("Timespinner.GameAbstractions.GamePadWrapper");
 
 		int hpCap;
+		int auraCap;
 		int levelCap;
 		DeathLinker deathLinkService;
 
@@ -81,6 +82,7 @@ namespace TsRandomizer.Screens
 
 			Settings = settings;
 			hpCap = Convert.ToInt32(Settings.HpCap.Value);
+			auraCap = Convert.ToInt32(Settings.AuraCap.Value);
 			levelCap = Convert.ToInt32(settings.LevelCap.Value) - 1;
 
 			try
@@ -195,12 +197,15 @@ namespace TsRandomizer.Screens
 			if (hpCap <= level.MainHero.MaxHP)
 				level.MainHero.MaxHP = hpCap;
 
+			if (auraCap <= level.MainHero.Aura)
+				level.MainHero.Aura = auraCap;
+
 			if (Settings.DamageRando.Value != "Off")
 				OrbDamageManager.UpdateOrbDamage(level.GameSave, level.MainHero);
 
 			if (level.MainHero.CurrentState == EAFSM.Skydashing
-			    && level.MainHero.Velocity.Y == 0
-			    && level.MainHero.AsDynamic()._isHittingHeadOnCeiling)
+				&& level.MainHero.Velocity.Y == 0
+				&& level.MainHero.AsDynamic()._isHittingHeadOnCeiling)
 				level.GameSave.AddConcussion();
 		}
 
@@ -220,7 +225,7 @@ namespace TsRandomizer.Screens
 
 			numberOfGifts = currentNumberOfGifts;
 		}
-		
+
 		public override void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
 			using (spriteBatch.BeginUsing())
@@ -232,7 +237,7 @@ namespace TsRandomizer.Screens
 
 		void DrawReceivedGifts(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
-			if(!Seed.Options.Archipelago || numberOfGifts == 0)
+			if (!Seed.Options.Archipelago || numberOfGifts == 0)
 				return;
 
 			var pauseMenuScreen = ScreenManager.FirstOrDefault<PauseMenuScreen>();
@@ -263,7 +268,7 @@ namespace TsRandomizer.Screens
 			spriteBatch.Draw(PauseMenuTexture.Texture, position, exclaimationMarkSourceRetangle, iconColor, 0f, Vector2.Zero, scale, SpriteEffects.None, 0);
 			spriteBatch.DrawString(menuFont, numberOfGifts.ToString(), textPosition, new Color(240, 240, 208), 0f, Vector2.Zero, scale / 1.5f, SpriteEffects.None, 1);
 		}
-		
+
 		void DrawRoomId(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
 #if DEBUG

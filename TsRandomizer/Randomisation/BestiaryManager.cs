@@ -700,7 +700,7 @@ namespace TsRandomizer.Randomisation
 						if (!bossMappings.ContainsKey(vanillaBossName))
 							return GetBossAttributes(level, vanillaBossId);
 						var replacedBoss = bossMappings[vanillaBossName];
-						var parsed = Enum.TryParse<EBossID>(replacedBoss, out var rBossId);
+						var parsed = Enum.TryParse(replacedBoss, out EBossID rBossId);
 						if (!parsed)
 							return GetBossAttributes(level, vanillaBossId);
 						return GetBossAttributes(level, (int)rBossId);
