@@ -23,7 +23,7 @@ Extract the contents of the corresponding zip file to the same folder as Timespi
 * Windows Steam version 1.33 (latest)
 * Windows DRM Free version 1.33 (latest)
 * Linux Steam version 1.33 (latest)
-  * Steam-Deck is supported after a manuel change, see [SteamDeck](https://github.com/Jarno458/TsRandomizer/blob/master/ReadMe.md#steamdeck) below
+  * Steam-Deck is supported after a manuel change, see [SteamDeck](#steamdeck) below
 * Linux DRM Free version 1.33 (latest)
 * Mac Steam version 1.33 (latest)
 * Mac DRM Free version 1.33 (latest)
