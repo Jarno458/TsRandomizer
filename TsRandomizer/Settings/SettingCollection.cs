@@ -10,8 +10,8 @@ namespace TsRandomizer.Settings
 		public static readonly GameSettingCategoryInfo[] Categories = {
 			new GameSettingCategoryInfo { Name = "Stats", Description = "Settings related to player and enemy stat scaling.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.BossRando, s => s.BossRandoType, s => s.EnemyRando, s => s.DamageRando, 
-					s => s.HpCap, s => s.LevelCap, s => s.ExtraEarringsXP, s => s.BossHealing
+					s => s.BossRando, s => s.BossRandoType, s => s.EnemyRando, s => s.DamageRando,
+					s => s.HpCap, s => s.AuraCap, s => s.LevelCap, s => s.ExtraEarringsXP, s => s.BossHealing
 				}},
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -20,7 +20,7 @@ namespace TsRandomizer.Settings
 				}},
 			new GameSettingCategoryInfo { Name = "Traps", Description = "Toggles traps available via the Trapped Chests flag.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.SparrowTrap, s => s.NeurotoxinTrap, s => s.ChaosTrap, s => s.PoisonTrap, s => s.BeeTrap
+					s => s.SparrowTrap, s => s.NeurotoxinTrap, s => s.ChaosTrap, s => s.PoisonTrap, s => s.BeeTrap, s => s.ThrowStunTrap
 				}},
 			new GameSettingCategoryInfo { Name = "Minimap", Description = "Settings related to minimap colors.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -73,6 +73,10 @@ namespace TsRandomizer.Settings
 		public NumberGameSetting HpCap = new NumberGameSetting("HP Cap",
 			"Sets the maximum HP Lunais is allowed to have", 1, 999, 64, 999);
 
+		public NumberGameSettingWithFixedSteps AuraCap = new NumberGameSettingWithFixedSteps("Aura Cap",
+			"Sets the maximum Aura Lunais is allowed to have. Level 1 is 80. Djinn Inferno costs 45.",
+			new double[] { 45, 69, 80, 89, 90, 120, 150, 180, 210, 240, 270, 300, 420, 999 }, 999);
+
 		public OnOffGameSetting BossHealing = new OnOffGameSetting("Heal After Bosses",
 			"When disabled, bosses will not provide healing. NOTE: currently only applicable for Boss Rando", true);
 
@@ -121,6 +125,9 @@ namespace TsRandomizer.Settings
 
 		public OnOffGameSetting BeeTrap = new OnOffGameSetting("Bees",
 			"Beeeeeeeeeeeeeeeeeeeeeeeeees!", true);
+
+		public OnOffGameSetting ThrowStunTrap = new OnOffGameSetting("Throw",
+			"Traps can cause Lunais to go flying.", true);
 
 		[DoesNotAffectCompetitiveBalance] 
 		public SpriteGameSetting LunaisSprite = new SpriteGameSetting("Lunais",
@@ -234,7 +241,7 @@ namespace TsRandomizer.Settings
 
 		public NumberGameSettingWithFixedSteps LevelCap = new NumberGameSettingWithFixedSteps("Level Cap",
 			"Sets the max level Lunais can achieve.",
-			new double[]{ 1, 5, 10, 15, 20, 25, 30, 69, 99 }, 99);
+			new double[] { 1, 5, 10, 15, 20, 25, 30, 69, 99 }, 99);
 
 		public OnOffGameSetting DeathLink = new OnOffGameSetting("DeathLink",
 			"Sets whether DeathLink is on or off", false, true);

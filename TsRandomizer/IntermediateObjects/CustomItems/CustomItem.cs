@@ -10,7 +10,7 @@ using TsRandomizer.Screens;
 
 namespace TsRandomizer.IntermediateObjects.CustomItems
 {
-	public enum CustomItemType 
+	public enum CustomItemType
 	{
 		ArchipelagoItem,
 		MeteorSparrowTrap,
@@ -23,7 +23,8 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		MysteriousWarpBeacon,
 		LaserAccessA,
 		LaserAccessI,
-		LaserAccessM
+		LaserAccessM,
+		ThrowStunTrap
 	}
 
 	// consider beacons as starting items
@@ -61,11 +62,11 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 			var customItemTypes = customItemType.Assembly.GetTypes()
 				.Where(t => customItemType.IsAssignableFrom(t)
-				            && !t.IsAbstract
-				            && !t.IsGenericType
-				            && t.GetConstructors().
-					            Any(c => c.GetParameters().Length == 1
-					                     && c.GetParameters()[0].ParameterType == typeof(ItemUnlockingMap)));
+							&& !t.IsAbstract
+							&& !t.IsGenericType
+							&& t.GetConstructors().
+								Any(c => c.GetParameters().Length == 1
+										 && c.GetParameters()[0].ParameterType == typeof(ItemUnlockingMap)));
 
 			foreach (var itemType in customItemTypes)
 				items.Add((ItemInfo)itemType.CreateInstance(args: unlockingMap));
@@ -76,14 +77,14 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		public override int AnimationIndex => 28; //purple star, default for custom items, otherwise they be invisible (-1)
 
 		static string GetName(CustomItemType itemType) => string.Join(" ", Regex.Split(itemType.ToString(), @"(?<!^)(?=[A-Z])"));
-		
+
 		protected readonly CustomItemType ItemType;
 
 		public string Name => GetName(ItemType);
 
 		protected virtual bool RemoveFromInventory => true;
 
-		protected CustomItem(ItemUnlockingMap unlockingMap, CustomItemType itemType) 
+		protected CustomItem(ItemUnlockingMap unlockingMap, CustomItemType itemType)
 			: base(unlockingMap, GetIdentifier(itemType))
 		{
 			ItemType = itemType;

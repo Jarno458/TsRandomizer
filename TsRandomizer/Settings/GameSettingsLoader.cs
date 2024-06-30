@@ -321,6 +321,8 @@ namespace TsRandomizer.Settings
 				settings.ShowBestiary.Value = IsTrue(showBestiary);
 			if (slotData.TryGetValue("HpCap", out var hpCap))
 				SetNumberGameSetting(settings.HpCap, hpCap);
+			if (slotData.TryGetValue("AuraCap", out var auraCap))
+				SetNumberGameSetting(settings.AuraCap, auraCap);
 			if (slotData.TryGetValue("LevelCap", out var levelCap))
 				SetNumberGameSetting(settings.LevelCap, levelCap);
 			if (slotData.TryGetValue("ExtraEarringsXP", out var extraEarringsXP))
