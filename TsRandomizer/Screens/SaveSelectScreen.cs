@@ -47,8 +47,9 @@ namespace TsRandomizer.Screens
 
 				var saveFile = (GameSave)entryReflected._saveFile;
 				var seed = saveFile.GetSeed();
+				var settings = saveFile.GetSettings();
 
-				seedRepresentations.Add(entry, new SeedRepresentation(seed, screenManager.GameContentManager, false));
+				seedRepresentations.Add(entry, new SeedRepresentation(seed, settings, screenManager.GameContentManager, false));
 				archipelagoRepresentations.Add(entry, new ArchipelagoRepresentation(saveFile, screenManager.GameContentManager));
 			}
 		}

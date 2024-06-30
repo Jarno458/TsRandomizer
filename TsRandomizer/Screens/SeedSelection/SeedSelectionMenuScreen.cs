@@ -14,7 +14,6 @@ using TsRandomizer.Screens.Menu;
 using SDL2;
 using TsRandomizer.Settings;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
-using System.Diagnostics;
 
 namespace TsRandomizer.Screens.SeedSelection
 {
@@ -53,6 +52,9 @@ namespace TsRandomizer.Screens.SeedSelection
 		{
 			if (!IsUsedAsSeedSelectionMenu)
 				return;
+
+			if (difficultyMenu.Seed.HasValue)
+				SetSeed(difficultyMenu.Seed.Value.ToString());
 
 			gcm = gameContentManager;
 
@@ -104,10 +106,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			}
 		}
 
-		void CopyClipboardSeed()
-		{
-			SDL.SDL_SetClipboardText(GetHexString());
-		}
+		void CopyClipboardSeed() => SDL.SDL_SetClipboardText(GetHexString());
 
 		void PasteClipboardSeed()
 		{

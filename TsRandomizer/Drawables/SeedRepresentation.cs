@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Timespinner.Core;
 using Timespinner.GameAbstractions;
 using TsRandomizer.Extensions;
+using TsRandomizer.Settings;
 
 namespace TsRandomizer.Drawables
 {
@@ -16,6 +17,7 @@ namespace TsRandomizer.Drawables
 		public bool ShowSeedId { get; set; }
 
 		Seed? seed;
+		SettingCollection settings;
 
 		Point drawPoint = Point.Zero;
 		Vector2 origin = Vector2.Zero;
@@ -24,19 +26,25 @@ namespace TsRandomizer.Drawables
 		readonly bool drawBackdrop;
 		readonly SpriteSheet menuIcons;
 
+		int seedHash;
+
 		public float Width => NumberOfItemsToDraw * IconSize;
 
 		public SeedRepresentation(GCM gcm, bool drawBackdrop = true)
-			: this(null, gcm, drawBackdrop)
+			: this(null, null, gcm, drawBackdrop)
 		{
 		}
 
-		public SeedRepresentation(Seed? seed, GCM gcm, bool drawBackdrop = true) 
+		public SeedRepresentation(Seed? seed, SettingCollection settings, GCM gcm, bool drawBackdrop = true) 
 		{
 			this.seed = seed;
+			this.settings = settings;
 			this.gcm = gcm;
 			this.drawBackdrop = drawBackdrop;
+
 			menuIcons = (SpriteSheet)gcm.AsDynamic().Get("Sprites/Items/MenuIcons");
+
+			RecalcuateSeedHash();
 		}
 
 		public void SetDrawPoint(Point newDrawPoint, Vector2 newOrigin = new Vector2())
@@ -46,7 +54,13 @@ namespace TsRandomizer.Drawables
 				origin = newOrigin;
 		}
 
-		public void SetSeed(Seed selectedSeed) => seed = selectedSeed;
+		public void SetSeedAndSettings(Seed selectedSeed, SettingCollection selectedSettings)
+		{
+			seed = selectedSeed;
+			settings = selectedSettings;
+
+			RecalcuateSeedHash();
+		} 
 
 		public void Draw(SpriteBatch spriteBatch)
 		{
@@ -71,14 +85,28 @@ namespace TsRandomizer.Drawables
 			}
 			else
 			{
-				var random = new Random(~(int)seed.Value.Id);
-
-				for (uint i = 0; i < seed.Value.Options.Flags; i++)
-					random.Next();
+				var random = new Random(seedHash);
 
 				for (var i = 0; i < NumberOfItemsToDraw; i++)
 					DrawItemIcon(spriteBatch, i, random);
 			}
+		}
+
+		void RecalcuateSeedHash()
+		{
+			if (!seed.HasValue)
+				return;
+
+			var seedRandom = new Random(~(int)seed.Value.Id);
+			var seedHash = seedRandom.Next();
+
+			var flagRandom = new Random(~(int)seed.Value.Options.Flags);
+			var flagsHash = flagRandom.Next();
+
+			var settingsRandom = new Random(~(settings?.GetHash() ?? 1337));
+			var settingsHash = settingsRandom.Next();
+
+			this.seedHash = seedHash ^ flagsHash ^ settingsHash;
 		}
 
 		void DrawSeedString(SpriteBatch spriteBatch, string seedId) => 

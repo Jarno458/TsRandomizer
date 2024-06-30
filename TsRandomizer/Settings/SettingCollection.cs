@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TsRandomizer.Extensions;
 using TsRandomizer.Settings.GameSettingObjects;
 
 namespace TsRandomizer.Settings
@@ -56,7 +57,7 @@ namespace TsRandomizer.Settings
 			new List<string> { "Shuffle", "Chaos", "Singularity", "Manual" }, "Shuffle", true);
 
 		public BossRandoOverridesSetting BossRandoOverrides = new BossRandoOverridesSetting("Boss Randomizer Overrides",
-			"Overrides the shuffling for each boss. Only editable from the file, so you shouldn't even be seeing this text.");
+			"Overrides the shuffling for each boss. Only editable from the file");
 
 		public SpecificValuesGameSetting EnemyRando = new SpecificValuesGameSetting("Enemy Randomization",
 			"Sets wheter enemies will be randomized, and if their damage/hp should be scaled.",
@@ -67,7 +68,7 @@ namespace TsRandomizer.Settings
 			new List<string> { "Off", "All Nerfs", "Mostly Nerfs", "Balanced", "Mostly Buffs", "All Buffs", "Manual" }, "Off");
 
 		public DamageRandoOverridesSetting DamageRandoOverrides = new DamageRandoOverridesSetting("Damage Randomizer Overrides",
-			"Overrides the odds for each orb to be nerfed or buffed. Only editable from the file, so you shouldn't even be seeing this text.");
+			"Overrides the odds for each orb to be nerfed or buffed. Only editable from the file");
 
 		public NumberGameSetting HpCap = new NumberGameSetting("HP Cap",
 			"Sets the maximum HP Lunais is allowed to have", 1, 999, 64, 999);
@@ -128,83 +129,113 @@ namespace TsRandomizer.Settings
 		public OnOffGameSetting ThrowStunTrap = new OnOffGameSetting("Throw",
 			"Traps can cause Lunais to go flying.", true);
 
+		[DoesNotAffectCompetitiveBalance] 
 		public SpriteGameSetting LunaisSprite = new SpriteGameSetting("Lunais",
 			"Sets the default Lunais sprite.", "Lunais", "Content\\Sprites\\Heroes\\LunaisSprite.xnb");
+		[DoesNotAffectCompetitiveBalance] 
 		public SpriteGameSetting LunaisEternalSprite = new SpriteGameSetting("Eternal",
 			"Sets the Lunais sprite used by the eternal brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite.xnb");
+		[DoesNotAffectCompetitiveBalance]
 		public SpriteGameSetting LunaisGoddessSprite = new SpriteGameSetting("Goddess",
 			"Sets the Lunais sprite used by the goddess brooch.", "Lunais", "Content\\Sprites\\Heroes\\LunaisAltSprite2.xnb");
+		[DoesNotAffectCompetitiveBalance]
 		public SpriteGameSetting MeyefSprite = new SpriteGameSetting("Meyef",
 			"Sets the default Meyef sprite.", "Meyef", "Content\\Sprites\\Heroes\\FamiliarMeyef.xnb");
+		[DoesNotAffectCompetitiveBalance]
 		public SpriteGameSetting MeyefWyrmSprite = new SpriteGameSetting("Wyrm",
 			"Sets the Meyef Sprite used by the wyrm brooch.", "Meyef", "Content\\Sprites\\Heroes\\FamiliarAltMeyef.xnb");
+		[DoesNotAffectCompetitiveBalance]
 		public SpriteGameSetting MerchantCrowSprite = new SpriteGameSetting("Merchant Crow",
 			"Sets the default Merchant Crow sprite.", "Crow", "Content\\Sprites\\Heroes\\FamiliarCrow.xnb");
+		[DoesNotAffectCompetitiveBalance]
 		public SpriteGameSetting MerchantCrowGreedSprite = new SpriteGameSetting("Greed",
 			"Sets the Merchant Crow sprite used by the greed brooch.", "Crow", "Content\\Sprites\\Heroes\\FamiliarAltCrow.xnb");
+		[DoesNotAffectCompetitiveBalance]
 		public SpriteGameSetting GriffinSprite = new SpriteGameSetting("Griffin",
 			"Sets the Griffin sprite.", "Griffin", "Content\\Sprites\\Heroes\\FamiliarGriffin.xnb");
+		[DoesNotAffectCompetitiveBalance]
 		public SpriteGameSetting DemonSprite = new SpriteGameSetting("Demon",
 			"Sets the Demon familiar sprite.", "Demon", "Content\\Sprites\\Heroes\\FamiliarDemon.xnb");
+		[DoesNotAffectCompetitiveBalance]
 		public SpriteGameSetting KoboSprite = new SpriteGameSetting("Kobo",
 			"Sets the Kobo sprite.", "Kobo", "Content\\Sprites\\Heroes\\FamiliarKobo.xnb");
+		[DoesNotAffectCompetitiveBalance]
 		public SpriteGameSetting SpriteFamiliarSprite = new SpriteGameSetting("Sprite",
 			"Sets the sprite for the Sprite familiar", "Sprite", "Content\\Sprites\\Heroes\\FamiliarSprite.xnb", contentExcludeRegex: "Lunais.*");
 
+		[DoesNotAffectCompetitiveBalance]
 		public NumberGameSetting NumberOfOnScreenLogLines = new NumberGameSetting("Log Number of Lines",
 			"Max number of messages to show at the bottom left of the screen, 0 to turn onscreen log off", 0, 25, 1, 3, true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public NumberGameSetting OnScreenLogLineScreenTime = new NumberGameSetting("Log Line ScreenTime",
 			"How long does a single line shown at the bottom left of the screen stay visible", 1, 10, 0.5, 8, true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public OnOffGameSetting ShowSendItemsFromMe = new OnOffGameSetting("Log Items sent by you",
 			"Logs items sent from the you to other players", true, true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public OnOffGameSetting ShowReceivedItemsFromMe = new OnOffGameSetting("Log Items received by you",
 			"Logs items you receive from other players", false, true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public OnOffGameSetting ShowSendGenericItems = new OnOffGameSetting("Log Generic Items",
 			"Logs Generic items sent between other players", false, true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public OnOffGameSetting ShowSendImportantItems = new OnOffGameSetting("Log Important Items",
 			"Logs Important items sent between other players", false, true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public OnOffGameSetting ShowSendProgressionItems = new OnOffGameSetting("Log Progression Items",
 			"Logs Progression items sent between other players", true, true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public OnOffGameSetting ShowSendTrapItems = new OnOffGameSetting("Log Trap Items",
 			"Logs Traps sent between other players", true, true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public OnOffGameSetting ShowSystemMessages = new OnOffGameSetting("Log System Message",
 			"Logs System messages, like who connected/left and who changed tags", true, true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public ColorGameSetting PastMinimapColor = new ColorGameSetting("Past color",
 			"Sets the default color for past minimap rooms", "#486090", true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public ColorGameSetting PresentMinimapColor = new ColorGameSetting("Present color",
 			"Sets the default color for present minimap rooms", "#802880", true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public ColorGameSetting PyramidMinimapColor = new ColorGameSetting("Pyramid color",
 			"Sets the default color for ancient pyramid minimap rooms", "#609030", true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public ColorGameSetting LootMinimapColor = new ColorGameSetting("Loot color",
 			"Sets the color for rooms that have items in them for you", "#C5782A", true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public ColorGameSetting SpecailLootMinimapColor = new ColorGameSetting("Special Loot color",
 			"Sets the color for rooms that have items in them for you and that are also special rooms like a boss room or transition room", "#F0D840", true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public ColorGameSetting SaveStatueMinimapColor = new ColorGameSetting("Save statue color",
 			"Sets the color for rooms that have items in them for you", "#D04040", true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public ColorGameSetting PresentTransitionMinimapColor = new ColorGameSetting("Present transition color",
 			"Sets the color for rooms that have items in them for you", "#1A52FB", true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public ColorGameSetting PastTransitionMinimapColor = new ColorGameSetting("Past transition color",
 			"Sets the color for rooms that have items in them for you", "#9712C2", true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public ColorGameSetting HintedMinimapColor = new ColorGameSetting("Hinted loot color",
 			"Sets the overlay color for rooms that have items in them that have been hinted for", "#00FF85", true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public ColorGameSetting FinalBossMinimapColor = new ColorGameSetting("Final Boss color",
 			"Sets the color for room of the final boss", "#EEEEEE", true);
 
@@ -218,15 +249,18 @@ namespace TsRandomizer.Settings
 		public NumberGameSetting ExtraEarringsXP = new NumberGameSetting("Extra Earrings XP",
 			"Adds additional XP granted by Galaxy Earrings", 0, 24, 1, 0, true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public OnOffGameSetting MeleeAutofire = new OnOffGameSetting("Autofire (Melee)",
 			"Holding the melee attack button will attack repeatedly.", false, true);
 
 		public OnOffGameSetting NoSaveStatues = new OnOffGameSetting("No Save Statues",
 			"Breaks all the save statues", false, true);
 
+		[DoesNotAffectCompetitiveBalance]
 		public OnOffGameSetting EnableMapFromStart = new OnOffGameSetting("Enable map from start",
 			"Marks all the rooms on minimap as known", false);
 
+		[DoesNotAffectCompetitiveBalance]
 		public NumberGameSettingWithFixedSteps GiftingReminderInterval = new NumberGameSettingWithFixedSteps("Received gifts reminder",
 			"The interval in seconds to remind the user about pending received gifts.", new double[] { 0, 1, 5, 10, 30, 60, 300 }, 1, true);
 	}

@@ -18,8 +18,8 @@ namespace TsRandomizer.Settings.GameSettingObjects
 			return defaultBossMapping;
 		}
 
-		public BossRandoOverridesSetting(string name, string description, bool canBeChangedInGame = false)
-				: base(name, description, GetDefaultBossMapping(), canBeChangedInGame)
+		public BossRandoOverridesSetting(string name, string description)
+				: base(name, description, GetDefaultBossMapping(), false)
 		{
 
 		}
@@ -29,9 +29,6 @@ namespace TsRandomizer.Settings.GameSettingObjects
 		{
 		}
 
-		public override void ToggleValue()
-		{
-
-		}
+		public override void ToggleValue() => throw new NotImplementedException("This value cannot be edited ingame");
 	}
 }
