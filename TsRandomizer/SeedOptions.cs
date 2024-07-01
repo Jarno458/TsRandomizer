@@ -33,6 +33,7 @@ namespace TsRandomizer
 		public bool TrappedChests => (Flags & 1 << 20) > 0;
 		public bool PresentAccessWithWheelAndSpindle => (Flags & 1 << 21) > 0;
 		public bool PrismBreak => (Flags & 1 << 22) > 0;
+		public bool ShopChecks => (Flags & 1 << 23) > 0;
 
 		public SeedOptions(uint flags)
 		{

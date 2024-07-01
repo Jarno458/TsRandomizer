@@ -86,7 +86,7 @@ namespace TsRandomizer.Archipelago
 
 					item.OnPickup(level, gameplayScreen);
 
-					Add(new ExternalItemLocation(item));
+					Add(new PrefilledItemLocation(item));
 
 					updateTracker = true;
 				}

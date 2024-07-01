@@ -185,6 +185,7 @@
     <Compile Include="Extensions\MinimapSpecificationExtensions.cs" />
     <Compile Include="Randomisation\OrbExperienceManager.cs" />
     <Compile Include="Archipelago\ArchipelagoUnlockingMap.cs" />
+    <Compile Include="Randomisation\PrefilledItemLocation.cs" />
     <Compile Include="Randomisation\SpriteManager.cs" />
     <Compile Include="LevelObjects\Monsters\MajorUgly.cs" />
     <Compile Include="Randomisation\WarpNames.cs" />
@@ -242,7 +243,7 @@
     <Compile Include="Archipelago\SlotDataParser.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="LevelObjects\TextReplacer.cs" />
-    <Compile Include="LevelObjects\Other\MerchantCrowNPC.cs" />
+    <Compile Include="LevelObjects\ItemManipulators\MerchantCrowNPC.cs" />
     <Compile Include="LevelObjects\Monsters\BossEnemy.cs" />
     <Compile Include="Randomisation\ExternalItemLocation.cs" />
     <Compile Include="Archipelago\Log.cs" />

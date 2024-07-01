@@ -3,17 +3,25 @@ using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
 
-namespace TsRandomizer.LevelObjects.Other
+namespace TsRandomizer.LevelObjects.ItemManipulators
 {
 	[TimeSpinnerType("Timespinner.GameObjects.NPCs.MerchantCrowNPC")]
-	class MerchantCrowNpc : LevelObject
+	class MerchantCrowNpc : ItemManipulator
 	{
+		public static readonly ItemKey ShopItem1 = new ItemKey(0, 0, (int)NPCBase.ENPCType.MerchantCrow, 1);
+		public static readonly ItemKey ShopItem2 = new ItemKey(0, 0, (int)NPCBase.ENPCType.MerchantCrow, 2);
+		public static readonly ItemKey ShopItem3 = new ItemKey(0, 0, (int)NPCBase.ENPCType.MerchantCrow, 3);
+		public static readonly ItemKey ShopItem4 = new ItemKey(0, 0, (int)NPCBase.ENPCType.MerchantCrow, 4);
+		public static readonly ItemKey ShopItem5 = new ItemKey(0, 0, (int)NPCBase.ENPCType.MerchantCrow, 5);
+
 		readonly MerchantInventory merchandiseInventory = new MerchantInventory();
 
-		public MerchantCrowNpc(Mobile typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
+		public MerchantCrowNpc(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation)
+			: base(typedObject, gameplayScreen, itemLocation)
 		{
 		}
 

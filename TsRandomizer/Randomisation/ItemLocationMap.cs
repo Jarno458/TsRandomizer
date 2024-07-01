@@ -6,6 +6,7 @@ using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.IntermediateObjects.CustomItems;
+using TsRandomizer.LevelObjects.ItemManipulators;
 using TsRandomizer.ReplacementObjects;
 using TsRandomizer.Screens;
 using R = TsRandomizer.Randomisation.Requirement;
@@ -104,10 +105,13 @@ namespace TsRandomizer.Randomisation
 				AddLoreLocations();
 
 			if (SeedOptions.StartWithTalaria)
-				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
+				Add(new PrefilledItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
 
 			if (SeedOptions.UnchainedKeys)
-				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.PyramidsKey)));
+				Add(new PrefilledItemLocation(itemInfoProvider.Get(EInventoryRelicType.PyramidsKey)));
+
+			if (SeedOptions.ShopChecks)
+				AddShopChecks();
 		}
 
 		void SetupGates()
@@ -245,6 +249,8 @@ namespace TsRandomizer.Randomisation
 				capacity += 1;
 			if (options.LoreChecks)
 				capacity += 22;
+			if (options.ShopChecks)
+				capacity += 10;
 
 			return capacity;
 		}
@@ -282,6 +288,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(2, 47, 216, 208), "Library: Storage room chest 1", ItemProvider.Get(EInventoryUseItemType.Ether), LeftLibrary & R.CardD);
 			Add(new ItemKey(2, 47, 152, 208), "Library: Storage room chest 2", ItemProvider.Get(EInventoryOrbType.Blade, EOrbSlot.Passive), LeftLibrary & R.CardD);
 			Add(new ItemKey(2, 47, 88, 208), "Library: Storage room chest 3", ItemProvider.Get(EInventoryOrbType.Blade, EOrbSlot.Spell), LeftLibrary & R.CardD);
+			Add(new DummyItemLocation(new ItemKey(2, 3, 81, 181)));
 			areaName = "Library Top";
 			Add(new ItemKey(2, 56, 168, 192), "Library: Backer room chest 5", ItemProvider.Get(EInventoryUseItemType.GoldNecklace), UpperLeftLibrary);
 			Add(new ItemKey(2, 56, 392, 192), "Library: Backer room chest 4", ItemProvider.Get(EInventoryUseItemType.GoldRing), UpperLeftLibrary);
@@ -534,6 +541,16 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(8, 36, 136, 145), "Caves of Banishment (Maw): Journal - Lower Left Caves (Naivety)", null, CavesOfBanishmentFlooded);
 		}
 
+		void AddShopChecks()
+		{
+			areaName = "Library";
+			Add(MerchantCrowNpc.ShopItem1, "Library: Merchant Crow, Shop item 1", null, LeftLibrary);
+			Add(MerchantCrowNpc.ShopItem2, "Library: Merchant Crow, Shop item 2", null, LeftLibrary);
+			Add(MerchantCrowNpc.ShopItem3, "Library: Merchant Crow, Shop item 3", null, LeftLibrary);
+			Add(MerchantCrowNpc.ShopItem4, "Library: Merchant Crow, Shop item 4", null, LeftLibrary);
+			Add(MerchantCrowNpc.ShopItem5, "Library: Merchant Crow, Shop item 5", null, LeftLibrary);
+		}
+
 		ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)
 		{
 			return TryGetValue(key, out var itemLocation)
@@ -756,7 +773,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemLocation(itemKey, areaName, name, defaultItem, gate));
 
 		public void AddCollected(ItemIdentifier item) => 
-			Add(new ExternalItemLocation(ItemProvider.Get(item)));
+			Add(new PrefilledItemLocation(ItemProvider.Get(item)));
 	}
 
 	class ProgressionChain
