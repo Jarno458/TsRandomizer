@@ -68,7 +68,8 @@ namespace TsRandomizer
 				{"UnchainedKeys", 1U << 19},
 				{"TrappedChests", 1U << 20},
 				{"PresentAccessWithWheelAndSpindle", 1U << 21},
-				{"PrismBreak", 1U << 22}
+				{"PrismBreak", 1U << 22},
+				{"ShopChecks", 1U << 22}
 			};
 
 			foreach (var kvp in stringToFlagMapping)
