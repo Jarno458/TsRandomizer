@@ -12,43 +12,44 @@ namespace TsRandomizer.Extensions
 	{
 		public static void EnforceTournamentSettings(this SettingCollection settings)
 		{
-			settings.BossRando.Value = "Scaled";
+			settings.BossRando.Value = "Scaled"; //Not clear if should be scaled or unscaled
 			settings.BossRandoType.Value = "Shuffle";
 			settings.BossRandoOverrides.SetDefault();
-			settings.EnemyRando.Value = "Off";
 
 			settings.DamageRando.Value = "Balanced";
 			settings.DamageRandoOverrides.SetDefault();
 
-			settings.HpCap.Value = 999;
-			settings.LevelCap.Value = 99;
-			settings.BossHealing.Value = true;
-
 			settings.ShopFill.Value = "Random";
-			settings.ShopMultiplier.Value = 1;
+			settings.ShopMultiplier.Value = 1; //not voted
 			settings.ShopWarpShards.Value = true;
 
 			settings.LootPool.Value = "Random";
-
-			settings.DropRateCategory.Value = "Random";
+			settings.DropRateCategory.Value = "Random"; //Not voted
 			settings.DropRate.SetDefault();
-			settings.LootTierDistro.Value = "Default Weight";
+			settings.LootTierDistro.Value = "Default Weight"; //not voted
 
-			settings.ShowBestiary.Value = false;
+			settings.HpCap.Value = 999;
+			settings.LevelCap.Value = 99;
+			settings.AuraCap.Value = 999;
 
-			settings.ShowDrops.Value = true;
+			settings.ExtraEarringsXP.Value = 15;
 
-			settings.MeleeAutofire.Value = false;
+			settings.EnemyRando.Value = "Off"; //not voted
+			settings.BossHealing.Value = true; //not voted
+
+			settings.ShowBestiary.Value = false; //not voted
+			settings.ShowDrops.Value = true; //not voted
 
 			settings.SparrowTrap.Value = true;
 			settings.BeeTrap.Value = true;
 			settings.PoisonTrap.Value = true;
 			settings.NeurotoxinTrap.Value = true;
 			settings.ChaosTrap.Value = true;
+			settings.ThrowStunTrap.Value = true;
 
-			settings.ExtraEarringsXP.Value = 0;
+			settings.NoSaveStatues.Value = false; //not voted
 
-			settings.NoSaveStatues.Value = false;
+			settings.EnableMapFromStart.Value = false; //not voted
 		}
 
 		static readonly FieldInfo[] OrderedSettingsFieldsThatAffectCompetitiveBalance =
