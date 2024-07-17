@@ -14,8 +14,8 @@ For questions / remarks and feedback, feel free to join the #randomizer channel 
 # Installation \ Startup
 Download latest TsRandomizer.exe or Linux / Mac zip file from the release page https://github.com/Jarno458/TsRandomizer/releases
 
-For windows:
-Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located, and start TsRandomizer.exe to start the game with the randomizer enabled, or Timespinner.exe to start the game normally
+For Windows:
+Extract the contents of the corresponding zip file to the same folder as Timespinner.exe is located, and start TsRandomizer.exe to start the game with the randomizer enabled, or Timespinner.exe to start the game normally
 For Linux and Mac:
 Extract the contents of the corresponding zip file to the same folder as Timespinner.exe is located, and start TsRandomizer to start the game with the randomizer enabled, or Timespinner to start the game normally
  
