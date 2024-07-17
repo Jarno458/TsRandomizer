@@ -74,6 +74,7 @@ namespace TsRandomizer.Screens
 			ScreenManager.Log.SetSettings(settings);
 
 			gameContentManager.UpdateMinimapColors(settings);
+			gameContentManager.ChangeLabWaterColor();
 			SpriteManager.ReloadCustomSprites(Level, GameContentManager, settings);
 
 			Seed = saveFileSeed ?? Seed.Zero;
