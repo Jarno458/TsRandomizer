@@ -477,7 +477,7 @@ namespace TsRandomizer.Randomisation
 			areaName = "Library";
 			Add(new ItemKey(2, 44, 792, 592), "Library: Terminal 1 (Windaria)", null, LeftLibrary & R.Tablet);
 			Add(new ItemKey(2, 44, 120, 368), "Library: Terminal 2 (Lachiem)", null, LeftLibrary & R.Tablet);
-			Add(new ItemKey(2, 44, 456, 368), "Library: Terminal 3 (Emporer Nuvius)", null, LeftLibrary & R.Tablet);
+			Add(new ItemKey(2, 44, 456, 368), "Library: Terminal 3 (Emperor Nuvius)", null, LeftLibrary & R.Tablet);
 			Add(new ItemKey(2, 58, 152, 208), "Library: V terminal 1 (War of the Sisters)", null, LeftLibrary & R.Tablet & R.CardV);
 			Add(new ItemKey(2, 58, 232, 208), "Library: V terminal 2 (Lake Desolation Map)", null, LeftLibrary & R.Tablet & R.CardV);
 			Add(new ItemKey(2, 58, 312, 208), "Library: V terminal 3 (Vilete)", null, LeftLibrary & R.Tablet & R.CardV);
