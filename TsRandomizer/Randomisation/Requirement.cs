@@ -40,6 +40,10 @@ namespace TsRandomizer.Randomisation
 		public static readonly Requirement LaserA = 1UL << 31;
 		public static readonly Requirement LaserI = 1UL << 32;
 		public static readonly Requirement LaserM = 1UL << 33;
+		public static readonly Requirement LabGenza = 1UL << 34;
+		public static readonly Requirement LabDynamo = 1UL << 35;
+		public static readonly Requirement LabExperiment = 1UL << 36;
+		public static readonly Requirement LabResearch = 1UL << 37;
 
 		public static readonly Requirement GateRefugeeCamp = 1UL << 42;
 		public static readonly Requirement GateSealedCaves = 1UL << 43;

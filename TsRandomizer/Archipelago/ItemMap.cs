@@ -209,8 +209,12 @@ namespace TsRandomizer.Archipelago
 				{1337191, CustomItem.GetIdentifier(CustomItemType.LaserAccessI)},
 				{1337192, CustomItem.GetIdentifier(CustomItemType.LaserAccessM)},
 				{1337193, CustomItem.GetIdentifier(CustomItemType.ThrowStunTrap)},
+				{1337194, CustomItem.GetIdentifier(CustomItemType.LabAccessGenza)},
+				{1337195, CustomItem.GetIdentifier(CustomItemType.LabAccessExperiment)},
+				{1337196, CustomItem.GetIdentifier(CustomItemType.LabAccessResearch)},
+				{1337197, CustomItem.GetIdentifier(CustomItemType.LabAccessDynamo)},
 
-				// 1337194 - 1337248 Reserved for future use
+				// 1337198 - 1337248 Reserved for future use
 
 				{1337249, new ItemIdentifier(EItemType.MaxSand)}
 			};

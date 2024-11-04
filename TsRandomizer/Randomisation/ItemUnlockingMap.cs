@@ -181,6 +181,13 @@ namespace TsRandomizer.Randomisation
 				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LaserAccessI), R.LaserI));
 				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LaserAccessM), R.LaserM));
 			}
+			if (seed.Options.LockKeyAmadeus)
+			{
+				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LabAccessGenza), R.LabGenza));
+				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LabAccessDynamo), R.LabDynamo));
+				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LabAccessExperiment), R.LabExperiment));
+				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LabAccessResearch), R.LabResearch));
+			}
 		}
 
 		void MakeKeyCardUnlocksCardSpecific()

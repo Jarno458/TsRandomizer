@@ -29,6 +29,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 20, new SeedOptionInfo { Name = "Trapped Chests", Description = "Items can be traps. Toggle available traps in the 'Traps' settings." } },
 			{ 1 << 21, new SeedOptionInfo { Name = "Past Wheel & Spindle Warp", Description = "When inverted, allows using the refugee camp warp when both the Timespinner Wheel and Spindle is acquired." } },
 			{ 1 << 22, new SeedOptionInfo { Name = "Prism Break", Description = "Lasers blocking the Military Hangar are disabled via items, rather than by defeating bosses." } },
+			{ 1 << 23, new SeedOptionInfo { Name = "Lock Key Amadeus", Description = "Lasers in Amadeus' Laboratory are disabled via items, rather than by de-powering the lab. Experiments will spawn in the lab." } },
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)

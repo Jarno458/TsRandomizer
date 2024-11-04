@@ -34,13 +34,15 @@ namespace TsRandomizerItemTracker
 			var numberOfFireSourcesCombined = 4;
 			var numberOfPinkSourcesCombined = 3;
             var numberOfPyramidKeysSourcesCombined = 4;
-			var numberOfLasersCombined = 3;
+			var numberOfHangarLasersCombined = 3;
+			var numberOfLabLasersCombined = 4;
 
 			numberOfItems = ItemTrackerState.NumberOfItems 
                             - (numberOfFireSourcesCombined-1) 
                             - (numberOfPinkSourcesCombined-1)
                             - (numberOfPyramidKeysSourcesCombined-1)
-			    - (numberOfLasersCombined-1);
+							- (numberOfHangarLasersCombined-1)
+							- (numberOfLabLasersCombined - 1);
 		}
 
 		public void SetWidth(int clientBoundsWidth)
@@ -89,6 +91,7 @@ namespace TsRandomizerItemTracker
 				DrawFireSource(spriteBatch, state);
 				DrawPinkSource(spriteBatch, state);
 				DrawLaserAccess(spriteBatch, state);
+				DrawLabAccess(spriteBatch, state);
 			}
 		}
 
@@ -111,6 +114,17 @@ namespace TsRandomizerItemTracker
 			DrawSubItem(spriteBatch, state.LaserI, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(1, 0), Color.LightSalmon);
 			DrawSubItem(spriteBatch, state.LaserM, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(0, 1), Color.Crimson);
 		}
+
+		void DrawLabAccess(SpriteBatch spriteBatch, ItemTrackerState state)
+		{
+			// TODO: give these unique sprites
+			DrawItem(spriteBatch, state.LabExperiment && state.LabResearch && state.LabDynamo && state.LabGenza, new ItemIdentifier(EInventoryUseItemType.None), Color.LightGray);
+			DrawSubItem(spriteBatch, state.LabGenza, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(0, 0), Color.HotPink);
+			DrawSubItem(spriteBatch, state.LabDynamo, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(1, 0), Color.LightSalmon);
+			DrawSubItem(spriteBatch, state.LabExperiment, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(0, 1), Color.Crimson);
+			DrawSubItem(spriteBatch, state.LabResearch, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(1, 1), Color.Bisque);
+		}
+
 
 		void DrawFireSource(SpriteBatch spriteBatch, ItemTrackerState state)
 		{

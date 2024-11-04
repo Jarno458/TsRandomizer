@@ -57,8 +57,8 @@ namespace TsRandomizer.Randomisation
 		internal Gate RavenlordsLair;
 		internal Gate MilitaryFortressHangar;
 		internal Gate RightSideMilitaryFortressHangar;
-		internal Gate TheLab;
-		internal Gate TheLabPoweredOff;
+		internal Gate MainLab;
+		internal Gate LabResearchWing;
 		internal Gate UpperLab;
 		internal Gate EmperorsTower;
 		//pyramid
@@ -207,9 +207,13 @@ namespace TsRandomizer.Randomisation
 			MilitaryFortress = LowerRightSideLibrary & pastCleared;
 			MilitaryFortressHangar = MilitaryFortress & R.TimeStop;
 			RightSideMilitaryFortressHangar = MilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : R.DoubleJump);
-			TheLab = RightSideMilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab);
-			TheLabPoweredOff = TheLab & DoubleJumpOfNpc;
-			UpperLab = TheLabPoweredOff & ForwardDashDoubleJump;
+			MainLab = RightSideMilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab);
+			LabResearchWing = SeedOptions.LockKeyAmadeus
+				? MainLab & (R.LabResearch | (R.LabDynamo & DoubleJumpOfNpc))
+				: MainLab & DoubleJumpOfNpc;
+			UpperLab = SeedOptions.LockKeyAmadeus
+				? MainLab & R.LabGenza & ForwardDashDoubleJump
+				: LabResearchWing & ForwardDashDoubleJump;
 			RavenlordsLair = UpperLab & R.MerchantCrow;
 			EmperorsTower = UpperLab;
 
@@ -329,17 +333,17 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(10, 7, 152, 192), "Military Fortress: B door chest 1", ItemProvider.Get(EItemType.MaxSand), MilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab));
 			Add(new ItemKey(10, 18, 280, 189), "Military Fortress: Pedestal", ItemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), RightSideMilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : DoubleJumpOfNpc | ForwardDashDoubleJump));
 			areaName = "The Lab";
-			Add(new ItemKey(11, 36, 312, 192), "Lab: Coffee break", ItemProvider.Get(EInventoryUseItemType.FoodSynth), TheLab);
-			Add(new ItemKey(11, 3, 1528, 192), "Lab: Lower trash right", ItemProvider.Get(EItemType.MaxHP), TheLab & R.DoubleJump);
-			Add(new ItemKey(11, 3, 72, 192), "Lab: Lower trash left", ItemProvider.Get(EInventoryUseItemType.FuturePotion), TheLab & R.UpwardDash); //when lab power is on, it only requires DoubleJumpOfNpc, but we cant code for the power state
-			Add(new ItemKey(11, 25, 104, 192), "Lab: Below lab entrance", ItemProvider.Get(EItemType.MaxAura), TheLab & R.DoubleJump);
-			Add(new ItemKey(11, 18, 824, 128), "Lab: Trash jump room", ItemProvider.Get(EInventoryUseItemType.ChaosHeal), TheLabPoweredOff);
-			Add(new RoomItemKey(11, 39), "Lab: Dynamo Works", ItemProvider.Get(EInventoryOrbType.Eye, EOrbSlot.Melee), TheLabPoweredOff);
+			Add(new ItemKey(11, 36, 312, 192), "Lab: Coffee break", ItemProvider.Get(EInventoryUseItemType.FoodSynth), MainLab);
+			Add(new ItemKey(11, 3, 1528, 192), "Lab: Lower trash right", ItemProvider.Get(EItemType.MaxHP), MainLab & R.DoubleJump);
+			Add(new ItemKey(11, 3, 72, 192), "Lab: Lower trash left", ItemProvider.Get(EInventoryUseItemType.FuturePotion), SeedOptions.LockKeyAmadeus ? MainLab & DoubleJumpOfNpc: MainLab & R.UpwardDash) ; //when lab power is on, it only requires DoubleJumpOfNpc, but we cant code for the power state
+			Add(new ItemKey(11, 25, 104, 192), "Lab: Below lab entrance", ItemProvider.Get(EItemType.MaxAura), MainLab & R.DoubleJump);
+			Add(new ItemKey(11, 18, 824, 128), "Lab: Trash jump room", ItemProvider.Get(EInventoryUseItemType.ChaosHeal), LabResearchWing);
+			Add(new RoomItemKey(11, 39), "Lab: Dynamo Works", ItemProvider.Get(EInventoryOrbType.Eye, EOrbSlot.Melee), LabResearchWing);
 			Add(new RoomItemKey(11, 21), "Lab: Genza (Blob Mom)", ItemProvider.Get(EInventoryRelicType.ScienceKeycardA), UpperLab);
-			Add(new RoomItemKey(11, 1), "Lab: Experiment #13", ItemProvider.Get(EInventoryRelicType.Dash), TheLabPoweredOff);
+			Add(new RoomItemKey(11, 1), "Lab: Experiment #13", ItemProvider.Get(EInventoryRelicType.Dash), SeedOptions.LockKeyAmadeus ? MainLab & R.LabExperiment : LabResearchWing);
 			Add(new ItemKey(11, 6, 328, 192), "Lab: Download and chest room chest", ItemProvider.Get(EInventoryEquipmentType.LabCoat), UpperLab);
 			Add(new ItemKey(11, 27, 296, 160), "Lab: Lab secret", ItemProvider.Get(EItemType.MaxSand), UpperLab & OculusRift);
-			Add(new RoomItemKey(11, 26), "Lab: Spider Hell", ItemProvider.Get(EInventoryRelicType.TimespinnerGear1), TheLabPoweredOff & R.CardA);
+			Add(new RoomItemKey(11, 26), "Lab: Spider Hell", ItemProvider.Get(EInventoryRelicType.TimespinnerGear1), LabResearchWing & R.CardA);
 			areaName = "Emperor's Tower";
 			Add(new ItemKey(12, 5, 344, 192), "Emperor's Tower: Courtyard bottom chest", ItemProvider.Get(EItemType.MaxAura), EmperorsTower);
 			Add(new ItemKey(12, 3, 200, 160), "Emperor's Tower: Courtyard floor secret", ItemProvider.Get(EInventoryEquipmentType.LachiemCrown), EmperorsTower & R.UpwardDash & OculusRift);
@@ -487,11 +491,11 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(2, 18, 200, 192), "Varndagroth Towers (Right): Medbay terminal (Bleakness Research)", null, RightSideLibraryElevator & R.CardB & R.Tablet);
 			areaName = "The lab";
 			Add(new ItemKey(11, 6, 200, 192), "Lab: Download and chest room terminal (Experiment #13)", null, UpperLab & R.Tablet);
-			Add(new ItemKey(11, 15, 152, 176), "Lab: Middle terminal (Amadeus Laboratory Map)", null, TheLabPoweredOff & R.Tablet);
-			Add(new ItemKey(11, 16, 600, 192), "Lab: Sentry platform terminal (Origins)", null, TheLabPoweredOff & R.Tablet);
-			Add(new ItemKey(11, 34, 200, 192), "Lab: Experiment 13 terminal (W.R.E.C Farewell)", null, TheLab & R.Tablet);
-			Add(new ItemKey(11, 37, 200, 192), "Lab: Left terminal (Biotechnology)", null, TheLab & R.Tablet);
-			Add(new ItemKey(11, 38, 120, 176), "Lab: Right terminal (Experiment #11)", null, TheLabPoweredOff & R.Tablet);
+			Add(new ItemKey(11, 15, 152, 176), "Lab: Middle terminal (Amadeus Laboratory Map)", null, LabResearchWing & R.Tablet);
+			Add(new ItemKey(11, 16, 600, 192), "Lab: Sentry platform terminal (Origins)", null, LabResearchWing & R.Tablet);
+			Add(new ItemKey(11, 34, 200, 192), "Lab: Experiment 13 terminal (W.R.E.C Farewell)", null, MainLab & R.Tablet);
+			Add(new ItemKey(11, 37, 200, 192), "Lab: Left terminal (Biotechnology)", null, MainLab & R.Tablet);
+			Add(new ItemKey(11, 38, 120, 176), "Lab: Right terminal (Experiment #11)", null, LabResearchWing & R.Tablet);
 		}
 
 		void AddLoreLocations()
@@ -511,8 +515,8 @@ namespace TsRandomizer.Randomisation
 			areaName = "Military Hangar";
 			Add(new ItemKey(10, 3, 536, 97), "Military Fortress: Memory - Bomber Climb (A Solution)", null, MilitaryFortress & DoubleJumpOfNpc & R.TimespinnerWheel);
 			areaName = "The Lab";
-			Add(new ItemKey(11, 7, 248, 129), "Lab: Memory - Genza's Secret Stash 1 (An Old Friend)", null, TheLab & OculusRift);
-			Add(new ItemKey(11, 7, 296, 129), "Lab: Memory - Genza's Secret Stash 2 (Twilight Dinner)", null, TheLab & OculusRift);
+			Add(new ItemKey(11, 7, 248, 129), "Lab: Memory - Genza's Secret Stash 1 (An Old Friend)", null, MainLab & OculusRift);
+			Add(new ItemKey(11, 7, 296, 129), "Lab: Memory - Genza's Secret Stash 2 (Twilight Dinner)", null, MainLab & OculusRift);
 			areaName = "Emperor's Tower";
 			Add(new ItemKey(12, 19, 56, 145), "Emperor's Tower: Memory - Way Up There (Final Circle)", null, EmperorsTower & DoubleJumpOfNpc);
 			// Letters

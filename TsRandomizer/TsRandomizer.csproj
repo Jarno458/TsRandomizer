@@ -166,6 +166,8 @@
     <Compile Include="LevelObjects\Monsters\LabTrashSpawner.cs" />
     <Compile Include="LevelObjects\Monsters\LabTurret.cs" />
     <Compile Include="LevelObjects\Monsters\TowerPlasmaPod.cs" />
+    <Compile Include="LevelObjects\Other\LabPowerCore.cs" />
+    <Compile Include="LevelObjects\Other\LabLaser.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast4.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCity2.cs" />
@@ -190,6 +192,7 @@
     <Compile Include="Randomisation\WarpNames.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
+    <Compile Include="RoomTriggers\Triggers\LabLaserRooms.cs" />
     <Compile Include="RoomTriggers\Triggers\MilitaryHangarGyreWarp.cs" />
     <Compile Include="RoomTriggers\SandmanSoftlockPrevention.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />
@@ -204,6 +207,7 @@
     <Compile Include="RoomTriggers\Triggers\Bosses\Ravenlord.cs" />
     <Compile Include="RoomTriggers\Triggers\EelsInsteadOfRats.cs" />
     <Compile Include="RoomTriggers\Triggers\FixLabFloorTiles.cs" />
+    <Compile Include="RoomTriggers\Triggers\LabAndTowerWarpRooms.cs" />
     <Compile Include="RoomTriggers\Triggers\MilitaryHangarWarpRoom.cs" />
     <Compile Include="RoomTriggers\Triggers\OneHpFix.cs" />
     <Compile Include="RoomTriggers\Triggers\RisingTides.cs" />
