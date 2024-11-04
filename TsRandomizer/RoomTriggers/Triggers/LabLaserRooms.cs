@@ -1,11 +1,8 @@
-﻿using Timespinner.GameAbstractions.Inventory;
-using TsRandomizer.Extensions;
-
-namespace TsRandomizer.RoomTriggers.Triggers
+﻿namespace TsRandomizer.RoomTriggers.Triggers
 {
 	[RoomTriggerTrigger(11, 1)] // Experiment 13
-	[RoomTriggerTrigger(11, 35)]
-	[RoomTriggerTrigger(11, 37)]
+	[RoomTriggerTrigger(11, 35)] // Genza
+	[RoomTriggerTrigger(11, 37)] // Research Wing
 	// 11, 39 also has a laser but is covered as Dynamo Works
 	class LabLaserRooms : RoomTrigger
 	{

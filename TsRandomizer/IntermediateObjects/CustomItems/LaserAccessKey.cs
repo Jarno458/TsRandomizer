@@ -63,7 +63,7 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 	class LabAccessResearch: LaserAccessKey
 	{
-		public LabAccessResearch(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.LabAccessExperiment)
+		public LabAccessResearch(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.LabAccessResearch)
 		{
 			SetDescription("Access credentials for the lower research wing of the laboratory.", null);
 		}

@@ -1,6 +1,8 @@
 ﻿using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
 
@@ -20,9 +22,11 @@ namespace TsRandomizer.LevelObjects.Other
 				return;
 
 			Level level = (Level)Dynamic._level;
-			// bool laser = level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LabAccessGenza));
-			if (level.GameSave.GetSaveBool("TSRando_IsLabPoweredOff"))
-				// TODO: subdivide into the different items
+
+			if ((level.RoomID == 1 && level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LabAccessExperiment))) ||
+					(level.RoomID == 35 && level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LabAccessGenza))) ||
+					(level.RoomID == 37 && level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LabAccessResearch))) ||
+					(level.RoomID == 39 && level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LabAccessDynamo))))
 				Dynamic.SilentKill();
 		}
 	}
