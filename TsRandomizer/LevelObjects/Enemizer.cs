@@ -16,7 +16,6 @@ namespace TsRandomizer.LevelObjects
 	class Enemizer
 	{
 		static readonly Type BossType = TimeSpinnerType.Get("Timespinner.GameObjects.BaseClasses.BossClass");
-
 		static readonly E[] LargeGroundedEnemies = {
 			E.JumpingCheveuxTank,
 			E.SealDog,
@@ -238,7 +237,7 @@ namespace TsRandomizer.LevelObjects
 			{	
 				if (enemy.EnemyType == EEnemyTileType.JunkSpawner || enemy.EnemyType == EEnemyTileType.LabAdult || enemy.EnemyType == EEnemyTileType.XarionBoss)
 					continue;
-				
+
 				var type = enemy.GetType();
 				if (type.IsSubclassOf(BossType))
 					continue;
