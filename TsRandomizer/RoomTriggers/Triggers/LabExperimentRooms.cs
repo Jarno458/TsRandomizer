@@ -7,14 +7,29 @@ using TsRandomizer.IntermediateObjects;
 namespace TsRandomizer.RoomTriggers.Triggers
 {
 	[RoomTriggerTrigger(11, 1)] // Experiment 13
-	// [RoomTriggerTrigger(11, 35)] // Genza
-	// [RoomTriggerTrigger(11, 37)] // Research Wing
-	// 11, 39 also has a laser but is covered as Dynamo Works
+	[RoomTriggerTrigger(11, 15)]
+	[RoomTriggerTrigger(11, 28)]
+	[RoomTriggerTrigger(11, 29)]
+	[RoomTriggerTrigger(11, 37)]
 	class LabExperimentRooms : RoomTrigger
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			SpawnExperiment(roomState, new Point(600, 176), true);
+			if (!roomState.Seed.Options.LockKeyAmadeus)
+				return;
+
+			if (roomState.RoomKey.RoomId == 1)
+				SpawnExperiment(roomState, new Point(600, 176), true);
+			else if (roomState.RoomKey.RoomId == 15)
+				SpawnExperiment(roomState, new Point(984, 176), false);
+				SpawnExperiment(roomState, new Point(552, 176), false);
+			else if (roomState.RoomKey.RoomId == 28)
+				SpawnExperiment(roomState, new Point(392, 192), false);
+			else if (roomState.RoomKey.RoomId == 29)
+				SpawnExperiment(roomState, new Point(536, 176), false);
+				SpawnExperiment(roomState, new Point(760, 176), false);
+			else if (roomState.RoomKey.RoomId == 37)
+				SpawnExperiment(roomState, new Point(216, 192), false);
 		}
 
 		protected static void SpawnExperiment(RoomState state, Point point, bool isAdult)
