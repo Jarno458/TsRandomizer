@@ -205,20 +205,23 @@ namespace TsRandomizer.Randomisation
 			SealedCavesSkeleton = (LakeDesolationLeft & (FloodsFlags.LakeDesolation ? R.Free : R.DoubleJump)) | R.GateSealedCaves | R.GateXarion;
 			SealedCaves = (SealedCavesSkeleton & R.CardA) | R.GateXarion;
 			SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
-			MilitaryFortress = LowerRightSideLibrary & pastCleared; // Need to fix circular and add | LabEntrance & (FloodsFlags.Lab ? R.Free : R.UpwardDash);
-			MilitaryFortressHangar = MilitaryFortress & R.TimeStop; // Need to fix circular and add | LabEntrance & (FloodsFlags.Lab ? R.Free : R.UpwardDash);
-			LabEntrance = R.GateLabEntrance | MilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : R.DoubleJump); // Need to fix circular and add | MainLab;
+			MilitaryFortress = LowerRightSideLibrary & pastCleared;
+			MilitaryFortressHangar = MilitaryFortress & R.TimeStop;
+			LabEntrance = R.GateLabEntrance | MilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : R.DoubleJump);
 			MainLab = SeedOptions.LockKeyAmadeus
 				? R.GateDadsTower & R.LabGenza | LabEntrance & R.CardB & NeedSwimming(FloodsFlags.Lab)
 				: LabEntrance & R.CardB & NeedSwimming(FloodsFlags.Lab);
+			LabEntrance |= MainLab;
 			LabResearchWing = SeedOptions.LockKeyAmadeus
 				? MainLab & (R.LabResearch | (R.LabDynamo & DoubleJumpOfNpc))
 				: MainLab & DoubleJumpOfNpc;
 			UpperLab = SeedOptions.LockKeyAmadeus
-				? MainLab & R.LabGenza & ForwardDashDoubleJump
+				? MainLab & R.LabGenza & ForwardDashDoubleJump | R.GateDadsTower
 				: LabResearchWing & ForwardDashDoubleJump;
 			RavenlordsLair = UpperLab & R.MerchantCrow;
 			EmperorsTower = UpperLab | R.GateDadsTower;
+			MilitaryFortressHangar |= LabEntrance & (FloodsFlags.Lab ? R.Free : R.UpwardDash);
+			MilitaryFortress |= MilitaryFortressHangar;
 
 			//pyramid
 			var completeTimespinner = R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3 & R.TimespinnerSpindle & R.TimespinnerWheel;
