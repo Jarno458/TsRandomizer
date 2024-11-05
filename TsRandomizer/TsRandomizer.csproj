@@ -161,6 +161,7 @@
     <Compile Include="LevelObjects\EnemyInfo.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Monsters\Bee.cs" />
+    <Compile Include="LevelObjects\Monsters\LabExperiment.cs" />
     <Compile Include="LevelObjects\Monsters\Demon.cs" />
     <Compile Include="LevelObjects\Monsters\CastleLargeSoldier.cs" />
     <Compile Include="LevelObjects\Monsters\LabTrashSpawner.cs" />
