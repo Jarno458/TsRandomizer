@@ -57,6 +57,7 @@ namespace TsRandomizer.Randomisation
 		internal Gate RavenlordsLair;
 		internal Gate MilitaryFortressHangar;
 		internal Gate RightSideMilitaryFortressHangar;
+		internal Gate LabEntrance;
 		internal Gate MainLab;
 		internal Gate LabResearchWing;
 		internal Gate UpperLab;
@@ -204,10 +205,12 @@ namespace TsRandomizer.Randomisation
 			SealedCavesSkeleton = (LakeDesolationLeft & (FloodsFlags.LakeDesolation ? R.Free : R.DoubleJump)) | R.GateSealedCaves | R.GateXarion;
 			SealedCaves = (SealedCavesSkeleton & R.CardA) | R.GateXarion;
 			SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
-			MilitaryFortress = LowerRightSideLibrary & pastCleared;
-			MilitaryFortressHangar = MilitaryFortress & R.TimeStop;
-			RightSideMilitaryFortressHangar = MilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : R.DoubleJump);
-			MainLab = RightSideMilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab);
+			MilitaryFortress = LowerRightSideLibrary & pastCleared; // Need to fix circular and add | LabEntrance & (FloodsFlags.Lab ? R.Free : R.UpwardDash);
+			MilitaryFortressHangar = MilitaryFortress & R.TimeStop; // Need to fix circular and add | LabEntrance & (FloodsFlags.Lab ? R.Free : R.UpwardDash);
+			LabEntrance = R.GateLabEntrance | MilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : R.DoubleJump); // Need to fix circular and add | MainLab;
+			MainLab = SeedOptions.LockKeyAmadeus
+				? R.GateDadsTower & R.LabGenza | LabEntrance & R.CardB & NeedSwimming(FloodsFlags.Lab)
+				: LabEntrance & R.CardB & NeedSwimming(FloodsFlags.Lab);
 			LabResearchWing = SeedOptions.LockKeyAmadeus
 				? MainLab & (R.LabResearch | (R.LabDynamo & DoubleJumpOfNpc))
 				: MainLab & DoubleJumpOfNpc;
@@ -215,7 +218,7 @@ namespace TsRandomizer.Randomisation
 				? MainLab & R.LabGenza & ForwardDashDoubleJump
 				: LabResearchWing & ForwardDashDoubleJump;
 			RavenlordsLair = UpperLab & R.MerchantCrow;
-			EmperorsTower = UpperLab;
+			EmperorsTower = UpperLab | R.GateDadsTower;
 
 			//pyramid
 			var completeTimespinner = R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3 & R.TimespinnerSpindle & R.TimespinnerWheel;
@@ -329,9 +332,9 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(10, 4, 1064, 176), "Military Fortress: Soldiers bridge", ItemProvider.Get(EInventoryUseItemType.FutureHiPotion), MilitaryFortressHangar);
 			Add(new ItemKey(10, 10, 104, 192), "Military Fortress: Giantess room", ItemProvider.Get(EInventoryRelicType.AirMask), MilitaryFortressHangar);
 			Add(new ItemKey(10, 8, 1080, 176), "Military Fortress: Giantess bridge", ItemProvider.Get(EInventoryEquipmentType.LabGlasses), MilitaryFortressHangar);
-			Add(new ItemKey(10, 7, 104, 192), "Military Fortress: B door chest 2", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), MilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab));
-			Add(new ItemKey(10, 7, 152, 192), "Military Fortress: B door chest 1", ItemProvider.Get(EItemType.MaxSand), MilitaryFortressHangar & R.CardB & NeedSwimming(FloodsFlags.Lab));
-			Add(new ItemKey(10, 18, 280, 189), "Military Fortress: Pedestal", ItemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), RightSideMilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : DoubleJumpOfNpc | ForwardDashDoubleJump));
+			Add(new ItemKey(10, 7, 104, 192), "Military Fortress: B door chest 2", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), LabEntrance & R.CardB & NeedSwimming(FloodsFlags.Lab));
+			Add(new ItemKey(10, 7, 152, 192), "Military Fortress: B door chest 1", ItemProvider.Get(EItemType.MaxSand), LabEntrance & R.CardB & NeedSwimming(FloodsFlags.Lab));
+			Add(new ItemKey(10, 18, 280, 189), "Military Fortress: Pedestal", ItemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), LabEntrance & (FloodsFlags.Lab ? R.Free : DoubleJumpOfNpc | ForwardDashDoubleJump));
 			areaName = "The Lab";
 			Add(new ItemKey(11, 36, 312, 192), "Lab: Coffee break", ItemProvider.Get(EInventoryUseItemType.FoodSynth), MainLab);
 			Add(new ItemKey(11, 3, 1528, 192), "Lab: Lower trash right", ItemProvider.Get(EItemType.MaxHP), MainLab & R.DoubleJump);
