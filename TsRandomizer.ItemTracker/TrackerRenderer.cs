@@ -209,7 +209,7 @@ namespace TsRandomizerItemTracker
 			var animationIndex = itemInfo.GetAnimationIndex();
 			// Handle None item
 			if (animationIndex < 0)
-				animationIndex = 27;
+				animationIndex = 230;
 
 			AnimationIndexes.Add(itemInfo, animationIndex);
 
