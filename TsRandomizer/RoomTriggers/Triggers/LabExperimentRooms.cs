@@ -21,13 +21,17 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			if (roomState.RoomKey.RoomId == 1)
 				SpawnExperiment(roomState, new Point(600, 176), true);
 			else if (roomState.RoomKey.RoomId == 15)
+			{
 				SpawnExperiment(roomState, new Point(984, 176), false);
 				SpawnExperiment(roomState, new Point(552, 176), false);
+			}
 			else if (roomState.RoomKey.RoomId == 28)
 				SpawnExperiment(roomState, new Point(392, 192), false);
 			else if (roomState.RoomKey.RoomId == 29)
+			{
 				SpawnExperiment(roomState, new Point(536, 176), false);
 				SpawnExperiment(roomState, new Point(760, 176), false);
+			}
 			else if (roomState.RoomKey.RoomId == 37)
 				SpawnExperiment(roomState, new Point(216, 192), false);
 		}

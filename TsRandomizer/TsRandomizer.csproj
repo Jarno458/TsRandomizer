@@ -193,7 +193,7 @@
     <Compile Include="Randomisation\WarpNames.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
-    <Compile Include="RoomTriggers\Triggers\LabLaserRooms.cs" />
+    <Compile Include="RoomTriggers\Triggers\LabExperimentRooms.cs" />
     <Compile Include="RoomTriggers\Triggers\MilitaryHangarGyreWarp.cs" />
     <Compile Include="RoomTriggers\SandmanSoftlockPrevention.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />
@@ -229,7 +229,6 @@
     <Compile Include="RoomTriggers\Triggers\LibraryIfritWarp.cs" />
     <Compile Include="RoomTriggers\Triggers\MawDemonGate.cs" />
     <Compile Include="RoomTriggers\Triggers\MawGasArea.cs" />
-    <Compile Include="RoomTriggers\Triggers\MilitairyHangerGyreWarp.cs" />
     <Compile Include="RoomTriggers\Triggers\PlasmaCrystal.cs" />
     <Compile Include="RoomTriggers\Triggers\PostIfritWarp.cs" />
     <Compile Include="RoomTriggers\Triggers\PostNightmareChest.cs" />
