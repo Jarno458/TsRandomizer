@@ -208,20 +208,52 @@ namespace TsRandomizer.Randomisation
 			MilitaryFortress = LowerRightSideLibrary & pastCleared;
 			MilitaryFortressHangar = MilitaryFortress & R.TimeStop;
 			LabEntrance = R.GateLabEntrance | MilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : R.DoubleJump);
-			MainLab = SeedOptions.LockKeyAmadeus
-				? R.GateDadsTower & R.LabGenza | LabEntrance & R.CardB & NeedSwimming(FloodsFlags.Lab)
-				: LabEntrance & R.CardB & NeedSwimming(FloodsFlags.Lab);
-			LabEntrance |= MainLab;
-			LabResearchWing = SeedOptions.LockKeyAmadeus
-				? MainLab & (R.LabResearch | (R.LabDynamo & DoubleJumpOfNpc))
-				: MainLab & DoubleJumpOfNpc;
-			UpperLab = SeedOptions.LockKeyAmadeus
-				? MainLab & R.LabGenza & ForwardDashDoubleJump | R.GateDadsTower
-				: LabResearchWing & ForwardDashDoubleJump;
+			MainLab = LabEntrance & R.CardB & NeedSwimming(FloodsFlags.Lab);
+			
+			LabResearchWing = MainLab &
+				(SeedOptions.LockKeyAmadeus
+				? R.LabResearch | (R.LabDynamo & DoubleJumpOfNpc)
+				: DoubleJumpOfNpc);
+			UpperLab = R.GateDadsTower | 
+				(SeedOptions.LockKeyAmadeus
+				? MainLab & R.LabGenza & ForwardDashDoubleJump
+				: LabResearchWing & ForwardDashDoubleJump);
 			RavenlordsLair = UpperLab & R.MerchantCrow;
-			EmperorsTower = UpperLab | R.GateDadsTower;
-			MilitaryFortressHangar |= LabEntrance & (FloodsFlags.Lab ? R.Free : R.UpwardDash);
-			MilitaryFortress |= MilitaryFortressHangar;
+			EmperorsTower = UpperLab;
+
+			if (SeedOptions.RiskyWarps)
+			{
+				// This block adds logic to locations between Dad's Tower and Military Hangar
+				// going right to left
+				// This uses |= to add on to the existing definitions, as these work around
+				// odd circular dependencies unique to the Risky Warps flag.
+				if (SeedOptions.LockKeyAmadeus)
+				{
+					// When the flag is off, lasers block the ability to go further than UpperLab, already defined as R.GateDadsTower
+					// And the lab power is in MainLab itself, making the logic moot
+					MainLab |= UpperLab & R.LabGenza;
+					LabEntrance |= MainLab;
+					LabResearchWing |= MainLab & R.LabGenza & ForwardDashDoubleJump;
+				}
+					
+				MilitaryFortressHangar |= LabEntrance & (FloodsFlags.Lab ? R.Free : R.UpwardDash);
+				MilitaryFortress |= MilitaryFortressHangar;
+				LowerRightSideLibrary |= MilitaryFortress & pastCleared;
+				// Remaining entries need to exist because variables like "LowerRightSideLibrary" were evaluated as they were at the time
+				// and don't include these new additions
+				SealedCavesSirens |= LowerRightSideLibrary & R.CardB & R.CardE;
+				MidLibrary |= LowerRightSideLibrary & (R.CardB | R.CardE);
+				RightSideLibraryElevator |= LowerRightSideLibrary & R.CardE;
+				UpperRightSideLibrary |= RightSideLibraryElevator;
+				LeftLibrary |= MidLibrary;
+				UpperLeftLibrary |= LeftLibrary & (R.DoubleJump | R.ForwardDash);
+				IfritsLair |= UpperLeftLibrary & R.Kobo & RefugeeCamp;
+				LakeDesolationRight |= LeftLibrary;
+				LakeDesolationLeft |= LakeDesolationRight;
+				UpperLakeDesolation |= LakeDesolationLeft & UpperLakeSirine & R.Fire;
+				SealedCavesSkeleton |= LakeDesolationLeft & (FloodsFlags.LakeDesolation ? R.Free : R.DoubleJump);
+				SealedCaves |= SealedCavesSkeleton & R.CardA;
+			}
 
 			//pyramid
 			var completeTimespinner = R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3 & R.TimespinnerSpindle & R.TimespinnerWheel;
