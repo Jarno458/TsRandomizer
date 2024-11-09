@@ -1,7 +1,4 @@
-﻿using Timespinner.GameAbstractions.Inventory;
-using TsRandomizer.Extensions;
-
-namespace TsRandomizer.RoomTriggers.Triggers
+﻿namespace TsRandomizer.RoomTriggers.Triggers
 {
 	[RoomTriggerTrigger(11, 39)]
 	class LabDynamoWorks : RoomTrigger

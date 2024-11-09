@@ -25,6 +25,30 @@ namespace TsRandomizer.LevelObjects.Other
 
 				return;
 			}
+			else if (Dynamic.Level.ID == 10)
+			{
+				// Hangar risky warp softlock
+				Dynamic._textPromptOffsetX = -20;
+				Dynamic._textPromptText = "Return to Lab";
+
+				return;
+			}
+			else if (Dynamic.Level.ID == 11 && Dynamic.Level.RoomID == 16)
+			{
+				// Upper Lab risky warp softlock
+				Dynamic._textPromptOffsetX = -20;
+				Dynamic._textPromptText = "Return to Tower";
+
+				return;
+			}
+			else if (Dynamic.Level.ID == 11 && Dynamic.Level.RoomID == 2)
+			{
+				// Research Lab risky warp softlock
+				Dynamic._textPromptOffsetX = -20;
+				Dynamic._textPromptText = "Return to Power Room";
+
+				return;
+			}
 			else if (Dynamic.Level.ID == 7)
 			{
 				// Cantoran
@@ -53,7 +77,8 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void OnUpdate()
 		{
-			if (Dynamic.Level.ID != 16 && Dynamic.Level.ID != 7)
+			Roomkey room = new Roomkey(Dynamic.Level.ID, Dynamic.Level.RoomID);
+			if ((room.LevelId != 16 && room.LevelId != 7 && room.LevelId != 11) || (room.LevelId == 11 && room.RoomId == 21))
 				return;
 			if (teleportTriggered)
 				return;
@@ -67,13 +92,34 @@ namespace TsRandomizer.LevelObjects.Other
 			int warpRoom = 0;
 			var song = Timespinner.GameAbstractions.EBGM.Level15;
 			// Cantoran Room
-			if (Dynamic.Level.ID == 7)
+			if (room.LevelId == 7)
 			{
 				warpLevel = 17;
 				warpRoom = 8;
 				song = Timespinner.GameAbstractions.EBGM.Boss06;
 			}
-			
+			// Hangar
+			if (room.LevelId == 10)
+			{
+				warpLevel = 10;
+				warpRoom = 2;
+				song = Timespinner.GameAbstractions.EBGM.Level10;
+			}
+			// Dad's Tower
+			if (room.LevelId == 11 && room.RoomId == 16)
+			{
+				warpLevel = 12;
+				warpRoom = 0;
+				song = Timespinner.GameAbstractions.EBGM.None;
+			}
+			// Dynamo Works
+			if (room.LevelId == 11 && room.RoomId == 2)
+			{
+				warpLevel = 11;
+				warpRoom = 39;
+				song = Timespinner.GameAbstractions.EBGM.Level11;
+			}
+
 			if (teleportEnabled && Scripts.Count == 0)
 			{
 				teleportTriggered = true;
