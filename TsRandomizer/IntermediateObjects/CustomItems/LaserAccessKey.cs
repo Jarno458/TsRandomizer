@@ -2,6 +2,19 @@
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 
+using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Timespinner.Core;
+using Timespinner.GameAbstractions;
+using Timespinner.GameAbstractions.Inventory;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.ItemTracker;
+
+
 namespace TsRandomizer.IntermediateObjects.CustomItems
 {
 	abstract class LaserAccessKey : CustomItem
@@ -47,6 +60,7 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 	class LabAccessGenza : LaserAccessKey
 	{
+		public override int AnimationIndex => new ItemIdentifier(EInventoryEquipmentType.LabGlasses).GetAnimationIndex();
 		public LabAccessGenza(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.LabAccessGenza)
 		{
 			SetDescription("Access credentials for Genza's personal wing of the laboratory.", null);
@@ -55,6 +69,7 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 	class LabAccessExperiment : LaserAccessKey
 	{
+		public override int AnimationIndex => new ItemIdentifier(EInventoryFamiliarType.Demon).GetAnimationIndex();
 		public LabAccessExperiment(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.LabAccessExperiment)
 		{
 			SetDescription("Access credentials for Experiment 13's containment area.", null);
@@ -63,6 +78,7 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 	class LabAccessResearch: LaserAccessKey
 	{
+		public override int AnimationIndex => new ItemIdentifier(EInventoryEquipmentType.LabCoat).GetAnimationIndex();
 		public LabAccessResearch(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.LabAccessResearch)
 		{
 			SetDescription("Access credentials for the lower research wing of the laboratory.", null);
@@ -71,6 +87,7 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 
 	class LabAccessDynamo : LaserAccessKey
 	{
+		public override int AnimationIndex => new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Melee).GetAnimationIndex();
 		public LabAccessDynamo(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.LabAccessDynamo)
 		{
 			SetDescription("Access credentials for the lab's power maintenance room.", null);

@@ -118,10 +118,10 @@ namespace TsRandomizerItemTracker
 		void DrawLabAccess(SpriteBatch spriteBatch, ItemTrackerState state)
 		{
 			DrawItem(spriteBatch, state.LabExperiment && state.LabResearch && state.LabDynamo && state.LabGenza, new ItemIdentifier(EInventoryUseItemType.None), Color.Black);
-			DrawSubItem(spriteBatch, state.LabGenza, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(0, 0), Color.WhiteSmoke);
-			DrawSubItem(spriteBatch, state.LabDynamo, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(1, 0), Color.OrangeRed);
-			DrawSubItem(spriteBatch, state.LabExperiment, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(0, 1), Color.RosyBrown);
-			DrawSubItem(spriteBatch, state.LabResearch, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(1, 1), Color.Beige);
+			DrawSubItem(spriteBatch, state.LabGenza, new ItemIdentifier(EInventoryEquipmentType.LabGlasses), 2, new Point(0, 0), Color.White);
+			DrawSubItem(spriteBatch, state.LabDynamo, new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Melee), 2, new Point(1, 0), Color.White);
+			DrawSubItem(spriteBatch, state.LabResearch, new ItemIdentifier(EInventoryEquipmentType.LabCoat), 2, new Point(0, 1), Color.White);
+			DrawSubItem(spriteBatch, state.LabExperiment, new ItemIdentifier(EInventoryFamiliarType.Demon), 2, new Point(1, 1), Color.White);
 		}
 
 
