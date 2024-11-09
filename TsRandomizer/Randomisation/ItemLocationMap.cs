@@ -255,6 +255,24 @@ namespace TsRandomizer.Randomisation
 				UpperLakeDesolation |= LakeDesolationLeft & UpperLakeSirine & R.Fire;
 				SealedCavesSkeleton |= LakeDesolationLeft & (FloodsFlags.LakeDesolation ? R.Free : R.DoubleJump);
 				SealedCaves |= SealedCavesSkeleton & R.CardA;
+
+				if (!SeedOptions.Inverted)
+					RefugeeCamp |= MidLibrary & R.TimespinnerWheel & R.TimespinnerSpindle;
+					UpperCavesOfBanishment = RefugeeCamp;
+					CastleRamparts = RefugeeCamp;
+					CastleKeep = CastleRamparts;
+					CastleBasement = CastleKeep & NeedSwimming(FloodsFlags.Basement);
+					RoyalTower |= CastleKeep & R.DoubleJump;
+					MidRoyalTower = RoyalTower & (MultipleSmallJumpsOfNpc | ForwardDashDoubleJump);
+					UpperRoyalTower = MidRoyalTower & R.DoubleJump;
+
+					LeftSideForestCaves |=
+						RefugeeCamp & (FloodsFlags.LakeSereneBridge ? R.Free : (R.TimeStop | R.ForwardDash));
+					UpperLakeSirine |=
+						LeftSideForestCaves & (FloodsFlags.DryLakeSerene ? R.Free : (R.TimeStop | R.Swimming));
+					LowerLakeSirine |= LeftSideForestCaves & NeedSwimming(!FloodsFlags.DryLakeSerene);
+					CavesOfBanishment |= LowerLakeSirine & (FloodsFlags.DryLakeSerene ? R.DoubleJump : R.Free);
+					CavesOfBanishmentFlooded = CavesOfBanishment & NeedSwimming(FloodsFlags.Maw);
 			}
 
 			//pyramid
