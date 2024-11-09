@@ -61,6 +61,7 @@ namespace TsRandomizer.Randomisation
 		internal Gate MainLab;
 		internal Gate LabResearchWing;
 		internal Gate UpperLab;
+		internal Gate EmperorsTowerCourtyard;
 		internal Gate EmperorsTower;
 		//pyramid
 		internal Gate TemporalGyre;
@@ -219,7 +220,8 @@ namespace TsRandomizer.Randomisation
 				? MainLab & R.LabGenza & ForwardDashDoubleJump
 				: LabResearchWing & ForwardDashDoubleJump);
 			RavenlordsLair = UpperLab & R.MerchantCrow;
-			EmperorsTower = UpperLab;
+			EmperorsTowerCourtyard = UpperLab;
+			EmperorsTower = EmperorsTowerCourtyard & R.DoubleJump;
 
 			if (SeedOptions.RiskyWarps)
 			{
@@ -383,7 +385,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(11, 27, 296, 160), "Lab: Lab secret", ItemProvider.Get(EItemType.MaxSand), UpperLab & OculusRift);
 			Add(new RoomItemKey(11, 26), "Lab: Spider Hell", ItemProvider.Get(EInventoryRelicType.TimespinnerGear1), LabResearchWing & R.CardA);
 			areaName = "Emperor's Tower";
-			Add(new ItemKey(12, 5, 344, 192), "Emperor's Tower: Courtyard bottom chest", ItemProvider.Get(EItemType.MaxAura), EmperorsTower);
+			Add(new ItemKey(12, 5, 344, 192), "Emperor's Tower: Courtyard bottom chest", ItemProvider.Get(EItemType.MaxAura), EmperorsTowerCourtyard);
 			Add(new ItemKey(12, 3, 200, 160), "Emperor's Tower: Courtyard floor secret", ItemProvider.Get(EInventoryEquipmentType.LachiemCrown), EmperorsTower & R.UpwardDash & OculusRift);
 			Add(new ItemKey(12, 25, 360, 176), "Emperor's Tower: Courtyard upper chest", ItemProvider.Get(EInventoryEquipmentType.EmpressCoat), EmperorsTower & R.UpwardDash);
 			Add(new ItemKey(12, 22, 56, 192), "Emperor's Tower: Galactic sage room", ItemProvider.Get(EItemType.MaxSand), EmperorsTower);
