@@ -1,19 +1,7 @@
 ﻿using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
-
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Timespinner.Core;
-using Timespinner.GameAbstractions;
-using Timespinner.GameAbstractions.Inventory;
-using TsRandomizer.Extensions;
-using TsRandomizer.IntermediateObjects;
-using TsRandomizer.ItemTracker;
-
 
 namespace TsRandomizer.IntermediateObjects.CustomItems
 {
