@@ -40,14 +40,6 @@ namespace TsRandomizer.LevelObjects.Other
 
 				return;
 			}
-			else if (Dynamic.Level.ID == 11 && Dynamic.Level.RoomID == 2)
-			{
-				// Research Lab risky warp softlock
-				Dynamic._textPromptOffsetX = -20;
-				Dynamic._textPromptText = "Return to Power Room";
-
-				return;
-			}
 			else if (Dynamic.Level.ID == 7)
 			{
 				// Cantoran
