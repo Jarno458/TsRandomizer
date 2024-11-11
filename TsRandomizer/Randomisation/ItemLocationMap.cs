@@ -137,7 +137,7 @@ namespace TsRandomizer.Randomisation
 				| (R.GateSealedSirensCave & R.CardE)
 				| (R.GateMilitaryGate & (R.CardE | R.CardB));
 
-			if (SeedOptions.Inverted && SeedOptions.PresentAccessWithWheelAndSpindle)
+			if (SeedOptions.Inverted && SeedOptions.BackToTheFuture)
 			{
 				LakeDesolationLeft |= R.TimespinnerWheel & R.TimespinnerSpindle;
 				LakeDesolationRight |= R.TimespinnerWheel & R.TimespinnerSpindle;

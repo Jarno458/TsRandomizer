@@ -15,7 +15,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			    && (
 					!roomState.Seed.Options.Inverted
 					|| (
-						roomState.Seed.Options.PresentAccessWithWheelAndSpindle
+						roomState.Seed.Options.BackToTheFuture
 					    && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerWheel)
 						&& roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerSpindle)
 					))
@@ -34,7 +34,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			if (roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.PyramidsKey))
 			{
 				if (roomState.Seed.Options.Inverted
-				    && roomState.Seed.Options.PresentAccessWithWheelAndSpindle
+				    && roomState.Seed.Options.BackToTheFuture
 				    && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerWheel)
 				    && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerSpindle))
 						roomState.Level.MarkRoomAsVisited(2, 54);
@@ -43,7 +43,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			}
 
 			if (!roomState.Seed.Options.Inverted
-			    || (roomState.Seed.Options.PresentAccessWithWheelAndSpindle
+			    || (roomState.Seed.Options.BackToTheFuture
 			        && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerWheel)
 			        && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerSpindle)))
 
