@@ -167,6 +167,7 @@
     <Compile Include="LevelObjects\Monsters\LabTrashSpawner.cs" />
     <Compile Include="LevelObjects\Monsters\LabTurret.cs" />
     <Compile Include="LevelObjects\Monsters\TowerPlasmaPod.cs" />
+    <Compile Include="LevelObjects\Other\BlastDoorEvent.cs" />
     <Compile Include="LevelObjects\Other\LabPowerCore.cs" />
     <Compile Include="LevelObjects\Other\LabLaser.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />
