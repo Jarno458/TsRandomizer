@@ -17,6 +17,7 @@ namespace TsRandomizer.LevelObjects.Other
 		{
 			if (!seed.Options.LockKeyAmadeus)
 				return;
+			Dynamic._orbPedestal.SilentKill();
 			Dynamic.SilentKill();
 		}
 	}
