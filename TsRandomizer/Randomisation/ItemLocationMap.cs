@@ -444,7 +444,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(7, 27, 184, 144), "Lake Serene (Upper): Cave secret", ItemProvider.Get(EInventoryFamiliarType.Griffin), UpperLakeSirine & OculusRift);
 			Add(new RoomItemKey(7, 28), "Lake Serene: Before Big Bird", ItemProvider.Get(EInventoryUseItemType.AlchemistTools), UpperLakeSirine);
 			Add(new ItemKey(7, 13, 56, 176), "Lake Serene: Behind the vines", ItemProvider.Get(EInventoryUseItemType.WarpCard), UpperLakeSirine);
-			Add(new ItemKey(7, 30, 296, 176), "Lake Serene: Pyramid keys room", ItemProvider.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine);
+			Add(new RoomItemKey(7, 30), "Lake Serene: Pyramid keys room", ItemProvider.Get(EInventoryRelicType.PyramidsKey), UpperLakeSirine);
 			Add(new ItemKey(7, 3, 120, 204), "Lake Serene (Upper): Chicken ledge", null, UpperLakeSirine);
 			areaName = "Lower Lake Serene";
 			Add(new ItemKey(7, 3, 440, 1232), "Lake Serene (Lower): Deep dive", ItemProvider.Get(EInventoryUseItemType.Potion), LowerLakeSirine);
