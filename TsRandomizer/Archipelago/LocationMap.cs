@@ -136,7 +136,7 @@ namespace TsRandomizer.Archipelago
 				{1337101, new ItemKey(7, 19, 168, 240)},
 				{1337102, new ItemKey(7, 27, 184, 144)},
 				{1337103, new ItemKey(7, 13, 56, 176)},
-				{1337104, new ItemKey(7, 30, 296, 176)},
+				{1337104, new RoomItemKey(7, 30)},
 				// Lower Lake Sirine
 				{1337105, new ItemKey(7, 3, 440, 1232)},
 				{1337106, new ItemKey(7, 7, 1432, 576)},
