@@ -31,7 +31,7 @@ namespace TsRandomizer
 		public bool RisingTides => (Flags & 1 << 18) > 0;
 		public bool UnchainedKeys => (Flags & 1 << 19) > 0;
 		public bool TrappedChests => (Flags & 1 << 20) > 0;
-		public bool PresentAccessWithWheelAndSpindle => (Flags & 1 << 21) > 0;
+		public bool BackToTheFuture => (Flags & 1 << 21) > 0;
 		public bool PrismBreak => (Flags & 1 << 22) > 0;
 		public bool LockKeyAmadeus => (Flags & 1 << 23) > 0;
 		public bool RiskyWarps => (Flags & 1 << 24) > 0;
@@ -61,14 +61,16 @@ namespace TsRandomizer
 				{"Cantoran", 1U << 11},
 				{"LoreChecks", 1U << 12},
 				{"Tournament", 1U << 13},
-				//FastPyramid, merged with EnterSandman
+				// FastPyramid, merged with EnterSandman
 				{"EnterSandman", 1U << 15},
-				//Archipelago, automaticly set above
+				// Archipelago, automaticly set above
 				{"DadPercent", 1U << 17},
 				{"RisingTides", 1U << 18},
 				{"UnchainedKeys", 1U << 19},
 				{"TrappedChests", 1U << 20},
+				// Alternative flag name for backwards compatability
 				{"PresentAccessWithWheelAndSpindle", 1U << 21},
+        {"BackToTheFuture", 1U << 21},
 				{"PrismBreak", 1U << 22},
 				{"LockKeyAmadeus", 1U << 23},
 				{"RiskyWarps", 1U << 24},
