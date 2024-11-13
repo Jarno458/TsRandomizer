@@ -6,7 +6,7 @@ namespace TsRandomizer.Randomisation
 	{
 		public static string Get(Requirement gate)
 		{
-			//present
+			// Present
 			if (gate.Contains(Requirement.GateKittyBoss))
 				return "Sewers";
 			if (gate.Contains(Requirement.GateLeftLibrary))
@@ -16,13 +16,17 @@ namespace TsRandomizer.Randomisation
 			if (gate.Contains(Requirement.GateSealedCaves))
 				return "Xarion's Cave Entrance";
 			if (gate.Contains(Requirement.GateXarion))
-				return "Xarion";
+				return "Xarion's Lair";
 			if (gate.Contains(Requirement.GateSealedSirensCave))
 				return "Sirens' Cave";
 			if (gate.Contains(Requirement.GateLakeDesolation))
 				return "Lake Desolation";
+			if (gate.Contains(Requirement.GateLabEntrance))
+				return "Amadeus' Laboratory";
+			if (gate.Contains(Requirement.GateDadsTower))
+				return "Emperor's Tower";
 
-			//past
+			// Past
 			if (gate.Contains(Requirement.GateRefugeeCamp))
 				return "Refugee Camp";
 			if (gate.Contains(Requirement.GateLakeSereneLeft))
@@ -42,7 +46,7 @@ namespace TsRandomizer.Randomisation
 			if (gate.Contains(Requirement.GateCavesOfBanishment))
 				return "Maw's Cave Entrance";
 
-			//ancient pyramid
+			// Ancient Pyramid
 			if (gate.Contains(Requirement.GateGyre))
 				return "Temporal Gyre Entrance";
 			if (gate.Contains(Requirement.GateLeftPyramid))

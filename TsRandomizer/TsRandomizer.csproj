@@ -161,11 +161,15 @@
     <Compile Include="LevelObjects\EnemyInfo.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
     <Compile Include="LevelObjects\Monsters\Bee.cs" />
+    <Compile Include="LevelObjects\Monsters\LabExperiment.cs" />
     <Compile Include="LevelObjects\Monsters\Demon.cs" />
     <Compile Include="LevelObjects\Monsters\CastleLargeSoldier.cs" />
     <Compile Include="LevelObjects\Monsters\LabTrashSpawner.cs" />
     <Compile Include="LevelObjects\Monsters\LabTurret.cs" />
     <Compile Include="LevelObjects\Monsters\TowerPlasmaPod.cs" />
+    <Compile Include="LevelObjects\Other\BlastDoorEvent.cs" />
+    <Compile Include="LevelObjects\Other\LabPowerCore.cs" />
+    <Compile Include="LevelObjects\Other\LabLaser.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast5.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCavesPast4.cs" />
     <Compile Include="LevelObjects\Other\CutsceneCity2.cs" />
@@ -190,6 +194,9 @@
     <Compile Include="Randomisation\WarpNames.cs" />
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
+    <Compile Include="RoomTriggers\Triggers\Bosses\AzureQueen.cs" />
+    <Compile Include="RoomTriggers\Triggers\LabSoftlockExits.cs" />
+    <Compile Include="RoomTriggers\Triggers\LabExperimentRooms.cs" />
     <Compile Include="RoomTriggers\Triggers\MilitaryHangarGyreWarp.cs" />
     <Compile Include="RoomTriggers\SandmanSoftlockPrevention.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />
@@ -204,6 +211,7 @@
     <Compile Include="RoomTriggers\Triggers\Bosses\Ravenlord.cs" />
     <Compile Include="RoomTriggers\Triggers\EelsInsteadOfRats.cs" />
     <Compile Include="RoomTriggers\Triggers\FixLabFloorTiles.cs" />
+    <Compile Include="RoomTriggers\Triggers\LabAndTowerWarpRooms.cs" />
     <Compile Include="RoomTriggers\Triggers\MilitaryHangarWarpRoom.cs" />
     <Compile Include="RoomTriggers\Triggers\OneHpFix.cs" />
     <Compile Include="RoomTriggers\Triggers\RisingTides.cs" />
@@ -224,7 +232,6 @@
     <Compile Include="RoomTriggers\Triggers\LibraryIfritWarp.cs" />
     <Compile Include="RoomTriggers\Triggers\MawDemonGate.cs" />
     <Compile Include="RoomTriggers\Triggers\MawGasArea.cs" />
-    <Compile Include="RoomTriggers\Triggers\MilitairyHangerGyreWarp.cs" />
     <Compile Include="RoomTriggers\Triggers\PlasmaCrystal.cs" />
     <Compile Include="RoomTriggers\Triggers\PostIfritWarp.cs" />
     <Compile Include="RoomTriggers\Triggers\PostNightmareChest.cs" />

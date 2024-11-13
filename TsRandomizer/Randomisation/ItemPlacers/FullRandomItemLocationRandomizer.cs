@@ -80,7 +80,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.ChaosHeal),
 				ItemInfoProvider.Get(EInventoryUseItemType.Antidote),
 				ItemInfoProvider.Get(EInventoryUseItemType.SandBottle),
-				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle)
+				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle),
 			};
 
 			traps = new List<ItemInfo>(6);
@@ -284,9 +284,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.Where(l => !l.IsUsed)
 				.ToList();
 
-			if (itemlist.Count > freeLocations.Count)
-				throw new Exception($"Not enough locations to place all items, locations {freeLocations.Count}, items: {itemlist.Count}");
-
 			//item pool
 			do
 			{
@@ -295,7 +292,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 				PutItemAtLocation(item, location);
 
-			} while (itemlist.Count > 0);
+			} while (itemlist.Count > 0 && freeLocations.Count > 0);
 
 			//traps
 			if (SeedOptions.TrappedChests)
@@ -309,16 +306,19 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 						PutItemAtLocation(item, location);
 					}
+					else
+						break;
 			}
 
 			//filler
-			do
-			{
-				var location = freeLocations.PopRandom(random);
-				var item = genericItems.SelectRandom(random);
+			if (freeLocations.Any())
+				do
+				{
+					var location = freeLocations.PopRandom(random);
+					var item = genericItems.SelectRandom(random);
 
-				PutItemAtLocation(item, location);
-			} while (freeLocations.Count > 0);
+					PutItemAtLocation(item, location);
+				} while (freeLocations.Count > 0);
 
 			FixProgressiveNonProgressionItemsInSameRoom(random);
 		}

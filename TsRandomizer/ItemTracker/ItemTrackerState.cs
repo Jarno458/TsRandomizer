@@ -50,6 +50,10 @@ namespace TsRandomizer.ItemTracker
 		public bool LaserA;
 		public bool LaserI;
 		public bool LaserM;
+		public bool LabGenza;
+		public bool LabDynamo;
+		public bool LabExperiment;
+		public bool LabResearch;
 
 		internal static ItemTrackerState FromItemLocationMap(IEnumerable<ItemLocation> itemLocations)
 		{
@@ -114,6 +118,10 @@ namespace TsRandomizer.ItemTracker
 			{CustomItem.GetIdentifier(CustomItemType.LaserAccessA), s => s.LaserA},
 			{CustomItem.GetIdentifier(CustomItemType.LaserAccessI), s => s.LaserI},
 			{CustomItem.GetIdentifier(CustomItemType.LaserAccessM), s => s.LaserM},
+			{CustomItem.GetIdentifier(CustomItemType.LabAccessGenza), s => s.LabGenza},
+			{CustomItem.GetIdentifier(CustomItemType.LabAccessDynamo), s => s.LabDynamo},
+			{CustomItem.GetIdentifier(CustomItemType.LabAccessExperiment), s => s.LabExperiment},
+			{CustomItem.GetIdentifier(CustomItemType.LabAccessResearch), s => s.LabResearch},
 		};
 
 		static void SetMemberForItem(ItemTrackerState trackerState, ItemIdentifier itemInfo)

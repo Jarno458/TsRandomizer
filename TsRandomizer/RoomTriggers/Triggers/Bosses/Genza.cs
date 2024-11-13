@@ -1,5 +1,7 @@
-﻿using Timespinner.GameAbstractions.Inventory;
+﻿using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Extensions;
+
 
 namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 {
@@ -10,15 +12,28 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 		{
 			base.OnRoomLoad(roomState);
 
-			if (roomState.Level.GameSave.GetSaveBool("IsFightingBoss"))
+			var level = roomState.Level;
+			// When Risky Warps is on and Boss Rando is off, Lunais should enter the boss to the right
+			if (level.GameSave.GetSeed().Value.Options.RiskyWarps &&
+				level.GameSave.GetSettings().BossRando.Value == "Off"
+				&& !level.GameSave.GetSaveBool("TSRando_IsBossDead_Shapeshift"))
+				if (level.RoomEntrance == EDirection.West)
+					level.RequestChangeLevel(new LevelChangeRequest
+					{
+						LevelID = 11,
+						RoomID = 21,
+						EnterDirection = EDirection.East
+					});
+
+			if (level.GameSave.GetSaveBool("IsFightingBoss"))
 				return;
 
 			if (!roomState.RoomItemLocation.IsPickedUp
-					&& roomState.Level.GameSave.GetSaveBool("TSRando_IsBossDead_Shapeshift")
-					&& roomState.Level.GameSave.HasRelic(EInventoryRelicType.ScienceKeycardA))
-				RoomTriggerHelper.SpawnItemDropPickup(roomState.Level, roomState.RoomItemLocation.ItemInfo, 200, 200);
+					&& level.GameSave.GetSaveBool("TSRando_IsBossDead_Shapeshift")
+					&& level.GameSave.HasRelic(EInventoryRelicType.ScienceKeycardA))
+				RoomTriggerHelper.SpawnItemDropPickup(level, roomState.RoomItemLocation.ItemInfo, 200, 200);
 
-			if (!roomState.Seed.Options.Inverted && roomState.Level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
+			if (!roomState.Seed.Options.Inverted && level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
 				RoomTriggerHelper.CreateSimpleOneWayWarp(roomState.Level, 16, 12);
 		}
 	}

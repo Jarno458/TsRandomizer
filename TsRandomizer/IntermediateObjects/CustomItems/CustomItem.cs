@@ -24,7 +24,11 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		LaserAccessA,
 		LaserAccessI,
 		LaserAccessM,
-		ThrowStunTrap
+		ThrowStunTrap,
+		LabAccessGenza,
+		LabAccessExperiment,
+		LabAccessResearch,
+		LabAccessDynamo
 	}
 
 	// consider beacons as starting items
