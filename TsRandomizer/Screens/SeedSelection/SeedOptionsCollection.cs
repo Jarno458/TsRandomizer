@@ -27,7 +27,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 18, new SeedOptionInfo { Name = "Rising Tides", Description = "Random areas are flooded or drained" } },
 			{ 1 << 19, new SeedOptionInfo { Name = "Unchained Keys", Description = "Start with Twin Pyramid Key, which does not give free warp; warp items for Past, Present, (and ??? with Enter Sandman) can be found." } },
 			{ 1 << 20, new SeedOptionInfo { Name = "Trapped Chests", Description = "Items can be traps. Toggle available traps in the 'Traps' settings." } },
-			{ 1 << 21, new SeedOptionInfo { Name = "Past Wheel & Spindle Warp", Description = "When inverted, allows using the refugee camp warp when both the Timespinner Wheel and Spindle is acquired." } },
+			{ 1 << 21, new SeedOptionInfo { Name = "Back to the Future", Description = "When inverted, allows using the refugee camp warp when both the Timespinner Wheel and Spindle are acquired." } },
 			{ 1 << 22, new SeedOptionInfo { Name = "Prism Break", Description = "Lasers blocking the Military Hangar are disabled via items, rather than by defeating bosses." } },
 		};
 
