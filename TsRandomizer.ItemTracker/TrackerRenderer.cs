@@ -34,13 +34,15 @@ namespace TsRandomizerItemTracker
 			var numberOfFireSourcesCombined = 4;
 			var numberOfPinkSourcesCombined = 3;
             var numberOfPyramidKeysSourcesCombined = 4;
-			var numberOfLasersCombined = 3;
+			var numberOfHangarLasersCombined = 3;
+			var numberOfLabLasersCombined = 4;
 
 			numberOfItems = ItemTrackerState.NumberOfItems 
                             - (numberOfFireSourcesCombined-1) 
                             - (numberOfPinkSourcesCombined-1)
                             - (numberOfPyramidKeysSourcesCombined-1)
-			    - (numberOfLasersCombined-1);
+							- (numberOfHangarLasersCombined-1)
+							- (numberOfLabLasersCombined - 1);
 		}
 
 		public void SetWidth(int clientBoundsWidth)
@@ -89,6 +91,7 @@ namespace TsRandomizerItemTracker
 				DrawFireSource(spriteBatch, state);
 				DrawPinkSource(spriteBatch, state);
 				DrawLaserAccess(spriteBatch, state);
+				DrawLabAccess(spriteBatch, state);
 			}
 		}
 
@@ -111,6 +114,16 @@ namespace TsRandomizerItemTracker
 			DrawSubItem(spriteBatch, state.LaserI, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(1, 0), Color.LightSalmon);
 			DrawSubItem(spriteBatch, state.LaserM, new ItemIdentifier(EInventoryUseItemType.PlaceHolderItem1), 2, new Point(0, 1), Color.Crimson);
 		}
+
+		void DrawLabAccess(SpriteBatch spriteBatch, ItemTrackerState state)
+		{
+			DrawItem(spriteBatch, state.LabExperiment && state.LabResearch && state.LabDynamo && state.LabGenza, new ItemIdentifier(EInventoryUseItemType.None), Color.Black);
+			DrawSubItem(spriteBatch, state.LabGenza, new ItemIdentifier(EInventoryEquipmentType.LabGlasses), 2, new Point(0, 0), Color.White);
+			DrawSubItem(spriteBatch, state.LabDynamo, new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Melee), 2, new Point(1, 0), Color.White);
+			DrawSubItem(spriteBatch, state.LabResearch, new ItemIdentifier(EInventoryEquipmentType.LabCoat), 2, new Point(0, 1), Color.White);
+			DrawSubItem(spriteBatch, state.LabExperiment, new ItemIdentifier(EInventoryFamiliarType.Demon), 2, new Point(1, 1), Color.White);
+		}
+
 
 		void DrawFireSource(SpriteBatch spriteBatch, ItemTrackerState state)
 		{
@@ -196,7 +209,7 @@ namespace TsRandomizerItemTracker
 			var animationIndex = itemInfo.GetAnimationIndex();
 			// Handle None item
 			if (animationIndex < 0)
-				animationIndex = 27;
+				animationIndex = 230;
 
 			AnimationIndexes.Add(itemInfo, animationIndex);
 

@@ -1,23 +1,25 @@
 # General
 Timespinner Randomizer will randomize the location of items such as equipment, relics, familiars, stat boosts, use items. The logic makes sure that each game you play is beatable.
 
-Unlike traditional randomizers, this randomizer will not alter the rom or exe of the game, instead it loads the game normally and alters its state in memory.
+Unlike traditional randomizers, this randomizer will not alter the executable, instead it loads the game normally and alters its state in memory.
 Save files will be loaded & stored in folder different from the normal game so they are not at risk.
 
-The game considers Nightmare as the final boss,	as such, to complete a seed you will need to collect all five pieces of the Timespinner and progress through the Ancient Pyramid. Your path to do so will be affected by the progression items (keycards, vertical movement, etc.) you find, as well as the flags you choose for the seed.
+The game considers Nightmare as the final boss, as such, to complete a seed you will need to collect all five pieces of the Timespinner and progress through the Ancient Pyramid. Your path to do so will be affected by the progression items (keycards, vertical movement, etc.) you find, as well as the flags you choose for the seed.
 
 Quests are not considered part of the randomizer, and they will not contain any progression items, however Neliste will still offer you an item when you talk to her, as will the Librarian.
 
-When you feel stuck, you can open the minimap and hold X (the key to remove map markers), it will highlight all locations that you can reach which have remaining checks.
+When you feel stuck, you can open the minimap and hold the melee button (the mapping to remove map markers), it will highlight all locations that you can reach which have remaining checks.
 
 For questions / remarks and feedback, feel free to join the #randomizer channel on the official timespinner discord https://discord.gg/Timespinner
 # Installation \ Startup
 Download latest TsRandomizer.exe or Linux / Mac zip file from the release page https://github.com/Jarno458/TsRandomizer/releases
 
-For windows:
-Just copy the TsRandomizer.exe to the same folder as Timespinner.exe is located, and start TsRandomizer.exe to start the game with the randomizer enabled, or Timespinner.exe to start the game normally
-For Linux and Mac:
+For Windows:
+Extract the contents of the corresponding zip file to the same folder as Timespinner.exe is located, and start TsRandomizer.exe to start the game with the randomizer enabled, or Timespinner.exe to start the game normally
+For Linux:
 Extract the contents of the corresponding zip file to the same folder as Timespinner.exe is located, and start TsRandomizer to start the game with the randomizer enabled, or Timespinner to start the game normally
+For Mac:
+Copy the contents of the Mac/ folder in the mac zip file to the `Timespinner.app/Contents/MacOS` folder. You may need to run `xattr -dr com.apple.quarantine TsRandomizer TsRandomizer.bin.osx` and `chmod +x TsRandomizer` to make execution possible. Then start TsRandomizer to start the game with the randomizer enabled, or Timespinner to start the game normally.
  
 ##### Supported versions
 * Windows Steam version 1.33 (latest)
@@ -36,24 +38,24 @@ In order to use the randomizer on a steam deck, you will have to install the ran
 
 # Gameplay changes
 * Orb\Ring\Spell shop is no longer available, orbs\rings\spells are dropped from random item locations instead
-* Umbra orb is randomized in even if you don't own the password
+* Umbra orb and familiar skins are in the item pool and do not require a password
 * Achievements cannot be unlocked
 * SaveStatue inside right elevator room is disabled to prevent a softlock
 * A return warp to the Pyramid entrance has been added in the Pyramid pit to prevent a softlock
 * SaveStatues in front of Temportal Gyre bosses Ifrit and Ravenlord are disabled to prevent softlocks
 * Aelana and The Maw no longer require twins to be killed before their door unlocks
+* Softlock exits are conditionally added the Lab and Hangar when Risky Warps are on and certain lasers are active
 
 # New keybinds
-* On the minimap screen, holding the secondary button (default: X) will highlight all locations that you can reach and still have items for you
-* In Load game menu, holding down the last orb button (default: left trigger) will show the seed id in numerical format
-* In Load game menu, holding down the last orb button (default: left trigger) +  the secondary button (default: X) will delete all saves
-* In Load game menu, pressing the next orb button (default: right trigger) will the generation of a spoiler log, the spoiler logs are saved in same directory as the TsRandomizer.exe
-* In Load game menu, Ctr+C can now be used to copy seed id of the currently selected save to the clipboard
-* In Seed selection menu, holding down the next orb button (default: right trigger) will allow you to force select a seed even when its logically unbeatable
-* In Seed selection menu, Ctr+V can now be used to past text in the seed field in order to copy paste seeds into the game
-* In Seed selection menu, Ctr+C can now be used to copy seed id to the clipboard
-* Anywhere, ` (tilde) will open the console. the console can be used to activate some command see /help for a list of available commands,
-	if you are connected to an archipelago server any text typed in the console is send to the server, giving you access to server commands
+* On the minimap screen, holding the melee button (default: X) will highlight all locations that you can reach and still have items for you
+* In Load game menu, holding down the left trigger will show the seed id in numerical format
+* In Load game menu, holding down the left trigger + X will delete all saves
+* In Load game menu, pressing the right trigger will trigger the generation of a spoiler log, the spoiler logs are saved in same directory as the TsRandomizer.exe
+* In Load game menu, Ctr+C can be used to copy seed id of the currently selected save to the clipboard
+* In Seed selection menu, holding down the right trigger will allow you to force select a seed even when its logically unbeatable
+* In Seed selection menu, Ctr+V can be used to past text in the seed field in order to copy paste seeds into the game
+* In Seed selection menu, Ctr+C can be used to copy seed id to the clipboard
+* Anywhere, ` (tilde) will open the console. the console can be used to activate some command see /help for a list of available commands, if you are connected to an archipelago server any text typed in the console is sent to the server, giving you access to server commands
 
 # Routing Changes
 * The drawbridge is now open by default, and doesn't require you to visit the Demon Twins in Lake Serene.
@@ -62,12 +64,13 @@ In order to use the randomizer on a steam deck, you will have to install the ran
 * When you obtain the twin pyramid key, a random transition room is unlocked that could open new routing opportunities. In the "Unchained Keys" flag, these bonus warps are found as items.
 * When using the "Gyre Archives" flag, locations from the Temporal Gyre are accessible from the present. The main loop can be reached in the Military Hangar after clearing the past, Ifrit can be reached by aquiring Kobo and proceeding to the portrait room in the Library, while Ravenlord can be reached by aquiring Merchant Crow and proceeding to the room in Amadeus' Laboratory containing the Historical Archives
 * When using the "Prism Break" flag, lasers protecting the Military Hangar are disabled by collecting items, rather than by killing the 3 relevant bosses.
+* When using the "Lock Key Amadeus" flag, lab lasers are disabled via items, and the power remains on. Junk spawners will continue to fire, and experiments will also spawn. The blast door remains closed.
 
 # Safety Checks
 Certain considerations were taken as anti-frustration changes in the seed routing. Sometimes this means certain items cannot appear in certain locations, other times it means while a difficult and/or tedious check may potentially be possible, the game will not consider it "in logic" until another requirement is reached.
 ## General
 * Selen will not give you Plasma Orb as a starter melee orb, as it quickly drains a low-level Lunais' aura.
-* The warp rooms next to the bosses Azure Queen and Xarion are not in the selection pool for free warps from the Twin Pyramid Key, as they could lead into immediate boss fights at the start of the seed.
+* The warp gates for Xarion, Azure Queen, Emperor's Tower, and Amadeus' Laboratory are only given as free warps when Risky Warps is on, due to their high level enemies or immediate bosses.
 * The Military Hangar chest guarded by falling bombs requires the Timespinner Wheel, though can be reached without it by using the Celestial Sash.
 * The larger "Struggle Juggle" maneuver, which requires jumping off of and repositioning a frozen Royal Guard enemy multiple times is only in logic with double jumps available, even if technically possible with single jumps.
 * While Meyef is able to burn vines, they do not count as a fire source in logic. (Two vines can be burned in this fashion by aggroing enemies into the correct locations, while the third can be burned by a second player)
@@ -106,8 +109,6 @@ The sprites for each setting will pull from XNB files both in the vanilla locati
 If additional sprites are copied to the appropriate character subfolder within the custom sprites folder, they can be selected in settings.
 
 There exist several programs that can extract XNB files into an editable image format, and can then repackage them for use as XNB files.
-
-Note that at this time Lunais' sprites are not able to be changed mid-run, but this may change in the future.
 
 # Known Bugs
 ##### I am aware of these issues, but I found them small enough not to fix at this moment

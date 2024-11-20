@@ -1,7 +1,6 @@
 ﻿namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 {
 	[RoomTriggerTrigger(6, 15)]
-	[RoomTriggerTrigger(7, 0)]
 	[RoomTriggerTrigger(8, 7)]
 	[RoomTriggerTrigger(9, 7)]
 	[RoomTriggerTrigger(12, 20)]
