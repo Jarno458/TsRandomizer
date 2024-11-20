@@ -61,7 +61,57 @@ namespace TsRandomizer.Extensions
 			for (int i = 0; i < colorData.Length; i++)
 				colorData[i] = newColor;
 
-			gameContentManager.SpMiniMap.Texture.SetData(0, target, colorData, 0, target.Width * target.Height);
+			gameContentManager.SpMiniMap.Texture.SetData(0, target, colorData, 0, colorData.Length);
+		}
+
+		public static void ChangeLabWaterColor(this GCM gameContentManager)
+		{
+			var tiles = gameContentManager.TsEventTiles;
+
+			var labWaterTile = tiles.GetFrameSource(7);
+			var labWaterTileColors = new Color[labWaterTile.Width * labWaterTile.Height];
+
+			gameContentManager.TsEventTiles.Texture.GetData(0, labWaterTile, labWaterTileColors, 0, labWaterTileColors.Length);
+
+			for (int i = 0; i < labWaterTileColors.Length; i++)
+			{
+				labWaterTileColors[i].G = (byte)(labWaterTileColors[i].G * 0.6f);
+				labWaterTileColors[i].A = 1;
+			}
+
+			gameContentManager.TsEventTiles.Texture.SetData(0, labWaterTile, labWaterTileColors, 0, labWaterTileColors.Length);
+
+			var leftLabWaterTopTile = tiles.GetFrameSource(8);
+			var rightLabWaterTopTile = tiles.GetFrameSource(13);
+
+			var frameSource = new Rectangle(leftLabWaterTopTile.X, leftLabWaterTopTile.Y,
+				(rightLabWaterTopTile.X + rightLabWaterTopTile.Width) - leftLabWaterTopTile.X,
+				(rightLabWaterTopTile.Y + rightLabWaterTopTile.Height) - leftLabWaterTopTile.Y);
+
+			var labWaterTopTileColors = new Color[frameSource.Width * frameSource.Height];
+
+			gameContentManager.TsEventTiles.Texture.GetData(0, frameSource, labWaterTopTileColors, 0, labWaterTopTileColors.Length);
+
+			for (int i = 0; i < labWaterTopTileColors.Length; i++)
+			{
+				if (labWaterTopTileColors[i].A == 0) 
+					continue;
+
+				labWaterTopTileColors[i].A = 1;
+
+				if (labWaterTopTileColors[i].R == 16 && labWaterTopTileColors[i].G == 112 && labWaterTopTileColors[i].B == 24)
+				{
+					labWaterTopTileColors[i].R = labWaterTileColors[0].R;
+					labWaterTopTileColors[i].G = labWaterTileColors[0].G;
+					labWaterTopTileColors[i].B = labWaterTileColors[0].B;
+				}
+				else
+				{
+					labWaterTopTileColors[i].G = (byte)(labWaterTopTileColors[i].G * 0.6f);
+				}
+			}
+
+			gameContentManager.TsEventTiles.Texture.SetData(0, frameSource, labWaterTopTileColors, 0, labWaterTopTileColors.Length);
 		}
 	}
 }

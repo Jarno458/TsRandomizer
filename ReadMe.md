@@ -16,8 +16,10 @@ Download latest TsRandomizer.exe or Linux / Mac zip file from the release page h
 
 For Windows:
 Extract the contents of the corresponding zip file to the same folder as Timespinner.exe is located, and start TsRandomizer.exe to start the game with the randomizer enabled, or Timespinner.exe to start the game normally
-For Linux and Mac:
+For Linux:
 Extract the contents of the corresponding zip file to the same folder as Timespinner.exe is located, and start TsRandomizer to start the game with the randomizer enabled, or Timespinner to start the game normally
+For Mac:
+Copy the contents of the Mac/ folder in the mac zip file to the `Timespinner.app/Contents/MacOS` folder. You may need to run `xattr -dr com.apple.quarantine TsRandomizer TsRandomizer.bin.osx` and `chmod +x TsRandomizer` to make execution possible. Then start TsRandomizer to start the game with the randomizer enabled, or Timespinner to start the game normally.
  
 ##### Supported versions
 * Windows Steam version 1.33 (latest)
