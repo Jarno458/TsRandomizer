@@ -16,7 +16,6 @@ namespace TsRandomizer.LevelObjects
 	class Enemizer
 	{
 		static readonly Type BossType = TimeSpinnerType.Get("Timespinner.GameObjects.BaseClasses.BossClass");
-
 		static readonly E[] LargeGroundedEnemies = {
 			E.JumpingCheveuxTank,
 			E.SealDog,
@@ -215,8 +214,6 @@ namespace TsRandomizer.LevelObjects
 					FlyingEnemies),
 				new RoomSpecificEnemies(10, 6, E.PresentBomber, //bombers before lab near gun-orb
 					E.PresentBomber),
-				new RoomSpecificEnemies(9, 7, E.XarionBossHand, //Xarions hand
-					E.XarionBossHand),
 				new RoomSpecificEnemies(8, 43, E.PastSnail, //Maw first snail
 					E.PastSnail),
 				new RoomSpecificEnemies(9, 43, E.PresentSnail, //Maw first snail
@@ -237,10 +234,10 @@ namespace TsRandomizer.LevelObjects
 			HardcodedEnemies.TryGetValue(roomKey, out var roomSpecificEnemies);
 
 			foreach (var enemy in enemies.ToArray())
-			{
-				if (enemy.EnemyType == EEnemyTileType.JunkSpawner || enemy.EnemyType == EEnemyTileType.LabAdult)
+			{	
+				if (enemy.EnemyType == EEnemyTileType.JunkSpawner || enemy.EnemyType == EEnemyTileType.LabAdult || enemy.EnemyType == EEnemyTileType.XarionBoss)
 					continue;
-				
+
 				var type = enemy.GetType();
 				if (type.IsSubclassOf(BossType))
 					continue;
