@@ -32,6 +32,8 @@ namespace TsRandomizer.Randomisation
 			if (!seed.Options.Inverted)
 			{
 				IEnumerable<TeleporterGate> pastTeleporterGates = PastTeleporterGates;
+				if (!seed.Options.RiskyWarps)
+					pastTeleporterGates = pastTeleporterGates.Where(g => g.Safe);
 
 				if (seed.FloodFlags.Maw)
 					pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
@@ -63,6 +65,9 @@ namespace TsRandomizer.Randomisation
 
 			if (seed.FloodFlags.Maw)
 				pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
+			if (!seed.Options.RiskyWarps)
+				pastTeleporterGates = pastTeleporterGates.Where(g => g.Safe);
+				presentTeleporterGates = presentTeleporterGates.Where(g => g.Safe);
 			if (seed.FloodFlags.Xarion)
 				presentTeleporterGates = presentTeleporterGates.Where(g => g.Gate != R.GateXarion);
 
@@ -92,42 +97,36 @@ namespace TsRandomizer.Randomisation
 	{
 		protected static readonly TeleporterGate[] PresentTeleporterGates =
 		{
-			new TeleporterGate{Gate = R.GateKittyBoss, LevelId = 2, RoomId = 55},
-			new TeleporterGate{Gate = R.GateLeftLibrary, LevelId = 2, RoomId = 54},
-			new TeleporterGate{Gate = R.GateMilitaryGate, LevelId = 10, RoomId = 12},
-			new TeleporterGate{Gate = R.GateSealedCaves, LevelId = 9, RoomId = 50},
-			new TeleporterGate{Gate = R.GateXarion, LevelId = 9, RoomId = 49},
-			new TeleporterGate{Gate = R.GateSealedSirensCave, LevelId = 9, RoomId = 51},
-			new TeleporterGate{Gate = R.GateLakeDesolation, LevelId = 1, RoomId = 25}
+			new TeleporterGate{Gate = R.GateKittyBoss, LevelId = 2, RoomId = 55, Safe = true},
+			new TeleporterGate{Gate = R.GateLeftLibrary, LevelId = 2, RoomId = 54, Safe = true},
+			new TeleporterGate{Gate = R.GateMilitaryGate, LevelId = 10, RoomId = 12, Safe = true},
+			new TeleporterGate{Gate = R.GateSealedCaves, LevelId = 9, RoomId = 50, Safe = true},
+			new TeleporterGate{Gate = R.GateXarion, LevelId = 9, RoomId = 49, Safe = false},
+			new TeleporterGate{Gate = R.GateSealedSirensCave, LevelId = 9, RoomId = 51, Safe = true},
+			new TeleporterGate{Gate = R.GateLakeDesolation, LevelId = 1, RoomId = 25, Safe = true},
+			new TeleporterGate{Gate = R.GateLabEntrance, LevelId = 11, RoomId = 33, Safe = false},
+			new TeleporterGate{Gate = R.GateDadsTower, LevelId = 12, RoomId = 0, Safe = false},
 		};
 
 		protected static readonly TeleporterGate[] PastTeleporterGates =
 		{
-			new TeleporterGate{Gate = R.GateRefugeeCamp, LevelId = 3, RoomId = 6},
-			new TeleporterGate{Gate = R.GateLakeSereneRight, LevelId = 7, RoomId = 31},
-			new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51},
-			new TeleporterGate{Gate = R.GateCastleRamparts, LevelId = 4, RoomId = 23},
-			new TeleporterGate{Gate = R.GateCastleKeep, LevelId = 5, RoomId = 24},
-			new TeleporterGate{Gate = R.GateRoyalTowers, LevelId = 6, RoomId = 0},
-			new TeleporterGate{Gate = R.GateMaw, LevelId = 8, RoomId = 49},
-			new TeleporterGate{Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50}
+			new TeleporterGate{Gate = R.GateRefugeeCamp, LevelId = 3, RoomId = 6, Safe = true},
+			new TeleporterGate{Gate = R.GateLakeSereneLeft, LevelId = 7, RoomId = 30, Safe = false },
+			new TeleporterGate{Gate = R.GateLakeSereneRight, LevelId = 7, RoomId = 31, Safe = true},
+			new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51, Safe = true},
+			new TeleporterGate{Gate = R.GateCastleRamparts, LevelId = 4, RoomId = 23, Safe = true},
+			new TeleporterGate{Gate = R.GateCastleKeep, LevelId = 5, RoomId = 24, Safe = true},
+			new TeleporterGate{Gate = R.GateRoyalTowers, LevelId = 6, RoomId = 0, Safe = true},
+			new TeleporterGate{Gate = R.GateMaw, LevelId = 8, RoomId = 49, Safe = true},
+			new TeleporterGate{Gate = R.GateCavesOfBanishment, LevelId = 8, RoomId = 50, Safe = true}
 		};
 
 		protected static readonly TeleporterGate[] PyramidTeleporterGates =
 		{
-			new TeleporterGate{Gate = R.GateGyre, LevelId = 14, RoomId = 1},
-			new TeleporterGate{Gate = R.GateLeftPyramid, LevelId = 16, RoomId = 12},
-			new TeleporterGate{Gate = R.GateRightPyramid, LevelId = 16, RoomId = 19}
+			new TeleporterGate{Gate = R.GateGyre, LevelId = 14, RoomId = 1, Safe = true},
+			new TeleporterGate{Gate = R.GateLeftPyramid, LevelId = 16, RoomId = 12, Safe = true},
+			new TeleporterGate{Gate = R.GateRightPyramid, LevelId = 16, RoomId = 19, Safe = true}
 		};
-
-		// Not enabled at this time
-		/*
-		protected static readonly TeleporterGate[] RiskyTeleporterGates =
-		{
-			new TeleporterGate{Gate = R.GateLakeSereneLeft, LevelId = 7, RoomId = 30}, // Azure Queen Boss
-			new TeleporterGate{Gate = R. , LevelId = 11, RoomId = 33}, // The Lab
-			new TeleporterGate{Gate = R. , LevelId = 12, RoomId = 0}, // Emperor's Tower
-		};*/
 
 		protected readonly LookupDictionary<ItemIdentifier, UnlockingSpecification> UnlockingSpecifications;
 
@@ -181,6 +180,13 @@ namespace TsRandomizer.Randomisation
 				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LaserAccessI), R.LaserI));
 				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LaserAccessM), R.LaserM));
 			}
+			if (seed.Options.LockKeyAmadeus)
+			{
+				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LabAccessGenza), R.LabGenza));
+				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LabAccessDynamo), R.LabDynamo));
+				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LabAccessExperiment), R.LabExperiment));
+				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LabAccessResearch), R.LabResearch));
+			}
 		}
 
 		void MakeKeyCardUnlocksCardSpecific()
@@ -222,6 +228,7 @@ namespace TsRandomizer.Randomisation
 			public R Gate { get; internal set; }
 			public int LevelId { get; internal set; }
 			public int RoomId { get; internal set; }
+			public bool Safe { get; internal set; }
 		}
 	}
 }
