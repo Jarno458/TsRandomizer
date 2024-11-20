@@ -11,6 +11,7 @@ using SDL2;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
+using TsRandomizer.Archipelago;
 using TsRandomizer.Drawables;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -99,7 +100,6 @@ namespace TsRandomizer.Screens
 
 			foreach (var missingEntry in missingArchipelagoEntries)
 				archipelagoRepresentations.Remove(missingEntry);
-
 
 			UpdateInput(input);
 		}
@@ -198,8 +198,6 @@ namespace TsRandomizer.Screens
 
 				DisplaySeedId();
 
-				DisplayArchipelagoInfo();
-
 				if (input.IsNewPressSecondary(null))
 				{
 					Dynamic._isDeleting = false;
@@ -210,6 +208,8 @@ namespace TsRandomizer.Screens
 			else
 			{
 				UpdateDescription(false);
+
+				DisplayArchipelagoInfo();
 			}
 
 			if (input.IsNewPressPageRight(null))
@@ -250,6 +250,33 @@ namespace TsRandomizer.Screens
 					ScreenManager.AddScreen(ArchipelagoSelectionScreen.Create(ScreenManager), null);
 			}
  		}
+
+		public string GetApServerUri()
+		{
+			var selectedSaveFile = CurrentSelectedSave;
+			if (selectedSaveFile == null)
+				return "";
+
+			return selectedSaveFile.GetSaveString(ArchipelagoItemLocationRandomizer.GameSaveServerKey);
+		}
+
+		public string GetApUserName()
+		{
+			var selectedSaveFile = CurrentSelectedSave;
+			if (selectedSaveFile == null)
+				return "";
+
+			return selectedSaveFile.GetSaveString(ArchipelagoItemLocationRandomizer.GameSaveUserKey);
+		}
+
+		public string GetApPassword()
+		{
+			var selectedSaveFile = CurrentSelectedSave;
+			if (selectedSaveFile == null)
+				return "";
+
+			return selectedSaveFile.GetSaveString(ArchipelagoItemLocationRandomizer.GameSavePasswordKey);
+		}
 
 		void UpdateDescription(bool displayDeleteAll)
 		{

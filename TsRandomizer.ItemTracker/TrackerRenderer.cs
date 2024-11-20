@@ -42,7 +42,7 @@ namespace TsRandomizerItemTracker
                             - (numberOfPinkSourcesCombined-1)
                             - (numberOfPyramidKeysSourcesCombined-1)
 							- (numberOfHangarLasersCombined-1)
-							- (numberOfLabLasersCombined - 1);
+							- (numberOfLabLasersCombined-1);
 		}
 
 		public void SetWidth(int clientBoundsWidth)
@@ -78,14 +78,14 @@ namespace TsRandomizerItemTracker
                 DrawPyramidKeys(spriteBatch, state);
 				DrawItem(spriteBatch, state.WaterMask, new ItemIdentifier(EInventoryRelicType.WaterMask));
 				DrawItem(spriteBatch, state.GasMask, new ItemIdentifier(EInventoryRelicType.AirMask));
-				DrawItem(spriteBatch, state.CardA, new ItemIdentifier(EInventoryRelicType.ScienceKeycardA));
+                DrawItem(spriteBatch, state.EyeRing, new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive));
+                DrawItem(spriteBatch, state.CardA, new ItemIdentifier(EInventoryRelicType.ScienceKeycardA));
 				DrawItem(spriteBatch, state.CardB, new ItemIdentifier(EInventoryRelicType.ScienceKeycardB));
 				DrawItem(spriteBatch, state.CardC, new ItemIdentifier(EInventoryRelicType.ScienceKeycardC));
 				DrawItem(spriteBatch, state.CardD, new ItemIdentifier(EInventoryRelicType.ScienceKeycardD));
 				DrawItem(spriteBatch, state.CardV, new ItemIdentifier(EInventoryRelicType.ScienceKeycardV));
 				DrawItem(spriteBatch, state.Tablet, new ItemIdentifier(EInventoryRelicType.Tablet));
 				DrawItem(spriteBatch, state.CardE, new ItemIdentifier(EInventoryRelicType.ElevatorKeycard));
-				DrawItem(spriteBatch, state.EyeRing, new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Passive));
 				DrawItem(spriteBatch, state.Kobo, new ItemIdentifier(EInventoryFamiliarType.Kobo));
 				DrawItem(spriteBatch, state.MerchantCrow, new ItemIdentifier(EInventoryFamiliarType.MerchantCrow));
 				DrawFireSource(spriteBatch, state);
@@ -117,7 +117,8 @@ namespace TsRandomizerItemTracker
 
 		void DrawLabAccess(SpriteBatch spriteBatch, ItemTrackerState state)
 		{
-			DrawItem(spriteBatch, state.LabExperiment && state.LabResearch && state.LabDynamo && state.LabGenza, new ItemIdentifier(EInventoryUseItemType.None), Color.Black);
+			//needed to correctly update xIndex
+			DrawItem(spriteBatch, false, new ItemIdentifier(EInventoryUseItemType.None), Color.Black);
 			DrawSubItem(spriteBatch, state.LabGenza, new ItemIdentifier(EInventoryEquipmentType.LabGlasses), 2, new Point(0, 0), Color.White);
 			DrawSubItem(spriteBatch, state.LabDynamo, new ItemIdentifier(EInventoryOrbType.Eye, EOrbSlot.Melee), 2, new Point(1, 0), Color.White);
 			DrawSubItem(spriteBatch, state.LabResearch, new ItemIdentifier(EInventoryEquipmentType.LabCoat), 2, new Point(0, 1), Color.White);
@@ -192,13 +193,13 @@ namespace TsRandomizerItemTracker
         {
             var gridSectionSize = IconSize / subGridSize;
 			var position = new Point(
-                --xIndex * IconSize + (gridSectionSize * subItemCoordinate.X),
-                  yIndex * IconSize + (gridSectionSize * subItemCoordinate.Y));
+                (xIndex - 1) * IconSize + (gridSectionSize * subItemCoordinate.X),
+                yIndex       * IconSize + (gridSectionSize * subItemCoordinate.Y));
 
             DrawItem(spriteBatch, new Rectangle(position.X, position.Y, gridSectionSize, gridSectionSize), 
                 obtained, GetAnimationIndex(itemInfo), color);
 
-            xIndex++;
+            //xIndex++;
         }
 
 		static int GetAnimationIndex(ItemIdentifier itemInfo)

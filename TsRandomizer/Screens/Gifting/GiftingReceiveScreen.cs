@@ -50,6 +50,7 @@ namespace TsRandomizer.Screens.Gifting
 			{ Trait.Consumable, "Use items" },
 			{ Trait.Resource, "Sand bottles" },
 			{ Trait.Fiber, "Herbs" },
+			{ Trait.XP, "Increases experience gain" },
 		};
 
 		static readonly Dictionary<Trait, object> Icons = new Dictionary<Trait, object> {
@@ -69,6 +70,7 @@ namespace TsRandomizer.Screens.Gifting
 			{ Trait.Consumable, EInventoryItemIconType.GetEnumValue("FuturePotion") },
 			{ Trait.Resource, EInventoryItemIconType.GetEnumValue("SandBottle") },
 			{ Trait.Fiber, EInventoryItemIconType.GetEnumValue("Herb") },
+			{ Trait.XP, EInventoryItemIconType.GetEnumValue("NelisteEarring") },
 		};
 
 		object traitSelectionMenu;

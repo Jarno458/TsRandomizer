@@ -61,7 +61,7 @@ namespace TsRandomizer.Settings
 
 		public SpecificValuesGameSetting EnemyRando = new SpecificValuesGameSetting("Enemy Randomization",
 			"Sets wheter enemies will be randomized, and if their damage/hp should be scaled.",
-			new List<string> { "Off", "Scaled", "UnScaled", "Ryshia" }, "Off", true);
+			new List<string> { "Off", "Scaled", "UnScaled", "No hell spiders", "Ryshia" }, "Off", true);
 
 		public SpecificValuesGameSetting DamageRando = new SpecificValuesGameSetting("Damage Randomizer",
 			"Randomly nerfs and buffs orbs, spells, and some rings. \"Manual\" requires editing the randomizer settings file.",

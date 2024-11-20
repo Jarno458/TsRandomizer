@@ -3,7 +3,6 @@ using Timespinner.Core.Specifications;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 
-
 namespace TsRandomizer.RoomTriggers.Triggers
 {
 	[RoomTriggerTrigger(11, 1)] // Experiment 13
@@ -11,6 +10,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	[RoomTriggerTrigger(11, 28)]
 	[RoomTriggerTrigger(11, 29)]
 	[RoomTriggerTrigger(11, 37)]
+	// ReSharper disable once UnusedMember.Global
 	class LabExperimentRooms : RoomTrigger
 	{
 		public override void OnRoomLoad(RoomState roomState)
@@ -47,9 +47,14 @@ namespace TsRandomizer.RoomTriggers.Triggers
 				Argument = 0,
 				IsFlippedHorizontally = false
 			};
-			var enemyType = isAdult ? TimeSpinnerType.Get("Timespinner.GameObjects.Enemies.LabAdult") : TimeSpinnerType.Get("Timespinner.GameObjects.Enemies.LabChild");
+			var enemyType = isAdult 
+				? TimeSpinnerType.Get("Timespinner.GameObjects.Enemies.LabAdult") 
+				: TimeSpinnerType.Get("Timespinner.GameObjects.Enemies.LabChild");
 			var sprite = isAdult ? level.GCM.SpLabAdult : level.GCM.SpLabChild;
 			var enemy = enemyType.CreateInstance(false, point, level, sprite, -1, enemyTile);
+
+			enemy.AsDynamic().InitializeMob();
+
 			level.AsDynamic().RequestAddObject(enemy);
 		}
 	}

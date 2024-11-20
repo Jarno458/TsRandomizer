@@ -58,13 +58,23 @@ namespace TsRandomizer.Screens
 			difficultyMenu = screenManager.FirstOrDefault<GameDifficultyMenuScreen>();
 			saveSelectScreen = screenManager.FirstOrDefault<SaveSelectScreen>();
 
+
+			if (saveSelectScreen == null)
+			{
 #if DEBUG
-			values[ServerIndex] = "localhost";
+				values[ServerIndex] = "localhost";
 #else
-			values[ServerIndex] = "archipelago.gg:";
+				values[ServerIndex] = "archipelago.gg:";
 #endif
-			values[UserIndex] = "";
-			values[PasswordIndex] = "";
+				values[UserIndex] = "";
+				values[PasswordIndex] = "";
+			}
+			else
+			{
+				values[ServerIndex] = saveSelectScreen.GetApServerUri();
+				values[UserIndex] = saveSelectScreen.GetApUserName();
+				values[PasswordIndex] = saveSelectScreen.GetApPassword();
+			}
 		}
 
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)

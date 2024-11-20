@@ -116,8 +116,16 @@ namespace TsRandomizer.LevelObjects
 			.Concat(OtherEnemies)
 			.ToArray();
 
+		static readonly E[] EnemiesWithHellSpider = Enemies.Concat(new[] {
+			E.HellSpider
+		}).ToArray();
+
 		static readonly E[] UnderwaterEnemies = Enemies.Concat(new[] {
 			E.Eel
+		}).ToArray();
+
+		static readonly E[] UnderwaterEnemiesWithHellSpider = UnderwaterEnemies.Concat(new[] {
+			E.HellSpider
 		}).ToArray();
 
 		static readonly LookupDictionary<Roomkey, RoomSpecificEnemies> HardcodedEnemies
@@ -263,16 +271,19 @@ namespace TsRandomizer.LevelObjects
 					//&& EnemyInfo.Get[hardcodedEnemy.EnemyTypeToReplace].Argument == enemy.AsDynamic()._argument
 					&& (roomSpecificEnemies.EnemyPositions == null || roomSpecificEnemies.EnemyPositions.Contains(enemy.Position)))
 				return roomSpecificEnemies.Enemies.SelectRandom(random);
+
 			if (settings.EnemyRando.Value == "Ryshia")
 				return E.Ryshia;
-			//if (enemy.IsOnCeiling())
-			//	return CeilingEnemies.SelectRandom(random);
-			if (enemy.IsInWater)
-				return UnderwaterEnemies.SelectRandom(random);
 			
-			return Enemies.SelectRandom(random);
-		}
+			if (enemy.IsInWater)
+				return settings.EnemyRando.Value == "No hell spiders" 
+					? UnderwaterEnemies.SelectRandom(random) 
+					: UnderwaterEnemiesWithHellSpider.SelectRandom(random);
 
+			return settings.EnemyRando.Value == "No hell spiders" 
+				? Enemies.SelectRandom(random) 
+				: EnemiesWithHellSpider.SelectRandom(random);
+		}
 	}
 	
 	class RoomSpecificEnemies

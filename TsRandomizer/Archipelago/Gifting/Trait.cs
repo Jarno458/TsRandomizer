@@ -18,5 +18,6 @@
 		Consumable,
 		Resource,
 		Fiber,
+		XP
 	}
 }

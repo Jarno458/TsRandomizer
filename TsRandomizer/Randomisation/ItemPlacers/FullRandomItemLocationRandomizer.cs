@@ -28,11 +28,17 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		{
 			itemsToRemoveFromGame = new List<ItemInfo>
 			{
+				//orb upgrade items
 				ItemInfoProvider.Get(EInventoryUseItemType.MagicMarbles),
 				ItemInfoProvider.Get(EInventoryUseItemType.GoldRing),
 				ItemInfoProvider.Get(EInventoryUseItemType.GoldNecklace),
+				//quest items
 				ItemInfoProvider.Get(EInventoryUseItemType.SilverOre),
 				ItemInfoProvider.Get(EInventoryUseItemType.EssenceCrystal),
+				ItemInfoProvider.Get(EInventoryEquipmentType.ShinyRock),
+				ItemInfoProvider.Get(EInventoryUseItemType.FoodSynth),
+				ItemInfoProvider.Get(EInventoryUseItemType.GalaxyStone),
+				ItemInfoProvider.Get(EInventoryUseItemType.PlasmaIV)
 			};
 
 			if (SeedOptions.StartWithJewelryBox)
@@ -53,7 +59,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryEquipmentType.TrendyJacket),
 				ItemInfoProvider.Get(EInventoryEquipmentType.FamiliarEgg),
 				ItemInfoProvider.Get(EInventoryEquipmentType.LuckyCoin),
-				ItemInfoProvider.Get(EInventoryEquipmentType.ShinyRock),
 				ItemInfoProvider.Get(EInventoryRelicType.EternalBrooch),
 				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltMeyef),
 				ItemInfoProvider.Get(EInventoryRelicType.FamiliarAltCrow)
@@ -84,7 +89,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			};
 
 			traps = new List<ItemInfo>(6);
-
 			//i hate it, we should not be using settings in here
 			if (settings.SparrowTrap.Value)
 				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.MeteorSparrowTrap)));
@@ -98,8 +102,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.BeeTrap)));
 			if (settings.ThrowStunTrap.Value)
 				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.ThrowStunTrap)));
-			if (!traps.Any())
-				traps.Add(itemInfoProvider.Get(EInventoryUseItemType.PlaceHolderItem1));
 		}
 
 		public override ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly)
@@ -284,6 +286,9 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				.Where(l => !l.IsUsed)
 				.ToList();
 
+			if (itemlist.Count > freeLocations.Count)
+				throw new Exception($"Not enough locations to place all items, locations {freeLocations.Count}, items: {itemlist.Count}");
+
 			//item pool
 			do
 			{
@@ -292,33 +297,33 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 				PutItemAtLocation(item, location);
 
-			} while (itemlist.Count > 0 && freeLocations.Count > 0);
+			} while (itemlist.Count > 0);
 
 			//traps
-			if (SeedOptions.TrappedChests)
+			if (SeedOptions.TrappedChests && traps.Any())
 			{
 				var trapChance = 15d;
-				for (int i = 0; i < Math.Ceiling((freeLocations.Count / 100d) * trapChance); i++)
-					if (freeLocations.Any())
-					{
-						var location = freeLocations.PopRandom(random);
-						var item = traps.SelectRandom(random);
-
-						PutItemAtLocation(item, location);
-					}
-					else
+				var trapsToPlace = Math.Ceiling((freeLocations.Count / 100d) * trapChance);
+				for (int i = 0; i < trapsToPlace; i++)
+				{
+					if (!freeLocations.Any())
 						break;
+
+					var location = freeLocations.PopRandom(random);
+					var item = traps.SelectRandom(random);
+
+					PutItemAtLocation(item, location);
+				}
 			}
 
 			//filler
-			if (freeLocations.Any())
-				do
-				{
-					var location = freeLocations.PopRandom(random);
-					var item = genericItems.SelectRandom(random);
+			while (freeLocations.Count > 0)
+			{
+				var location = freeLocations.PopRandom(random);
+				var item = genericItems.SelectRandom(random);
 
-					PutItemAtLocation(item, location);
-				} while (freeLocations.Count > 0);
+				PutItemAtLocation(item, location);
+			}
 
 			FixProgressiveNonProgressionItemsInSameRoom(random);
 		}
