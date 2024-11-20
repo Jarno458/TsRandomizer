@@ -109,8 +109,11 @@ namespace TsRandomizer.Archipelago
 			ScreenManager.Console.AddLine($"Socket Error: {message}", XnaColor.Red);
 			ScreenManager.Console.AddLine($"Socket Exception: {e.Message}", XnaColor.Red);
 
-			foreach (var line in e.StackTrace.Split('\n'))
-				ScreenManager.Console.AddLine($"    {line}");
+			if (e.StackTrace != null)
+				foreach (var line in e.StackTrace.Split('\n'))
+					ScreenManager.Console.AddLine($"    {line}");
+			else
+				ScreenManager.Console.AddLine($"    No stacktrace provided");
 		}
 		static void Socket_SocketOpened() =>
 			ScreenManager.Console.AddLine($"Socket opened to: {session.Socket.Uri}", XnaColor.Gray);
@@ -151,7 +154,7 @@ namespace TsRandomizer.Archipelago
 			{
 				case ItemSendLogMessage itemMessage:
 					ScreenManager.Log.Add(itemMessage.IsSenderTheActivePlayer, 
-						itemMessage.Receiver.IsSharingGroupWith(Team, Slot), itemMessage.Item.Flags, parts);
+						itemMessage.Receiver.IsRelatedTo(session.Players.ActivePlayer), itemMessage.Item.Flags, parts);
 					break;
 				case CountdownLogMessage countdown:
 					_ = new Countdown(countdown.RemainingSeconds);

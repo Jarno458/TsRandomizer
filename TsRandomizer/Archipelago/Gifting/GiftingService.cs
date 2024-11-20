@@ -182,7 +182,7 @@ namespace TsRandomizer.Archipelago.Gifting
 			{
 				ScreenManager.Console.AddException(e, "GiftingService.GetGifts() Failed");
 
-				return new Gift[0];
+				return Array.Empty<Gift>();
 			}
 		}
 
