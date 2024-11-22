@@ -150,7 +150,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceStarterProgressionItems(Random random)
 		{
-			if (SeedOptions.StartWithTalaria || (SeedOptions.Inverted && !SeedOptions.PyramidStart) || Seed.FloodFlags.LakeDesolation)
+			if (!SeedOptions.PyramidStart && (SeedOptions.StartWithTalaria || SeedOptions.Inverted || Seed.FloodFlags.LakeDesolation))
 				GiveOrbsToMom(random, false);
 			else
 				PlaceStarterProgressionItem(random);
