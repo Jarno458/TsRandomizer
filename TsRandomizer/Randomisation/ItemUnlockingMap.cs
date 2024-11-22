@@ -71,7 +71,7 @@ namespace TsRandomizer.Randomisation
 			SetUnchainedKeysUnlock(Random, CustomItemType.TimewornWarpBeacon, pastTeleporterGates.ToArray());
 			SetUnchainedKeysUnlock(Random, CustomItemType.ModernWarpBeacon, presentTeleporterGates.ToArray());
 
-			if (seed.Options.EnterSandman && !seed.Options.PyramidStart)
+			if (seed.Options.EnterSandman)
 				SetUnchainedKeysUnlock(Random, CustomItemType.MysteriousWarpBeacon, PyramidTeleporterGates);
 		}
 
