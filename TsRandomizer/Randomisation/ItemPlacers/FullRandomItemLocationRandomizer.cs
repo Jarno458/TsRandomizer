@@ -159,13 +159,19 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		void PlaceStarterProgressionItem(Random random)
 		{
 			var starterProgressionItems = new List<ItemInfo> {
-				ItemInfoProvider.Get(EInventoryRelicType.Dash),
-				ItemInfoProvider.Get(EInventoryRelicType.Dash),
+				
 				ItemInfoProvider.Get(EInventoryRelicType.DoubleJump),
 				ItemInfoProvider.Get(EInventoryRelicType.DoubleJump),
-				ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel),
-				ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel),
 			};
+
+			if (!SeedOptions.PyramidStart)
+			{
+				// Neither are helpful in a pyramid start
+				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));
+				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));
+				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel));
+				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel));
+			}
 
 			if (!SeedOptions.ProgressiveVerticalMovement)
 			{
