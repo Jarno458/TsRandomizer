@@ -105,6 +105,9 @@ namespace TsRandomizer.Randomisation
 			if (SeedOptions.LoreChecks)
 				AddLoreLocations();
 
+			if (SeedOptions.PyramidStart)
+				AddPyramidStartLocations();
+
 			if (SeedOptions.StartWithTalaria)
 				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
 
@@ -122,7 +125,7 @@ namespace TsRandomizer.Randomisation
 				? R.GasMask
 				: R.Free;
 
-			LakeDesolationLeft = (!SeedOptions.Inverted)
+			LakeDesolationLeft = (!SeedOptions.Inverted && !SeedOptions.PyramidStart)
 				? R.Free
 				: R.GateLakeDesolation
 				| R.GateKittyBoss
@@ -145,7 +148,7 @@ namespace TsRandomizer.Randomisation
 				LakeDesolationRight |= R.TimespinnerWheel & R.TimespinnerSpindle;
 			}
 			
-			RefugeeCamp = (SeedOptions.Inverted)
+			RefugeeCamp = (SeedOptions.Inverted && !SeedOptions.PyramidStart)
 				? R.Free
 				: (
 					R.TimespinnerWheel & R.TimespinnerSpindle
@@ -256,7 +259,7 @@ namespace TsRandomizer.Randomisation
 				SealedCavesSkeleton |= LakeDesolationLeft & (FloodsFlags.LakeDesolation ? R.Free : R.DoubleJump);
 				SealedCaves |= SealedCavesSkeleton & R.CardA;
 
-				if (!SeedOptions.Inverted)
+				if (!SeedOptions.Inverted & !SeedOptions.PyramidStart)
 					RefugeeCamp |= MidLibrary & R.TimespinnerWheel & R.TimespinnerSpindle;
 					UpperCavesOfBanishment = RefugeeCamp;
 					CastleRamparts = RefugeeCamp;
@@ -278,8 +281,9 @@ namespace TsRandomizer.Randomisation
 			//pyramid
 			var completeTimespinner = R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3 & R.TimespinnerSpindle & R.TimespinnerWheel;
 			TemporalGyre = MilitaryFortress & R.TimespinnerWheel;
-			PyramidEntrance =
-				(UpperLab & completeTimespinner)
+			PyramidEntrance = (SeedOptions.PyramidStart)
+				? R.Free
+				: (UpperLab & completeTimespinner)
 				| R.GateGyre | R.GateLeftPyramid | (R.GateRightPyramid & R.DoubleJump);
 			MidPyramid = PyramidEntrance & R.DoubleJump;
 			RightPyramid = 
@@ -517,6 +521,11 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(16, 16, 1512, 144), "Ancient Pyramid: Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), MidPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft));
 			Add(new ItemKey(16, 5, 136, 192), "Ancient Pyramid: Nightmare Door chest", ItemProvider.Get(EInventoryEquipmentType.SelenBangle), RightPyramid);
 		}
+		void AddPyramidStartLocations()
+		{
+			areaName = "Ancient Forest";
+			Add(new RoomItemKey(15, 2), "Ancient Forest: Training Dummy", null, PyramidEntrance);
+		}
 
 		void AddGyreItemLocations()
 		{
@@ -698,15 +707,15 @@ namespace TsRandomizer.Randomisation
 
 		bool IsGasMaskReachableWithTheMawRequirements()
 		{
-			//Gasmask may never be placed in a Gas effected place
+			//Gasmask may never be placed in a Gas affected place
 			//the very basics to reach maw should also allow you to get Gasmask
-			//unless we run inverted, then we can garantee the user has the pyramid keys before entering lake desolation
+			//unless we run inverted, then we can guarantee the user has the pyramid keys before entering lake desolation
 			var gasmaskLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
 
 			var levelIdsToAvoid = new List<int>(3) { 1 }; //lake desolation
 			var mawRequirements = R.None;
 			
-			if (!SeedOptions.Inverted)
+			if (!SeedOptions.Inverted && !SeedOptions.PyramidStart)
 			{
 				mawRequirements |= R.GateAccessToPast;
 

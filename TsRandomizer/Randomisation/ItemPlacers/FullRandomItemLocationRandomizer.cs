@@ -243,7 +243,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			var levelIdsToAvoid = new List<int>(3) { 1 };
 			var minimalMawRequirements = R.None;
 
-			if (!SeedOptions.Inverted)
+			if (!SeedOptions.Inverted && !SeedOptions.PyramidStart)
 			{
 				minimalMawRequirements |= R.GateAccessToPast;
 

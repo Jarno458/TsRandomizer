@@ -31,6 +31,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 22, new SeedOptionInfo { Name = "Prism Break", Description = "Lasers blocking the Military Hangar are disabled via items, rather than by defeating bosses." } },
 			{ 1 << 23, new SeedOptionInfo { Name = "Lock Key Amadeus", Description = "Lasers in Amadeus' Laboratory are disabled via items, rather than by de-powering the lab. Experiments will spawn in the lab." } },
 			{ 1 << 24, new SeedOptionInfo { Name = "Risky Warps", Description = "Expanded free-warp eligible locations, including Azure Queen, Xarion, Amadeus' Laboratory, and Emperor's Tower." } },
+			{ 1 << 25, new SeedOptionInfo { Name = "Pyramid Start", Description = "Start in ???. Takes priority over Inverted, but selecting both will remove Vardagroth's Timespinner." } },
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)

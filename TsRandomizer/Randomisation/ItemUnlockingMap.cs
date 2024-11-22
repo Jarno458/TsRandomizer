@@ -29,17 +29,14 @@ namespace TsRandomizer.Randomisation
 
 			var teleporterGates = presentTeleporterGates;
 
-			if (!seed.Options.Inverted)
-			{
-				IEnumerable<TeleporterGate> pastTeleporterGates = PastTeleporterGates;
-				if (!seed.Options.RiskyWarps)
-					pastTeleporterGates = pastTeleporterGates.Where(g => g.Safe);
+			IEnumerable<TeleporterGate> pastTeleporterGates = PastTeleporterGates;
+			if (!seed.Options.RiskyWarps)
+				pastTeleporterGates = pastTeleporterGates.Where(g => g.Safe);
 
-				if (seed.FloodFlags.Maw)
-					pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
+			if (seed.FloodFlags.Maw)
+				pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
 
-				teleporterGates = teleporterGates.Union(pastTeleporterGates);
-			}
+			teleporterGates = teleporterGates.Union(pastTeleporterGates);
 
 			var selectedGate = teleporterGates.SelectRandom(Random);
 
@@ -48,13 +45,13 @@ namespace TsRandomizer.Randomisation
 			pyramidUnlockingSpecification.OnPickup = level => {
 				level.MarkRoomAsVisited(selectedGate.LevelId, selectedGate.RoomId);
 
-				if (seed.Options.EnterSandman)
+				if (seed.Options.EnterSandman && !seed.Options.PyramidStart)
 					level.MarkRoomAsVisited(PyramidTeleporterGates[1].LevelId, PyramidTeleporterGates[1].RoomId);
 			};
 
 			pyramidUnlockingSpecification.Unlocks = selectedGate.Gate;
 
-			if (seed.Options.EnterSandman)
+			if (seed.Options.EnterSandman && !seed.Options.PyramidStart)
 				pyramidUnlockingSpecification.AdditionalUnlocks |= PyramidTeleporterGates[1].Gate;
 		}
 
@@ -74,7 +71,7 @@ namespace TsRandomizer.Randomisation
 			SetUnchainedKeysUnlock(Random, CustomItemType.TimewornWarpBeacon, pastTeleporterGates.ToArray());
 			SetUnchainedKeysUnlock(Random, CustomItemType.ModernWarpBeacon, presentTeleporterGates.ToArray());
 
-			if (seed.Options.EnterSandman)
+			if (seed.Options.EnterSandman && !seed.Options.PyramidStart)
 				SetUnchainedKeysUnlock(Random, CustomItemType.MysteriousWarpBeacon, PyramidTeleporterGates);
 		}
 

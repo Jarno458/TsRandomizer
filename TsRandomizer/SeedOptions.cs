@@ -35,6 +35,7 @@ namespace TsRandomizer
 		public bool PrismBreak => (Flags & 1 << 22) > 0;
 		public bool LockKeyAmadeus => (Flags & 1 << 23) > 0;
 		public bool RiskyWarps => (Flags & 1 << 24) > 0;
+		public bool PyramidStart => (Flags & 1 << 25) > 0;
 
 		public SeedOptions(uint flags)
 		{
