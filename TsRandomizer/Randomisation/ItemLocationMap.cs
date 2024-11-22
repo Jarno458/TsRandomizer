@@ -523,8 +523,8 @@ namespace TsRandomizer.Randomisation
 		}
 		void AddPyramidStartLocations()
 		{
-			areaName = "Ancient Forest";
-			Add(new RoomItemKey(15, 2), "Ancient Forest: Training Dummy", null, PyramidEntrance);
+			areaName = "Dark Forest";
+			Add(new RoomItemKey(15, 2), "Dark Forest: Training Dummy", null, PyramidEntrance);
 		}
 
 		void AddGyreItemLocations()
