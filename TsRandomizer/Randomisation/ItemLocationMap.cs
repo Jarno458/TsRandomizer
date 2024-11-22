@@ -65,6 +65,7 @@ namespace TsRandomizer.Randomisation
 		internal Gate EmperorsTower;
 		//pyramid
 		internal Gate TemporalGyre;
+		internal Gate OldGyreEntrance;
 		internal Gate PyramidEntrance;
 		internal Gate MidPyramid;
 		internal Gate RightPyramid;
@@ -285,6 +286,7 @@ namespace TsRandomizer.Randomisation
 				? R.Free
 				: (UpperLab & completeTimespinner)
 				| R.GateGyre | R.GateLeftPyramid | (R.GateRightPyramid & R.DoubleJump);
+			OldGyreEntrance = (PyramidEntrance & R.UpwardDash) | R.GateGyre;
 			MidPyramid = PyramidEntrance & R.DoubleJump;
 			RightPyramid = 
 				(
@@ -312,7 +314,7 @@ namespace TsRandomizer.Randomisation
 			if (options.LoreChecks)
 				capacity += 22;
 			if (options.PyramidStart)
-				capacity += 2;
+				capacity += 3;
 
 			return capacity;
 		}
@@ -526,9 +528,11 @@ namespace TsRandomizer.Randomisation
 		void AddPyramidStartLocations()
 		{
 			areaName = "Dark Forest";
-			Add(new RoomItemKey(15, 2), "Dark Forest: Training Dummy", null, PyramidEntrance);
+			Add(new ItemKey(15, 2, 200, 562), "Dark Forest: Training Dummy", null, PyramidEntrance);
+			areaName = "Temporal Gyre";
+			Add(new ItemKey(14, 0, 240, 192), "Temporal Gyre: Forest Entrance", null, OldGyreEntrance);
 			areaName = "Ancient Pyramid";
-			Add(new RoomItemKey(16, 2), "Ancient Pyramid: Rubble", null, PyramidEntrance);
+			Add(new ItemKey(16, 2, 2192, 1552), "Ancient Pyramid: Rubble", null, PyramidEntrance);
 		}
 
 		void AddGyreItemLocations()
