@@ -213,7 +213,8 @@
     <Compile Include="RoomTriggers\Triggers\LabAndTowerWarpRooms.cs" />
     <Compile Include="RoomTriggers\Triggers\MilitaryHangarWarpRoom.cs" />
     <Compile Include="RoomTriggers\Triggers\OneHpFix.cs" />
-    <Compile Include="RoomTriggers\Triggers\PyramidStartBonus.cs" />
+    <Compile Include="RoomTriggers\Triggers\PyramidStartBonusRubble.cs" />
+    <Compile Include="RoomTriggers\Triggers\PyramidStartBonusForest.cs" />
     <Compile Include="RoomTriggers\Triggers\Prologue.cs" />
     <Compile Include="RoomTriggers\Triggers\RisingTides.cs" />
     <Compile Include="RoomTriggers\Triggers\DadsPedistal.cs" />

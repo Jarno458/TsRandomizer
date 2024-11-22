@@ -1,7 +1,7 @@
 ﻿namespace TsRandomizer.RoomTriggers.Triggers
 {
 	[RoomTriggerTrigger(15, 2)]
-	class PyramidStartBonus : RoomTrigger
+	class PyramidStartBonusForest : RoomTrigger
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{

@@ -311,6 +311,8 @@ namespace TsRandomizer.Randomisation
 				capacity += 1;
 			if (options.LoreChecks)
 				capacity += 22;
+			if (options.PyramidStart)
+				capacity += 2;
 
 			return capacity;
 		}
@@ -525,6 +527,8 @@ namespace TsRandomizer.Randomisation
 		{
 			areaName = "Dark Forest";
 			Add(new RoomItemKey(15, 2), "Dark Forest: Training Dummy", null, PyramidEntrance);
+			areaName = "Ancient Pyramid";
+			Add(new RoomItemKey(16, 2), "Ancient Pyramid: Rubble", null, PyramidEntrance);
 		}
 
 		void AddGyreItemLocations()
