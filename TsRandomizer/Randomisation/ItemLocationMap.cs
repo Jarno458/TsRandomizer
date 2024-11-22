@@ -143,7 +143,7 @@ namespace TsRandomizer.Randomisation
 				| (R.GateSealedSirensCave & R.CardE)
 				| (R.GateMilitaryGate & (R.CardE | R.CardB));
 
-			if (SeedOptions.Inverted && SeedOptions.BackToTheFuture)
+			if ((SeedOptions.Inverted || SeedOptions.PyramidStart) && SeedOptions.BackToTheFuture)
 			{
 				LakeDesolationLeft |= R.TimespinnerWheel & R.TimespinnerSpindle;
 				LakeDesolationRight |= R.TimespinnerWheel & R.TimespinnerSpindle;
@@ -728,7 +728,7 @@ namespace TsRandomizer.Randomisation
 				mawRequirements |= R.GateAccessToPast;
 
 				levelIdsToAvoid.Add(2); //library
-				levelIdsToAvoid.Add(9); //xarion skelleton
+				levelIdsToAvoid.Add(9); //xarion skeleton
 			}
 			else
 			{
