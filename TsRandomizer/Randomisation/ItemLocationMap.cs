@@ -131,7 +131,7 @@ namespace TsRandomizer.Randomisation
 				: R.Free;
 
 			var pastRoutesToRefugeeCamp =
-				(SeedOptions.Inverted)
+				(SeedOptions.Inverted && !SeedOptions.PyramidStart)
 					? R.Free
 					: R.GateRefugeeCamp
 					| R.GateLakeSereneLeft
