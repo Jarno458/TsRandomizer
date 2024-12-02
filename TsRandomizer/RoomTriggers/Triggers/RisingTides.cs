@@ -150,12 +150,13 @@ namespace TsRandomizer.RoomTriggers.Triggers
 				case 10 when state.Seed.FloodFlags.Lab:
 					HandleRightMilitaryHangarFlood(state);
 					break;
-				case 11 when state.Seed.FloodFlags.Lab:
+				case 11:
+					// Check for FloodFlags.Lab in handle function to cover shaft aura case
 					HandleLabFlood(state);
 					break;
 				case 16:
-					if (state.Seed.FloodFlags.PyramidShaft)
-						HandleFloodPyramidShaft(state);
+					// Check for FloodFlags.PyramidShaft in handle function to cover shaft aura case
+					HandleFloodPyramidShaft(state);
 					if (state.Seed.FloodFlags.BackPyramid)
 						HandleFloodPyramidBack(state);
 					break;
@@ -309,31 +310,40 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 		static void HandleFloodPyramidShaft(RoomState state)
 		{
-			switch (state.RoomKey.RoomId)
+			if (state.Seed.FloodFlags.PyramidShaft)
 			{
-				case 6:
-					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 10), state.Level.RoomSize16);
-					break;
-				case 8:
-					var waterRightOffset8 = state.Level.GameSave.GetSaveBool("BW_16_8_0")
-						? state.Level.RoomSize16.X
-						: state.Level.RoomSize16.X - 3;
-					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 0),
-						new Point(waterRightOffset8, state.Level.RoomSize16.Y));
-					break;
-				case 22:
-					var waterRightOffset22 = state.Level.GameSave.GetSaveBool("BW_16_22_0")
-						? state.Level.RoomSize16.X
-						: state.Level.RoomSize16.X - 3;
-					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 0),
-						new Point(waterRightOffset22, state.Level.RoomSize16.Y));
-					break;
-				case 16:
-				case 20:
-				case 21:
-				case 23:
-					RoomTriggerHelper.FillRoomWithWater(state.Level);
-					break;
+				switch (state.RoomKey.RoomId)
+				{
+					case 6:
+						RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 10), state.Level.RoomSize16);
+						break;
+					case 8:
+						var waterRightOffset8 = state.Level.GameSave.GetSaveBool("BW_16_8_0")
+							? state.Level.RoomSize16.X
+							: state.Level.RoomSize16.X - 3;
+						RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 0),
+							new Point(waterRightOffset8, state.Level.RoomSize16.Y));
+						break;
+					case 22:
+						var waterRightOffset22 = state.Level.GameSave.GetSaveBool("BW_16_22_0")
+							? state.Level.RoomSize16.X
+							: state.Level.RoomSize16.X - 3;
+						RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 0),
+							new Point(waterRightOffset22, state.Level.RoomSize16.Y));
+						break;
+					case 16:
+					case 20:
+					case 21:
+					case 23:
+						RoomTriggerHelper.FillRoomWithWater(state.Level);
+						break;
+				}
+			}
+			else if (state.RoomKey.RoomId == 6)
+			{
+				// Mark the room as boosted aura to help with the climb
+				state.Level.AsDynamic().IsOnVilete = true;
+				state.Level.MainHero.AsDynamic().IsOnVilete = true;
 			}
 		}
 
@@ -532,37 +542,46 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 		static void HandleLabFlood(RoomState state)
 		{
-			switch (state.RoomKey.RoomId)
+			if (state.Seed.FloodFlags.Lab)
 			{
-				case 2:
-					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 73), state.Level.RoomSize16);
-					break;
-				case 3:
-					RoomTriggerHelper.RemoveWotah(state.Level);
-					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 13), state.Level.RoomSize16);
+				switch (state.RoomKey.RoomId)
+				{
+					case 2:
+						RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 73), state.Level.RoomSize16);
+						break;
+					case 3:
+						RoomTriggerHelper.RemoveWotah(state.Level);
+						RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 13), state.Level.RoomSize16);
 
-					foreach (var tile in state.Level.SolidTiles.Values)
-						if (tile.Special == ETileSpecialType.VerticalSpike)
-							tile.AsDynamic()._specialType = ETileSpecialType.None;
-					break;
-				case 35:
-					RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 33), state.Level.RoomSize16);
-					break;
-				case 0:
-				case 15:
-				case 23:
-				case 24:
-				case 25:
-				case 26:
-				case 28:
-				case 30:
-				case 33:
-				case 36:
-				case 37:
-				case 38:
-				case 40:
-					RoomTriggerHelper.FillRoomWithWater(state.Level);
-					break;
+						foreach (var tile in state.Level.SolidTiles.Values)
+							if (tile.Special == ETileSpecialType.VerticalSpike)
+								tile.AsDynamic()._specialType = ETileSpecialType.None;
+						break;
+					case 35:
+						RoomTriggerHelper.PlaceWater(state.Level, new Point(0, 33), state.Level.RoomSize16);
+						break;
+					case 0:
+					case 15:
+					case 23:
+					case 24:
+					case 25:
+					case 26:
+					case 28:
+					case 30:
+					case 33:
+					case 36:
+					case 37:
+					case 38:
+					case 40:
+						RoomTriggerHelper.FillRoomWithWater(state.Level);
+						break;
+				}
+			}
+			else if (state.RoomKey.RoomId == 2)
+			{
+				// Mark the room as boosted aura to help with the climb
+				state.Level.AsDynamic().IsOnVilete = true;
+				state.Level.MainHero.AsDynamic().IsOnVilete = true;
 			}
 		}
 
