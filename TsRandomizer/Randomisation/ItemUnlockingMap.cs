@@ -24,6 +24,8 @@ namespace TsRandomizer.Randomisation
 		{
 			IEnumerable<TeleporterGate> presentTeleporterGates = PresentTeleporterGates;
 
+			if (seed.FloodFlags.Lab)
+				presentTeleporterGates = presentTeleporterGates.Where(g => g.Gate != R.GateLabEntrance);
 			if (seed.FloodFlags.Xarion)
 				presentTeleporterGates = presentTeleporterGates.Where(g => g.Gate != R.GateXarion);
 
@@ -32,6 +34,7 @@ namespace TsRandomizer.Randomisation
 			if (!seed.Options.Inverted)
 			{
 				IEnumerable<TeleporterGate> pastTeleporterGates = PastTeleporterGates;
+
 				if (!seed.Options.RiskyWarps)
 					pastTeleporterGates = pastTeleporterGates.Where(g => g.Safe);
 
@@ -65,12 +68,16 @@ namespace TsRandomizer.Randomisation
 
 			if (seed.FloodFlags.Maw)
 				pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
-			if (!seed.Options.RiskyWarps)
-				pastTeleporterGates = pastTeleporterGates.Where(g => g.Safe);
-				presentTeleporterGates = presentTeleporterGates.Where(g => g.Safe);
+			if (seed.FloodFlags.Lab)
+				pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateLabEntrance);
 			if (seed.FloodFlags.Xarion)
 				presentTeleporterGates = presentTeleporterGates.Where(g => g.Gate != R.GateXarion);
-
+			if (!seed.Options.RiskyWarps)
+			{
+				pastTeleporterGates = pastTeleporterGates.Where(g => g.Safe);
+				presentTeleporterGates = presentTeleporterGates.Where(g => g.Safe);
+			}
+			
 			SetUnchainedKeysUnlock(Random, CustomItemType.TimewornWarpBeacon, pastTeleporterGates.ToArray());
 			SetUnchainedKeysUnlock(Random, CustomItemType.ModernWarpBeacon, presentTeleporterGates.ToArray());
 
@@ -111,7 +118,7 @@ namespace TsRandomizer.Randomisation
 		protected static readonly TeleporterGate[] PastTeleporterGates =
 		{
 			new TeleporterGate{Gate = R.GateRefugeeCamp, LevelId = 3, RoomId = 6, Safe = true},
-			new TeleporterGate{Gate = R.GateLakeSereneLeft, LevelId = 7, RoomId = 30, Safe = false },
+			new TeleporterGate{Gate = R.GateLakeSereneLeft, LevelId = 7, RoomId = 30, Safe = false},
 			new TeleporterGate{Gate = R.GateLakeSereneRight, LevelId = 7, RoomId = 31, Safe = true},
 			new TeleporterGate{Gate = R.GateAccessToPast, LevelId = 8, RoomId = 51, Safe = true},
 			new TeleporterGate{Gate = R.GateCastleRamparts, LevelId = 4, RoomId = 23, Safe = true},

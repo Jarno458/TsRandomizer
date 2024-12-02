@@ -66,16 +66,16 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			ChangeAvailableButtons(
 				MenuEntry.Create("DEL", OnDeleteCharacter),
-				okButton,
+				MenuEntry.Create("Copy", OnCopySelected),
 				MenuEntry.Create("", () => { }, false),
-				MenuEntry.Create("New", OnGenerateSelected),
+				MenuEntry.Create("Paste", OnPasteSelected),
 				MenuEntry.Create("Flags", OnOptionsSelected),
 				MenuEntry.Create("", () => { }, false),
 				MenuEntry.Create("Settings", OnSettingsSelected),
 				MenuEntry.Create("", () => { }, false),
-				MenuEntry.Create("Copy", OnCopySelected),
+				okButton,
 				MenuEntry.Create("", () => { }, false),
-				MenuEntry.Create("Paste", OnPasteSelected)
+				MenuEntry.Create("New", OnGenerateSelected)
 			);
 		}
 
@@ -104,6 +104,12 @@ namespace TsRandomizer.Screens.SeedSelection
 				else
 					SetSelectedMenuItemByIndex(selectedMenuEntryIndex + 1);
 			}
+
+			if (GetSelectedMenuEntryText(selectedMenuEntryIndex) != "OK")
+			{
+				var defaultDescription = "Select a seed to play\nCtrl+C / Ctrl+V are supported\nPress $G to force play an unbeatable seed";
+				Dynamic.ChangeDescription(defaultDescription, InventoryItemIconType.GetEnumValue("None"));
+			}
 		}
 
 		void CopyClipboardSeed() => SDL.SDL_SetClipboardText(GetHexString());
@@ -114,6 +120,8 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			if (text.Length > Seed.Length)
 				text = text.Substring(0, Seed.Length);
+			if (text.Length < Seed.Length)
+				text = new string('0', Seed.Length - text.Length) + text;
 
 			SetSeed(text);
 		}
@@ -171,7 +179,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			if (!forceSeed && !Randomizer.IsBeatable(seed, new SettingCollection(), FillingMethod.Random))
 			{
-				ShowErrorDescription("Invalid seed id, it cannot be beaten.");
+				ShowErrorDescription("Invalid seed id, it cannot be beaten.\nPress $G to force play an unbeatable seed.");
 				return;
 			}
 

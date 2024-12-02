@@ -56,9 +56,9 @@ namespace TsRandomizer.Randomisation
 		internal Gate MilitaryFortress;
 		internal Gate RavenlordsLair;
 		internal Gate MilitaryFortressHangar;
-		internal Gate RightSideMilitaryFortressHangar;
 		internal Gate LabEntrance;
 		internal Gate MainLab;
+		internal Gate MainLabFlooded;
 		internal Gate LabResearchWing;
 		internal Gate UpperLab;
 		internal Gate EmperorsTowerCourtyard;
@@ -114,6 +114,10 @@ namespace TsRandomizer.Randomisation
 
 		void SetupGates()
 		{
+			MultipleSmallJumpsOfNpc = R.TimespinnerWheel | R.UpwardDash;
+			DoubleJumpOfNpc = (R.DoubleJump & R.TimespinnerWheel) | R.UpwardDash;
+			ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
+
 			OculusRift = (SeedOptions.EyeSpy)
 				? R.OculusRift
 				: R.Free;
@@ -122,29 +126,74 @@ namespace TsRandomizer.Randomisation
 				? R.GasMask
 				: R.Free;
 
+			var pastRoutesToRefugeeCamp =
+				(SeedOptions.Inverted)
+					? R.Free
+					: R.GateRefugeeCamp
+					| R.GateLakeSereneLeft
+					| R.GateAccessToPast
+					| R.GateLakeSereneRight
+					| R.GateRoyalTowers
+					| R.GateCastleRamparts
+					| R.GateCastleKeep
+					| ((R.GateCavesOfBanishment | R.GateMaw) & (MawGasMask | R.ForwardDash) & NeedSwimming(FloodsFlags.Maw))  //through shaft
+					| ((R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump)) & NeedSwimming(!FloodsFlags.DryLakeSerene)); // though left entrance;
+
+			var labToMilitaryFortress =
+				R.GateLabEntrance & (FloodsFlags.Lab ? R.Swimming : DoubleJumpOfNpc)
+				| R.GateDadsTower & (FloodsFlags.Lab ? R.Swimming : DoubleJumpOfNpc) & (SeedOptions.LockKeyAmadeus ? R.LabGenza : R.Free);
+
+			var refugeeCampToMaw =
+				(
+					(
+						(FloodsFlags.LakeSereneBridge ? R.Free : R.TimeStop | R.ForwardDash)
+						| R.GateLakeSereneLeft
+						| R.GateLakeSereneRight
+					) //LeftSideForestCaves
+					& NeedSwimming(!FloodsFlags.DryLakeSerene) //LowerLakeSirine
+					& (FloodsFlags.DryLakeSerene ? R.DoubleJump : R.Free) //CavesOfBanishment
+				)
+				| R.GateCavesOfBanishment 
+				| R.GateMaw
+				& NeedSwimming(FloodsFlags.Maw)
+				& MawGasMask;
+				
+			var militaryFortressToLakeDesolation =
+				labToMilitaryFortress
+				& (
+					SeedOptions.PrismBreak 
+						? R.LaserA & R.LaserI & R.LaserM
+						: (SeedOptions.Inverted ? R.Free : pastRoutesToRefugeeCamp)
+						  & R.TimeStop // Refugee camp -> kill Twins
+						  & (MultipleSmallJumpsOfNpc | ForwardDashDoubleJump) & R.DoubleJump // Refugee camp -> kill Aelana 
+						  & refugeeCampToMaw // Refugee camp -> kill Maw
+				) // militaryLazerGate
+				& (R.CardE | R.CardB);
+
 			LakeDesolationLeft = (!SeedOptions.Inverted)
 				? R.Free
 				: R.GateLakeDesolation
-				| R.GateKittyBoss
-				| R.GateLeftLibrary
-				| R.GateSealedCaves
-				| R.GateXarion
-				| (R.GateSealedSirensCave & R.CardE)
-				| (R.GateMilitaryGate & (R.CardE | R.CardB));
+				  | R.GateKittyBoss
+				  | R.GateLeftLibrary
+				  | R.GateSealedCaves
+				  | R.GateXarion
+				  | (R.GateSealedSirensCave & R.CardE)
+				  | (R.GateMilitaryGate & (R.CardE | R.CardB))
+				  | militaryFortressToLakeDesolation;
 
-			LakeDesolationRight = 
+			LakeDesolationRight =
 				(LakeDesolationLeft & (FloodsFlags.LakeDesolation ? R.Free : R.TimeStop | R.ForwardDash))
 				| R.GateKittyBoss
 				| R.GateLeftLibrary
 				| (R.GateSealedSirensCave & R.CardE)
-				| (R.GateMilitaryGate & (R.CardE | R.CardB));
+				| (R.GateMilitaryGate & (R.CardE | R.CardB))
+				| militaryFortressToLakeDesolation;
 
-			if (SeedOptions.Inverted && SeedOptions.BackToTheFuture)
-			{
+			if (SeedOptions.Inverted && SeedOptions.BackToTheFuture) {
 				LakeDesolationLeft |= R.TimespinnerWheel & R.TimespinnerSpindle;
 				LakeDesolationRight |= R.TimespinnerWheel & R.TimespinnerSpindle;
 			}
-			
+
 			RefugeeCamp = (SeedOptions.Inverted)
 				? R.Free
 				: (
@@ -153,21 +202,9 @@ namespace TsRandomizer.Randomisation
 						(LakeDesolationRight & R.CardD)
 						| (R.GateSealedSirensCave & R.CardE)
 						| (R.GateMilitaryGate & (R.CardB | R.CardE))
-					)
-				) //libraryTimespinner
-				| R.GateRefugeeCamp
-				| R.GateLakeSereneLeft
-				| R.GateAccessToPast
-				| R.GateLakeSereneRight
-				| R.GateRoyalTowers
-				| R.GateCastleRamparts
-				| R.GateCastleKeep
-				| ((R.GateCavesOfBanishment | R.GateMaw) & (MawGasMask | R.ForwardDash) & NeedSwimming(FloodsFlags.Maw))  //through shaft
-				| ((R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump)) & NeedSwimming(!FloodsFlags.DryLakeSerene)); // though left entrance
-
-			MultipleSmallJumpsOfNpc = R.TimespinnerWheel | R.UpwardDash;
-			DoubleJumpOfNpc = (R.DoubleJump & R.TimespinnerWheel) | R.UpwardDash;
-			ForwardDashDoubleJump = (R.ForwardDash & R.DoubleJump) | R.UpwardDash;
+                     )
+				  ) //libraryTimespinner
+				  | pastRoutesToRefugeeCamp;
 
 			//past
 			LeftSideForestCaves =
@@ -190,10 +227,10 @@ namespace TsRandomizer.Randomisation
 			KillMaw = CavesOfBanishmentFlooded & MawGasMask;
 			var killTwins = CastleKeep & R.TimeStop;
 			var killAelana = UpperRoyalTower;
-			var pastCleared  = (SeedOptions.PrismBreak)
+			var militaryLazerGate = (SeedOptions.PrismBreak)
 				? R.LaserA & R.LaserI & R.LaserM
 				: killTwins & killAelana & KillMaw;
-
+			
 			//future
 			UpperLakeDesolation = LakeDesolationLeft & UpperLakeSirine & R.Fire;
 			LeftLibrary = UpperLakeDesolation | LakeDesolationRight;
@@ -206,24 +243,18 @@ namespace TsRandomizer.Randomisation
 			SealedCavesSkeleton = (LakeDesolationLeft & (FloodsFlags.LakeDesolation ? R.Free : R.DoubleJump)) | R.GateSealedCaves | R.GateXarion;
 			SealedCaves = (SealedCavesSkeleton & R.CardA) | R.GateXarion;
 			SealedCavesSirens = (MidLibrary & R.CardB & R.CardE) | R.GateSealedSirensCave;
-			MilitaryFortress = LowerRightSideLibrary & pastCleared;
-			MilitaryFortressHangar = MilitaryFortress & R.TimeStop;
-			LabEntrance = R.GateLabEntrance | MilitaryFortressHangar & (FloodsFlags.Lab ? R.Free : R.DoubleJump);
-			MainLab = LabEntrance & R.CardB & NeedSwimming(FloodsFlags.Lab);
-			
-			LabResearchWing = MainLab &
-				(SeedOptions.LockKeyAmadeus
-				? R.LabResearch
-				: DoubleJumpOfNpc);
-			UpperLab = R.GateDadsTower | 
-				(SeedOptions.LockKeyAmadeus
-				? MainLab & R.LabGenza & ForwardDashDoubleJump
-				: LabResearchWing & ForwardDashDoubleJump);
+			MilitaryFortress = (LowerRightSideLibrary & militaryLazerGate) | labToMilitaryFortress;
+			MilitaryFortressHangar = MilitaryFortress & R.TimeStop | labToMilitaryFortress;
+			LabEntrance = R.GateLabEntrance | MilitaryFortressHangar & (FloodsFlags.Lab ? R.Swimming : R.DoubleJump);
+			MainLabFlooded = LabEntrance & R.CardB & NeedSwimming(FloodsFlags.Lab);
+			MainLab = MainLabFlooded;
+			LabResearchWing = MainLabFlooded & (SeedOptions.LockKeyAmadeus ? R.LabResearch : DoubleJumpOfNpc);
+			UpperLab = R.GateDadsTower | MainLab & ForwardDashDoubleJump & (SeedOptions.LockKeyAmadeus ? R.LabGenza : R.Free);
 			RavenlordsLair = UpperLab & R.MerchantCrow;
 			EmperorsTowerCourtyard = UpperLab;
 			EmperorsTower = EmperorsTowerCourtyard & R.DoubleJump;
 
-			if (SeedOptions.RiskyWarps)
+			/*if (SeedOptions.RiskyWarps)
 			{
 				// This block adds logic to locations between Dad's Tower and Military Hangar
 				// going right to left
@@ -234,7 +265,8 @@ namespace TsRandomizer.Randomisation
 					// When the flag is off, lasers block the ability to go further than UpperLab, already defined as R.GateDadsTower
 					// And the lab power is in MainLab itself, making the logic moot
 					MainLab |= UpperLab & R.LabGenza;
-					LabEntrance |= MainLab;
+					MainLabFlooded |= MainLab & NeedSwimming(FloodsFlags.Lab);
+					LabEntrance |= MainLabFlooded;
 					LabResearchWing |= MainLab & R.LabGenza & ForwardDashDoubleJump;
 				}
 					
@@ -256,7 +288,7 @@ namespace TsRandomizer.Randomisation
 				SealedCavesSkeleton |= LakeDesolationLeft & (FloodsFlags.LakeDesolation ? R.Free : R.DoubleJump);
 				SealedCaves |= SealedCavesSkeleton & R.CardA;
 
-				if (!SeedOptions.Inverted)
+				if (!SeedOptions.Inverted) {
 					RefugeeCamp |= MidLibrary & R.TimespinnerWheel & R.TimespinnerSpindle;
 					UpperCavesOfBanishment = RefugeeCamp;
 					CastleRamparts = RefugeeCamp;
@@ -273,22 +305,22 @@ namespace TsRandomizer.Randomisation
 					LowerLakeSirine |= LeftSideForestCaves & NeedSwimming(!FloodsFlags.DryLakeSerene);
 					CavesOfBanishment |= LowerLakeSirine & (FloodsFlags.DryLakeSerene ? R.DoubleJump : R.Free);
 					CavesOfBanishmentFlooded = CavesOfBanishment & NeedSwimming(FloodsFlags.Maw);
-			}
+				}
+			}*/
 
 			//pyramid
 			var completeTimespinner = R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3 & R.TimespinnerSpindle & R.TimespinnerWheel;
 			TemporalGyre = MilitaryFortress & R.TimespinnerWheel;
 			PyramidEntrance =
 				(UpperLab & completeTimespinner)
-				| R.GateGyre | R.GateLeftPyramid | (R.GateRightPyramid & R.DoubleJump);
+				| R.GateGyre 
+				| R.GateLeftPyramid 
+				| (R.GateRightPyramid & R.DoubleJump);
 			MidPyramid = PyramidEntrance & R.DoubleJump;
-			RightPyramid = 
-				(
-					(MidPyramid & (FloodsFlags.PyramidShaft ? R.Free : R.UpwardDash)) 
-					| R.GateRightPyramid
-				)
-				& NeedSwimming(FloodsFlags.BackPyramid);
-			Nightmare = RightPyramid & completeTimespinner;
+			RightPyramid =
+				(MidPyramid & (FloodsFlags.PyramidShaft ? R.Free : R.UpwardDash))
+				| R.GateRightPyramid;
+			Nightmare = RightPyramid & completeTimespinner & NeedSwimming(FloodsFlags.BackPyramid);
 		}
 
 		static int CalculateCapacity(SeedOptions options)
@@ -515,7 +547,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(16, 3, 88, 192), "Ancient Pyramid: Conviction guarded room", ItemProvider.Get(EItemType.MaxHP), MidPyramid);
 			Add(new ItemKey(16, 22, 200, 192), "Ancient Pyramid: Pit secret room", ItemProvider.Get(EItemType.MaxAura), MidPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft));
 			Add(new ItemKey(16, 16, 1512, 144), "Ancient Pyramid: Regret chest", ItemProvider.Get(EInventoryRelicType.EssenceOfSpace), MidPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft));
-			Add(new ItemKey(16, 5, 136, 192), "Ancient Pyramid: Nightmare Door chest", ItemProvider.Get(EInventoryEquipmentType.SelenBangle), RightPyramid);
+			Add(new ItemKey(16, 5, 136, 192), "Ancient Pyramid: Nightmare Door chest", ItemProvider.Get(EInventoryEquipmentType.SelenBangle), RightPyramid & NeedSwimming(FloodsFlags.BackPyramid));
 		}
 
 		void AddGyreItemLocations()

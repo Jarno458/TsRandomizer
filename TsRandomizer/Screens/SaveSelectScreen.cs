@@ -192,11 +192,15 @@ namespace TsRandomizer.Screens
 		{
 			if (!GameScreen.IsActive) return;
 
+			var seed = CurrentSelectedSave?.GetSeed();
+			var isArchipelagoSeed = seed.HasValue && seed.Value.Options.Archipelago;
+
 			if (input.AsDynamic().IsMenuPress(ButtonMapping.EDestinationType.PageLeft, PlayerIndex.One))
 			{
 				UpdateDescription(true);
 
-				DisplaySeedId();
+				if (!isArchipelagoSeed)
+					DisplaySeedId();
 
 				if (input.IsNewPressSecondary(null))
 				{
@@ -210,12 +214,18 @@ namespace TsRandomizer.Screens
 				UpdateDescription(false);
 
 				DisplayArchipelagoInfo();
+
+				if (isArchipelagoSeed)
+					DisplaySeedId();
 			}
 
 			if (input.IsNewPressPageRight(null))
 			{
 				var selectedSaveFile = CurrentSelectedSave;
-				if(selectedSaveFile == null)
+				if(selectedSaveFile == null || !seed.HasValue)
+					return;
+
+				if (isArchipelagoSeed)
 					return;
 
 				ShowSpoilerGenerationDialog(selectedSaveFile);
@@ -223,8 +233,6 @@ namespace TsRandomizer.Screens
 
 			if (input.IsControllHold() && input.IsKeyHold(Keys.C))
 			{
-				var seed = CurrentSelectedSave?.GetSeed();
-
 				if (!seed.HasValue)
 					return;
 
@@ -245,8 +253,7 @@ namespace TsRandomizer.Screens
 						ScreenManager.RemoveScreen(newGamePlusPopup);
 				}
 
-				var seed = selectedSaveFile.GetSeed();
-				if (seed.HasValue && seed.Value.Options.Archipelago)
+				if (isArchipelagoSeed)
 					ScreenManager.AddScreen(ArchipelagoSelectionScreen.Create(ScreenManager), null);
 			}
  		}
@@ -285,7 +292,7 @@ namespace TsRandomizer.Screens
 			var menuEntry = CurrentSelectedMenuEntry?.AsDynamic();
 			if (menuEntry == null) return;
 
-			string desc = TimeSpinnerGame.Localizer.Get("SaveSelectContinueDescription");
+			var desc = TimeSpinnerGame.Localizer.Get("SaveSelectContinueDescription");
 
 			if (displayDeleteAll)
 			{
@@ -299,7 +306,9 @@ namespace TsRandomizer.Screens
 			var seed = CurrentSelectedSave?.GetSeed();
 			if (seed.HasValue && seed.Value.Options.Archipelago)
 				desc += " Press $Y to change archipelago server/credentials";
-			
+			else if(seed.HasValue && !seed.Value.Options.Archipelago)
+				desc += " Press $G to generate spoiler log";
+
 			menuEntry.Description = desc;
 
 			Dynamic.OnSelectedEntryChanged(Dynamic.SelectedIndex);
@@ -334,11 +343,6 @@ namespace TsRandomizer.Screens
 
 		void ShowSpoilerGenerationDialog(GameSave save)
 		{
-			var seed = save.GetSeed();
-
-			if (!seed.HasValue)
-				return;
-
 			var messageBox = MessageBox.Create(ScreenManager, "Generate Spoiler log?", _ => OnSpoilerLogCreationAccepted(save));
 
 			ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
@@ -361,6 +365,15 @@ namespace TsRandomizer.Screens
 
 			if (!seed.HasValue)
 				return;
+
+			if (seed.Value.Options.Tournament && !save.IsGameCleared)
+			{
+				var messageBox = MessageBox.Create(ScreenManager, "Spoiler logs cannot be generated for Tournament seeds until they are beaten");
+
+				ScreenManager.AddScreen(messageBox.Screen, GameScreen.ControllingPlayer);
+
+				return;
+			}
 
 			using (var file = new StreamWriter(GetFileName(seed.Value)))
 			{

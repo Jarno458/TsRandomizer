@@ -45,7 +45,7 @@ namespace TsRandomizer
 		{
 			Flags = 1 << 16; //Archipelago
 
-			var stringToFlagMapping = new Dictionary<string, uint>(11)
+			var stringToFlagMapping = new Dictionary<string, uint>(24)
 			{
 				{"StartWithJewelryBox", 1U << 0},
 				{"ProgressiveVerticalMovement", 1U << 1},
@@ -61,16 +61,15 @@ namespace TsRandomizer
 				{"Cantoran", 1U << 11},
 				{"LoreChecks", 1U << 12},
 				{"Tournament", 1U << 13},
-				// FastPyramid, merged with EnterSandman
+				// 14 FastPyramid, merged with EnterSandman
 				{"EnterSandman", 1U << 15},
-				// Archipelago, automaticly set above
+				// 16 Archipelago, automaticly set above
 				{"DadPercent", 1U << 17},
 				{"RisingTides", 1U << 18},
 				{"UnchainedKeys", 1U << 19},
 				{"TrappedChests", 1U << 20},
-				// Alternative flag name for backwards compatability
-				{"PresentAccessWithWheelAndSpindle", 1U << 21},
-        {"BackToTheFuture", 1U << 21},
+				{"PresentAccessWithWheelAndSpindle", 1U << 21}, // Alternative flag name for backwards compatability
+				{"BackToTheFuture", 1U << 21},
 				{"PrismBreak", 1U << 22},
 				{"LockKeyAmadeus", 1U << 23},
 				{"RiskyWarps", 1U << 24},
