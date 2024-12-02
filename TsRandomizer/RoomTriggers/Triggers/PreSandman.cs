@@ -21,7 +21,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			roomState.Level.GameSave.SetValue("TSRando_IsBossDead_Sandman", false);
 			roomState.Level.GameSave.SetValue("TSRando_IsBossDead_Nightmare", false);
 
-			if (!roomState.Seed.Options.EnterSandman)
+			if (!roomState.Seed.Options.EnterSandman && !roomState.Seed.Options.PyramidStart)
 				return;
 
 			var bossDoor = ((Dictionary<int, GameEvent>)roomState.Level.AsDynamic()._levelEvents).Values

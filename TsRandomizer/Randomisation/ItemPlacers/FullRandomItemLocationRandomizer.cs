@@ -150,7 +150,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceStarterProgressionItems(Random random)
 		{
-			if (SeedOptions.StartWithTalaria || SeedOptions.Inverted || Seed.FloodFlags.LakeDesolation)
+			if (!SeedOptions.PyramidStart && (SeedOptions.StartWithTalaria || SeedOptions.Inverted || Seed.FloodFlags.LakeDesolation)) 
 				GiveOrbsToMom(random, false);
 			else
 				PlaceStarterProgressionItem(random);
@@ -159,13 +159,18 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 		void PlaceStarterProgressionItem(Random random)
 		{
 			var starterProgressionItems = new List<ItemInfo> {
-				ItemInfoProvider.Get(EInventoryRelicType.Dash),
-				ItemInfoProvider.Get(EInventoryRelicType.Dash),
 				ItemInfoProvider.Get(EInventoryRelicType.DoubleJump),
 				ItemInfoProvider.Get(EInventoryRelicType.DoubleJump),
-				ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel),
-				ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel),
 			};
+
+			if (!SeedOptions.PyramidStart)
+			{
+				// Neither are helpful in a pyramid start
+				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));
+				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));
+				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel));
+				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel));
+			}
 
 			if (!SeedOptions.ProgressiveVerticalMovement)
 			{
@@ -243,7 +248,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			var levelIdsToAvoid = new List<int>(3) { 1 };
 			var minimalMawRequirements = R.None;
 
-			if (!SeedOptions.Inverted)
+			if (!SeedOptions.Inverted && !SeedOptions.PyramidStart)
 			{
 				minimalMawRequirements |= R.GateAccessToPast;
 

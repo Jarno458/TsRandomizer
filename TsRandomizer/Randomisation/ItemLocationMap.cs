@@ -65,6 +65,7 @@ namespace TsRandomizer.Randomisation
 		internal Gate EmperorsTower;
 		//pyramid
 		internal Gate TemporalGyre;
+		internal Gate OldGyreEntrance;
 		internal Gate PyramidEntrance;
 		internal Gate MidPyramid;
 		internal Gate RightPyramid;
@@ -104,6 +105,9 @@ namespace TsRandomizer.Randomisation
 
 			if (SeedOptions.LoreChecks)
 				AddLoreLocations();
+
+			if (SeedOptions.PyramidStart)
+				AddPyramidStartLocations();
 
 			if (SeedOptions.StartWithTalaria)
 				Add(new ExternalItemLocation(itemInfoProvider.Get(EInventoryRelicType.Dash)));
@@ -163,14 +167,14 @@ namespace TsRandomizer.Randomisation
 				& (
 					SeedOptions.PrismBreak 
 						? R.LaserA & R.LaserI & R.LaserM
-						: (SeedOptions.Inverted ? R.Free : pastRoutesToRefugeeCamp)
+						: (SeedOptions.Inverted && !SeedOptions.PyramidStart ? R.Free : pastRoutesToRefugeeCamp)
 						  & R.TimeStop // Refugee camp -> kill Twins
 						  & (MultipleSmallJumpsOfNpc | ForwardDashDoubleJump) & R.DoubleJump // Refugee camp -> kill Aelana 
 						  & refugeeCampToMaw // Refugee camp -> kill Maw
 				) // militaryLazerGate
 				& (R.CardE | R.CardB);
 
-			LakeDesolationLeft = (!SeedOptions.Inverted)
+			LakeDesolationLeft = (!SeedOptions.Inverted && !SeedOptions.PyramidStart)
 				? R.Free
 				: R.GateLakeDesolation
 				  | R.GateKittyBoss
@@ -194,7 +198,7 @@ namespace TsRandomizer.Randomisation
 				LakeDesolationRight |= R.TimespinnerWheel & R.TimespinnerSpindle;
 			}
 
-			RefugeeCamp = (SeedOptions.Inverted)
+			RefugeeCamp = (SeedOptions.Inverted && !SeedOptions.PyramidStart)
 				? R.Free
 				: (
 					R.TimespinnerWheel & R.TimespinnerSpindle
@@ -311,11 +315,13 @@ namespace TsRandomizer.Randomisation
 			//pyramid
 			var completeTimespinner = R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3 & R.TimespinnerSpindle & R.TimespinnerWheel;
 			TemporalGyre = MilitaryFortress & R.TimespinnerWheel;
-			PyramidEntrance =
-				(UpperLab & completeTimespinner)
+			PyramidEntrance = (SeedOptions.PyramidStart)
+				? R.Free
+				: (UpperLab & completeTimespinner)
 				| R.GateGyre 
 				| R.GateLeftPyramid 
 				| (R.GateRightPyramid & R.DoubleJump);
+			OldGyreEntrance = (PyramidEntrance & R.UpwardDash) | R.GateGyre;
 			MidPyramid = PyramidEntrance & R.DoubleJump;
 			RightPyramid =
 				(MidPyramid & (FloodsFlags.PyramidShaft ? R.Free : R.UpwardDash))
@@ -339,6 +345,8 @@ namespace TsRandomizer.Randomisation
 				capacity += 1;
 			if (options.LoreChecks)
 				capacity += 22;
+			if (options.PyramidStart)
+				capacity += 3;
 
 			return capacity;
 		}
@@ -550,6 +558,16 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(16, 5, 136, 192), "Ancient Pyramid: Nightmare Door chest", ItemProvider.Get(EInventoryEquipmentType.SelenBangle), RightPyramid & NeedSwimming(FloodsFlags.BackPyramid));
 		}
 
+		void AddPyramidStartLocations()
+		{
+			areaName = "Dark Forest";
+			Add(new ItemKey(15, 2, 200, 562), "Dark Forest: Training Dummy", null, PyramidEntrance);
+			areaName = "Temporal Gyre";
+			Add(new ItemKey(14, 0, 240, 192), "Temporal Gyre: Forest Entrance", null, OldGyreEntrance);
+			areaName = "Ancient Pyramid";
+			Add(new ItemKey(16, 2, 2192, 1552), "Ancient Pyramid: Rubble", null, PyramidEntrance);
+		}
+
 		void AddGyreItemLocations()
 		{
 			areaName = "Temporal Gyre";
@@ -730,20 +748,20 @@ namespace TsRandomizer.Randomisation
 
 		bool IsGasMaskReachableWithTheMawRequirements()
 		{
-			//Gasmask may never be placed in a Gas effected place
+			//Gasmask may never be placed in a Gas affected place
 			//the very basics to reach maw should also allow you to get Gasmask
-			//unless we run inverted, then we can garantee the user has the pyramid keys before entering lake desolation
+			//unless we run inverted, then we can guarantee the user has the pyramid keys before entering lake desolation
 			var gasmaskLocation = this.First(l => l.ItemInfo?.Identifier == new ItemIdentifier(EInventoryRelicType.AirMask));
 
 			var levelIdsToAvoid = new List<int>(3) { 1 }; //lake desolation
 			var mawRequirements = R.None;
 			
-			if (!SeedOptions.Inverted)
+			if (!SeedOptions.Inverted && !SeedOptions.PyramidStart)
 			{
 				mawRequirements |= R.GateAccessToPast;
 
 				levelIdsToAvoid.Add(2); //library
-				levelIdsToAvoid.Add(9); //xarion skelleton
+				levelIdsToAvoid.Add(9); //xarion skeleton
 			}
 			else
 			{

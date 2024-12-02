@@ -35,6 +35,7 @@ namespace TsRandomizer
 		public bool PrismBreak => (Flags & 1 << 22) > 0;
 		public bool LockKeyAmadeus => (Flags & 1 << 23) > 0;
 		public bool RiskyWarps => (Flags & 1 << 24) > 0;
+		public bool PyramidStart => (Flags & 1 << 25) > 0;
 
 		public SeedOptions(uint flags)
 		{
@@ -45,7 +46,7 @@ namespace TsRandomizer
 		{
 			Flags = 1 << 16; //Archipelago
 
-			var stringToFlagMapping = new Dictionary<string, uint>(24)
+			var stringToFlagMapping = new Dictionary<string, uint>(25)
 			{
 				{"StartWithJewelryBox", 1U << 0},
 				{"ProgressiveVerticalMovement", 1U << 1},
@@ -73,6 +74,7 @@ namespace TsRandomizer
 				{"PrismBreak", 1U << 22},
 				{"LockKeyAmadeus", 1U << 23},
 				{"RiskyWarps", 1U << 24},
+				{"PyramidStart", 1U << 25},
 			};
 
 			foreach (var kvp in stringToFlagMapping)
