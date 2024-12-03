@@ -13,6 +13,7 @@ namespace TsRandomizer.LevelObjects.Other
 	// ReSharper disable once UnusedMember.Global
 	class LabLaser : LevelObject
 	{
+		bool doRainbow;
 		float rainbow;
 
 		public LabLaser(Mobile typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
@@ -21,18 +22,30 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
+			if (Level.RoomID > 30)
+				doRainbow = seed.Id % Level.RoomID < 5;
+			else
+				doRainbow = seed.Id % 36 < 5;
+
 			if (!seed.Options.LockKeyAmadeus)
 				return;
 
 			if ((Level.RoomID == 1 && Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LabAccessExperiment))) ||
-					(Level.RoomID == 35 && Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LabAccessGenza))) ||
-					(Level.RoomID == 37 && Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LabAccessResearch))) ||
-					(Level.RoomID == 39 && Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LabAccessDynamo))))
+			    (Level.RoomID == 35 && Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LabAccessGenza))) ||
+			    (Level.RoomID == 37 && Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LabAccessResearch))) ||
+			    (Level.RoomID == 39 && Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LabAccessDynamo))))
+			{
 				Dynamic.SilentKill();
+
+				doRainbow = false;
+			}
 		}
 
 		protected override void OnUpdate()
 		{
+			if (!doRainbow)
+				return;
+
 			rainbow += 0.01f;
 
 			Dynamic.AuraColor = Rainbow(rainbow);
@@ -40,7 +53,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 		public static Color Rainbow(float progress)
 		{
-			float div = (Math.Abs(progress % 1) * 6);
+			float div = Math.Abs(progress % 1) * 6;
 			int ascending = (int)((div % 1) * 255);
 			int descending = 255 - ascending;
 

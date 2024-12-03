@@ -150,13 +150,13 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceStarterProgressionItems(Random random)
 		{
-			if (!SeedOptions.PyramidStart && (SeedOptions.StartWithTalaria || SeedOptions.Inverted || Seed.FloodFlags.LakeDesolation)) 
+			if (!SeedOptions.PyramidStart && (SeedOptions.Inverted || SeedOptions.StartWithTalaria || Seed.FloodFlags.LakeDesolation)) 
 				GiveOrbsToMom(random, false);
 			else
-				PlaceStarterProgressionItem(random);
+				PlaceStarterProgressionInLakeDesolationItem(random);
 		}
-
-		void PlaceStarterProgressionItem(Random random)
+		
+		void PlaceStarterProgressionInLakeDesolationItem(Random random)
 		{
 			var starterProgressionItems = new List<ItemInfo> {
 				ItemInfoProvider.Get(EInventoryRelicType.DoubleJump),
@@ -165,7 +165,6 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			if (!SeedOptions.PyramidStart)
 			{
-				// Neither are helpful in a pyramid start
 				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));
 				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.Dash));
 				starterProgressionItems.Add(ItemInfoProvider.Get(EInventoryRelicType.TimespinnerWheel));
@@ -198,9 +197,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			var starterProgressionItem = starterProgressionItems.SelectRandom(random);
 
-			var shouldGiveLightwallAsSpell = ShouldGiveLightwall(random, starterProgressionItem);
-
-			if (shouldGiveLightwallAsSpell)
+			if (ShouldGiveLightwall(random, starterProgressionItem))
 			{
 				GiveOrbsToMom(random, true);
 			}
@@ -210,6 +207,43 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 				PutStarterProgressionItemInReachableLocation(random, starterProgressionItem);
 			}
+			
+			if (SeedOptions.PyramidStart)
+				ProvidePyramidExit(random, starterProgressionItem);
+		}
+		
+		void ProvidePyramidExit(Random random, ItemInfo starterProgressionItem)
+		{
+			List<ItemInfo> pyramidExitItems;
+
+			if (SeedOptions.UnchainedKeys)
+			{
+				pyramidExitItems = new List<ItemInfo>
+				{
+					ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.TimewornWarpBeacon)),
+					ItemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.ModernWarpBeacon))
+				};
+			}
+			else
+			{
+				pyramidExitItems = new List<ItemInfo> {
+					ItemInfoProvider.Get(EInventoryRelicType.PyramidsKey),
+				};
+			}
+
+			if (pyramidExitItems.Any(i => i == starterProgressionItem))
+				return;
+
+			var pyramidLocations = itemLocations
+				.Where(l => (l.Key.RoomId == 15 || l.Key.RoomId == 16) && !l.IsUsed)
+				.Concat(itemLocations[new ItemKey(14, 0, 240, 192)]) // Temporal Gyre: Forest Entrance
+				.Where(l => l.Gate.CanBeOpenedWith(starterProgressionItem.Unlocks))
+				.ToArray();
+
+			var pyramidExitItem = pyramidExitItems.SelectRandom(random);
+			var location = pyramidLocations.SelectRandom(random);
+
+			PutItemAtLocation(pyramidExitItem, location);
 		}
 
 		void PutStarterProgressionItemInReachableLocation(Random random, ItemInfo starterProgressionItem)
