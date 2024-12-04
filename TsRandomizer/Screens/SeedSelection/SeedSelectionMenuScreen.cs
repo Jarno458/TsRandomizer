@@ -35,6 +35,9 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		string password = "";
 
+		int lastSelectedMenuIndex;
+		string error;
+
 		public static GameScreen Create(ScreenManager screenManager)
 		{
 			void Noop() { }
@@ -97,6 +100,13 @@ namespace TsRandomizer.Screens.SeedSelection
 			}
 
 			var selectedMenuEntryIndex = Dynamic.SelectedIndex;
+
+			if (lastSelectedMenuIndex != selectedMenuEntryIndex)
+			{
+				lastSelectedMenuIndex = selectedMenuEntryIndex;
+				error = null;
+			}
+
 			if (GetSelectedMenuEntryText(selectedMenuEntryIndex) == "")
 			{
 				if (input.IsPressMenuLeft(null))
@@ -105,26 +115,35 @@ namespace TsRandomizer.Screens.SeedSelection
 					SetSelectedMenuItemByIndex(selectedMenuEntryIndex + 1);
 			}
 
-			if (GetSelectedMenuEntryText(selectedMenuEntryIndex) != "OK")
-			{
-				var defaultDescription = "Select a seed to play\nCtrl+C / Ctrl+V are supported\nPress $G to force play an unbeatable seed";
-				Dynamic.ChangeDescription(defaultDescription, InventoryItemIconType.GetEnumValue("None"));
-			}
+			var description = !string.IsNullOrEmpty(error) 
+				? error 
+				: "Select a seed to play\nCtrl+C / Ctrl+V are supported\nPress $G to force play an unbeatable seed";
+
+			Dynamic.ChangeDescription(description, InventoryItemIconType.GetEnumValue("None"));
 		}
 
 		void CopyClipboardSeed() => SDL.SDL_SetClipboardText(GetHexString());
 
 		void PasteClipboardSeed()
 		{
-			var text = SDL.SDL_GetClipboardText().Trim();
+			var text = SDL.SDL_GetClipboardText().Trim().ToUpper();
 
 			if (text.Length > Seed.Length)
 				text = text.Substring(0, Seed.Length);
+
+			if (!IsHex(text))
+			{
+				ShowErrorDescription("Clipboard text is not a valid hexadecimal value");
+				return;
+			}
+
 			if (text.Length < Seed.Length)
 				text = new string('0', Seed.Length - text.Length) + text;
 
 			SetSeed(text);
 		}
+
+		bool IsHex(IEnumerable<char> chars) => chars.All(c => (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F'));
 
 		void ChangeAvailableButtons(params MenuEntry[] extraButtons)
 		{
@@ -188,8 +207,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			Dynamic.OnCancel(playerIndex);
 		}
 
-		void ShowErrorDescription(string message) => 
-			Dynamic.ChangeDescription(message, InventoryItemIconType.GetEnumValue("None"));
+		void ShowErrorDescription(string message) => error = message;
 
 		void OnOptionsSelected(PlayerIndex playerIndex)
 		{
