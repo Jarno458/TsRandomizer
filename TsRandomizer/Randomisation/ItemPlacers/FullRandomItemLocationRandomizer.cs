@@ -235,7 +235,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				return;
 
 			var pyramidLocations = itemLocations
-				.Where(l => (l.Key.RoomId == 15 || l.Key.RoomId == 16) && !l.IsUsed)
+				.Where(l => (l.Key.LevelId == 15 || l.Key.LevelId == 16) && !l.IsUsed)
 				.Concat(itemLocations[new ItemKey(14, 0, 240, 192)]) // Temporal Gyre: Forest Entrance
 				.Where(l => l.Gate.CanBeOpenedWith(starterProgressionItem.Unlocks))
 				.ToArray();

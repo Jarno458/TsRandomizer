@@ -32,8 +32,9 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		bool forceSeed;
 		MenuEntry okButton;
+		MenuEntry newButton;
 
-		string password = "";
+        string password = "";
 
 		int lastSelectedMenuIndex;
 		string error;
@@ -66,8 +67,9 @@ namespace TsRandomizer.Screens.SeedSelection
 			Dynamic._displayCharacterOrigins = new Vector2[Seed.Length];
 
 			okButton = MenuEntry.Create("OK", OnOkayEntrySelected);
-
-			ChangeAvailableButtons(
+			newButton = MenuEntry.Create("New", OnGenerateSelected);
+            
+            ChangeAvailableButtons(
 				MenuEntry.Create("DEL", OnDeleteCharacter),
 				MenuEntry.Create("Copy", OnCopySelected),
 				MenuEntry.Create("", () => { }, false),
@@ -78,8 +80,8 @@ namespace TsRandomizer.Screens.SeedSelection
 				MenuEntry.Create("", () => { }, false),
 				okButton,
 				MenuEntry.Create("", () => { }, false),
-				MenuEntry.Create("New", OnGenerateSelected)
-			);
+				newButton
+            );
 		}
 
 		public override void Update(GameTime gameTime, InputState input)
@@ -90,8 +92,9 @@ namespace TsRandomizer.Screens.SeedSelection
 			forceSeed = input.IsButtonHold(Buttons.RightTrigger);
 
 			okButton.Text = forceSeed ? "Force" : "OK";
+			newButton.Text = forceSeed ? "Yolo" : "New";
 
-			if (input.IsControllHold())
+            if (input.IsControllHold())
 			{
 				if (input.IsKeyHold(Keys.V) && SDL.SDL_HasClipboardText() == SDL.SDL_bool.SDL_TRUE)
 					PasteClipboardSeed();
@@ -117,7 +120,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			var description = !string.IsNullOrEmpty(error) 
 				? error 
-				: "Select a seed to play\nCtrl+C / Ctrl+V are supported\nPress $G to force play an unbeatable seed";
+				: "Select a seed to play\nCtrl+C / Ctrl+V are supported\nPress $G to force play or yolo a seed";
 
 			Dynamic.ChangeDescription(description, InventoryItemIconType.GetEnumValue("None"));
 		}
@@ -192,7 +195,7 @@ namespace TsRandomizer.Screens.SeedSelection
 
 			if (!Seed.TryParse(hexString, null, out var seed))
 			{
-				ShowErrorDescription("Invalid seed id, it is not a valid hexidecimal value.");
+				ShowErrorDescription("Invalid seed id, it is not a valid hexadecimal value.");
 				return;
 			}
 
@@ -241,11 +244,15 @@ namespace TsRandomizer.Screens.SeedSelection
 
 		void OnGenerateSelected()
 		{
-			var seed = Randomizer.Generate(FillingMethod.Random, GetCurrentOptions());
+			var options = forceSeed ? GetRandomOptions() : GetCurrentOptions();
+			var seed = Randomizer.Generate(FillingMethod.Random, options);
 
-			ScreenManager.Console.AddLine($"Spend {seed.Itterations} itterations to generate seed {seed.Seed}, in {seed.Elapsed}");
+            ScreenManager.Console.AddLine($"Spend {seed.Itterations} iterations to generate seed {seed.Seed}, in {seed.Elapsed}");
 
 			SetSeed(seed.Seed.ToString());
+
+            if (forceSeed)
+				OnOkayEntrySelected(PlayerIndex.One);
 		}
 
 		internal SeedOptionsCollection GetCurrentOptions()
@@ -257,7 +264,10 @@ namespace TsRandomizer.Screens.SeedSelection
 				: new SeedOptionsCollection(seed.Options);
 		}
 
-		string GetHexString()
+		internal SeedOptionsCollection GetRandomOptions() =>
+			 new SeedOptionsCollection(new SeedOptions((uint)new Random().Next()));
+
+        string GetHexString()
 		{
 			var hexString = password;
 
