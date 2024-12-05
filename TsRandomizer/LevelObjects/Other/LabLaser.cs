@@ -23,9 +23,9 @@ namespace TsRandomizer.LevelObjects.Other
 		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
 			if (Level.RoomID > 30)
-				doRainbow = seed.Id % Level.RoomID < 5;
+				doRainbow = seed.Id % Level.RoomID < 3;
 			else
-				doRainbow = seed.Id % 36 < 5;
+				doRainbow = seed.Id % 36 < 3;
 
 			if (!seed.Options.LockKeyAmadeus)
 				return;
