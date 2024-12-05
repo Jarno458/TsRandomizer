@@ -89,7 +89,7 @@ namespace TsRandomizer.LevelObjects
 			E.PastCeilingTentacle,
 			E.PresentCeilingTentacle,
 			E.CeilingSpider,
-			E.CeilingHellSpider,
+			//E.CeilingHellSpider,
 			E.PastCeilingAnemone,
 			E.PresentCeilingAnemone
 		};
@@ -97,7 +97,7 @@ namespace TsRandomizer.LevelObjects
 		static readonly E[] OtherEnemies = {
 			//E.PastSnail, //cause issues if facing wrong way
 			//E.PresentSnail, //cause issues if facing wrong way
-			E.HellSpider, //path blocking lazer, timestop immunity
+			//E.HellSpider, //path blocking lazer, timestop immunity
 			//E.Conviction, //timestop immunity //Falls through floor
 			//E.Zeal, //timestop immunity //Attack can go off the map and crash the game
 			E.Justice, //timestop immunity
@@ -117,7 +117,8 @@ namespace TsRandomizer.LevelObjects
 			.ToArray();
 
 		static readonly E[] EnemiesWithHellSpider = Enemies.Concat(new[] {
-			E.HellSpider
+			E.HellSpider,
+			E.CeilingHellSpider
 		}).ToArray();
 
 		static readonly E[] UnderwaterEnemies = Enemies.Concat(new[] {
@@ -125,7 +126,8 @@ namespace TsRandomizer.LevelObjects
 		}).ToArray();
 
 		static readonly E[] UnderwaterEnemiesWithHellSpider = UnderwaterEnemies.Concat(new[] {
-			E.HellSpider
+			E.HellSpider,
+			E.CeilingHellSpider
 		}).ToArray();
 
 		static readonly LookupDictionary<Roomkey, RoomSpecificEnemies> HardcodedEnemies
@@ -241,6 +243,10 @@ namespace TsRandomizer.LevelObjects
 
 			HardcodedEnemies.TryGetValue(roomKey, out var roomSpecificEnemies);
 
+			var shouldScale = gameSettings.EnemyRando.Value == "Scaled"
+							|| gameSettings.EnemyRando.Value == "Ryshia"
+							|| gameSettings.EnemyRando.Value == "No hell spiders";
+
 			foreach (var enemy in enemies.ToArray())
 			{	
 				if (enemy.EnemyType == EEnemyTileType.JunkSpawner || enemy.EnemyType == EEnemyTileType.LabAdult || enemy.EnemyType == EEnemyTileType.XarionBoss)
@@ -259,7 +265,7 @@ namespace TsRandomizer.LevelObjects
 				if (newEnemy == null)
 					continue;
 
-				if (gameSettings.EnemyRando.Value == "Scaled" || gameSettings.EnemyRando.Value == "Ryshia")
+				if (shouldScale) 
 					newEnemy.ScaleTo(enemy);
 			}
 		}
