@@ -15,7 +15,8 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
-			Dynamic.CloseAndLock();
+			if (seed.Options.LockKeyAmadeus)
+				Dynamic.CloseAndLock();
 		}
 	}
 }
