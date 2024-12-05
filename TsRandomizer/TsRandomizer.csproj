@@ -196,6 +196,7 @@
     <Compile Include="RoomTriggers\Triggers\Bosses\AzureQueen.cs" />
     <Compile Include="RoomTriggers\Triggers\LabSoftlockExits.cs" />
     <Compile Include="RoomTriggers\Triggers\LabExperimentRooms.cs" />
+    <Compile Include="RoomTriggers\Triggers\LightwallClimbBoost.cs" />
     <Compile Include="RoomTriggers\Triggers\MilitaryHangarGyreWarp.cs" />
     <Compile Include="RoomTriggers\SandmanSoftlockPrevention.cs" />
     <Compile Include="RoomTriggers\Triggers\AncientPyramidPitWarp.cs" />
