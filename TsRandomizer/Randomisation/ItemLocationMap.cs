@@ -77,6 +77,7 @@ namespace TsRandomizer.Randomisation
 		protected readonly ItemUnlockingMap UnlockingMap;
 		protected readonly SeedOptions SeedOptions;
 		protected readonly RisingTides FloodsFlags;
+		protected readonly Era StartingEra;
 
 		string areaName;
 
@@ -87,6 +88,7 @@ namespace TsRandomizer.Randomisation
 			UnlockingMap = itemUnlockingMap;
 			SeedOptions = seed.Options;
 			FloodsFlags = seed.FloodFlags;
+			StartingEra = seed.StartingEra;
 
 			SetupGates();
 
@@ -131,7 +133,7 @@ namespace TsRandomizer.Randomisation
 				: R.Free;
 
 			var pastRoutesToRefugeeCamp =
-				(SeedOptions.Inverted && !SeedOptions.PyramidStart)
+				(StartingEra == Era.Past)
 					? R.Free
 					: R.GateRefugeeCamp
 					| R.GateLakeSereneLeft
@@ -167,14 +169,14 @@ namespace TsRandomizer.Randomisation
 				& (
 					SeedOptions.PrismBreak 
 						? R.LaserA & R.LaserI & R.LaserM
-						: (SeedOptions.Inverted && !SeedOptions.PyramidStart ? R.Free : pastRoutesToRefugeeCamp)
+						: (StartingEra == Era.Past ? R.Free : pastRoutesToRefugeeCamp)
 						  & R.TimeStop // Refugee camp -> kill Twins
 						  & (MultipleSmallJumpsOfNpc | ForwardDashDoubleJump) & R.DoubleJump // Refugee camp -> kill Aelana 
 						  & refugeeCampToMaw // Refugee camp -> kill Maw
 				) // militaryLazerGate
 				& (R.CardE | R.CardB);
 
-			LakeDesolationLeft = (!SeedOptions.Inverted && !SeedOptions.PyramidStart)
+			LakeDesolationLeft = (StartingEra == Era.Present)
 				? R.Free
 				: R.GateLakeDesolation
 				  | R.GateKittyBoss
@@ -193,12 +195,12 @@ namespace TsRandomizer.Randomisation
 				| (R.GateMilitaryGate & (R.CardE | R.CardB))
 				| militaryFortressToLakeDesolation;
 
-			if ((SeedOptions.Inverted || SeedOptions.PyramidStart) && SeedOptions.BackToTheFuture) {
+			if ((StartingEra == Era.Past || StartingEra == Era.Pyramid) && SeedOptions.BackToTheFuture) {
 				LakeDesolationLeft |= R.TimespinnerWheel & R.TimespinnerSpindle;
 				LakeDesolationRight |= R.TimespinnerWheel & R.TimespinnerSpindle;
 			}
 
-			RefugeeCamp = (SeedOptions.Inverted && !SeedOptions.PyramidStart)
+			RefugeeCamp = (StartingEra == Era.Past)
 				? R.Free
 				: (
 					R.TimespinnerWheel & R.TimespinnerSpindle
@@ -701,8 +703,8 @@ namespace TsRandomizer.Randomisation
 
 			var levelIdsToAvoid = new List<int>(3) { 1 }; //lake desolation
 			var mawRequirements = R.None;
-			
-			if (!SeedOptions.Inverted && !SeedOptions.PyramidStart)
+	
+			if (StartingEra == Era.Present)
 			{
 				mawRequirements |= R.GateAccessToPast;
 

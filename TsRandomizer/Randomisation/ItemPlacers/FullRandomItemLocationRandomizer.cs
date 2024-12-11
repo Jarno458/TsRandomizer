@@ -150,7 +150,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 		protected void PlaceStarterProgressionItems(Random random)
 		{
-			if (!SeedOptions.PyramidStart && (SeedOptions.Inverted || SeedOptions.StartWithTalaria || Seed.FloodFlags.LakeDesolation)) 
+			if (Seed.StartingEra != Era.Pyramid && (Seed.StartingEra == Era.Past || SeedOptions.StartWithTalaria || Seed.FloodFlags.LakeDesolation)) 
 				GiveOrbsToMom(random, false);
 			else
 				PlaceStarterProgressionInLakeDesolationItem(random);
@@ -282,7 +282,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			var levelIdsToAvoid = new List<int>(3) { 1 };
 			var minimalMawRequirements = R.None;
 
-			if (!SeedOptions.Inverted && !SeedOptions.PyramidStart)
+			if (Seed.StartingEra == Era.Present)
 			{
 				minimalMawRequirements |= R.GateAccessToPast;
 

@@ -31,7 +31,7 @@ namespace TsRandomizer.Randomisation
 
 			var teleporterGates = presentTeleporterGates;
 
-			if (!seed.Options.Inverted || seed.Options.PyramidStart)
+			if (seed.StartingEra != Era.Past)
 			{
 				IEnumerable<TeleporterGate> pastTeleporterGates = PastTeleporterGates;
 				if (!seed.Options.RiskyWarps)
