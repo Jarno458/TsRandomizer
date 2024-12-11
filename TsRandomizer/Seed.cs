@@ -3,6 +3,12 @@ using System.Globalization;
 
 namespace TsRandomizer
 {
+	public enum Era
+	{
+		Past,
+		Present,
+		Pyramid
+	}
 	struct Seed
 	{
 		public const int Length = 8 + SeedOptions.Length;
@@ -10,6 +16,7 @@ namespace TsRandomizer
 		public readonly uint Id;
 		public readonly SeedOptions Options;
 		public readonly RisingTides FloodFlags;
+		public readonly Era StartingEra;
 
 		public static Seed Zero = new Seed(0U, SeedOptions.None);
 
@@ -18,6 +25,11 @@ namespace TsRandomizer
 			Id = id;
 			Options = options;
 			FloodFlags = floodFlags ?? new RisingTides(id, options);
+			StartingEra = Era.Present;
+			if (options.PyramidStart)
+				StartingEra = Era.Pyramid;
+			else if (options.Inverted)
+				StartingEra = Era.Past;
 		}
 
 		public static Seed GenerateRandom(SeedOptions options, Random random)

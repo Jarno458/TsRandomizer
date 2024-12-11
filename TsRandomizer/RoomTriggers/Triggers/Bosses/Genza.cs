@@ -33,8 +33,7 @@ namespace TsRandomizer.RoomTriggers.Triggers.Bosses
 					&& level.GameSave.HasRelic(EInventoryRelicType.ScienceKeycardA))
 				RoomTriggerHelper.SpawnItemDropPickup(level, roomState.RoomItemLocation.ItemInfo, 200, 200);
 
-			if (!roomState.Seed.Options.Inverted 
-					&& !roomState.Seed.Options.PyramidStart 
+			if (roomState.Seed.StartingEra == Era.Present
 					&& level.GameSave.HasCutsceneBeenTriggered("Alt3_Teleport"))
 				RoomTriggerHelper.CreateSimpleOneWayWarp(roomState.Level, 16, 12);
 		}
