@@ -195,7 +195,7 @@ namespace TsRandomizer.Randomisation
 				| (R.GateMilitaryGate & (R.CardE | R.CardB))
 				| militaryFortressToLakeDesolation;
 
-			if ((StartingEra == Era.Past || StartingEra == Era.Pyramid) && SeedOptions.BackToTheFuture) {
+			if (StartingEra != Era.Present && SeedOptions.BackToTheFuture) {
 				LakeDesolationLeft |= R.TimespinnerWheel & R.TimespinnerSpindle;
 				LakeDesolationRight |= R.TimespinnerWheel & R.TimespinnerSpindle;
 			}
