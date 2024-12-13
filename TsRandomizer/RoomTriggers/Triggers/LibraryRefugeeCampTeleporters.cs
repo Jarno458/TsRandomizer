@@ -13,7 +13,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 			if (roomState.Level.GameSave.DataKeyBools.ContainsKey("HasUsedCityTS") 
 			    && (
-					!roomState.Seed.Options.Inverted
+					roomState.Seed.StartingEra != Era.Past
 					|| (
 						roomState.Seed.Options.BackToTheFuture
 					    && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerWheel)
