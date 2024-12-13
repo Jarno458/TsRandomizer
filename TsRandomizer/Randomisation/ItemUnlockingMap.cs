@@ -23,9 +23,9 @@ namespace TsRandomizer.Randomisation
 		void SetTeleporterPickupAction(Seed seed)
 		{
 			IEnumerable<TeleporterGate> presentTeleporterGates = PresentTeleporterGates;
+
 			if (!seed.Options.RiskyWarps)
 				presentTeleporterGates = presentTeleporterGates.Where(g => g.Safe);
-
 			if (seed.FloodFlags.Lab)
 				presentTeleporterGates = presentTeleporterGates.Where(g => g.Gate != R.GateLabEntrance);
 			if (seed.FloodFlags.Xarion)
@@ -36,9 +36,9 @@ namespace TsRandomizer.Randomisation
 			if (seed.StartingEra != Era.Past)
 			{
 				IEnumerable<TeleporterGate> pastTeleporterGates = PastTeleporterGates;
+
 				if (!seed.Options.RiskyWarps)
 					pastTeleporterGates = pastTeleporterGates.Where(g => g.Safe);
-
 				if (seed.FloodFlags.Maw)
 					pastTeleporterGates = pastTeleporterGates.Where(g => g.Gate != R.GateMaw);
 
