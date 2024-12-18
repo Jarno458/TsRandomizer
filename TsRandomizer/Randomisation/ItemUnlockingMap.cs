@@ -195,6 +195,10 @@ namespace TsRandomizer.Randomisation
 				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LabAccessExperiment), R.LabExperiment));
 				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.LabAccessResearch), R.LabResearch));
 			}
+			if (seed.Options.GateKeep)
+			{
+				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.DrawbridgeKey), R.DrawbridgeKey));
+			}
 		}
 
 		void MakeKeyCardUnlocksCardSpecific()

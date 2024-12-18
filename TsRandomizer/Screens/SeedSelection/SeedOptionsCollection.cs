@@ -32,6 +32,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 23, new SeedOptionInfo { Name = "Lock Key Amadeus", Description = "Lasers in Amadeus' Laboratory are disabled via items, rather than by de-powering the lab. Experiments will spawn in the lab." } },
 			{ 1 << 24, new SeedOptionInfo { Name = "Risky Warps", Description = "Expanded free-warp eligible locations, including Azure Queen, Xarion, Amadeus' Laboratory, and Emperor's Tower." } },
 			{ 1 << 25, new SeedOptionInfo { Name = "Pyramid Start", Description = "Start in ???. Takes priority over Inverted. Additional chests in Dark Forest and Pyramid. Sandman door behaves as it does in Enter Sandman." } },
+			{ 1 << 26, new SeedOptionInfo { Name = "Gate Keep", Description = "The castle drawbridge starts raised, and can be lowered via item." } },
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)

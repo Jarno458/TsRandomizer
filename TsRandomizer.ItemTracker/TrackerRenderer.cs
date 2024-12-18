@@ -92,6 +92,7 @@ namespace TsRandomizerItemTracker
 				DrawPinkSource(spriteBatch, state);
 				DrawLaserAccess(spriteBatch, state);
 				DrawLabAccess(spriteBatch, state);
+				DrawItem(spriteBatch, state.DrawbridgeKey, 236, Color.White);
 			}
 		}
 
@@ -176,6 +177,11 @@ namespace TsRandomizerItemTracker
 
 		void DrawItem(SpriteBatch spriteBatch, bool obtained, ItemIdentifier itemInfo, Color color)
 		{
+			DrawItem(spriteBatch, obtained, GetAnimationIndex(itemInfo), color);
+		}
+
+		void DrawItem(SpriteBatch spriteBatch, bool obtained, int animationIndex, Color color)
+		{
 			if (xIndex >= columnCount)
 			{
 				xIndex = 0;
@@ -185,7 +191,7 @@ namespace TsRandomizerItemTracker
 			var position = new Point(xIndex++ * IconSize, yIndex * IconSize);
 
 			DrawItem(spriteBatch, new Rectangle(position.X, position.Y, IconSize, IconSize), 
-                obtained, GetAnimationIndex(itemInfo), color);
+                obtained, animationIndex, color);
 		}
 
         void DrawSubItem(SpriteBatch spriteBatch, bool obtained, ItemIdentifier itemInfo, 

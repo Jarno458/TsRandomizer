@@ -154,6 +154,7 @@
     <Compile Include="IntermediateObjects\CustomItems\StatusTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\Trap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\LaserAccessKey.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\DrawbridgeKey.cs" />
     <Compile Include="IntermediateObjects\CustomItems\UnchainedKey.cs" />
     <Compile Include="IntermediateObjects\ProgressiveItemProvider.cs" />
     <Compile Include="LevelObjects\CollisionDetectionEvent.cs" />

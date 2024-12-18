@@ -54,6 +54,7 @@ namespace TsRandomizer.ItemTracker
 		public bool LabDynamo;
 		public bool LabExperiment;
 		public bool LabResearch;
+		public bool DrawbridgeKey;
 
 		internal static ItemTrackerState FromItemLocationMap(IEnumerable<ItemLocation> itemLocations)
 		{
@@ -122,6 +123,7 @@ namespace TsRandomizer.ItemTracker
 			{CustomItem.GetIdentifier(CustomItemType.LabAccessDynamo), s => s.LabDynamo},
 			{CustomItem.GetIdentifier(CustomItemType.LabAccessExperiment), s => s.LabExperiment},
 			{CustomItem.GetIdentifier(CustomItemType.LabAccessResearch), s => s.LabResearch},
+			{CustomItem.GetIdentifier(CustomItemType.DrawbridgeKey), s => s.DrawbridgeKey},
 		};
 
 		static void SetMemberForItem(ItemTrackerState trackerState, ItemIdentifier itemInfo)

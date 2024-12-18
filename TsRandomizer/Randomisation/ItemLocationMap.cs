@@ -224,7 +224,7 @@ namespace TsRandomizer.Randomisation
 			CavesOfBanishment = (LowerLakeSirine & (FloodsFlags.DryLakeSerene ? R.DoubleJump : R.Free)) | R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump);
 			CavesOfBanishmentFlooded = CavesOfBanishment & NeedSwimming(FloodsFlags.Maw);
 			UpperCavesOfBanishment = RefugeeCamp;
-			CastleRamparts = RefugeeCamp;
+			CastleRamparts = (SeedOptions.GateKeep) ? RefugeeCamp & (R.DrawbridgeKey | R.UpwardDash | R.GateCastleKeep) : RefugeeCamp;
 			CastleKeep = CastleRamparts;
 			CastleBasement = CastleKeep & NeedSwimming(FloodsFlags.Basement);
 			RoyalTower = (CastleKeep & R.DoubleJump) | R.GateRoyalTowers;
