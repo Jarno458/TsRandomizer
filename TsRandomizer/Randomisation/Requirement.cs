@@ -44,6 +44,7 @@ namespace TsRandomizer.Randomisation
 		public static readonly Requirement LabDynamo = 1UL << 35;
 		public static readonly Requirement LabExperiment = 1UL << 36;
 		public static readonly Requirement LabResearch = 1UL << 37;
+		public static readonly Requirement DrawbridgeKey = 1UL << 38;
 
 		public static readonly Requirement GateRefugeeCamp = 1UL << 42;
 		public static readonly Requirement GateSealedCaves = 1UL << 43;

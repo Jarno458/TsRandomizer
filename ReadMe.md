@@ -58,7 +58,7 @@ In order to use the randomizer on a steam deck, you will have to install the ran
 * Anywhere, ` (tilde) will open the console. the console can be used to activate some command see /help for a list of available commands, if you are connected to an archipelago server any text typed in the console is sent to the server, giving you access to server commands
 
 # Routing Changes
-* The drawbridge is now open by default, and doesn't require you to visit the Demon Twins in Lake Serene.
+* The drawbridge is now open by default, and doesn't require you to visit the Demon Twins in Lake Serene. When using the "Gate Keep" flag, the castle drawbridge starts raised and can be lowered via item, although logic will consider the raised drawbridge to be traversable with Lightwall or Celestial Sash.
 * Amadeus' Laboratory now requires keycard B to open
 * To prevent players from getting stuck in the past when items are still available in the present, the transition room next to the refugee camp can now be used to freely travel back and forth between past and present
 * When you obtain the twin pyramid key, a random transition room is unlocked that could open new routing opportunities. In the "Unchained Keys" flag, these bonus warps are found as items.
