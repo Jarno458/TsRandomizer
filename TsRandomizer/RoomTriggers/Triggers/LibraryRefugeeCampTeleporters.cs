@@ -8,21 +8,9 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.PyramidsKey))
-				return;
-
-			if (roomState.Level.GameSave.DataKeyBools.ContainsKey("HasUsedCityTS") 
-			    && (
-					roomState.Seed.StartingEra != Era.Past
-					|| (
-						roomState.Seed.Options.BackToTheFuture
-					    && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerWheel)
-						&& roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerSpindle)
-					))
-				)
+			if (!roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.PyramidsKey)
+					&& roomState.Level.GameSave.DataKeyBools.ContainsKey("HasAccessedToRefugeCampTeleporter"))
 				RoomTriggerHelper.CreateSimpleOneWayWarp(roomState.Level, 3, 6);
-
-				
 		}
 	}
 
@@ -31,24 +19,18 @@ namespace TsRandomizer.RoomTriggers.Triggers
 	{
 		public override void OnRoomLoad(RoomState roomState)
 		{
-			if (roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.PyramidsKey))
-			{
-				if (roomState.Seed.Options.Inverted
-				    && roomState.Seed.Options.BackToTheFuture
-				    && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerWheel)
-				    && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerSpindle))
-						roomState.Level.MarkRoomAsVisited(2, 54);
-				
-				return;
-			}
+			roomState.Level.GameSave.SetValue("HasAccessedToRefugeCampTeleporter", true);
 
-			if (!roomState.Seed.Options.Inverted
+			if (roomState.Seed.StartingEra == Era.Present
 			    || (roomState.Seed.Options.BackToTheFuture
 			        && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerWheel)
 			        && roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.TimespinnerSpindle)))
-
-
-				RoomTriggerHelper.CreateSimpleOneWayWarp(roomState.Level, 2, 54);
+			{
+				if (roomState.Level.GameSave.HasRelicEnabled(EInventoryRelicType.PyramidsKey))
+					roomState.Level.MarkRoomAsVisited(2, 54);
+				else
+					RoomTriggerHelper.CreateSimpleOneWayWarp(roomState.Level, 2, 54);
+			}
 		}
 	}
 }
