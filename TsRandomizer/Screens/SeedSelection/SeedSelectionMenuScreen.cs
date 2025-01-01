@@ -264,10 +264,9 @@ namespace TsRandomizer.Screens.SeedSelection
 				: new SeedOptionsCollection(seed.Options);
 		}
 
-		internal SeedOptionsCollection GetRandomOptions() =>
-			 new SeedOptionsCollection(new SeedOptions((uint)new Random().Next()));
+		internal SeedOptionsCollection GetRandomOptions() => new SeedOptionsCollection(SeedOptions.CreateRandom());
 
-        string GetHexString()
+		string GetHexString()
 		{
 			var hexString = password;
 

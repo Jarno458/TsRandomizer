@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace TsRandomizer
@@ -85,6 +86,14 @@ namespace TsRandomizer
 				if (slotData.TryGetValue(key, out var value) && IsTrue(value))
 					Flags |= flag;
 			}
+		}
+
+		public static SeedOptions CreateRandom()
+		{
+			var randomValue = (uint)new Random().Next();
+			randomValue &= ~(1U << 13); //Tournament
+
+			return new SeedOptions(randomValue);
 		}
 
 		static bool IsTrue(object o)
