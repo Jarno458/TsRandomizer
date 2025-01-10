@@ -13,6 +13,8 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					// Military Hangar crash site to Gyre
 					RoomTriggerHelper.SpawnGyreWarp(roomState.Level, 340, 180);
 			}
+			else if (roomState.Seed.Options.RiskyWarps)
+				RoomTriggerHelper.SpawnGlowingFloor(roomState.Level, new Point(360, 120));
 		}
 	}
 }

@@ -69,7 +69,7 @@ namespace TsRandomizer.LevelObjects.Other
 		protected override void OnUpdate()
 		{
 			Roomkey room = new Roomkey(Dynamic.Level.ID, Dynamic.Level.RoomID);
-			if ((room.LevelId != 16 && room.LevelId != 7 && room.LevelId != 11) || (room.LevelId == 11 && room.RoomId == 21))
+			if ((room.LevelId != 16 && room.LevelId != 7 && room.LevelId != 11 && room.LevelId != 10) || (room.LevelId == 11 && room.RoomId == 21))
 				return;
 			if (teleportTriggered)
 				return;
