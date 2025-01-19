@@ -105,9 +105,9 @@
       <HintPath>..\packages\Archipelago.MultiClient.Net.6.5.0\lib\net45\Archipelago.MultiClient.Net.dll</HintPath>
     </Reference>
     <Reference Include="FNA">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
-      <HintPath>..\..\..\TestVersions\DRMFreeVersion\FNA.dll</HintPath>
-      <HintPath>$(HOME)/.local/share/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
+      <HintPath Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll')">C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
+      <HintPath Condition="Exists('..\..\..\TestVersions\DRMFreeVersion\FNA.dll')">..\..\..\TestVersions\DRMFreeVersion\FNA.dll</HintPath>
+      <HintPath Condition="Exists('$(HOME)/.local/share/Steam/steamapps/common/Timespinner/FNA.dll')">$(HOME)/.local/share/Steam/steamapps/common/Timespinner/FNA.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -120,8 +120,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Timespinner">
-      <HintPath>..\..\..\TestVersions\DRMFreeVersion\Timespinner.exe</HintPath>
-      <HintPath>$(HOME)/.local/share/Steam/steamapps/common/Timespinner/Timespinner.exe</HintPath>
+      <HintPath Condition="Exists('..\..\..\TestVersions\DRMFreeVersion\Timespinner.exe')">..\..\..\TestVersions\DRMFreeVersion\Timespinner.exe</HintPath>
+      <HintPath Condition="Exists('$(HOME)/.local/share/Steam/steamapps/common/Timespinner/Timespinner.exe')">$(HOME)/.local/share/Steam/steamapps/common/Timespinner/Timespinner.exe</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
