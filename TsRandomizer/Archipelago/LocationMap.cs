@@ -247,6 +247,10 @@ namespace TsRandomizer.Archipelago
 				// 1337199 - 1337235 Reserved
 
 				// Pyramid
+				// Pyramid start checks
+				{1337233, new ItemKey(15, 2, 200, 562)}, //training dummy
+				{1337234, new ItemKey(14, 0, 240, 192)}, //gyre
+				{1337235, new ItemKey(16, 2, 2192, 1552)}, //pyramid rubble
 				// Ancient Pyramid
 				{1337236, new ItemKey(16, 5, 136, 192)}, //nightmare door
 				// Temporal Gyre
