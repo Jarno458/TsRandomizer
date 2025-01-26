@@ -190,6 +190,9 @@ namespace TsRandomizer.Settings
 					case 3:
 						enumValue = "Ryshia";
 						break;
+					case 4:
+						enumValue = "No hell spiders";
+						break;
 					default:
 						enumValue = "Off";
 						break;
