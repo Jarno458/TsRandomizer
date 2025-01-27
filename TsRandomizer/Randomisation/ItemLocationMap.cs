@@ -548,7 +548,7 @@ namespace TsRandomizer.Randomisation
 			areaName = "The lab";
 			Add(new ItemKey(11, 6, 200, 192), "Lab: Download and chest room terminal (Experiment #13)", null, UpperLab & R.Tablet);
 			Add(new ItemKey(11, 15, 152, 176), "Lab: Middle terminal (Amadeus Laboratory Map)", null, LabResearchWing & R.Tablet);
-			Add(new ItemKey(11, 16, 600, 192), "Lab: Sentry platform terminal (Origins)", null, LabResearchWing & R.Tablet);
+			Add(new ItemKey(11, 16, 600, 192), "Lab: Sentry platform terminal (Origins)", null, (SeedOptions.LockKeyAmadeus ? MainLab & R.LabGenza : LabResearchWing) & R.Tablet);
 			Add(new ItemKey(11, 34, 200, 192), "Lab: Experiment 13 terminal (W.R.E.C Farewell)", null, MainLab & R.Tablet);
 			Add(new ItemKey(11, 37, 200, 192), "Lab: Left terminal (Biotechnology)", null, MainLab & R.Tablet);
 			Add(new ItemKey(11, 38, 120, 176), "Lab: Right terminal (Experiment #11)", null, LabResearchWing & R.Tablet);
