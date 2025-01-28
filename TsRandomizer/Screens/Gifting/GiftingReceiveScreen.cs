@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Archipelago.Gifting.Net.Gifts.Versions.Current;
+using Archipelago.Gifting.Net.Versioning.Gifts.Current;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Timespinner.GameAbstractions;

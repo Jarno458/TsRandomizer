@@ -6,15 +6,27 @@ using Microsoft.Xna.Framework.Graphics;
 using Timespinner.Core;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Inventory;
+using TsRandomizer;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.ItemTracker;
+using TsRandomizer.Randomisation;
 
 namespace TsRandomizerItemTracker
 {
 	class TrackerRenderer
 	{
 		static readonly Dictionary<ItemIdentifier, int> AnimationIndexes = new Dictionary<ItemIdentifier, int>(ItemTrackerState.NumberOfItems);
+		
+        static TrackerRenderer()
+        {
+            CustomItem.Initialize();
+
+            var unlockingMap = new DefaultItemUnlockingMap(Seed.Zero);
+            foreach (var item in CustomItem.GetAllCustomItems(unlockingMap))
+                AnimationIndexes.Add(item.Identifier, item.AnimationIndex);
+        }
 
 		public int IconSize { get; set; } = 32;
 
@@ -61,8 +73,11 @@ namespace TsRandomizerItemTracker
 		}
 
 		public void Draw(SpriteBatch spriteBatch, ItemTrackerState state)
-		{
-			ResetPosition();
+        {
+            state.DrawbridgeKey = true;
+
+
+            ResetPosition();
 
 			using (spriteBatch.BeginUsing(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp))
 			{
@@ -92,7 +107,7 @@ namespace TsRandomizerItemTracker
 				DrawPinkSource(spriteBatch, state);
 				DrawLaserAccess(spriteBatch, state);
 				DrawLabAccess(spriteBatch, state);
-				DrawItem(spriteBatch, state.DrawbridgeKey, 236, Color.White);
+                DrawItem(spriteBatch, state.DrawbridgeKey, CustomItem.GetIdentifier(CustomItemType.DrawbridgeKey));
 			}
 		}
 
@@ -175,13 +190,8 @@ namespace TsRandomizerItemTracker
 			spriteBatch.Draw(menuIcons.Texture, destination, sprite, color);
 		}
 
-		void DrawItem(SpriteBatch spriteBatch, bool obtained, ItemIdentifier itemInfo, Color color)
-		{
-			DrawItem(spriteBatch, obtained, GetAnimationIndex(itemInfo), color);
-		}
-
-		void DrawItem(SpriteBatch spriteBatch, bool obtained, int animationIndex, Color color)
-		{
+        void DrawItem(SpriteBatch spriteBatch, bool obtained, ItemIdentifier itemInfo, Color color)
+        {
 			if (xIndex >= columnCount)
 			{
 				xIndex = 0;
@@ -191,7 +201,7 @@ namespace TsRandomizerItemTracker
 			var position = new Point(xIndex++ * IconSize, yIndex * IconSize);
 
 			DrawItem(spriteBatch, new Rectangle(position.X, position.Y, IconSize, IconSize), 
-                obtained, animationIndex, color);
+                obtained, GetAnimationIndex(itemInfo), color);
 		}
 
         void DrawSubItem(SpriteBatch spriteBatch, bool obtained, ItemIdentifier itemInfo, 

@@ -16,4 +16,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.32.5")]
 
 [assembly: InternalsVisibleTo("TsRandomizer.Tests")]
+[assembly: InternalsVisibleTo("TsRandomizerItemTracker")]
 [assembly: InternalsVisibleTo("TsRandomizerSeedGeneratah")]

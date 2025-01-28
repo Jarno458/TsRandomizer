@@ -2,10 +2,9 @@
 using System.Linq;
 using TsRandomizer.Extensions;
 using System.Collections.Generic;
-using Archipelago.Gifting.Net.Gifts;
-using Archipelago.Gifting.Net.Gifts.Versions.Current;
 using Archipelago.Gifting.Net.Service;
-using Archipelago.Gifting.Net.Traits;
+using Archipelago.Gifting.Net.Versioning.Gifts;
+using Archipelago.Gifting.Net.Versioning.Gifts.Current;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
@@ -109,7 +108,9 @@ namespace TsRandomizer.Archipelago.Gifting
 					.Select(t => new GiftTrait(t.Key.ToString(), 1, t.Value))
 					.ToArray();
 
-				return service.SendGift(giftItem, traits, players.GetPlayerName(playerInfo.Slot), playerInfo.Team);
+				var result = service.SendGift(giftItem, traits, players.GetPlayerName(playerInfo.Slot), playerInfo.Team);
+
+				return result.Success;
 			}
 			catch (Exception e)
 			{
@@ -205,7 +206,7 @@ namespace TsRandomizer.Archipelago.Gifting
 		{
 			try
 			{
-				var box = service.GetCurrentGiftboxState();
+				var box = service.GetCurrentGiftBoxState();
 				if (box == null)
 					return new Trait[0];
 
