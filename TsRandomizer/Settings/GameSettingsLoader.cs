@@ -190,6 +190,9 @@ namespace TsRandomizer.Settings
 					case 3:
 						enumValue = "Ryshia";
 						break;
+					case 4:
+						enumValue = "No hell spiders";
+						break;
 					default:
 						enumValue = "Off";
 						break;
@@ -344,6 +347,7 @@ namespace TsRandomizer.Settings
 				settings.ChaosTrap.Value = traps.Contains("Chaos Trap");
 				settings.NeurotoxinTrap.Value = traps.Contains("Neurotoxin Trap");
 				settings.BeeTrap.Value = traps.Contains("Bee Trap");
+				settings.ThrowStunTrap.Value = traps.Contains("Throw Stun Trap");
 			}
 
 			if (slotData.TryGetValue("EnableMapFromStart", out var enableMapFromStart))
