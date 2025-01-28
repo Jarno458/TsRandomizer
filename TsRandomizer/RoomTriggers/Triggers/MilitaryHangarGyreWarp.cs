@@ -15,7 +15,6 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			}
 			else if (roomState.Seed.Options.RiskyWarps)
 				RoomTriggerHelper.SpawnGlowingFloor(roomState.Level, new Point(360, 120));
-			
 		}
 	}
 }
