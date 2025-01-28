@@ -1,5 +1,7 @@
 ﻿using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
 
@@ -16,7 +18,7 @@ namespace TsRandomizer.LevelObjects.Other
 		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
 			Dynamic._isDrawbridgeUp = !LevelReflected.GetLevelSaveBool("HasWinchBeenUsed") 
-				? false 
+				? seed.Options.GateKeep && !Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.DrawbridgeKey))
 				: LevelReflected.GetLevelSaveBool("IsDrawbridgeRaised");
 			Dynamic._isRotatingClockwise = Dynamic._isDrawbridgeUp;
 		}

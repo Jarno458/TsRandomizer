@@ -28,7 +28,8 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		LabAccessGenza,
 		LabAccessExperiment,
 		LabAccessResearch,
-		LabAccessDynamo
+		LabAccessDynamo,
+		DrawbridgeKey
 	}
 
 	// consider beacons as starting items
