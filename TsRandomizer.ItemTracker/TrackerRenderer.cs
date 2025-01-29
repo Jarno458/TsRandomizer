@@ -74,8 +74,6 @@ namespace TsRandomizerItemTracker
 
 		public void Draw(SpriteBatch spriteBatch, ItemTrackerState state)
         {
-            state.DrawbridgeKey = true;
-
 
             ResetPosition();
 
