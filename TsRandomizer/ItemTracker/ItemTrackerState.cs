@@ -13,7 +13,7 @@ namespace TsRandomizer.ItemTracker
 	[Serializable]
 	public class ItemTrackerState
 	{
-		public const int NumberOfItems = 35;
+		public const int NumberOfItems = 40;
 
 		public bool Timestop;
 		public bool TimeSpindle;
