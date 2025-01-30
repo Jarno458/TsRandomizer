@@ -19,43 +19,58 @@ namespace TsRandomizer.RoomTriggers.Triggers
 				return;
 
 			if (roomState.RoomKey.RoomId == 1)
-				SpawnExperiment(roomState, new Point(600, 176), true);
+				SpawnExperimentAdult(roomState, new Point(600, 176));
 			else if (roomState.RoomKey.RoomId == 15)
 			{
-				SpawnExperiment(roomState, new Point(984, 176), false);
-				SpawnExperiment(roomState, new Point(552, 176), false);
+				SpawnExperimentChild(roomState, new Point(61, 10));
+				SpawnExperimentChild(roomState, new Point(34, 10));
 			}
 			else if (roomState.RoomKey.RoomId == 28)
-				SpawnExperiment(roomState, new Point(392, 192), false);
+				SpawnExperimentChild(roomState, new Point(24, 11));
 			else if (roomState.RoomKey.RoomId == 29)
 			{
-				SpawnExperiment(roomState, new Point(536, 176), false);
-				SpawnExperiment(roomState, new Point(760, 176), false);
+				SpawnExperimentChild(roomState, new Point(33, 10));
+				SpawnExperimentChild(roomState, new Point(47, 10));
 			}
 			else if (roomState.RoomKey.RoomId == 37)
-				SpawnExperiment(roomState, new Point(216, 192), false);
+				SpawnExperimentChild(roomState, new Point(13, 11));
 		}
 
-		protected static void SpawnExperiment(RoomState state, Point point, bool isAdult)
+                protected static void SpawnExperimentAdult(RoomState state, Point point)
+                {
+                        var level = state.Level;
+                        var enemyTile = new ObjectTileSpecification
+                        {
+                                Category = EObjectTileCategory.Enemy,
+                                Layer = ETileLayerType.Objects,
+                                ObjectID = (int)EEnemyTileType.LabAdult,
+                                Argument = 0,
+                                IsFlippedHorizontally = false
+                        };
+                        var enemyType = TimeSpinnerType.Get("Timespinner.GameObjects.Enemies.LabAdult");
+                        var sprite = level.GCM.SpLabAdult;
+                        var enemy = enemyType.CreateInstance(false, point, level, sprite, -1, enemyTile);
+
+                        enemy.AsDynamic().InitializeMob();
+
+                        level.AsDynamic().RequestAddObject(enemy);
+                }
+
+		protected static void SpawnExperimentChild(RoomState state, Point point)
 		{
 			var level = state.Level;
 			var enemyTile = new ObjectTileSpecification
 			{
 				Category = EObjectTileCategory.Enemy,
 				Layer = ETileLayerType.Objects,
-				ObjectID = isAdult ? (int)EEnemyTileType.LabAdult : (int)EEnemyTileType.LabChild,
+				ObjectID = (int)EEnemyTileType.LabChild,
 				Argument = 0,
-				IsFlippedHorizontally = false
+				IsFlippedHorizontally = false,
+				X = point.X,
+				Y = point.Y
 			};
-			var enemyType = isAdult 
-				? TimeSpinnerType.Get("Timespinner.GameObjects.Enemies.LabAdult") 
-				: TimeSpinnerType.Get("Timespinner.GameObjects.Enemies.LabChild");
-			var sprite = isAdult ? level.GCM.SpLabAdult : level.GCM.SpLabChild;
-			var enemy = enemyType.CreateInstance(false, point, level, sprite, -1, enemyTile);
 
-			enemy.AsDynamic().InitializeMob();
-
-			level.AsDynamic().RequestAddObject(enemy);
+			level.PlaceEvent(enemyTile, false);
 		}
 	}
 }
