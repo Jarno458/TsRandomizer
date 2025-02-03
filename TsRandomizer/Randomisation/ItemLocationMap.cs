@@ -227,7 +227,7 @@ namespace TsRandomizer.Randomisation
 			CastleRamparts = (SeedOptions.GateKeep) ? RefugeeCamp & (R.DrawbridgeKey | R.UpwardDash | R.GateCastleKeep) : RefugeeCamp;
 			CastleKeep = CastleRamparts;
 			CastleBasement = CastleKeep & NeedSwimming(FloodsFlags.Basement);
-			RoyalTower = (CastleKeep & R.DoubleJump & (SeedOptions.GateKeep ? R.PinkOrb : R.Free)) | R.GateRoyalTowers;
+			RoyalTower = (CastleKeep & R.DoubleJump & (SeedOptions.RoyalRoadblock ? R.PinkOrb : R.Free)) | R.GateRoyalTowers;
 			MidRoyalTower = RoyalTower & (MultipleSmallJumpsOfNpc | ForwardDashDoubleJump);
 			UpperRoyalTower = MidRoyalTower & R.DoubleJump;
 			KillMaw = CavesOfBanishmentFlooded & MawGasMask;
