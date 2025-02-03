@@ -220,6 +220,7 @@
     <Compile Include="RoomTriggers\Triggers\PyramidStartBonusGyre.cs" />
     <Compile Include="RoomTriggers\Triggers\PyramidStartBonusRubble.cs" />
     <Compile Include="RoomTriggers\Triggers\RisingTides.cs" />
+    <Compile Include="RoomTriggers\Triggers\RoyalTowersDoor.cs" />
     <Compile Include="RoomTriggers\Triggers\DadsPedistal.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\Genza.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\GoldenIdol.cs" />

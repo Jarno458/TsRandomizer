@@ -33,6 +33,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 24, new SeedOptionInfo { Name = "Risky Warps", Description = "Expanded free-warp eligible locations, including Azure Queen, Xarion, Amadeus' Laboratory, and Emperor's Tower." } },
 			{ 1 << 25, new SeedOptionInfo { Name = "Pyramid Start", Description = "Start in ???. Takes priority over Inverted. Additional chests in Dark Forest and Pyramid. Sandman door behaves as it does in Enter Sandman." } },
 			{ 1 << 26, new SeedOptionInfo { Name = "Gate Keep", Description = "The castle drawbridge starts raised, and can be lowered via item." } },
+			{ 1 << 27, new SeedOptionInfo { Name = "Royal Roadblock", Description = "The Royal Towers entrance door requires a royal orb (Plasma Orb, Plasma Geyser, or Royal Ring) to enter." } },
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)
