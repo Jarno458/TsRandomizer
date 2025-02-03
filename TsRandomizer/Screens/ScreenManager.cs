@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Timespinner;
@@ -50,7 +51,20 @@ namespace TsRandomizer.Screens
 			Console = new GameConsole(this, GameContentManager);
 
 			Console.AddCommand(new ConnectCommand(this));
+
+			AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_AssemblyLoad;
+			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 		}
+
+		static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+		{
+			Console.AddDebugLine($"Attempt to load assembly: {args.Name} as depedency of {args.RequestingAssembly.FullName}", Color.BlanchedAlmond);
+
+			return null;
+		}
+
+		static void CurrentDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs args) =>
+			Console.AddDebugLine($"Loaded assembly: {args.LoadedAssembly.FullName}", Color.Beige);
 
 		public override void Update(GameTime gameTime)
 		{
