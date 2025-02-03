@@ -105,7 +105,7 @@ namespace TsRandomizer.Archipelago.Gifting
 			{
 				var giftItem = new GiftItem(GetItemName(item), amount, 0);
 				var traits = TraitMapping.ValuesPerItem[item]
-					.Select(t => new GiftTrait(t.Key.ToString(), 1, t.Value))
+					.Select(t => new GiftTrait(t.Key.ToString(), t.Value))
 					.ToArray();
 
 				var result = service.SendGift(giftItem, traits, players.GetPlayerName(playerInfo.Slot), playerInfo.Team);
