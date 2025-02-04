@@ -46,6 +46,7 @@ namespace TsRandomizer.Extensions
 			settings.NeurotoxinTrap.Value = true;
 			settings.ChaosTrap.Value = true;
 			settings.ThrowStunTrap.Value = true;
+			settings.SpiderTrap.Value = true;
 
 			settings.NoSaveStatues.Value = false; //not voted
 

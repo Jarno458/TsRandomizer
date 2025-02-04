@@ -348,6 +348,7 @@ namespace TsRandomizer.Settings
 				settings.NeurotoxinTrap.Value = traps.Contains("Neurotoxin Trap");
 				settings.BeeTrap.Value = traps.Contains("Bee Trap");
 				settings.ThrowStunTrap.Value = traps.Contains("Throw Stun Trap");
+				settings.SpiderTrap.Value = traps.Contains("Spider Trap");
 			}
 
 			if (slotData.TryGetValue("EnableMapFromStart", out var enableMapFromStart))
