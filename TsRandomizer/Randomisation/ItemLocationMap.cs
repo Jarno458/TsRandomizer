@@ -591,7 +591,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(6, 14, 136, 177), "Royal Towers: Journal - Aelana Boss (Stained Letter)", null, UpperRoyalTower);
 			Add(new ItemKey(6, 25, 152, 145), "Royal Towers: Journal - Near Bottom Struggle Juggle (Mission Findings)", null, MidRoyalTower & (FloodsFlags.CastleCourtyard ? R.Free : DoubleJumpOfNpc));
 			areaName = "Caves of Banishment (Maw)";
-			Add(new ItemKey(8, 36, 136, 145), "Caves of Banishment (Maw): Journal - Lower Left Caves (Naivety)", null, CavesOfBanishmentFlooded);
+			Add(new ItemKey(8, 36, 136, 145), "Caves of Banishment (Maw): Journal - Lower Left Caves (Naivety)", null, CavesOfBanishmentFlooded | (R.GateMaw & NeedSwimming(FloodsFlags.Maw)));
 		}
 
 		ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)
