@@ -262,7 +262,7 @@ namespace TsRandomizer.Randomisation
 
 			//pyramid
 			var completeTimespinner = R.TimespinnerPiece1 & R.TimespinnerPiece2 & R.TimespinnerPiece3 & R.TimespinnerSpindle & R.TimespinnerWheel;
-			TemporalGyre = MilitaryFortress & R.TimespinnerWheel;
+			TemporalGyre = MilitaryFortress & militaryLazerGate & R.TimespinnerWheel;
 			PyramidEntrance = (SeedOptions.PyramidStart)
 				? R.Free
 				: (UpperLab & completeTimespinner)
