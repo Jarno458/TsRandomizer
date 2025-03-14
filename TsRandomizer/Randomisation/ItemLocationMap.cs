@@ -384,7 +384,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(11, 3, 72, 192), "Lab: Lower trash left", ItemProvider.Get(EInventoryUseItemType.FuturePotion), MainLab & (FloodsFlags.Lab ? R.Free : (SeedOptions.LockKeyAmadeus ? DoubleJumpOfNpc: R.UpwardDash))); // When lab power is on, it only requires DoubleJumpOfNpc, but we cant code for the power state
 			Add(new ItemKey(11, 25, 104, 192), "Lab: Below lab entrance", ItemProvider.Get(EItemType.MaxAura), MainLab & (FloodsFlags.Lab ? R.Swimming : R.DoubleJump));
 			Add(new ItemKey(11, 18, 824, 128), "Lab: Trash jump room", ItemProvider.Get(EInventoryUseItemType.ChaosHeal), MainLab & (SeedOptions.LockKeyAmadeus ? DoubleJumpOfNpc : R.UpwardDash)); // Only requires DoubleJumpOffNpc when lab power is on
-			Add(new RoomItemKey(11, 39), "Lab: Dynamo Works", ItemProvider.Get(EInventoryOrbType.Eye, EOrbSlot.Melee), SeedOptions.LockKeyAmadeus ? LabResearchWing & R.UpwardDash : LabResearchWing); // Blast door is closed in Lock Key Amadeus
+			Add(new RoomItemKey(11, 39), "Lab: Dynamo Works", ItemProvider.Get(EInventoryOrbType.Eye, EOrbSlot.Melee), SeedOptions.LockKeyAmadeus ? LabResearchWing & R.LabDynamo & R.UpwardDash : LabResearchWing); // Blast door is closed in Lock Key Amadeus
 			Add(new RoomItemKey(11, 21), "Lab: Genza (Blob Mom)", ItemProvider.Get(EInventoryRelicType.ScienceKeycardA), UpperLab);
 			Add(new RoomItemKey(11, 1), "Lab: Experiment #13", ItemProvider.Get(EInventoryRelicType.Dash), SeedOptions.LockKeyAmadeus ? MainLab & R.LabExperiment : LabResearchWing);
 			Add(new ItemKey(11, 6, 328, 192), "Lab: Download and chest room chest", ItemProvider.Get(EInventoryEquipmentType.LabCoat), UpperLab);
