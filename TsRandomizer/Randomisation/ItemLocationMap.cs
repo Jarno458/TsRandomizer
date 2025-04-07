@@ -602,16 +602,16 @@ namespace TsRandomizer.Randomisation
 		void AddLanternLocations()
 		{
 			areaName = "Lake Desolation";
-			Add(new ItemKey(1, 11, 106, 221), "Lantern TBD", null, RefugeeCamp);
+			Add(new ItemKey(1, 11, 106, 221), "Lake Desolation (Lower): Not so secret room Lantern", null, LakeDesolationRight & OculusRift);
 			Add(new ItemKey(1, 16, 106, 461), "Lantern TBD", null, RefugeeCamp);
 			Add(new ItemKey(1, 16, 282, 269), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(1, 17, 282, 141), "Lantern TBD", null, RefugeeCamp);
+			Add(new ItemKey(1, 17, 282, 141), "Lake Desolation (Upper): Oxygen recovery room Lantern", null, UpperLakeDesolation);
 			Add(new ItemKey(1, 19, 218, 365), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(1, 20, 250, 237), "Lantern TBD", null, RefugeeCamp);
+			Add(new ItemKey(1, 20, 250, 237), "Lake Desolation (Upper): Double jump cave lantern", null, UpperLakeDesolation);
 			Add(new ItemKey(1, 6, 474, 413), "Lantern TBD", null, RefugeeCamp);
 			Add(new ItemKey(1, 6, 570, 173), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(1, 9, 122, 189), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(1, 9, 314, 141), "Lantern TBD", null, RefugeeCamp);
+			Add(new ItemKey(1, 9, 122, 189), "Lake Desolation (Lower): Timespinner Wheel room Lantern 1", null, LakeDesolationLeft);
+			Add(new ItemKey(1, 9, 314, 141), "Lake Desolation (Lower): Timespinner Wheel room Lantern 2", null, LakeDesolationLeft);
 
 			areaName = "Lower Lake Desolation";
 			areaName = "Upper Lake Desolation";
@@ -1139,33 +1139,33 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(16, 9, 602, 166), "Lantern TBD", null, RefugeeCamp);
 
 			areaName = "Dark Forest";
-			Add(new ItemKey(15, 0, 1144, 169), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(15, 0, 1448, 169), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(15, 0, 344, 169), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(15, 0, 616, 169), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(15, 0, 824, 169), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(15, 0, 88, 169), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(15, 2, 104, 537), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(15, 2, 344, 537), "Lantern TBD", null, RefugeeCamp);
+			Add(new ItemKey(15, 0, 1144, 169), "Dark Forest: Pyramid Entrance Lantern 1", null, PyramidEntrance);
+			Add(new ItemKey(15, 0, 1448, 169), "Dark Forest: Pyramid Entrance Lantern 2", null, PyramidEntrance);
+			Add(new ItemKey(15, 0, 344, 169), "Dark Forest: Pyramid Entrance Lantern 3", null, PyramidEntrance);
+			Add(new ItemKey(15, 0, 616, 169), "Dark Forest: Pyramid Entrance Lantern 4", null, PyramidEntrance);
+			Add(new ItemKey(15, 0, 824, 169), "Dark Forest: Pyramid Entrance Lantern 5", null, PyramidEntrance);
+			Add(new ItemKey(15, 0, 88, 169), "Dark Forest: Pyramid Entrance Lantern 6", null, PyramidEntrance);
+			Add(new ItemKey(15, 2, 104, 537), "Dark Forest: Training Dummy Lantern 7", null, PyramidEntrance);
+			Add(new ItemKey(15, 2, 344, 537), "Dark Forest: Training Dummy Lantern 8", null, PyramidEntrance);
 
 
 			areaName = "Temporal Gyre";
-			Add(new ItemKey(14, 12, 280, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 12, 520, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 13, 280, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 13, 520, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 15, 280, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 15, 520, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 16, 280, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 16, 520, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 18, 280, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 18, 520, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 19, 280, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 19, 520, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 21, 280, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 21, 520, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 22, 280, 128), "Lantern TBD", null, RefugeeCamp);
-			Add(new ItemKey(14, 22, 520, 128), "Lantern TBD", null, RefugeeCamp);
+			Add(new ItemKey(14, 12, 280, 128), "Temporal Gyre: Lantern 1", null, TemporalGyre);
+			Add(new ItemKey(14, 12, 520, 128), "Temporal Gyre: Lantern 2", null, TemporalGyre);
+			Add(new ItemKey(14, 13, 280, 128), "Temporal Gyre: Lantern 3", null, TemporalGyre);
+			Add(new ItemKey(14, 13, 520, 128), "Temporal Gyre: Lantern 4", null, TemporalGyre);
+			Add(new ItemKey(14, 15, 280, 128), "Temporal Gyre: Lantern 5", null, TemporalGyre);
+			Add(new ItemKey(14, 15, 520, 128), "Temporal Gyre: Lantern 6", null, TemporalGyre);
+			Add(new ItemKey(14, 16, 280, 128), "Temporal Gyre: Lantern 7", null, TemporalGyre);
+			Add(new ItemKey(14, 16, 520, 128), "Temporal Gyre: Lantern 8", null, TemporalGyre);
+			Add(new ItemKey(14, 18, 280, 128), "Temporal Gyre: Lantern 9", null, TemporalGyre);
+			Add(new ItemKey(14, 18, 520, 128), "Temporal Gyre: Lantern 10", null, TemporalGyre);
+			Add(new ItemKey(14, 19, 280, 128), "Temporal Gyre: Lantern 11", null, TemporalGyre);
+			Add(new ItemKey(14, 19, 520, 128), "Temporal Gyre: Lantern 12", null, TemporalGyre);
+			Add(new ItemKey(14, 21, 280, 128), "Temporal Gyre: Lantern 13", null, TemporalGyre);
+			Add(new ItemKey(14, 21, 520, 128), "Temporal Gyre: Lantern 14", null, TemporalGyre);
+			Add(new ItemKey(14, 22, 280, 128), "Temporal Gyre: Lantern 15", null, TemporalGyre);
+			Add(new ItemKey(14, 22, 520, 128), "Temporal Gyre: Lantern 16", null, TemporalGyre);
 		}
 
 		ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)
