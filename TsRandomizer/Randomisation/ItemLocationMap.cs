@@ -297,7 +297,7 @@ namespace TsRandomizer.Randomisation
 			if (options.LoreChecks)
 				capacity += 22;
 			if (options.PureTorcher)
-				capacity += 0; // TODO capacity TBD
+				capacity += 503;
 			if (options.PyramidStart)
 				capacity += 3;
 
@@ -844,6 +844,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(12, 26, 282, 156), "Lantern TBD", null, RefugeeCamp);
 			// TODO left lantern missing
 			Add(new ItemKey(12, 3, 282, 124), "Lantern TBD", null, RefugeeCamp);
+			// TODO left bottom lantern missing
 			Add(new ItemKey(12, 4, 106, 172), "Lantern TBD", null, RefugeeCamp);
 			Add(new ItemKey(12, 4, 282, 172), "Lantern TBD", null, RefugeeCamp);
 			Add(new ItemKey(12, 4, 282, 572), "Lantern TBD", null, RefugeeCamp);
