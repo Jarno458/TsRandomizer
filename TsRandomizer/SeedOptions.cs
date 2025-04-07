@@ -39,6 +39,7 @@ namespace TsRandomizer
 		public bool PyramidStart => (Flags & 1 << 25) > 0;
 		public bool GateKeep => (Flags & 1 << 26) > 0;
 		public bool RoyalRoadblock => (Flags & 1 << 27) > 0;
+		public bool PureTorcher => (Flags & 1 << 28) > 0;
 
 		public SeedOptions(uint flags)
 		{
@@ -80,6 +81,7 @@ namespace TsRandomizer
 				{"PyramidStart", 1U << 25},
 				{"GateKeep", 1U << 26},
 				{"RoyalRoadblock", 1U << 27},
+				{"PureTorcher", 1U << 28},
 			};
 
 			foreach (var kvp in stringToFlagMapping)
