@@ -400,6 +400,33 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(12, 13, 120, 176), "Emperor's Tower: Left tower balcony", ItemProvider.Get(EItemType.MaxHP), EmperorsTower);
 			Add(new ItemKey(12, 11, 264, 208), "Emperor's Tower: Emperor's Chambers chest", ItemProvider.Get(EInventoryRelicType.EmpireBrooch), EmperorsTower);
 			Add(new ItemKey(12, 11, 136, 205), "Emperor's Tower: Emperor's Chambers pedestal", ItemProvider.Get(EInventoryOrbType.Empire, EOrbSlot.Melee), EmperorsTower);
+
+			areaName = "TODO remove";
+			Add(new ItemKey(18, 0, 42, 573), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 170, 573), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 362, 589), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 554, 589), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 682, 589), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 74, 573), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 112, 560), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 104, 532), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 203, 573), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 234, 561), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 264, 568), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 269, 557), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 328, 588), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 424, 539), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 424, 592), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 458, 557), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 488, 588), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 521, 588), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 586, 557), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 616, 588), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 649, 588), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 712, 596), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 744, 556), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 394, 557), "TODO TEST", null, RefugeeCamp);
+			Add(new ItemKey(18, 0, 132, 592), "TODO TEST", null, RefugeeCamp);
 		}
 
 		void AddCantoran()

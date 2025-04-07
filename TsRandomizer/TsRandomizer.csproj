@@ -161,6 +161,7 @@
     <Compile Include="LevelObjects\Enemizer.cs" />
     <Compile Include="LevelObjects\EnemyInfo.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
+    <Compile Include="LevelObjects\ItemManipulators\Lantern.cs" />
     <Compile Include="LevelObjects\Monsters\Bee.cs" />
     <Compile Include="LevelObjects\Monsters\Demon.cs" />
     <Compile Include="LevelObjects\Monsters\CastleLargeSoldier.cs" />
