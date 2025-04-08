@@ -244,7 +244,7 @@ namespace TsRandomizer.Archipelago
 				{1337197, new ItemKey(6, 25, 152, 145)},
 				{1337198, new ItemKey(8, 36, 136, 145)},
 
-				// 1337199 - 1337235 Reserved
+				// 1337199 - 1337232 Reserved
 
 				// Pyramid
 				// Pyramid start checks
@@ -268,6 +268,8 @@ namespace TsRandomizer.Archipelago
 				{1337247, new ItemKey(16, 3, 88, 192)},
 				{1337248, new ItemKey(16, 22, 200, 192)},
 				{1337249, new ItemKey(16, 16, 1512, 144)}
+
+				// TODO add all Lantern locations
 			};
 
 			MapItemKeyToLocationId = new Dictionary<ItemKey, long>(MapLocationIdToItemKey.Count);

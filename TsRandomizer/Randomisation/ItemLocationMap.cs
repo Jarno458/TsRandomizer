@@ -606,20 +606,19 @@ namespace TsRandomizer.Randomisation
 
 		void AddLanternLocations()
 		{
-			areaName = "Lake Desolation";
+			areaName = "Lower Lake Desolation";
 			Add(new ItemKey(1, 11, 106, 221), "Lake Desolation (Lower): Not so secret room Lantern", null, LakeDesolationRight & OculusRift & LanternCube);
-// 			Add(new ItemKey(1, 16, 106, 461), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(1, 16, 282, 269), "Lantern TBD", null, LanternCube & LanternCube);
-			Add(new ItemKey(1, 17, 282, 141), "Lake Desolation (Upper): Oxygen recovery room Lantern", null, UpperLakeDesolation & LanternCube);
-// 			Add(new ItemKey(1, 19, 218, 365), "Lantern TBD", null, LanternCube & LanternCube);
-			Add(new ItemKey(1, 20, 250, 237), "Lake Desolation (Upper): Double jump cave lantern", null, UpperLakeDesolation & LanternCube);
-// 			Add(new ItemKey(1, 6, 474, 413), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(1, 6, 570, 173), "Lantern TBD", null, LanternCube & LanternCube);
+			Add(new ItemKey(1, 6, 474, 413), "Lake Desolation (Lower): Middle Room Lantern 1", null, LakeDesolationRight & OculusRift & LanternCube);
+			Add(new ItemKey(1, 6, 570, 173), "Lake Desolation (Lower): Middle Room Lantern 2", null, LakeDesolationRight & OculusRift & LanternCube);
 			Add(new ItemKey(1, 9, 122, 189), "Lake Desolation (Lower): Timespinner Wheel room Lantern 1", null, LakeDesolationLeft & LanternCube);
 			Add(new ItemKey(1, 9, 314, 141), "Lake Desolation (Lower): Timespinner Wheel room Lantern 2", null, LakeDesolationLeft & LanternCube);
 
-			areaName = "Lower Lake Desolation";
 			areaName = "Upper Lake Desolation";
+			Add(new ItemKey(1, 16, 106, 461), "Lake Desolation (Upper): Upper Left Room Lantern 1", null, UpperLakeDesolation & LanternCube);
+			Add(new ItemKey(1, 16, 282, 269), "Lake Desolation (Upper): Upper Left Room Lantern 2", null, UpperLakeDesolation & LanternCube);
+			Add(new ItemKey(1, 17, 282, 141), "Lake Desolation (Upper): Oxygen recovery room Lantern", null, UpperLakeDesolation & LanternCube);
+			Add(new ItemKey(1, 19, 218, 365), "Lake Desolation (Upper): Upper Right Room Lantern 1", null, UpperLakeDesolation & LanternCube);
+			Add(new ItemKey(1, 20, 250, 237), "Lake Desolation (Upper): Double jump cave Lantern", null, UpperLakeDesolation & LanternCube);
 
 			areaName = "Library";
 // 			Add(new ItemKey(2, 0, 1432, 116), "Lantern TBD", null, LanternCube & LanternCube);
@@ -767,23 +766,23 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(9, 31, 73, 124), "Sealed Caves (Sirens): Condemned Shaft Lantern 2", null, SealedCavesSirens & LanternCube);
 
 			areaName = "Military Fortress";
-// 			Add(new ItemKey(10, 1, 136, 156), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 1, 264, 156), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 18, 120, 156), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 3, 232, 508), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 3, 232, 876), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 3, 568, 508), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 3, 568, 876), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 4, 1512, 140), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 4, 264, 140), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 4, 744, 140), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 5, 120, 556), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 5, 280, 556), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 6, 1048, 556), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 6, 152, 556), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 8, 1512, 140), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 8, 248, 140), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(10, 8, 632, 140), "Lantern TBD", null, LanternCube & LanternCube);
+			Add(new ItemKey(10, 1, 136, 156), "Military Fortress: Entrance Lantern 1", null, MilitaryFortress & LanternCube);
+			Add(new ItemKey(10, 1, 264, 156), "Military Fortress: Entrance Lantern 2", null, MilitaryFortress & LanternCube);
+			Add(new ItemKey(10, 3, 232, 508), "Military Fortress: Bombing Room Upper Lantern 1", null, MilitaryFortressHangar & LanternCube);
+			Add(new ItemKey(10, 3, 232, 876), "Military Fortress: Bombing Room Upper Lantern 2", null, MilitaryFortressHangar & LanternCube);
+			Add(new ItemKey(10, 3, 568, 508), "Military Fortress: Bombing Room Lower Lantern 1", null, MilitaryFortress & LanternCube);
+			Add(new ItemKey(10, 3, 568, 876), "Military Fortress: Bombing Room Lower Lantern 2", null, MilitaryFortress & LanternCube);
+			Add(new ItemKey(10, 18, 120, 156), "Military Fortress: Pedestal Lantern", null, LabEntrance & (FloodsFlags.Lab ? R.Free : DoubleJumpOfNpc | ForwardDashDoubleJump) & LanternCube);
+			Add(new ItemKey(10, 4, 1512, 140), "Military Fortress: Left Bridge Lantern 1", null, MilitaryFortressHangar & LanternCube);
+			Add(new ItemKey(10, 4, 264, 140), "Military Fortress: Left Bridge Lantern 2", null, MilitaryFortressHangar & LanternCube);
+			Add(new ItemKey(10, 4, 744, 140), "Military Fortress: Left Bridgee Lantern 3", null, MilitaryFortressHangar & LanternCube);
+			Add(new ItemKey(10, 5, 120, 556), "Military Fortress: Middle Room Lantern 1", null, MilitaryFortressHangar & LanternCube);
+			Add(new ItemKey(10, 5, 280, 556), "Military Fortress: Middle Room Lantern 2", null, MilitaryFortressHangar & LanternCube);
+			Add(new ItemKey(10, 6, 1048, 556), "Military Fortress: Spike Room Lantern 1", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), LabEntrance & NeedSwimming(FloodsFlags.Lab) & LanternCube);
+			Add(new ItemKey(10, 6, 152, 556), "Military Fortress: Spike Room Lantern 2", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), LabEntrance & NeedSwimming(FloodsFlags.Lab) & LanternCube);
+			Add(new ItemKey(10, 8, 1512, 140), "Right Bridgee Lantern 1", null, MilitaryFortressHangar & LanternCube);
+			Add(new ItemKey(10, 8, 248, 140), "Right Bridgee Lantern 2", null, MilitaryFortressHangar & LanternCube);
+			Add(new ItemKey(10, 8, 632, 140), "Right Bridgee Lantern 3", null, MilitaryFortressHangar & LanternCube);
 
 			areaName = "The Lab";
 // 			Add(new ItemKey(11, 0, 136, 169), "Lantern TBD", null, LanternCube & LanternCube);
