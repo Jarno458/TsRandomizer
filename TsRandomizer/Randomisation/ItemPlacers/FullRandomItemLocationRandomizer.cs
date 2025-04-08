@@ -102,6 +102,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.BeeTrap)));
 			if (settings.ThrowStunTrap.Value)
 				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.ThrowStunTrap)));
+			if (settings.SpiderTrap.Value)
+				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.SpiderTrap)));
 		}
 
 		public override ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly)

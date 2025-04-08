@@ -20,7 +20,8 @@ namespace TsRandomizer.Settings
 				}},
 			new GameSettingCategoryInfo { Name = "Traps", Description = "Toggles traps available via the Trapped Chests flag.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.SparrowTrap, s => s.NeurotoxinTrap, s => s.ChaosTrap, s => s.PoisonTrap, s => s.BeeTrap, s => s.ThrowStunTrap
+					s => s.SparrowTrap, s => s.NeurotoxinTrap, s => s.ChaosTrap, s => s.PoisonTrap, s => s.BeeTrap, s => s.ThrowStunTrap,
+					s => s.SpiderTrap
 				}},
 			new GameSettingCategoryInfo { Name = "Minimap", Description = "Settings related to minimap colors.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -128,6 +129,9 @@ namespace TsRandomizer.Settings
 
 		public OnOffGameSetting ThrowStunTrap = new OnOffGameSetting("Throw",
 			"Traps can cause Lunais to go flying.", true);
+
+		public OnOffGameSetting SpiderTrap = new OnOffGameSetting("Spider",
+			"Traps can spawn spiders.", true);
 
 		[DoesNotAffectCompetitiveBalance] 
 		public SpriteGameSetting LunaisSprite = new SpriteGameSetting("Lunais",

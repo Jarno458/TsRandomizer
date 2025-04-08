@@ -151,6 +151,7 @@
     <Compile Include="IntermediateObjects\CustomItems\BeeTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\ThrowStunTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\MeteorSparrowTrap.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\SpiderTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\StatusTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\Trap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\LaserAccessKey.cs" />
