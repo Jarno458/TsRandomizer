@@ -302,7 +302,7 @@ namespace TsRandomizer.Randomisation
 			if (options.LoreChecks)
 				capacity += 22;
 			if (options.PureTorcher)
-				capacity += 505; // update to 520;
+				capacity += 520;
 			if (options.PyramidStart)
 				capacity += 3;
 
@@ -867,26 +867,19 @@ namespace TsRandomizer.Randomisation
 
 
 			areaName = "Upper Lake Serene";
-// 			Add(new ItemKey(7, 1, 2568, 107), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 14, 104, 283), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 15, 200, 187), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 15, 2104, 187), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 15, 2200, 187), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 15, 296, 187), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 17, 312, 267), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 2, 1480, 688), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 2, 152, 688), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 2, 936, 656), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 20, 184, 240), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 3, 120, 379), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 3, 328, 736), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 3, 392, 1104), "Lantern TBD", null, LanternCube & LanternCube);
-			// 			Add(new ItemKey(7, 4, 328, 155), "Lantern TBD", null, LanternCube & LanternCube);
-			Add(new ItemKey(7, 6, 1336, 256), "Lake Serene (Lower): Water Spikes Lantern 1", null, LowerLakeSirine & LanternCube);
-			Add(new ItemKey(7, 6, 472, 432), "Lake Serene (Lower): Water Spikes Lantern 2", null, LowerLakeSirine & LanternCube);
-			Add(new ItemKey(7, 6, 568, 192), "Lake Serene (Lower): Water Spikes Lantern 3", null, LowerLakeSirine & LanternCube);
+			Add(new ItemKey(7, 1, 2568, 107), "Lake Serene (Upper): Intro Room Lantern", null, UpperLakeSirine & LanternCube);
+			Add(new ItemKey(7, 14, 104, 283), "Lake Serene (Upper): Middle Cave Lantern", null, UpperLakeSirine & LanternCube);
+			Add(new ItemKey(7, 15, 200, 187), "Lake Serene (Upper): Uncrashed Site Lantern 1", null, UpperLakeSirine & LanternCube);
+			Add(new ItemKey(7, 15, 2104, 187), "Lake Serene (Upper): Uncrashed Site Lantern 2", null, UpperLakeSirine & LanternCube);
+			Add(new ItemKey(7, 15, 2200, 187), "Lake Serene (Upper): Uncrashed Site Lantern 3", null, UpperLakeSirine & LanternCube);
+			Add(new ItemKey(7, 15, 296, 187), "Lake Serene (Upper): Uncrashed Site Lantern 4", null, UpperLakeSirine & LanternCube);
+			Add(new ItemKey(7, 17, 312, 267), "Lake Serene (Upper): Past First Vine Lantern", null, UpperLakeSirine & LanternCube);
+			Add(new ItemKey(7, 3, 120, 379), "Lake Serene (Upper): Fork Dry Lantern", null, LeftSideForestCaves & LanternCube);
+			Add(new ItemKey(7, 4, 328, 155), "Lake Serene (Upper): Past Cantoran Lantern", null, LeftSideForestCaves & LanternCube);
 
 			areaName = "Lower Lake Serene";
+			Add(new ItemKey(7, 3, 328, 736), "Lake Serene (Upper): Fork Wet Lantern 1", null, LeftSideForestCaves & R.Swimming & LanternCube);
+			Add(new ItemKey(7, 3, 392, 1104), "Lake Serene (Upper): Fork Wet Lantern 2", null, LeftSideForestCaves & R.Swimming & LanternCube);
 			Add(new ItemKey(7, 11, 184, 160), "Lake Serene (Lower): Underwater Secret Lantern 1", null, LowerLakeSirine & OculusRift & LanternCube);
 			Add(new ItemKey(7, 11, 248, 160), "Lake Serene (Lower): Underwater Secret Lantern 2", null, LowerLakeSirine & OculusRift & LanternCube);
 			Add(new ItemKey(7, 11, 312, 160), "Lake Serene (Lower): Underwater Secret Lantern 3", null, LowerLakeSirine & OculusRift & LanternCube);
@@ -895,6 +888,13 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(7, 7, 1704, 155), "Lake Serene (Lower): Under The Eels Lantern 3", null, LeftSideForestCaves & R.Swimming & LanternCube);
 			Add(new ItemKey(7, 7, 488, 576), "Lake Serene (Lower): Under The Eels Lantern 4", null, LeftSideForestCaves & R.Swimming & LanternCube);
 			Add(new ItemKey(7, 7, 824, 608), "Lake Serene (Lower): Under The Eels Lantern 5", null, LeftSideForestCaves & R.Swimming & LanternCube);
+			Add(new ItemKey(7, 6, 1336, 256), "Lake Serene (Lower): Water Spikes Lantern 1", null, LowerLakeSirine & LanternCube);
+			Add(new ItemKey(7, 6, 472, 432), "Lake Serene (Lower): Water Spikes Lantern 2", null, LowerLakeSirine & LanternCube);
+			Add(new ItemKey(7, 6, 568, 192), "Lake Serene (Lower): Water Spikes Lantern 3", null, LowerLakeSirine & LanternCube);
+			Add(new ItemKey(7, 2, 1480, 688), "Lake Serene (Lower): Underwater Lantern 1", null, LowerLakeSirine & LanternCube);
+			Add(new ItemKey(7, 2, 152, 688), "Lake Serene (Lower): Underwater Lantern 2", null, LowerLakeSirine & LanternCube);
+			Add(new ItemKey(7, 2, 936, 656), "Lake Serene (Lower): Underwater Lantern 3", null, LowerLakeSirine & LanternCube);
+			Add(new ItemKey(7, 20, 184, 240), "Lake Serene (Lower): Past the Eels Lantern", null, LeftSideForestCaves & R.Swimming & LanternCube);
 
 			areaName = "Caves of Banishment (Maw)";
 			Add(new ItemKey(8, 10, 120, 124), "Caves of Banishment (Maw): Not Dead Yet Lantern 1", null, CavesOfBanishmentFlooded & LanternCube);
