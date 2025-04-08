@@ -1099,8 +1099,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(16, 0, 152, 128), "Ancient Pyramid: Entrance Lantern 1", null, PyramidEntrance & LanternCube);
 			Add(new ItemKey(16, 0, 247, 128), "Ancient Pyramid: Entrance Lantern 2", null, PyramidEntrance & LanternCube);
 			Add(new ItemKey(16, 2, 1370, 822), "Ancient Pyramid: Rubble Lantern 1", null, PyramidEntrance & LanternCube);
-			Add(new ItemKey(16, 2, 1370, 822), "Ancient Pyramid: Rubble Lantern 2", null, PyramidEntrance & LanternCube);
-			Add(new ItemKey(16, 2, 1370, 822), "Ancient Pyramid: Rubble Lantern 3", null, PyramidEntrance & LanternCube);
+			Add(new ItemKey(16, 2, 202, 166), "Ancient Pyramid: Rubble Lantern 2", null, PyramidEntrance & LanternCube);
+			Add(new ItemKey(16, 2, 2202, 1526), "Ancient Pyramid: Rubble Lantern 3", null, PyramidEntrance & LanternCube);
 			Add(new ItemKey(16, 17, 154, 566), "Ancient Pyramid: Entrance Climb Lantern 1", null, PyramidEntrance & LanternCube);
 			Add(new ItemKey(16, 17, 250, 566), "Ancient Pyramid: Entrance Climb Lantern 1", null, PyramidEntrance & LanternCube);
 			Add(new ItemKey(16, 15, 154, 886), "Ancient Pyramid: First Enemy Lantern 1", null, MidPyramid & LanternCube);
