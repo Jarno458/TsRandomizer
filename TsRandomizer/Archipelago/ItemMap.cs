@@ -214,8 +214,9 @@ namespace TsRandomizer.Archipelago
 				{1337196, CustomItem.GetIdentifier(CustomItemType.LabAccessResearch)},
 				{1337197, CustomItem.GetIdentifier(CustomItemType.LabAccessDynamo)},
 				{1337198, CustomItem.GetIdentifier(CustomItemType.DrawbridgeKey)},
+				{1337199, CustomItem.GetIdentifier(CustomItemType.SpiderTrap)},
 
-				// 1337199 - 1337248 Reserved for future use
+				// 1337200 - 1337248 Reserved for future use
 
 				{1337249, new ItemIdentifier(EItemType.MaxSand)}
 			};
