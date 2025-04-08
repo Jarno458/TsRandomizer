@@ -302,7 +302,7 @@ namespace TsRandomizer.Randomisation
 			if (options.LoreChecks)
 				capacity += 22;
 			if (options.PureTorcher)
-				capacity += 179; // update to 523;
+				capacity += 271; // update to 523;
 			if (options.PyramidStart)
 				capacity += 3;
 
@@ -716,10 +716,10 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(9, 38, 168, 828), "Sealed Caves (Xarion) Forked Shaft Lantern 3", null, SealedCaves & LanternCube);
 			Add(new ItemKey(9, 38, 248, 828), "Sealed Caves (Xarion) Forked Shaft Lantern 4", null, SealedCaves & LanternCube);
 			Add(new ItemKey(9, 38, 296, 124), "Sealed Caves (Xarion) Forked Shaft Lantern 5", null, SealedCaves & LanternCube);
-			Add(new ItemKey(9, 19, 1096, 1756), "Sealed Caves (Xarion): Shroom Jump Lantern 1", ItemProvider.Get(EInventoryUseItemType.Antidote), SealedCaves & R.TimeStop & LanternCube);
-			Add(new ItemKey(9, 19, 520, 876), "Sealed Caves (Xarion): Shroom Jump Lantern 2", ItemProvider.Get(EInventoryUseItemType.Antidote), SealedCaves & R.TimeStop & LanternCube);
-			Add(new ItemKey(9, 19, 536, 140), "Sealed Caves (Xarion): Shroom Jump Lantern 3", ItemProvider.Get(EInventoryUseItemType.Antidote), SealedCaves & R.TimeStop & LanternCube);
-			Add(new ItemKey(9, 19, 696, 876), "Sealed Caves (Xarion): Shroom Jump Lantern 4", ItemProvider.Get(EInventoryUseItemType.Antidote), SealedCaves & R.TimeStop & LanternCube);
+			Add(new ItemKey(9, 19, 1096, 1756), "Sealed Caves (Xarion): Shroom Jump Lantern 1", null, SealedCaves & R.TimeStop & LanternCube);
+			Add(new ItemKey(9, 19, 520, 876), "Sealed Caves (Xarion): Shroom Jump Lantern 2", null, SealedCaves & R.TimeStop & LanternCube);
+			Add(new ItemKey(9, 19, 536, 140), "Sealed Caves (Xarion): Shroom Jump Lantern 3", null, SealedCaves & R.TimeStop & LanternCube);
+			Add(new ItemKey(9, 19, 696, 876), "Sealed Caves (Xarion): Shroom Jump Lantern 4", null, SealedCaves & R.TimeStop & LanternCube);
 			Add(new ItemKey(9, 46, 104, 140), "Sealed Caves (Xarion): Lower Fork Start Lantern 1", null, SealedCaves & LanternCube);
 			Add(new ItemKey(9, 46, 296, 140), "Sealed Caves (Xarion): Lower Fork Start Lantern 2", null, SealedCaves & LanternCube);
 			Add(new ItemKey(9, 9, 104, 124), "Sealed Caves (Xarion): Lower Fork Vertical Room Lantern 1", null, SealedCaves & LanternCube);
@@ -781,8 +781,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(10, 8, 1512, 140), "Military Fortress: Right Bridge Lantern 1", null, MilitaryFortressHangar & LanternCube);
 			Add(new ItemKey(10, 8, 248, 140), "Military Fortress: Right Bridge Lantern 2", null, MilitaryFortressHangar & LanternCube);
 			Add(new ItemKey(10, 8, 632, 140), "Military Fortress: Right Bridge Lantern 3", null, MilitaryFortressHangar & LanternCube);
-			Add(new ItemKey(10, 6, 1048, 556), "Military Fortress: Spike Room Lantern 1", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), LabEntrance & NeedSwimming(FloodsFlags.Lab) & LanternCube);
-			Add(new ItemKey(10, 6, 152, 556), "Military Fortress: Spike Room Lantern 2", ItemProvider.Get(EInventoryUseItemType.PlasmaIV), LabEntrance & NeedSwimming(FloodsFlags.Lab) & LanternCube);
+			Add(new ItemKey(10, 6, 1048, 556), "Military Fortress: Spike Room Lantern 1", null, LabEntrance & NeedSwimming(FloodsFlags.Lab) & LanternCube);
+			Add(new ItemKey(10, 6, 152, 556), "Military Fortress: Spike Room Lantern 2", null, LabEntrance & NeedSwimming(FloodsFlags.Lab) & LanternCube);
 
 			areaName = "The Lab";
 // 			Add(new ItemKey(11, 0, 136, 169), "Lantern TBD", null, LanternCube & LanternCube);
@@ -845,7 +845,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(12, 22, 282, 156), "Emperor's Tower: Galactic Sage Lantern 2", null, EmperorsTower & LanternCube);
 			Add(new ItemKey(12, 24, 122, 140), "Emperor's Tower: Courtyard Giantess Lantern 1", null, EmperorsTower & LanternCube);
 			Add(new ItemKey(12, 24, 266, 140), "Emperor's Tower: Courtyard Giantess Lantern 2", null, EmperorsTower & LanternCube);
-			Add(new ItemKey(12, 25, 122, 140), "Emperor's Tower: Courtyard Upper Lantern", ItemProvider.Get(EInventoryEquipmentType.EmpressCoat), EmperorsTower & R.UpwardDash & LanternCube);
+			Add(new ItemKey(12, 25, 122, 140), "Emperor's Tower: Courtyard Upper Lantern", null, EmperorsTower & R.UpwardDash & LanternCube);
 			Add(new ItemKey(12, 26, 106, 156), "Emperor's Tower: Lower Save Room Lantern 1", null, EmperorsTower & LanternCube);
 			Add(new ItemKey(12, 26, 282, 156), "Emperor's Tower: Lower Save Room Lantern 2", null, EmperorsTower & LanternCube);
 			Add(new ItemKey(12, 4, 106, 572), "Emperor's Tower: Climb Past Stairs Lantern 1", null, EmperorsTower & LanternCube);
