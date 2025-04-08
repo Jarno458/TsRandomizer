@@ -60,23 +60,31 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
 			Dynamic.DoesRegenerate = true;
-			Dynamic._isAffectedByTime = false;
-			Dynamic._isFrozen = false;
-			Dynamic.IsInvulnerable = false;
-			originalColor = Dynamic.OrbGlowColor;
-			originalRadius = Dynamic._glowRadius;
+			// TODO investigate this re-awarding
 			if (!hasAwardedItem && ItemInfo != null)
 			{
 				Dynamic.OrbGlowColor = Color.DarkSeaGreen.ToVector4();
 				Dynamic._glowRadius = (int)(originalRadius * 1.5);
 			}
-			cubeFlag = seed.Options.FindTheFlame;
+			else if (seed.Options.FindTheFlame && !Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.CubeOfBodie)))
+			{
+				Dynamic._isAffectedByTime = true;
+				Dynamic._isFrozen = true;
+				Dynamic.IsInvulnerable = true;
+				Dynamic.OrbGlowColor = Color.DimGray.ToVector4();
+				Dynamic._glowRadius = (int)(originalRadius * 0.5);
+			}
+			else
+			{
+				Dynamic._isAffectedByTime = false;
+				Dynamic._isFrozen = false;
+				Dynamic.IsInvulnerable = false;
+				originalColor = Dynamic.OrbGlowColor;
+				originalRadius = Dynamic._glowRadius;
+			}
 		}
 		protected override void OnUpdate()
 		{
-			if (cubeFlag)
-				CheckCube();
-				
 			if (ItemInfo == null ||  hasAwardedItem || !Dynamic.IsDormant)
 				return;
 			AwardContainedItem();
@@ -85,21 +93,6 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			hasAwardedItem = true;
 			Dynamic.OrbGlowColor = originalColor;
 			Dynamic._glowRadius = originalRadius;
-		}
-		protected void CheckCube()
-		{
-			if (!Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.CubeOfBodie)))
-			{
-				Dynamic._isAffectedByTime = true;
-				Dynamic._isFrozen = true;
-				Dynamic.IsInvulnerable = true;
-			}
-			else
-			{
-				Dynamic._isAffectedByTime = false;
-				Dynamic._isFrozen = false;
-				Dynamic.IsInvulnerable = false;
-			}
 		}
 	}
 	
