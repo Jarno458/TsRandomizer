@@ -143,7 +143,7 @@ namespace TsRandomizer.LevelObjects
 		
 		public static void AwardFirstFrameItem(IEnumerable<Item> itemDictionary, Protagonist lunais)
 		{
-			//sometimes lunais picks up an item because she's intersecting with it as the screen loads, or right as it drops.
+			//sometimes Lunais picks up an item because she's intersecting with it as the screen loads, or right as it drops.
 			//that doesn't give the replacer enough time to replace the item. But she deserves it. You deserve it.
 			foreach (var item in itemDictionary)
 				if (item.Bbox.Intersects(lunais.Bbox))
@@ -221,7 +221,7 @@ namespace TsRandomizer.LevelObjects
 
 			return newObjects.Any();
 		}
-
+		
 
 		public static void GenerateShadowObjects(
 			GameSave save, ItemLocationMap itemLocations, Mobile[] objects, Seed seed, 
