@@ -792,8 +792,8 @@ namespace TsRandomizer.Archipelago
 				{1337769, new ItemKey(9, 9, 104, 124)},
 				{1337770, new ItemKey(9, 9, 104, 508)},
 				{1337771, new ItemKey(9, 9, 280, 124)},
-				{1337772, new ItemKey(9, 9, 280, 508)}
-
+				{1337772, new ItemKey(9, 9, 280, 508)},
+				{1337773, new ItemKey(11, 17, 120, 505)}
 				// Reserved through 1337999
 			};
 
