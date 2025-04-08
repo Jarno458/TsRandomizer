@@ -638,21 +638,9 @@ namespace TsRandomizer.Randomisation
 // 			Add(new ItemKey(2, 17, 648, 192), "Lantern TBD", null, LanternCube & LanternCube);
 // 			Add(new ItemKey(2, 19, 1048, 192), "Lantern TBD", null, LanternCube & LanternCube);
 // 			Add(new ItemKey(2, 19, 168, 192), "Lantern TBD", null, LanternCube & LanternCube);
-			Add(new ItemKey(2, 20, 168, 1200), "Varndagroth Towers (Right): Right Elevator Lantern 1", null, RightSideLibraryElevator & LanternCube);
-			Add(new ItemKey(2, 20, 168, 1840), "Varndagroth Towers (Right): Right Elevator Lantern 2", null, RightSideLibraryElevator & LanternCube);
-			Add(new ItemKey(2, 20, 168, 208), "Varndagroth Towers (Right): Right Elevator Lantern 3", null, RightSideLibraryElevator & LanternCube);
-			Add(new ItemKey(2, 20, 168, 2160), "Varndagroth Towers (Right): Right Elevator Lantern 4", null, RightSideLibraryElevator & LanternCube);
-			Add(new ItemKey(2, 20, 168, 2512), "Varndagroth Towers (Right): Right Elevator Lantern 5", null, RightSideLibraryElevator & LanternCube);
-			Add(new ItemKey(2, 20, 168, 880), "Varndagroth Towers (Right): Right Elevator Lantern 6", null, RightSideLibraryElevator & LanternCube);
-			Add(new ItemKey(2, 23, 200, 560), "Varndagroth Towers (Right): Vent Lantern 1", null, UpperRightSideLibrary & (R.CardE | R.DoubleJump) & LanternCube); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
-			Add(new ItemKey(2, 23, 648, 560), "Varndagroth Towers (Right): Vent Lantern 2", null, UpperRightSideLibrary & (R.CardE | R.DoubleJump) & LanternCube); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
-			Add(new ItemKey(2, 23, 984, 560), "Varndagroth Towers (Right): Vent Lantern 3", null, UpperRightSideLibrary & (R.CardE | R.DoubleJump) & LanternCube); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
 // 			Add(new ItemKey(2, 24, 1048, 192), "Lantern TBD", null, LanternCube & LanternCube);
 // 			Add(new ItemKey(2, 24, 88, 192), "Lantern TBD", null, LanternCube & LanternCube);
 // 			Add(new ItemKey(2, 31, 208, 96), "Lantern TBD", null, LanternCube & LanternCube);
-			Add(new ItemKey(2, 32, 120, 192), "Varndagroth Towers (Left): Bottom floor Lantern", null, MidLibrary & R.CardC & LanternCube);
-			Add(new ItemKey(2, 34, 232, 1520), "Varndagroth Towers (Left): Left Elevator Lantern 1", null, MidLibrary & LanternCube);
-			Add(new ItemKey(2, 34, 232, 2512), "Varndagroth Towers (Left): Left Elevator Lantern 2", null, MidLibrary & LanternCube);
 // 			Add(new ItemKey(2, 36, 312, 208), "Lantern TBD", null, LanternCube & LanternCube);
 // 			Add(new ItemKey(2, 37, 152, 192), "Lantern TBD", null, LanternCube & LanternCube);
 // 			Add(new ItemKey(2, 37, 728, 192), "Lantern TBD", null, LanternCube & LanternCube);
@@ -697,8 +685,20 @@ namespace TsRandomizer.Randomisation
 // 			Add(new ItemKey(2, 9, 200, 192), "Lantern TBD", null, LanternCube & LanternCube);
 // 			Add(new ItemKey(2, 9, 600, 192), "Lantern TBD", null, LanternCube & LanternCube);
 			areaName = "Library Top";
-			areaName = "Varndagroth Tower Left";
-			areaName = "Varndagroth Tower Right";
+			areaName = "Varndagroth Towers (Left)";
+			Add(new ItemKey(2, 32, 120, 192), "Varndagroth Towers (Left): Bottom floor Lantern", null, MidLibrary & R.CardC & LanternCube);
+			Add(new ItemKey(2, 34, 232, 1520), "Varndagroth Towers (Left): Left Elevator Lantern 1", null, MidLibrary & LanternCube);
+			Add(new ItemKey(2, 34, 232, 2512), "Varndagroth Towers (Left): Left Elevator Lantern 2", null, MidLibrary & LanternCube);
+			areaName = "Varndagroth Towers (Right)";
+			Add(new ItemKey(2, 20, 168, 1200), "Varndagroth Towers (Right): Right Elevator Lantern 1", null, RightSideLibraryElevator & LanternCube);
+			Add(new ItemKey(2, 20, 168, 1840), "Varndagroth Towers (Right): Right Elevator Lantern 2", null, RightSideLibraryElevator & LanternCube);
+			Add(new ItemKey(2, 20, 168, 208), "Varndagroth Towers (Right): Right Elevator Lantern 3", null, RightSideLibraryElevator & LanternCube);
+			Add(new ItemKey(2, 20, 168, 2160), "Varndagroth Towers (Right): Right Elevator Lantern 4", null, RightSideLibraryElevator & LanternCube);
+			Add(new ItemKey(2, 20, 168, 2512), "Varndagroth Towers (Right): Right Elevator Lantern 5", null, RightSideLibraryElevator & LanternCube);
+			Add(new ItemKey(2, 20, 168, 880), "Varndagroth Towers (Right): Right Elevator Lantern 6", null, RightSideLibraryElevator & LanternCube);
+			Add(new ItemKey(2, 23, 200, 560), "Varndagroth Towers (Right): Vent Lantern 1", null, UpperRightSideLibrary & (R.CardE | R.DoubleJump) & LanternCube); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
+			Add(new ItemKey(2, 23, 648, 560), "Varndagroth Towers (Right): Vent Lantern 2", null, UpperRightSideLibrary & (R.CardE | R.DoubleJump) & LanternCube); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
+			Add(new ItemKey(2, 23, 984, 560), "Varndagroth Towers (Right): Vent Lantern 3", null, UpperRightSideLibrary & (R.CardE | R.DoubleJump) & LanternCube); //needs only UpperRightSideLibrary but requires Elevator Card | Double Jump to get out
 
 			areaName = "Sealed Caves (Xarion)";
 			Add(new ItemKey(9, 0, 1032, 140), "Sealed Caves (Xarion) First Hall Lantern 1", null, SealedCaves & LanternCube);

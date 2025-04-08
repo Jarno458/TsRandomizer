@@ -1,17 +1,13 @@
-﻿using Timespinner.GameObjects.BaseClasses;
+﻿using Microsoft.Xna.Framework;
+using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using TsRandomizer.IntermediateObjects.CustomItems;
 using TsRandomizer.Randomisation;
+using TsRandomizer.RoomTriggers;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
 
-using Microsoft.Xna.Framework;
-
-using TsRandomizer.Extensions;
-using TsRandomizer.IntermediateObjects.CustomItems;
-
-
-// TODO revert
-using TsRandomizer.Extensions;
 
 namespace TsRandomizer.LevelObjects.ItemManipulators
 {
@@ -63,14 +59,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			originalColor = Dynamic.OrbGlowColor;
 			originalRadius = Dynamic._glowRadius;
 
-			// Normal (no checks remaining)
-			if (!hasAwardedItem && ItemInfo != null)
-			{
-				Dynamic.OrbGlowColor = Color.DarkSeaGreen.ToVector4();
-				Dynamic._glowRadius = (int)(originalRadius * 1.5);
-			}
 			// Cube-blocked
-			else if (seed.Options.FindTheFlame && !Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.CubeOfBodie)))
+			if (seed.Options.FindTheFlame && !Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.CubeOfBodie)))
 			{
 				Dynamic._isAffectedByTime = true;
 				Dynamic._isFrozen = true;
@@ -79,23 +69,26 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				Dynamic._glowRadius = (int)(originalRadius * 0.5);
 			}
 			// Collectable
-			else
+			else if (!hasAwardedItem && ItemInfo != null)
 			{
 				Dynamic._isAffectedByTime = false;
 				Dynamic._isFrozen = false;
 				Dynamic.IsInvulnerable = false;
+				Dynamic.OrbGlowColor = Color.DarkSeaGreen.ToVector4();
+				Dynamic._glowRadius = (int)(originalRadius * 1.5);
 			}
 		}
 		protected override void OnUpdate()
 		{
 			if (ItemInfo == null ||  hasAwardedItem || !Dynamic.IsDormant)
 				return;
-			AwardContainedItem();
-			ShowItemAwardPopup();
-			// OnItemPickup();
+			RoomTriggerHelper.SpawnItemDropPickup(Dynamic.Level, ItemInfo, Dynamic.AnchorPosition.X, Dynamic.AnchorPosition.Y);
 			hasAwardedItem = true;
 			Dynamic.OrbGlowColor = originalColor;
 			Dynamic._glowRadius = originalRadius;
+			Dynamic._isAffectedByTime = true;
+			Dynamic._isFrozen = false;
+			Dynamic.IsInvulnerable = false;
 		}
 	}
 	
