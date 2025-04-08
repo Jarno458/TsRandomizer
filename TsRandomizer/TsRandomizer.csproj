@@ -149,6 +149,7 @@
     <Compile Include="Extensions\SettingsExtensions.cs" />
     <Compile Include="IntermediateObjects\CustomItems\CustomItem.cs" />
     <Compile Include="IntermediateObjects\CustomItems\BeeTrap.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\CubeOfBodie.cs" />
     <Compile Include="IntermediateObjects\CustomItems\ThrowStunTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\MeteorSparrowTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\StatusTrap.cs" />

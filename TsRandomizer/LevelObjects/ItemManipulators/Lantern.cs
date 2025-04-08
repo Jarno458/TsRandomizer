@@ -6,6 +6,10 @@ using TsRandomizer.Settings;
 
 using Microsoft.Xna.Framework;
 
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects.CustomItems;
+
+
 // TODO revert
 using TsRandomizer.Extensions;
 
@@ -45,6 +49,7 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	class LanternEvent : ItemManipulator
 	{
 		bool hasAwardedItem;
+		bool cubeFlag;
 		Vector4 originalColor;
 		int originalRadius;
 		public LanternEvent(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation)
@@ -65,9 +70,13 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				Dynamic.OrbGlowColor = Color.DarkSeaGreen.ToVector4();
 				Dynamic._glowRadius = (int)(originalRadius * 1.5);
 			}
+			cubeFlag = seed.Options.FindTheFlame;
 		}
 		protected override void OnUpdate()
 		{
+			if (cubeFlag)
+				CheckCube();
+				
 			if (ItemInfo == null ||  hasAwardedItem || !Dynamic.IsDormant)
 				return;
 			AwardContainedItem();
@@ -77,5 +86,21 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			Dynamic.OrbGlowColor = originalColor;
 			Dynamic._glowRadius = originalRadius;
 		}
+		protected void CheckCube()
+		{
+			if (!Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.CubeOfBodie)))
+			{
+				Dynamic._isAffectedByTime = true;
+				Dynamic._isFrozen = true;
+				Dynamic.IsInvulnerable = true;
+			}
+			else
+			{
+				Dynamic._isAffectedByTime = false;
+				Dynamic._isFrozen = false;
+				Dynamic.IsInvulnerable = false;
+			}
+		}
 	}
+	
 }

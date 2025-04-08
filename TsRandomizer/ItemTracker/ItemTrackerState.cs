@@ -13,7 +13,7 @@ namespace TsRandomizer.ItemTracker
 	[Serializable]
 	public class ItemTrackerState
 	{
-		public const int NumberOfItems = 40;
+		public const int NumberOfItems = 41;
 
 		public bool Timestop;
 		public bool TimeSpindle;
@@ -55,6 +55,7 @@ namespace TsRandomizer.ItemTracker
 		public bool LabExperiment;
 		public bool LabResearch;
 		public bool DrawbridgeKey;
+		public bool LanternCube;
 
 		internal static ItemTrackerState FromItemLocationMap(IEnumerable<ItemLocation> itemLocations)
 		{
@@ -124,6 +125,7 @@ namespace TsRandomizer.ItemTracker
 			{CustomItem.GetIdentifier(CustomItemType.LabAccessExperiment), s => s.LabExperiment},
 			{CustomItem.GetIdentifier(CustomItemType.LabAccessResearch), s => s.LabResearch},
 			{CustomItem.GetIdentifier(CustomItemType.DrawbridgeKey), s => s.DrawbridgeKey},
+			{CustomItem.GetIdentifier(CustomItemType.CubeOfBodie), s => s.LanternCube},
 		};
 
 		static void SetMemberForItem(ItemTrackerState trackerState, ItemIdentifier itemInfo)
