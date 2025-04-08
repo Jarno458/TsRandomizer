@@ -35,7 +35,7 @@ namespace TsRandomizer.Screens.SeedSelection
 			{ 1 << 26, new SeedOptionInfo { Name = "Gate Keep", Description = "The castle drawbridge starts raised, and can be lowered via item." } },
 			{ 1 << 27, new SeedOptionInfo { Name = "Royal Roadblock", Description = "The Royal Towers entrance door requires a royal orb (Plasma Orb, Plasma Geyser, or Royal Ring) to enter." } },
 			{ 1 << 28, new SeedOptionInfo { Name = "Pure Torcher", Description = "All lanterns contain checks. (Except tutorial)" } },
-			{ 1 << 29, new SeedOptionInfo { Name = "Find the Flame", Description = "Lanterns will not break without new item 'Cube of Bodie'. Best paired with 'Pure Torcher'" } },
+			{ 1 << 29, new SeedOptionInfo { Name = "Find the Flame", Description = "Lanterns in 'Pure Torcher' will not break without new item 'Cube of Bodie'." } },
 		};
 
 		public SeedOptionsCollection(SeedOptions seedOptions)

@@ -49,23 +49,27 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	class LanternEvent : ItemManipulator
 	{
 		bool hasAwardedItem;
-		bool cubeFlag;
 		Vector4 originalColor;
 		int originalRadius;
 		public LanternEvent(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation)
 			: base(typedObject, gameplayScreen, itemLocation)
 		{
+			hasAwardedItem = itemLocation.IsPickedUp;
 		}
 
 		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
 			Dynamic.DoesRegenerate = true;
-			// TODO investigate this re-awarding
+			originalColor = Dynamic.OrbGlowColor;
+			originalRadius = Dynamic._glowRadius;
+
+			// Normal (no checks remaining)
 			if (!hasAwardedItem && ItemInfo != null)
 			{
 				Dynamic.OrbGlowColor = Color.DarkSeaGreen.ToVector4();
 				Dynamic._glowRadius = (int)(originalRadius * 1.5);
 			}
+			// Cube-blocked
 			else if (seed.Options.FindTheFlame && !Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.CubeOfBodie)))
 			{
 				Dynamic._isAffectedByTime = true;
@@ -74,13 +78,12 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 				Dynamic.OrbGlowColor = Color.DimGray.ToVector4();
 				Dynamic._glowRadius = (int)(originalRadius * 0.5);
 			}
+			// Collectable
 			else
 			{
 				Dynamic._isAffectedByTime = false;
 				Dynamic._isFrozen = false;
 				Dynamic.IsInvulnerable = false;
-				originalColor = Dynamic.OrbGlowColor;
-				originalRadius = Dynamic._glowRadius;
 			}
 		}
 		protected override void OnUpdate()
