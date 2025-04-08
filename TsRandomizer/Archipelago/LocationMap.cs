@@ -526,13 +526,13 @@ namespace TsRandomizer.Archipelago
 				{1337503, new ItemKey(3, 4, 1691, 77)},
 				{1337504, new ItemKey(3, 4, 411, 77)},
 				{1337505, new ItemKey(3, 7, 1307, 125)},
-				{1337506, new ItemKey(3, 8, 235, 125)},
+				{1337506, new ItemKey(11, 17, 120, 505)},
 				{1337507, new ItemKey(4, 10, 122, 161)},
 				{1337508, new ItemKey(4, 10, 266, 161)},
 				{1337509, new ItemKey(4, 11, 138, 161)},
 				{1337510, new ItemKey(4, 11, 282, 161)},
-				{1337511, new ItemKey(4, 21, 106, 161)},
-				{1337512, new ItemKey(4, 21, 298, 161)},
+				// 1337511
+				// 1337512
 				{1337513, new ItemKey(4, 22, 298, 161)},
 				{1337514, new ItemKey(4, 3, 234, 561)},
 				{1337515, new ItemKey(4, 3, 570, 561)},
@@ -793,7 +793,6 @@ namespace TsRandomizer.Archipelago
 				{1337770, new ItemKey(9, 9, 104, 508)},
 				{1337771, new ItemKey(9, 9, 280, 124)},
 				{1337772, new ItemKey(9, 9, 280, 508)},
-				{1337773, new ItemKey(11, 17, 120, 505)}
 				// Reserved through 1337999
 			};
 

@@ -302,7 +302,7 @@ namespace TsRandomizer.Randomisation
 			if (options.LoreChecks)
 				capacity += 22;
 			if (options.PureTorcher)
-				capacity += 309; // update to 524;
+				capacity += 341; // update to 521;
 			if (options.PyramidStart)
 				capacity += 3;
 
@@ -969,43 +969,40 @@ namespace TsRandomizer.Randomisation
 			areaName = "Caves of Banishment (Sirens)";
 			areaName = "Refugee Camp";
 			areaName = "Forest";
-// 			Add(new ItemKey(3, 1, 235, 125), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(3, 12, 1019, 109), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(3, 13, 1227, 125), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(3, 13, 251, 125), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(3, 13, 747, 125), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(3, 2, 235, 157), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(3, 4, 1691, 77), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(3, 4, 411, 77), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(3, 7, 1307, 125), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(3, 8, 235, 125), "Lantern TBD", null, LanternCube & LanternCube);
+			Add(new ItemKey(3, 1, 235, 125), "Forest: Lantern Past Signpost", null, LeftSideForestCaves  & LanternCube);
+			Add(new ItemKey(3, 12, 1019, 109), "Forest: Rats Lantern", null, RefugeeCamp & LanternCube);
+			Add(new ItemKey(3, 13, 1227, 125), "Forest: Ramparts Bridge Lantern 1", null, RefugeeCamp & LanternCube);
+			Add(new ItemKey(3, 13, 251, 125), "Forest: Ramparts Bridge Lantern 2", null, RefugeeCamp & LanternCube);
+			Add(new ItemKey(3, 13, 747, 125), "Forest: Ramparts Bridge Lantern 3", null, RefugeeCamp & LanternCube);
+			Add(new ItemKey(3, 2, 235, 157), "Forest: Batcave Lantern", null, RefugeeCamp & LanternCube);
+			Add(new ItemKey(3, 4, 1691, 77), "Forest: Lantern Before Broken Bridge", null, RefugeeCamp & LanternCube);
+			Add(new ItemKey(3, 4, 411, 77), "Forest: Lantern After Broken Bridge", null, LeftSideForestCaves & LanternCube);
+			Add(new ItemKey(3, 7, 1307, 125), "Forest: Left Caves Lantern", null, LeftSideForestCaves & LanternCube);
 
 			areaName = "Castle Ramparts";
-// 			Add(new ItemKey(4, 10, 122, 161), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 10, 266, 161), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 11, 138, 161), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 11, 282, 161), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 21, 106, 161), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 21, 298, 161), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 22, 298, 161), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 3, 234, 561), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 3, 570, 561), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 4, 1418, 129), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 4, 378, 129), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 4, 922, 129), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 5, 202, 497), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 5, 312, 264), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 5, 88, 264), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 6, 234, 561), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 6, 280, 104), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 6, 520, 104), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 6, 570, 561), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 7, 202, 497), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 7, 312, 264), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 7, 88, 264), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 8, 1418, 129), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 8, 362, 129), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(4, 8, 858, 129), "Lantern TBD", null, LanternCube & LanternCube);
+			Add(new ItemKey(4, 10, 122, 161), "Castle Ramparts: Giantess Lantern 1", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 10, 266, 161), "Castle Ramparts: Giantess Lantern 2", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 11, 138, 161), "Castle Ramparts: Archer + Knight Lantern 1", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 11, 282, 161), "Castle Ramparts: Archer + Knight Lantern 2", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 22, 298, 161), "Castle Ramparts: Pedestal Lantern", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 3, 234, 561), "Castle Ramparts: Big Boulder Room Lantern 1", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 3, 570, 561), "Castle Ramparts: Big Boulder Room Lantern 2", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 4, 1418, 129), "Castle Ramparts: Left Rooftops Lantern 1", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 4, 378, 129), "Castle Ramparts: Left Rooftops Lantern 2", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 4, 922, 129), "Castle Ramparts: Left Rooftops Lantern 3", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 5, 202, 497), "Castle Ramparts: Middle Hammer Lantern 1", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 5, 312, 264), "Castle Ramparts: Middle Hammer Lantern 2", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 5, 88, 264), "Castle Ramparts: Middle Hammer Lantern 3", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 6, 234, 561), "Castle Ramparts: Exit Lantern 1", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 6, 280, 104), "Castle Ramparts: Exit Lantern 2", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 6, 520, 104), "Castle Ramparts: Exit Lantern 3", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 6, 570, 561), "Castle Ramparts: Exit Lantern 4", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 7, 202, 497), "Castle Ramparts: Pedestal Stairs Lantern 1", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 7, 312, 264), "Castle Ramparts: Pedestal Stairs Lantern 2", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 7, 88, 264), "Castle Ramparts: Pedestal Stairs Lantern 3", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 8, 1418, 129), "Castle Ramparts: Right Rooftops Lantern 1", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 8, 362, 129), "Castle Ramparts: Right Rooftops Lantern 2", null, CastleRamparts & LanternCube);
+			Add(new ItemKey(4, 8, 858, 129), "Castle Ramparts: Right Rooftops Lantern 3", null, CastleRamparts & LanternCube);
 
 			areaName = "Castle Keep";
 // 			Add(new ItemKey(5, 0, 1032, 173), "Lantern TBD", null, LanternCube & LanternCube);
