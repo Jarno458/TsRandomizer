@@ -301,8 +301,8 @@ namespace TsRandomizer.Randomisation
 				capacity += 1;
 			if (options.LoreChecks)
 				capacity += 22;
-			//if (options.PureTorcher)
-			// 	capacity += 503;
+			if (options.PureTorcher)
+				capacity += 179; // update to 523;
 			if (options.PyramidStart)
 				capacity += 3;
 
