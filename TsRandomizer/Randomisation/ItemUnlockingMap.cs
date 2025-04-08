@@ -199,6 +199,7 @@ namespace TsRandomizer.Randomisation
 			{
 				UnlockingSpecifications.Add(new UnlockingSpecification(CustomItem.GetIdentifier(CustomItemType.DrawbridgeKey), R.DrawbridgeKey));
 			}
+			// TODO put lanterncube here
 		}
 
 		void MakeKeyCardUnlocksCardSpecific()
