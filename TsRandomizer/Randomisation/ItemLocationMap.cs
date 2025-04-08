@@ -302,7 +302,7 @@ namespace TsRandomizer.Randomisation
 			if (options.LoreChecks)
 				capacity += 22;
 			if (options.PureTorcher)
-				capacity += 476; // update to 520;
+				capacity += 505; // update to 520;
 			if (options.PyramidStart)
 				capacity += 3;
 
@@ -1062,35 +1062,35 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(5, 7, 200, 444), "Castle Keep: Twins Stairwell Lantern 2", null, CastleKeep & R.TimeStop & LanternCube);
 
 			areaName = "Royal Towers";
-// 			Add(new ItemKey(6, 1, 1114, 257), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 1, 1402, 257), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 1, 250, 257), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 1, 538, 257), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 1, 826, 257), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 10, 138, 253), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 10, 266, 253), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 11, 298, 173), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 16, 202, 157), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 16, 346, 157), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 16, 58, 157), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 2, 74, 349), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 2, 74, 541), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 21, 154, 893), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 21, 250, 893), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 22, 154, 173), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 22, 250, 173), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 24, 122, 141), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 24, 266, 141), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 25, 135, 73), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 25, 87, 73), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 27, 394, 157), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 27, 394, 541), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 3, 330, 173), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 7, 202, 1245), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 7, 202, 333), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 9, 199, 217), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 9, 199, 537), "Lantern TBD", null, LanternCube & LanternCube);
-// 			Add(new ItemKey(6, 9, 199, 841), "Lantern TBD", null, LanternCube & LanternCube);
+			Add(new ItemKey(6, 1, 1114, 257), "Royal Towers: Long Balcony Lantern 1", null, MidRoyalTower & NeedSwimming(FloodsFlags.CastleCourtyard) & LanternCube);
+			Add(new ItemKey(6, 1, 1402, 257), "Royal Towers: Long Balcony Lantern 2", null, MidRoyalTower & NeedSwimming(FloodsFlags.CastleCourtyard) & LanternCube);
+			Add(new ItemKey(6, 1, 250, 257), "Royal Towers: Long Balcony Lantern 3", null, MidRoyalTower & NeedSwimming(FloodsFlags.CastleCourtyard) & LanternCube);
+			Add(new ItemKey(6, 1, 538, 257), "Royal Towers: Long Balcony Lantern 4", null, MidRoyalTower & NeedSwimming(FloodsFlags.CastleCourtyard) & LanternCube);
+			Add(new ItemKey(6, 1, 826, 257), "Royal Towers: Long Balcony Lantern 5", null, MidRoyalTower & NeedSwimming(FloodsFlags.CastleCourtyard) & LanternCube);
+			Add(new ItemKey(6, 10, 138, 253), "Royal Towers: Bottom Struggle Base Lantern 1", null, MidRoyalTower & (FloodsFlags.CastleCourtyard ? R.Free : DoubleJumpOfNpc) & LanternCube);
+			Add(new ItemKey(6, 10, 266, 253), "Royal Towers: Bottom Struggle Base Lantern 1", null, MidRoyalTower & (FloodsFlags.CastleCourtyard ? R.Free : DoubleJumpOfNpc) & LanternCube);
+			Add(new ItemKey(6, 11, 298, 173), "Royal Towers: Before Aelana Lantern 1", null, UpperRoyalTower & LanternCube);
+			Add(new ItemKey(6, 16, 202, 157), "Royal Towers: Tower Base Entrance Lantern 1", null, UpperRoyalTower & LanternCube);
+			Add(new ItemKey(6, 16, 346, 157), "Royal Towers: Tower Base Entrance Lantern 2", null, UpperRoyalTower & LanternCube);
+			Add(new ItemKey(6, 16, 58, 157), "Royal Towers: Tower Base Entrance Lantern 3", null, UpperRoyalTower & LanternCube);
+			Add(new ItemKey(6, 2, 74, 349), "Royal Towers: Lantern Above Time-Stop Demon", null, MidRoyalTower & LanternCube);
+			Add(new ItemKey(6, 2, 74, 541), "Royal Towers:  Lantern Below Time-Stop Demon", null, RoyalTower & LanternCube);
+			Add(new ItemKey(6, 21, 154, 893), "Royal Towers: Left Tower Base Lantern 1", null, UpperRoyalTower & LanternCube);
+			Add(new ItemKey(6, 21, 250, 893), "Royal Towers: Left Tower Base Lantern 2", null, UpperRoyalTower & LanternCube);
+			Add(new ItemKey(6, 22, 154, 173), "Royal Towers: Left Royal Guard Lantern 1", null, UpperRoyalTower & LanternCube);
+			Add(new ItemKey(6, 22, 250, 173), "Royal Towers: Left Royal Guard Lantern 2", null, UpperRoyalTower & LanternCube);
+			Add(new ItemKey(6, 24, 122, 141), "Royal Towers: Before Bottom Struggle Lantern 1", null, MidRoyalTower & (FloodsFlags.CastleCourtyard ? R.Free : DoubleJumpOfNpc) & LanternCube);
+			Add(new ItemKey(6, 24, 266, 141), "Royal Towers: Before Bottom Struggle Lantern 2", null, MidRoyalTower & (FloodsFlags.CastleCourtyard ? R.Free : DoubleJumpOfNpc) & LanternCube);
+			Add(new ItemKey(6, 25, 135, 73), "Royal Towers: Past Bottom Struggle Lantern 1", null, MidRoyalTower & (FloodsFlags.CastleCourtyard ? R.Free : DoubleJumpOfNpc) & LanternCube);
+			Add(new ItemKey(6, 25, 87, 73), "Royal Towers: Past Bottom Struggle Lantern 2", null, MidRoyalTower & (FloodsFlags.CastleCourtyard ? R.Free : DoubleJumpOfNpc) & LanternCube);
+			Add(new ItemKey(6, 27, 394, 157), "Royal Towers: Pre-Climb Lantern 1", null, MidRoyalTower & LanternCube);
+			Add(new ItemKey(6, 27, 394, 541), "Royal Towers: Pre-Climb Lantern 2", null, MidRoyalTower & LanternCube);
+			Add(new ItemKey(6, 3, 330, 173), "Royal Towers: Bottom Struggle Lantern", null, MidRoyalTower & DoubleJumpOfNpc & LanternCube);
+			Add(new ItemKey(6, 7, 202, 1245), "Royal Towers: Final Climb Lantern 1", null, UpperRoyalTower & LanternCube);
+			Add(new ItemKey(6, 7, 202, 333), "Royal Towers: Final Climb Lantern 2", null, UpperRoyalTower & LanternCube);
+			Add(new ItemKey(6, 9, 199, 217), "Royal Towers: Right Tower Base Lantern 1", null, UpperRoyalTower & LanternCube);
+			Add(new ItemKey(6, 9, 199, 537), "Royal Towers: Right Tower Base Lantern 2", null, UpperRoyalTower & LanternCube);
+			Add(new ItemKey(6, 9, 199, 841), "Royal Towers: Right Tower Base Lantern 3", null, UpperRoyalTower & LanternCube);
 
 			areaName = "Ancient Pyramid";
 			Add(new ItemKey(16, 0, 152, 128), "Ancient Pyramid: Entrance Lantern 1", null, PyramidEntrance & LanternCube);
