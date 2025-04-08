@@ -130,7 +130,12 @@ namespace TsRandomizer.Archipelago
 				level.AsDynamic().UnlockRelic(itemIdentifier.Relic);
 
 			if (!firstPass || item.IsProgression)
-				level.ShowItemAwardPopup(itemIdentifier);
+			{
+	                        if (item is CustomItem customItem)
+	                                gameplayScreen.ShowItemPickupBar(customItem.Name);
+				else
+					level.ShowItemAwardPopup(itemIdentifier);
+			}
 
 			if (item.IsProgression)
 				ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(this));

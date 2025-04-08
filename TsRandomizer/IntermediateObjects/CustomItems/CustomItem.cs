@@ -30,7 +30,8 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		LabAccessResearch,
 		LabAccessDynamo,
 		DrawbridgeKey,
-		CubeOfBodie
+		CubeOfBodie,
+		SpiderTrap
 	}
 
 	// consider beacons as starting items
