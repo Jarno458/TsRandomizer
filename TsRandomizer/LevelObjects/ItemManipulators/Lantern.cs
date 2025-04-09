@@ -93,17 +93,19 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 		}
 	}
 
-	// TODO: handle these
-	/*
 	[TimeSpinnerType("Timespinner.GameObjects.Events.MetropolisLanternEvent")]
 	class MetropolisLantern : LevelObject
 	{
-		public MetropolisLantern(Mobile typedObject, GameplayScreen gameplayScreen)
-			: base(typedObject, gameplayScreen)
+		public MetropolisLantern(Mobile typedObject, GameplayScreen gameplayScreen) : base(typedObject, gameplayScreen)
 		{
-			Dynamic._oscillDelta = 0; // Fix the item's position so the replacement doesn't miss
+		}
+
+		protected override void Initialize(Seed seed, SettingCollection settings)
+		{
+			// Oscillation is being problematic, this removes this single room-type of lantern, replaced by a room trigger
+			if (!seed.Options.PureTorcher)
+				return;
+			Dynamic.SilentKill();
 		}
 	}
-	*/
-
 }
