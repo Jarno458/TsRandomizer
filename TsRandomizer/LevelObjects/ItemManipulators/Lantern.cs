@@ -30,7 +30,6 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Lanterns.LabTowerLanternEvent")]
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Lanterns.LakeCandleLanternEvent")]
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Lanterns.LakeCoralLanternEvent")]
-	[TimeSpinnerType("Timespinner.GameObjects.Events.MetropolisLanternEvent")]
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Lanterns.MetropolisLanternLibraryHangEvent")]
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Lanterns.MetropolisLanternLibraryStandEvent")]
 	[TimeSpinnerType("Timespinner.GameObjects.Events.Lanterns.MetropolisLanternTowerStandEvent")]
@@ -93,5 +92,18 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			Dynamic.IsInvulnerable = false;
 		}
 	}
-	
+
+	// TODO: handle these
+	/*
+	[TimeSpinnerType("Timespinner.GameObjects.Events.MetropolisLanternEvent")]
+	class MetropolisLantern : LevelObject
+	{
+		public MetropolisLantern(Mobile typedObject, GameplayScreen gameplayScreen)
+			: base(typedObject, gameplayScreen)
+		{
+			Dynamic._oscillDelta = 0; // Fix the item's position so the replacement doesn't miss
+		}
+	}
+	*/
+
 }
