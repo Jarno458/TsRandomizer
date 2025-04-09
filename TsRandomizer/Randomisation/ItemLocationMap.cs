@@ -895,11 +895,12 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(7, 11, 184, 160), "Lake Serene (Lower): Underwater Secret Lantern 1", null, LowerLakeSirine & OculusRift & LanternCube);
 			Add(new ItemKey(7, 11, 248, 160), "Lake Serene (Lower): Underwater Secret Lantern 2", null, LowerLakeSirine & OculusRift & LanternCube);
 			Add(new ItemKey(7, 11, 312, 160), "Lake Serene (Lower): Underwater Secret Lantern 3", null, LowerLakeSirine & OculusRift & LanternCube);
+			Add(new ItemKey(7, 7, 184, 123), "Lake Serene (Lower): Above The Eels Lantern 1", null, LeftSideForestCaves & LanternCube);
+			Add(new ItemKey(7, 7, 1704, 155), "Lake Serene (Lower): Above The Eels Lantern 2", null, LeftSideForestCaves & LanternCube);
 			Add(new ItemKey(7, 7, 1112, 592), "Lake Serene (Lower): Under The Eels Lantern 1", null, LeftSideForestCaves & R.Swimming & LanternCube);
 			Add(new ItemKey(7, 7, 1544, 592), "Lake Serene (Lower): Under The Eels Lantern 2", null, LeftSideForestCaves & R.Swimming & LanternCube);
-			Add(new ItemKey(7, 7, 1704, 155), "Lake Serene (Lower): Under The Eels Lantern 3", null, LeftSideForestCaves & R.Swimming & LanternCube);
-			Add(new ItemKey(7, 7, 488, 576), "Lake Serene (Lower): Under The Eels Lantern 4", null, LeftSideForestCaves & R.Swimming & LanternCube);
-			Add(new ItemKey(7, 7, 824, 608), "Lake Serene (Lower): Under The Eels Lantern 5", null, LeftSideForestCaves & R.Swimming & LanternCube);
+			Add(new ItemKey(7, 7, 488, 576), "Lake Serene (Lower): Under The Eels Lantern 3", null, LeftSideForestCaves & R.Swimming & LanternCube);
+			Add(new ItemKey(7, 7, 824, 608), "Lake Serene (Lower): Under The Eels Lantern 4", null, LeftSideForestCaves & R.Swimming & LanternCube);
 			Add(new ItemKey(7, 6, 1336, 256), "Lake Serene (Lower): Water Spikes Lantern 1", null, LowerLakeSirine & LanternCube);
 			Add(new ItemKey(7, 6, 472, 432), "Lake Serene (Lower): Water Spikes Lantern 2", null, LowerLakeSirine & LanternCube);
 			Add(new ItemKey(7, 6, 568, 192), "Lake Serene (Lower): Water Spikes Lantern 3", null, LowerLakeSirine & LanternCube);
@@ -1063,6 +1064,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(5, 4, 168, 173), "Castle Keep: Twins Door Lantern 1", null, CastleKeep & R.TimeStop & LanternCube);
 			Add(new ItemKey(5, 4, 232, 173), "Castle Keep: Twins Door Lantern 2", null, CastleKeep & R.TimeStop & LanternCube);
 			Add(new ItemKey(5, 41, 152, 173), "Castle Keep: Under The Twins Lantern 1", null, CastleKeep & LanternCube);
+			Add(new ItemKey(5, 41, 232, 173), "Castle Keep: Under The Twins Lantern 2", null, CastleKeep & LanternCube);
 			Add(new ItemKey(5, 43, 200, 172), "Castle Basement: Center Shaft Lantern 1", null, CastleBasement & LanternCube);
 			Add(new ItemKey(5, 43, 200, 428), "Castle Basement: Center Shaft Lantern 2", null, CastleBasement & LanternCube);
 			Add(new ItemKey(5, 44, 122, 161), "Castle Basement: Giantess Lantern 1", null, CastleBasement & LanternCube);
@@ -1122,8 +1124,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(16, 11, 202, 166), "Ancient Pyramid: Upper-Right Stairway Lantern 1", null, RightPyramid & LanternCube);
 			Add(new ItemKey(16, 11, 2202, 1526), "Ancient Pyramid: Upper-Right Stairway Lantern 2", null, RightPyramid & LanternCube);
 			Add(new ItemKey(16, 14, 202, 166), "Ancient Pyramid: Why Not It's Right There Lantern", null, PyramidEntrance & LanternCube);
-			Add(new ItemKey(16, 20, 154, 886), "Ancient Pyramid: Regret Shaft Lantern 1", null, MidPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft) & LanternCube);
-			Add(new ItemKey(16, 20, 250, 866), "Ancient Pyramid: Regret Shaft Lantern 2", null, MidPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft) & LanternCube);
+			Add(new ItemKey(16, 20, 154, 886), "Ancient Pyramid: 8egret Shaft Lantern 1", null, MidPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft) & LanternCube);
+			Add(new ItemKey(16, 20, 250, 886), "Ancient Pyramid: Regret Shaft Lantern 2", null, MidPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft) & LanternCube);
 			Add(new ItemKey(16, 16, 1002, 166), "Ancient Pyramid: Regret Lantern 1", null, MidPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft) & LanternCube);
 			Add(new ItemKey(16, 16, 1402, 166), "Ancient Pyramid: Regret Lantern 2", null, MidPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft) & LanternCube);
 			Add(new ItemKey(16, 16, 202, 166), "Ancient Pyramid: Regret Lantern 3", null, MidPyramid & OculusRift & NeedSwimming(FloodsFlags.PyramidShaft) & LanternCube);
