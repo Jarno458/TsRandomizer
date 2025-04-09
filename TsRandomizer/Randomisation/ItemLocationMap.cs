@@ -302,7 +302,7 @@ namespace TsRandomizer.Randomisation
 			if (options.LoreChecks)
 				capacity += 22;
 			if (options.PureTorcher)
-				capacity += 520;
+				capacity += 527;
 			if (options.PyramidStart)
 				capacity += 3;
 
@@ -619,6 +619,15 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(1, 17, 282, 141), "Lake Desolation (Upper): Oxygen recovery room Lantern", null, UpperLakeDesolation & LanternCube);
 			Add(new ItemKey(1, 19, 218, 365), "Lake Desolation (Upper): Upper Right Room Lantern 1", null, UpperLakeDesolation & LanternCube);
 			Add(new ItemKey(1, 20, 250, 237), "Lake Desolation (Upper): Double jump cave Lantern", null, UpperLakeDesolation & LanternCube);
+
+			areaName = "Lake Desolation";
+			Add(new ItemKey(1, 7, 1432, 58), "Lake Desolation: Metropolis Bridge Lantern 1", null, LakeDesolationRight & R.DoubleJump & LanternCube);
+			Add(new ItemKey(1, 7, 472, 58), "Lake Desolation: Metropolis Bridge Lantern 2", null, LakeDesolationRight & R.DoubleJump & LanternCube);
+			Add(new ItemKey(1, 7, 1624, 58), "Lake Desolation: Metropolis Bridge Lantern 3", null, LakeDesolationRight & R.DoubleJump & LanternCube);
+			Add(new ItemKey(1, 7, 664, 58), "Lake Desolation: Metropolis Bridge Lantern 4", null, LakeDesolationRight & R.DoubleJump & LanternCube);
+			Add(new ItemKey(1, 7, 856, 58), "Lake Desolation: Metropolis Bridge Lantern 5", null, LakeDesolationRight & R.DoubleJump & LanternCube);
+			Add(new ItemKey(1, 7, 1054, 58), "Lake Desolation: Metropolis Bridge Lantern 6", null, LakeDesolationRight & R.DoubleJump & LanternCube);
+			Add(new ItemKey(1, 7, 1240, 58), "Lake Desolation: Metropolis Bridge Lantern 7", null, LakeDesolationRight & R.DoubleJump & LanternCube);
 
 			areaName = "Library";
 			Add(new ItemKey(2, 57, 200, 100), "Library: Sewer Entrance Lantern", null, LeftLibrary & LanternCube);
