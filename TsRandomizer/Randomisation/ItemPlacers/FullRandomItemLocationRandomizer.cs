@@ -147,7 +147,12 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			}
 
 			if (!isProgressionOnly)
-				FillRemainingChests(random);
+			{
+				if (SeedOptions.NothingVenture)
+					FillWithNothing(random);
+				else
+					FillRemainingChests(random);
+			}
 		}
 
 		protected void PlaceStarterProgressionItems(Random random)
@@ -367,6 +372,20 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			}
 
 			FixProgressiveNonProgressionItemsInSameRoom(random);
+		}
+
+		protected void FillWithNothing(Random random)
+		{
+			var freeLocations = itemLocations
+				.Where(l => !l.IsUsed)
+				.ToList();
+			ItemInfo nothing = ItemInfoProvider.Get(EInventoryUseItemType.PlaceHolderItem1);
+			//filler
+			while (freeLocations.Count > 0)
+			{
+				var location = freeLocations.PopRandom(random);
+				PutItemAtLocation(nothing, location);
+			}
 		}
 
 		void FixProgressiveNonProgressionItemsInSameRoom(Random random)
