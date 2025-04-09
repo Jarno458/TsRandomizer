@@ -1,4 +1,5 @@
 ﻿using TsRandomizer.Randomisation;
+
 namespace TsRandomizer.RoomTriggers.Triggers
 {
 	[RoomTriggerTrigger(10, 12),
