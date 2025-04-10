@@ -24,7 +24,6 @@ namespace TsRandomizer.Extensions
 
 		public static int GetAmount(this InventoryItem item)
 		{
-			item.AsDynamic().StackCount = 999;
 			switch (item)
 			{
 				case InventoryUseItem useItem:
