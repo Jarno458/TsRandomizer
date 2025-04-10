@@ -757,7 +757,7 @@ namespace TsRandomizer.Archipelago
 				{1337734, new ItemKey(9, 16, 1096, 1756)},
 				{1337735, new ItemKey(9, 16, 1096, 780)},
 				{1337736, new ItemKey(9, 16, 920, 780)},
-				{1337737, new ItemKey(9, 19, 1096, 1756)},
+				{1337737, new ItemKey(8, 43, 634, 157)},
 				{1337738, new ItemKey(9, 19, 520, 876)},
 				{1337739, new ItemKey(9, 19, 536, 140)},
 				{1337740, new ItemKey(9, 19, 696, 876)},

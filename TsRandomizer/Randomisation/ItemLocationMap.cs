@@ -671,8 +671,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(2, 56, 400, 96), "Library: Backer Room Lantern 3", null, UpperLeftLibrary & LanternCube);
 			Add(new ItemKey(2, 56, 624, 96), "Library: Backer Room Lantern 4", null, UpperLeftLibrary & LanternCube);
 			Add(new ItemKey(2, 56, 848, 96), "Library: Backer Room Lantern 5", null, UpperLeftLibrary & LanternCube);
-			Add(new ItemKey(2, 58, 160, 96), "Library: V Room Lantern 1", null, LeftLibrary & LanternCube);
-			Add(new ItemKey(2, 58, 272, 96), "Library: V Room Lantern 2", null, LeftLibrary & LanternCube);
+			Add(new ItemKey(2, 58, 160, 96), "Library: V Room Lantern 1", null, LeftLibrary & R.CardV & LanternCube);
+			Add(new ItemKey(2, 58, 272, 96), "Library: V Room Lantern 2", null, LeftLibrary & R.CardV & LanternCube);
 			Add(new ItemKey(2, 4, 112, 512), "Library: Backer Stairs Lantern 1", null, UpperLeftLibrary & LanternCube);
 			Add(new ItemKey(2, 4, 112, 96), "Library: Backer Stairs Lantern 2", null, UpperLeftLibrary & LanternCube);
 			Add(new ItemKey(2, 4, 288, 512), "Library: Backer Stairs Lantern 3", null, UpperLeftLibrary & LanternCube);
@@ -729,11 +729,10 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(9, 38, 168, 828), "Sealed Caves (Xarion) Forked Shaft Lantern 3", null, SealedCaves & LanternCube);
 			Add(new ItemKey(9, 38, 248, 828), "Sealed Caves (Xarion) Forked Shaft Lantern 4", null, SealedCaves & LanternCube);
 			Add(new ItemKey(9, 38, 296, 124), "Sealed Caves (Xarion) Forked Shaft Lantern 5", null, SealedCaves & LanternCube);
-			Add(new ItemKey(9, 19, 1096, 1756), "Sealed Caves (Xarion): Shroom Jump Lantern 1", null, SealedCaves & R.TimeStop & LanternCube);
-			Add(new ItemKey(9, 19, 520, 876), "Sealed Caves (Xarion): Shroom Jump Lantern 2", null, SealedCaves & R.TimeStop & LanternCube);
-			Add(new ItemKey(9, 19, 536, 140), "Sealed Caves (Xarion): Shroom Jump Lantern 3", null, SealedCaves & R.TimeStop & LanternCube);
-			Add(new ItemKey(9, 19, 696, 876), "Sealed Caves (Xarion): Shroom Jump Lantern 4", null, SealedCaves & R.TimeStop & LanternCube);
-			Add(new ItemKey(9, 19, 712, 140), "Sealed Caves (Xarion): Shroom Jump Lantern 5", null, SealedCaves & R.TimeStop & LanternCube);
+			Add(new ItemKey(9, 19, 520, 876), "Sealed Caves (Xarion): Shroom Jump Lantern 1", null, SealedCaves & R.TimeStop & LanternCube);
+			Add(new ItemKey(9, 19, 536, 140), "Sealed Caves (Xarion): Shroom Jump Lantern 2", null, SealedCaves & R.TimeStop & LanternCube);
+			Add(new ItemKey(9, 19, 696, 876), "Sealed Caves (Xarion): Shroom Jump Lantern 3", null, SealedCaves & R.TimeStop & LanternCube);
+			Add(new ItemKey(9, 19, 712, 140), "Sealed Caves (Xarion): Shroom Jump Lantern 4", null, SealedCaves & R.TimeStop & LanternCube);
 			Add(new ItemKey(9, 46, 104, 140), "Sealed Caves (Xarion): Lower Fork Start Lantern 1", null, SealedCaves & LanternCube);
 			Add(new ItemKey(9, 46, 296, 140), "Sealed Caves (Xarion): Lower Fork Start Lantern 2", null, SealedCaves & LanternCube);
 			Add(new ItemKey(9, 9, 104, 124), "Sealed Caves (Xarion): Lower Fork Vertical Room Lantern 1", null, SealedCaves & LanternCube);
@@ -956,6 +955,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(8, 43, 1466, 157), "Caves of Banishment (Maw): Rejoined Hallway Lantern 3", null, CavesOfBanishmentFlooded & LanternCube);
 			Add(new ItemKey(8, 43, 218, 157), "Caves of Banishment (Maw): Rejoined Hallway Lantern 4", null, CavesOfBanishmentFlooded & LanternCube);
 			Add(new ItemKey(8, 43, 426, 157), "Caves of Banishment (Maw): Rejoined Hallway Lantern 5", null, CavesOfBanishmentFlooded & LanternCube);
+			Add(new ItemKey(8, 43, 634, 157), "Caves of Banishment (Maw): Rejoined Hallway Lantern 6", null, CavesOfBanishmentFlooded & LanternCube);
 			Add(new ItemKey(8, 46, 104, 140), "Caves of Banishment (Maw): Lower Fork Start Lantern 1", null, CavesOfBanishmentFlooded & LanternCube);
 			Add(new ItemKey(8, 46, 296, 140), "Caves of Banishment (Maw): Lower Fork Start Lantern 1", null, CavesOfBanishmentFlooded & LanternCube);
 			Add(new ItemKey(8, 47, 122, 157), "Caves of Banishment (Maw): Post-Fork Room Lantern 1", null, CavesOfBanishmentFlooded & LanternCube);
