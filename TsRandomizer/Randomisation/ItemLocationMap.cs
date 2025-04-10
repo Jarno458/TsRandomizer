@@ -302,7 +302,11 @@ namespace TsRandomizer.Randomisation
 			if (options.LoreChecks)
 				capacity += 22;
 			if (options.PureTorcher)
-				capacity += 527;
+			{
+				capacity += 508;
+				if (options.GyreArchives)
+					capacity += 16;
+			}
 			if (options.PyramidStart)
 				capacity += 3;
 
@@ -607,16 +611,16 @@ namespace TsRandomizer.Randomisation
 		void AddLanternLocations()
 		{
 			areaName = "Lower Lake Desolation";
-			Add(new ItemKey(1, 11, 106, 221), "Lake Desolation (Lower): Not so secret room Lantern", null, LakeDesolationRight & OculusRift & LanternCube);
+			Add(new ItemKey(1, 11, 106, 221), "Lake Desolation (Lower): Not  So Secret Lantern", null, LakeDesolationRight & OculusRift & LanternCube);
 			Add(new ItemKey(1, 6, 474, 413), "Lake Desolation (Lower): Middle Room Lantern 1", null, LakeDesolationRight & OculusRift & LanternCube);
 			Add(new ItemKey(1, 6, 570, 173), "Lake Desolation (Lower): Middle Room Lantern 2", null, LakeDesolationRight & OculusRift & LanternCube);
-			Add(new ItemKey(1, 9, 122, 189), "Lake Desolation (Lower): Timespinner Wheel room Lantern 1", null, LakeDesolationLeft & LanternCube);
-			Add(new ItemKey(1, 9, 314, 141), "Lake Desolation (Lower): Timespinner Wheel room Lantern 2", null, LakeDesolationLeft & LanternCube);
+			Add(new ItemKey(1, 9, 122, 189), "Lake Desolation (Lower): Timespinner Wheel Lantern 1", null, LakeDesolationLeft & LanternCube);
+			Add(new ItemKey(1, 9, 314, 141), "Lake Desolation (Lower): Timespinner Wheel Lantern 2", null, LakeDesolationLeft & LanternCube);
 
 			areaName = "Upper Lake Desolation";
 			Add(new ItemKey(1, 16, 106, 461), "Lake Desolation (Upper): Upper Left Room Lantern 1", null, UpperLakeDesolation & LanternCube);
 			Add(new ItemKey(1, 16, 282, 269), "Lake Desolation (Upper): Upper Left Room Lantern 2", null, UpperLakeDesolation & LanternCube);
-			Add(new ItemKey(1, 17, 282, 141), "Lake Desolation (Upper): Oxygen recovery room Lantern", null, UpperLakeDesolation & LanternCube);
+			Add(new ItemKey(1, 17, 282, 141), "Lake Desolation (Upper): Oxygen Recovery Lantern", null, UpperLakeDesolation & LanternCube);
 			Add(new ItemKey(1, 19, 218, 365), "Lake Desolation (Upper): Upper Right Room Lantern 1", null, UpperLakeDesolation & LanternCube);
 			Add(new ItemKey(1, 20, 250, 237), "Lake Desolation (Upper): Double jump cave Lantern", null, UpperLakeDesolation & LanternCube);
 
@@ -729,6 +733,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(9, 19, 520, 876), "Sealed Caves (Xarion): Shroom Jump Lantern 2", null, SealedCaves & R.TimeStop & LanternCube);
 			Add(new ItemKey(9, 19, 536, 140), "Sealed Caves (Xarion): Shroom Jump Lantern 3", null, SealedCaves & R.TimeStop & LanternCube);
 			Add(new ItemKey(9, 19, 696, 876), "Sealed Caves (Xarion): Shroom Jump Lantern 4", null, SealedCaves & R.TimeStop & LanternCube);
+			Add(new ItemKey(9, 19, 712, 140), "Sealed Caves (Xarion): Shroom Jump Lantern 5", null, SealedCaves & R.TimeStop & LanternCube);
 			Add(new ItemKey(9, 46, 104, 140), "Sealed Caves (Xarion): Lower Fork Start Lantern 1", null, SealedCaves & LanternCube);
 			Add(new ItemKey(9, 46, 296, 140), "Sealed Caves (Xarion): Lower Fork Start Lantern 2", null, SealedCaves & LanternCube);
 			Add(new ItemKey(9, 9, 104, 124), "Sealed Caves (Xarion): Lower Fork Vertical Room Lantern 1", null, SealedCaves & LanternCube);
@@ -1080,6 +1085,9 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(6, 1, 826, 257), "Royal Towers: Long Balcony Lantern 5", null, MidRoyalTower & NeedSwimming(FloodsFlags.CastleCourtyard) & LanternCube);
 			Add(new ItemKey(6, 10, 138, 253), "Royal Towers: Bottom Struggle Base Lantern 1", null, MidRoyalTower & (FloodsFlags.CastleCourtyard ? R.Free : DoubleJumpOfNpc) & LanternCube);
 			Add(new ItemKey(6, 10, 266, 253), "Royal Towers: Bottom Struggle Base Lantern 1", null, MidRoyalTower & (FloodsFlags.CastleCourtyard ? R.Free : DoubleJumpOfNpc) & LanternCube);
+			Add(new ItemKey(6, 23, 519, 73), "Royal Towers: Aelana's Attic Lantern 1", null, UpperRoyalTower & R.UpwardDash);
+			Add(new ItemKey(6, 23, 599, 73), "Royal Towers: Aelana's Attic Lantern 2", null, UpperRoyalTower & R.UpwardDash);
+			Add(new ItemKey(6, 23, 679, 73), "Royal Towers: Aelana's Attic Lantern 3", null, UpperRoyalTower & R.UpwardDash);
 			Add(new ItemKey(6, 11, 298, 173), "Royal Towers: Before Aelana Lantern 1", null, UpperRoyalTower & LanternCube);
 			Add(new ItemKey(6, 16, 202, 157), "Royal Towers: Tower Base Entrance Lantern 1", null, UpperRoyalTower & LanternCube);
 			Add(new ItemKey(6, 16, 346, 157), "Royal Towers: Tower Base Entrance Lantern 2", null, UpperRoyalTower & LanternCube);
