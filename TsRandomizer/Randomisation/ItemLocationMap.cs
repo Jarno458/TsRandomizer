@@ -1028,9 +1028,9 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(5, 13, 200, 444), "Castle Basement: Exit Climb Lantern 2", null, CastleBasement & LanternCube);
 			Add(new ItemKey(5, 16, 298, 129), "Castle Basement: First Bird Hall Lantern 1", null, CastleBasement & LanternCube);
 			Add(new ItemKey(5, 16, 490, 129), "Castle Basement: First Bird Hall Lantern 2", null, CastleBasement & LanternCube);
-			Add(new ItemKey(5, 18, 200, 172), "Castle Keep: Far-Left Climb Lantern 1", null, CastleKeep & LanternCube);
-			Add(new ItemKey(5, 18, 200, 492), "Castle Keep: Far-Left Climb Lantern 2", null, CastleKeep & LanternCube);
-			Add(new ItemKey(5, 18, 200, 748), "Castle Keep: Far-Left Climb Lantern 3", null, CastleKeep & LanternCube);
+			Add(new ItemKey(5, 18, 200, 172), "Castle Keep: Far-Left Climb Double-Jump Lantern", null, CastleKeep & R.DoubleJump & LanternCube);
+			Add(new ItemKey(5, 18, 200, 492), "Castle Keep: Far-Left Climb Lower Lantern 1", null, CastleKeep & LanternCube);
+			Add(new ItemKey(5, 18, 200, 748), "Castle Keep: Far-Left Climb Lower Lantern 2", null, CastleKeep & LanternCube);
 			Add(new ItemKey(5, 19, 168, 157), "Castle Keep: Under The Twins Hallway Lantern 1", null, CastleKeep & LanternCube);
 			Add(new ItemKey(5, 19, 424, 157), "Castle Keep: Under The Twins Hallway Lantern 2", null, CastleKeep & LanternCube);
 			Add(new ItemKey(5, 19, 728, 157), "Castle Keep: Under The Twins Hallway Lantern 3", null, CastleKeep & LanternCube);
@@ -1041,15 +1041,15 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(5, 21, 984, 157), "Castle Keep: Right-Middle Hallway Lantern 4", null, CastleKeep & LanternCube);
 			Add(new ItemKey(5, 22, 152, 141), "Castle Keep: Tiny Royal Guard Room Lantern 1", null, CastleKeep & ((R.TimeStop & R.ForwardDash) | R.DoubleJump) & LanternCube);
 			Add(new ItemKey(5, 22, 264, 141), "Castle Keep: Tiny Royal Guard Room Lantern 2", null, CastleKeep & ((R.TimeStop & R.ForwardDash) | R.DoubleJump) & LanternCube);
-			Add(new ItemKey(5, 29, 200, 204), "Castle Keep: Royal Tower Entrance Lantern 1", null, RoyalTower & LanternCube);
-			Add(new ItemKey(5, 29, 200, 460), "Castle Keep: Royal Tower Entrance Lantern 2", null, RoyalTower & LanternCube);
+			Add(new ItemKey(5, 29, 200, 204), "Castle Keep: Royal Tower Entrance Lantern 1", null, CastleKeep & R.DoubleJump & LanternCube);
+			Add(new ItemKey(5, 29, 200, 460), "Castle Keep: Royal Tower Entrance Lantern 2", null, CastleKeep & R.DoubleJump & LanternCube);
 			Add(new ItemKey(5, 3, 200, 445), "Castle Keep: Foyer Low Left Lantern", null, CastleBasement & LanternCube); // Low are below the water line
 			Add(new ItemKey(5, 3, 1000, 445), "Castle Keep: Foyer Low Right Lantern", null, CastleBasement & LanternCube);
 			Add(new ItemKey(5, 3, 184, 205), "Castle Keep: Foyer Mid Left Lantern", null, CastleKeep & LanternCube);
 			Add(new ItemKey(5, 3, 1016, 205), "Castle Keep: Foyer Mid Right Lantern", null, CastleKeep & LanternCube);
 			Add(new ItemKey(5, 3, 552, 285), "Castle Keep: Foyer High Left Lantern", null, CastleKeep & LanternCube);
 			Add(new ItemKey(5, 3, 648, 285), "Castle Keep: Foyer High Right Lantern", null, CastleKeep & LanternCube);
-			Add(new ItemKey(5, 32, 488, 141), "Castle Keep: Below Royal Room Lantern", null, CastleKeep & LanternCube);
+			Add(new ItemKey(5, 32, 488, 141), "Castle Keep: Below Royal Room Lantern", null, CastleKeep & R.DoubleJump & LanternCube);
 			Add(new ItemKey(5, 33, 122, 161), "Castle Basement: Single Bird Lantern 1", null, CastleBasement & LanternCube);
 			Add(new ItemKey(5, 33, 298, 161), "Castle Basement: Single Bird Lantern 2", null, CastleBasement & LanternCube);
 			Add(new ItemKey(5, 35, 298, 129), "Castle Basement: Second Bird Hall Lantern 1", null, CastleBasement & LanternCube);
