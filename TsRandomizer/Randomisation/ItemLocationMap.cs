@@ -1043,12 +1043,12 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(5, 22, 264, 141), "Castle Keep: Tiny Royal Guard Room Lantern 2", null, CastleKeep & ((R.TimeStop & R.ForwardDash) | R.DoubleJump) & LanternCube);
 			Add(new ItemKey(5, 29, 200, 204), "Castle Keep: Royal Tower Entrance Lantern 1", null, RoyalTower & LanternCube);
 			Add(new ItemKey(5, 29, 200, 460), "Castle Keep: Royal Tower Entrance Lantern 2", null, RoyalTower & LanternCube);
-			Add(new ItemKey(5, 3, 1000, 445), "Castle Keep: Foyer Lantern 1", null, CastleKeep & LanternCube);
-			Add(new ItemKey(5, 3, 1016, 205), "Castle Keep: Foyer Lantern 2", null, CastleKeep & LanternCube);
-			Add(new ItemKey(5, 3, 184, 205), "Castle Keep: Foyer Lantern 3", null, CastleKeep & LanternCube);
-			Add(new ItemKey(5, 3, 200, 445), "Castle Keep: Foyer Lantern 4", null, CastleKeep & LanternCube);
-			Add(new ItemKey(5, 3, 552, 285), "Castle Keep: Foyer Lantern 5", null, CastleKeep & LanternCube);
-			Add(new ItemKey(5, 3, 648, 285), "Castle Keep: Foyer Lantern 6", null, CastleKeep & LanternCube);
+			Add(new ItemKey(5, 3, 200, 445), "Castle Keep: Foyer Low Left Lantern", null, CastleBasement & LanternCube); // Low are below the water line
+			Add(new ItemKey(5, 3, 1000, 445), "Castle Keep: Foyer Low Right Lantern", null, CastleBasement & LanternCube);
+			Add(new ItemKey(5, 3, 184, 205), "Castle Keep: Foyer Mid Left Lantern", null, CastleKeep & LanternCube);
+			Add(new ItemKey(5, 3, 1016, 205), "Castle Keep: Foyer Mid Right Lantern", null, CastleKeep & LanternCube);
+			Add(new ItemKey(5, 3, 552, 285), "Castle Keep: Foyer High Left Lantern", null, CastleKeep & LanternCube);
+			Add(new ItemKey(5, 3, 648, 285), "Castle Keep: Foyer High Right Lantern", null, CastleKeep & LanternCube);
 			Add(new ItemKey(5, 32, 488, 141), "Castle Keep: Below Royal Room Lantern", null, CastleKeep & LanternCube);
 			Add(new ItemKey(5, 33, 122, 161), "Castle Basement: Single Bird Lantern 1", null, CastleBasement & LanternCube);
 			Add(new ItemKey(5, 33, 298, 161), "Castle Basement: Single Bird Lantern 2", null, CastleBasement & LanternCube);
