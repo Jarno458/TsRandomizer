@@ -16,7 +16,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			SpawnLantern(roomState, new Point(472, 95));
 			SpawnLantern(roomState, new Point(664, 95));
 			SpawnLantern(roomState, new Point(856, 95));
-			SpawnLantern(roomState, new Point(1054, 95));
+			SpawnLantern(roomState, new Point(1048, 95));
 			SpawnLantern(roomState, new Point(1240, 95));
 			SpawnLantern(roomState, new Point(1432, 95));
 			SpawnLantern(roomState, new Point(1624, 95));

@@ -628,7 +628,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(1, 7, 472, 95), "Lake Desolation: Metropolis Bridge Lantern 1", null, LakeDesolationRight & R.DoubleJump & LanternCube);
 			Add(new ItemKey(1, 7, 664, 95), "Lake Desolation: Metropolis Bridge Lantern 2", null, LakeDesolationRight & R.DoubleJump & LanternCube);
 			Add(new ItemKey(1, 7, 856, 95), "Lake Desolation: Metropolis Bridge Lantern 3", null, LakeDesolationRight & R.DoubleJump & LanternCube);
-			Add(new ItemKey(1, 7, 1054, 95), "Lake Desolation: Metropolis Bridge Lantern 4", null, LakeDesolationRight & R.DoubleJump & LanternCube);
+			Add(new ItemKey(1, 7, 1048, 95), "Lake Desolation: Metropolis Bridge Lantern 4", null, LakeDesolationRight & R.DoubleJump & LanternCube);
 			Add(new ItemKey(1, 7, 1240, 95), "Lake Desolation: Metropolis Bridge Lantern 5", null, LakeDesolationRight & R.DoubleJump & LanternCube);
 			Add(new ItemKey(1, 7, 1432, 95), "Lake Desolation: Metropolis Bridge Lantern 6", null, LakeDesolationRight & R.DoubleJump & LanternCube);
 			Add(new ItemKey(1, 7, 1624, 95), "Lake Desolation: Metropolis Bridge Lantern 7", null, LakeDesolationRight & R.DoubleJump & LanternCube);
