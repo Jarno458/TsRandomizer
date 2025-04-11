@@ -15,10 +15,11 @@ namespace TsRandomizer.RoomTriggers.Triggers
 
 		public override void OnRoomLoad(RoomState roomState)
 		{
+			if (roomState.Level.LastRoomIndex == 0) // Loading from save
+				return;
 			// Spawn glowing floor event to give a soft-lock exit warp
 			if (((Dictionary<int, NPCBase>)roomState.Level.AsDynamic()._npcs).Values.Any(npc => npc.GetType() == GlowingFloorEventType)) 
 				return;
-
 			var position = new Point(100, 195);
 
 			RoomTriggerHelper.SpawnGlowingFloor(roomState.Level, position);

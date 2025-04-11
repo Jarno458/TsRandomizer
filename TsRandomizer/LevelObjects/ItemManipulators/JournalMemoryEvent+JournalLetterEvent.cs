@@ -23,14 +23,8 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 
 			if (ItemInfo == null || hasAwardedItem || !Dynamic._isFading)
 				return;
-
-			var x = GameplayScreen;
-			var y = Level;
-
 			AwardContainedItem();
-
 			ShowItemAwardPopup();
-
 			hasAwardedItem = true;
 		}
 	}
