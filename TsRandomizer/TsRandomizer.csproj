@@ -149,6 +149,7 @@
     <Compile Include="Extensions\SettingsExtensions.cs" />
     <Compile Include="IntermediateObjects\CustomItems\CustomItem.cs" />
     <Compile Include="IntermediateObjects\CustomItems\BeeTrap.cs" />
+    <Compile Include="IntermediateObjects\CustomItems\CubeOfBodie.cs" />
     <Compile Include="IntermediateObjects\CustomItems\ThrowStunTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\MeteorSparrowTrap.cs" />
     <Compile Include="IntermediateObjects\CustomItems\SpiderTrap.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="LevelObjects\Enemizer.cs" />
     <Compile Include="LevelObjects\EnemyInfo.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalMemoryEvent+JournalLetterEvent.cs" />
+    <Compile Include="LevelObjects\ItemManipulators\Lantern.cs" />
     <Compile Include="LevelObjects\Monsters\Bee.cs" />
     <Compile Include="LevelObjects\Monsters\Demon.cs" />
     <Compile Include="LevelObjects\Monsters\CastleLargeSoldier.cs" />
@@ -196,6 +198,7 @@
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\AzureQueen.cs" />
+    <Compile Include="RoomTriggers\Triggers\MetropolisBridgeLanterns.cs" />
     <Compile Include="RoomTriggers\Triggers\LabSoftlockExits.cs" />
     <Compile Include="RoomTriggers\Triggers\LabExperimentRooms.cs" />
     <Compile Include="RoomTriggers\Triggers\LightwallClimbBoost.cs" />
