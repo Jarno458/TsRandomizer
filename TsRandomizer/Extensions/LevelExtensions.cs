@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
@@ -66,14 +67,8 @@ namespace TsRandomizer.Extensions
 		internal static bool IsRoomVisited(this Level level, int levelId, int roomId)
 		{
 			var minimapRoom = level.Minimap.Areas[levelId].Rooms.Find(x => x.RoomID == roomId);
-			bool visited = false;
-			foreach (var block in minimapRoom.Blocks.Values)
-				if (block.IsVisited)
-				{
-					visited = true;
-					break;
-				}
-			return visited;
+
+			return minimapRoom.Blocks.Values.Any(block => block.IsVisited);
 		}
 	}
 }
