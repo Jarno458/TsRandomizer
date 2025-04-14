@@ -215,10 +215,11 @@ namespace TsRandomizer.Archipelago
 				{1337197, CustomItem.GetIdentifier(CustomItemType.LabAccessDynamo)},
 				{1337198, CustomItem.GetIdentifier(CustomItemType.DrawbridgeKey)},
 				{1337199, CustomItem.GetIdentifier(CustomItemType.CubeOfBodie)},
+				{1337200, CustomItem.GetIdentifier(CustomItemType.SpiderTrap)},
 
-				// 1337200 - 1337248 Reserved for future use
+				// 1337201 - 1337248 Reserved for future use
 
-				{1337249, new ItemIdentifier(EItemType.MaxSand)}
+        {1337249, new ItemIdentifier(EItemType.MaxSand)}
 			};
 
 			MapItemIdentifierToItemId = new Dictionary<ItemIdentifier, long>(MapItemIdToItemItemIdentifier.Count);
