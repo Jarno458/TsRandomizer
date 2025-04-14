@@ -3,6 +3,7 @@ using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.IntermediateObjects;
 
+
 namespace TsRandomizer.Extensions
 {
 	public static class LevelExtensions
@@ -60,6 +61,19 @@ namespace TsRandomizer.Extensions
 
 			minimapRoom.SetKnown(true);
 			minimapRoom.SetVisited(true);
+		}
+
+		internal static bool IsRoomVisited(this Level level, int levelId, int roomId)
+		{
+			var minimapRoom = level.Minimap.Areas[levelId].Rooms.Find(x => x.RoomID == roomId);
+			bool visited = false;
+			foreach (var block in minimapRoom.Blocks.Values)
+				if (block.IsVisited)
+				{
+					visited = true;
+					break;
+				}
+			return visited;
 		}
 	}
 }

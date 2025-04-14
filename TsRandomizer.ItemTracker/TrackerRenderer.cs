@@ -106,6 +106,7 @@ namespace TsRandomizerItemTracker
 				DrawLaserAccess(spriteBatch, state);
 				DrawLabAccess(spriteBatch, state);
                 DrawItem(spriteBatch, state.DrawbridgeKey, CustomItem.GetIdentifier(CustomItemType.DrawbridgeKey));
+				DrawItem(spriteBatch, state.LanternCube, CustomItem.GetIdentifier(CustomItemType.CubeOfBodie));
 			}
 		}
 

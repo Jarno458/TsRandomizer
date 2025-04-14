@@ -30,6 +30,7 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 		LabAccessResearch,
 		LabAccessDynamo,
 		DrawbridgeKey,
+		CubeOfBodie,
 		SpiderTrap
 	}
 

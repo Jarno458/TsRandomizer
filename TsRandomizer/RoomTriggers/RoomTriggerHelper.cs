@@ -187,7 +187,8 @@ namespace TsRandomizer.RoomTriggers
 			dynamicLevel.PlaceWaterTiles();
 
 			var tileSize = new Point(16, 16);
-			DestroyLanternsInArea(level, topLeftTilePos * tileSize, bottomRightTilePos * tileSize);
+			if (!level.GameSave.GetSeed().Value.Options.PureTorcher)
+				DestroyLanternsInArea(level, topLeftTilePos * tileSize, bottomRightTilePos * tileSize);
 			
 			if (level.ID == 6) //counteract level specific water handling for level 6
 			{

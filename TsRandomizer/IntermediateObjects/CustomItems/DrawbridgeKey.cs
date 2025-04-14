@@ -1,5 +1,4 @@
 ﻿using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameAbstractions.Inventory;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
 

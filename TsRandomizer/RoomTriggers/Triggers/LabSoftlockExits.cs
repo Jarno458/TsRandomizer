@@ -12,11 +12,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			if (!roomState.Seed.Options.RiskyWarps)
 				return;
 			// Only spawns if you are past the laser but it's still on (i.e. coming from Dad's Tower warp)
-			if (roomState.Level.RoomID == 16 && (
-				// 11_LabPower true = power off
-				!roomState.Level.GameSave.GetSaveBool("11_LabPower")
-				|| (roomState.Seed.Options.LockKeyAmadeus && !roomState.Level.GameSave.HasItem(CustomItem.GetIdentifier(CustomItemType.LabAccessGenza)))
-			))
+			if (!roomState.Level.IsRoomVisited(11, 35))
 				RoomTriggerHelper.SpawnGlowingFloor(roomState.Level, new Point(900, 300));
 		}
 

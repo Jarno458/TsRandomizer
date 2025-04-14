@@ -23,7 +23,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 				Dynamic._portalType = 2; // post-dungeon
 				LevelReflected.SetLevelSaveInt("GyreDungeonSeed", 0); // Warp to Ravenlord
 			}
-			// Backer room
+			// Backer Room
 			else if (typedObject.Level.ID == 2 && typedObject.Level.RoomID == 51)
 			{
 				Dynamic._portalType = 2; // post-dungeon
