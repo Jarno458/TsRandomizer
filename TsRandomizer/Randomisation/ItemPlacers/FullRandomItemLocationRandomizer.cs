@@ -13,6 +13,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 	class FullRandomItemLocationRandomizer : ItemLocationRandomizer
 	{
 		ItemLocationMap itemLocations;
+		SettingCollection settings;
 
 		readonly List<ItemInfo> itemsToRemoveFromGame;
 		readonly List<ItemInfo> itemsToAddToGame;
@@ -26,6 +27,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			ItemUnlockingMap unlockingMap
 		) : base(seed, itemInfoProvider, unlockingMap)
 		{
+			this.settings = settings;
+
 			itemsToRemoveFromGame = new List<ItemInfo>
 			{
 				//orb upgrade items
@@ -148,8 +151,8 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 
 			if (!isProgressionOnly)
 			{
-				if (SeedOptions.NothingVenture)
-					FillWithNothing(random);
+				if (settings.NothingVenture.Value)
+					FillWithNothing();
 				else
 					FillRemainingChests(random);
 			}
@@ -374,18 +377,16 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 			FixProgressiveNonProgressionItemsInSameRoom(random);
 		}
 
-		protected void FillWithNothing(Random random)
+		protected void FillWithNothing()
 		{
 			var freeLocations = itemLocations
 				.Where(l => !l.IsUsed)
 				.ToList();
-			ItemInfo nothing = ItemInfoProvider.Get(EInventoryUseItemType.PlaceHolderItem1);
-			//filler
-			while (freeLocations.Count > 0)
-			{
-				var location = freeLocations.PopRandom(random);
-				PutItemAtLocation(nothing, location);
-			}
+
+			var nothing = ItemInfoProvider.Get(EInventoryUseItemType.PlaceHolderItem1);
+
+			foreach (var freeLocation in freeLocations)
+				PutItemAtLocation(nothing, freeLocation);
 		}
 
 		void FixProgressiveNonProgressionItemsInSameRoom(Random random)

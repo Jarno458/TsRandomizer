@@ -16,7 +16,7 @@ namespace TsRandomizer.Settings
 			new GameSettingCategoryInfo { Name = "Loot", Description = "Settings related to shop inventory and loot.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
 					s => s.ShopFill, s => s.ShopMultiplier, s => s.ShopWarpShards, s => s.LootPool,
-					s => s.DropRateCategory, s => s.DropRate, s => s.LootTierDistro
+					s => s.DropRateCategory, s => s.DropRate, s => s.LootTierDistro, s => s.NothingVenture
 				}},
 			new GameSettingCategoryInfo { Name = "Traps", Description = "Toggles traps available via the Trapped Chests flag.",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
@@ -267,5 +267,8 @@ namespace TsRandomizer.Settings
 		[DoesNotAffectCompetitiveBalance]
 		public NumberGameSettingWithFixedSteps GiftingReminderInterval = new NumberGameSettingWithFixedSteps("Received gifts reminder",
 			"The interval in seconds to remind the user about pending received gifts.", new double[] { 0, 1, 5, 10, 30, 60, 300 }, 1, true);
+
+		public OnOffGameSetting NothingVenture = new OnOffGameSetting("Nothing Venture",
+			"Nothing gained. All non-progression items are replaced with 'Nothing'.", false);
 	}
 }
