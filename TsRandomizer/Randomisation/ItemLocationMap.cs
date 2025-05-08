@@ -683,8 +683,8 @@ namespace TsRandomizer.Randomisation
 			areaName = "Varndagroth Towers (Left)";
 			Add(new ItemKey(2, 16, 200, 192), "Varndagroth Towers (Left): Entrance Lantern", null, MidLibrary & LanternCube);
 			Add(new ItemKey(2, 32, 120, 192), "Varndagroth Towers (Left): Bottom Floor Lantern", null, MidLibrary & R.CardC & LanternCube);
-			Add(new ItemKey(2, 34, 232, 1520), "Varndagroth Towers (Left): Left Elevator Lantern 1", null, MidLibrary & LanternCube);
-			Add(new ItemKey(2, 34, 232, 2512), "Varndagroth Towers (Left): Left Elevator Lantern 2", null, MidLibrary & LanternCube);
+			Add(new ItemKey(2, 34, 232, 1520), "Varndagroth Towers (Left): Left Elevator Card Lantern", null, MidLibrary & R.CardE & LanternCube);
+			Add(new ItemKey(2, 34, 232, 2512), "Varndagroth Towers (Left): Left Elevator Free Lantern", null, MidLibrary & LanternCube);
 			Add(new ItemKey(2, 43, 200, 192), "Varndagroth Towers (Left): Left Stairs Base Lantern 1", null, MidLibrary & LanternCube);
 			Add(new ItemKey(2, 43, 600, 192), "Varndagroth Towers (Left): Left Stairs Base Lantern 2", null, MidLibrary & LanternCube);
 			Add(new ItemKey(2, 12, 168, 256), "Varndagroth Towers (Left): Left Stairs Floor 2 Lantern 1", null, MidLibrary & LanternCube);
@@ -756,15 +756,15 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(9, 43, 218, 157), "Sealed Caves (Xarion): Rejoined Hallway Lantern 4", null, SealedCaves & LanternCube);
 			Add(new ItemKey(9, 43, 426, 157), "Sealed Caves (Xarion): Rejoined Hallway Lantern 5", null, SealedCaves & LanternCube);
 			Add(new ItemKey(9, 43, 634, 157), "Sealed Caves (Xarion): Rejoined Hallway Lantern 6", null, SealedCaves & LanternCube);
-			Add(new ItemKey(9, 14, 1050, 157), "Sealed Caves (Xarion): Penultimate Hall Lantern 1", null, SealedCaves & LanternCube);
-			Add(new ItemKey(9, 14, 1258, 157), "Sealed Caves (Xarion): Penultimate Hall Lantern 2", null, SealedCaves & LanternCube);
-			Add(new ItemKey(9, 14, 1466, 157), "Sealed Caves (Xarion): Penultimate Hall Lantern 3", null, SealedCaves & LanternCube);
-			Add(new ItemKey(9, 14, 218, 157), "Sealed Caves (Xarion): Penultimate Hall Lantern 4", null, SealedCaves & LanternCube);
-			Add(new ItemKey(9, 14, 426, 157), "Sealed Caves (Xarion): Penultimate Hall Lantern 5", null, SealedCaves & LanternCube);
-			Add(new ItemKey(9, 14, 634, 157), "Sealed Caves (Xarion): Penultimate Hall Lantern 6", null, SealedCaves & LanternCube);
+			Add(new ItemKey(9, 14, 1050, 157), "Sealed Caves (Xarion): Penultimate Hall Lantern 1", null, SealedCaves & NeedSwimming(FloodsFlags.Xarion) & LanternCube);
+			Add(new ItemKey(9, 14, 1258, 157), "Sealed Caves (Xarion): Penultimate Hall Lantern 2", null, SealedCaves & NeedSwimming(FloodsFlags.Xarion) & LanternCube);
+			Add(new ItemKey(9, 14, 1466, 157), "Sealed Caves (Xarion): Penultimate Hall Lantern 3", null, SealedCaves & NeedSwimming(FloodsFlags.Xarion) & LanternCube);
+			Add(new ItemKey(9, 14, 218, 157), "Sealed Caves (Xarion): Penultimate Hall Lantern 4", null, SealedCaves & NeedSwimming(FloodsFlags.Xarion) & LanternCube);
+			Add(new ItemKey(9, 14, 426, 157), "Sealed Caves (Xarion): Penultimate Hall Lantern 5", null, SealedCaves & NeedSwimming(FloodsFlags.Xarion) & LanternCube);
+			Add(new ItemKey(9, 14, 634, 157), "Sealed Caves (Xarion): Penultimate Hall Lantern 6", null, SealedCaves & NeedSwimming(FloodsFlags.Xarion) & LanternCube);
 			Add(new ItemKey(9, 8, 282, 157), "Sealed Caves (Xarion): Last Chance Room Lantern 1", null, SealedCaves & LanternCube);
 			Add(new ItemKey(9, 8, 392, 348), "Sealed Caves (Xarion): Last Chance Room Lantern 2", null, SealedCaves & LanternCube);
-			Add(new ItemKey(9, 8, 392, 540), "Sealed Caves (Xarion): Last Chance Room Lantern 3", null, SealedCaves & LanternCube);
+			Add(new ItemKey(9, 8, 392, 540), "Sealed Caves (Xarion): Last Chance Room Lantern 3", null, SealedCaves & NeedSwimming(FloodsFlags.Xarion) & LanternCube);
 			Add(new ItemKey(9, 8, 506, 157), "Sealed Caves (Xarion): Last Chance Room Lantern 4", null, SealedCaves & R.DoubleJump & LanternCube);
 
 			areaName = "Sealed Caves (Sirens)";
