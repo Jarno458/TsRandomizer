@@ -1,9 +1,12 @@
-﻿using Timespinner.GameAbstractions.Gameplay;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Timespinner.GameAbstractions.Gameplay;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
+
 
 namespace TsRandomizer.LevelObjects.Other
 {
@@ -75,6 +78,10 @@ namespace TsRandomizer.LevelObjects.Other
 				return;
 			if (Scripts.Count != 0)
 			{
+				// Ignore events caused by item pickups
+				var giveOrbScript = Scripts.FirstOrDefault(s => s.AsDynamic().ScriptType == EScriptType.RelicOrbGetToast);
+				if (giveOrbScript != null)
+					return;
 				Scripts.Clear();
 				teleportEnabled = true;
 			}
