@@ -8,6 +8,20 @@ using TsRandomizer.RoomTriggers;
 using TsRandomizer.Screens;
 using TsRandomizer.Settings;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
+using Timespinner.GameAbstractions;
+using Timespinner.GameAbstractions.Base;
+using Timespinner.GameAbstractions.GameObjects;
+using Timespinner.GameAbstractions.Inventory;
+using Timespinner.GameObjects.BaseClasses;
+using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.Randomisation;
+using TsRandomizer.Screens;
+
 
 namespace TsRandomizer.LevelObjects.ItemManipulators
 {
@@ -52,6 +66,14 @@ namespace TsRandomizer.LevelObjects.ItemManipulators
 			: base(typedObject, gameplayScreen, itemLocation)
 		{
 			hasAwardedItem = itemLocation.IsPickedUp;
+			// Adds small additional bounding box below lantern
+			var hittableAppendage = new Appendage((Animate)typedObject, new Point(32, 16), Point.Zero, Level, Dynamic._sprite)
+			{
+				AnchorOffset = new Point(0, 16),
+				FollowType = EAppendageFollowType.AnchorLocked
+			};
+			hittableAppendage.ChangeAnimation(-1);
+			Dynamic.Appendages.Add(hittableAppendage);
 		}
 
 		protected override void Initialize(Seed seed, SettingCollection settings)
