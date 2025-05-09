@@ -151,7 +151,7 @@ namespace TsRandomizer.Randomisation
 					| R.GateCastleRamparts
 					| R.GateCastleKeep
 					| ((R.GateCavesOfBanishment | R.GateMaw) & (MawGasMask | R.ForwardDash) & NeedSwimming(FloodsFlags.Maw))  //through shaft
-					| ((R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump)) & NeedSwimming(!FloodsFlags.DryLakeSerene)); // though Left entrance;
+					| ((R.GateCavesOfBanishment | (R.GateMaw & R.DoubleJump)) & NeedSwimming(!FloodsFlags.DryLakeSerene)); // though left entrance;
 
 			var labToMilitaryFortress =
 				R.GateLabEntrance & (FloodsFlags.Lab ? R.Swimming : DoubleJumpOfNpc)
@@ -611,7 +611,7 @@ namespace TsRandomizer.Randomisation
 		void AddLanternLocations()
 		{
 			areaName = "Lower Lake Desolation";
-			Add(new ItemKey(1, 11, 106, 221), "Lake Desolation (Lower): Not So Secret Lantern", null, LakeDesolationRight & OculusRift & LanternCube);
+			Add(new ItemKey(1, 11, 106, 221), "Lake Desolation (Lower): Not-so Secret Lantern", null, LakeDesolationRight & OculusRift & LanternCube);
 			Add(new ItemKey(1, 6, 474, 413), "Lake Desolation (Lower): Middle Room Lantern 1", null, LakeDesolationRight & OculusRift & LanternCube);
 			Add(new ItemKey(1, 6, 570, 173), "Lake Desolation (Lower): Middle Room Lantern 2", null, LakeDesolationRight & OculusRift & LanternCube);
 			Add(new ItemKey(1, 9, 122, 189), "Lake Desolation (Lower): Timespinner Wheel Lantern 1", null, LakeDesolationLeft & LanternCube);
@@ -1192,8 +1192,8 @@ namespace TsRandomizer.Randomisation
 		{
 			return TryGetValue(key, out var itemLocation)
 				? itemLocation
-				: TryGetValue(key.ToRoomItemKey(), out var RoomItemLocation)
-					? RoomItemLocation
+				: TryGetValue(key.ToRoomItemKey(), out var roomItemLocation)
+					? roomItemLocation
 					: null;
 		}
 
