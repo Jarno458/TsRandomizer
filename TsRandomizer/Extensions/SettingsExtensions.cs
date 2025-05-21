@@ -47,6 +47,8 @@ namespace TsRandomizer.Extensions
 			settings.ChaosTrap.Value = true;
 			settings.ThrowStunTrap.Value = true;
 			settings.SpiderTrap.Value = true;
+			settings.LightsOutTrap.Value = true;
+			settings.PalmPunchTrap.Value = true;
 
 			settings.NoSaveStatues.Value = false; //not voted
 

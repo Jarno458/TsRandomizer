@@ -216,8 +216,10 @@ namespace TsRandomizer.Archipelago
 				{1337198, CustomItem.GetIdentifier(CustomItemType.DrawbridgeKey)},
 				{1337199, CustomItem.GetIdentifier(CustomItemType.CubeOfBodie)},
 				{1337200, CustomItem.GetIdentifier(CustomItemType.SpiderTrap)},
+				{1337201, CustomItem.GetIdentifier(CustomItemType.LightsOutTrap)},
+				{1337202, CustomItem.GetIdentifier(CustomItemType.PalmPunchTrap)},
 
-				// 1337201 - 1337248 Reserved for future use
+				// 1337203 - 1337248 Reserved for future use
 
         {1337249, new ItemIdentifier(EItemType.MaxSand)}
 			};
