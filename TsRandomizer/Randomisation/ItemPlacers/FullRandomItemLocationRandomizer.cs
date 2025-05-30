@@ -91,7 +91,7 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				ItemInfoProvider.Get(EInventoryUseItemType.HiSandBottle),
 			};
 
-			traps = new List<ItemInfo>(6);
+			traps = new List<ItemInfo>(8);
 			//i hate it, we should not be using settings in here
 			if (settings.SparrowTrap.Value)
 				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.MeteorSparrowTrap)));
@@ -107,6 +107,10 @@ namespace TsRandomizer.Randomisation.ItemPlacers
 				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.ThrowStunTrap)));
 			if (settings.SpiderTrap.Value)
 				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.SpiderTrap)));
+			if (settings.LightsOutTrap.Value)
+				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.LightsOutTrap)));
+			if (settings.PalmPunchTrap.Value)
+				traps.Add(itemInfoProvider.Get(CustomItem.GetIdentifier(CustomItemType.PalmPunchTrap)));
 		}
 
 		public override ItemLocationMap GenerateItemLocationMap(bool isProgressionOnly)
