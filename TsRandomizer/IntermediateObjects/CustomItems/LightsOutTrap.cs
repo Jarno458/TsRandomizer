@@ -1,5 +1,4 @@
 ﻿using Timespinner.GameAbstractions.Gameplay;
-using Timespinner.GameObjects.Heroes;
 using TsRandomizer.Extensions;
 using TsRandomizer.Randomisation;
 using TsRandomizer.Screens;
@@ -13,8 +12,6 @@ namespace TsRandomizer.IntermediateObjects.CustomItems
 	class LightsOutTrap : Trap
 	{
 		public LightsOutTrap(ItemUnlockingMap unlockingMap) : base(unlockingMap, CustomItemType.LightsOutTrap) { }
-
-		delegate void checkForHit(Protagonist lunais, ScriptAction throwScript);
 
 		internal override void OnPickup(Level level, GameplayScreen gameplayScreen)
 		{
