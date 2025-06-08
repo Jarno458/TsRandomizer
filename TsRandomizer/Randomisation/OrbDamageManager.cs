@@ -15,6 +15,18 @@ namespace TsRandomizer.Randomisation
 		public int MidValue;
 		public int MaxValue;
 	}
+	struct OrbNames
+	{
+		public string OrbName;
+		public string SpellName;
+		public string RingName;
+	}
+
+	struct OrbAttributes
+    {
+		public OrbDamageRange DamageRange;
+		public OrbNames Names;
+    }
 
 	public class OrbDamageOdds
 	{
@@ -89,27 +101,83 @@ namespace TsRandomizer.Randomisation
 			PlusOdds = 1
 		};
 
-		static OrbDamageRange GetOrbDamageOptions(EInventoryOrbType orbType)
+		static OrbAttributes GetOrbDetails(EInventoryOrbType orbType)
 		{
 			switch (orbType)
 			{
-				case EInventoryOrbType.Blue: return new OrbDamageRange { MinValue = 1, MidValue = 4, MaxValue = 8 };
-				case EInventoryOrbType.Blade: return new OrbDamageRange { MinValue = 1, MidValue = 7, MaxValue = 12 };
-				case EInventoryOrbType.Flame: return new OrbDamageRange { MinValue = 2, MidValue = 6, MaxValue = 16 };
-				case EInventoryOrbType.Pink: return new OrbDamageRange { MinValue = 2, MidValue = 6, MaxValue = 30 };
-				case EInventoryOrbType.Iron: return new OrbDamageRange { MinValue = 2, MidValue = 10, MaxValue = 20 };
-				case EInventoryOrbType.Ice: return new OrbDamageRange { MinValue = 1, MidValue = 4, MaxValue = 12 };
-				case EInventoryOrbType.Wind: return new OrbDamageRange { MinValue = 1, MidValue = 3, MaxValue = 8 };
-				case EInventoryOrbType.Gun: return new OrbDamageRange { MinValue = 3, MidValue = 9, MaxValue = 30 };
-				case EInventoryOrbType.Umbra: return new OrbDamageRange { MinValue = 1, MidValue = 4, MaxValue = 10 };
-				case EInventoryOrbType.Empire: return new OrbDamageRange { MinValue = 2, MidValue = 10, MaxValue = 20 };
-				case EInventoryOrbType.Eye: return new OrbDamageRange { MinValue = 1, MidValue = 3, MaxValue = 8 };
-				case EInventoryOrbType.Blood: return new OrbDamageRange { MinValue = 1, MidValue = 3, MaxValue = 8 };
-				case EInventoryOrbType.Book: return new OrbDamageRange { MinValue = 1, MidValue = 6, MaxValue = 12 };
-				case EInventoryOrbType.Moon: return new OrbDamageRange { MinValue = 1, MidValue = 3, MaxValue = 8 };
-				case EInventoryOrbType.Nether: return new OrbDamageRange { MinValue = 1, MidValue = 6, MaxValue = 12 };
-				case EInventoryOrbType.Barrier: return new OrbDamageRange { MinValue = 2, MidValue = 8, MaxValue = 20 };
-				default: return new OrbDamageRange { MinValue = 6, MidValue = 6, MaxValue = 6 }; //MONSKE??? But I thought you were dead???
+				case EInventoryOrbType.Blue: 
+					return new OrbAttributes {
+						DamageRange = new OrbDamageRange { MinValue = 1, MidValue = 4, MaxValue = 8 },
+						Names = new OrbNames { OrbName = "Blue Orb", SpellName = "Aura Blast", RingName = "Bleak Ring" }
+					};
+				case EInventoryOrbType.Blade:
+					return new OrbAttributes {
+						DamageRange = new OrbDamageRange { MinValue = 1, MidValue = 7, MaxValue = 12 },
+						Names = new OrbNames { OrbName = "Blade Orb", SpellName = "Colossal Blade", RingName = "Scythe Ring" }
+					};
+				case EInventoryOrbType.Flame:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 2, MidValue = 6, MaxValue = 16 }, 
+						Names = new OrbNames { OrbName = "Fire Orb", SpellName = "Infernal Flames", RingName = "Pyro Ring" }
+					};
+				case EInventoryOrbType.Pink:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 2, MidValue = 6, MaxValue = 30 }, 
+						Names = new OrbNames { OrbName = "Plasma Orb", SpellName = "Plasma Geyser", RingName = "Royal Ring" }
+					};
+				case EInventoryOrbType.Iron:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 2, MidValue = 10, MaxValue = 20 }, 
+						Names = new OrbNames { OrbName = "Iron Orb", SpellName = "Colossal Hammer", RingName = "Shield Ring" }
+					};
+				case EInventoryOrbType.Ice:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 1, MidValue = 4, MaxValue = 12 }, 
+						Names = new OrbNames { OrbName = "Ice Orb", SpellName = "Frozen Spires", RingName = "Icicle Ring" }};
+				case EInventoryOrbType.Wind:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 1, MidValue = 3, MaxValue = 8 }, 
+						Names = new OrbNames { OrbName = "Wind Orb", SpellName = "Storm Eye", RingName = "Tailwind Ring" }};
+				case EInventoryOrbType.Gun:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 3, MidValue = 9, MaxValue = 30 }, 
+						Names = new OrbNames { OrbName = "Gun Orb", SpellName = "Arm Cannon", RingName = "Economizer Ring" }};
+				case EInventoryOrbType.Umbra:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 1, MidValue = 4, MaxValue = 10 }, 
+						Names = new OrbNames { OrbName = "Umbra Orb", SpellName = "Dark Flames", RingName = "Tailwind Ring" }};
+				case EInventoryOrbType.Empire:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 2, MidValue = 10, MaxValue = 20 }, 
+						Names = new OrbNames { OrbName = "Empire Orb", SpellName = "Aura Serpent", RingName = "Star of Lachiem" }};
+				case EInventoryOrbType.Eye:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 1, MidValue = 3, MaxValue = 8 }, 
+						Names = new OrbNames { OrbName = "Eye Orb", SpellName = "Chaos Blades", RingName = "Oculus Ring" }};
+				case EInventoryOrbType.Blood:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 1, MidValue = 3, MaxValue = 8 }, 
+						Names = new OrbNames { OrbName = "Blood Orb", SpellName = "Crimson Vortex", RingName = "Sanguine Ring" }};
+				case EInventoryOrbType.Book:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 1, MidValue = 6, MaxValue = 12 }, 
+						Names = new OrbNames { OrbName = "Forbidden Tome", SpellName = "Djinn Inferno", RingName = "Sun Ring" }};
+				case EInventoryOrbType.Moon:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 1, MidValue = 3, MaxValue = 8 }, 
+						Names = new OrbNames { OrbName = "Shattered Orb", SpellName = "Bombardment", RingName = "Silence Ring" }};
+				case EInventoryOrbType.Nether:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 1, MidValue = 6, MaxValue = 12 }, 
+						Names = new OrbNames { OrbName = "Nether Orb", SpellName = "Corruption", RingName = "Shadow Seal" }};
+				case EInventoryOrbType.Barrier:
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 2, MidValue = 8, MaxValue = 20 }, 
+						Names = new OrbNames { OrbName = "Radiant Orb", SpellName = "Lightwall", RingName = "Hope Ring" }};
+				default: //MONSKE??? But I thought you were dead???
+					return new OrbAttributes { 
+						DamageRange = new OrbDamageRange { MinValue = 6, MidValue = 6, MaxValue = 6 }, 
+						Names = new OrbNames { OrbName = "Monkse Orb", SpellName = "None Spell", RingName = "Left Ring" }};
 			}
 		}
 
@@ -159,24 +227,24 @@ namespace TsRandomizer.Randomisation
 		public static void RandomizeOrb(string orbTypeName, OrbDamageOdds orbOdds, Random random)
 		{
 			var orbType = (EInventoryOrbType)Enum.Parse(typeof(EInventoryOrbType), orbTypeName);
-			var options = GetOrbDamageOptions(orbType);
+			OrbAttributes orbDetails = GetOrbDetails(orbType);
 
 			int newDamage;
 
 			switch (orbOdds.GetModifier(random))
 			{
 				case OrbDamageOdds.OrbDamageModifier.Minus:
-					newDamage = options.MinValue;
-					OverrideOrbNames(orbType, "(-)");
+					newDamage = orbDetails.DamageRange.MinValue;
+					OverrideOrbNames(orbType, orbDetails, "(-)");
 					break;
 				case OrbDamageOdds.OrbDamageModifier.Plus:
-					newDamage = options.MaxValue;
-					OverrideOrbNames(orbType, "(+)");
+					newDamage = orbDetails.DamageRange.MaxValue;
+					OverrideOrbNames(orbType, orbDetails, "(+)");
 					break;
 				default:
-					newDamage = options.MidValue;
+					newDamage = orbDetails.DamageRange.MidValue;
+					OverrideOrbNames(orbType, orbDetails, "");
 					break;
-
 			}
 			if (!OrbDamageLookup.ContainsKey((int)orbType))
 			{
@@ -184,14 +252,14 @@ namespace TsRandomizer.Randomisation
 			}
 		}
 
-		public static void OverrideOrbNames(EInventoryOrbType orbType, string suffix)
+		public static void OverrideOrbNames(EInventoryOrbType orbType, OrbAttributes orbDetails, string suffix)
 		{
 			string locKey = $"inv_orb_{orbType}";
 			string spellLocKey = $"{locKey}_spell";
 			string ringLocKey = $"{locKey}_passive";
-			string actualOrbName = new InventoryOrb(orbType).Name;
-			string actualSpellName = new InventoryOrb(orbType).AsDynamic().SpellName;
-			string actualRingName = new InventoryOrb(orbType).AsDynamic().PassiveName;
+			string actualOrbName = orbDetails.Names.OrbName;
+			string actualSpellName = orbDetails.Names.SpellName;
+			string actualRingName = orbDetails.Names.RingName;
 
 			TimeSpinnerGame.Localizer.OverrideKey(locKey, $"{actualOrbName} {suffix}");
 			TimeSpinnerGame.Localizer.OverrideKey(spellLocKey, $"{actualSpellName} {suffix}");
