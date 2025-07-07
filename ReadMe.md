@@ -16,10 +16,14 @@ Download latest TsRandomizer.exe or Linux / Mac zip file from the release page h
 
 For Windows:
 Extract the contents of the corresponding zip file to the same folder as Timespinner.exe is located, and start TsRandomizer.exe to start the game with the randomizer enabled, or Timespinner.exe to start the game normally
+
 For Linux:
 Extract the contents of the corresponding zip file to the same folder as Timespinner.exe is located, and start TsRandomizer to start the game with the randomizer enabled, or Timespinner to start the game normally
+
 For Mac:
-Copy the contents of the Mac/ folder in the mac zip file to the `Timespinner.app/Contents/MacOS` folder. You may need to run `xattr -dr com.apple.quarantine TsRandomizer TsRandomizer.bin.osx` and `chmod +x TsRandomizer` to make execution possible. Then start TsRandomizer to start the game with the randomizer enabled, or Timespinner to start the game normally.
+Copy the contents of the Mac/ folder in the mac zip file to the `Timespinner.app/Contents/Resources` folder, and in that folder, run: `ln -s ../MacOS/osx/* .`. You may need to run `xattr -dr com.apple.quarantine TsRandomizer TsRandomizer.bin.osx` and `chmod +x TsRandomizer TSRandomizer.bin.osx` to make execution possible. Then start `Timespinner.app/Contents/Resources/TsRandomizer` to start the game with the randomizer enabled, or `Timespinner.app/Contents/MacOS/Timespinner` (or just double-click Timespinner.app) to start the game normally.
+
+To connect to archipelago on mac: after copying the contents of the zip file to `Timespinner.app/Contents/Resources`, additionally copy the contents of `MonoKickStartOSX.zip` from [the MonoKickstart release page](https://github.com/MonoGame/MonoKickstart/releases/tag/v0.0.12), overwriting as necessary. Rename `kick.bin.osx` from there to `TSRandomizer.bin.osx` and overwrite `Timespinner.app/Contents/Resources/TSRandomizer.bin.osx`. This will break launching the vanilla game.
  
 ##### Supported versions
 * Windows Steam version 1.33 (latest)
