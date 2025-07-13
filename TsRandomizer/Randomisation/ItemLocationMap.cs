@@ -612,8 +612,8 @@ namespace TsRandomizer.Randomisation
 		{
 			areaName = "Lower Lake Desolation";
 			Add(new ItemKey(1, 11, 106, 221), "Lake Desolation (Lower): Not  So Secret Lantern", null, LakeDesolationRight & OculusRift & LanternCube);
-			Add(new ItemKey(1, 6, 474, 413), "Lake Desolation (Lower): Middle Room Lantern 1", null, LakeDesolationRight & OculusRift & LanternCube);
-			Add(new ItemKey(1, 6, 570, 173), "Lake Desolation (Lower): Middle Room Lantern 2", null, LakeDesolationRight & OculusRift & LanternCube);
+			Add(new ItemKey(1, 6, 474, 413), "Lake Desolation (Lower): Middle Room Lantern 1", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 6, 570, 173), "Lake Desolation (Lower): Middle Room Lantern 2", null, LakeDesolationRight & LanternCube);
 			Add(new ItemKey(1, 9, 122, 189), "Lake Desolation (Lower): Timespinner Wheel Lantern 1", null, LakeDesolationLeft & LanternCube);
 			Add(new ItemKey(1, 9, 314, 141), "Lake Desolation (Lower): Timespinner Wheel Lantern 2", null, LakeDesolationLeft & LanternCube);
 
