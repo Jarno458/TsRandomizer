@@ -788,7 +788,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(10, 18, 120, 156), "Military Fortress: Pedestal Lantern", null, LabEntrance & (FloodsFlags.Lab ? R.Free : DoubleJumpOfNpc | ForwardDashDoubleJump) & LanternCube);
 			Add(new ItemKey(10, 4, 1512, 140), "Military Fortress: Left Bridge Lantern 1", null, MilitaryFortressHangar & LanternCube);
 			Add(new ItemKey(10, 4, 264, 140), "Military Fortress: Left Bridge Lantern 2", null, MilitaryFortressHangar & LanternCube);
-			Add(new ItemKey(10, 4, 744, 140), "Military Fortress: Left Bridgee Lantern 3", null, MilitaryFortressHangar & LanternCube);
+			Add(new ItemKey(10, 4, 744, 140), "Military Fortress: Left Bridge Lantern 3", null, MilitaryFortressHangar & LanternCube);
 			Add(new ItemKey(10, 5, 120, 556), "Military Fortress: Middle Room Lantern 1", null, MilitaryFortressHangar & LanternCube);
 			Add(new ItemKey(10, 5, 280, 556), "Military Fortress: Middle Room Lantern 2", null, MilitaryFortressHangar & LanternCube);
 			Add(new ItemKey(10, 8, 1512, 140), "Military Fortress: Right Bridge Lantern 1", null, MilitaryFortressHangar & LanternCube);
