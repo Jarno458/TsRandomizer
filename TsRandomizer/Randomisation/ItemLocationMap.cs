@@ -1085,9 +1085,9 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(6, 1, 826, 257), "Royal Towers: Long Balcony Lantern 5", null, MidRoyalTower & NeedSwimming(FloodsFlags.CastleCourtyard) & LanternCube);
 			Add(new ItemKey(6, 10, 138, 253), "Royal Towers: Bottom Struggle Base Lantern 1", null, MidRoyalTower & (FloodsFlags.CastleCourtyard ? R.Free : DoubleJumpOfNpc) & LanternCube);
 			Add(new ItemKey(6, 10, 266, 253), "Royal Towers: Bottom Struggle Base Lantern 1", null, MidRoyalTower & (FloodsFlags.CastleCourtyard ? R.Free : DoubleJumpOfNpc) & LanternCube);
-			Add(new ItemKey(6, 23, 519, 73), "Royal Towers: Aelana's Attic Lantern 1", null, UpperRoyalTower & R.UpwardDash);
-			Add(new ItemKey(6, 23, 599, 73), "Royal Towers: Aelana's Attic Lantern 2", null, UpperRoyalTower & R.UpwardDash);
-			Add(new ItemKey(6, 23, 679, 73), "Royal Towers: Aelana's Attic Lantern 3", null, UpperRoyalTower & R.UpwardDash);
+			Add(new ItemKey(6, 23, 519, 73), "Royal Towers: Aelana's Attic Lantern 1", null, UpperRoyalTower & R.UpwardDash & LanternCube);
+			Add(new ItemKey(6, 23, 599, 73), "Royal Towers: Aelana's Attic Lantern 2", null, UpperRoyalTower & R.UpwardDash & LanternCube);
+			Add(new ItemKey(6, 23, 679, 73), "Royal Towers: Aelana's Attic Lantern 3", null, UpperRoyalTower & R.UpwardDash & LanternCube);
 			Add(new ItemKey(6, 11, 298, 173), "Royal Towers: Before Aelana Lantern 1", null, UpperRoyalTower & LanternCube);
 			Add(new ItemKey(6, 16, 202, 157), "Royal Towers: Tower Base Entrance Lantern 1", null, UpperRoyalTower & LanternCube);
 			Add(new ItemKey(6, 16, 346, 157), "Royal Towers: Tower Base Entrance Lantern 2", null, UpperRoyalTower & LanternCube);
