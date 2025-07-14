@@ -683,7 +683,7 @@ namespace TsRandomizer.Randomisation
 			areaName = "Varndagroth Towers (Left)";
 			Add(new ItemKey(2, 16, 200, 192), "Varndagroth Towers (Left): Entrance Lantern", null, MidLibrary & LanternCube);
 			Add(new ItemKey(2, 32, 120, 192), "Varndagroth Towers (Left): Bottom Floor Lantern", null, MidLibrary & R.CardC & LanternCube);
-			Add(new ItemKey(2, 34, 232, 1520), "Varndagroth Towers (Left): Left Elevator Lantern 1", null, MidLibrary & LanternCube);
+			Add(new ItemKey(2, 34, 232, 1520), "Varndagroth Towers (Left): Left Elevator Lantern 1", null, MidLibrary & R.CardE & LanternCube);
 			Add(new ItemKey(2, 34, 232, 2512), "Varndagroth Towers (Left): Left Elevator Lantern 2", null, MidLibrary & LanternCube);
 			Add(new ItemKey(2, 43, 200, 192), "Varndagroth Towers (Left): Left Stairs Base Lantern 1", null, MidLibrary & LanternCube);
 			Add(new ItemKey(2, 43, 600, 192), "Varndagroth Towers (Left): Left Stairs Base Lantern 2", null, MidLibrary & LanternCube);
