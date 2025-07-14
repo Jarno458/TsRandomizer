@@ -829,7 +829,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(11, 23, 280, 169), "Lab: Spider Hell Entrance Lantern 2", null, LabResearchWing & R.CardA & LanternCube);
 			Add(new ItemKey(11, 3, 1448, 489), "Lab: Lower Trash Lantern 1", null, MainLab & (FloodsFlags.Lab ? R.Free : (SeedOptions.LockKeyAmadeus ? DoubleJumpOfNpc : R.UpwardDash)) & LanternCube);
 			Add(new ItemKey(11, 3, 152, 489), "Lab: Lower Trash Lantern 2", null, MainLab & (FloodsFlags.Lab ? R.Free : (SeedOptions.LockKeyAmadeus ? DoubleJumpOfNpc : R.UpwardDash)) & LanternCube);
-			Add(new ItemKey(11, 30, 152, 169), "Lab: Intro Hallway Lantern", null, LabEntrance & LanternCube);
+			Add(new ItemKey(11, 30, 152, 169), "Lab: Intro Hallway Lantern 1", null, LabEntrance & LanternCube);
+			Add(new ItemKey(11, 30, 264, 169), "Lab: Intro Hallway Lantern 2", null, LabEntrance & LanternCube);
 			Add(new ItemKey(11, 34, 136, 169), "Lab: Exp. 13 Terminal Lantern 1", null, MainLab & LanternCube);
 			Add(new ItemKey(11, 34, 264, 169), "Lab: Exp. 13 Terminal Lantern 2", null, MainLab & LanternCube);
 			Add(new ItemKey(11, 37, 136, 169), "Lab: Left Terminal Lantern 1", null, MainLab & LanternCube);
