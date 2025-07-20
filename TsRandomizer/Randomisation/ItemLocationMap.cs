@@ -612,8 +612,8 @@ namespace TsRandomizer.Randomisation
 		{
 			areaName = "Lower Lake Desolation";
 			Add(new ItemKey(1, 11, 106, 221), "Lake Desolation (Lower): Not  So Secret Lantern", null, LakeDesolationRight & OculusRift & LanternCube);
-			Add(new ItemKey(1, 6, 474, 413), "Lake Desolation (Lower): Middle Room Lantern 1", null, LakeDesolationRight & OculusRift & LanternCube);
-			Add(new ItemKey(1, 6, 570, 173), "Lake Desolation (Lower): Middle Room Lantern 2", null, LakeDesolationRight & OculusRift & LanternCube);
+			Add(new ItemKey(1, 6, 474, 413), "Lake Desolation (Lower): Middle Room Lantern 1", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 6, 570, 173), "Lake Desolation (Lower): Middle Room Lantern 2", null, LakeDesolationRight & LanternCube);
 			Add(new ItemKey(1, 9, 122, 189), "Lake Desolation (Lower): Timespinner Wheel Lantern 1", null, LakeDesolationLeft & LanternCube);
 			Add(new ItemKey(1, 9, 314, 141), "Lake Desolation (Lower): Timespinner Wheel Lantern 2", null, LakeDesolationLeft & LanternCube);
 
@@ -683,7 +683,7 @@ namespace TsRandomizer.Randomisation
 			areaName = "Varndagroth Towers (Left)";
 			Add(new ItemKey(2, 16, 200, 192), "Varndagroth Towers (Left): Entrance Lantern", null, MidLibrary & LanternCube);
 			Add(new ItemKey(2, 32, 120, 192), "Varndagroth Towers (Left): Bottom Floor Lantern", null, MidLibrary & R.CardC & LanternCube);
-			Add(new ItemKey(2, 34, 232, 1520), "Varndagroth Towers (Left): Left Elevator Lantern 1", null, MidLibrary & LanternCube);
+			Add(new ItemKey(2, 34, 232, 1520), "Varndagroth Towers (Left): Left Elevator Lantern 1", null, MidLibrary & R.CardE & LanternCube);
 			Add(new ItemKey(2, 34, 232, 2512), "Varndagroth Towers (Left): Left Elevator Lantern 2", null, MidLibrary & LanternCube);
 			Add(new ItemKey(2, 43, 200, 192), "Varndagroth Towers (Left): Left Stairs Base Lantern 1", null, MidLibrary & LanternCube);
 			Add(new ItemKey(2, 43, 600, 192), "Varndagroth Towers (Left): Left Stairs Base Lantern 2", null, MidLibrary & LanternCube);
@@ -782,13 +782,13 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(10, 1, 136, 156), "Military Fortress: Entrance Lantern 1", null, MilitaryFortress & LanternCube);
 			Add(new ItemKey(10, 1, 264, 156), "Military Fortress: Entrance Lantern 2", null, MilitaryFortress & LanternCube);
 			Add(new ItemKey(10, 3, 232, 508), "Military Fortress: Bombing Room Upper Lantern 1", null, MilitaryFortressHangar & LanternCube);
-			Add(new ItemKey(10, 3, 232, 876), "Military Fortress: Bombing Room Upper Lantern 2", null, MilitaryFortressHangar & LanternCube);
-			Add(new ItemKey(10, 3, 568, 508), "Military Fortress: Bombing Room Lower Lantern 1", null, MilitaryFortress & LanternCube);
+			Add(new ItemKey(10, 3, 568, 508), "Military Fortress: Bombing Room Upper Lantern 2", null, MilitaryFortressHangar & LanternCube);
+			Add(new ItemKey(10, 3, 232, 876), "Military Fortress: Bombing Room Lower Lantern 1", null, MilitaryFortress & LanternCube);
 			Add(new ItemKey(10, 3, 568, 876), "Military Fortress: Bombing Room Lower Lantern 2", null, MilitaryFortress & LanternCube);
 			Add(new ItemKey(10, 18, 120, 156), "Military Fortress: Pedestal Lantern", null, LabEntrance & (FloodsFlags.Lab ? R.Free : DoubleJumpOfNpc | ForwardDashDoubleJump) & LanternCube);
 			Add(new ItemKey(10, 4, 1512, 140), "Military Fortress: Left Bridge Lantern 1", null, MilitaryFortressHangar & LanternCube);
 			Add(new ItemKey(10, 4, 264, 140), "Military Fortress: Left Bridge Lantern 2", null, MilitaryFortressHangar & LanternCube);
-			Add(new ItemKey(10, 4, 744, 140), "Military Fortress: Left Bridgee Lantern 3", null, MilitaryFortressHangar & LanternCube);
+			Add(new ItemKey(10, 4, 744, 140), "Military Fortress: Left Bridge Lantern 3", null, MilitaryFortressHangar & LanternCube);
 			Add(new ItemKey(10, 5, 120, 556), "Military Fortress: Middle Room Lantern 1", null, MilitaryFortressHangar & LanternCube);
 			Add(new ItemKey(10, 5, 280, 556), "Military Fortress: Middle Room Lantern 2", null, MilitaryFortressHangar & LanternCube);
 			Add(new ItemKey(10, 8, 1512, 140), "Military Fortress: Right Bridge Lantern 1", null, MilitaryFortressHangar & LanternCube);
@@ -829,7 +829,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(11, 23, 280, 169), "Lab: Spider Hell Entrance Lantern 2", null, LabResearchWing & R.CardA & LanternCube);
 			Add(new ItemKey(11, 3, 1448, 489), "Lab: Lower Trash Lantern 1", null, MainLab & (FloodsFlags.Lab ? R.Free : (SeedOptions.LockKeyAmadeus ? DoubleJumpOfNpc : R.UpwardDash)) & LanternCube);
 			Add(new ItemKey(11, 3, 152, 489), "Lab: Lower Trash Lantern 2", null, MainLab & (FloodsFlags.Lab ? R.Free : (SeedOptions.LockKeyAmadeus ? DoubleJumpOfNpc : R.UpwardDash)) & LanternCube);
-			Add(new ItemKey(11, 30, 152, 169), "Lab: Intro Hallway Lantern", null, LabEntrance & LanternCube);
+			Add(new ItemKey(11, 30, 152, 169), "Lab: Intro Hallway Lantern 1", null, LabEntrance & LanternCube);
+			Add(new ItemKey(11, 30, 264, 169), "Lab: Intro Hallway Lantern 2", null, LabEntrance & LanternCube);
 			Add(new ItemKey(11, 34, 136, 169), "Lab: Exp. 13 Terminal Lantern 1", null, MainLab & LanternCube);
 			Add(new ItemKey(11, 34, 264, 169), "Lab: Exp. 13 Terminal Lantern 2", null, MainLab & LanternCube);
 			Add(new ItemKey(11, 37, 136, 169), "Lab: Left Terminal Lantern 1", null, MainLab & LanternCube);
@@ -1085,9 +1086,9 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(6, 1, 826, 257), "Royal Towers: Long Balcony Lantern 5", null, MidRoyalTower & NeedSwimming(FloodsFlags.CastleCourtyard) & LanternCube);
 			Add(new ItemKey(6, 10, 138, 253), "Royal Towers: Bottom Struggle Base Lantern 1", null, MidRoyalTower & (FloodsFlags.CastleCourtyard ? R.Free : DoubleJumpOfNpc) & LanternCube);
 			Add(new ItemKey(6, 10, 266, 253), "Royal Towers: Bottom Struggle Base Lantern 1", null, MidRoyalTower & (FloodsFlags.CastleCourtyard ? R.Free : DoubleJumpOfNpc) & LanternCube);
-			Add(new ItemKey(6, 23, 519, 73), "Royal Towers: Aelana's Attic Lantern 1", null, UpperRoyalTower & R.UpwardDash);
-			Add(new ItemKey(6, 23, 599, 73), "Royal Towers: Aelana's Attic Lantern 2", null, UpperRoyalTower & R.UpwardDash);
-			Add(new ItemKey(6, 23, 679, 73), "Royal Towers: Aelana's Attic Lantern 3", null, UpperRoyalTower & R.UpwardDash);
+			Add(new ItemKey(6, 23, 519, 73), "Royal Towers: Aelana's Attic Lantern 1", null, UpperRoyalTower & R.UpwardDash & LanternCube);
+			Add(new ItemKey(6, 23, 599, 73), "Royal Towers: Aelana's Attic Lantern 2", null, UpperRoyalTower & R.UpwardDash & LanternCube);
+			Add(new ItemKey(6, 23, 679, 73), "Royal Towers: Aelana's Attic Lantern 3", null, UpperRoyalTower & R.UpwardDash & LanternCube);
 			Add(new ItemKey(6, 11, 298, 173), "Royal Towers: Before Aelana Lantern 1", null, UpperRoyalTower & LanternCube);
 			Add(new ItemKey(6, 16, 202, 157), "Royal Towers: Tower Base Entrance Lantern 1", null, UpperRoyalTower & LanternCube);
 			Add(new ItemKey(6, 16, 346, 157), "Royal Towers: Tower Base Entrance Lantern 2", null, UpperRoyalTower & LanternCube);
