@@ -160,8 +160,6 @@ namespace TsRandomizer.LevelObjects
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.EssenceOfSpace));
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.DoubleJump));
 			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.WaterMask));
-			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.ElevatorKeycard));
-			level.GameSave.AddItem(level, new ItemIdentifier(EInventoryRelicType.ScienceKeycardA));
 #endif
 
 			Objects.Clear();
