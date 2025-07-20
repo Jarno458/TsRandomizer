@@ -26,7 +26,7 @@ namespace TsRandomizer.LevelObjects.Other
 
 			bool breakAllSaves = Level.GameSave.GetSettings().NoSaveStatues.Value;
 
-			if (!breakAllSaves && (Level.ID != 2 || Level.RoomID != 20) // Right side libarary elevator room
+			if (!breakAllSaves
 				&& (Level.ID != 14 || Level.RoomID != 8) // Ravenlord
 				&& (Level.ID != 14 || Level.RoomID != 6))  // Ifrit
 				return;

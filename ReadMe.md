@@ -44,7 +44,7 @@ In order to use the randomizer on a steam deck, you will have to install the ran
 * Orb\Ring\Spell shop is no longer available, orbs\rings\spells are dropped from random item locations instead
 * Umbra orb and familiar skins are in the item pool and do not require a password
 * Achievements cannot be unlocked
-* SaveStatue inside right elevator room is disabled to prevent a softlock
+* Platforms added outside the right Varndagroth Towers Elevator Save to prevent a softlock
 * A return warp to the Pyramid entrance has been added in the Pyramid pit to prevent a softlock
 * SaveStatues in front of Temportal Gyre bosses Ifrit and Ravenlord are disabled to prevent softlocks
 * Aelana and The Maw no longer require twins to be killed before their door unlocks
