@@ -23,7 +23,6 @@ namespace TsRandomizer.Screens
 
 		static readonly Roomkey[] DisabledCheckpoints =
 		{
-			new Roomkey(2, 20),
 			new Roomkey(16, 21)
 		};
 
