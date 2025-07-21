@@ -36,11 +36,14 @@ namespace TsRandomizer.LevelObjects.Monsters
 			Point position = Dynamic.Position;
 			position.X += (Dynamic.IsFacingLeft ? -24 : 24);
 			var bomb = (Projectile)bombType.CreateInstance(false, position, Level, sprite, -1, 0);
-			
+
 			Random rand = new Random();
+			// Only ERobotJunkType.Junk_Fresh
+			int[] trashIds = { 0, 3, 6 };
 			for (int i = 0; i < 5; i++)
 			{
-				bomb.AsDynamic()._animationStart = rand.Next(6);
+				int trashId = rand.Next(trashIds.Length);
+				bomb.AsDynamic()._animationStart = rand.Next(trashId);
 				Dynamic._bombBag[i] = bomb;
 			}
 		}
