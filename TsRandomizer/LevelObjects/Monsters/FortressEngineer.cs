@@ -43,7 +43,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 			for (int i = 0; i < 5; i++)
 			{
 				int trashId = rand.Next(trashIds.Length);
-				bomb.AsDynamic()._animationStart = rand.Next(trashId);
+				bomb.AsDynamic()._animationStart = trashIds[trashId];
 				Dynamic._bombBag[i] = bomb;
 			}
 		}
