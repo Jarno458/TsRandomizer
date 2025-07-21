@@ -36,10 +36,11 @@ namespace TsRandomizer.LevelObjects.Monsters
 			Point position = Dynamic.Position;
 			position.X += (Dynamic.IsFacingLeft ? -24 : 24);
 			var bomb = (Projectile)bombType.CreateInstance(false, position, Level, sprite, -1, 0);
-			bomb.AsDynamic()._animationStart = 0;
-
+			
+			Random rand = new Random();
 			for (int i = 0; i < 5; i++)
 			{
+				bomb.AsDynamic()._animationStart = rand.Next(6);
 				Dynamic._bombBag[i] = bomb;
 			}
 		}
