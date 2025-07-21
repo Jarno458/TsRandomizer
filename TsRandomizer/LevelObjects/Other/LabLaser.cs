@@ -22,6 +22,10 @@ namespace TsRandomizer.LevelObjects.Other
 
 		protected override void Initialize(Seed seed, SettingCollection settings)
 		{
+			// Lower Trash
+			if (Level.RoomID == 3)
+				Dynamic.IsTriggerableByMonsters = false;
+
 			if (Level.RoomID > 30)
 				doRainbow = seed.Id % Level.RoomID < 3;
 			else
