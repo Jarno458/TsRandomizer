@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using Timespinner.GameAbstractions;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
@@ -36,11 +37,6 @@ namespace TsRandomizer.Screens
 		{
 			gcm = gameContentManager;
 
-			if (!IsUsedAsGameSettingsMenu)
-				return;
-
-			Dynamic._menuTitle = "Randomizer Settings";
-
 			var gameplayScreen = ScreenManager.FirstOrDefault<GameplayScreen>();
 			save = gameplayScreen?.Save;
 
@@ -48,7 +44,17 @@ namespace TsRandomizer.Screens
 				? gameplayScreen.Settings
 				: GameSettingsLoader.LoadSettingsFromFile();
 
-			ResetMenu();
+			if (IsUsedAsGameSettingsMenu)
+			{
+				Dynamic._menuTitle = "Randomizer Settings";
+				ResetMenu();
+			}
+			else 
+			{
+				// Journal is being used as a journal, replace Feats and Quests with Objectives and Statistics
+				SetStatistics(itemLocationMap);
+				SetObjectives();
+			}
 		}
 
 		public override void Unload()
@@ -259,6 +265,52 @@ namespace TsRandomizer.Screens
 				menuEntry.BaseDrawColor = MenuEntry.UnAvailableColor;
 
 			setting.UpdateMenuEntry(menuEntry);
+		}
+		void SetStatistics(ItemLocationMap itemLocationMap)
+		{
+			var gameplayScreen = ScreenManager.FirstOrDefault<GameplayScreen>();
+			save = gameplayScreen?.Save;
+			((object)Dynamic._questsMenuEntry).AsDynamic().Text = "Statistics";
+			((object)Dynamic._questsMenuEntry).AsDynamic().Description = "A variety of relevant randomizer statistics";
+			var menuEntryList = new object[0].ToList(MenuEntryType);
+
+			var checkTotal = itemLocationMap.Count;
+			var checksFound = itemLocationMap.Where(l => l.IsPickedUp).ToList().Count;
+			var statEntry = MenuEntry.Create(string.Format("Checks: {0}/{1}", checksFound, checkTotal), _ => { });
+			statEntry.IsCenterAligned = false;
+			menuEntryList.Add(statEntry.AsTimeSpinnerMenuEntry());
+
+			var bonkTotal = save.GetConcussionCount();
+			statEntry = MenuEntry.Create(string.Format("Celestial Sash Bonks: {0}", bonkTotal), _ => { });
+			statEntry.IsCenterAligned = false;
+			menuEntryList.Add(statEntry.AsTimeSpinnerMenuEntry());
+
+			((object)Dynamic._questInventory).AsDynamic()._entries = menuEntryList;
+		}
+
+		void SetObjectives()
+		{
+			var gameplayScreen = ScreenManager.FirstOrDefault<GameplayScreen>();
+			save = gameplayScreen?.Save;
+			((object)Dynamic._featsMenuEntry).AsDynamic().Text = "Objectives";
+			((object)Dynamic._featsMenuEntry).AsDynamic().Description = "Goals required to complete the seed";
+			var selectedMenu = ((object)Dynamic._featsInventory).AsDynamic();
+			var menuEntry = ((IList)selectedMenu.Entries)[0];
+			menuEntry.AsDynamic().Text = "Goal: Nightmare";
+			menuEntry.AsDynamic().Description = "Clear the boss fight at the center of the Ancient Pyramid after collecting five Timespinner pieces.";
+			if (save.GetSeed().Value.GoalState == Goal.DadPercent)
+			{
+				menuEntry.AsDynamic().Text = "Goal: Dad Percent";
+				menuEntry.AsDynamic().Description = "Clear the boss fight at the top of Emperor's Tower.";
+			}
+			menuEntry.AsDynamic()._isUnlocked = save.GetSaveBool("TsRandoGoalCleared");
+
+			// Remove all extra feat entries
+			// Currently bonus objectives are not available, only goals
+			var bonusTaskCount = 0;
+			while (((IList)selectedMenu.Entries).Count > bonusTaskCount + 1)
+				((IList)selectedMenu.Entries).RemoveAt(bonusTaskCount + 1);
+
 		}
 	}
 }
