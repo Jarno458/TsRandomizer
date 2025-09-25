@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Timespinner.GameAbstractions.Inventory;
 using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.Heroes;
@@ -167,14 +168,15 @@ namespace TsRandomizer.Randomisation
 			{
 				case OrbDamageOdds.OrbDamageModifier.Minus:
 					newDamage = options.MinValue;
-					OverrideOrbNames(orbType, "(-)");
+					OverrideOrbNames(orbType, " (-)");
 					break;
 				case OrbDamageOdds.OrbDamageModifier.Plus:
 					newDamage = options.MaxValue;
-					OverrideOrbNames(orbType, "(+)");
+					OverrideOrbNames(orbType, " (+)");
 					break;
 				default:
 					newDamage = options.MidValue;
+					OverrideOrbNames(orbType, "");
 					break;
 
 			}
@@ -189,13 +191,17 @@ namespace TsRandomizer.Randomisation
 			string locKey = $"inv_orb_{orbType}";
 			string spellLocKey = $"{locKey}_spell";
 			string ringLocKey = $"{locKey}_passive";
-			string actualOrbName = new InventoryOrb(orbType).Name;
-			string actualSpellName = new InventoryOrb(orbType).AsDynamic().SpellName;
-			string actualRingName = new InventoryOrb(orbType).AsDynamic().PassiveName;
+			// Clear existing names before replacement
+			string pattern = @" \([+-]\)";
+			string substitution = @"";
+			Regex regex = new Regex(pattern);
+			string actualOrbName = regex.Replace(new InventoryOrb(orbType).Name, substitution, 1);
+			string actualSpellName = regex.Replace(new InventoryOrb(orbType).AsDynamic().SpellName, substitution, 1);
+			string actualRingName = regex.Replace(new InventoryOrb(orbType).AsDynamic().PassiveName, substitution, 1);
 
-			TimeSpinnerGame.Localizer.OverrideKey(locKey, $"{actualOrbName} {suffix}");
-			TimeSpinnerGame.Localizer.OverrideKey(spellLocKey, $"{actualSpellName} {suffix}");
-			TimeSpinnerGame.Localizer.OverrideKey(ringLocKey, $"{actualRingName} {suffix}");
+			TimeSpinnerGame.Localizer.OverrideKey(locKey, $"{actualOrbName}{suffix}");
+			TimeSpinnerGame.Localizer.OverrideKey(spellLocKey, $"{actualSpellName}{suffix}");
+			TimeSpinnerGame.Localizer.OverrideKey(ringLocKey, $"{actualRingName}{suffix}");
 		}
 
 		public static void PopulateOrbLookups(GameSave save, string setting, Dictionary<string, OrbDamageOdds> overrides)

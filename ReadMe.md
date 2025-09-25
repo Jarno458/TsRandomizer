@@ -49,6 +49,7 @@ In order to use the randomizer on a steam deck, you will have to install the ran
 * SaveStatues in front of Temportal Gyre bosses Ifrit and Ravenlord are disabled to prevent softlocks
 * Aelana and The Maw no longer require twins to be killed before their door unlocks
 * Softlock exits are conditionally added the Lab and Hangar when Risky Warps are on and certain lasers are active
+* The depowered lab has safeties to ensure certain items are still reachable: lower left trash has a broken gate, upper left trash has engineers throwing trash, and the dynamo shaft has hand-holds.
 
 # New keybinds
 * On the minimap screen, holding the melee button (default: X) will highlight all locations that you can reach and still have items for you
@@ -123,6 +124,4 @@ There exist several programs that can extract XNB files into an editable image f
 
 # Ideas
 ##### Ideas that may never happen but I think will be fun when they are implemented:
-* Randomize quest items
 * Timesanity (entrance randomizer)
-* Make warpshard optionally a progression item that unlocks all softlocks

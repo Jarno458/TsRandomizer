@@ -170,6 +170,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 				if (isFinalBoss)
 				{
 					Level.GameSave.SetValue("CreditsActive", true);
+					Level.GameSave.SetValue("TsRandoGoalCleared", true);
 					var fillingMethod = Level.GameSave.GetFillingMethod();
 
 					if (fillingMethod == FillingMethod.Archipelago)
