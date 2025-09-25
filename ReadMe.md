@@ -123,6 +123,4 @@ There exist several programs that can extract XNB files into an editable image f
 
 # Ideas
 ##### Ideas that may never happen but I think will be fun when they are implemented:
-* Randomize quest items
 * Timesanity (entrance randomizer)
-* Make warpshard optionally a progression item that unlocks all softlocks

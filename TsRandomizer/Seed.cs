@@ -9,6 +9,11 @@ namespace TsRandomizer
 		Present,
 		Pyramid
 	}
+	public enum Goal
+	{
+		Nightmare,
+		DadPercent
+	}
 	struct Seed
 	{
 		public const int Length = 8 + SeedOptions.Length;
@@ -17,6 +22,7 @@ namespace TsRandomizer
 		public readonly SeedOptions Options;
 		public readonly RisingTides FloodFlags;
 		public readonly Era StartingEra;
+		public readonly Goal GoalState;
 
 		public static Seed Zero = new Seed(0U, SeedOptions.None);
 
@@ -30,6 +36,9 @@ namespace TsRandomizer
 				StartingEra = Era.Pyramid;
 			else if (options.Inverted)
 				StartingEra = Era.Past;
+			GoalState = Goal.Nightmare;
+			if (options.DadPercent)
+				GoalState = Goal.DadPercent;
 		}
 
 		public static Seed GenerateRandom(SeedOptions options, Random random)
