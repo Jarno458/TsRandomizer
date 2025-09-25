@@ -394,11 +394,11 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(10, 18, 280, 189), "Military Fortress: Pedestal", ItemProvider.Get(EInventoryOrbType.Gun, EOrbSlot.Melee), LabEntrance & (FloodsFlags.Lab ? R.Free : DoubleJumpOfNpc | ForwardDashDoubleJump));
 			areaName = "The Lab";
 			Add(new ItemKey(11, 36, 312, 192), "Lab: Coffee break", ItemProvider.Get(EInventoryUseItemType.FoodSynth), MainLab);
-			Add(new ItemKey(11, 3, 1528, 192), "Lab: Lower trash right", ItemProvider.Get(EItemType.MaxHP), MainLab & (FloodsFlags.Lab ? R.Free : R.DoubleJump));
-			Add(new ItemKey(11, 3, 72, 192), "Lab: Lower trash left", ItemProvider.Get(EInventoryUseItemType.FuturePotion), MainLab & (FloodsFlags.Lab ? R.Free : (SeedOptions.LockKeyAmadeus ? DoubleJumpOfNpc: R.UpwardDash))); // When lab power is on, it only requires DoubleJumpOfNpc, but we cant code for the power state
+			Add(new ItemKey(11, 3, 1528, 192), "Lab: Lower Trash Right", ItemProvider.Get(EItemType.MaxHP), MainLab & (FloodsFlags.Lab ? R.Free : R.DoubleJump));
+			Add(new ItemKey(11, 3, 72, 192), "Lab: Lower Trash Left", ItemProvider.Get(EInventoryUseItemType.FuturePotion), MainLab & (FloodsFlags.Lab ? R.Free : DoubleJumpOfNpc));
 			Add(new ItemKey(11, 25, 104, 192), "Lab: Below lab entrance", ItemProvider.Get(EItemType.MaxAura), MainLab & (FloodsFlags.Lab ? R.Swimming : R.DoubleJump));
-			Add(new ItemKey(11, 18, 824, 128), "Lab: Trash jump room", ItemProvider.Get(EInventoryUseItemType.ChaosHeal), MainLab & (SeedOptions.LockKeyAmadeus ? DoubleJumpOfNpc : R.UpwardDash)); // Only requires DoubleJumpOffNpc when lab power is on
-			Add(new RoomItemKey(11, 39), "Lab: Dynamo Works", ItemProvider.Get(EInventoryOrbType.Eye, EOrbSlot.Melee), SeedOptions.LockKeyAmadeus ? LabResearchWing & R.LabDynamo & R.UpwardDash : LabResearchWing); // Blast door is closed in Lock Key Amadeus
+			Add(new ItemKey(11, 18, 824, 128), "Lab: Trash jump room", ItemProvider.Get(EInventoryUseItemType.ChaosHeal), MainLab & DoubleJumpOfNpc);
+			Add(new RoomItemKey(11, 39), "Lab: Dynamo Works", ItemProvider.Get(EInventoryOrbType.Eye, EOrbSlot.Melee), LabResearchWing & (SeedOptions.LockKeyAmadeus ?  R.LabDynamo & R.UpwardDash : R.Free)); // Blast door is closed in Lock Key Amadeus
 			Add(new RoomItemKey(11, 21), "Lab: Genza (Blob Mom)", ItemProvider.Get(EInventoryRelicType.ScienceKeycardA), UpperLab);
 			Add(new RoomItemKey(11, 1), "Lab: Experiment #13", ItemProvider.Get(EInventoryRelicType.Dash), SeedOptions.LockKeyAmadeus ? MainLab & R.LabExperiment : LabResearchWing);
 			Add(new ItemKey(11, 6, 328, 192), "Lab: Download and chest room chest", ItemProvider.Get(EInventoryEquipmentType.LabCoat), UpperLab);
@@ -821,14 +821,14 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(11, 22, 280, 505), "Lab: File Cabinet Staircase Lantern 4", null, UpperLab & LanternCube);
 			Add(new ItemKey(11, 17, 216, 281), "Lab: Trash Stairs Lantern 1", null, MainLab & LanternCube);
 			Add(new ItemKey(11, 17, 120, 505), "Lab: Trash Stairs Lantern 2", null, MainLab & LanternCube);
-			Add(new ItemKey(11, 18, 126, 144), "Lab: Trash Jump Lantern 1", null, MainLab & (SeedOptions.LockKeyAmadeus ? DoubleJumpOfNpc : R.UpwardDash) & LanternCube);
-			Add(new ItemKey(11, 18, 782, 112), "Lab: Trash Jump Lantern 2", null, MainLab & (SeedOptions.LockKeyAmadeus ? DoubleJumpOfNpc : R.UpwardDash) & LanternCube);
+			Add(new ItemKey(11, 18, 126, 144), "Lab: Trash Jump Lantern 1", null, MainLab & R.DoubleJump & LanternCube);
+			Add(new ItemKey(11, 18, 782, 112), "Lab: Trash Jump Lantern 2", null, MainLab & DoubleJumpOfNpc & LanternCube);
 			Add(new ItemKey(11, 19, 120, 169), "Lab: Genza Door Lantern 1", null, UpperLab & LanternCube);
 			Add(new ItemKey(11, 19, 264, 169), "Lab: Genza Door Lantern 2", null, UpperLab & LanternCube);
 			Add(new ItemKey(11, 23, 104, 169), "Lab: Spider Hell Entrance Lantern 1", null, LabResearchWing & R.CardA & LanternCube);
 			Add(new ItemKey(11, 23, 280, 169), "Lab: Spider Hell Entrance Lantern 2", null, LabResearchWing & R.CardA & LanternCube);
-			Add(new ItemKey(11, 3, 1448, 489), "Lab: Lower Trash Lantern 1", null, MainLab & (FloodsFlags.Lab ? R.Free : (SeedOptions.LockKeyAmadeus ? DoubleJumpOfNpc : R.UpwardDash)) & LanternCube);
-			Add(new ItemKey(11, 3, 152, 489), "Lab: Lower Trash Lantern 2", null, MainLab & (FloodsFlags.Lab ? R.Free : (SeedOptions.LockKeyAmadeus ? DoubleJumpOfNpc : R.UpwardDash)) & LanternCube);
+			Add(new ItemKey(11, 3, 1448, 489), "Lab: Lower Trash Lantern 1", null, MainLab & NeedSwimming(FloodsFlags.Lab) & LanternCube);
+			Add(new ItemKey(11, 3, 152, 489), "Lab: Lower Trash Lantern 2", null, MainLab & NeedSwimming(FloodsFlags.Lab) & LanternCube);
 			Add(new ItemKey(11, 30, 152, 169), "Lab: Intro Hallway Lantern 1", null, LabEntrance & LanternCube);
 			Add(new ItemKey(11, 30, 264, 169), "Lab: Intro Hallway Lantern 2", null, LabEntrance & LanternCube);
 			Add(new ItemKey(11, 34, 136, 169), "Lab: Exp. 13 Terminal Lantern 1", null, MainLab & LanternCube);
