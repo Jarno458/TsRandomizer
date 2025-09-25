@@ -858,8 +858,8 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(12, 21, 298, 892), "Emperor's Tower: Lower Left Tower Lantern 2", null, EmperorsTower & LanternCube);
 			Add(new ItemKey(12, 22, 106, 156), "Emperor's Tower: Galactic Sage Lantern 1", null, EmperorsTower & LanternCube);
 			Add(new ItemKey(12, 22, 282, 156), "Emperor's Tower: Galactic Sage Lantern 2", null, EmperorsTower & LanternCube);
-			Add(new ItemKey(12, 24, 122, 140), "Emperor's Tower: Courtyard Giantess Lantern 1", null, EmperorsTower & LanternCube);
-			Add(new ItemKey(12, 24, 266, 140), "Emperor's Tower: Courtyard Giantess Lantern 2", null, EmperorsTower & LanternCube);
+			Add(new ItemKey(12, 24, 122, 140), "Emperor's Tower: Courtyard Giantess Lantern 1", null, EmperorsTower & R.UpwardDash & LanternCube);
+			Add(new ItemKey(12, 24, 266, 140), "Emperor's Tower: Courtyard Giantess Lantern 2", null, EmperorsTower & R.UpwardDash & LanternCube);
 			Add(new ItemKey(12, 25, 122, 140), "Emperor's Tower: Courtyard Upper Lantern", null, EmperorsTower & R.UpwardDash & LanternCube);
 			Add(new ItemKey(12, 26, 106, 156), "Emperor's Tower: Lower Save Room Lantern 1", null, EmperorsTower & LanternCube);
 			Add(new ItemKey(12, 26, 282, 156), "Emperor's Tower: Lower Save Room Lantern 2", null, EmperorsTower & LanternCube);
