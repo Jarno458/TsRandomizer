@@ -202,6 +202,7 @@
     <Compile Include="RisingTides.cs" />
     <Compile Include="Randomisation\BestiaryManager.cs" />
     <Compile Include="RoomTriggers\Triggers\Bosses\AzureQueen.cs" />
+    <Compile Include="RoomTriggers\Triggers\LibrarySoftlockExits.cs" />
     <Compile Include="RoomTriggers\Triggers\LabPowerChanges.cs" />
     <Compile Include="RoomTriggers\Triggers\MetropolisBridgeLanterns.cs" />
     <Compile Include="RoomTriggers\Triggers\LabSoftlockExits.cs" />
