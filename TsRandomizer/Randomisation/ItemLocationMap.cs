@@ -625,13 +625,13 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(1, 20, 250, 237), "Lake Desolation (Upper): Double jump cave Lantern", null, UpperLakeDesolation & LanternCube);
 
 			areaName = "Lake Desolation";
-			Add(new ItemKey(1, 7, 472, 95), "Lake Desolation: Metropolis Bridge Lantern 1", null, LakeDesolationRight & R.DoubleJump & LanternCube);
-			Add(new ItemKey(1, 7, 664, 95), "Lake Desolation: Metropolis Bridge Lantern 2", null, LakeDesolationRight & R.DoubleJump & LanternCube);
-			Add(new ItemKey(1, 7, 856, 95), "Lake Desolation: Metropolis Bridge Lantern 3", null, LakeDesolationRight & R.DoubleJump & LanternCube);
-			Add(new ItemKey(1, 7, 1048, 95), "Lake Desolation: Metropolis Bridge Lantern 4", null, LakeDesolationRight & R.DoubleJump & LanternCube);
-			Add(new ItemKey(1, 7, 1240, 95), "Lake Desolation: Metropolis Bridge Lantern 5", null, LakeDesolationRight & R.DoubleJump & LanternCube);
-			Add(new ItemKey(1, 7, 1432, 95), "Lake Desolation: Metropolis Bridge Lantern 6", null, LakeDesolationRight & R.DoubleJump & LanternCube);
-			Add(new ItemKey(1, 7, 1624, 95), "Lake Desolation: Metropolis Bridge Lantern 7", null, LakeDesolationRight & R.DoubleJump & LanternCube);
+			Add(new ItemKey(1, 7, 472, 95), "Lake Desolation: Metropolis Bridge Lantern 1", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 7, 664, 95), "Lake Desolation: Metropolis Bridge Lantern 2", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 7, 856, 95), "Lake Desolation: Metropolis Bridge Lantern 3", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 7, 1048, 95), "Lake Desolation: Metropolis Bridge Lantern 4", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 7, 1240, 95), "Lake Desolation: Metropolis Bridge Lantern 5", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 7, 1432, 95), "Lake Desolation: Metropolis Bridge Lantern 6", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 7, 1624, 95), "Lake Desolation: Metropolis Bridge Lantern 7", null, LakeDesolationRight & LanternCube);
 
 			areaName = "Library";
 			Add(new ItemKey(2, 57, 200, 100), "Library: Sewer Entrance Lantern", null, LeftLibrary & LanternCube);
