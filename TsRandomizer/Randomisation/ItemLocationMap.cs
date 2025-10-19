@@ -1195,7 +1195,7 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(14, 22, 520, 128), "Temporal Gyre: Room 8 Lantern 2", null, TemporalGyre & LanternCube);
 		}
 
-			ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)
+		ItemLocation GetItemLocationBasedOnKeyOrRoomKey(ItemKey key)
 		{
 			return TryGetValue(key, out var itemLocation)
 				? itemLocation
