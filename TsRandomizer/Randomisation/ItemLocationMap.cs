@@ -110,7 +110,11 @@ namespace TsRandomizer.Randomisation
 				AddLoreLocations();
 
 			if (SeedOptions.PureTorcher)
+			{
 				AddLanternLocations();
+				if (SeedOptions.GyreArchives)
+					AddGyreLanternLocations();
+			}
 
 			if (SeedOptions.PyramidStart)
 				AddPyramidStartLocations();
@@ -625,13 +629,13 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(1, 20, 250, 237), "Lake Desolation (Upper): Double jump cave Lantern", null, UpperLakeDesolation & LanternCube);
 
 			areaName = "Lake Desolation";
-			Add(new ItemKey(1, 7, 472, 95), "Lake Desolation: Metropolis Bridge Lantern 1", null, LakeDesolationRight & R.DoubleJump & LanternCube);
-			Add(new ItemKey(1, 7, 664, 95), "Lake Desolation: Metropolis Bridge Lantern 2", null, LakeDesolationRight & R.DoubleJump & LanternCube);
-			Add(new ItemKey(1, 7, 856, 95), "Lake Desolation: Metropolis Bridge Lantern 3", null, LakeDesolationRight & R.DoubleJump & LanternCube);
-			Add(new ItemKey(1, 7, 1048, 95), "Lake Desolation: Metropolis Bridge Lantern 4", null, LakeDesolationRight & R.DoubleJump & LanternCube);
-			Add(new ItemKey(1, 7, 1240, 95), "Lake Desolation: Metropolis Bridge Lantern 5", null, LakeDesolationRight & R.DoubleJump & LanternCube);
-			Add(new ItemKey(1, 7, 1432, 95), "Lake Desolation: Metropolis Bridge Lantern 6", null, LakeDesolationRight & R.DoubleJump & LanternCube);
-			Add(new ItemKey(1, 7, 1624, 95), "Lake Desolation: Metropolis Bridge Lantern 7", null, LakeDesolationRight & R.DoubleJump & LanternCube);
+			Add(new ItemKey(1, 7, 472, 95), "Lake Desolation: Metropolis Bridge Lantern 1", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 7, 664, 95), "Lake Desolation: Metropolis Bridge Lantern 2", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 7, 856, 95), "Lake Desolation: Metropolis Bridge Lantern 3", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 7, 1048, 95), "Lake Desolation: Metropolis Bridge Lantern 4", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 7, 1240, 95), "Lake Desolation: Metropolis Bridge Lantern 5", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 7, 1432, 95), "Lake Desolation: Metropolis Bridge Lantern 6", null, LakeDesolationRight & LanternCube);
+			Add(new ItemKey(1, 7, 1624, 95), "Lake Desolation: Metropolis Bridge Lantern 7", null, LakeDesolationRight & LanternCube);
 
 			areaName = "Library";
 			Add(new ItemKey(2, 57, 200, 100), "Library: Sewer Entrance Lantern", null, LeftLibrary & LanternCube);
@@ -1168,8 +1172,10 @@ namespace TsRandomizer.Randomisation
 			Add(new ItemKey(15, 0, 88, 169), "Dark Forest: Pyramid Entrance Lantern 6", null, PyramidEntrance & LanternCube);
 			Add(new ItemKey(15, 2, 104, 537), "Dark Forest: Training Dummy Lantern 1", null, PyramidEntrance & LanternCube);
 			Add(new ItemKey(15, 2, 344, 537), "Dark Forest: Training Dummy Lantern 2", null, PyramidEntrance & LanternCube);
+		}
 
-
+		void AddGyreLanternLocations()
+		{
 			areaName = "Temporal Gyre";
 			Add(new ItemKey(14, 12, 280, 128), "Temporal Gyre: Room 1 Lantern 1", null, TemporalGyre & LanternCube);
 			Add(new ItemKey(14, 12, 520, 128), "Temporal Gyre: Room 1 Lantern 2", null, TemporalGyre & LanternCube);
