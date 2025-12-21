@@ -18,8 +18,10 @@ namespace TsRandomizer.Archipelago
 	class ArchipelagoItemLocationMap : ItemLocationMap
 	{
 		public const string GameItemIndex = "ArchipelagoGameItemIndex";
+		public const string HasSavedKey = "TSRando_IsSaved";
 
 		bool firstPass;
+		DateTime nextTick = DateTime.MinValue;
 
 		HashSet<ItemKey> personalLocationItemKeys;
 
@@ -48,28 +50,42 @@ namespace TsRandomizer.Archipelago
 
 		public override void Update(Level level, GameplayScreen gameplayScreen)
 		{
-			var receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
-
 			if (firstPass)
 			{
-				while (receivedItem != null)
-				{
-					ReceiveItem(receivedItem, level, gameplayScreen);
-					level.GameSave.DataKeyInts[GameItemIndex] = level.GameSave.GetSaveInt(GameItemIndex) + 1;
-
-					receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
-				}
+				ReceiveStarterInventory(level, gameplayScreen);
 
 				LoadObtainedProgressionItemsFromSave(level, gameplayScreen);
 
 				firstPass = false;
 			}
 
+			if (!level.GameSave.GetSaveBool(HasSavedKey))
+				return;
+
+			if (DateTime.UtcNow < nextTick)
+				return;
+
+			nextTick = DateTime.UtcNow.AddMilliseconds(200);
+				
+			var receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
 			if(receivedItem == null)
 				return;
 			
 			ReceiveItem(receivedItem, level, gameplayScreen);
-			level.GameSave.DataKeyInts[GameItemIndex] = level.GameSave.GetSaveInt(GameItemIndex) + 1;
+			level.GameSave.DataKeyInts[GameItemIndex]++;
+		}
+
+		void ReceiveStarterInventory(Level level, GameplayScreen gameplayScreen)
+		{
+			var receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
+
+			while (receivedItem != null && receivedItem.LocationId == -2) //starting inventory
+			{
+				ReceiveItem(receivedItem, level, gameplayScreen);
+				level.GameSave.DataKeyInts[GameItemIndex]++;
+
+				receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
+			}
 		}
 
 		void LoadObtainedProgressionItemsFromSave(Level level, GameplayScreen gameplayScreen)
@@ -131,8 +147,8 @@ namespace TsRandomizer.Archipelago
 
 			if (!firstPass || item.IsProgression)
 			{
-	                        if (item is CustomItem customItem)
-	                                gameplayScreen.ShowItemPickupBar(customItem.Name);
+                if (item is CustomItem customItem)
+                        gameplayScreen.ShowItemPickupBar(customItem.Name);
 				else
 					level.ShowItemAwardPopup(itemIdentifier);
 			}

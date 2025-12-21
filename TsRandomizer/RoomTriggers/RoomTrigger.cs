@@ -37,6 +37,8 @@ namespace TsRandomizer.RoomTriggers
 	{
 		static readonly Dictionary<Roomkey, List<RoomTrigger>> RoomTriggers = new Dictionary<Roomkey, List<RoomTrigger>>();
 
+		static Roomkey LastRoomKey = new Roomkey(0, 0);
+
 		static RoomTrigger()
 		{
 			// ReSharper disable once PossibleNullReferenceException
@@ -76,6 +78,24 @@ namespace TsRandomizer.RoomTriggers
 			Level level, Seed seed, SettingCollection gameSettings, ItemLocationMap itemLocations, ScreenManager screenManager,
 			Roomkey roomKey)
 		{
+			if (RoomTriggers.TryGetValue(LastRoomKey, out var triggersForLastRoom))
+			{
+				var roomState = new RoomState
+				{
+					Level = level,
+					RoomItemLocation = itemLocations[new RoomItemKey(LastRoomKey.LevelId, LastRoomKey.RoomId)],
+					Seed = seed,
+					Settings = gameSettings,
+					ScreenManager = screenManager,
+					RoomKey = roomKey
+				};
+
+				foreach (var trigger in triggersForLastRoom)
+					trigger.OnRoomExit(roomState);
+			}
+
+			LastRoomKey = roomKey;
+
 			if (RoomTriggers.TryGetValue(roomKey, out var triggersForRoom))
 			{
 				var roomState = new RoomState {
@@ -92,6 +112,8 @@ namespace TsRandomizer.RoomTriggers
 			}
 		}
 
-		public abstract void OnRoomLoad(RoomState roomState);
+		public virtual void OnRoomLoad(RoomState roomState) { }
+
+		public virtual void OnRoomExit(RoomState roomState) { }
 	}
 }

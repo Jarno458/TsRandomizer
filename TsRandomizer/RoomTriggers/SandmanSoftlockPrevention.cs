@@ -13,7 +13,7 @@ namespace TsRandomizer.RoomTriggers
 	[RoomTriggerTrigger(16, 5)]
 	class SandmanSoftlockPrevention : RoomTrigger
 	{
-		readonly static Type SpikeType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Sandman.SandmanBossCeilingSpikes");
+		static readonly Type SpikeType = TimeSpinnerType.Get("Timespinner.GameObjects.Bosses.Sandman.SandmanBossCeilingSpikes");
 
 		public override void OnRoomLoad(RoomState state)
 		{
