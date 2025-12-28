@@ -72,7 +72,8 @@ namespace TsRandomizer.Archipelago
 				return;
 			
 			ReceiveItem(receivedItem, level, gameplayScreen);
-			level.GameSave.DataKeyInts[GameItemIndex]++;
+
+			level.GameSave.DataKeyInts[GameItemIndex] = level.GameSave.GetSaveInt(GameItemIndex) + 1; //do not use ++ here as it may be uninitialized
 		}
 
 		void ReceiveStarterInventory(Level level, GameplayScreen gameplayScreen)
@@ -82,7 +83,8 @@ namespace TsRandomizer.Archipelago
 			while (receivedItem != null && receivedItem.LocationId == -2) //starting inventory
 			{
 				ReceiveItem(receivedItem, level, gameplayScreen);
-				level.GameSave.DataKeyInts[GameItemIndex]++;
+
+				level.GameSave.DataKeyInts[GameItemIndex] = level.GameSave.GetSaveInt(GameItemIndex) + 1; //do not use ++ here as it may be uninitialized
 
 				receivedItem = Client.GetNextItem(level.GameSave.GetSaveInt(GameItemIndex));
 			}
