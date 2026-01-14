@@ -28,7 +28,7 @@ namespace TsRandomizer.LevelObjects.Monsters
 		protected override void OnUpdate()
 		{
 			// Modified behavior exclusive to new trash jump engineers in lab
-			if (Level.ID != 11)
+			if (Level.ID != 11 && !(Level.RoomID == 3 || Level.RoomID == 18))
 				return;
 			Dynamic._aggroBbox = new Rectangle(0, 0, 0, 0);
 			var bombType = TimeSpinnerType.Get("Timespinner.GameAbstractions.GameObjects.FortressEngineerBomb");
