@@ -1,23 +1,29 @@
-﻿using Timespinner.Core.Specifications;
-using TsRandomizer.IntermediateObjects;
-using System;
+﻿using System;
+using System.Security.Policy;
 using Microsoft.Xna.Framework;
+using Timespinner.Core.Specifications;
+using Timespinner.GameAbstractions.Gameplay;
 using TsRandomizer.Extensions;
+using TsRandomizer.IntermediateObjects;
+using TsRandomizer.LevelObjects;
 
 
 namespace TsRandomizer.RoomTriggers.Triggers
 {
-	[RoomTriggerTrigger(11, 3)]
+	[RoomTriggerTrigger(11, 3)] //lab lower trash room before coffee room
 	class LabLowerTrash : RoomTrigger
 	{
 		static readonly Type LaserType = TimeSpinnerType.Get("Timespinner.GameObjects.Events.EnvironmentPrefabs.L11_Lab.EnvPrefabLabForceField");
+		static readonly Type ChaosKitten = TimeSpinnerType.Get("Timespinner.GameObjects.Enemies.LabChild");
+
 		public override void OnRoomLoad(RoomState roomState)
 		{
 
 			if (roomState.Seed.Options.LockKeyAmadeus)
 				return;
 
-			Point[] lasers = new[] { new Point(492, 112), new Point(516, 112) };
+			Point[] lasers = { new Point(492, 112), new Point(516, 112) };
+
 			foreach (Point point in lasers)
 			{
 				var laser = LaserType.CreateInstance(false, roomState.Level, point, -1, new ObjectTileSpecification(), Timespinner.GameObjects.Events.EnvironmentPrefabs.EEnvironmentPrefabType.L11_ForceField);
@@ -27,27 +33,49 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			// Remove barrier wall tiles if powered down
 			if (roomState.Level.GameSave.GetSaveBool("11_LabPower"))
             {
-				TileSpecification[] tiles = new[] {
-					new TileSpecification { ID = 510, X = 31, Y = 6, Layer = ETileLayerType.Top },
+				TileSpecification[] tiles = {
+					new TileSpecification { ID = 510, X = 31, Y = 6, Layer = ETileLayerType.Top }, // i guess 510 is empty tile?
 					new TileSpecification { ID = 510, X = 31, Y = 5, Layer = ETileLayerType.Top },
 					new TileSpecification { ID = 510, X = 31, Y = 4, Layer = ETileLayerType.Top },
 					new TileSpecification { ID = 510, X = 31, Y = 3, Layer = ETileLayerType.Top }
-					};
+				};
+
 				foreach (TileSpecification tile in tiles)
-				{
 					roomState.Level.ReplaceTile(tile);
-				}
 			}
+
+			// spawn 1 chaos kitten bypassing enemy randomizer
+			var timePosition = new Point(31, 3);
+			var enemyTile = new ObjectTileSpecification
+			{
+				Category = EObjectTileCategory.Enemy,
+				Layer = ETileLayerType.Objects,
+				ObjectID = (int)EEnemyTileType.LabChild,
+				Argument = 0,
+				IsFlippedHorizontally = false,
+				X = timePosition.X,
+				Y = timePosition.Y
+			};
+
+			var position = new Point(timePosition.X * 16, timePosition.Y * 16);
+			var sprite = roomState.Level.GCM.SpLabChild;
+
+			var enemy = ChaosKitten.CreateInstance(false, position, roomState.Level, sprite, -1, enemyTile);
+			enemy.AsDynamic().InitializeMob();
+			roomState.Level.AsDynamic().RequestAddObject(enemy);
 		}
 	}
-	[RoomTriggerTrigger(11, 18)]
+	[RoomTriggerTrigger(11, 18)] //lab upper trash room before dynamo
 	class LabUpperTrash : RoomTrigger
 	{
+		static readonly Type FortressEngineerType = TimeSpinnerType.Get("Timespinner.GameObjects.Enemies.FortressEngineer");
+
 		struct Engineer
 		{
 			public Point position;
 			public bool isFlipped;
 		}
+
 		public override void OnRoomLoad(RoomState roomState)
 		{
 			// Only run room trigger when power is off
@@ -55,21 +83,20 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			  return;
 
 			TileSpecification[] replaceTiles = new[] {
-				new TileSpecification { ID = 22, X = 15, Y = 2, Layer = ETileLayerType.Middle},
+				new TileSpecification { ID = 22, X = 15, Y = 2, Layer = ETileLayerType.Middle, IsFlippedHorizontally = true},
 				new TileSpecification { ID = 22, X = 16, Y = 2, Layer = ETileLayerType.Middle},
-				new TileSpecification { ID = 22, X = 21, Y = 2, Layer = ETileLayerType.Middle},
+				new TileSpecification { ID = 22, X = 21, Y = 2, Layer = ETileLayerType.Middle, IsFlippedHorizontally = true},
 				new TileSpecification { ID = 22, X = 22, Y = 2, Layer = ETileLayerType.Middle},
-				new TileSpecification { ID = 22, X = 29, Y = 2, Layer = ETileLayerType.Middle },
-				new TileSpecification { ID = 22, X = 30, Y = 2, Layer = ETileLayerType.Middle },
-				new TileSpecification { ID = 22, X = 35, Y = 2, Layer = ETileLayerType.Middle},
+				new TileSpecification { ID = 22, X = 29, Y = 2, Layer = ETileLayerType.Middle, IsFlippedHorizontally = true},
+				new TileSpecification { ID = 22, X = 30, Y = 2, Layer = ETileLayerType.Middle},
+				new TileSpecification { ID = 22, X = 35, Y = 2, Layer = ETileLayerType.Middle, IsFlippedHorizontally = true},
 				new TileSpecification { ID = 22, X = 36, Y = 2, Layer = ETileLayerType.Middle},
 			};
-			foreach (TileSpecification tile in replaceTiles)
-			{
-				roomState.Level.ReplaceTile(tile);
-			}
 
-			Engineer[] engineers = new[] {
+			foreach (TileSpecification tile in replaceTiles)
+				roomState.Level.ReplaceTile(tile);
+
+			Engineer[] engineers = {
 				 new Engineer
 				 {
 					position = new Point(256, 16),
@@ -91,6 +118,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 					isFlipped = false
 				 },
 			};
+
 			var enemyTile = new ObjectTileSpecification
 			{
 				Category = EObjectTileCategory.Enemy,
@@ -99,12 +127,13 @@ namespace TsRandomizer.RoomTriggers.Triggers
 				Argument = 1,
 				IsFlippedHorizontally = false
 			};
-			var enemyType = TimeSpinnerType.Get("Timespinner.GameObjects.Enemies.FortressEngineer");
+
 			var sprite = roomState.Level.GCM.SpFortressEngineer;
+
 			foreach (Engineer engineer in engineers)
 			{
 				enemyTile.IsFlippedHorizontally = engineer.isFlipped;
-				var enemy = enemyType.CreateInstance(false, engineer.position, roomState.Level, sprite, -1, enemyTile);
+				var enemy = FortressEngineerType.CreateInstance(false, engineer.position, roomState.Level, sprite, -1, enemyTile);
 				enemy.AsDynamic().InitializeMob();
 				roomState.Level.AsDynamic().RequestAddObject(enemy);
 			}
@@ -119,6 +148,7 @@ namespace TsRandomizer.RoomTriggers.Triggers
 			// Power is always off here except during Lock Key Amadeus
 			if (roomState.Seed.Options.LockKeyAmadeus)
 				return;
+
 			TileSpecification[] deleteTiles = new[] {
 				new TileSpecification { ID = 513, X = 9, Y = 20, Layer = ETileLayerType.Middle },
 				new TileSpecification { ID = 513, X = 15, Y = 27, Layer = ETileLayerType.Middle },
@@ -135,10 +165,10 @@ namespace TsRandomizer.RoomTriggers.Triggers
 				new TileSpecification { ID = 513, X = 9, Y = 104, Layer = ETileLayerType.Middle },
 				new TileSpecification { ID = 513, X = 15, Y = 106, Layer = ETileLayerType.Middle },
 			};
+
 			foreach (TileSpecification tile in deleteTiles)
-			{
 				roomState.Level.DeleteTile(tile);
-			}
+
 			// Set Background
 			foreach (TileSpecification tile in deleteTiles)
 			{
@@ -146,7 +176,8 @@ namespace TsRandomizer.RoomTriggers.Triggers
 				tile.Layer = ETileLayerType.Bottom;
 				roomState.Level.PlaceTile(tile, true);
 			}
-			TileSpecification[] replaceTiles = new[] {
+
+			TileSpecification[] replaceTiles = {
 				new TileSpecification { ID = 21, X = 9, Y = 19, Layer = ETileLayerType.Middle, IsFlippedVertically = true },
 				new TileSpecification { ID = 21, X = 9, Y = 21, Layer = ETileLayerType.Middle},
 				new TileSpecification { ID = 21, X = 15, Y = 26, Layer = ETileLayerType.Middle, IsFlippedHorizontally = true, IsFlippedVertically = true },
@@ -177,10 +208,9 @@ namespace TsRandomizer.RoomTriggers.Triggers
 				new TileSpecification { ID = 22, X = 15, Y = 107, Layer = ETileLayerType.Middle, IsFlippedHorizontally = true },
 				new TileSpecification { ID = 22, X = 16, Y = 107, Layer = ETileLayerType.Middle },
 			};
+
 			foreach (TileSpecification tile in replaceTiles)
-			{
 				roomState.Level.ReplaceTile(tile);
-			}
 		}
 	}
 }
