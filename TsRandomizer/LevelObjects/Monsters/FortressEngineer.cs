@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
@@ -44,16 +46,29 @@ namespace TsRandomizer.LevelObjects.Monsters
 			Point position = Dynamic.Position;
 			position.X += (Dynamic.IsFacingLeft ? -24 : 24);
 
-			if (!(FortressEngineerBombType.CreateInstance(false, position, Level, sprite, -1, 0) is Projectile bomb))
-				return;
+			Random rand = new Random(((int)seed.Id ^ Level.RoomID) + position.X);
 
-			Random rand = new Random((int)seed.Id ^ Level.RoomID);
+			var bombBag = Enumerable.Range(1, 5)
+				.Select(i => {
+					try
+					{
+						if (!(FortressEngineerBombType.CreateInstance(false, position, Level, sprite, -1, 0) is Projectile bomb))
+							return null;
 
-			for (int i = 0; i < 5; i++)
-			{
-				bomb.AsDynamic()._animationStart = trashIds.SelectRandom(rand);
-				Dynamic._bombBag[i] = bomb;
-			}
+						bomb.AsDynamic()._animationStart = trashIds.SelectRandom(rand);
+
+						return bomb;
+					}
+					catch (Exception e)
+					{
+						return null;
+					}
+
+				})
+				.Where(b => b != null)
+				.ToArray(FortressEngineerBombType);
+			
+			Dynamic._bombBag = bombBag;
 		}
 	}
 }

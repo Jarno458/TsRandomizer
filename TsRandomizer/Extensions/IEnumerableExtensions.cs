@@ -25,6 +25,15 @@ namespace TsRandomizer.Extensions
 			return (IList)listMethod?.Invoke(null, new object[] { enumerable });
 		}
 
+		internal static IList ToArray(this IEnumerable source, Type targetType)
+		{
+			var enumerable = Cast(source, targetType);
+
+			var listMethod = EnumerableType.GetMethod("ToArray")?.MakeGenericMethod(targetType);
+
+			return (Array)listMethod?.Invoke(null, new object[] { enumerable });
+		}
+
 		internal static IEnumerable<T> Concat<T>(this IEnumerable<T> items, T item) => items.Concat(new[] {item});
 
 		public static IEnumerable<T> NotOfType<T,T2>(this IEnumerable<T> items) => items.Where(i => i.GetType() != typeof(T2));

@@ -66,7 +66,7 @@ namespace TsRandomizer.Archipelago
 				Disconnect();
 			}
 
-			serverUrl = server;
+			serverUrl = server.Trim();
 			userName = user;
 			password = pass;
 
