@@ -1,3 +1,6 @@
+#Modded from the original tsrandomizer
+this version prevents the game from locking player movement on levelups and item collections, it also increase max stack size and purchase limit to 99 in shops
+
 # General
 Timespinner Randomizer will randomize the location of items such as equipment, relics, familiars, stat boosts, use items. The logic makes sure that each game you play is beatable.
 
