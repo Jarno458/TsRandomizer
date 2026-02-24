@@ -1,4 +1,5 @@
-#Modded from the original tsrandomizer
+# Modded from the original timespinner randomizer
+
 this version prevents the game from locking player movement on levelups and item collections, it also increase max stack size and purchase limit to 99 in shops
 
 # General
