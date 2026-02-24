@@ -79,8 +79,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug DRM Free %28GoG%29|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\TestVersions\kairimod\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>..\..\TestVersions\DRMFreeGoG\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <LangVersion>7.3</LangVersion>
