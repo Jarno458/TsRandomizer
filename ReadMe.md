@@ -2,9 +2,7 @@
 
 This Modded Tsrandomizer has an extra options menu for a few Quality of life settings:
 
--Auto Skip Cutscenes
-
--Auto Skip Dialogues
+-Auto Skip Cutscenes and dialogue instantly
 
 -Change item stack cap (9, 25, 50, 99)
 
