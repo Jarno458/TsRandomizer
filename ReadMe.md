@@ -13,6 +13,7 @@ This Modded Tsrandomizer has an extra options menu for a few Quality of life set
 -Toasts Block Movement (On, Off)
 
 stack cap is intended to make other players in large multiworlds feel like their 70th Berry Pick-mi up matters.
+
 this QoL Mod is intended to make gameplay smoother for players who know Timespinner by heart and don't want control taken away from them every time they obtain an orb #LetMePlayDamnIt
 
 You can find the menu in the options menu
