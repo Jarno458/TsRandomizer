@@ -1,8 +1,19 @@
 # Modded from the original timespinner randomizer
 
-this version prevents the game from locking player movement on levelups and item collections, it also increase max stack size and purchase limit to 99 in shops
+This Modded Tsrandomizer has an extra options menu for a few Quality of life settings:
+-Auto Skip Cutscenes
+-Auto Skip Dialogues
+-Change item stack cap (9, 25, 50, 99)
+-Toast Popup Speed options (Fast, Vanilla)
+-Toasts Block Movement (On, Off)
 
-Simply paste this release over a regular installation of TsRandomizer to apply the patches
+this is intended to make gameplay smoother for players who know Timespinner by heart and don't want control taken away from them every time they obtain an orb #LetMePlayDamnIt
+
+stack cap is intended to make other players in large multiworlds feel like their 70th Berry Pick-mi up matters
+
+
+<img width="1197" height="897" alt="image" src="https://github.com/user-attachments/assets/42416a0d-181d-422a-92c6-b5a25fc46c75" />
+
 
 # General
 Timespinner Randomizer will randomize the location of items such as equipment, relics, familiars, stat boosts, use items. The logic makes sure that each game you play is beatable.
