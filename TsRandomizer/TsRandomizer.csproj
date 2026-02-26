@@ -79,7 +79,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug DRM Free %28GoG%29|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\TestVersions\DRMFreeGoG\</OutputPath>
+    <OutputPath>..\..\TestVersions\DebugDRMFreeGoG\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -88,10 +88,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release DRM Free %28GoG%29|AnyCPU'">
-    <OutputPath>..\..\TestVersions\DRMFreeGoG\</OutputPath>
+    <OutputPath>..\..\TestVersions\ReleaseDRMFreeGoG\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <Optimize>false</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <LangVersion>7.3</LangVersion>
@@ -127,6 +127,8 @@
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
     <Compile Include="Archipelago\Countdown.cs" />
     <Compile Include="Archipelago\Gifting\GiftingService.cs" />
+    <Compile Include="patchcutscenes.cs" />
+    <Compile Include="patchdialogues.cs" />
     <Compile Include="patchtoasttimer.cs" />
     <Compile Include="patchstackincrease.cs" />
     <Compile Include="Commands\InstaGibCommand.cs" />
