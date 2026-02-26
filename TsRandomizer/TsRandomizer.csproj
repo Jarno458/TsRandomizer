@@ -107,8 +107,9 @@
     <Reference Include="Archipelago.MultiClient.Net, Version=6.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Archipelago.MultiClient.Net.6.7.0\lib\net45\Archipelago.MultiClient.Net.dll</HintPath>
     </Reference>
-    <Reference Include="FNA">
-      <HintPath>..\..\Timespinner rando modified\FNA.dll</HintPath>
+    <Reference Include="FNA, Version=21.8.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TestVersions\DebugDRMFreeGoG\FNA.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -119,18 +120,22 @@
     <Reference Include="System.Numerics">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Timespinner">
-      <HintPath>..\..\Timespinner rando modified\Timespinner.exe</HintPath>
+    <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TestVersions\DebugDRMFreeGoG\Timespinner.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
     <Compile Include="Archipelago\Countdown.cs" />
     <Compile Include="Archipelago\Gifting\GiftingService.cs" />
-    <Compile Include="patchcutscenes.cs" />
-    <Compile Include="patchdialogues.cs" />
-    <Compile Include="patchtoasttimer.cs" />
-    <Compile Include="patchstackincrease.cs" />
+    <Compile Include="TsRandomizer QoL\Menu\QoLMenuInjector.cs" />
+    <Compile Include="TsRandomizer QoL\Menu\QoLSettingsMenu.cs" />
+    <Compile Include="TsRandomizer QoL\Settings\QoLSettings.cs" />
+    <Compile Include="TsRandomizer QoL\Patches\patchcutscenes.cs" />
+    <Compile Include="TsRandomizer QoL\Patches\patchdialogues.cs" />
+    <Compile Include="TsRandomizer QoL\Patches\patchtoasttimer.cs" />
+    <Compile Include="TsRandomizer QoL\Patches\patchstackincrease.cs" />
     <Compile Include="Commands\InstaGibCommand.cs" />
     <Compile Include="Commands\CheckCommand.cs" />
     <Compile Include="Commands\HintPointsCommand.cs" />
