@@ -1,10 +1,15 @@
 # Modded from the original timespinner randomizer
 
 This Modded Tsrandomizer has an extra options menu for a few Quality of life settings:
+
 -Auto Skip Cutscenes
+
 -Auto Skip Dialogues
+
 -Change item stack cap (9, 25, 50, 99)
+
 -Toast Popup Speed options (Fast, Vanilla)
+
 -Toasts Block Movement (On, Off)
 
 stack cap is intended to make other players in large multiworlds feel like their 70th Berry Pick-mi up matters.
