@@ -98,23 +98,18 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FNA, Version=19.5.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\FNA.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="FNA">
+      <HintPath>..\..\TestVersions\DebugDRMFreeGoG\FNA.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
-    <Reference Include="Timespinner, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Timespinner\Timespinner.exe</HintPath>
-      <Private>False</Private>
+    <Reference Include="Timespinner">
+      <HintPath>..\..\TestVersions\DebugDRMFreeGoG\Timespinner.exe</HintPath>
     </Reference>
-    <Reference Include="TsRandomizer, Version=1.30.2.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TestVersions\SteamVerison\TsRandomizer.exe</HintPath>
+    <Reference Include="TsRandomizer">
+      <HintPath>..\..\TestVersions\DebugDRMFreeGoG\TsRandomizer.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
