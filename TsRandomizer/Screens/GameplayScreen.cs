@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
@@ -187,10 +188,48 @@ namespace TsRandomizer.Screens
 
 			UpdateGenericScripts(Level);
 
+			if (QoLSettings.Current.AutoSkipCutscenes)
+				TrySkipCutscene();
+
+			if (QoLSettings.Current.AutoSkipDialogue)
+				TrySkipDialogue();
+
 #if DEBUG
 			TimespinnerAfterDark(input);
 #endif
 			HandleCurrentGifts();
+		}
+
+		void TrySkipCutscene()
+		{
+			var level = Level;
+			if (level == null) return;
+
+			var levelDynamic = LevelReflected;
+			if (!(bool)levelDynamic.IsPlayerInputBlocked) return;
+			if ((bool)levelDynamic.IsActiveScriptUnskippable) return;
+			if ((bool)levelDynamic.IsDoingPlayerDeathCutscene) return;
+
+			var activeScripts = (IList)levelDynamic._activeScripts;
+			foreach (var script in activeScripts)
+			{
+				var s = script.AsDynamic();
+				if (s.ScriptType.ToString() == "CutsceneStart" && (float)s.Arguments.X >= 1f)
+				{
+					levelDynamic.SkipCutscene();
+					Dynamic._isShowingSkipCutscenePrompt = false;
+					return;
+				}
+			}
+		}
+
+		void TrySkipDialogue()
+		{
+			var dialogueBox = (object)Dynamic._currentDialogue;
+			if (dialogueBox == null) return;
+			var d = dialogueBox.AsDynamic();
+			if ((bool)d.IsFinished) return;
+			d.FinishDialogue();
 		}
 
 		void UpdateGenericScripts(Level level)
@@ -286,7 +325,6 @@ namespace TsRandomizer.Screens
 			spriteBatch.DrawString(menuFont, text, new Vector2(30, 130), Color.Red, inGameZoom);
 #endif
 		}
-
 
 		public void HideItemPickupBar() => ((object)Dynamic._itemGetBanner).AsDynamic()._displayTimer = 3f;
 

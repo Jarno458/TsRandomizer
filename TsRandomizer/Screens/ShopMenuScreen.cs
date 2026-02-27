@@ -19,6 +19,8 @@ namespace TsRandomizer.Screens
 			// Menu count varies on relics/items/equipment etc. being in inventory
 			// Last menu is always helper functions that don't have an _items
 			// but aren't otherwise distinguishable
+
+
 			foreach (var i in Enumerable.Range(0, ((IList)Dynamic._subMenuCollections).Count - 1))
 			{
 				var shopMenu = ((IList)Dynamic._subMenuCollections)[i].AsDynamic();
@@ -32,15 +34,26 @@ namespace TsRandomizer.Screens
 						item.IsSellable = false;
 						dynamicShopMenuEntry.ShopPrice = -1;
 					}
-					
+
 					int currentPrice = dynamicShopMenuEntry.ShopPrice;
 					if (currentPrice == 0)
 					{
 						// Set a price for "priceless" items
+
 						dynamicShopMenuEntry.ShopPrice = 2000;
 						currentPrice = dynamicShopMenuEntry.ShopPrice;
 					}
 					dynamicShopMenuEntry.ShopPrice = (int)(currentPrice * gameSettings.ShopMultiplier.Value);
+
+					if (item is InventoryUseItem useItem)
+					{
+						var type = useItem.UseItemType;
+						if (type != EInventoryUseItemType.MagicMarbles
+							&& type != EInventoryUseItemType.EssenceCrystal
+							&& type != EInventoryUseItemType.GoldRing
+							&& type != EInventoryUseItemType.GoldNecklace)
+							useItem.StackCap = QoLSettings.Current.StackCap;
+					}
 				}
 			}
 		}
