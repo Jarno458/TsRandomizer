@@ -129,7 +129,7 @@
     <Compile Include="ItemTracker\ItemTrackerState.cs" />
     <Compile Include="Screens\ToastPopupScreen.cs" />
     <Compile Include="Settings\QoLSettings.cs" />
-    <Compile Include="Settings\QoLSettingsMenu.cs" />
+    <Compile Include="Screens\Menu\QoLSettingsMenu.cs" />
     <Compile Include="Commands\InstaGibCommand.cs" />
     <Compile Include="Commands\CheckCommand.cs" />
     <Compile Include="Commands\HintPointsCommand.cs" />
