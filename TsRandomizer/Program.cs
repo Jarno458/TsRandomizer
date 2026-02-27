@@ -1,5 +1,5 @@
 ﻿using System;
-using HarmonyLib;
+
 
 namespace TsRandomizer
 {
@@ -10,8 +10,7 @@ namespace TsRandomizer
 		{
 			WithExceptionLogging(() => {
 
-				var harmony = new Harmony("com.tsrandomizer.mods");
-				harmony.PatchAll();
+
 				var platformHelper = DummyPlatformHelper.CreateInstance();
 
 				new TimeSpinnerGame(platformHelper).Run();
