@@ -98,9 +98,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lib.Harmony.2.4.2\lib\net48\0Harmony.dll</HintPath>
-    </Reference>
     <Reference Include="Archipelago.Gifting.Net, Version=0.4.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Archipelago.Gifting.Net.0.4.4\lib\net452\Archipelago.Gifting.Net.dll</HintPath>
     </Reference>
@@ -129,13 +126,10 @@
     <Compile Include="Archipelago\ArchipelagoItemLocationMap.cs" />
     <Compile Include="Archipelago\Countdown.cs" />
     <Compile Include="Archipelago\Gifting\GiftingService.cs" />
-    <Compile Include="TsRandomizer QoL\Menu\QoLMenuInjector.cs" />
-    <Compile Include="TsRandomizer QoL\Menu\QoLSettingsMenu.cs" />
-    <Compile Include="TsRandomizer QoL\Settings\QoLSettings.cs" />
-    <Compile Include="TsRandomizer QoL\Patches\patchcutscenes.cs" />
-    <Compile Include="TsRandomizer QoL\Patches\patchdialogues.cs" />
-    <Compile Include="TsRandomizer QoL\Patches\patchtoasttimer.cs" />
-    <Compile Include="TsRandomizer QoL\Patches\patchstackincrease.cs" />
+    <Compile Include="ItemTracker\ItemTrackerState.cs" />
+    <Compile Include="Screens\ToastPopupScreen.cs" />
+    <Compile Include="Settings\QoLSettings.cs" />
+    <Compile Include="Settings\QoLSettingsMenu.cs" />
     <Compile Include="Commands\InstaGibCommand.cs" />
     <Compile Include="Commands\CheckCommand.cs" />
     <Compile Include="Commands\HintPointsCommand.cs" />
@@ -304,7 +298,6 @@
     <Compile Include="IntermediateObjects\RequestButtonPressTrigger.cs" />
     <Compile Include="IntermediateObjects\SingleItemInfo.cs" />
     <Compile Include="IntermediateObjects\TriggerBase.cs" />
-    <Compile Include="ItemTracker\ItemTrackerState.cs" />
     <Compile Include="LevelObjects\AlwaysSpawnAttribute.cs" />
     <Compile Include="ItemTracker\ItemTrackerUplink.cs" />
     <Compile Include="LevelObjects\ItemManipulators\JournalComputerEvent+MapComputerEvent.cs" />
