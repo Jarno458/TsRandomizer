@@ -105,6 +105,7 @@ namespace TsRandomizer.Screens
 			ItemTrackerUplink.UpdateState(ItemTrackerState.FromItemLocationMap(ItemLocations));
 
 			ItemManipulator.Initialize(ItemLocations);
+			ItemManipulator.ApplyStackCap(Level.GameSave);
 
 			if (settings.DamageRando.Value != "Off")
 				OrbDamageManager.PopulateOrbLookups(Level.GameSave, settings.DamageRando.Value, settings.DamageRandoOverrides.Value);
@@ -193,6 +194,8 @@ namespace TsRandomizer.Screens
 
 			if (QoLSettings.Current.AutoSkipDialogue)
 				TrySkipDialogue();
+			if (QoLSettings.Current.StackCap != 9)
+				ItemManipulator.ApplyStackCap(Level.GameSave);
 
 #if DEBUG
 			TimespinnerAfterDark(input);
