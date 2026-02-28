@@ -25,6 +25,7 @@ namespace TsRandomizer.Screens
 
 		readonly SeedSelectionMenuScreen seedSelectionScreen;
 		readonly OptionsMenuScreen optionsMenuScreen;
+		readonly bool isQoLMenu;
 
 		GameSave save;
 		SettingCollection settings;
@@ -36,6 +37,12 @@ namespace TsRandomizer.Screens
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
 			gcm = gameContentManager;
+
+			if (isQoLMenu)
+			{
+				QoLSettingsMenu.BuildMenu(GameScreen, 0);
+				return;
+			}
 
 			var gameplayScreen = ScreenManager.FirstOrDefault<GameplayScreen>();
 			save = gameplayScreen?.Save;
@@ -49,7 +56,7 @@ namespace TsRandomizer.Screens
 				Dynamic._menuTitle = "Randomizer Settings";
 				ResetMenu();
 			}
-			else 
+			else
 			{
 				// Journal is being used as a journal, replace Feats and Quests with Objectives and Statistics
 				SetStatistics(itemLocationMap);
@@ -66,8 +73,8 @@ namespace TsRandomizer.Screens
 					gcm.UpdateMinimapColors(settings);
 
 					if (IsInGame)
-                    {
-	                    var gameplayScreen = ScreenManager.FirstOrDefault<GameplayScreen>();
+					{
+						var gameplayScreen = ScreenManager.FirstOrDefault<GameplayScreen>();
 						if (gameplayScreen != null)
 							SpriteManager.ReloadCustomSprites(gameplayScreen.Level, gcm, settings);
 					}
@@ -87,6 +94,8 @@ namespace TsRandomizer.Screens
 		{
 			seedSelectionScreen = screenManager.FirstOrDefault<SeedSelectionMenuScreen>();
 			optionsMenuScreen = screenManager.FirstOrDefault<OptionsMenuScreen>();
+			isQoLMenu = QoLSettingsMenu.IsQoLMenuPending;
+			QoLSettingsMenu.IsQoLMenuPending = false;
 		}
 
 		public static GameScreen Create(ScreenManager screenManager)
@@ -135,7 +144,7 @@ namespace TsRandomizer.Screens
 					{
 						var setting = settingsFunc(settings);
 
-						if(IsInGame && !setting.CanBeChangedInGame)
+						if (IsInGame && !setting.CanBeChangedInGame)
 							continue;
 
 						setting.SetDefault();
@@ -198,7 +207,7 @@ namespace TsRandomizer.Screens
 			foreach (var settingFunc in category.SettingsPerCategory)
 				submenu.Add(CreateMenuForSetting(settingFunc(settings)).AsTimeSpinnerMenuEntry());
 
-			submenu.Add(CreateDefaultsMenu(new [] { category }, true));
+			submenu.Add(CreateDefaultsMenu(new[] { category }, true));
 			Dynamic.ChangeMenuCollection(collection, true);
 
 			((object)Dynamic._selectedMenuCollection).AsDynamic().SetSelectedIndex(0);
@@ -209,6 +218,7 @@ namespace TsRandomizer.Screens
 			dynamic collection;
 			// Multiple submenus can share the same inventory collection
 			// as the in-use collection is cleared before use.
+
 			switch (submenu)
 			{
 				// Currently using quest layout for most, other layouts may be useful for other menus
@@ -220,6 +230,7 @@ namespace TsRandomizer.Screens
 					collection = Dynamic._featsInventory;
 					break;
 				*/
+
 				default:
 					collection = ((object)Dynamic._questInventory).AsDynamic();
 					break;
@@ -266,6 +277,7 @@ namespace TsRandomizer.Screens
 
 			setting.UpdateMenuEntry(menuEntry);
 		}
+
 		void SetStatistics(ItemLocationMap itemLocationMap)
 		{
 			var gameplayScreen = ScreenManager.FirstOrDefault<GameplayScreen>();
@@ -307,10 +319,10 @@ namespace TsRandomizer.Screens
 
 			// Remove all extra feat entries
 			// Currently bonus objectives are not available, only goals
+
 			var bonusTaskCount = 0;
 			while (((IList)selectedMenu.Entries).Count > bonusTaskCount + 1)
 				((IList)selectedMenu.Entries).RemoveAt(bonusTaskCount + 1);
-
 		}
 	}
 }

@@ -23,6 +23,7 @@ namespace TsRandomizer.Screens
 		public override void Initialize(ItemLocationMap itemLocationMap, GCM gameContentManager)
 		{
 			AddSettingButton(MenuEntry.Create("Randomizer Settings", OpenSettingsMenu));
+			AddSettingButton(MenuEntry.Create("Randomizer QoL Settings", OpenQoLSettingsMenu));
 		}
 
 		void AddSettingButton(MenuEntry settingButton)
@@ -41,6 +42,13 @@ namespace TsRandomizer.Screens
 			var gameSettingsMenu = GameSettingsScreen.Create(ScreenManager);
 
 			ScreenManager.AddScreen(gameSettingsMenu, playerIndex);
+		}
+
+		void OpenQoLSettingsMenu(PlayerIndex playerIndex)
+		{
+			QoLSettingsMenu.IsQoLMenuPending = true;
+			var qolMenu = QoLSettingsMenu.Create(ScreenManager);
+			ScreenManager.AddScreen(qolMenu, playerIndex);
 		}
 	}
 }
