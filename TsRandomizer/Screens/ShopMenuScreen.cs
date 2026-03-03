@@ -116,10 +116,11 @@ namespace TsRandomizer.Screens
 
 			// Only act when we are already at or above the vanilla cap,
 			// so below that the vanilla input handling works as normal.
+
 			if (rightPressed && currentQty >= vanillaCap && currentQty < maxCanBuy)
 				entryDynamic.QuanityToBuy = currentQty + 1;
 
-			if (leftPressed && currentQty > vanillaCap)
+			if (leftPressed && currentQty > vanillaCap && currentQty != 1)
 				entryDynamic.QuanityToBuy = currentQty - 1;
 		}
 	}
