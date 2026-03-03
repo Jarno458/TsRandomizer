@@ -23,6 +23,18 @@ namespace TsRandomizer.Screens
 			.Get("Timespinner.GameStateManagement.Screens.Shop.ShopMenuEntryCollection")
 			.GetMethod("GetSelectedShopEntry", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
+		static readonly MethodInfo ChangeDescriptionMethod = TimeSpinnerType
+			.Get("Timespinner.GameStateManagement.Screens.Shop.ShopMenuScreen")
+			.GetMethod("ChangeDescription", BindingFlags.NonPublic | BindingFlags.Instance);
+
+		// Timers for held-button repeat on quantity adjustment
+		float _rightHeldTime;
+		float _leftHeldTime;
+		const float HoldDelay = 0.4f;
+		const float HoldRepeat = 0.1f;
+		float _rightLastRepeat;
+		float _leftLastRepeat;
+
 		public ShopMenuScreen(ScreenManager screenManager, GameScreen screen) : base(screenManager, screen)
 		{
 			var gameSettings = ((GameSave)Dynamic._saveFile).GetSettings();
@@ -72,16 +84,67 @@ namespace TsRandomizer.Screens
 			bool isBuying = (bool)Dynamic._isBuying;
 			if (!isBuying) return;
 
-			// Use only IsNew checks — held state would increment every frame
-			bool rightPressed = input.IsNewButtonPress(Buttons.DPadRight)
+			float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+			// Detect raw held state for repeat logic
+			bool rightHeld = false;
+			bool leftHeld = false;
+			for (int i = 0; i < input.CurrentGamePadStates.Length; i++)
+			{
+				rightHeld |= input.CurrentGamePadStates[i].IsButtonDown(Buttons.DPadRight)
+					|| input.CurrentGamePadStates[i].IsButtonDown(Buttons.LeftThumbstickRight)
+					|| input.CurrentGamePadStates[i].IsButtonDown(Buttons.RightThumbstickRight);
+				leftHeld |= input.CurrentGamePadStates[i].IsButtonDown(Buttons.DPadLeft)
+					|| input.CurrentGamePadStates[i].IsButtonDown(Buttons.LeftThumbstickLeft)
+					|| input.CurrentGamePadStates[i].IsButtonDown(Buttons.RightThumbstickLeft);
+			}
+			for (int i = 0; i < input.CurrentKeyboardStates.Length; i++)
+			{
+				rightHeld |= input.CurrentKeyboardStates[i].IsKeyDown(Keys.Right);
+				leftHeld |= input.CurrentKeyboardStates[i].IsKeyDown(Keys.Left);
+			}
+
+			bool rightNew = input.IsNewButtonPress(Buttons.DPadRight)
 				|| input.IsNewButtonPress(Buttons.LeftThumbstickRight)
 				|| input.IsNewButtonPress(Buttons.RightThumbstickRight)
 				|| input.IsNewKeyPress(Keys.Right);
 
-			bool leftPressed = input.IsNewButtonPress(Buttons.DPadLeft)
+			bool leftNew = input.IsNewButtonPress(Buttons.DPadLeft)
 				|| input.IsNewButtonPress(Buttons.LeftThumbstickLeft)
 				|| input.IsNewButtonPress(Buttons.RightThumbstickLeft)
 				|| input.IsNewKeyPress(Keys.Left);
+
+			// Update hold timers
+			if (rightHeld)
+			{
+				_rightHeldTime += dt;
+				if (rightNew) _rightLastRepeat = 0f;
+			}
+			else
+			{
+				_rightHeldTime = 0f;
+				_rightLastRepeat = 0f;
+			}
+
+			if (leftHeld)
+			{
+				_leftHeldTime += dt;
+				if (leftNew) _leftLastRepeat = 0f;
+			}
+			else
+			{
+				_leftHeldTime = 0f;
+				_leftLastRepeat = 0f;
+			}
+
+			// Fire on initial press or after hold delay with repeat interval
+			bool rightPressed = rightNew
+				|| (rightHeld && _rightHeldTime >= HoldDelay && _rightHeldTime - _rightLastRepeat >= HoldRepeat);
+			bool leftPressed = leftNew
+				|| (leftHeld && _leftHeldTime >= HoldDelay && _leftHeldTime - _leftLastRepeat >= HoldRepeat);
+
+			if (rightPressed && _rightHeldTime >= HoldDelay) _rightLastRepeat = _rightHeldTime;
+			if (leftPressed && _leftHeldTime >= HoldDelay) _leftLastRepeat = _leftHeldTime;
 
 			if (!rightPressed && !leftPressed) return;
 
@@ -116,12 +179,15 @@ namespace TsRandomizer.Screens
 
 			// Only act when we are already at or above the vanilla cap,
 			// so below that the vanilla input handling works as normal.
-
 			if (rightPressed && currentQty >= vanillaCap && currentQty < maxCanBuy)
 				entryDynamic.QuanityToBuy = currentQty + 1;
 
 			if (leftPressed && currentQty > vanillaCap && currentQty != 1)
 				entryDynamic.QuanityToBuy = currentQty - 1;
+
+			// Show a message if the player tries to confirm but holds 9 or more
+			if (input.IsNewPressConfirm(null) && currentCount >= 9)
+				Dynamic.ChangeDescription("Vanilla purchase limit reached - you need to hold fewer than 9 to buy more.", 0);
 		}
 	}
 }
