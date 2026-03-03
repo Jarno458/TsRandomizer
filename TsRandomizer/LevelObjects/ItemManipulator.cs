@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Timespinner.GameAbstractions.Gameplay;
+using Timespinner.GameAbstractions.Inventory;
+using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameObjects.BaseClasses;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
@@ -32,7 +34,7 @@ namespace TsRandomizer.LevelObjects
 		public readonly ItemInfo ItemInfo;
 		public readonly ItemLocation ItemLocation;
 
-		protected ItemManipulator(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation) 
+		protected ItemManipulator(Mobile typedObject, GameplayScreen gameplayScreen, ItemLocation itemLocation)
 			: base(typedObject, gameplayScreen)
 		{
 			ItemInfo = itemLocation?.ItemInfo;
@@ -45,6 +47,8 @@ namespace TsRandomizer.LevelObjects
 
 			if (ItemInfo.Identifier.LootType == LootType.ConstRelic)
 				LevelReflected.UnlockRelic(ItemInfo.Identifier.Relic);
+
+			ApplyStackCap(Level.GameSave);
 
 			OnItemPickup();
 		}
@@ -59,6 +63,27 @@ namespace TsRandomizer.LevelObjects
 		}
 
 		public static void Initialize(ItemLocationMap itemLocations) => itemLocationMap = itemLocations;
+
+		public static void ApplyStackCap(GameSave save)
+		{
+			int cap = QoLSettings.Current.StackCap;
+			var inventory = save.Inventory.UseItemInventory.Inventory;
+
+			foreach (var kvp in inventory)
+			{
+				var item = kvp.Value;
+
+				// Leave special currency items at vanilla cap
+				var type = (EInventoryUseItemType)kvp.Key;
+				if (type == EInventoryUseItemType.MagicMarbles
+					|| type == EInventoryUseItemType.EssenceCrystal
+					|| type == EInventoryUseItemType.GoldRing
+					|| type == EInventoryUseItemType.GoldNecklace)
+					continue;
+
+				item.StackCap = cap;
+			}
+		}
 
 		public static ItemManipulator GenerateShadowObject(
 			Type levelObjectType, Mobile obj, GameplayScreen gameplayScreen, ItemLocationMap itemLocations)

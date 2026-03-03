@@ -75,6 +75,8 @@ namespace TsRandomizer.Screens
 		{
 		}
 
+
+		public virtual void HandleInput(InputState input) { }
 		public virtual void Draw(SpriteBatch spriteBatch, SpriteFont menuFont)
 		{
 		}
