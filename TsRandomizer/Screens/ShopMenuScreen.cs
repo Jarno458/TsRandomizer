@@ -8,6 +8,7 @@ using Timespinner.GameAbstractions.Saving;
 using Timespinner.GameStateManagement.ScreenManager;
 using TsRandomizer.Extensions;
 using TsRandomizer.IntermediateObjects;
+using System;
 
 namespace TsRandomizer.Screens
 {
@@ -23,9 +24,11 @@ namespace TsRandomizer.Screens
 			.Get("Timespinner.GameStateManagement.Screens.Shop.ShopMenuEntryCollection")
 			.GetMethod("GetSelectedShopEntry", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-		static readonly MethodInfo ChangeDescriptionMethod = TimeSpinnerType
-			.Get("Timespinner.GameStateManagement.Screens.Shop.ShopMenuScreen")
-			.GetMethod("ChangeDescription", BindingFlags.NonPublic | BindingFlags.Instance);
+		static readonly Type MenuDescriptionType = TimeSpinnerType
+			.Get("Timespinner.GameStateManagement.Screens.BaseClasses.Menu.MenuDescription");
+
+		static readonly Type EInventoryItemIconType = TimeSpinnerType
+			.Get("Timespinner.GameAbstractions.Inventory.EInventoryItemIcon");
 
 		// Timers for held-button repeat on quantity adjustment
 		float _rightHeldTime;
@@ -184,10 +187,54 @@ namespace TsRandomizer.Screens
 
 			if (leftPressed && currentQty > vanillaCap && currentQty != 1)
 				entryDynamic.QuanityToBuy = currentQty - 1;
+		}
 
-			// Show a message if the player tries to confirm but holds 9 or more
-			if (input.IsNewPressConfirm(null) && currentCount >= 9)
-				Dynamic.ChangeDescription("Vanilla purchase limit reached - you need to hold fewer than 9 to buy more.", 0);
+		public override void HandleInput(InputState input)
+		{
+			int cap = QoLSettings.Current.StackCap;
+			if (cap <= 9) return;
+
+			bool isBuying = (bool)Dynamic._isBuying;
+			if (!isBuying) return;
+
+			if (!input.IsNewPressConfirm(null)) return;
+
+			var selectedCategory = GetSelectedCategoryMethod?.Invoke(GameScreen, null);
+			if (selectedCategory == null) return;
+
+			var selectedEntry = GetSelectedShopEntryMethod?.Invoke(selectedCategory, null);
+			if (selectedEntry == null) return;
+
+			var entryDynamic = ((object)selectedEntry).AsDynamic();
+			var item = (InventoryItem)entryDynamic.Item;
+			if (!(item is InventoryUseItem)) return;
+
+			var save = (GameSave)Dynamic._saveFile;
+			int currentCount = save.Inventory.UseItemInventory.Inventory.ContainsKey(item.Key)
+				? save.Inventory.UseItemInventory.Inventory[item.Key].Count
+				: 0;
+
+			if (currentCount < 9) return;
+
+			// Player holds 9+ and tries to confirm - show message immediately in HandleInput phase
+			Dynamic.PlayErrorSound();
+			var noneIcon = Enum.ToObject(EInventoryItemIconType, 0);
+			var ctor = MenuDescriptionType.GetConstructors(
+				System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+			if (ctor.Length > 0)
+			{
+				var menuDesc = ctor[0].Invoke(new object[]
+				{
+					"Vanilla cap reached - hold fewer than 9 to buy more. (We cannot fix this, sorry!)",
+					(object)Dynamic.DescriptionFont,
+					noneIcon,
+					(object)Dynamic.GCM.SpMenuIcons,
+					(object)Dynamic.GCM.SpUIButtons,
+					(bool)Dynamic.IsDescriptionCentered,
+					(object)Dynamic.DescriptionControllerMapping
+				});
+				Dynamic.CurrentDescription = menuDesc;
+			}
 		}
 	}
 }

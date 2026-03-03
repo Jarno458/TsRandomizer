@@ -174,6 +174,8 @@ namespace TsRandomizer.Screens
 		void UpdateScreens(GameTime gameTime, InputState input)
 		{
 			foreach (var screen in hookedScreens)
+				screen.HandleInput(input);
+			foreach (var screen in hookedScreens)
 				screen.Update(gameTime, input);
 		}
 
