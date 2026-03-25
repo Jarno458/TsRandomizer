@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 namespace TsRandomizer
 {
 	public static class Program
@@ -8,6 +9,8 @@ namespace TsRandomizer
 		public static int Main()
 		{
 			WithExceptionLogging(() => {
+
+
 				var platformHelper = DummyPlatformHelper.CreateInstance();
 
 				new TimeSpinnerGame(platformHelper).Run();
