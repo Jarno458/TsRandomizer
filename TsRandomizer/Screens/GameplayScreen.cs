@@ -174,9 +174,6 @@ namespace TsRandomizer.Screens
 
 			deathLinkService?.Update(Level, ScreenManager);
 
-			if (Settings.MeleeAutofire.Value)
-				GamePadWrapper.GetProperty("IsMeleeDown").SetValue(Level.MainHero.AsDynamic()._gamePadWrapper, false, null);
-
 			if (Settings.ExtraEarringsXP.Value > 0)
 			{
 				OrbExperienceManager.UpdateHitRegistry(Level.MainHero);

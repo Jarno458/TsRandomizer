@@ -45,7 +45,7 @@ namespace TsRandomizer.Settings
 				}},
 			new GameSettingCategoryInfo { Name = "Other", Description = "Miscellaneous settings",
 				SettingsPerCategory = new List<Func<SettingCollection, GameSetting>> {
-					s => s.ShowBestiary, s => s.ShowDrops, s => s.MeleeAutofire, s => s.NoSaveStatues, s => s.EnableMapFromStart
+					s => s.ShowBestiary, s => s.ShowDrops, s => s.NoSaveStatues, s => s.EnableMapFromStart
 				}}
 		};
 
@@ -258,10 +258,6 @@ namespace TsRandomizer.Settings
 
 		public NumberGameSetting ExtraEarringsXP = new NumberGameSetting("Extra Earrings XP",
 			"Adds additional XP granted by Galaxy Earrings", 0, 24, 1, 0, true);
-
-		[DoesNotAffectCompetitiveBalance]
-		public OnOffGameSetting MeleeAutofire = new OnOffGameSetting("Autofire (Melee)",
-			"Holding the melee attack button will attack repeatedly.", false, true);
 
 		public OnOffGameSetting NoSaveStatues = new OnOffGameSetting("No Save Statues",
 			"Breaks all the save statues", false, true);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Timespinner.GameAbstractions;
 using Timespinner.GameStateManagement.ScreenManager;
@@ -31,6 +32,11 @@ namespace TsRandomizer.Screens
 			settingButton.DoesDrawLargeShadow = false;
 
 			var buttons = (IList)((object)Dynamic._primaryMenuCollection).AsDynamic()._entries;
+			// Delete Passwords Menu if present
+			if (buttons[buttons.Count - 1].AsDynamic().Text == "Passwords")
+			{
+				buttons.RemoveAt(buttons.Count - 1);
+			}
 			buttons.Add(settingButton.AsTimeSpinnerMenuEntry());
 
 			((object)Dynamic._primaryMenuCollection).AsDynamic()._entries = buttons.ToList(MainMenuEntryType);
